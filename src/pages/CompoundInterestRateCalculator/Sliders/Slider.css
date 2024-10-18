@@ -1,0 +1,47 @@
+.example-thumb{
+    color:#fff;
+    background: #000;
+    width: 15px;
+    height: 15px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    top:-5px;
+    position: relative;
+}
+
+.example-thumb::before{
+    content:'';
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    background: #00000030;
+    position: absolute;
+}
+
+.active-thumb{
+    border:1px solid #ffff;
+}
+
+
+.horizontal-slider .example-track{
+    background: gray;
+    height: 5px;
+    border-radius: 10px;
+}
+.horizontal-slider .example-track{
+    background: #1D1B201F;
+}
+
+
+.example-track.example-track-0{
+    background: black;
+}
+
+.example-track.example-track-1{
+    background: rgb(185, 183, 183);
+}
