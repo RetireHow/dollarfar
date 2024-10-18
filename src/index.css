@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@font-face {
+    font-family: myFirstFont;
+    src: url(/webfonts/Geist-Regular.woff2);
+  }
+  
+  body {
+    font-family: myFirstFont;
+  }
