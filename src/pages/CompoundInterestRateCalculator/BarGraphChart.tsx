@@ -12,16 +12,27 @@ import {
 } from "recharts";
 
 const renderTooltip = ({ active, label, payload }) => {
+  console.log("Tooltip value==>", payload);
   if (active && payload?.length) {
     return (
-      <div className="bg-[#000019] rounded-lg px-2 py-1 font-bold text-[10px] w-[68px] h-[35px] text-white">
-        <p>{label}</p>
-        <div className="flex items-center gap-1">
-          <Icon
-            icon="material-symbols-light:circle"
-            className="text-[#25BF17] w-2 h-2"
-          />
-          <p className="text-[10px]">{payload[0]?.value}</p>
+      <div className="bg-white border-[1px] border-gray-300 rounded-lg p-3 font-bold text-[16px]">
+        <p><span>Year :</span> <span className="text-[1.2rem] font-bold">{label}</span></p>
+        <div className="">
+          {payload?.map((item) => (
+            <div>
+              {item.name == "interest" ? (
+                <div className="mt-2 text-[#EAB308]">
+                  <span className="mr-1">Total Interest :</span>
+                  <span className="text-[1.2rem] font-bold">{item.payload.interest}</span>
+                </div>
+              ) : (
+                <div className="mt-2 text-[#22C55E]">
+                  <span className="mr-1">Total Principal :</span>
+                  <span className="text-[1.2rem] font-bold">{item.payload.principal}</span>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     );
