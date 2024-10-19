@@ -7,8 +7,19 @@ import TimePeriodSlider from "./Sliders/TimePeriodSlider";
 import { BarGraphChart } from "./BarGraphChart";
 import CalculationCard from "./CalculationCard";
 import Description from "./Description";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { calculateCompoundInterest, calculateInterestBreakdown } from "../../redux/features/compoundInterestSlice/compoundInterestSlice";
 
 export default function CompoundInterestCalculator() {
+  const dispatch = useAppDispatch();
+  const { rate, time, principal, frequency, frequencyName } = useAppSelector(
+    (state) => state.compoundInterest
+  );
+  useEffect(() => {
+    dispatch(calculateCompoundInterest());
+    dispatch(calculateInterestBreakdown());
+  }, [rate, time, principal,frequency, dispatch]);
   return (
     <main className="mb-[5rem]">
       <section className="bg-black text-white md:px-[5rem] px-[1rem] py-[2.5rem] space-y-[1.5rem] relative mb-[5rem]">
@@ -73,6 +84,9 @@ export default function CompoundInterestCalculator() {
       </section>
 
       <section className="mb-[5rem] border-[1px] border-[#EAECF0] rounded-[10px] p-[1rem] lg:mx-[5rem] mx-[1rem]">
+        <div className="flex justify-center items-center">
+        <p className="font-bold text-[#EAB308] text-[1.5rem]">{frequencyName} Breakdown Data</p>
+        </div>
         <BarGraphChart />
         <p className="md:text-[1.25rem] font-semibold text-center mt-5">
           "An investment of $1,000 today will grow to $1,276.28 by 2029, based

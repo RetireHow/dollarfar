@@ -1,4 +1,3 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { useEffect, useState } from "react";
 import {
   BarChart,
@@ -10,84 +9,14 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-import { numberWithCommas } from "../../utils/numberWithCommas";
+import { renderTooltip } from "./renderTooltip";
+import { renderLegend } from "./renderLegend";
+import { useAppSelector } from "../../redux/hooks";
 
-const renderTooltip = ({ active, label, payload }) => {
-  console.log("Tooltip value==>", payload);
-  if (active && payload?.length) {
-    return (
-      <div className="bg-white border-[1px] border-gray-300 rounded-lg p-3 font-bold text-[16px]">
-        <p><span>Year :</span> <span className="text-[1.2rem] font-bold">{label}</span></p>
-        <div className="">
-          {payload?.map((item) => (
-            <div>
-              {item.name == "interest" ? (
-                <div className="mt-2 text-[#EAB308]">
-                  <span className="mr-1">Total Interest :</span>
-                  <span className="text-[1.2rem] font-bold">{numberWithCommas(item.payload.interest)}</span>
-                </div>
-              ) : (
-                <div className="mt-2 text-[#22C55E]">
-                  <span className="mr-1">Total Principal :</span>
-                  <span className="text-[1.2rem] font-bold">{numberWithCommas(item.payload.principal)}</span>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  return null;
-};
-
-const renderLegend = (props) => {
-  const { payload } = props;
-
-  return (
-    <ul className="space-y-[1.5rem] md:ml-[3rem] ml-[1rem]">
-      {payload.map((entry, index) => {
-        const { color, payload } = entry;
-        const { dataKey } = payload || {};
-        return (
-          <li
-            className="flex items-center gap-3 font-semibold"
-            key={`item-${index}`}
-          >
-            <p
-              style={{ backgroundColor: `${color}` }}
-              className="w-10 h-3 rounded-[10px]"
-            ></p>
-            <p className="font-semibold">
-              {dataKey == "interest" ? "Total Interest" : "Total Principal"}
-            </p>
-          </li>
-        );
-      })}
-      <li className="flex items-center gap-3 font-semibold">
-        <Icon className="w-[1.5rem] h-[1.5rem]" icon="mdi:dollar" />
-        <span>CAD - Canadian Dollar</span>
-      </li>
-    </ul>
-  );
-};
 
 export const BarGraphChart = () => {
-  const data = [
-    { year: 2014, principal: 1800, interest: 180 },
-    { year: 2015, principal: 1900, interest: 190 },
-    { year: 2016, principal: 2000, interest: 200 },
-    { year: 2017, principal: 2100, interest: 210 },
-    { year: 2018, principal: 2200, interest: 220 },
-    { year: 2019, principal: 2300, interest: 230 },
-    { year: 2020, principal: 2400, interest: 240 },
-    { year: 2021, principal: 2500, interest: 250 },
-    { year: 2022, principal: 2600, interest: 260 },
-    { year: 2023, principal: 2700, interest: 270 },
-    { year: 2024, principal: 2800, interest: 280 },
-    { year: 2025, principal: 2900, interest: 290 },
-  ];
+  const { interestBreakdown } = useAppSelector((state) => state.compoundInterest);
+  console.log(interestBreakdown)
 
   const [legendLayout, setLegendLayout] = useState("vertical");
   // Function to handle window resize and update layout
@@ -114,7 +43,7 @@ export const BarGraphChart = () => {
           <BarChart
             width={500}
             height={400}
-            data={data}
+            data={interestBreakdown}
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
           >
             <CartesianGrid
@@ -123,17 +52,19 @@ export const BarGraphChart = () => {
               strokeWidth={1}
               strokeOpacity={0.5}
             />
-            <XAxis dataKey="year" />
+            
+            <XAxis dataKey="period" />
             <YAxis />
-            <Tooltip cursor={{ fill: "transparent" }} content={renderTooltip} />
+            {/* <Tooltip cursor={{ fill: "transparent" }} content={renderTooltip} /> */}
+            <Tooltip />
             <Legend
               layout={legendLayout}
               align={legendLayout === "vertical" ? "right" : "center"}
               verticalAlign={legendLayout === "vertical" ? "middle" : "bottom"}
               content={renderLegend}
             />
+            <Bar dataKey="principal" fill="#22C55E" stackId="a" barSize={15}/>
             <Bar dataKey="interest" fill="#EAB308" stackId="a" barSize={15} />
-            <Bar dataKey="principal" fill="#22C55E" stackId="a" barSize={15} />
           </BarChart>
         </ResponsiveContainer>
       </div>

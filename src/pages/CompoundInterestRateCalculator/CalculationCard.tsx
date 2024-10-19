@@ -1,6 +1,11 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { setFrequency } from "../../redux/features/compoundInterestSlice/compoundInterestSlice";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function CalculationCard() {
+  const dispatch = useAppDispatch();
+  const { frequency, compoundInterest, principal } = useAppSelector((state) => state.compoundInterest);
   return (
     <div className="space-y-[2rem] bg-[#F8F8F8] md:p-[1.5rem] p-[1rem] rounded-[10px] lg:w-[50%] w-full">
       <div className="flex justify-between items-center flex-wrap">
@@ -8,12 +13,18 @@ export default function CalculationCard() {
           Compounding Frequency
         </p>
         <div className="flex items-center justify-between gap-2 border-[1px] border-[#0000001A] px-[1.25rem] py-[10px] rounded-[10px] font-medium w-[140px] cursor-pointer">
-          <select className="outline-none" name="frequency" id="frequency">
-            <option value="Annually">Annually</option>
-            <option value="Daily">Daily</option>
-            <option value="Weekly">Weekly</option>
-            <option value="Monthly">Monthly</option>
-            <option value="Quarterly">Quarterly</option>
+          <select
+            onChange={(e) => dispatch(setFrequency(Number(e.target.value)))}
+            className="outline-none"
+            name="frequency"
+            id="frequency"
+            defaultValue={frequency}
+          >
+            <option value="1">Annually</option>
+            <option value="4">Quarterly</option>
+            <option value="12">Monthly</option>
+            <option value="52">Weekly</option>
+            <option value="365">Daily</option>
           </select>
         </div>
       </div>
@@ -22,7 +33,7 @@ export default function CalculationCard() {
         <p className="font-medium">Principle Amount</p>
         <div className="flex items-center">
           <Icon className="text-[1.2rem]" icon="mdi:dollar" />
-          <p> 9999</p>
+          <p>{numberWithCommas(principal)}</p>
         </div>
       </div>
 
@@ -30,7 +41,7 @@ export default function CalculationCard() {
         <p className="text-[1.25rem] font-medium">Total Interest</p>
         <div className="flex items-center">
           <Icon className="text-[1.2rem]" icon="mdi:dollar" />
-          <p> 9999</p>
+          <p>{compoundInterest}</p>
         </div>
       </div>
 
@@ -38,7 +49,7 @@ export default function CalculationCard() {
         <p className="text-[1.25rem] font-medium">Total Amount</p>
         <div className="flex items-center gap-[2px]">
           <Icon className="text-[1.2rem]" icon="mdi:dollar" />
-          <p> 9999</p>
+          <p>{compoundInterest+principal}</p>
         </div>
       </div>
     </div>
