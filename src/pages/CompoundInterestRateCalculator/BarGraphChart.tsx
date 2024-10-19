@@ -10,6 +10,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 const renderTooltip = ({ active, label, payload }) => {
   console.log("Tooltip value==>", payload);
@@ -23,12 +24,12 @@ const renderTooltip = ({ active, label, payload }) => {
               {item.name == "interest" ? (
                 <div className="mt-2 text-[#EAB308]">
                   <span className="mr-1">Total Interest :</span>
-                  <span className="text-[1.2rem] font-bold">{item.payload.interest}</span>
+                  <span className="text-[1.2rem] font-bold">{numberWithCommas(item.payload.interest)}</span>
                 </div>
               ) : (
                 <div className="mt-2 text-[#22C55E]">
                   <span className="mr-1">Total Principal :</span>
-                  <span className="text-[1.2rem] font-bold">{item.payload.principal}</span>
+                  <span className="text-[1.2rem] font-bold">{numberWithCommas(item.payload.principal)}</span>
                 </div>
               )}
             </div>
