@@ -1,4 +1,3 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { setFrequency } from "../../redux/features/compoundInterestSlice/compoundInterestSlice";
 import { numberWithCommas } from "../../utils/numberWithCommas";
@@ -24,6 +23,7 @@ export default function CalculationCard() {
             <option value="4">Quarterly</option>
             <option value="12">Monthly</option>
             <option value="52">Weekly</option>
+            <option value="26">Bi-Weekly</option>
             <option value="365">Daily</option>
           </select>
         </div>
@@ -32,7 +32,8 @@ export default function CalculationCard() {
       <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-8">
         <p className="font-medium">Principle Amount</p>
         <div className="flex items-center">
-          <Icon className="text-[1.2rem]" icon="mdi:dollar" />
+          {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
+          <p>$</p>
           <p>{numberWithCommas(principal)}</p>
         </div>
       </div>
@@ -40,7 +41,8 @@ export default function CalculationCard() {
       <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-8">
         <p className="text-[1.25rem] font-medium">Total Interest</p>
         <div className="flex items-center">
-          <Icon className="text-[1.2rem]" icon="mdi:dollar" />
+          {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
+          <p>$</p>
           <p>{compoundInterest}</p>
         </div>
       </div>
@@ -48,8 +50,9 @@ export default function CalculationCard() {
       <div className="flex items-center justify-between bg-black text-white px-[1.25rem] text-[1.25rem] rounded-[10px] py-[0.3rem]">
         <p className="text-[1.25rem] font-medium">Total Amount</p>
         <div className="flex items-center gap-[2px]">
-          <Icon className="text-[1.2rem]" icon="mdi:dollar" />
-          <p>{compoundInterest+principal}</p>
+          {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
+          <p>$</p>
+          <p>{(compoundInterest+principal).toFixed(2)}</p>
         </div>
       </div>
     </div>

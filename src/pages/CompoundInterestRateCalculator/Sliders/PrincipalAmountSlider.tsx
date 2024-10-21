@@ -1,6 +1,5 @@
 import ReactSlider from "react-slider";
 import "./Slider.css";
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { numberWithCommas } from "../../../utils/numberWithCommas";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { setPrincipal } from "../../../redux/features/compoundInterestSlice/compoundInterestSlice";
@@ -13,7 +12,8 @@ export default function PrincipalAmountSlider() {
       <div className="flex justify-between items-center mb-[1.25rem]">
         <p className="font-semibold text-[1.3rem]">Principle Amount</p>
         <div className="font-bold text-[1.2rem] text-right bg-[#F8F8F8] rounded-[10px] px-[1.25rem] py-[10px] w-[130px] flex justify-center items-center">
-          <Icon className="text-[1.2rem]" icon="mdi:dollar" />
+          {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
+          <p>$</p>
           {numberWithCommas(principal)}
         </div>
       </div>

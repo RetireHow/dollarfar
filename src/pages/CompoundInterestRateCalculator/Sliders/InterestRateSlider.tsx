@@ -1,6 +1,5 @@
 import ReactSlider from "react-slider";
 import "./Slider.css";
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { setRate } from "../../../redux/features/compoundInterestSlice/compoundInterestSlice";
 
@@ -12,7 +11,8 @@ export default function InterestRateSlider() {
       <div className="flex justify-between items-center mb-[1.25rem]">
         <p className="font-semibold text-[1.3rem]">Rate of Interest</p>
         <div className="font-bold text-[1.2rem] text-right bg-[#F8F8F8] rounded-[10px] px-[1.25rem] py-[10px] w-[130px] flex justify-center items-center">
-        <Icon className="mr-1" icon="material-symbols:percent" />
+        {/* <Icon className="mr-1" icon="material-symbols:percent" /> */}
+        <p>%</p>
           {rate}
         </div>
       </div>

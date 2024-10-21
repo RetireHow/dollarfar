@@ -53,6 +53,9 @@ const compoundInterestSlice = createSlice({
         case 52:
           state.frequencyName = "Weekly";
           break;
+        case 26:
+          state.frequencyName = "Bi-Weekly";
+          break;
         case 365:
           state.frequencyName = "Daily";
           break;
@@ -101,6 +104,9 @@ const compoundInterestSlice = createSlice({
             break;
           case 52: // Weekly
             periodLabel = `W${i}`;
+            break;
+          case 26: // Bi-Weekly
+            periodLabel = `Bi-W${i}`;
             break;
           case 365: // Daily
             periodLabel = `D${i}`;

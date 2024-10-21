@@ -16,7 +16,7 @@ export default function CalculatorCard({
 }: {
   item: TCalculatorCardProps;
 }) {
-  const { title, description, arrowIcon, calcIcon, btnText, navLink } = item;
+  const { title, description, calcIcon, navLink } = item;
   return (
     <div className="border-[1px] border-[#EAECF0] rounded-[10px] flex flex-col justify-between">
       <div className="pt-[1.5rem] px-[1.5rem]">
