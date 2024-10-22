@@ -18,7 +18,7 @@ export const BarGraphChart = () => {
     <div className="lg:max-w-[800px] lg:h-[400px] overflow-x-auto">
       <div
         className={`lg:w-full  h-[400px] ${
-          frequency.value == 365 ? "min-w-[18000px]" : frequency.value == 52 ? "min-w-[3000px]" : frequency.value == 26 ? "min-w-[1800px]" : ""
+          frequency == 365 ? "min-w-[18000px]" : frequency == 52 ? "min-w-[3000px]" : frequency == 26 ? "min-w-[1800px]" : ""
         }`}
       >
         <ResponsiveContainer width="100%" height="100%">
