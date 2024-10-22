@@ -7,7 +7,7 @@ interface CompoundInterestState {
   principal: number;
   rate: number;
   time: number;
-  frequency: {value:number, label:string};
+  frequency: number;
   frequencyName: string; // default frequency name
   compoundInterest: number;
   interestBreakdown: Array<{ period: string; interest: number }>; // for chart data
@@ -18,7 +18,7 @@ const initialState: CompoundInterestState = {
   principal: 3000,
   rate: 6,
   time: 5,
-  frequency: {value:1, label:'Annually'}, // compounding frequency (e.g., annually, quarterly, monthly)
+  frequency: 1, // compounding frequency (e.g., annually, quarterly, monthly)
   frequencyName: "Yearly", // default frequency name
   compoundInterest: 0,
   interestBreakdown: [],
@@ -38,11 +38,11 @@ const compoundInterestSlice = createSlice({
     setTime: (state, action: PayloadAction<number>) => {
       state.time = action.payload;
     },
-    setFrequency: (state, action: PayloadAction<{value:number, label:string}>) => {
+    setFrequency: (state, action: PayloadAction<number>) => {
       state.frequency = action.payload;
 
       // Map numeric frequency to corresponding frequency name
-      switch (action.payload.value) {
+      switch (action.payload) {
         case 1:
           state.frequencyName = "Yearly";
           break;
@@ -70,7 +70,7 @@ const compoundInterestSlice = createSlice({
       const P = state.principal;
       const r = state.rate / 100; // convert to decimal
       const t = state.time;
-      const n = state.frequency.value;
+      const n = state.frequency;
 
       // Compound Interest Formula: A = P(1 + r/n)^(nt)
       const amount = P * Math.pow(1 + r / n, n * t);
@@ -85,7 +85,7 @@ const compoundInterestSlice = createSlice({
     calculateInterestBreakdown: (state) => {
       const P = state.principal;
       const r = state.rate / 100; // convert to decimal
-      const n = state.frequency.value; // frequency (1 = Annually, 4 = Quarterly, etc.)
+      const n = state.frequency; // frequency (1 = Annually, 4 = Quarterly, etc.)
       const breakdown = [];
 
       // Loop through each period based on frequency
@@ -157,7 +157,7 @@ const compoundInterestSlice = createSlice({
       state.principal = 0;
       state.rate = 0;
       state.time = 0;
-      state.frequency = {value:1, label:'Yearly'};
+      state.frequency = 1;
       state.compoundInterest = 0;
     },
   },

@@ -1,62 +1,11 @@
+import { Select } from "antd";
 import { setFrequency } from "../../redux/features/compoundInterestSlice/compoundInterestSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { numberWithCommas } from "../../utils/numberWithCommas";
-import Select from "react-select";
-import { StylesConfig } from "react-select";
 
 type TOption = {
   label: string;
   value: number;
-};
-
-const customStyles: StylesConfig<TOption, boolean> = {
-  container: (provided) => ({
-    ...provided,
-    width: "100%",
-    borderRadius: 0,
-    padding: "1px",
-  }),
-  control: (provided) => ({
-    ...provided,
-    border: "1px solid #D9D9D9",
-    boxShadow: "none",
-    "&:hover": {
-      border: "1px solid #D9D9D9",
-    },
-    padding: "3px",
-    borderRadius: "5px",
-    cursor: "pointer",
-  }),
-  menu: (provided) => ({
-    ...provided,
-    width: "100%",
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    backgroundColor: state.isSelected ? "#000" : provided.backgroundColor,
-    color: state.isSelected ? "#fff" : provided.color,
-    "&:hover": {
-      backgroundColor: state.isSelected ? "#000" : provided.backgroundColor,
-    },
-    cursor: "pointer",
-  }),
-  singleValue: (provided) => ({
-    ...provided,
-    color: "#333",
-  }),
-  dropdownIndicator: (provided) => ({
-    ...provided,
-    color: "#000", // Change this to the color you want for the arrow
-    "&:hover": {
-      color: "#000", // Optional: change color on hover if desired
-    },
-  }),
-
-  placeholder: (provided) => ({
-    ...provided,
-    color: "#858585", // Set the placeholder color
-    fontWeight: "normal",
-  }),
 };
 
 const frequencyOptions: TOption[] = [
@@ -73,9 +22,6 @@ export default function CalculationCard() {
   const { frequency, compoundInterest, principal } = useAppSelector(
     (state) => state.compoundInterest
   );
-  const handleChange = (value:TOption) => {
-    dispatch(setFrequency(value))
-  };
   return (
     <div className="space-y-[2rem] bg-[#F8F8F8] md:p-[1.5rem] p-[1rem] rounded-[10px] lg:w-[50%] w-full">
       <div className="flex justify-between items-center flex-wrap">
@@ -83,13 +29,20 @@ export default function CalculationCard() {
           Compounding Frequency
         </p>
         <div>
-
           <div>
-            <Select
+            {/* <Select
               onChange={handleChange}
+              isMulti={false}
               options={frequencyOptions}
               styles={customStyles}
               defaultValue={frequency}
+            ></Select> */}
+            <Select
+              defaultValue={frequency}
+              style={{ width: 130, height: 45, border: "1px solid gray" }}
+              className="border-[1px] border-gray-300 font-bold focus:border-gray-500 focus:border-[1px] hover:border-gray-300 rounded-[5px]"
+              onChange={(value) => dispatch(setFrequency(value))}
+              options={frequencyOptions}
             ></Select>
           </div>
         </div>
