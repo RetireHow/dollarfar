@@ -23,16 +23,16 @@ export const cardsData = [
     navLink: "net-worth-calculator",
   },
 
-  {
-    id: 3,
-    title: "Mortgage/Loan Calculator",
-    description:
-      "This calculator estimates the monthly payments you need to make on a mortgage or loan based on the principal amount, interest rate, and loan term.....",
-    arrowIcon: assets.arrowUpIcon,
-    calcIcon: assets.loanCalcIcon,
-    btnText: "Calculate",
-    navLink: "loan-calculator",
-  },
+  // {
+  //   id: 3,
+  //   title: "Mortgage/Loan Calculator",
+  //   description:
+  //     "This calculator estimates the monthly payments you need to make on a mortgage or loan based on the principal amount, interest rate, and loan term.....",
+  //   arrowIcon: assets.arrowUpIcon,
+  //   calcIcon: assets.loanCalcIcon,
+  //   btnText: "Calculate",
+  //   navLink: "loan-calculator",
+  // },
 
   {
     id: 4,
@@ -45,15 +45,46 @@ export const cardsData = [
     navLink: "budget-calculator",
   },
 
+  // {
+  //   id: 5,
+  //   title: "Registered Education Savings Plan (RESP) Calculator",
+  //   description:
+  //     "This calculator estimates how much money you will accumulate in an RESP, which is designed to save for a child's post-secondary education. It considers initial contributions, ongoing contributions, and.....",
+  //   arrowIcon: assets.arrowUpIcon,
+  //   calcIcon: assets.educationCalcIcon,
+  //   btnText: "Calculate",
+  //   navLink: "education-savings-plan-calculator",
+  // },
+
   {
-    id: 5,
-    title: "Registered Education Savings Plan (RESP) Calculator",
+    id: 7,
+    title: "Comprehensive Retirement Calculator",
     description:
-      "This calculator estimates how much money you will accumulate in an RESP, which is designed to save for a child's post-secondary education. It considers initial contributions, ongoing contributions, and.....",
+      "This calculator estimates helps users estimate how much money they need to save to comfortably retire based on their current financial situation, income, savings, lifestyle, and future expenses.....",
     arrowIcon: assets.arrowUpIcon,
-    calcIcon: assets.educationCalcIcon,
+    calcIcon: assets.comprehensiveRetirement,
     btnText: "Calculate",
-    navLink: "education-savings-plan-calculator",
+    navLink: "comprehensive-retirement-calculator",
+  },
+  {
+    id: 8,
+    title: "Registered Retirement Savings Plan (RRSP) Calculator",
+    description:
+      "This calculator is a financial tool that helps users estimate how much money they can accumulate in their RRSP account over time and how much tax they can save.....",
+    arrowIcon: assets.arrowUpIcon,
+    calcIcon: assets.registeredRetirementSavings,
+    btnText: "Calculate",
+    navLink: "registered-retirement-savings-plan-calculator",
+  },
+  {
+    id: 9,
+    title: "Registered Retirement Income Fund (RRIF) Calculator",
+    description:
+      "This calculator is a tool that helps individuals in Canada estimate their withdrawals from an RRIF after converting their RRSP (Registered Retirement Savings Plan) into an RRIF.....",
+    arrowIcon: assets.arrowUpIcon,
+    calcIcon: assets.registeredRetirementIncome,
+    btnText: "Calculate",
+    navLink: "registered-retirement-income-fund-calculator",
   },
 
   {

@@ -7,6 +7,9 @@ import BudgetCalculator from "../pages/BudgetCalculator/BudgetCalculator";
 import LoanCalcualtor from "../pages/LoanCalculator/LoanCalcualtor";
 import EducationSavingsCalculator from "../pages/EducationSavingsCalculator/EducationSavingsCalculator";
 import CostOfLivingCalculator from "../pages/CostOfLivingCalculator/CostOfLivingCalculator";
+import RegisteredRetirementSavings from "../pages/RegisteredRetirementSavings/RegisteredRetirementSavings";
+import RegisteredRetirementIncome from "../pages/RegisteredRetirementIncome/RegisteredRetirementIncome";
+import ComprehensiveRetirement from "../pages/ComprehensiveRetirement/ComprehensiveRetirement";
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +44,18 @@ export const router = createBrowserRouter([
       {
         path: "cost-of-living-calculator",
         element: <CostOfLivingCalculator />,
+      },
+      {
+        path: "registered-retirement-savings-plan-calculator",
+        element: <RegisteredRetirementSavings />,
+      },
+      {
+        path: "registered-retirement-income-fund-calculator",
+        element: <RegisteredRetirementIncome />,
+      },
+      {
+        path: "comprehensive-retirement-calculator",
+        element: <ComprehensiveRetirement />,
       },
     ],
   },

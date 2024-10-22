@@ -10,13 +10,17 @@ import {
 import { useAppSelector } from "../../redux/hooks";
 
 export const BarGraphChart = () => {
-  const { interestBreakdown } = useAppSelector(
+  const { interestBreakdown, frequency } = useAppSelector(
     (state) => state.compoundInterest
   );
 
   return (
-    <div className="lg:w-full lg:h-[400px] overflow-x-auto">
-      <div className="lg:w-full  h-[400px]">
+    <div className="lg:max-w-[800px] lg:h-[400px] overflow-x-auto">
+      <div
+        className={`lg:w-full  h-[400px] ${
+          frequency.value == 365 ? "min-w-[18000px]" : frequency.value == 52 ? "min-w-[3000px]" : frequency.value == 26 ? "min-w-[1800px]" : ""
+        }`}
+      >
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             width={500}
@@ -30,14 +34,23 @@ export const BarGraphChart = () => {
               strokeLinejoin="miter"
               strokeWidth={1}
               strokeOpacity={0.5}
+              strokeDasharray={5}
             />
 
-            <XAxis dataKey="period" />
-            <YAxis tickFormatter={(value) => `$${value}`} />
+            <XAxis dataKey="period" fontSize={12} />
+            <YAxis tickFormatter={(value) => `$${value}`} fontSize={12} />
             {/* <Tooltip cursor={{ fill: "transparent" }} content={renderTooltip} /> */}
-            <Tooltip />
-            <Bar dataKey="principal" fill="#22C55E" stackId="a" barSize={30} />
-            <Bar dataKey="interest" fill="#EAB308" stackId="a" barSize={30} />
+            <Tooltip
+              formatter={(value: number, name: string, props) => {
+                console.log(props);
+                return [
+                  value,
+                  name == "interest" ? "Total Interest" : "Total Principal",
+                ];
+              }}
+            />
+            <Bar dataKey="principal" fill="#22C55E" stackId="a" barSize={20} />
+            <Bar dataKey="interest" fill="#EAB308" stackId="a" barSize={20} />
           </BarChart>
         </ResponsiveContainer>
       </div>

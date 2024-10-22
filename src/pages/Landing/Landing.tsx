@@ -1,13 +1,16 @@
 import { assets } from "../../assets/assets";
 import { cardsData } from "../../data/cardsData";
 import CalculatorCard from "./CalculatorCard";
+import heroEllipseImage from '../../assets/hero-ellipse.svg'
 export default function Landing() {
   return (
-    <main className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-[3rem] mt-[5rem]">
+    <main className="mb-[3rem] mt-[5rem]">
       {/* Hero Section  */}
       <section className="flex items-center justify-between lg:flex-row flex-col-reverse md:text-left text-center">
-        <div className="max-w-[700px]">
-          <h3 className="font-extrabold lg:text-[54px] text-[2rem] leading-tight lg:mb-0 mb-[1rem]">
+        
+        <div style={{backgroundImage:`url(${heroEllipseImage})`, backgroundRepeat:'no-repeat', backgroundSize:'contain'}} className="max-w-[700px]">
+         <div className="lg:ml-[5rem] md:ml-[2rem] ml-[1rem]">
+         <h3 className="font-extrabold lg:text-[54px] text-[2rem] leading-tight mb-[1rem]">
             Master Your Finances with Powerful Calculators
           </h3>
           <p className="text-[20px] text-[#696969]">
@@ -21,13 +24,15 @@ export default function Landing() {
               <img src={assets.arrowWhite} alt="Arrow Icon" />
             </button>
           </div>
+         </div>
         </div>
+
         <div className="lg:mb-0 mb-[2rem]">
           <img src={assets.heroImage} alt="Hero Image" />
         </div>
       </section>
 
-      <section>
+      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem]">
         <div className="text-center mt-[5rem] mb-[2.5rem]">
           <h1 className="font-bold md:text-[2.5rem] text-[1.8rem]">
             Our calculators and tools for you

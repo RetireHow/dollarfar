@@ -10,6 +10,9 @@ import heroImage from "./hero-image.svg";
 import arrowWhite from "./arrow-white.svg";
 import leftArrow from "./left-arrow.svg";
 import whiteBarChart from "./white-bar-chart.svg";
+import comprehensiveRetirement from "./comprehensive-retirement.svg";
+import registeredRetirementSavings from "./registered-retirement-savings.svg";
+import registeredRetirementIncome from "./registered-retirement-income.svg";
 
 export const assets = {
   siteLogo,
@@ -24,4 +27,7 @@ export const assets = {
   arrowWhite,
   leftArrow,
   whiteBarChart,
+  comprehensiveRetirement,
+  registeredRetirementIncome,
+  registeredRetirementSavings,
 };
