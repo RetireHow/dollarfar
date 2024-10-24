@@ -9,9 +9,9 @@ export default function Header() {
       <Link to="/">
         <img src={siteLogo} alt="Logo Image" />
       </Link>
-      <Link to="/research">
+      {/* <Link to="/research">
         <button>Researh</button>
-      </Link>
+      </Link> */}
     </div>
   );
 }

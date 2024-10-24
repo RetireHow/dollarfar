@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import compoundInterestReducer from "./features/compoundInterestSlice/compoundInterestSlice";
 import researchReducer from "./features/other/researchSlice";
+import NWReducer from "./features/NWSlice/NWSlice";
 
 // Create and configure the store
 const store = configureStore({
   reducer: {
     compoundInterest: compoundInterestReducer,
     research: researchReducer,
+    NWCalculator: NWReducer,
   },
 });
 
