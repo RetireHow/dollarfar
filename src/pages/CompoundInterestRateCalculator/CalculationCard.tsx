@@ -30,13 +30,6 @@ export default function CalculationCard() {
         </p>
         <div>
           <div>
-            {/* <Select
-              onChange={handleChange}
-              isMulti={false}
-              options={frequencyOptions}
-              styles={customStyles}
-              defaultValue={frequency}
-            ></Select> */}
             <Select
               defaultValue={frequency}
               style={{ width: 130, height: 45, border: "1px solid gray" }}
@@ -66,7 +59,7 @@ export default function CalculationCard() {
         </div>
       </div>
 
-      <div className="flex items-center justify-between bg-black text-white px-[1.25rem] text-[1.25rem] rounded-[10px] py-[0.3rem]">
+      <div className="flex items-center justify-between bg-black text-white px-[1.25rem] text-[1.25rem] rounded-[10px] h-[50px]">
         <p className="text-[1.25rem] font-medium">Total Amount</p>
         <div className="flex items-center gap-[2px]">
           {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}

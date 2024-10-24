@@ -15,7 +15,7 @@ export const BarGraphChart = () => {
   );
 
   return (
-    <div className="lg:max-w-[800px] lg:h-[400px] overflow-x-auto">
+    <div id="chart-container" className="lg:max-w-[800px] lg:h-[400px] overflow-x-auto">
       <div
         className={`lg:w-full  h-[400px] ${
           frequency == 365 ? "min-w-[18000px]" : frequency == 52 ? "min-w-[3000px]" : frequency == 26 ? "min-w-[1800px]" : ""

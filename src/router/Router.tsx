@@ -10,6 +10,7 @@ import CostOfLivingCalculator from "../pages/CostOfLivingCalculator/CostOfLiving
 import RegisteredRetirementSavings from "../pages/RegisteredRetirementSavings/RegisteredRetirementSavings";
 import RegisteredRetirementIncome from "../pages/RegisteredRetirementIncome/RegisteredRetirementIncome";
 import ComprehensiveRetirement from "../pages/ComprehensiveRetirement/ComprehensiveRetirement";
+import Research from "../pages/Research";
 
 export const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
       {
         path: "comprehensive-retirement-calculator",
         element: <ComprehensiveRetirement />,
+      },
+      {
+        path: "research",
+        element: <Research />,
       },
     ],
   },

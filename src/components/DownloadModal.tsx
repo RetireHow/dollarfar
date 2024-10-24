@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Checkbox, CheckboxProps, Modal } from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { generatePDF } from "./generatePdf";
 
-const DownloadModal: React.FC = () => {
+const DownloadModal = ({id}:{id:string}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    console.log(name, email);
+    generatePDF(name, email, id);
     setIsModalOpen(false);
   };
 
@@ -28,12 +34,14 @@ const DownloadModal: React.FC = () => {
         className="flex items-center gap-2 border-[1px] border-[#0000001A] md:px-[1.25rem] px-[0.5rem] md:py-[10px] py-[8px] rounded-[10px] font-medium md:w-[140px] w-[110px] cursor-pointer"
       >
         <p>Download</p>
-        <Icon
-          className="text-[1.5rem]"
-          icon="material-symbols:download"
-        />
+        <Icon className="text-[1.5rem]" icon="material-symbols:download" />
       </div>
-      <Modal open={isModalOpen} closeIcon={false} footer={false} className="geist">
+      <Modal
+        open={isModalOpen}
+        closeIcon={false}
+        footer={false}
+        className="geist"
+      >
         <div className="space-y-[1rem]">
           <div className="flex items-center justify-between">
             <h3 className="text-[1.5rem] font-bold">
@@ -54,6 +62,7 @@ const DownloadModal: React.FC = () => {
               className="p-[0.8rem] border-[1px] border-[#838383] rounded-[8px] outline-none w-full"
               type="text"
               placeholder="Enter Name"
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div>
@@ -64,6 +73,7 @@ const DownloadModal: React.FC = () => {
               className="p-[0.8rem] border-[1px] border-[#838383] rounded-[8px] outline-none w-full"
               type="email"
               placeholder="Enter Email Address"
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <Checkbox className="text-[12px] geist" onChange={onChange}>

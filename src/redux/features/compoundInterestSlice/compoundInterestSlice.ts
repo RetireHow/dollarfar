@@ -112,7 +112,7 @@ const compoundInterestSlice = createSlice({
           });
         }
       } else {
-        for (let i = 1; i <= n; i++) {
+        for (let i = 1; i <= state.time * n; i++) {
           const amount = P * Math.pow(1 + r / n, i); // Calculate compound interest at this period
           const interest = amount - P;
 
@@ -123,19 +123,19 @@ const compoundInterestSlice = createSlice({
               periodLabel = `${new Date().getFullYear()}`;
               break;
             case 4: // Quarterly
-              periodLabel = `Quarter:${i}`;
+              periodLabel = `Q:${i}`;
               break;
             case 12: // Monthly
               periodLabel = months[i-1];
               break;
             case 52: // Weekly
-              periodLabel = `Week:${i}`;
+              periodLabel = `W:${i}`;
               break;
             case 26: // Bi-Weekly
-              periodLabel = `Bi-Week:${i}`;
+              periodLabel = `Bi-W:${i}`;
               break;
             case 365: // Daily
-              periodLabel = `Day:${i}`;
+              periodLabel = `D:${i}`;
               break;
             default:
               periodLabel = `Period ${i}`;

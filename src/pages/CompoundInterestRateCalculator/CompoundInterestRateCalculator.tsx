@@ -1,6 +1,4 @@
-import { Link } from "react-router-dom";
 import { assets } from "../../assets/assets";
-import { Icon } from "@iconify/react";
 import PrincipalAmountSlider from "./Sliders/PrincipalAmountSlider";
 import InterestRateSlider from "./Sliders/InterestRateSlider";
 import TimePeriodSlider from "./Sliders/TimePeriodSlider";
@@ -13,7 +11,15 @@ import {
   calculateCompoundInterest,
   calculateInterestBreakdown,
 } from "../../redux/features/compoundInterestSlice/compoundInterestSlice";
-import DownloadModal from "../../components/DownloadModal";
+import PageHero from "../../components/UI/PageHero";
+import SectionHeader from "../../components/UI/SectionHeader";
+
+const data = {
+  title: "Compound Interest Rate Calculator",
+  description:
+    "This calculator helps you determine how much an investment will grow over time when interest is applied not just to the principal amount but also to the accumulated interest. It's useful for understanding the power of compounding in savings accounts or investments.",
+  image: assets.whiteBarChart,
+};
 
 export default function CompoundInterestCalculator() {
   const dispatch = useAppDispatch();
@@ -24,54 +30,22 @@ export default function CompoundInterestCalculator() {
     dispatch(calculateCompoundInterest());
     dispatch(calculateInterestBreakdown());
   }, [rate, time, principal, frequency, dispatch]);
-  return (
-    <main className="mb-[5rem]" id="report">
-      <section className="bg-black text-white md:px-[5rem] px-[1rem] py-[2.5rem] space-y-[1.5rem] relative mb-[5rem]">
-        <Link to="/">
-          <button className="flex items-center gap-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] px-[1.5rem] py-[0.5rem] text-[18px] font-bold">
-            <img src={assets.leftArrow} alt="" />
-            <span> Back</span>
-          </button>
-        </Link>
-        <h3 className="text-[28px] font-extrabold">
-          Compound Interest Rate Calculator
-        </h3>
-        <p className="text-[18px] text-[#DADADA] leading-[27px] md:mr-[8rem]">
-          This calculator helps you determine how much an investment will grow
-          over time when interest is applied not just to the principal amount
-          but also to the accumulated interest. It's useful for understanding
-          the power of compounding in savings accounts or investments.
-        </p>
-        <div className="md:absolute bottom-0 right-0">
-          <img src={assets.whiteBarChart} alt="" />
-        </div>
-      </section>
 
-      <div>
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  return (
+    <main className="mb-[5rem]">
+      <PageHero data={data} />
+
+      <div id="report">
         <section
           id="calculation-card"
           className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem]"
         >
           {/* Header  */}
-          <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[5rem]">
-            <div className="flex justify-between items-center flex-wrap">
-              <h3 className="text-[1.5rem] font-bold md:mb-0 mb-3">
-                Compound Interest Calculator
-              </h3>
-              <div className="flex items-center flex-wrap gap-5">
-                <div className="flex items-center md:gap-2 gap-1 border-[1px] border-[#0000001A] md:px-[1.25rem] px-[0.5rem] md:py-[10px] py-[8px] rounded-[10px] font-medium md:w-[140px] w-[110px] cursor-pointer">
-                  {/* <Icon className="w-[1.5rem] h-[1.5rem]" icon="mdi:dollar" /> */}
-                  <p>$</p>
-                  <p>CAD</p>
-                  <Icon
-                    className="w-[1.5rem] h-[1.5rem]"
-                    icon="iconamoon:arrow-down-2"
-                  />
-                </div>
-                <DownloadModal />
-              </div>
-            </div>
-          </div>
+          <SectionHeader id="report" title="Compound Interest Calculator" />
 
           <div className="flex items-center justify-between gap-[5rem] lg:flex-row flex-col">
             {/* ==========================|| Sliders Container ||===================================  */}
