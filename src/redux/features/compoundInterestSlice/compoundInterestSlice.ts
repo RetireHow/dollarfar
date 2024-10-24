@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
 // Define the state type
 interface CompoundInterestState {
   principal: number;
@@ -126,7 +124,7 @@ const compoundInterestSlice = createSlice({
               periodLabel = `Q:${i}`;
               break;
             case 12: // Monthly
-              periodLabel = months[i-1];
+              periodLabel = `M:${i}`;
               break;
             case 52: // Weekly
               periodLabel = `W:${i}`;
