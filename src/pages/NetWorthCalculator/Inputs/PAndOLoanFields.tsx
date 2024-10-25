@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import { useDispatch } from "react-redux";
-import { setCottage, setDynamicAsset, setPrincipalResidence, setProperty, setRealEstateAssets } from "../../../redux/features/NWSlice/NWSlice";
+import {
+  setDynamicLiability,
+  setPersonalLoan,
+  setPersonalOtherLoans,
+  setStudentLoan,
+} from "../../../redux/features/NWSlice/NWSlice";
 
 interface DynamicInput {
   id: number;
@@ -9,7 +14,7 @@ interface DynamicInput {
   value: string;
 }
 
-const PropertyInputFields = () => {
+const PAndOLoanFields = () => {
   const dispatch = useDispatch();
   // State to manage dynamic inputs
   const [dynamicInputs, setDynamicInputs] = useState<DynamicInput[]>([]);
@@ -31,7 +36,10 @@ const PropertyInputFields = () => {
     if (newInput.label) {
       console.log("New Input Value===> ", newInput);
       dispatch(
-        setDynamicAsset({ key: newInput.label.trim().split(" ").join(""), value: Number(newInput.value) })
+        setDynamicLiability({
+          key: newInput.label.trim().split(" ").join(""),
+          value: Number(newInput.value),
+        })
       );
       setDynamicInputs([
         ...dynamicInputs,
@@ -55,7 +63,7 @@ const PropertyInputFields = () => {
   ) => {
     const { value, name } = e.target;
     console.log(value, e.target.name);
-    dispatch(setDynamicAsset({key:name, value:Number(value)}))
+    dispatch(setDynamicLiability({ key: name, value: Number(value) }));
     setDynamicInputs((prevInputs) =>
       prevInputs.map((input) => (input.id === id ? { ...input, value } : input))
     );
@@ -74,7 +82,7 @@ const PropertyInputFields = () => {
           className="flex items-center gap-1 font-semibold"
           htmlFor="property"
         >
-          <span>Property</span>{" "}
+          <span>Personal & Other Loans</span>{" "}
           <Icon
             className="text-[#838383] text-[1rem]"
             icon="material-symbols:info-outline"
@@ -85,7 +93,7 @@ const PropertyInputFields = () => {
           onClick={() => setShowSubInputs(!showSubInputs)}
           className="font-semibold flex items-center gap-1"
         >
-          <span>Add Properties</span>
+          <span>Add Personal & Other Loans</span>
           {showSubInputs ? (
             // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
             <Icon className="text-[1.5rem]" icon="iconamoon:arrow-up-2-light" />
@@ -101,7 +109,9 @@ const PropertyInputFields = () => {
         onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
           e.currentTarget.blur()
         }
-        onChange={(e)=>dispatch(setProperty(Number(e.target.value)))}
+        onChange={(e) =>
+          dispatch(setPersonalOtherLoans(Number(e.target.value)))
+        }
       />
 
       {/* Sub Input Fields */}
@@ -112,7 +122,7 @@ const PropertyInputFields = () => {
               className="flex items-center gap-1 font-semibold"
               htmlFor="principalResidence"
             >
-              <span className="text-nowrap">Principal Residence</span>{" "}
+              <span className="text-nowrap">Personal Loan</span>{" "}
               <Icon
                 className="text-[#838383] text-[1rem]"
                 icon="material-symbols:info-outline"
@@ -125,7 +135,9 @@ const PropertyInputFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setPrincipalResidence(Number(e.target.value)))}
+              onChange={(e) =>
+                dispatch(setPersonalLoan(Number(e.target.value)))
+              }
             />
           </div>
           <div>
@@ -133,7 +145,7 @@ const PropertyInputFields = () => {
               className="flex items-center gap-1 font-semibold"
               htmlFor="cottage"
             >
-              <span className="text-nowrap">Cottage</span>{" "}
+              <span className="text-nowrap">Student Loan</span>{" "}
               <Icon
                 className="text-[#838383] text-[1rem]"
                 icon="material-symbols:info-outline"
@@ -146,28 +158,7 @@ const PropertyInputFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setCottage(Number(e.target.value)))}
-            />
-          </div>
-          <div>
-            <label
-              className="flex items-center gap-1 font-semibold"
-              htmlFor="realEstate"
-            >
-              <span className="text-nowrap">Real Estate Assets</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
-            </label>
-            <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
-              type="number"
-              placeholder="$0"
-              onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
-                e.currentTarget.blur()
-              }
-              onChange={(e)=>dispatch(setRealEstateAssets(Number(e.target.value)))}
+              onChange={(e) => dispatch(setStudentLoan(Number(e.target.value)))}
             />
           </div>
 
@@ -266,4 +257,4 @@ const PropertyInputFields = () => {
   );
 };
 
-export default PropertyInputFields;
+export default PAndOLoanFields;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import { useDispatch } from "react-redux";
-import { setCottage, setDynamicAsset, setPrincipalResidence, setProperty, setRealEstateAssets } from "../../../redux/features/NWSlice/NWSlice";
+import {setCreditCard1, setCreditCard2, setCreditCard3, setCreditCardDues, setDynamicLiability } from "../../../redux/features/NWSlice/NWSlice";
 
 interface DynamicInput {
   id: number;
@@ -9,7 +9,7 @@ interface DynamicInput {
   value: string;
 }
 
-const PropertyInputFields = () => {
+const CreditCardDueFields = () => {
   const dispatch = useDispatch();
   // State to manage dynamic inputs
   const [dynamicInputs, setDynamicInputs] = useState<DynamicInput[]>([]);
@@ -29,9 +29,8 @@ const PropertyInputFields = () => {
   // Save the new dynamic input field
   const handleSaveInput = () => {
     if (newInput.label) {
-      console.log("New Input Value===> ", newInput);
       dispatch(
-        setDynamicAsset({ key: newInput.label.trim().split(" ").join(""), value: Number(newInput.value) })
+        setDynamicLiability({ key: newInput.label.trim().split(" ").join(""), value: Number(newInput.value) })
       );
       setDynamicInputs([
         ...dynamicInputs,
@@ -55,7 +54,7 @@ const PropertyInputFields = () => {
   ) => {
     const { value, name } = e.target;
     console.log(value, e.target.name);
-    dispatch(setDynamicAsset({key:name, value:Number(value)}))
+    dispatch(setDynamicLiability({key:name, value:Number(value)}))
     setDynamicInputs((prevInputs) =>
       prevInputs.map((input) => (input.id === id ? { ...input, value } : input))
     );
@@ -74,7 +73,7 @@ const PropertyInputFields = () => {
           className="flex items-center gap-1 font-semibold"
           htmlFor="property"
         >
-          <span>Property</span>{" "}
+          <span>Credit Card Dues</span>{" "}
           <Icon
             className="text-[#838383] text-[1rem]"
             icon="material-symbols:info-outline"
@@ -85,7 +84,7 @@ const PropertyInputFields = () => {
           onClick={() => setShowSubInputs(!showSubInputs)}
           className="font-semibold flex items-center gap-1"
         >
-          <span>Add Properties</span>
+          <span>Add Credit Card Dues</span>
           {showSubInputs ? (
             // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
             <Icon className="text-[1.5rem]" icon="iconamoon:arrow-up-2-light" />
@@ -101,7 +100,7 @@ const PropertyInputFields = () => {
         onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
           e.currentTarget.blur()
         }
-        onChange={(e)=>dispatch(setProperty(Number(e.target.value)))}
+        onChange={(e)=>dispatch(setCreditCardDues(Number(e.target.value)))}
       />
 
       {/* Sub Input Fields */}
@@ -112,7 +111,7 @@ const PropertyInputFields = () => {
               className="flex items-center gap-1 font-semibold"
               htmlFor="principalResidence"
             >
-              <span className="text-nowrap">Principal Residence</span>{" "}
+              <span className="text-nowrap">Credit card 1</span>{" "}
               <Icon
                 className="text-[#838383] text-[1rem]"
                 icon="material-symbols:info-outline"
@@ -125,7 +124,7 @@ const PropertyInputFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setPrincipalResidence(Number(e.target.value)))}
+              onChange={(e)=>dispatch(setCreditCard1(Number(e.target.value)))}
             />
           </div>
           <div>
@@ -133,7 +132,7 @@ const PropertyInputFields = () => {
               className="flex items-center gap-1 font-semibold"
               htmlFor="cottage"
             >
-              <span className="text-nowrap">Cottage</span>{" "}
+              <span className="text-nowrap">Credit card 2</span>{" "}
               <Icon
                 className="text-[#838383] text-[1rem]"
                 icon="material-symbols:info-outline"
@@ -146,15 +145,16 @@ const PropertyInputFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setCottage(Number(e.target.value)))}
+              onChange={(e)=>dispatch(setCreditCard2(Number(e.target.value)))}
             />
           </div>
+
           <div>
             <label
               className="flex items-center gap-1 font-semibold"
-              htmlFor="realEstate"
+              htmlFor="cottage"
             >
-              <span className="text-nowrap">Real Estate Assets</span>{" "}
+              <span className="text-nowrap">Credit card 3</span>{" "}
               <Icon
                 className="text-[#838383] text-[1rem]"
                 icon="material-symbols:info-outline"
@@ -167,7 +167,7 @@ const PropertyInputFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setRealEstateAssets(Number(e.target.value)))}
+              onChange={(e)=>dispatch(setCreditCard3(Number(e.target.value)))}
             />
           </div>
 
@@ -266,4 +266,5 @@ const PropertyInputFields = () => {
   );
 };
 
-export default PropertyInputFields;
+export default CreditCardDueFields;
+

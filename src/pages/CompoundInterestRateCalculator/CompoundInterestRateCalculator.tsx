@@ -58,37 +58,37 @@ export default function CompoundInterestCalculator() {
             {/* =============================|| Calculated Card ||==================================== */}
             <CalculationCard />
           </div>
-        </section>
 
-        <div className="lg:flex items-center gap-10 lg:mx-[5rem] mx-[1rem] mb-[5rem]">
-          <section className="border-[1px] border-[#EAECF0] rounded-[10px] p-[1rem]">
-            <div className="flex justify-center items-center">
-              <p className="font-bold text-gray-500 text-[1.2rem]">
-                {frequencyName} Breakdown Data
+          <div className="lg:flex items-center gap-5 ml-[1rem] mt-[5rem]">
+            <section className="border-[1px] border-[#EAECF0] rounded-[10px] p-[1rem]">
+              <div className="flex justify-center items-center">
+                <p className="font-bold text-gray-500 text-[1.2rem]">
+                  {frequencyName} Breakdown Data
+                </p>
+              </div>
+              <BarGraphChart />
+              <p className="md:text-[1rem] font-semibold text-center mt-5">
+                "An investment of $1,000 today will grow to $1,276.28 by 2029,
+                based on an interest rate of 5% compounded annually."
               </p>
-            </div>
-            <BarGraphChart />
-            <p className="md:text-[1rem] font-medium text-center mt-5">
-              "An investment of $1,000 today will grow to $1,276.28 by 2029,
-              based on an interest rate of 5% compounded annually."
-            </p>
-          </section>
+            </section>
 
-          <ul className="space-y-[1.5rem] lg:mt-0 mt-[2rem]">
-            <li className="flex items-center gap-[1.25rem] font-medium text-[1rem]">
-              <div className="bg-[#427B3C] w-[30px] h-[10px] rounded-[10px]"></div>
-              <p className="text-nowrap">Principle Amount</p>
-            </li>
-            <li className="flex items-center gap-[1.25rem] font-medium text-[1rem]">
-              <div className="bg-[#FFCC32] w-[30px] h-[10px] rounded-[10px]"></div>
-              <p className="text-nowrap">Total Interest/Total Return</p>
-            </li>
-            <li className="flex items-center gap-[1.25rem] font-medium text-[1rem]">
-              <p>$</p>
-              <p className="text-nowrap">CAD - Canadian Dollar</p>
-            </li>
-          </ul>
-        </div>
+            <ul className="space-y-[1.5rem] lg:mt-0 mt-[2rem] text-[14px]">
+              <li className="flex items-center gap-[0.5rem] font-semibold">
+                <div className="bg-[#427B3C] min-w-[30px] h-[10px] rounded-[10px]"></div>
+                <p className="text-nowrap">Principle Amount</p>
+              </li>
+              <li className="flex items-center gap-[0.5rem] font-semibold">
+                <div className="bg-[#FFCC32] min-w-[30px] h-[10px] rounded-[10px]"></div>
+                <p>Total Interest/Total Return</p>
+              </li>
+              <li className="flex items-center gap-[0.5rem] font-semibold">
+                <p className="min-w-[30px]">$</p>
+                <p>CAD - Canadian Dollar</p>
+              </li>
+            </ul>
+          </div>
+        </section>
       </div>
 
       <Description />

@@ -2,6 +2,7 @@ import { Select } from "antd";
 import { setFrequency } from "../../redux/features/compoundInterestSlice/compoundInterestSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { numberWithCommas } from "../../utils/numberWithCommas";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 type TOption = {
   label: string;
@@ -32,10 +33,12 @@ export default function CalculationCard() {
           <div>
             <Select
               defaultValue={frequency}
-              style={{ width: 130, height: 45, border: "1px solid gray" }}
-              className="border-[1px] border-gray-300 font-bold focus:border-gray-500 focus:border-[1px] hover:border-gray-300 rounded-[5px]"
+              size="large"
+              style={{ width: 130, height: 45, border: "1px solid gray"}}
+              className="custom-select"
               onChange={(value) => dispatch(setFrequency(value))}
               options={frequencyOptions}
+              suffixIcon={<Icon className="text-[1.5rem]" icon="iconamoon:arrow-down-2" />}
             ></Select>
           </div>
         </div>

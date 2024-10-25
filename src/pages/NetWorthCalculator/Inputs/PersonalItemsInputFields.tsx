@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import { useDispatch } from "react-redux";
-import { setCottage, setDynamicAsset, setPrincipalResidence, setProperty, setRealEstateAssets } from "../../../redux/features/NWSlice/NWSlice";
+import { setArtwork, setCollectibles, setDynamicAsset, setJewelry, setPersonalItems } from "../../../redux/features/NWSlice/NWSlice";
 
 interface DynamicInput {
   id: number;
@@ -9,7 +9,7 @@ interface DynamicInput {
   value: string;
 }
 
-const PropertyInputFields = () => {
+const PersonalItemsInputFields = () => {
   const dispatch = useDispatch();
   // State to manage dynamic inputs
   const [dynamicInputs, setDynamicInputs] = useState<DynamicInput[]>([]);
@@ -74,7 +74,7 @@ const PropertyInputFields = () => {
           className="flex items-center gap-1 font-semibold"
           htmlFor="property"
         >
-          <span>Property</span>{" "}
+          <span>Personal Items</span>{" "}
           <Icon
             className="text-[#838383] text-[1rem]"
             icon="material-symbols:info-outline"
@@ -85,7 +85,7 @@ const PropertyInputFields = () => {
           onClick={() => setShowSubInputs(!showSubInputs)}
           className="font-semibold flex items-center gap-1"
         >
-          <span>Add Properties</span>
+          <span>Add Personal Items</span>
           {showSubInputs ? (
             // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
             <Icon className="text-[1.5rem]" icon="iconamoon:arrow-up-2-light" />
@@ -101,7 +101,7 @@ const PropertyInputFields = () => {
         onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
           e.currentTarget.blur()
         }
-        onChange={(e)=>dispatch(setProperty(Number(e.target.value)))}
+        onChange={(e)=>dispatch(setPersonalItems(Number(e.target.value)))}
       />
 
       {/* Sub Input Fields */}
@@ -112,7 +112,7 @@ const PropertyInputFields = () => {
               className="flex items-center gap-1 font-semibold"
               htmlFor="principalResidence"
             >
-              <span className="text-nowrap">Principal Residence</span>{" "}
+              <span className="text-nowrap">Jewelry</span>{" "}
               <Icon
                 className="text-[#838383] text-[1rem]"
                 icon="material-symbols:info-outline"
@@ -125,7 +125,7 @@ const PropertyInputFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setPrincipalResidence(Number(e.target.value)))}
+              onChange={(e)=>dispatch(setJewelry(Number(e.target.value)))}
             />
           </div>
           <div>
@@ -133,7 +133,7 @@ const PropertyInputFields = () => {
               className="flex items-center gap-1 font-semibold"
               htmlFor="cottage"
             >
-              <span className="text-nowrap">Cottage</span>{" "}
+              <span className="text-nowrap">Art work</span>{" "}
               <Icon
                 className="text-[#838383] text-[1rem]"
                 icon="material-symbols:info-outline"
@@ -146,7 +146,7 @@ const PropertyInputFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setCottage(Number(e.target.value)))}
+              onChange={(e)=>dispatch(setArtwork(Number(e.target.value)))}
             />
           </div>
           <div>
@@ -154,7 +154,7 @@ const PropertyInputFields = () => {
               className="flex items-center gap-1 font-semibold"
               htmlFor="realEstate"
             >
-              <span className="text-nowrap">Real Estate Assets</span>{" "}
+              <span className="text-nowrap">Collectibles</span>{" "}
               <Icon
                 className="text-[#838383] text-[1rem]"
                 icon="material-symbols:info-outline"
@@ -167,7 +167,7 @@ const PropertyInputFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setRealEstateAssets(Number(e.target.value)))}
+              onChange={(e)=>dispatch(setCollectibles(Number(e.target.value)))}
             />
           </div>
 
@@ -266,4 +266,5 @@ const PropertyInputFields = () => {
   );
 };
 
-export default PropertyInputFields;
+export default PersonalItemsInputFields;
+

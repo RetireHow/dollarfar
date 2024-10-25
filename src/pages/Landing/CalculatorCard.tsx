@@ -18,7 +18,7 @@ export default function CalculatorCard({
 }) {
   const { title, description, calcIcon, navLink } = item;
   return (
-    <div className="border-[1px] border-[#d1d2d4] rounded-[10px] flex flex-col justify-between">
+    <div className="border-[1px] border-[#EAECF0] hover:border-[#b5b8bd] duration-200 rounded-[10px] flex flex-col justify-between">
       <div className="pt-[1.5rem] px-[1.5rem]">
       <h3 className="md:text-[28px] text-[1.25rem] font-bold mb-[1rem]">
         {title}

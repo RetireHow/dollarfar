@@ -10,9 +10,17 @@ export default function TimePeriodSlider() {
     <div>
       <div className="flex justify-between items-center mb-[1.25rem]">
         <p className="font-semibold text-[1.3rem]">Time Period</p>
-        <div className="font-bold text-[1.2rem] text-right bg-[#F8F8F8] rounded-[10px] px-[1.25rem] py-[10px] w-[130px] flex justify-center items-center gap-1">
-          {time}
-          <span>Years</span>
+        <div className="relative">
+          <input
+            className="font-bold text-[1.2rem] text-left bg-[#F8F8F8] rounded-[10px] px-[1.25rem] py-[10px] max-w-[130px] outline-none"
+            type="number"
+            value={time}
+            onChange={(e) => dispatch(setTime(Number(e.target.value)))}
+            onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
+              e.currentTarget.blur()
+            }
+          />
+          <p className="absolute right-3 top-2 font-semibold text-[1.2rem]">years</p>
         </div>
       </div>
       <ReactSlider

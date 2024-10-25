@@ -37,3 +37,27 @@
   background-color: #949292;
   /* background-color: #25BF17; */
 }
+
+
+
+
+/* In your component CSS file or global CSS */
+.custom-select {
+  border:0 !important;
+  font-weight: bolder;
+}
+
+.custom-select .ant-select-item-option-content {
+  font-size: 28px !important; /* Increase font size */
+}
+
+/* In your component CSS file or global CSS */
+.custom-select .ant-select-arrow {
+  color: #000 !important;
+  font-size: 16px;
+}
+
+/* Optional: change the arrow on hover */
+.custom-select:hover .ant-select-arrow {
+  color: #000 !important; /* Change color on hover */
+}
