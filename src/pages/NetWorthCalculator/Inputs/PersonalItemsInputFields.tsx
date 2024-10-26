@@ -1,70 +1,31 @@
-import React, { useState } from "react";
 import { Icon } from "@iconify/react";
-import { useDispatch } from "react-redux";
-import { setArtwork, setCollectibles, setDynamicAsset, setJewelry, setPersonalItems } from "../../../redux/features/NWSlice/NWSlice";
-
-interface DynamicInput {
-  id: number;
-  label: string;
-  value: string;
-}
+import CustomTooltip from "../../../components/UI/CustomTooltip";
+import { updateAsset } from "../../../redux/features/NWSlice/NWSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { useRef } from "react";
+import useDynamicInput from "../../../hooks/useDynamicInput";
 
 const PersonalItemsInputFields = () => {
-  const dispatch = useDispatch();
-  // State to manage dynamic inputs
-  const [dynamicInputs, setDynamicInputs] = useState<DynamicInput[]>([]);
-  const [newInput, setNewInput] = useState<{ label: string; value: string }>({
-    label: "",
-    value: "",
-  });
-  const [showNewInputField, setShowNewInputField] = useState(false);
+  const dispatch = useAppDispatch();
+  const {
+    assets: {
+      totals: { personalItems: personalItemsTotal },
+    },
+  } = useAppSelector((state) => state.NWCalculator);
+  const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
 
-  const [showSubInputs, setShowSubInputs] = useState(false);
-
-  // Add new input field when "+ Add More" button is clicked
-  const handleAddNewInput = () => {
-    setShowNewInputField(true);
-  };
-
-  // Save the new dynamic input field
-  const handleSaveInput = () => {
-    if (newInput.label) {
-      console.log("New Input Value===> ", newInput);
-      dispatch(
-        setDynamicAsset({ key: newInput.label.trim().split(" ").join(""), value: Number(newInput.value) })
-      );
-      setDynamicInputs([
-        ...dynamicInputs,
-        { id: Date.now(), label: newInput.label, value: newInput.value },
-      ]);
-      setNewInput({ label: "", value: "" });
-      setShowNewInputField(false);
-    }
-  };
-
-  // Remove unsaved new input field
-  const handleRemoveNewInput = () => {
-    setNewInput({ label: "", value: "" });
-    setShowNewInputField(false);
-  };
-
-  // Handle input value changes for dynamic inputs
-  const handleDynamicInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: number
-  ) => {
-    const { value, name } = e.target;
-    console.log(value, e.target.name);
-    dispatch(setDynamicAsset({key:name, value:Number(value)}))
-    setDynamicInputs((prevInputs) =>
-      prevInputs.map((input) => (input.id === id ? { ...input, value } : input))
-    );
-  };
-
-  // Handle input value changes for the new (unsaved) input field
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewInput({ ...newInput, [e.target.name]: e.target.value });
-  };
+  const {
+    newInput,
+    dynamicInputs,
+    handleSaveInput,
+    handleInputChange,
+    handleDynamicInputChange,
+    handleRemoveNewInput,
+    showNewInputField,
+    showSubInputs,
+    setShowSubInputs,
+    handleAddNewInput,
+  } = useDynamicInput({ category: "personalItems", dynamicFieldTitleRef });
 
   return (
     <div>
@@ -75,10 +36,7 @@ const PersonalItemsInputFields = () => {
           htmlFor="property"
         >
           <span>Personal Items</span>{" "}
-          <Icon
-            className="text-[#838383] text-[1rem]"
-            icon="material-symbols:info-outline"
-          />
+          <CustomTooltip title="Value of jewelry, artwork, collectibles, etc." />
         </label>
         {/* No functionality on "Add Properties" button */}
         <button
@@ -98,10 +56,11 @@ const PersonalItemsInputFields = () => {
         className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
         type="number"
         placeholder="$0"
+        value={personalItemsTotal}
+        disabled
         onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
           e.currentTarget.blur()
         }
-        onChange={(e)=>dispatch(setPersonalItems(Number(e.target.value)))}
       />
 
       {/* Sub Input Fields */}
@@ -125,7 +84,15 @@ const PersonalItemsInputFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setJewelry(Number(e.target.value)))}
+              onChange={(e) =>
+                dispatch(
+                  updateAsset({
+                    category: "personalItems",
+                    key: "jewelry",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           <div>
@@ -146,7 +113,15 @@ const PersonalItemsInputFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setArtwork(Number(e.target.value)))}
+              onChange={(e) =>
+                dispatch(
+                  updateAsset({
+                    category: "personalItems",
+                    key: "artWork",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           <div>
@@ -167,7 +142,15 @@ const PersonalItemsInputFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setCollectibles(Number(e.target.value)))}
+              onChange={(e) =>
+                dispatch(
+                  updateAsset({
+                    category: "personalItems",
+                    key: "collectibles",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
 
@@ -203,11 +186,12 @@ const PersonalItemsInputFields = () => {
             <div className="mt-3 flex flex-col items-center">
               <div className="flex items-center justify-between gap-4">
                 <input
+                  ref={dynamicFieldTitleRef}
                   className="border-[1px] border-[#838383] rounded-[5px] outline-none px-1 py-[2px] flex-1"
                   type="text"
                   name="label"
                   value={newInput.label}
-                  placeholder="Property Name"
+                  placeholder="Enter name"
                   onChange={handleInputChange}
                 />
                 <div className="flex items-center gap-3">
@@ -267,4 +251,3 @@ const PersonalItemsInputFields = () => {
 };
 
 export default PersonalItemsInputFields;
-

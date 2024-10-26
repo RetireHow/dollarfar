@@ -1,70 +1,31 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { Icon } from "@iconify/react";
-import { useDispatch } from "react-redux";
-import {setBusinessOwnershipInterest, setDynamicAsset, setEquity, setOwnership, setPartnership } from "../../../redux/features/NWSlice/NWSlice";
-
-interface DynamicInput {
-  id: number;
-  label: string;
-  value: string;
-}
+import CustomTooltip from "../../../components/UI/CustomTooltip";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { updateAsset } from "../../../redux/features/NWSlice/NWSlice";
+import useDynamicInput from "../../../hooks/useDynamicInput";
 
 const BusinessOwnershipFields = () => {
-  const dispatch = useDispatch();
-  // State to manage dynamic inputs
-  const [dynamicInputs, setDynamicInputs] = useState<DynamicInput[]>([]);
-  const [newInput, setNewInput] = useState<{ label: string; value: string }>({
-    label: "",
-    value: "",
-  });
-  const [showNewInputField, setShowNewInputField] = useState(false);
+  const dispatch = useAppDispatch();
+  const {
+    assets: {
+      totals: { businessOwnershipInterest: businessOwnershipInterestTotal },
+    },
+  } = useAppSelector((state) => state.NWCalculator);
+  const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
 
-  const [showSubInputs, setShowSubInputs] = useState(false);
-
-  // Add new input field when "+ Add More" button is clicked
-  const handleAddNewInput = () => {
-    setShowNewInputField(true);
-  };
-
-  // Save the new dynamic input field
-  const handleSaveInput = () => {
-    if (newInput.label) {
-      console.log("New Input Value===> ", newInput);
-      dispatch(
-        setDynamicAsset({ key: newInput.label.trim().split(" ").join(""), value: Number(newInput.value) })
-      );
-      setDynamicInputs([
-        ...dynamicInputs,
-        { id: Date.now(), label: newInput.label, value: newInput.value },
-      ]);
-      setNewInput({ label: "", value: "" });
-      setShowNewInputField(false);
-    }
-  };
-
-  // Remove unsaved new input field
-  const handleRemoveNewInput = () => {
-    setNewInput({ label: "", value: "" });
-    setShowNewInputField(false);
-  };
-
-  // Handle input value changes for dynamic inputs
-  const handleDynamicInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: number
-  ) => {
-    const { value, name } = e.target;
-    console.log(value, e.target.name);
-    dispatch(setDynamicAsset({key:name, value:Number(value)}))
-    setDynamicInputs((prevInputs) =>
-      prevInputs.map((input) => (input.id === id ? { ...input, value } : input))
-    );
-  };
-
-  // Handle input value changes for the new (unsaved) input field
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewInput({ ...newInput, [e.target.name]: e.target.value });
-  };
+  const {
+    newInput,
+    dynamicInputs,
+    handleSaveInput,
+    handleInputChange,
+    handleDynamicInputChange,
+    handleRemoveNewInput,
+    showNewInputField,
+    showSubInputs,
+    setShowSubInputs,
+    handleAddNewInput,
+  } = useDynamicInput({ category: "businessOwnershipInterest", dynamicFieldTitleRef });
 
   return (
     <div>
@@ -74,11 +35,10 @@ const BusinessOwnershipFields = () => {
           className="flex items-center gap-1 font-semibold"
           htmlFor="property"
         >
-          <p className="text-nowrap">Business Ownership/Partnership Interest (if applicable)</p>{" "}
-          <Icon
-            className="text-[#838383] text-[1rem]"
-            icon="material-symbols:info-outline"
-          />
+          <p className="text-nowrap">
+            Business Ownership/Partnership Interest (if applicable)
+          </p>{" "}
+          <CustomTooltip title="Value of any businesses or equity in businesses." />
         </label>
         {/* No functionality on "Add Properties" button */}
         <button
@@ -98,10 +58,11 @@ const BusinessOwnershipFields = () => {
         className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
         type="number"
         placeholder="$0"
+        value={businessOwnershipInterestTotal}
+        disabled
         onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
           e.currentTarget.blur()
         }
-        onChange={(e)=>dispatch(setBusinessOwnershipInterest(Number(e.target.value)))}
       />
 
       {/* Sub Input Fields */}
@@ -125,7 +86,15 @@ const BusinessOwnershipFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setOwnership(Number(e.target.value)))}
+              onChange={(e) =>
+                dispatch(
+                  updateAsset({
+                    category: "businessOwnershipInterest",
+                    key: "ownership",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           <div>
@@ -146,7 +115,15 @@ const BusinessOwnershipFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setPartnership(Number(e.target.value)))}
+              onChange={(e) =>
+                dispatch(
+                  updateAsset({
+                    category: "businessOwnershipInterest",
+                    key: "partnership",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           <div>
@@ -167,7 +144,15 @@ const BusinessOwnershipFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setEquity(Number(e.target.value)))}
+              onChange={(e) =>
+                dispatch(
+                  updateAsset({
+                    category: "businessOwnershipInterest",
+                    key: "equity",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
 
@@ -203,11 +188,12 @@ const BusinessOwnershipFields = () => {
             <div className="mt-3 flex flex-col items-center">
               <div className="flex items-center justify-between gap-4">
                 <input
+                  ref={dynamicFieldTitleRef}
                   className="border-[1px] border-[#838383] rounded-[5px] outline-none px-1 py-[2px] flex-1"
                   type="text"
                   name="label"
                   value={newInput.label}
-                  placeholder="Property Name"
+                  placeholder="Enter name"
                   onChange={handleInputChange}
                 />
                 <div className="flex items-center gap-3">
@@ -267,5 +253,3 @@ const BusinessOwnershipFields = () => {
 };
 
 export default BusinessOwnershipFields;
-
-

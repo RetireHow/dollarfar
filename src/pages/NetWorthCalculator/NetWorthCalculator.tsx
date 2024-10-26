@@ -23,11 +23,11 @@ export default function NetWorthCalculator() {
       >
         <SectionHeader id="NWReport" title="Net worth Calculator" />
         <NWForm />
-        <div className="lg:grid flex flex-col-reverse lg:grid-cols-2 grid-cols-1 gap-[5rem]">
+        <div className="lg:grid flex flex-col-reverse lg:grid-cols-3 grid-cols-1 gap-[2rem]">
           <NWBarChart />
           <NWTotal />
         </div>
-        <p className="md:text-[1.25rem] text-[1rem] font-semibold text-center mt-5">"Based on the information provided, your total assets are $10,000, and your total liabilities are $1,000. This gives you a net worth of $9,000."</p>
+        <p className="md:text-[1.1rem] text-[1rem] font-semibold text-center mt-5">"Based on the information provided, your total assets are $10,000, and your total liabilities are $1,000. This gives you a net worth of $9,000."</p>
       </section>
       <NWDescription />
     </main>

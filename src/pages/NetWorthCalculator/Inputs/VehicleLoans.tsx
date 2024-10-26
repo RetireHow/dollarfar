@@ -1,70 +1,35 @@
-import React, { useState } from "react";
+import { useRef } from "react";
 import { Icon } from "@iconify/react";
-import { useDispatch } from "react-redux";
-import {setCarLoan, setDynamicLiability, setMotorcycleLoan, setVehicleLoans } from "../../../redux/features/NWSlice/NWSlice";
-
-interface DynamicInput {
-  id: number;
-  label: string;
-  value: string;
-}
+import CustomTooltip from "../../../components/UI/CustomTooltip";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { updateLiabilities } from "../../../redux/features/NWSlice/NWSlice";
+import useDynamicInput from "../../../hooks/useDynamicInput";
 
 const VehicleLoans = () => {
-  const dispatch = useDispatch();
-  // State to manage dynamic inputs
-  const [dynamicInputs, setDynamicInputs] = useState<DynamicInput[]>([]);
-  const [newInput, setNewInput] = useState<{ label: string; value: string }>({
-    label: "",
-    value: "",
+  const dispatch = useAppDispatch();
+  const {
+    liabilities: {
+      totals: { vehicleLoans: vehicleLoansTotal },
+    },
+  } = useAppSelector((state) => state.NWCalculator);
+  const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
+
+  const {
+    newInput,
+    dynamicInputs,
+    handleSaveInput,
+    handleInputChange,
+    handleDynamicInputChange,
+    handleRemoveNewInput,
+    showNewInputField,
+    showSubInputs,
+    setShowSubInputs,
+    handleAddNewInput,
+  } = useDynamicInput({
+    category: "vehicleLoans",
+    dynamicFieldTitleRef,
+    type: "Liabilities",
   });
-  const [showNewInputField, setShowNewInputField] = useState(false);
-
-  const [showSubInputs, setShowSubInputs] = useState(false);
-
-  // Add new input field when "+ Add More" button is clicked
-  const handleAddNewInput = () => {
-    setShowNewInputField(true);
-  };
-
-  // Save the new dynamic input field
-  const handleSaveInput = () => {
-    if (newInput.label) {
-      console.log("New Input Value===> ", newInput);
-      dispatch(
-        setDynamicLiability({ key: newInput.label.trim().split(" ").join(""), value: Number(newInput.value) })
-      );
-      setDynamicInputs([
-        ...dynamicInputs,
-        { id: Date.now(), label: newInput.label, value: newInput.value },
-      ]);
-      setNewInput({ label: "", value: "" });
-      setShowNewInputField(false);
-    }
-  };
-
-  // Remove unsaved new input field
-  const handleRemoveNewInput = () => {
-    setNewInput({ label: "", value: "" });
-    setShowNewInputField(false);
-  };
-
-  // Handle input value changes for dynamic inputs
-  const handleDynamicInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: number
-  ) => {
-    const { value, name } = e.target;
-    console.log(value, e.target.name);
-    dispatch(setDynamicLiability({key:name, value:Number(value)}))
-    setDynamicInputs((prevInputs) =>
-      prevInputs.map((input) => (input.id === id ? { ...input, value } : input))
-    );
-  };
-
-  // Handle input value changes for the new (unsaved) input field
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewInput({ ...newInput, [e.target.name]: e.target.value });
-  };
 
   return (
     <div>
@@ -75,10 +40,7 @@ const VehicleLoans = () => {
           htmlFor="property"
         >
           <span>Vehicle Loans</span>{" "}
-          <Icon
-            className="text-[#838383] text-[1rem]"
-            icon="material-symbols:info-outline"
-          />
+          <CustomTooltip title="Car loan balance and other vehicle loans (motorcycle, tractor, RV, etc.)" />
         </label>
         {/* No functionality on "Add Properties" button */}
         <button
@@ -96,12 +58,12 @@ const VehicleLoans = () => {
       </div>
       <input
         className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
-        type="number"
-        placeholder="$0"
+        type="text"
+        value={vehicleLoansTotal}
+        disabled
         onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
           e.currentTarget.blur()
         }
-        onChange={(e)=>dispatch(setVehicleLoans(Number(e.target.value)))}
       />
 
       {/* Sub Input Fields */}
@@ -125,7 +87,15 @@ const VehicleLoans = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setCarLoan(Number(e.target.value)))}
+              onChange={(e) =>
+                dispatch(
+                  updateLiabilities({
+                    category: "vehicleLoans",
+                    key: "carLoan",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           <div>
@@ -146,7 +116,15 @@ const VehicleLoans = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setMotorcycleLoan(Number(e.target.value)))}
+              onChange={(e) =>
+                dispatch(
+                  updateLiabilities({
+                    category: "vehicleLoans",
+                    key: "motorcycleLoan",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
 
@@ -182,11 +160,12 @@ const VehicleLoans = () => {
             <div className="mt-3 flex flex-col items-center">
               <div className="flex items-center justify-between gap-4">
                 <input
+                  ref={dynamicFieldTitleRef}
                   className="border-[1px] border-[#838383] rounded-[5px] outline-none px-1 py-[2px] flex-1"
                   type="text"
                   name="label"
                   value={newInput.label}
-                  placeholder="Property Name"
+                  placeholder="Enter name"
                   onChange={handleInputChange}
                 />
                 <div className="flex items-center gap-3">
@@ -246,4 +225,3 @@ const VehicleLoans = () => {
 };
 
 export default VehicleLoans;
-

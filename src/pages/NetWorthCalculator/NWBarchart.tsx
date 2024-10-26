@@ -10,6 +10,7 @@ import {
   ChartOptions,
   ChartData,
 } from "chart.js";
+import { useAppSelector } from "../../redux/hooks";
 
 // Register the necessary components
 ChartJS.register(
@@ -22,13 +23,16 @@ ChartJS.register(
 );
 
 export const NWBarChart = () => {
+  const { totalAssets, totalLiabilities, netWorth } = useAppSelector(
+    (state) => state.NWCalculator
+  );
   // Data for the chart
   const data: ChartData<"bar", number[], string> = {
     labels: ["Assets", "Liabilities", "Net Worth"],
     datasets: [
       {
         // label: 'Financial Overview',
-        data: [50000, 30000, 20000], // Values for Assets, Liabilities, Net Worth
+        data: [totalAssets, totalLiabilities, netWorth], // Values for Assets, Liabilities, Net Worth
         backgroundColor: [
           "#4CAF50", // Green for Assets
           "#F44336", // Red for Liabilities
@@ -80,29 +84,31 @@ export const NWBarChart = () => {
   };
 
   return (
-    <div>
-      <div
-        style={{ boxShadow: "0px 0px 5px 1px rgba(0, 0, 0, 0.05)" }}
-        className="max-h-[500px] bg-white shadow-md rounded-lg border-[1px] border-gray-200 p-[1rem]"
-      >
-        <Bar data={data} options={options} />
-      </div>
-      <div className="flex items-center flex-wrap gap-x-10 my-5 gap-y-[1rem] font-semibold">
-        <div className="flex items-center gap-3">
-          <p className="bg-[#4CAF50] w-[30px] h-[10px] rounded-[10px]"></p>
-          <p>Assets</p>
+    <div className="col-span-2 overflow-x-auto">
+      <div className="min-w-[400px]">
+        <div
+          style={{ boxShadow: "0px 0px 5px 1px rgba(0, 0, 0, 0.05)" }}
+          className="max-h-[300px] bg-white shadow-md rounded-lg border-[1px] border-gray-200 p-[1rem]"
+        >
+          <Bar data={data} options={options} />
         </div>
-        <div className="flex items-center gap-3">
-          <p className="bg-[#F44336] w-[30px] h-[10px] rounded-[10px]"></p>
-          <p>Liabilities</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <p className="bg-[#1E88E5] w-[30px] h-[10px] rounded-[10px]"></p>
-          <p>Net Worth</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <p className="">$</p>
-          <p>CAD - Canadian Dollar</p>
+        <div className="flex items-center flex-wrap md:gap-x-10 gap-x-5 my-5 gap-y-[1rem] font-semibold">
+          <div className="flex items-center md:gap-3 gap-1">
+            <p className="bg-[#4CAF50] w-[30px] h-[10px] rounded-[10px]"></p>
+            <p>Assets</p>
+          </div>
+          <div className="flex items-center md:gap-3 gap-1">
+            <p className="bg-[#F44336] w-[30px] h-[10px] rounded-[10px]"></p>
+            <p>Liabilities</p>
+          </div>
+          <div className="flex items-center md:gap-3 gap-1">
+            <p className="bg-[#1E88E5] w-[30px] h-[10px] rounded-[10px]"></p>
+            <p>Net Worth</p>
+          </div>
+          <div className="flex items-center md:gap-3 gap-1">
+            <p className="">$</p>
+            <p>CAD - Canadian Dollar</p>
+          </div>
         </div>
       </div>
     </div>

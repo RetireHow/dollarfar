@@ -1,69 +1,35 @@
-import React, { useState } from "react";
+import { useRef } from "react";
 import { Icon } from "@iconify/react";
-import { useDispatch } from "react-redux";
-import {setCreditCard1, setCreditCard2, setCreditCard3, setCreditCardDues, setDynamicLiability } from "../../../redux/features/NWSlice/NWSlice";
-
-interface DynamicInput {
-  id: number;
-  label: string;
-  value: string;
-}
+import CustomTooltip from "../../../components/UI/CustomTooltip";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { updateLiabilities } from "../../../redux/features/NWSlice/NWSlice";
+import useDynamicInput from "../../../hooks/useDynamicInput";
 
 const CreditCardDueFields = () => {
-  const dispatch = useDispatch();
-  // State to manage dynamic inputs
-  const [dynamicInputs, setDynamicInputs] = useState<DynamicInput[]>([]);
-  const [newInput, setNewInput] = useState<{ label: string; value: string }>({
-    label: "",
-    value: "",
+  const dispatch = useAppDispatch();
+  const {
+    liabilities: {
+      totals: { creditCardDues: creditCardDuesTotal },
+    },
+  } = useAppSelector((state) => state.NWCalculator);
+  const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
+
+  const {
+    newInput,
+    dynamicInputs,
+    handleSaveInput,
+    handleInputChange,
+    handleDynamicInputChange,
+    handleRemoveNewInput,
+    showNewInputField,
+    showSubInputs,
+    setShowSubInputs,
+    handleAddNewInput,
+  } = useDynamicInput({
+    category: "creditCardDues",
+    dynamicFieldTitleRef,
+    type: "Liabilities",
   });
-  const [showNewInputField, setShowNewInputField] = useState(false);
-
-  const [showSubInputs, setShowSubInputs] = useState(false);
-
-  // Add new input field when "+ Add More" button is clicked
-  const handleAddNewInput = () => {
-    setShowNewInputField(true);
-  };
-
-  // Save the new dynamic input field
-  const handleSaveInput = () => {
-    if (newInput.label) {
-      dispatch(
-        setDynamicLiability({ key: newInput.label.trim().split(" ").join(""), value: Number(newInput.value) })
-      );
-      setDynamicInputs([
-        ...dynamicInputs,
-        { id: Date.now(), label: newInput.label, value: newInput.value },
-      ]);
-      setNewInput({ label: "", value: "" });
-      setShowNewInputField(false);
-    }
-  };
-
-  // Remove unsaved new input field
-  const handleRemoveNewInput = () => {
-    setNewInput({ label: "", value: "" });
-    setShowNewInputField(false);
-  };
-
-  // Handle input value changes for dynamic inputs
-  const handleDynamicInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: number
-  ) => {
-    const { value, name } = e.target;
-    console.log(value, e.target.name);
-    dispatch(setDynamicLiability({key:name, value:Number(value)}))
-    setDynamicInputs((prevInputs) =>
-      prevInputs.map((input) => (input.id === id ? { ...input, value } : input))
-    );
-  };
-
-  // Handle input value changes for the new (unsaved) input field
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewInput({ ...newInput, [e.target.name]: e.target.value });
-  };
 
   return (
     <div>
@@ -74,10 +40,7 @@ const CreditCardDueFields = () => {
           htmlFor="property"
         >
           <span>Credit Card Dues</span>{" "}
-          <Icon
-            className="text-[#838383] text-[1rem]"
-            icon="material-symbols:info-outline"
-          />
+          <CustomTooltip title="Total credit card debt" />
         </label>
         {/* No functionality on "Add Properties" button */}
         <button
@@ -95,12 +58,12 @@ const CreditCardDueFields = () => {
       </div>
       <input
         className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
-        type="number"
-        placeholder="$0"
+        type="text"
+        value={creditCardDuesTotal}
+        disabled
         onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
           e.currentTarget.blur()
         }
-        onChange={(e)=>dispatch(setCreditCardDues(Number(e.target.value)))}
       />
 
       {/* Sub Input Fields */}
@@ -124,7 +87,15 @@ const CreditCardDueFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setCreditCard1(Number(e.target.value)))}
+              onChange={(e) =>
+                dispatch(
+                  updateLiabilities({
+                    category: "creditCardDues",
+                    key: "creditCard1",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           <div>
@@ -145,7 +116,15 @@ const CreditCardDueFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setCreditCard2(Number(e.target.value)))}
+              onChange={(e) =>
+                dispatch(
+                  updateLiabilities({
+                    category: "creditCardDues",
+                    key: "creditCard2",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
 
@@ -167,7 +146,15 @@ const CreditCardDueFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(setCreditCard3(Number(e.target.value)))}
+              onChange={(e) =>
+                dispatch(
+                  updateLiabilities({
+                    category: "creditCardDues",
+                    key: "creditCard3",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
 
@@ -203,11 +190,12 @@ const CreditCardDueFields = () => {
             <div className="mt-3 flex flex-col items-center">
               <div className="flex items-center justify-between gap-4">
                 <input
+                  ref={dynamicFieldTitleRef}
                   className="border-[1px] border-[#838383] rounded-[5px] outline-none px-1 py-[2px] flex-1"
                   type="text"
                   name="label"
                   value={newInput.label}
-                  placeholder="Property Name"
+                  placeholder="Enter name"
                   onChange={handleInputChange}
                 />
                 <div className="flex items-center gap-3">
@@ -267,4 +255,3 @@ const CreditCardDueFields = () => {
 };
 
 export default CreditCardDueFields;
-

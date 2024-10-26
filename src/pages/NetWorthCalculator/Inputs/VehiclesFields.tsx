@@ -1,79 +1,32 @@
-import React, { useState } from "react";
 import { Icon } from "@iconify/react";
-import { useDispatch } from "react-redux";
-import {
-  setCar1,
-  setCar2,
-  setDynamicAsset,
-  setMotorcycle,
-  setVehicles,
-} from "../../../redux/features/NWSlice/NWSlice";
+import CustomTooltip from "../../../components/UI/CustomTooltip";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { updateAsset } from "../../../redux/features/NWSlice/NWSlice";
+import { useRef } from "react";
+import useDynamicInput from "../../../hooks/useDynamicInput";
 
-interface DynamicInput {
-  id: number;
-  label: string;
-  value: string;
-}
 
 const VehiclesFields = () => {
-  const dispatch = useDispatch();
-  // State to manage dynamic inputs
-  const [dynamicInputs, setDynamicInputs] = useState<DynamicInput[]>([]);
-  const [newInput, setNewInput] = useState<{ label: string; value: string }>({
-    label: "",
-    value: "",
-  });
-  const [showNewInputField, setShowNewInputField] = useState(false);
+  const dispatch = useAppDispatch();
+  const {
+    assets: {
+      totals: { vehicles: vehiclesTotal },
+    },
+  } = useAppSelector((state) => state.NWCalculator);
+  const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
 
-  const [showSubInputs, setShowSubInputs] = useState(false);
-
-  // Add new input field when "+ Add More" button is clicked
-  const handleAddNewInput = () => {
-    setShowNewInputField(true);
-  };
-
-  // Save the new dynamic input field
-  const handleSaveInput = () => {
-    if (newInput.label) {
-      console.log("New Input Value===> ", newInput);
-      dispatch(
-        setDynamicAsset({
-          key: newInput.label.trim().split(" ").join(""),
-          value: Number(newInput.value),
-        })
-      );
-      setDynamicInputs([
-        ...dynamicInputs,
-        { id: Date.now(), label: newInput.label, value: newInput.value },
-      ]);
-      setNewInput({ label: "", value: "" });
-      setShowNewInputField(false);
-    }
-  };
-
-  // Remove unsaved new input field
-  const handleRemoveNewInput = () => {
-    setNewInput({ label: "", value: "" });
-    setShowNewInputField(false);
-  };
-
-  // Handle input value changes for dynamic inputs
-  const handleDynamicInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: number
-  ) => {
-    const { value, name } = e.target;
-    console.log(value, e.target.name);
-    dispatch(setDynamicAsset({ key: name, value: Number(value) }));
-    setDynamicInputs((prevInputs) =>
-      prevInputs.map((input) => (input.id === id ? { ...input, value } : input))
-    );
-  };
-
-  // Handle input value changes for the new (unsaved) input field
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewInput({ ...newInput, [e.target.name]: e.target.value });
-  };
+  const {
+    newInput,
+    dynamicInputs,
+    handleSaveInput,
+    handleInputChange,
+    handleDynamicInputChange,
+    handleRemoveNewInput,
+    showNewInputField,
+    showSubInputs,
+    setShowSubInputs,
+    handleAddNewInput,
+  } = useDynamicInput({ category: "vehicles", dynamicFieldTitleRef });
 
   return (
     <div>
@@ -84,10 +37,7 @@ const VehiclesFields = () => {
           htmlFor="property"
         >
           <span>Vechiles</span>{" "}
-          <Icon
-            className="text-[#838383] text-[1rem]"
-            icon="material-symbols:info-outline"
-          />
+          <CustomTooltip title="Value of car(s) and value of other vehicles (motorcycle, Tractor, etc.). Enter depreciated/present market value here."/>
         </label>
         {/* No functionality on "Add Properties" button */}
         <button
@@ -107,10 +57,11 @@ const VehiclesFields = () => {
         className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
         type="number"
         placeholder="$0"
+        value={vehiclesTotal}
+        disabled
         onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
           e.currentTarget.blur()
         }
-        onChange={(e) => dispatch(setVehicles(Number(e.target.value)))}
       />
 
       {/* Sub Input Fields */}
@@ -134,7 +85,13 @@ const VehiclesFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e) => dispatch(setCar1(Number(e.target.value)))}
+              onChange={(e) => dispatch(
+                updateAsset({
+                  category: "vehicles",
+                  key: 'car1',
+                  value: Number(e.target.value),
+                })
+              )}
             />
           </div>
           <div>
@@ -155,7 +112,13 @@ const VehiclesFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e) => dispatch(setCar2(Number(e.target.value)))}
+              onChange={(e) => dispatch(
+                updateAsset({
+                  category: "vehicles",
+                  key: 'car2',
+                  value: Number(e.target.value),
+                })
+              )}
             />
           </div>
           <div>
@@ -176,7 +139,13 @@ const VehiclesFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e) => dispatch(setMotorcycle(Number(e.target.value)))}
+              onChange={(e) => dispatch(
+                updateAsset({
+                  category: "vehicles",
+                  key: 'motorcycle',
+                  value: Number(e.target.value),
+                })
+              )}
             />
           </div>
 
@@ -212,11 +181,12 @@ const VehiclesFields = () => {
             <div className="mt-3 flex flex-col items-center">
               <div className="flex items-center justify-between gap-4">
                 <input
+                  ref={dynamicFieldTitleRef}
                   className="border-[1px] border-[#838383] rounded-[5px] outline-none px-1 py-[2px] flex-1"
                   type="text"
                   name="label"
                   value={newInput.label}
-                  placeholder="Property Name"
+                  placeholder="Enter name"
                   onChange={handleInputChange}
                 />
                 <div className="flex items-center gap-3">
