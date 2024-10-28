@@ -74,11 +74,8 @@ const TaxLiabilityFields = () => {
               className="flex items-center gap-1 font-semibold"
               htmlFor="principalResidence"
             >
-              <span className="text-nowrap">EG capital gains</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <span className="text-nowrap">EG Capital Gains</span>{" "}
+              <CustomTooltip title="Estimated taxes on any unrealized capital gains from investment sales."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -102,10 +99,7 @@ const TaxLiabilityFields = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">Any other tax liability</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Other tax obligations, including overdue amounts or expected liabilities not accounted for."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"

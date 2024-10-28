@@ -74,10 +74,7 @@ const BusinessOwnershipFields = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Ownership</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Value of any businesses or private corporations you own directly."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -103,10 +100,7 @@ const BusinessOwnershipFields = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">Partnership</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Your share in partnerships or joint ventures, estimated at current market value."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -132,10 +126,7 @@ const BusinessOwnershipFields = () => {
               htmlFor="realEstate"
             >
               <span className="text-nowrap">Equity</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Any additional financial equity holdings, outside of specific retirement or registered accounts."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"

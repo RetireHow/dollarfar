@@ -72,10 +72,7 @@ const PersonalItemsInputFields = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Jewelry</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Estimated value of valuable jewelry, including items like watches, rings, or necklaces."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -101,10 +98,7 @@ const PersonalItemsInputFields = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">Art work</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Total appraised value of art pieces you own, such as paintings or sculptures."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -130,10 +124,7 @@ const PersonalItemsInputFields = () => {
               htmlFor="realEstate"
             >
               <span className="text-nowrap">Collectibles</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="The market value of collectible items, like coins, stamps, or memorabilia."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"

@@ -2,6 +2,7 @@ import ReactSlider from "react-slider";
 import "./Slider.css";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { setRate } from "../../../redux/features/compoundInterestSlice/compoundInterestSlice";
+import CustomTooltip from "../../../components/UI/CustomTooltip";
 
 export default function InterestRateSlider() {
   const dispatch = useAppDispatch();
@@ -9,7 +10,10 @@ export default function InterestRateSlider() {
   return (
     <div>
       <div className="flex justify-between items-center mb-[1.25rem]">
+        <div className="flex items-center gap-2">
         <p className="font-semibold text-[1.3rem]">Rate of Interest</p>
+        <CustomTooltip title="The annual interest rate or rate of return. This is the percentage at which your principal amount grows each year."/>
+        </div>
         <div className="relative">
           <input
             className="font-bold text-[1.2rem] text-left bg-[#F8F8F8] rounded-[10px] px-[1.25rem] py-[10px] max-w-[130px] outline-none"

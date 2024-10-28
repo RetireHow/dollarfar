@@ -71,10 +71,7 @@ const HomeLoanFields = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Cottage Loan</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Outstanding balance on loans taken out specifically for the cottage or vacation property."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -98,10 +95,7 @@ const HomeLoanFields = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">Mortgage Loan</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Remaining balance on the mortgage of your primary residence."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -125,10 +119,7 @@ const HomeLoanFields = () => {
               htmlFor="realEstate"
             >
               <span className="text-nowrap">Loan 1</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Additional loan balance, specify type if applicable (e.g., business, personal)."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"

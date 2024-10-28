@@ -35,10 +35,10 @@ export default function CalculationCard() {
               defaultValue={frequency}
               size="large"
               style={{ width: 130, height: 45, border: "1px solid gray"}}
-              className="custom-select"
+              className="!border-none"
               onChange={(value) => dispatch(setFrequency(value))}
               options={frequencyOptions}
-              suffixIcon={<Icon className="text-[1.5rem]" icon="iconamoon:arrow-down-2" />}
+              suffixIcon={<Icon className="text-[1.5rem] text-gray-600" icon="iconamoon:arrow-down-2" />}
             ></Select>
           </div>
         </div>

@@ -75,10 +75,7 @@ const CreditCardDueFields = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Credit card 1</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Outstanding balance on your first credit card."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -104,10 +101,7 @@ const CreditCardDueFields = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">Credit card 2</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Outstanding balance on your second credit card."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -134,10 +128,7 @@ const CreditCardDueFields = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">Credit card 3</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Outstanding balance on your third credit card, if applicable."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"

@@ -43,8 +43,9 @@
 
 /* In your component CSS file or global CSS */
 .custom-select {
-  border:0 !important;
-  font-weight: bolder;
+  /* border-width:'1px' !important;
+  border-radius: 9px;
+  font-weight: bolder; */
 }
 
 .custom-select .ant-select-item-option-content {

@@ -75,10 +75,7 @@ const VehicleLoans = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Car Loan</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Remaining balance on any car loan taken for your primary vehicle."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -104,10 +101,7 @@ const VehicleLoans = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">Motorcycle Loan</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Outstanding balance on a motorcycle loan, if applicable."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"

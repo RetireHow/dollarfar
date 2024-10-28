@@ -73,10 +73,7 @@ const SAndIInputFields = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">RRSP</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Total value of your RRSP accounts, a Canadian retirement savings plan with tax benefits."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -100,10 +97,7 @@ const SAndIInputFields = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">RRIF</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Current balance of your RRIF, typically a converted RRSP that pays out income in retirement"/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -127,10 +121,7 @@ const SAndIInputFields = () => {
               htmlFor="realEstate"
             >
               <span className="text-nowrap">RESP</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Total balance in your RESP accounts, designed for post-secondary education savings with tax benefits."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"

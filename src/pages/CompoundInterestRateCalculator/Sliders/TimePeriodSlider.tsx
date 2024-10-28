@@ -2,6 +2,7 @@ import ReactSlider from "react-slider";
 import "./Slider.css";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { setTime } from "../../../redux/features/compoundInterestSlice/compoundInterestSlice";
+import CustomTooltip from "../../../components/UI/CustomTooltip";
 
 export default function TimePeriodSlider() {
   const dispatch = useAppDispatch();
@@ -9,7 +10,10 @@ export default function TimePeriodSlider() {
   return (
     <div>
       <div className="flex justify-between items-center mb-[1.25rem]">
+        <div className="flex items-center gap-2">
         <p className="font-semibold text-[1.3rem]">Time Period</p>
+        <CustomTooltip title="The total time the money is invested or borrowed for, usually in years. Enter the number of years you want to calculate compound interest for."/>
+        </div>
         <div className="relative">
           <input
             className="font-bold text-[1.2rem] text-left bg-[#F8F8F8] rounded-[10px] px-[1.25rem] py-[10px] max-w-[130px] outline-none"

@@ -75,10 +75,7 @@ const PAndOLoanFields = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Personal Loan</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Outstanding balance of personal loans, excluding specific mortgage or vehicle loans."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -104,10 +101,7 @@ const PAndOLoanFields = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">Student Loan</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Outstanding balance of educational or student loans."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"

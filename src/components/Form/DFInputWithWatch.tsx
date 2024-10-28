@@ -43,9 +43,12 @@ export default function DFInputWithWatch({
   
   return (
     <div>
+      <div className="flex justify-between items-center">
       <label className="block mb-[0.5rem]" htmlFor={name}>
         {label}
       </label>
+      <button className="font-semibold">+ Add More</button>
+      </div>
       <input
         className={`outline-none border-[1px] px-[12px] py-2 w-full duration-300 ${
           readonly && "cursor-not-allowed"

@@ -11,6 +11,13 @@ import RegisteredRetirementSavings from "../pages/RegisteredRetirementSavings/Re
 import RegisteredRetirementIncome from "../pages/RegisteredRetirementIncome/RegisteredRetirementIncome";
 import ComprehensiveRetirement from "../pages/ComprehensiveRetirement/ComprehensiveRetirement";
 import Research from "../pages/Research";
+import BgtIncomeForm from "../pages/BudgetCalculator/BudgetIncomeForms/BgtIncomeForm";
+import BgtHousingForm from "../pages/BudgetCalculator/BudgetIncomeForms/BgtHousingForm";
+import BgtTransportForm from "../pages/BudgetCalculator/BudgetIncomeForms/BgtTransportForm";
+import BgtEduForm from "../pages/BudgetCalculator/BudgetIncomeForms/BgtEduForm";
+import BgtOtherForm from "../pages/BudgetCalculator/BudgetIncomeForms/BgtOtherForm";
+import BgtLoanForm from "../pages/BudgetCalculator/BudgetIncomeForms/BgtLoanForm";
+import BgtSavingsForm from "../pages/BudgetCalculator/BudgetIncomeForms/BgtSavingsForm";
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +44,36 @@ export const router = createBrowserRouter([
       {
         path: "budget-calculator",
         element: <BudgetCalculator />,
+        children: [
+          {
+            index: true,
+            element: <BgtIncomeForm />,
+          },
+          {
+            path: "housing-expenses",
+            element: <BgtHousingForm />,
+          },
+          {
+            path: "transport-expenses",
+            element: <BgtTransportForm />,
+          },
+          {
+            path: "educational-expenses",
+            element: <BgtEduForm />,
+          },
+          {
+            path: "other-expenses",
+            element: <BgtOtherForm />,
+          },
+          {
+            path: "loans",
+            element: <BgtLoanForm />,
+          },
+          {
+            path: "savings",
+            element: <BgtSavingsForm />,
+          },
+        ],
       },
       {
         path: "education-savings-plan-calculator",

@@ -71,10 +71,7 @@ const PropertyInputFields = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Principal Residence</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="The current market value of your primary home or residence."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -100,10 +97,7 @@ const PropertyInputFields = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">Cottage</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="The estimated market value of your secondary residence or vacation property."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -129,10 +123,7 @@ const PropertyInputFields = () => {
               htmlFor="realEstate"
             >
               <span className="text-nowrap">Real Estate Assets</span>{" "}
-              <Icon
-                className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
-              />
+              <CustomTooltip title="Any additional real estate holdings or properties you own, excluding your primary residence and cottage."/>
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"

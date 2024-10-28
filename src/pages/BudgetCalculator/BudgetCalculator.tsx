@@ -1,6 +1,7 @@
 import { assets } from "../../assets/assets";
 import PageHero from "../../components/UI/PageHero";
 import SectionHeader from "../../components/UI/SectionHeader";
+import BudgetCalcLayout from "./BudgetCalcLayout";
 import BudgetDescription from "./BudgetDescription";
 import BudgetPieChart from "./BudgetPieChart";
 
@@ -21,7 +22,7 @@ export default function BudgetCalculator() {
         className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem]"
       >
         <SectionHeader id="budgetReport" title="Budget Calculator" />
-        <h3 className="font-semibold text-center">Stepper</h3>
+        <BudgetCalcLayout/>
 
         <BudgetPieChart />
 
