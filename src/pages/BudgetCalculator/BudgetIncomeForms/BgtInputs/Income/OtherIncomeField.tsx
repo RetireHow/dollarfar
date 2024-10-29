@@ -3,6 +3,8 @@ import { Icon } from "@iconify/react";
 import useBudgetDynamicInput from "../../../../../hooks/useBudgetDynamicInput";
 import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { Select } from "antd";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
+import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 
 type TOption = {
   label: string;
@@ -19,6 +21,8 @@ const selectOptions: TOption[] = [
 
 const OtherIncomeField = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
+  const dispatch = useAppDispatch();
+  const {income:{totals:{otherIncome}}} = useAppSelector(state => state.budgetCalculator)
 
   const {
     newInput,
@@ -32,9 +36,7 @@ const OtherIncomeField = () => {
     setShowSubInputs,
     handleAddNewInput,
   } = useBudgetDynamicInput({
-    category: "homeLoan",
     dynamicFieldTitleRef,
-    type: "Liabilities",
   });
 
   return (
@@ -71,7 +73,7 @@ const OtherIncomeField = () => {
           <input
             className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
             type="text"
-            value={0}
+            value={otherIncome}
             disabled
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()
@@ -113,6 +115,16 @@ const OtherIncomeField = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
+              onChange={(e) =>
+                dispatch(
+                  updateField({
+                    category: "income",
+                    subCategory: "otherIncome",
+                    field: "rentalIncome",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           {/* Dynamic Input Fields */}
@@ -134,7 +146,9 @@ const OtherIncomeField = () => {
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
                 placeholder="$0"
-                onChange={(e) => handleDynamicInputChange(e, input.id)}
+                onChange={(e) =>
+                  handleDynamicInputChange(e, input.id, "income", "otherIncome")
+                }
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
@@ -158,7 +172,12 @@ const OtherIncomeField = () => {
                 <div className="flex items-center gap-3">
                   <button
                     className="bg-[#000000] text-white font-semibold rounded px-2 py-[2px]"
-                    onClick={handleSaveInput}
+                    onClick={() =>
+                      handleSaveInput({
+                        category: "income",
+                        subCategory: "otherIncome",
+                      })
+                    }
                   >
                     Save
                   </button>

@@ -4,7 +4,6 @@ import useBudgetDynamicInput from "../../../../../hooks/useBudgetDynamicInput";
 
 export const AddMoreTransportField = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
-
   const {
     newInput,
     dynamicInputs,
@@ -14,7 +13,7 @@ export const AddMoreTransportField = () => {
     handleRemoveNewInput,
     showNewInputField,
     handleAddNewInput,
-  } = useBudgetDynamicInput({ category: "otherAssets", dynamicFieldTitleRef });
+  } = useBudgetDynamicInput({ dynamicFieldTitleRef });
 
   return (
     <div>
@@ -39,7 +38,9 @@ export const AddMoreTransportField = () => {
               name={input.label.trim().split(" ").join("")}
               value={input.value}
               placeholder="$0"
-              onChange={(e) => handleDynamicInputChange(e, input.id)}
+              onChange={(e) =>
+                handleDynamicInputChange(e, input.id, "transport")
+              }
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -63,7 +64,7 @@ export const AddMoreTransportField = () => {
               <div className="flex items-center gap-3">
                 <button
                   className="bg-[#000000] text-white font-semibold rounded px-2 py-[2px]"
-                  onClick={handleSaveInput}
+                  onClick={() => handleSaveInput({ category: "transport" })}
                 >
                   Save
                 </button>
@@ -95,7 +96,8 @@ export const AddMoreTransportField = () => {
             className="font-semibold text-nowrap border-[1px] border-[#E5E5E5] rounded-[8px] py-[0.2rem] px-[1rem]"
             onClick={handleAddNewInput}
           >
-            <span className="text-[1.3rem] pr-1">+</span> Add more transport expenses
+            <span className="text-[1.3rem] pr-1">+</span> Add more transport
+            expenses
           </button>
         </div>
       </div>

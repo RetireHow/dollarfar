@@ -14,7 +14,7 @@ export const AddMoreEduField = () => {
     handleRemoveNewInput,
     showNewInputField,
     handleAddNewInput,
-  } = useBudgetDynamicInput({ category: "otherAssets", dynamicFieldTitleRef });
+  } = useBudgetDynamicInput({ dynamicFieldTitleRef });
 
   return (
     <div>
@@ -39,7 +39,9 @@ export const AddMoreEduField = () => {
               name={input.label.trim().split(" ").join("")}
               value={input.value}
               placeholder="$0"
-              onChange={(e) => handleDynamicInputChange(e, input.id)}
+              onChange={(e) =>
+                handleDynamicInputChange(e, input.id, "educational")
+              }
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -63,7 +65,7 @@ export const AddMoreEduField = () => {
               <div className="flex items-center gap-3">
                 <button
                   className="bg-[#000000] text-white font-semibold rounded px-2 py-[2px]"
-                  onClick={handleSaveInput}
+                  onClick={() => handleSaveInput({ category: "educational" })}
                 >
                   Save
                 </button>

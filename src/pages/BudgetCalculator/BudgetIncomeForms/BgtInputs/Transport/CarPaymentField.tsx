@@ -2,7 +2,10 @@ import { Select } from "antd";
 import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { selectOptions } from "../../../BgtSelectOptions";
+import { useAppDispatch } from "../../../../../redux/hooks";
+import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 export default function CarPaymentField() {
+  const dispatch = useAppDispatch()
   return (
     <div>
       <div className="flex justify-between items-center text-[1rem] mb-1">
@@ -22,6 +25,15 @@ export default function CarPaymentField() {
           placeholder="$0"
           onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
             e.currentTarget.blur()
+          }
+          onChange={(e) =>
+            dispatch(
+              updateField({
+                category: "transport",
+                field: "carPayment",
+                value: Number(e.target.value),
+              })
+            )
           }
         />
         <div>

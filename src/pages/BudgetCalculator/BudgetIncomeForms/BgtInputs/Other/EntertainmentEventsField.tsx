@@ -4,9 +4,17 @@ import useBudgetDynamicInput from "../../../../../hooks/useBudgetDynamicInput";
 import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { Select } from "antd";
 import { selectOptions } from "../../../BgtSelectOptions";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
+import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 
 export const EntertainmentEvents = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
+  const dispatch = useAppDispatch();
+  const {
+    other: {
+      totals: { entertainmentEvents },
+    },
+  } = useAppSelector((state) => state.budgetCalculator);
 
   const {
     newInput,
@@ -20,9 +28,7 @@ export const EntertainmentEvents = () => {
     setShowSubInputs,
     handleAddNewInput,
   } = useBudgetDynamicInput({
-    category: "homeLoan",
     dynamicFieldTitleRef,
-    type: "Liabilities",
   });
 
   return (
@@ -59,7 +65,7 @@ export const EntertainmentEvents = () => {
           <input
             className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
             type="text"
-            value={0}
+            value={entertainmentEvents}
             disabled
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()
@@ -73,7 +79,10 @@ export const EntertainmentEvents = () => {
               className="rounded-[9px]"
               options={selectOptions}
               suffixIcon={
-                <Icon className="text-[1.5rem] text-gray-600" icon="iconamoon:arrow-down-2" />
+                <Icon
+                  className="text-[1.5rem] text-gray-600"
+                  icon="iconamoon:arrow-down-2"
+                />
               }
             ></Select>
           </div>
@@ -98,6 +107,16 @@ export const EntertainmentEvents = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
+              onChange={(e) =>
+                dispatch(
+                  updateField({
+                    category: "other",
+                    field: "entertainment",
+                    subCategory: "entertainmentEvents",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           <div>
@@ -114,6 +133,16 @@ export const EntertainmentEvents = () => {
               placeholder="$0"
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
+              }
+              onChange={(e) =>
+                dispatch(
+                  updateField({
+                    category: "other",
+                    subCategory: "entertainmentEvents",
+                    field: "events",
+                    value: Number(e.target.value),
+                  })
+                )
               }
             />
           </div>
@@ -136,7 +165,14 @@ export const EntertainmentEvents = () => {
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
                 placeholder="$0"
-                onChange={(e) => handleDynamicInputChange(e, input.id)}
+                onChange={(e) =>
+                  handleDynamicInputChange(
+                    e,
+                    input.id,
+                    "other",
+                    "entertainmentEvents"
+                  )
+                }
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
@@ -160,7 +196,12 @@ export const EntertainmentEvents = () => {
                 <div className="flex items-center gap-3">
                   <button
                     className="bg-[#000000] text-white font-semibold rounded px-2 py-[2px]"
-                    onClick={handleSaveInput}
+                    onClick={() =>
+                      handleSaveInput({
+                        category: "other",
+                        subCategory: "entertainmentEvents",
+                      })
+                    }
                   >
                     Save
                   </button>
@@ -212,4 +253,3 @@ export const EntertainmentEvents = () => {
     </div>
   );
 };
-

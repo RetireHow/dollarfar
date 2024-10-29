@@ -3,6 +3,8 @@ import { Icon } from "@iconify/react";
 import useBudgetDynamicInput from "../../../../../hooks/useBudgetDynamicInput";
 import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { Select } from "antd";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
+import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 
 type TOption = {
   label: string;
@@ -19,7 +21,8 @@ const selectOptions: TOption[] = [
 
 const NetIncomeField = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
-
+  const dispatch = useAppDispatch()
+  const {income:{totals:{netIncome}}} = useAppSelector(state => state.budgetCalculator)
   const {
     newInput,
     dynamicInputs,
@@ -32,9 +35,7 @@ const NetIncomeField = () => {
     setShowSubInputs,
     handleAddNewInput,
   } = useBudgetDynamicInput({
-    category: "homeLoan",
     dynamicFieldTitleRef,
-    type: "Liabilities",
   });
 
   return (
@@ -71,7 +72,7 @@ const NetIncomeField = () => {
           <input
             className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
             type="text"
-            value={0}
+            value={netIncome}
             disabled
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()
@@ -110,6 +111,16 @@ const NetIncomeField = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
+              onChange={(e) =>
+                dispatch(
+                  updateField({
+                    category: "income",
+                    subCategory: "netIncome",
+                    field: "businessProfit",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           {/* Dynamic Input Fields */}
@@ -131,7 +142,7 @@ const NetIncomeField = () => {
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
                 placeholder="$0"
-                onChange={(e) => handleDynamicInputChange(e, input.id)}
+                onChange={(e) => handleDynamicInputChange(e, input.id, 'income', 'netIncome')}
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
@@ -155,7 +166,7 @@ const NetIncomeField = () => {
                 <div className="flex items-center gap-3">
                   <button
                     className="bg-[#000000] text-white font-semibold rounded px-2 py-[2px]"
-                    onClick={handleSaveInput}
+                    onClick={()=>handleSaveInput({category:'income', subCategory:'netIncome'})}
                   >
                     Save
                   </button>

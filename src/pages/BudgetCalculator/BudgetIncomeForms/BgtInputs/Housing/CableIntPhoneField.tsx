@@ -3,6 +3,8 @@ import { Icon } from "@iconify/react";
 import useBudgetDynamicInput from "../../../../../hooks/useBudgetDynamicInput";
 import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { Select } from "antd";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
+import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 
 type TOption = {
   label: string;
@@ -19,7 +21,8 @@ const selectOptions: TOption[] = [
 
 export const CableIntPhoneField = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
-
+  const dispatch = useAppDispatch()
+  const {housing:{totals:{cableTvInternetPhone}}} = useAppSelector(state => state.budgetCalculator)
   const {
     newInput,
     dynamicInputs,
@@ -32,9 +35,7 @@ export const CableIntPhoneField = () => {
     setShowSubInputs,
     handleAddNewInput,
   } = useBudgetDynamicInput({
-    category: "homeLoan",
-    dynamicFieldTitleRef,
-    type: "Liabilities",
+    dynamicFieldTitleRef
   });
 
   return (
@@ -71,7 +72,7 @@ export const CableIntPhoneField = () => {
           <input
             className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
             type="text"
-            value={0}
+            value={cableTvInternetPhone}
             disabled
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()
@@ -113,6 +114,16 @@ export const CableIntPhoneField = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
+              onChange={(e) =>
+                dispatch(
+                  updateField({
+                    category: "housing",
+                    subCategory:"cableTvInternetPhone",
+                    field: "cableTv",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           <div>
@@ -129,6 +140,16 @@ export const CableIntPhoneField = () => {
               placeholder="$0"
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
+              }
+              onChange={(e) =>
+                dispatch(
+                  updateField({
+                    category: "housing",
+                    subCategory:"cableTvInternetPhone",
+                    field: "internet",
+                    value: Number(e.target.value),
+                  })
+                )
               }
             />
           </div>
@@ -147,6 +168,16 @@ export const CableIntPhoneField = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
+              onChange={(e) =>
+                dispatch(
+                  updateField({
+                    category: "housing",
+                    subCategory:"cableTvInternetPhone",
+                    field: "homePhone",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           <div>
@@ -163,6 +194,16 @@ export const CableIntPhoneField = () => {
               placeholder="$0"
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
+              }
+              onChange={(e) =>
+                dispatch(
+                  updateField({
+                    category: "housing",
+                    subCategory:"cableTvInternetPhone",
+                    field: "cellPhone",
+                    value: Number(e.target.value),
+                  })
+                )
               }
             />
           </div>
@@ -185,7 +226,7 @@ export const CableIntPhoneField = () => {
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
                 placeholder="$0"
-                onChange={(e) => handleDynamicInputChange(e, input.id)}
+                onChange={(e) => handleDynamicInputChange(e, input.id, 'housing', 'cableTvInternetPhone')}
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
@@ -209,7 +250,7 @@ export const CableIntPhoneField = () => {
                 <div className="flex items-center gap-3">
                   <button
                     className="bg-[#000000] text-white font-semibold rounded px-2 py-[2px]"
-                    onClick={handleSaveInput}
+                    onClick={()=>handleSaveInput({category:'housing', subCategory:'cableTvInternetPhone'})}
                   >
                     Save
                   </button>

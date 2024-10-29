@@ -1,6 +1,8 @@
 import { Select } from "antd";
 import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useAppDispatch } from "../../../../../redux/hooks";
+import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 type TOption = {
     label: string;
     value: string;
@@ -15,6 +17,7 @@ type TOption = {
   ];
 
 export default function MortgageField() {
+  const dispatch = useAppDispatch()
   return (
     <div>
       <div className="flex justify-between items-center text-[1rem] mb-1">
@@ -34,6 +37,15 @@ export default function MortgageField() {
           placeholder="$0"
           onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
             e.currentTarget.blur()
+          }
+          onChange={(e) =>
+            dispatch(
+              updateField({
+                category: "housing",
+                field: "mortgage",
+                value: Number(e.target.value),
+              })
+            )
           }
         />
         <div>

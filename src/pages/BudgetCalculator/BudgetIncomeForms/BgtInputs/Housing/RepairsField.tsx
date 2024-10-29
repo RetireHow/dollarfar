@@ -3,6 +3,8 @@ import { Icon } from "@iconify/react";
 import useBudgetDynamicInput from "../../../../../hooks/useBudgetDynamicInput";
 import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { Select } from "antd";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
+import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 
 type TOption = {
   label: string;
@@ -19,7 +21,12 @@ const selectOptions: TOption[] = [
 
 export const RepairsField = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
-
+  const dispatch = useAppDispatch();
+  const {
+    housing: {
+      totals: { repairsOrMaintenance },
+    },
+  } = useAppSelector((state) => state.budgetCalculator);
   const {
     newInput,
     dynamicInputs,
@@ -32,9 +39,7 @@ export const RepairsField = () => {
     setShowSubInputs,
     handleAddNewInput,
   } = useBudgetDynamicInput({
-    category: "homeLoan",
     dynamicFieldTitleRef,
-    type: "Liabilities",
   });
 
   return (
@@ -71,7 +76,7 @@ export const RepairsField = () => {
           <input
             className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
             type="text"
-            value={0}
+            value={repairsOrMaintenance}
             disabled
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()
@@ -113,6 +118,16 @@ export const RepairsField = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
+              onChange={(e) =>
+                dispatch(
+                  updateField({
+                    category: "housing",
+                    subCategory:"repairsOrMaintenance",
+                    field: "repairs",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           <div>
@@ -129,6 +144,16 @@ export const RepairsField = () => {
               placeholder="$0"
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
+              }
+              onChange={(e) =>
+                dispatch(
+                  updateField({
+                    category: "housing",
+                    subCategory:"repairsOrMaintenance",
+                    field: "maintenances",
+                    value: Number(e.target.value),
+                  })
+                )
               }
             />
           </div>
@@ -151,7 +176,14 @@ export const RepairsField = () => {
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
                 placeholder="$0"
-                onChange={(e) => handleDynamicInputChange(e, input.id)}
+                onChange={(e) =>
+                  handleDynamicInputChange(
+                    e,
+                    input.id,
+                    "income",
+                    "repairsOrMaintenance"
+                  )
+                }
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
@@ -175,7 +207,12 @@ export const RepairsField = () => {
                 <div className="flex items-center gap-3">
                   <button
                     className="bg-[#000000] text-white font-semibold rounded px-2 py-[2px]"
-                    onClick={handleSaveInput}
+                    onClick={() =>
+                      handleSaveInput({
+                        category: "housing",
+                        subCategory: "repairsOrMaintenance",
+                      })
+                    }
                   >
                     Save
                   </button>

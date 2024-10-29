@@ -7,30 +7,19 @@ export default function NWDescription() {
         </h3>
         <div className="text-[#696969] text-[18px] leading-[27px]">
           <p>
-            The net worth of an individual or company constitutes the total
-            assets owned by them. In other words, net worth can also be
-            described as the total value of all the assets owned minus the total
-            value of all the liabilities.
+          The net worth of an individual or company constitutes the total assets owned by them. In other words, net worth can also be described as the total value of all the assets owned minus the total value of all the liabilities.																									
           </p>
 
           <p className="mt-5">
-            A net worth calculator is a tool that helps to determine the net
-            worth of an individual or company, based on certain inputs. These
-            inputs include the total value of all the assets and the total value
-            of all the liabilities.
+          A net worth calculator is a tool that helps to determine the net worth of an individual or company based on certain inputs. These inputs include the total value of all the assets and the total value of all the liabilities.																									
           </p>
 
           <p className="mt-5">
-            An efficient net worth calculator can even ask for inputs
-            specifically for different types of assets like the value of shares
-            and equity, property, gold and jewellery, cash and bank accounts,
-            etc. or the various types of liabilities like home loans, personal
-            loans, income tax owned, credit card dues, etc.
+          An efficient net worth calculator can even ask for inputs specifically for different types of assets like the value of shares and equity, property, gold and jewelry, cash and bank accounts, etc., or the various types of liabilities like home loans, personal loans, income tax owned, credit card dues, etc.																									
           </p>
 
           <p className="mt-5">
-            Let us know in detail how to calculate the net worth using a net
-            worth calculator.
+          Let us know in detail how to calculate the net worth using a net worth calculator.																									
           </p>
         </div>
       </section>
@@ -41,19 +30,11 @@ export default function NWDescription() {
         </h3>
         <div className="text-[#696969] text-[18px] leading-[27px]">
           <p>
-            The net worth can be calculated for any company, group, individual
-            using a simple formula. Every individual or company owns resources
-            that are either responsible for bringing in financial benefit for
-            them or drain it out.
+          The net worth can be calculated for any company, group, or individual using a simple formula. Every individual or company owns resources that are either responsible for bringing in financial benefit for them or draining it out.																									
           </p>
 
           <p className="mt-5">
-            Hence, the difference between the total value of assets and
-            liabilities yields the net worth. The formula for calculating the
-            net worth is mentioned ahead in detail. With the help of it, you can
-            calculate the net worth of any individual or company provided that
-            you have the relevant information about their assets and
-            liabilities.
+          Hence, the difference between the total value of assets and liabilities yields the net worth. The formula for calculating the net worth is mentioned ahead in detail. With the help of it, you can calculate the net worth of any individual or company, provided that you have the relevant information about their assets and liabilities.																									
           </p>
         </div>
       </section>
@@ -63,20 +44,16 @@ export default function NWDescription() {
           Net Worth Calculation Formula
         </h3>
         <p className="text-[#696969] text-[18px] leading-[27px]">
-          The measurement of net worth is based on a simple formula that
-          includes the total value of assets and the total value of liabilities
-          of an individual or company.
+        The measurement of net worth is based on a simple formula that includes the total value of assets and the total value of liabilities of an individual or company.																									
         </p>
         <p className="text-[#696969] text-[18px] leading-[27px] mt-5">
-          Net Worth Calculation Formula is as stated below:
+        The net worth calculation formula is as stated below:																									
         </p>
         <p className="font-bold text-black mt-5">
-          Net worth = [Value of Asset 1 + Value of Asset 2 + Value of Asset 3 +
-          Value of Asset N] - [Value of Liability 1 + Value of Liability 2 +
-          Value of Liability 3 + Value of Liability N]
+        Net worth = [Value of Asset 1 + Value of Asset 2 + Value of Asset 3 + Value of Asset N] [Value of Liability 1 + Value of Liability 2 + Value of Liability 3 + Value of Liability N]																									
         </p>
         <p className="text-[#696969] text-[18px] leading-[27px] mt-5">
-          Let us understand this formula in detail:
+        Let us understand this formula in detail:																									
         </p>
 
         <div className="text-[18px] leading-[27px] mt-5">
@@ -84,26 +61,18 @@ export default function NWDescription() {
             <li>
               <span className="text-black font-bold mx-1">Assets:</span>
               <span className="text-[#696969]">
-                While calculating the net worth, all the sources of income or
-                ways that yield a financial benefit will fall under the category
-                of an asset. This can include resources such as a property,
-                rented home, shares, etc.
+              While calculating the net worth, all the sources of income or ways that yield a financial benefit will fall under the category of an asset. This can include resources such as a property, rented home, shares, etc.																									
               </span>
             </li>
             <li>
               <span className="text-black font-bold mx-1">Liabilities:</span>
               <span className="text-[#696969]">
-                Contrary to assets, liabilities are all such sources that result
-                in the drain of financial resources. These can either be basic
-                necessities or pleasure-giving materialistic things. Ideally,
-                liabilities can include fees, taxes, loans, etc.
+              Contrary to assets, liabilities are all such sources that result in the drain of financial resources. These can either be basic necessities or pleasure-giving materialistic things. Ideally, liabilities can include fees, taxes, loans, etc.																									
               </span>
             </li>
           </ul>
           <p className="text-[#696969] text-[18px] leading-[27px] mt-5">
-            Hence summing up all the assets as well as the liabilities
-            separately and then calculating the difference between them will
-            ultimately yield the net worth of an individual or company.
+          Hence, summing up all the assets as well as the liabilities separately and then calculating the difference between them will ultimately yield the net worth of an individual or company.																									
           </p>
         </div>
       </section>

@@ -4,10 +4,17 @@ import useBudgetDynamicInput from "../../../../../hooks/useBudgetDynamicInput";
 import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { Select } from "antd";
 import { selectOptions } from "../../../BgtSelectOptions";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
+import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 
 export const SCFeeField = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
-
+  const dispatch = useAppDispatch();
+  const {
+    educational: {
+      totals: { schoolCollegeFee },
+    },
+  } = useAppSelector((state) => state.budgetCalculator);
   const {
     newInput,
     dynamicInputs,
@@ -20,9 +27,7 @@ export const SCFeeField = () => {
     setShowSubInputs,
     handleAddNewInput,
   } = useBudgetDynamicInput({
-    category: "homeLoan",
     dynamicFieldTitleRef,
-    type: "Liabilities",
   });
 
   return (
@@ -59,7 +64,7 @@ export const SCFeeField = () => {
           <input
             className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
             type="text"
-            value={0}
+            value={schoolCollegeFee}
             disabled
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()
@@ -73,7 +78,10 @@ export const SCFeeField = () => {
               className="rounded-[9px]"
               options={selectOptions}
               suffixIcon={
-                <Icon className="text-[1.5rem] text-gray-600" icon="iconamoon:arrow-down-2" />
+                <Icon
+                  className="text-[1.5rem] text-gray-600"
+                  icon="iconamoon:arrow-down-2"
+                />
               }
             ></Select>
           </div>
@@ -98,6 +106,16 @@ export const SCFeeField = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
+              onChange={(e) =>
+                dispatch(
+                  updateField({
+                    category: "educational",
+                    subCategory: "schoolCollegeFee",
+                    field: "schoolFee",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           <div>
@@ -114,6 +132,16 @@ export const SCFeeField = () => {
               placeholder="$0"
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
+              }
+              onChange={(e) =>
+                dispatch(
+                  updateField({
+                    category: "educational",
+                    subCategory: "schoolCollegeFee",
+                    field: "collegeFee",
+                    value: Number(e.target.value),
+                  })
+                )
               }
             />
           </div>
@@ -136,7 +164,14 @@ export const SCFeeField = () => {
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
                 placeholder="$0"
-                onChange={(e) => handleDynamicInputChange(e, input.id)}
+                onChange={(e) =>
+                  handleDynamicInputChange(
+                    e,
+                    input.id,
+                    "educational",
+                    "schoolCollegeFee"
+                  )
+                }
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
@@ -160,7 +195,12 @@ export const SCFeeField = () => {
                 <div className="flex items-center gap-3">
                   <button
                     className="bg-[#000000] text-white font-semibold rounded px-2 py-[2px]"
-                    onClick={handleSaveInput}
+                    onClick={() =>
+                      handleSaveInput({
+                        category: "educational",
+                        subCategory: "schoolCollegeFee",
+                      })
+                    }
                   >
                     Save
                   </button>
@@ -212,4 +252,3 @@ export const SCFeeField = () => {
     </div>
   );
 };
-

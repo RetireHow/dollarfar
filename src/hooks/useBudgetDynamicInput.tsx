@@ -1,16 +1,8 @@
 import { useState, MutableRefObject } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import {
-  updateAsset,
-  updateLiabilities,
-} from "../redux/features/NWSlice/NWSlice";
 import { removeSpacesFromKey } from "../utils/removeSpaceFromKey";
-import {
-  Assets,
-  Liabilities,
-  LiabilityCategoryKeys,
-} from "../redux/features/NWSlice/types";
+import {BudgetState, Field, SubCategory, updateField } from "../redux/features/BgtSlice/BgtSlice";
 
 // Define a type for the dynamic input items
 type DynamicInputItem = {
@@ -20,12 +12,8 @@ type DynamicInputItem = {
 };
 
 const useBudgetDynamicInput = ({
-  category,
-  type,
   dynamicFieldTitleRef,
 }: {
-  category: keyof Assets | keyof Liabilities;
-  type?: string;
   dynamicFieldTitleRef: MutableRefObject<HTMLInputElement | null>;
 }) => {
   const dispatch = useDispatch();
@@ -35,11 +23,9 @@ const useBudgetDynamicInput = ({
   });
   const [dynamicInputs, setDynamicInputs] = useState<DynamicInputItem[]>([]);
   const [showNewInputField, setShowNewInputField] = useState(false);
-  const [showSubInputs, setShowSubInputs] = useState(
-    category == "property" ? true : false
-  );
+  const [showSubInputs, setShowSubInputs] = useState(false);
 
-  const handleSaveInput = () => {
+  const handleSaveInput = ({category, subCategory}:{category:keyof BudgetState;subCategory?:keyof SubCategory}) => {
     if (newInput.label) {
       if (!isNaN(Number(newInput.label))) {
         if (dynamicFieldTitleRef.current) {
@@ -51,19 +37,12 @@ const useBudgetDynamicInput = ({
       }
 
       dispatch(
-        type
-          ? updateLiabilities({
-              category: category as keyof Liabilities,
-              key: removeSpacesFromKey(
-                newInput.label
-              ) as keyof LiabilityCategoryKeys,
-              value: Number(newInput.value),
-            })
-          : updateAsset({
-              category: category as keyof Assets,
-              key: removeSpacesFromKey(newInput.label),
-              value: Number(newInput.value),
-            })
+        updateField({
+          category: category as keyof BudgetState,
+          subCategory: subCategory as keyof SubCategory,
+          field: removeSpacesFromKey(newInput.label) as keyof Field,
+          value: Number(newInput.value),
+        })
       );
 
       setDynamicInputs((prev) => [
@@ -100,21 +79,18 @@ const useBudgetDynamicInput = ({
 
   const handleDynamicInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    id: number
+    id: number,
+    category:keyof BudgetState,
+    subCategory?:keyof SubCategory
   ) => {
     const { value, name } = e.target;
     dispatch(
-      type
-        ? updateLiabilities({
-            category: category as keyof Liabilities,
-            key: name as keyof LiabilityCategoryKeys,
-            value: Number(value),
-          })
-        : updateAsset({
-            category: category as keyof Assets,
-            key: name,
-            value: Number(value),
-          })
+      updateField({
+        category: category as keyof BudgetState,
+        subCategory: subCategory as keyof SubCategory,
+        field: removeSpacesFromKey(name) as keyof Field,
+        value: Number(value),
+      })
     );
     setDynamicInputs((prevInputs) =>
       prevInputs.map((input) => (input.id === id ? { ...input, value } : input))

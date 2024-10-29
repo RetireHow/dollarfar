@@ -3,6 +3,8 @@ import { Icon } from "@iconify/react";
 import useBudgetDynamicInput from "../../../../../hooks/useBudgetDynamicInput";
 import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { Select } from "antd";
+import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 
 type TOption = {
   label: string;
@@ -18,8 +20,9 @@ const selectOptions: TOption[] = [
 ];
 
 const GovtBenefitsField = () => {
+  const dispatch = useAppDispatch()
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
-
+  const {income:{totals:{govtBenefits}}} = useAppSelector(state => state.budgetCalculator)
   const {
     newInput,
     dynamicInputs,
@@ -32,9 +35,7 @@ const GovtBenefitsField = () => {
     setShowSubInputs,
     handleAddNewInput,
   } = useBudgetDynamicInput({
-    category: "homeLoan",
     dynamicFieldTitleRef,
-    type: "Liabilities",
   });
 
   return (
@@ -71,7 +72,7 @@ const GovtBenefitsField = () => {
           <input
             className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
             type="text"
-            value={0}
+            value={govtBenefits}
             disabled
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()
@@ -85,7 +86,10 @@ const GovtBenefitsField = () => {
               className="rounded-[9px]"
               options={selectOptions}
               suffixIcon={
-                <Icon className="text-[1.5rem] text-gray-600" icon="iconamoon:arrow-down-2" />
+                <Icon
+                  className="text-[1.5rem] text-gray-600"
+                  icon="iconamoon:arrow-down-2"
+                />
               }
             ></Select>
           </div>
@@ -110,6 +114,16 @@ const GovtBenefitsField = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
+              onChange={(e) =>
+                dispatch(
+                  updateField({
+                    category: "income",
+                    subCategory: "govtBenefits",
+                    field: "childTaxBenefit",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           {/* Dynamic Input Fields */}
@@ -131,7 +145,7 @@ const GovtBenefitsField = () => {
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
                 placeholder="$0"
-                onChange={(e) => handleDynamicInputChange(e, input.id)}
+                onChange={(e) => handleDynamicInputChange(e, input.id, 'income', 'govtBenefits')}
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
@@ -155,7 +169,7 @@ const GovtBenefitsField = () => {
                 <div className="flex items-center gap-3">
                   <button
                     className="bg-[#000000] text-white font-semibold rounded px-2 py-[2px]"
-                    onClick={handleSaveInput}
+                    onClick={()=>handleSaveInput({category:'income', subCategory:'govtBenefits'})}
                   >
                     Save
                   </button>

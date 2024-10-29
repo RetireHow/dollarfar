@@ -3,6 +3,8 @@ import { Icon } from "@iconify/react";
 import useBudgetDynamicInput from "../../../../../hooks/useBudgetDynamicInput";
 import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { Select } from "antd";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
+import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 
 type TOption = {
   label: string;
@@ -18,7 +20,9 @@ const selectOptions: TOption[] = [
 ];
 
 const SalaryWagesInputFields = () => {
+  const dispatch = useAppDispatch();
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
+  const {income:{totals:{salaryOrWages}}} = useAppSelector(state => state.budgetCalculator)
 
   const {
     newInput,
@@ -32,9 +36,7 @@ const SalaryWagesInputFields = () => {
     setShowSubInputs,
     handleAddNewInput,
   } = useBudgetDynamicInput({
-    category: "homeLoan",
     dynamicFieldTitleRef,
-    type: "Liabilities",
   });
 
   return (
@@ -55,7 +57,7 @@ const SalaryWagesInputFields = () => {
             className="font-semibold flex items-center gap-1"
           >
             <span>Add Salary / Wages</span>
-            {showSubInputs ? (
+            {!showSubInputs ? (
               // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
               <Icon
                 className="text-[1.5rem]"
@@ -71,11 +73,12 @@ const SalaryWagesInputFields = () => {
           <input
             className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
             type="text"
-            value={0}
+            value={salaryOrWages}
             disabled
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()
             }
+            title="Total will be shown here"
           />
           <div>
             <Select
@@ -85,7 +88,10 @@ const SalaryWagesInputFields = () => {
               className="rounded-[9px]"
               options={selectOptions}
               suffixIcon={
-                <Icon className="text-[1.5rem] text-gray-600" icon="iconamoon:arrow-down-2" />
+                <Icon
+                  className="text-[1.5rem] text-gray-600"
+                  icon="iconamoon:arrow-down-2"
+                />
               }
             ></Select>
           </div>
@@ -93,7 +99,7 @@ const SalaryWagesInputFields = () => {
       </div>
 
       {/* Sub Input Fields */}
-      {showSubInputs && (
+      {!showSubInputs && (
         <div className="mt-3 text-[14px] flex gap-[1.5rem] overflow-x-auto pb-2">
           <div>
             <label
@@ -105,10 +111,21 @@ const SalaryWagesInputFields = () => {
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+              autoFocus
               type="number"
               placeholder="$0"
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
+              }
+              onChange={(e) =>
+                dispatch(
+                  updateField({
+                    category: "income",
+                    subCategory: "salaryOrWages",
+                    field: "salary1",
+                    value: Number(e.target.value),
+                  })
+                )
               }
             />
           </div>
@@ -126,6 +143,16 @@ const SalaryWagesInputFields = () => {
               placeholder="$0"
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
+              }
+              onChange={(e) =>
+                dispatch(
+                  updateField({
+                    category: "income",
+                    subCategory: "salaryOrWages",
+                    field: "wages",
+                    value: Number(e.target.value),
+                  })
+                )
               }
             />
           </div>
@@ -149,7 +176,7 @@ const SalaryWagesInputFields = () => {
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
                 placeholder="$0"
-                onChange={(e) => handleDynamicInputChange(e, input.id)}
+                onChange={(e) => handleDynamicInputChange(e, input.id, 'income', 'salaryOrWages')}
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
@@ -173,7 +200,7 @@ const SalaryWagesInputFields = () => {
                 <div className="flex items-center gap-3">
                   <button
                     className="bg-[#000000] text-white font-semibold rounded px-2 py-[2px]"
-                    onClick={handleSaveInput}
+                    onClick={()=>handleSaveInput({category:'income', subCategory:'salaryOrWages'})}
                   >
                     Save
                   </button>

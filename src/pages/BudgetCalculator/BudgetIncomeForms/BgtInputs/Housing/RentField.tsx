@@ -1,6 +1,8 @@
 import { Select } from "antd";
 import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
+import { useAppDispatch } from "../../../../../redux/hooks";
 type TOption = {
   label: string;
   value: string;
@@ -15,6 +17,7 @@ const selectOptions: TOption[] = [
 ];
 
 export default function RentField() {
+  const dispatch = useAppDispatch()
   return (
     <div>
       <div className="flex justify-between items-center text-[1rem] mb-1">
@@ -34,6 +37,15 @@ export default function RentField() {
           placeholder="$0"
           onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
             e.currentTarget.blur()
+          }
+          onChange={(e) =>
+            dispatch(
+              updateField({
+                category: "housing",
+                field: "rent",
+                value: Number(e.target.value),
+              })
+            )
           }
         />
         <div>

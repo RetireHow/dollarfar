@@ -1,4 +1,20 @@
+import { useAppSelector } from "../../redux/hooks";
+
 export default function BudgetCalcCard() {
+  const {
+    income: { subTotal: totalIncome },
+    housing: { subTotal: houseExpenses },
+    transport: { subTotal: transportExpenses },
+    educational: { subTotal: educationalExpenses },
+    other: { subTotal: otherExpenses },
+    loans: { subTotal: totalLoans },
+    savings: { subTotal: totalSavings },
+  } = useAppSelector((state) => state.budgetCalculator);
+
+  // Calculate cashflow deficit
+const totalExpenses = houseExpenses + transportExpenses + educationalExpenses + otherExpenses + totalLoans + totalSavings;
+const cashflowDeficit = totalIncome - totalExpenses;
+
   return (
     <section>
       <h3 className="text-[2rem] font-bold mb-[1.25rem]">Budget</h3>
@@ -7,7 +23,7 @@ export default function BudgetCalcCard() {
           <p className="font-medium">Income</p>
           <div className="flex items-center">
             <p>$</p>
-            <p>66</p>
+            <p>{totalIncome}</p>
           </div>
         </div>
 
@@ -15,7 +31,7 @@ export default function BudgetCalcCard() {
           <p className="text-[1.25rem] font-medium">House Expenses</p>
           <div className="flex items-center">
             <p>$</p>
-            <p>44</p>
+            <p>{houseExpenses}</p>
           </div>
         </div>
 
@@ -23,7 +39,7 @@ export default function BudgetCalcCard() {
           <p className="text-[1.25rem] font-medium">Transport Expenses</p>
           <div className="flex items-center">
             <p>$</p>
-            <p>44</p>
+            <p>{transportExpenses}</p>
           </div>
         </div>
 
@@ -31,7 +47,7 @@ export default function BudgetCalcCard() {
           <p className="text-[1.25rem] font-medium">Educational Expenses</p>
           <div className="flex items-center">
             <p>$</p>
-            <p>44</p>
+            <p>{educationalExpenses}</p>
           </div>
         </div>
 
@@ -39,7 +55,7 @@ export default function BudgetCalcCard() {
           <p className="text-[1.25rem] font-medium">Other Expenses</p>
           <div className="flex items-center">
             <p>$</p>
-            <p>44</p>
+            <p>{otherExpenses}</p>
           </div>
         </div>
 
@@ -47,7 +63,7 @@ export default function BudgetCalcCard() {
           <p className="text-[1.25rem] font-medium">Loans</p>
           <div className="flex items-center">
             <p>$</p>
-            <p>44</p>
+            <p>{totalLoans}</p>
           </div>
         </div>
 
@@ -55,7 +71,7 @@ export default function BudgetCalcCard() {
           <p className="text-[1.25rem] font-medium">Savings</p>
           <div className="flex items-center">
             <p>$</p>
-            <p>44</p>
+            <p>{totalSavings}</p>
           </div>
         </div>
 
@@ -63,7 +79,7 @@ export default function BudgetCalcCard() {
           <p className="text-[1.25rem] font-medium">Cashflow Deficit</p>
           <div className="flex items-center gap-[2px]">
             <p>$</p>
-            <p>99</p>
+            <p>{cashflowDeficit}</p>
           </div>
         </div>
       </div>

@@ -7,6 +7,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
+import { useAppSelector } from "../../redux/hooks";
 
 // Custom Legend Component
 const CustomLegend = (props: any) => {
@@ -37,21 +38,35 @@ const CustomLegend = (props: any) => {
 };
 
 // Sample data for the chart
-const data = [
-  { name: "Housing Expenses", value: 123, color: "#2196F3" },
-  { name: "Transport Expenses", value: 142, color: "#FF9800" },
-  { name: "Educational Expenses", value: 1450, color: "#03A9F4" },
-  { name: "Other Expenses", value: 1477, color: "#FF5722" },
-  { name: "Loans", value: 1477, color: "#F44336" },
-  { name: "Savings", value: 1478, color: "#9C27B0" },
-  { name: "Cashflow Deficit", value: 8050, color: "#009688" },
-];
 
-// Calculate total income
-const totalIncome = data.reduce((acc, item) => acc + item.value, 0);
 
 const BudgetPieChart = () => {
   const isMobile = window.innerWidth <= 768;
+  const {
+    income: { subTotal: totalIncome },
+    housing: { subTotal: houseExpenses },
+    transport: { subTotal: transportExpenses },
+    educational: { subTotal: educationalExpenses },
+    other: { subTotal: otherExpenses },
+    loans: { subTotal: totalLoans },
+    savings: { subTotal: totalSavings },
+  } = useAppSelector((state) => state.budgetCalculator);
+
+  // Calculate cashflow deficit
+const totalExpenses = houseExpenses + transportExpenses + educationalExpenses + otherExpenses + totalLoans + totalSavings;
+const cashflowDeficit = totalIncome - totalExpenses;
+
+
+  const data = [
+    { name: "Housing Expenses", value: houseExpenses, color: "#2196F3" },
+    { name: "Transport Expenses", value: transportExpenses, color: "#FF9800" },
+    { name: "Educational Expenses", value: educationalExpenses, color: "#03A9F4" },
+    { name: "Other Expenses", value: otherExpenses, color: "#FF5722" },
+    { name: "Loans", value: totalLoans, color: "#F44336" },
+    { name: "Savings", value: totalSavings, color: "#9C27B0" },
+    { name: "Cashflow Deficit", value: cashflowDeficit, color: "#009688" },
+  ];
+  
   return (
     <div className="overflow-x-auto">
       <div className="flex justify-center items-center gap-10 min-w-[450px]">

@@ -2,6 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import compoundInterestReducer from "./features/compoundInterestSlice/compoundInterestSlice";
 import researchReducer from "./features/other/researchSlice";
 import NWReducer from "./features/NWSlice/NWSlice";
+import budgetReducer from "./features/BgtSlice/BgtSlice";
+import stepperReducer from "./features/stepperSlice/stepperSclie";
 
 // Create and configure the store
 const store = configureStore({
@@ -9,6 +11,8 @@ const store = configureStore({
     compoundInterest: compoundInterestReducer,
     research: researchReducer,
     NWCalculator: NWReducer,
+    budgetCalculator: budgetReducer,
+    stepper: stepperReducer,
   },
 });
 
