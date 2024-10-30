@@ -3,6 +3,9 @@ import { cardsData } from "../../data/cardsData";
 import CalculatorCard from "./CalculatorCard";
 import heroEllipseImage from "../../assets/hero-ellipse.svg";
 export default function Landing() {
+  const handleGetStarted = ()=>{
+    window.scrollTo({top:630, behavior:'smooth'})
+  }
   return (
     <main className="mb-[3rem] mt-[5rem]">
       {/* Hero Section  */}
@@ -26,7 +29,7 @@ export default function Landing() {
               future.
             </p>
             <div className="flex md:justify-start justify-center">
-              <button className="bg-black text-white text-[18px] font-bold flex items-center justify-center gap-3 px-8 py-2 rounded-[10px] mt-[2.5rem]">
+              <button onClick={handleGetStarted} className="bg-black text-white text-[18px] font-bold flex items-center justify-center gap-3 px-8 py-2 rounded-[10px] mt-[2.5rem] hover:scale-105 duration-300 animate-bounce hover:animate-none">
                 <span>Get Started</span>
                 <img src={assets.arrowWhite} alt="Arrow Icon" />
               </button>
