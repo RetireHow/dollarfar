@@ -1,12 +1,15 @@
 import { FormEvent, useState } from "react";
-import { Checkbox, CheckboxProps, Modal } from "antd";
+import { Modal } from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { generatePDF } from "./generatePdf";
+import { generatePDFWithoutDetails } from "./generatePDFWithoutDetails";
 
-const DownloadModal = ({id}:{id:string}) => {
+const DownloadModal = ({ id }: { id: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [checked, setChecked] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -14,8 +17,19 @@ const DownloadModal = ({id}:{id:string}) => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(name, email);
+    if (!checked) {
+      return setShowError(true);
+    }
     generatePDF(name, email, id);
+    setIsModalOpen(false);
+  };
+
+  const handleDownload = (e: FormEvent) => {
+    e.preventDefault();
+    if (!checked) {
+      return setShowError(true);
+    }
+    generatePDFWithoutDetails(id);
     setIsModalOpen(false);
   };
 
@@ -23,15 +37,12 @@ const DownloadModal = ({id}:{id:string}) => {
     setIsModalOpen(false);
   };
 
-  const onChange: CheckboxProps["onChange"] = (e) => {
-    console.log(`checked = ${e.target.checked}`);
-  };
-
   return (
     <>
       <div
         onClick={showModal}
         className="flex items-center gap-2 border-[1px] border-[#0000001A] md:px-[1.25rem] px-[0.5rem] md:py-[10px] py-[8px] rounded-[10px] font-medium md:w-[140px] w-[110px] cursor-pointer"
+        data-html2canvas-ignore
       >
         <p>Download</p>
         <Icon className="text-[1.5rem]" icon="material-symbols:download" />
@@ -76,17 +87,43 @@ const DownloadModal = ({id}:{id:string}) => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <Checkbox className="text-[12px] geist" onChange={onChange}>
-            <span className="text-[#838383]">
-              By proceeding, you are agreeing to our
-            </span>
-            Terms and Conditions & Privacy Policy.
-          </Checkbox>
+          <div>
+            <div
+              onClick={() => setChecked(!checked)}
+              className="text-[12px] flex items-center gap-1 cursor-pointer select-none"
+            >
+              {checked ? (
+                <Icon className="text-[1.2rem]" icon="mingcute:checkbox-fill" />
+              ) : (
+                <Icon
+                  className="text-[1.2rem]"
+                  icon="mdi:checkbox-blank-outline"
+                />
+              )}
+              <span className="text-[#838383]">
+                By proceeding, you are agreeing to our
+              </span>
+              <span>Terms and Conditions & Privacy Policy.</span>
+            </div>
+            {showError && !checked && (
+              <p className="text-red-500 text-[12px] mt-1">
+                Please check Terms and Conditions & Privacy Policy
+              </p>
+            )}
+          </div>
           <button
             onClick={handleSubmit}
             className="bg-black text-white w-full rounded-[10px] py-[0.8rem]"
+            type="button"
           >
             Submit
+          </button>
+          <button
+            onClick={handleDownload}
+            className="bg-black text-white w-full rounded-[10px] py-[0.8rem]"
+            type="button"
+          >
+            Download
           </button>
         </div>
       </Modal>

@@ -17,7 +17,7 @@ const initialState: CompoundInterestState = {
   rate: 6,
   time: 5,
   frequency: 1, // compounding frequency (e.g., annually, quarterly, monthly)
-  frequencyName: "Yearly", // default frequency name
+  frequencyName: "Annually", // default frequency name
   compoundInterest: 0,
   interestBreakdown: [],
 };
@@ -42,7 +42,7 @@ const compoundInterestSlice = createSlice({
       // Map numeric frequency to corresponding frequency name
       switch (action.payload) {
         case 1:
-          state.frequencyName = "Yearly";
+          state.frequencyName = "Annually";
           break;
         case 4:
           state.frequencyName = "Quarterly";

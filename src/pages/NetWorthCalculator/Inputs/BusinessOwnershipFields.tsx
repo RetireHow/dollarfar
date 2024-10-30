@@ -45,13 +45,13 @@ const BusinessOwnershipFields = () => {
           onClick={() => setShowSubInputs(!showSubInputs)}
           className="font-semibold flex items-center gap-1"
         >
-          <p className="text-nowrap ml-5">Add Ownership/Partnership</p>
           {showSubInputs ? (
             // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
             <Icon className="text-[1.5rem]" icon="iconamoon:arrow-up-2-light" />
           ) : (
             <Icon className="text-[1.25rem]" icon="ic:round-plus" />
           )}
+          <p className="text-nowrap">Add Ownership/Partnership</p>
         </button>
       </div>
       <input

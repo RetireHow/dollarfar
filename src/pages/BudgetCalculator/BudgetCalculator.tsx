@@ -1,6 +1,7 @@
 import { assets } from "../../assets/assets";
 import PageHero from "../../components/UI/PageHero";
 import SectionHeader from "../../components/UI/SectionHeader";
+import { useAppSelector } from "../../redux/hooks";
 import BudgetCalcLayout from "./BudgetCalcLayout";
 import BudgetDescription from "./BudgetDescription";
 import BudgetPieChart from "./BudgetPieChart";
@@ -13,6 +14,19 @@ const data = {
 };
 
 export default function BudgetCalculator() {
+  const {
+    income: { subTotal: totalIncome },
+    housing: { subTotal: houseExpenses },
+    transport: { subTotal: transportExpenses },
+    educational: { subTotal: educationalExpenses },
+    other: { subTotal: otherExpenses },
+    loans: { subTotal: totalLoans },
+    savings: { subTotal: totalSavings },
+  } = useAppSelector((state) => state.budgetCalculator);
+
+  // Calculate cashflow deficit
+const totalExpenses = houseExpenses + transportExpenses + educationalExpenses + otherExpenses + totalLoans + totalSavings;
+const cashflowDeficit = totalIncome - totalExpenses;
   return (
     <main className="mb-[5rem]">
       <PageHero data={data} />
@@ -27,8 +41,8 @@ export default function BudgetCalculator() {
         <BudgetPieChart />
 
         <p className="md:text-[1.25rem] text-[1rem] font-semibold text-center mt-5">
-          "Your total annual income is $95,000, and after your expenses of
-          $59,000, you have $36,000 left for savings or investments."
+          "Your total annual income is ${totalIncome}, and after your expenses of
+          ${totalExpenses}, you have ${cashflowDeficit} left for savings or investments."
         </p>
       </section>
 

@@ -47,13 +47,13 @@ const VehicleLoans = () => {
           onClick={() => setShowSubInputs(!showSubInputs)}
           className="font-semibold flex items-center gap-1"
         >
-          <span>Add Vehicle Loans</span>
           {showSubInputs ? (
             // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
             <Icon className="text-[1.5rem]" icon="iconamoon:arrow-up-2-light" />
           ) : (
             <Icon className="text-[1.25rem]" icon="ic:round-plus" />
           )}
+          <span>Add Vehicle Loans</span>
         </button>
       </div>
       <input

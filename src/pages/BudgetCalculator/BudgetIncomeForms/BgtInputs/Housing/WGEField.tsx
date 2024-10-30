@@ -21,8 +21,12 @@ const selectOptions: TOption[] = [
 
 export const WGEField = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
-  const dispatch = useAppDispatch()
-  const {housing:{totals:{wge}}} = useAppSelector(state => state.budgetCalculator)
+  const dispatch = useAppDispatch();
+  const {
+    housing: {
+      totals: { wge },
+    },
+  } = useAppSelector((state) => state.budgetCalculator);
   const {
     newInput,
     dynamicInputs,
@@ -35,7 +39,7 @@ export const WGEField = () => {
     setShowSubInputs,
     handleAddNewInput,
   } = useBudgetDynamicInput({
-    dynamicFieldTitleRef
+    dynamicFieldTitleRef,
   });
 
   return (
@@ -55,7 +59,6 @@ export const WGEField = () => {
             onClick={() => setShowSubInputs(!showSubInputs)}
             className="font-semibold flex items-center gap-1"
           >
-            <span>Add Expenses</span>
             {showSubInputs ? (
               // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
               <Icon
@@ -65,6 +68,7 @@ export const WGEField = () => {
             ) : (
               <Icon className="text-[1.25rem]" icon="ic:round-plus" />
             )}
+            <span>Add Expenses</span>
           </button>
         </div>
 
@@ -118,7 +122,7 @@ export const WGEField = () => {
                 dispatch(
                   updateField({
                     category: "housing",
-                    subCategory:"wge",
+                    subCategory: "wge",
                     field: "water",
                     value: Number(e.target.value),
                   })
@@ -145,7 +149,7 @@ export const WGEField = () => {
                 dispatch(
                   updateField({
                     category: "housing",
-                    subCategory:"wge",
+                    subCategory: "wge",
                     field: "gas",
                     value: Number(e.target.value),
                   })
@@ -172,7 +176,7 @@ export const WGEField = () => {
                 dispatch(
                   updateField({
                     category: "housing",
-                    subCategory:"wge",
+                    subCategory: "wge",
                     field: "electricity",
                     value: Number(e.target.value),
                   })
@@ -199,7 +203,9 @@ export const WGEField = () => {
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
                 placeholder="$0"
-                onChange={(e) => handleDynamicInputChange(e, input.id, 'housing', 'wge')}
+                onChange={(e) =>
+                  handleDynamicInputChange(e, input.id, "housing", "wge")
+                }
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
@@ -223,7 +229,12 @@ export const WGEField = () => {
                 <div className="flex items-center gap-3">
                   <button
                     className="bg-[#000000] text-white font-semibold rounded px-2 py-[2px]"
-                    onClick={()=>handleSaveInput({category:'housing', subCategory:'wge'})}
+                    onClick={() =>
+                      handleSaveInput({
+                        category: "housing",
+                        subCategory: "wge",
+                      })
+                    }
                   >
                     Save
                   </button>

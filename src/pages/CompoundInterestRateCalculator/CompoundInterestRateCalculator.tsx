@@ -23,7 +23,7 @@ const data = {
 
 export default function CompoundInterestCalculator() {
   const dispatch = useAppDispatch();
-  const { rate, time, principal, frequency, frequencyName } = useAppSelector(
+  const { rate, time, principal, frequency, frequencyName, compoundInterest, interestBreakdown } = useAppSelector(
     (state) => state.compoundInterest
   );
   useEffect(() => {
@@ -39,10 +39,9 @@ export default function CompoundInterestCalculator() {
     <main className="mb-[5rem]">
       <PageHero data={data} />
 
-      <div id="report">
         <section
-          id="calculation-card"
           className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem]"
+          id="report"
         >
           {/* Header  */}
           <SectionHeader id="report" title="Compound Interest Calculator" />
@@ -68,8 +67,8 @@ export default function CompoundInterestCalculator() {
               </div>
               <BarGraphChart />
               <p className="md:text-[1rem] font-semibold text-center mt-5">
-                "An investment of $1,000 today will grow to $1,276.28 by 2029,
-                based on an interest rate of 5% compounded annually."
+                "An investment of ${principal} today will grow to ${(compoundInterest + principal).toFixed(2)} by {interestBreakdown[interestBreakdown.length-1].period},
+                based on an interest rate of {rate}% compounded {frequencyName?.toLowerCase()}."
               </p>
             </section>
 
@@ -89,7 +88,6 @@ export default function CompoundInterestCalculator() {
             </ul>
           </div>
         </section>
-      </div>
 
       <Description />
     </main>

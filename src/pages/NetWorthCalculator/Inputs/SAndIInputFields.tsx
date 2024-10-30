@@ -10,7 +10,7 @@ const SAndIInputFields = () => {
   const dispatch = useAppDispatch();
   const {
     assets: {
-      totals: { savingsInvestment:savingsInvestmentTotal },
+      totals: { savingsInvestment: savingsInvestmentTotal },
     },
   } = useAppSelector((state) => state.NWCalculator);
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
@@ -26,7 +26,7 @@ const SAndIInputFields = () => {
     showSubInputs,
     setShowSubInputs,
     handleAddNewInput,
-  } = useDynamicInput({category:"savingsInvestment", dynamicFieldTitleRef});
+  } = useDynamicInput({ category: "savingsInvestment", dynamicFieldTitleRef });
 
   return (
     <div>
@@ -44,13 +44,13 @@ const SAndIInputFields = () => {
           onClick={() => setShowSubInputs(!showSubInputs)}
           className="font-semibold flex items-center gap-1"
         >
-          <span>Add Savings & Investments</span>
           {showSubInputs ? (
             // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
             <Icon className="text-[1.5rem]" icon="iconamoon:arrow-up-2-light" />
           ) : (
             <Icon className="text-[1.25rem]" icon="ic:round-plus" />
           )}
+          <span>Add Savings & Investments</span>
         </button>
       </div>
       <input
@@ -73,7 +73,7 @@ const SAndIInputFields = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">RRSP</span>{" "}
-              <CustomTooltip title="Total value of your RRSP accounts, a Canadian retirement savings plan with tax benefits."/>
+              <CustomTooltip title="Total value of your RRSP accounts, a Canadian retirement savings plan with tax benefits." />
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -82,13 +82,15 @@ const SAndIInputFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e) => dispatch(
-                updateAsset({
-                  category: "savingsInvestment",
-                  key: 'rrsp',
-                  value: Number(e.target.value),
-                })
-              )}
+              onChange={(e) =>
+                dispatch(
+                  updateAsset({
+                    category: "savingsInvestment",
+                    key: "rrsp",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           <div>
@@ -97,7 +99,7 @@ const SAndIInputFields = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">RRIF</span>{" "}
-              <CustomTooltip title="Current balance of your RRIF, typically a converted RRSP that pays out income in retirement"/>
+              <CustomTooltip title="Current balance of your RRIF, typically a converted RRSP that pays out income in retirement" />
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -106,13 +108,15 @@ const SAndIInputFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e) => dispatch(
-                updateAsset({
-                  category: "savingsInvestment",
-                  key: 'rrIf',
-                  value: Number(e.target.value),
-                })
-              )}
+              onChange={(e) =>
+                dispatch(
+                  updateAsset({
+                    category: "savingsInvestment",
+                    key: "rrIf",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           <div>
@@ -121,7 +125,7 @@ const SAndIInputFields = () => {
               htmlFor="realEstate"
             >
               <span className="text-nowrap">RESP</span>{" "}
-              <CustomTooltip title="Total balance in your RESP accounts, designed for post-secondary education savings with tax benefits."/>
+              <CustomTooltip title="Total balance in your RESP accounts, designed for post-secondary education savings with tax benefits." />
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -130,13 +134,15 @@ const SAndIInputFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e) => dispatch(
-                updateAsset({
-                  category: "savingsInvestment",
-                  key: 'resp',
-                  value: Number(e.target.value),
-                })
-              )}
+              onChange={(e) =>
+                dispatch(
+                  updateAsset({
+                    category: "savingsInvestment",
+                    key: "resp",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
 

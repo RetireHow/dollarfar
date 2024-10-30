@@ -48,7 +48,6 @@ export const EntertainmentEvents = () => {
             onClick={() => setShowSubInputs(!showSubInputs)}
             className="font-semibold flex items-center gap-1"
           >
-            <span>Add Expenses</span>
             {showSubInputs ? (
               // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
               <Icon
@@ -58,6 +57,7 @@ export const EntertainmentEvents = () => {
             ) : (
               <Icon className="text-[1.25rem]" icon="ic:round-plus" />
             )}
+            <span>Add Expenses</span>
           </button>
         </div>
 

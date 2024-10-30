@@ -55,16 +55,16 @@ const NetIncomeField = () => {
             onClick={() => setShowSubInputs(!showSubInputs)}
             className="font-semibold flex items-center gap-1"
           >
-            <span>Add Net Income</span>
             {showSubInputs ? (
               // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
               <Icon
-                className="text-[1.5rem]"
+              className="text-[1.5rem]"
                 icon="iconamoon:arrow-up-2-light"
-              />
-            ) : (
-              <Icon className="text-[1.25rem]" icon="ic:round-plus" />
-            )}
+                />
+              ) : (
+                <Icon className="text-[1.25rem]" icon="ic:round-plus" />
+              )}
+              <span>Add Net Income</span>
           </button>
         </div>
 

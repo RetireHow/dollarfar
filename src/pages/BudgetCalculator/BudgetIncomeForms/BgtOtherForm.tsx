@@ -21,7 +21,7 @@ export default function BgtOtherForm() {
     navigate(-1)
   };
   useEffect(() => {
-    window.scrollTo({ top: 500, behavior: "smooth" });
+    window.scrollTo({ top: 330, behavior: "smooth" });
   }, []);
   return (
     <div className="space-y-[2rem]">
