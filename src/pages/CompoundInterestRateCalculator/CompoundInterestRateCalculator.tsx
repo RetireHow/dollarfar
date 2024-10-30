@@ -67,7 +67,7 @@ export default function CompoundInterestCalculator() {
               </div>
               <BarGraphChart />
               <p className="md:text-[1rem] font-semibold text-center mt-5">
-                "An investment of ${principal} today will grow to ${(compoundInterest + principal).toFixed(2)} by {interestBreakdown[interestBreakdown.length-1].period},
+                "An investment of ${principal} today will grow to ${(compoundInterest + principal)?.toFixed(2)} by {interestBreakdown[interestBreakdown.length-1]?.period},
                 based on an interest rate of {rate}% compounded {frequencyName?.toLowerCase()}."
               </p>
             </section>
