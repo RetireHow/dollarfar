@@ -4,7 +4,7 @@ import Stepper from "./Stepper";
 
 export default function BudgetCalcLayout() {
   return (
-    <section>
+    <section className="max-w-[1200px]">
       <Stepper/>
       <div className="grid md:grid-cols-2 grid-cols-1 gap-10 mb-[3rem]">
         <Outlet />

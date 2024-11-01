@@ -1,65 +1,46 @@
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import html2pdf from "html2pdf.js";
 import siteLogo from "../assets/Dollar-logo.svg";
+export const generatePDF = (
+  name:string,
+  email:string,
+  fileName: string
+): void => {
+  const element = document.getElementById("report") as HTMLDivElement | null;
+ 
+ // Create a temporary div to hold the header and content
+ const tempDiv = document.createElement('div');
 
-export const generatePDF = (name: string, email: string, id: string): void => {
-  const headerHTML = `<div
-      style="display:flex; justify-content:space-between; padding:10px; margin:30px 80px;box-shadow:0px 0px 10px 0px rgba(0, 0, 0, 0.10)"
-    >
-        <div><img width="150px" height="150px" src=${siteLogo} alt="Logo Image" /></div>
-        <div>
-        <h5 style="font-weight:600; margin-bottom:10px;">Created By</h5>
+ // Create the dynamic header
+ const headerHTML = `
+   <div style="box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+     <img src="${siteLogo}" alt="Logo Image" style="width: 150px; height: 150px; margin-left:2.2rem" />
+     ${
+      (name || email) ? `<div style="margin-right: 30rem;">
+       <h3 style="font-weight: bold;">Created By:</h3>
+       <div style="display: flex; align-items: center; gap: 10px;">
+         <p style="margin: 0;">Name:</p>
+         <p style="margin: 0;">${name}</p>
+       </div>
+       <div style="display: flex; align-items: center; gap: 10px;">
+         <p style="margin: 0;">Email:</p>
+         <p style="margin: 0;">${email}</p>
+       </div>
+     </div>` : ``
+     }
+   </div>
+ `;
 
-        <div style="display:flex; gap:50px; margin-bottom:10px"><p style="color:#696969;">Name:</p> <p style="font-weight: 600;">${
-          name ? name : "NA"
-        }</p>
-        </div>
+ // Set the inner HTML of the temporary div
+ tempDiv.innerHTML = headerHTML + (element ? element.innerHTML : ''); // Replace with actual content
 
-        <div style="display:flex; gap:50px;"><p style="color:#696969;">Email:</p> <p style="font-weight: 600;">${
-          email ? email : "NA"
-        }</p>
-        </div>
+ const pdfOptions = {
+   filename: `${fileName}.pdf`,
+   jsPDF: { unit: "px", format: [3500, 1900], orientation: "portrait" },
+   html2canvas: { scale: 1 },
+   pagebreak: { mode: ["css", "legacy"] },
+   margin: [20, 30, 30, 30],
+ };
 
-        </div>
-    </div>`;
-
-  const footerHTML = `<footer id="footer" style="display:flex; justify-content:space-between; padding:10px; margin:0 80px">
-      <div>Dollarfar.com</div>
-      <div>Copyright © ${new Date().getFullYear()} - Dollarfar</div>
-    </footer>`;
-
-  // Create elements for header and footer
-  const header = document.createElement("div");
-  header.innerHTML = headerHTML;
-
-  const footer = document.createElement("div");
-  footer.innerHTML = footerHTML;
-
-  const input = document.getElementById(id) as HTMLDivElement | null;
-
-  if (input) {
-    input.insertBefore(header, input.firstChild); // Insert header at the top
-    input.appendChild(footer); // Append footer at the bottom
-    html2canvas(input)
-      .then((canvas) => {
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF();
-
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-        // Add the canvas image to the PDF
-        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-        pdf.save("downloaded-file-with-header-footer.pdf");
-
-        // Remove header and footer
-        input.removeChild(input.firstChild as HTMLElement);
-        input.removeChild(input.lastChild as HTMLElement);
-      })
-      .catch((error) => {
-        console.error("Error generating PDF:", error);
-      });
-  } else {
-    console.error("Element with ID 'report' not found.");
-  }
+ // Generate the PDF
+ html2pdf(tempDiv, pdfOptions);
 };

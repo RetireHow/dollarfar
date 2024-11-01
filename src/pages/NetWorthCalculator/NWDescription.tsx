@@ -1,6 +1,6 @@
 export default function NWDescription() {
   return (
-    <article>
+    <article data-html2canvas-ignore>
       <section className="md:mx-[5rem] mx-[1rem]">
         <h3 className="text-[28px] font-extrabold mb-[1.5rem]">
           What is Net Worth?

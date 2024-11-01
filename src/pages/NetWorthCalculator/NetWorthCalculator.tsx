@@ -23,9 +23,9 @@ export default function NetWorthCalculator() {
       <PageHero data={data} />
       <section
         
-        className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem]"
+        className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem] max-w-[1200px]"
       >
-        <SectionHeader id="NWReport" title="Net worth Calculator" />
+        <SectionHeader id="NWReport" title="Net worth Calculator" fileName="Net Worth Calculator"/>
         <NWForm />
         <div id="NWReport" className="lg:grid flex flex-col-reverse lg:grid-cols-3 grid-cols-1 gap-[2rem]">
           <NWBarChart />

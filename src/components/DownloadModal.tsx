@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { generatePDF } from "./generatePdf";
 import { generatePDFWithoutDetails } from "./generatePDFWithoutDetails";
 
-const DownloadModal = ({ id }: { id: string }) => {
+const DownloadModal = ({fileName }: { id: string, fileName:string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -20,7 +20,7 @@ const DownloadModal = ({ id }: { id: string }) => {
     if (!checked) {
       return setShowError(true);
     }
-    generatePDF(name, email, id);
+    generatePDF(name, email, fileName);
     setIsModalOpen(false);
   };
 
@@ -29,7 +29,7 @@ const DownloadModal = ({ id }: { id: string }) => {
     if (!checked) {
       return setShowError(true);
     }
-    generatePDFWithoutDetails(id);
+    generatePDFWithoutDetails(fileName);
     setIsModalOpen(false);
   };
 

@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function MainLayout() {
   return (
-    <main>
+    <main id="report">
       <Header />
       <div>
         <Outlet />

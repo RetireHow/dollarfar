@@ -37,14 +37,13 @@ export default function CompoundInterestCalculator() {
 
   return (
     <main className="mb-[5rem]">
-      <PageHero data={data} />
+      <div data-html2canvas-ignore><PageHero data={data} /></div>
 
         <section
-          className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem]"
-          id="report"
+          className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem] max-w-[1200px]"
         >
           {/* Header  */}
-          <SectionHeader id="report" title="Compound Interest Calculator" />
+          <SectionHeader id="report" title="Compound Interest Calculator" fileName="Compound Interest Report"/>
 
           <div className="flex items-center justify-between gap-[5rem] lg:flex-row flex-col">
             {/* ==========================|| Sliders Container ||===================================  */}
@@ -89,7 +88,7 @@ export default function CompoundInterestCalculator() {
           </div>
         </section>
 
-      <Description />
+      <div data-html2canvas-ignore><Description /></div>
     </main>
   );
 }

@@ -10,7 +10,7 @@ type TPageHeroProps = {
 export default function PageHero({data}:{data:TPageHeroProps}) {
     const { title, description, image } = data;
   return (
-    <section className="bg-black text-white md:px-[5rem] px-[1rem] py-[2.5rem] space-y-[1.5rem] relative mb-[5rem]">
+    <section className="bg-black text-white md:px-[5rem] px-[1rem] py-[2.5rem] space-y-[1.5rem] relative mb-[5rem]" data-html2canvas-ignore>
       <Link to="/">
         <button className="flex items-center gap-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] px-[1.5rem] py-[0.5rem] text-[18px] font-bold">
           <img src={assets.leftArrow} alt="" />

@@ -64,8 +64,4 @@
 }
 
 
-.pdf-content {
-  width: 1700px;
-  margin: 0 auto;
-}
 @layer base { img { display: initial; } }
