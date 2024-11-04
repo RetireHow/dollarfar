@@ -10,7 +10,7 @@ import {
   Assets,
   Liabilities,
   LiabilityCategoryKeys,
-} from "../redux/features/NWSlice/types";
+} from "../redux/features/NWSlice/NWTypes";
 
 // Define a type for the dynamic input items
 type DynamicInputItem = {

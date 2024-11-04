@@ -1,20 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { CompoundInterestState } from "./CompoundInterestTypes";
 
-// Define the state type
-interface CompoundInterestState {
-  principal: number;
-  rate: number;
-  time: number;
-  frequency: number;
-  frequencyName: string; // default frequency name
-  compoundInterest: number;
-  interestBreakdown: Array<{ period: string; interest: number }>; // for chart data
-}
-
-// Initial state
-const initialState: CompoundInterestState = {
-  principal: 3000,
-  rate: 6,
+ // Initial state
+ export const initialState: CompoundInterestState = {
+  principal: 5000,
+  rate: 5,
   time: 5,
   frequency: 1, // compounding frequency (e.g., annually, quarterly, monthly)
   frequencyName: "Annually", // default frequency name

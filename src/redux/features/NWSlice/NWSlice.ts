@@ -6,7 +6,7 @@ import {
   LiabilityTotals,
   NWState,
   Totals,
-} from "./types";
+} from "./NWTypes";
 
 const initialState: NWState = {
   assets: {

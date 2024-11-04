@@ -2,7 +2,8 @@ import { useState, MutableRefObject } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { removeSpacesFromKey } from "../utils/removeSpaceFromKey";
-import {BudgetState, Field, SubCategory, updateField } from "../redux/features/BgtSlice/BgtSlice";
+import { updateField } from "../redux/features/BgtSlice/BgtSlice";
+import { BudgetState, Field, SubCategory } from "../redux/features/BgtSlice/BgtTypes";
 
 // Define a type for the dynamic input items
 type DynamicInputItem = {
