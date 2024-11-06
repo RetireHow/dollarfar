@@ -21,7 +21,7 @@ const data = {
   image: assets.whiteBarChart,
 };
 
-export default function CompoundInterestCalculator() {
+export default function CIRC() {
   const dispatch = useAppDispatch();
   const { rate, time, principal, frequency, frequencyName, compoundInterest, interestBreakdown } = useAppSelector(
     (state) => state.compoundInterest

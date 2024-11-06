@@ -11,8 +11,8 @@ type TInputProps = {
   required?: boolean;
   readonly?: boolean;
   formName?: string;
-   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-   setValue: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setValue?: any;
 };
 
 export default function DFInputWithWatch({
@@ -36,28 +36,26 @@ export default function DFInputWithWatch({
     name,
   });
   useEffect(() => {
-   if(setValue){
-     dispatch(setValue(value))
-   }
+    if (setValue) {
+      dispatch(setValue(value));
+    }
   }, [value, setValue, dispatch]);
-  
+
   return (
     <div>
-      <div className="flex justify-between items-center">
-      <label className="block mb-[0.5rem]" htmlFor={name}>
+      <label className="block mb-[0.5rem] font-semibold" htmlFor={name}>
         {label}
       </label>
-      <button className="font-semibold">+ Add More</button>
-      </div>
       <input
-        className={`outline-none border-[1px] px-[12px] py-2 w-full duration-300 ${
+        className={`outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] ${
           readonly && "cursor-not-allowed"
-        } ${errors[name]?.message ? "border-red-500" : "border-[#D9D9D9]"}`}
+        } ${errors[name]?.message ? "border-red-500" : "border-[#838383]"}`}
         type={type}
         {...register(name)}
         id={name}
         placeholder={placeholder}
         readOnly={readonly}
+        onWheel={(e) => e.currentTarget.blur()}
       />
       {errors[name]?.message && (
         <Error message={errors[name].message as string} />

@@ -13,7 +13,7 @@ const data = {
   image: assets.budgetCalcIcon,
 };
 
-export default function BudgetCalculator() {
+export default function BC() {
   const {
     income: { subTotal: totalIncome },
     housing: { subTotal: houseExpenses },

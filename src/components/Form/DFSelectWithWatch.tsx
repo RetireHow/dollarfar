@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import Error from '../UI/Error';
-import Select from 'react-select';
 import RedStar from '../UI/RedStar';
+import Select from 'react-select';
 import { StylesConfig } from 'react-select';
 
 type TOptions = {
@@ -23,7 +23,7 @@ const customStyles: StylesConfig<TOptions, boolean> = {
 	container: provided => ({
 		...provided,
 		width: '100%',
-		borderRadius: 0,
+		borderRadius: "5px",
 		padding: '1px',
 	}),
 	control: provided => ({
@@ -43,10 +43,10 @@ const customStyles: StylesConfig<TOptions, boolean> = {
 	}),
 	option: (provided, state) => ({
 		...provided,
-		backgroundColor: state.isSelected ? '#24B24B' : provided.backgroundColor,
+		backgroundColor: state.isSelected ? '#000' : provided.backgroundColor,
 		color: state.isSelected ? '#fff' : provided.color,
 		'&:hover': {
-			backgroundColor: state.isSelected ? '#24B24B' : provided.backgroundColor,
+			backgroundColor: state.isSelected ? '#000' : provided.backgroundColor,
 		},
 		cursor: 'pointer',
 	}),
@@ -69,7 +69,7 @@ const customStyles: StylesConfig<TOptions, boolean> = {
 	}),
 };
 
-export default function DFSelect({
+export default function DFSelectWithWatch({
 	name,
 	label,
 	options,
@@ -84,7 +84,7 @@ export default function DFSelect({
 
 	return (
 		<div>
-			<label className="block mb-[0.5rem]" htmlFor={name}>
+			<label className="block mb-[0.5rem] font-semibold" htmlFor={name}>
 				{label}
 				{required && <RedStar />}
 			</label>
@@ -100,7 +100,7 @@ export default function DFSelect({
 						styles={customStyles}
 						isMulti={isMulti}
 						className={`rounded-md border-[1px] duration-300 ${
-							errors[name]?.message ? 'border-red-500' : 'border-[#D9D9D9]'
+							errors[name]?.message ? 'border-red-500' : 'border-[#838383]'
 						}`}
 					></Select>
 				)}
