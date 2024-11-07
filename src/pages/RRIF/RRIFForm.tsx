@@ -149,7 +149,7 @@ export default function RRIFForm() {
         <div>
           <div className="flex items-center gap-2 mb-2">
             <p className="font-semibold">Annual Withdrawal Amount</p>
-            <CustomTooltip title="This is demo toast text" />
+            <CustomTooltip title="Specify the amount you'd like to withdraw from your RRIF annually." />
           </div>
           <input
             className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
@@ -162,7 +162,7 @@ export default function RRIFForm() {
         <div>
           <div className="flex items-center gap-2 font-semibold mb-2">
             <p>Withdrawal Frequency</p>
-            <CustomTooltip title="This is demo info text" />
+            <CustomTooltip title="Choose how often you want to withdraw from your RRIF: Monthly, Yearly, or Weekly." />
           </div>
           <Select
             onChange={(value) => console.log(value)}
@@ -177,7 +177,7 @@ export default function RRIFForm() {
           <div>
             <div className="flex items-center gap-2 font-semibold mb-2">
               <p>Withdrawal Start Year</p>
-              <CustomTooltip title="This is demo info text" />
+              <CustomTooltip title="Enter the year you plan to begin withdrawals from your RRIF." />
             </div>
             <input
               className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
@@ -190,7 +190,7 @@ export default function RRIFForm() {
           <div>
             <div className="flex items-center gap-2 font-semibold mb-2">
               <p>Withdrawal End Year</p>
-              <CustomTooltip title="This is demo info text" />
+              <CustomTooltip title="Specify the year you plan to end withdrawals." />
             </div>
             <input
               className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
@@ -205,7 +205,7 @@ export default function RRIFForm() {
         <div>
           <div className="flex items-center gap-2 font-semibold mb-2">
             <p>Start Payment in Year</p>
-            <CustomTooltip title="This is demo info text" />
+            <CustomTooltip title="Select the first payment year for withdrawals from your RRIF." />
           </div>
           <Select
             onChange={(value) => console.log(value)}
