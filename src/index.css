@@ -64,4 +64,24 @@
 }
 
 
+
+/* Customize the radio button color */
+.ant-radio-checked .ant-radio-inner {
+  border-color: #000 !important; /* Change the border color for checked state */
+  background-color: #000 !important; /* Change the background color for checked state */
+}
+
+.ant-radio:hover 
+.ant-radio-input:focus + .ant-radio-inner {
+  border-color: #000 !important; /* Change the hover border color */
+}
+
+/* Optional: Change the border color for all radio buttons */
+.ant-radio .ant-radio-inner {
+  border-color: #000 !important;
+}
+
+
+
+
 @layer base { img { display: initial; } }

@@ -4,6 +4,7 @@ import researchReducer from "./features/other/researchSlice";
 import NWReducer from "./features/NWSlice/NWSlice";
 import budgetReducer from "./features/BgtSlice/BgtSlice";
 import stepperReducer from "./features/stepperSlice/stepperSclie";
+import RRIFReducer from "./features/RRIF/RRIFSlice";
 
 // Create and configure the store
 const store = configureStore({
@@ -12,6 +13,7 @@ const store = configureStore({
     research: researchReducer,
     NWCalculator: NWReducer,
     budgetCalculator: budgetReducer,
+    RRIF: RRIFReducer,
     stepper: stepperReducer,
   },
 });

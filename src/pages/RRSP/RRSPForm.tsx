@@ -3,9 +3,6 @@ import CustomTooltip from "../../components/UI/CustomTooltip";
 
 import Select from "react-select";
 import { StylesConfig } from "react-select";
-import { Radio } from "antd";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { updateRRIFState } from "../../redux/features/RRIF/RRIFSlice";
 
 type TOptions = {
   label: string;
@@ -64,15 +61,17 @@ const customStyles: StylesConfig<TOptions, boolean> = {
 
 const withdrawalFrequencyOptions = [
   { label: "Monthly", value: "Monthly" },
-  { label: "Annually", value: "Annually" },
+  { label: "Yearly", value: "Yearly" },
+  { label: "Weekly", value: "Weekly" },
 ];
 
-export default function RRIFForm() {
-  const dispatch = useAppDispatch();
-  const { currentAge, rateOfReturn, withdrawType } = useAppSelector(
-    (state) => state.RRIF
-  );
+const paymentYearOptions = [
+  { label: "First", value: "First" },
+  { label: "Second", value: "Second" },
+  { label: "Third", value: "Third" },
+];
 
+export default function RRSPForm() {
   return (
     <section className="space-y-[2rem]">
       <div>
@@ -84,14 +83,6 @@ export default function RRIFForm() {
           type="number"
           placeholder="$0"
           onWheel={(e) => e.currentTarget.blur()}
-          onChange={(e) =>
-            dispatch(
-              updateRRIFState({
-                key: "RRIFInitalBalance",
-                value: Number(e.target.value),
-              })
-            )
-          }
         />
       </div>
 
@@ -105,15 +96,6 @@ export default function RRIFForm() {
               type="number"
               placeholder="$0"
               onWheel={(e) => e.currentTarget.blur()}
-              value={currentAge}
-              onChange={(e) =>
-                dispatch(
-                  updateRRIFState({
-                    key: "currentAge",
-                    value: Number(e.target.value),
-                  })
-                )
-              }
             />
           </div>
         </div>
@@ -122,13 +104,10 @@ export default function RRIFForm() {
           thumbClassName="example-thumb"
           trackClassName="example-track"
           thumbActiveClassName="active-thumb"
-          min={0}
-          max={100}
-          value={currentAge}
+          min={1}
+          max={50}
           minDistance={10}
-          onChange={(newValue) =>
-            dispatch(updateRRIFState({ key: "currentAge", value: newValue }))
-          }
+          onChange={(newValue) => newValue}
         />
         <div className="flex justify-between items-center text-[1rem] font-medium text-[#696969] pt-5">
           <p>0</p>
@@ -142,23 +121,13 @@ export default function RRIFForm() {
           <h3 className="mb-[0.5rem] font-semibold">
             Rate of return (maximum value 16%)
           </h3>
-          <div className="max-w-[80px] relative">
+          <div className="max-w-[80px]">
             <input
               className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
               type="number"
               placeholder="%0"
               onWheel={(e) => e.currentTarget.blur()}
-              value={rateOfReturn}
-              onChange={(e) =>
-                dispatch(
-                  updateRRIFState({
-                    key: "rateOfReturn",
-                    value: Number(e.target.value),
-                  })
-                )
-              }
             />
-            <span className="absolute top-2 right-8 font-extrabold">%</span>
           </div>
         </div>
         <ReactSlider
@@ -166,73 +135,27 @@ export default function RRIFForm() {
           thumbClassName="example-thumb"
           trackClassName="example-track"
           thumbActiveClassName="active-thumb"
-          min={0}
-          max={16}
-          value={rateOfReturn}
+          min={1}
+          max={50}
           minDistance={10}
-          onChange={(newValue) =>
-            dispatch(updateRRIFState({ key: "rateOfReturn", value: newValue }))
-          }
+          onChange={(newValue) => newValue}
         />
         <div className="flex justify-between items-center text-[1rem] font-medium text-[#696969] pt-5">
-          <p>0%</p>
-          <p>16%</p>
-        </div>
-      </div>
-
-      <div>
-        <p className="font-semibold mb-2">Withdraw Type</p>
-        <div>
-          <Radio.Group
-            name="radiogroup"
-            value={withdrawType}
-            optionType="default"
-            style={{ fontWeight: "bold" }}
-            onChange={(e) =>
-              dispatch(
-                updateRRIFState({
-                  key: "withdrawType",
-                  value: e.target.value,
-                })
-              )
-            }
-          >
-            <Radio value="Government">Government</Radio>
-            <Radio value="Mannual">Mannual</Radio>
-          </Radio.Group>
+          <p>0</p>
+          <p>100</p>
         </div>
       </div>
 
       <div>
         <div className="flex items-center gap-2 mb-2">
-          <p
-            className={`font-semibold ${
-              withdrawType === "Government" && "text-gray-300"
-            }`}
-          >
-            Annual Withdrawal Amount
-          </p>
-          {withdrawType === "Mannual" && (
-            <CustomTooltip title="Specify the amount you'd like to withdraw from your RRIF annually." />
-          )}
+          <p className="font-semibold">Annual Withdrawal Amount</p>
+          <CustomTooltip title="Specify the amount you'd like to withdraw from your RRIF annually." />
         </div>
         <input
-          className={`outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383] ${
-            withdrawType === "Government" &&
-            "cursor-not-allowed border-gray-200 text-gray-200"
-          } duration-300`}
+          className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
           type="number"
           placeholder="$0"
           onWheel={(e) => e.currentTarget.blur()}
-          disabled={withdrawType === "Government" ? true : false}
-          onChange={(e) =>
-            dispatch(
-              updateRRIFState({
-                key: "annualWithdrawalAmount",
-                value: Number(e.target.value),
-              })
-            )
-          }
         />
       </div>
 
@@ -242,18 +165,10 @@ export default function RRIFForm() {
           <CustomTooltip title="Choose how often you want to withdraw from your RRIF: Monthly, Yearly, or Weekly." />
         </div>
         <Select
-          onChange={(value) =>
-            dispatch(
-              updateRRIFState({
-                key: "withdrawalFrequency",
-                value: value,
-              })
-            )
-          }
+          onChange={(value) => console.log(value)}
           options={withdrawalFrequencyOptions}
           styles={customStyles}
           isMulti={false}
-          placeholder="Select withdrawal frequency"
           className="rounded-md border-[1px] duration-300 border-[#838383]"
         ></Select>
       </div>
@@ -269,14 +184,6 @@ export default function RRIFForm() {
             type="number"
             placeholder="$0"
             onWheel={(e) => e.currentTarget.blur()}
-            onChange={(e) =>
-              dispatch(
-                updateRRIFState({
-                  key: "withdrawalStartYear",
-                  value: Number(e.target.value),
-                })
-              )
-            }
           />
         </div>
 
@@ -290,24 +197,23 @@ export default function RRIFForm() {
             type="number"
             placeholder="$0"
             onWheel={(e) => e.currentTarget.blur()}
-            onChange={(e) =>
-              dispatch(
-                updateRRIFState({
-                  key: "withdrawalEndYear",
-                  value: Number(e.target.value),
-                })
-              )
-            }
           />
         </div>
       </div>
 
-      {/* <button
-        onClick={handleCalculate}
-        className="bg-black text-white p-[0.8rem] rounded-[10px] w-[300px]"
-      >
-        Calculate
-      </button> */}
+      <div>
+        <div className="flex items-center gap-2 font-semibold mb-2">
+          <p>Start Payment in Year</p>
+          <CustomTooltip title="Select the first payment year for withdrawals from your RRIF." />
+        </div>
+        <Select
+          onChange={(value) => console.log(value)}
+          options={paymentYearOptions}
+          styles={customStyles}
+          isMulti={false}
+          className="rounded-md border-[1px] duration-300 border-[#838383]"
+        ></Select>
+      </div>
     </section>
   );
 }
