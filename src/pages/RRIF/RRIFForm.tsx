@@ -261,13 +261,13 @@ export default function RRIFForm() {
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
         <div>
           <div className="flex items-center gap-2 font-semibold mb-2">
-            <p>Withdrawal Start Year</p>
+            <p>Withdrawal Start Age</p>
             <CustomTooltip title="Enter the year you plan to begin withdrawals from your RRIF." />
           </div>
           <input
             className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
             type="number"
-            placeholder="$0"
+            placeholder="66"
             onWheel={(e) => e.currentTarget.blur()}
             onChange={(e) =>
               dispatch(
@@ -282,13 +282,13 @@ export default function RRIFForm() {
 
         <div>
           <div className="flex items-center gap-2 font-semibold mb-2">
-            <p>Withdrawal End Year</p>
+            <p>Withdrawal End Age</p>
             <CustomTooltip title="Specify the year you plan to end withdrawals." />
           </div>
           <input
             className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
             type="number"
-            placeholder="$0"
+            placeholder="80"
             onWheel={(e) => e.currentTarget.blur()}
             onChange={(e) =>
               dispatch(

@@ -15,9 +15,7 @@ const data = {
 
 export default function RRSP() {
   return (
-    <>
-    <h1 className="p-5">RRSP calculator is comming soon....</h1>
-    <main className="mb-[5rem] hidden">
+    <main className="mb-[5rem]">
       <div data-html2canvas-ignore>
         <PageHero data={data} />
       </div>
@@ -41,6 +39,5 @@ export default function RRSP() {
         <RRSPDescription />
       </div>
     </main>
-    </>
   );
 }
