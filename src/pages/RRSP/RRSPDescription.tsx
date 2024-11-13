@@ -137,11 +137,11 @@ export default function RRSPDescription() {
           <h3 className="text-black font-semibold text-[18px] leading-[27px]">
             2. Investment Earnings
           </h3>
-          <p className="text-[#696969] text-[18px] leading-[27px]">
-            Total Contributions=C×n=1,000×360=360,000
+          <p className="text-[#696969] text-[18px] leading-[27px] flex flex-wrap">
+            <span>Total Contributions</span><span>=C×n=</span><span>1,000×360=360,000</span>
           </p>
-          <p className="text-[#696969] text-[18px] leading-[27px]">
-            Investment Earnings=1,506,052.13−360,000=1,146,052.13
+          <p className="text-[#696969] text-[18px] leading-[27px] flex flex-wrap">
+            <span>Investment Earnings</span>=<span>1,506,052.13−</span> <span>360,000=1,146,052.13</span>
           </p>
         </div>
 
