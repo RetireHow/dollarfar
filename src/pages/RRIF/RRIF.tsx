@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { assets } from "../../assets/assets";
 import PageHero from "../../components/UI/PageHero";
 import SectionHeader from "../../components/UI/SectionHeader";
@@ -15,6 +16,9 @@ const data = {
 };
 
 export default function RRIF() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   return (
     <main className="mb-[5rem]">
       <div data-html2canvas-ignore>
