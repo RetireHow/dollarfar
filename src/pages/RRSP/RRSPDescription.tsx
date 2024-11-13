@@ -55,16 +55,24 @@ export default function RRSPDescription() {
           </p>
         </div>
 
-        <p className="text-black font-semibold text-[18px] leading-[27px] mt-5">
-          Tax Savings Formula:
-        </p>
-        <p className="text-black font-semibold text-[18px] leading-[27px] mt-5">
-          Tax Savings = RRSP Contribution * Marginal Tax Rate
-        </p>
-        <p className="text-[#696969] text-[18px] leading-[27px] mt-5">
-          This formula estimates how much you save on taxes based on your RRSP
-          contributions and your marginal tax rate.
-        </p>
+        <div className="mt-5">
+          <p className="text-black font-semibold text-[18px] leading-[27px]">
+            Investment Earnings
+          </p>
+          <p className="text-black font-medium text-[18px] leading-[27px]">
+            Investment Earnings = FV total − Total Contributions
+          </p>
+        </div>
+
+        <div className="mt-5">
+          <p className="text-black font-semibold text-[18px] leading-[27px]">
+            Savings (Net Savings):
+          </p>
+          <p className="text-black font-medium text-[18px] leading-[27px]">
+            Savings (Net Savings) = Total Savings at Retirement − Total
+            Contributions at Retiremen
+          </p>
+        </div>
       </section>
 
       <section className="md:mx-[5rem] mx-[1rem] mt-[3rem]">
@@ -72,26 +80,81 @@ export default function RRSPDescription() {
           How does RRSP Work?
         </h3>
         <div className="text-[#696969] text-[18px] leading-[27px]">
+          <p className="text-[#696969] text-[18px] leading-[27px]">Inputs:</p>
           <p className="text-[#696969] text-[18px] leading-[27px]">
-            - The RRSP calculator uses your “annual contributions”, “current
-            balance”, and “expected return rate” to estimate how much your RRSP
-            will be worth by the time you retire.
+            Current Age: 25
           </p>
           <p className="text-[#696969] text-[18px] leading-[27px]">
-            - It also calculates the “tax savings” you'll achieve based on your
-            contribution and marginal tax rate.
+            Retirement Age: 55
           </p>
           <p className="text-[#696969] text-[18px] leading-[27px]">
-            - Over time, the combination of contributions and compound growth
-            will help determine the “future value” of your RRSP, providing
-            insight into your financial readiness for retirement.
+            Pre-Tax Income: $100,000
           </p>
+          <p className="text-[#696969] text-[18px] leading-[27px]">
+            Ongoing Contribution Amount: $1,000 per month
+          </p>
+          <p className="text-[#696969] text-[18px] leading-[27px]">
+            Current RRSP Savings: $150,000
+          </p>
+          <p className="text-[#696969] text-[18px] leading-[27px]">
+            Contribution Frequency: Monthly
+          </p>
+          <p className="text-[#696969] text-[18px] leading-[27px]">
+            Assumed Rate of Return: 5% annually
+          </p>
+        </div>
 
-          <p className="mt-5">
-            The calculator helps users plan effectively for retirement by
-            understanding both the growth of their investments and the tax
-            advantages associated with contributing to an RRSP.
+        <div className="mt-5">
+          <h3 className="text-black font-semibold text-[18px] leading-[27px]">
+            1. RRSP Balance at Retirement (Future Value)
+          </h3>
+          <p className="text-[#696969] text-[18px] leading-[27px]">
+            The formula for RRSP Balance at Retirement is: FV = P(1 + r)^n -{" "}
+            <span>{"{C{(1 + r)^n - 1}}/{r}"}</span>
           </p>
+          <p className="text-[#696969] text-[18px] leading-[27px]">
+            P = 150,000
+          </p>
+          <p className="text-[#696969] text-[18px] leading-[27px]">
+            r = 5% annually = 5/100×12 = 0.004167 per month
+          </p>
+          <p className="text-[#696969] text-[18px] leading-[27px]">
+            n = (55 − 25) × 12 = 360
+          </p>
+          <p className="text-[#696969] text-[18px] leading-[27px]">C = 1,000</p>
+        </div>
+
+        <div className="mt-5">
+          <p className="text-[#696969] text-[18px] leading-[27px]">
+            After calculating:
+          </p>
+          <p className="text-[#696969] text-[18px] leading-[27px]">
+            FV≈1,506,052.13
+          </p>
+        </div>
+
+        <div className="mt-5">
+          <h3 className="text-black font-semibold text-[18px] leading-[27px]">
+            2. Investment Earnings
+          </h3>
+          <p className="text-[#696969] text-[18px] leading-[27px]">
+            Total Contributions=C×n=1,000×360=360,000
+          </p>
+          <p className="text-[#696969] text-[18px] leading-[27px]">
+            Investment Earnings=1,506,052.13−360,000=1,146,052.13
+          </p>
+        </div>
+
+        <div className="mt-5">
+          <h3 className="text-black font-semibold text-[18px] leading-[27px]">
+          3. Savings (Net Savings)
+          </h3>
+          <p className="text-[#696969] text-[18px] leading-[27px]">
+          Savings = Total Contributions
+          </p>
+          {/* <p className="text-[#696969] text-[18px] leading-[27px]">
+          Savings=1,506,052.13 - 360,000=1,146,052.13
+          </p> */}
         </div>
       </section>
     </article>

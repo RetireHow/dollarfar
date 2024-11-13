@@ -8,27 +8,33 @@ import {
   ResponsiveContainer,
   LabelList,
 } from "recharts";
+import { useAppSelector } from "../../redux/hooks";
+
 
 export default function RRSPBarChart() {
-  const interestBreakdown = [
-    {name:'RRSP Amount', RRSPAmount:5000},
-    {name:'Savings', savings:2000}
-  ];
+  const { result, input:{contributionFrequency} } = useAppSelector((state) => state.rrspCalculator);
+  const { rrspBalanceAtRetirement, totalSavings } =
+    result || {};
 
 
-  const renderCustomizedLabel = (props:any) => {
-    const { x, y, width, value, name } = props;
-    const radius = 10;
-    console.log("Props=====>", name)
-  
-    return (
-      <g>
-        <text x={x + width / 2} y={y - radius} fill="#000" textAnchor="middle" dominantBaseline="middle">
-          {name==='Savings' ? `$${value} / month` : `$${value}`}
-        </text>
-      </g>
-    );
-  };
+    const interestBreakdown = [
+      {name:'RRSP Amount', RRSPAmount:rrspBalanceAtRetirement?.toFixed(2)},
+      {name:'Savings', savings:totalSavings?.toFixed()}
+    ];
+
+
+    const renderCustomizedLabel = (props:any) => {
+      const { x, y, width, value, name } = props;
+      const radius = 10;
+    
+      return (
+        <g>
+          <text x={x + width / 2} y={y - radius} fill="#000" textAnchor="middle" dominantBaseline="middle">
+            {name==='Savings' ? `$${value} / ${contributionFrequency.value.toLowerCase()}` : `$${value}`}
+          </text>
+        </g>
+      );
+    };
 
   return (
     <div className="lg:flex items-center justify-center gap-5 my-[5rem]">

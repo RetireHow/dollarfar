@@ -1,26 +1,44 @@
 // utils/calculateRRSP.ts
-import { RRSPCalculatorInput, RRSPCalculatorResult } from './RRSP.types';
+import { RRSPCalculatorInput, RRSPCalculatorResult } from "./RRSP.types";
 
-export const calculateRRSP = (input: RRSPCalculatorInput): RRSPCalculatorResult => {
-  const { currentAge, retirementAge, preTaxIncome, ongoingContribution, currentRRSP, rateOfReturn } = input;
-  
-  // 1. Calculate Maximum Annual Contribution (18% of pre-tax income)
-  const maxAnnualContribution = Number((preTaxIncome * 0.18).toFixed(2));
+export const calculateRRSP = (
+  input: RRSPCalculatorInput
+): RRSPCalculatorResult => {
+  const {
+    currentAge,
+    retirementAge,
+    ongoingContribution,
+    currentRRSP,
+    contributionFrequency, // "Monthly" or "Annually"
+    rateOfReturn // Annual rate in decimal form, e.g., 5% as 0.05
+  } = input;
 
-  // 2. Calculate Years to Retirement
+  //Convert return to decimal
+  const decimalRateOfReturn = rateOfReturn/100;
+
   const yearsToRetirement = retirementAge - currentAge;
+  const totalPeriods = contributionFrequency.value === "Monthly" ? yearsToRetirement * 12 : yearsToRetirement;
+  const ratePerPeriod = contributionFrequency.value === "Monthly" ? decimalRateOfReturn / 12 : decimalRateOfReturn;
+  
+  // Future Value of current RRSP balance with compound interest
+  const futureValueCurrentSavings = currentRRSP * Math.pow((1 + ratePerPeriod), totalPeriods);
 
-  // 3. Calculate RRSP Balance at Retirement
-  const rrspBalanceAtRetirement = 
-    currentRRSP * Math.pow(1 + rateOfReturn, yearsToRetirement) +
-    ongoingContribution * ((Math.pow(1 + rateOfReturn, yearsToRetirement) - 1) / rateOfReturn);
+  // Future Value of contributions
+  const futureValueContributions = ongoingContribution * 
+    ((Math.pow(1 + ratePerPeriod, totalPeriods) - 1) / ratePerPeriod);
 
-  // 4. Set total savings as the RRSP balance at retirement
-  const totalSavings = Number(rrspBalanceAtRetirement.toFixed(2));
+  // Total RRSP Balance at Retirement
+  const rrspBalanceAtRetirement = futureValueCurrentSavings + futureValueContributions;
+
+  // Total Contributions made
+  const totalContributions = ongoingContribution * totalPeriods;
+
+  // Investment Earnings
+  const investmentEarnings = rrspBalanceAtRetirement - totalContributions;
 
   return {
-    maxAnnualContribution,
-    rrspBalanceAtRetirement,
-    totalSavings
+    rrspBalanceAtRetirement: rrspBalanceAtRetirement,
+    investmentEarnings: investmentEarnings,
+    totalSavings: totalContributions
   };
 };

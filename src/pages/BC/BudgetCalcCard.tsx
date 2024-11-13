@@ -12,8 +12,14 @@ export default function BudgetCalcCard() {
   } = useAppSelector((state) => state.budgetCalculator);
 
   // Calculate cashflow deficit
-const totalExpenses = houseExpenses + transportExpenses + educationalExpenses + otherExpenses + totalLoans + totalSavings;
-const cashflowDeficit = totalIncome - totalExpenses;
+  const totalExpenses =
+    houseExpenses +
+    transportExpenses +
+    educationalExpenses +
+    otherExpenses +
+    totalLoans +
+    totalSavings;
+  const cashflowDeficit = totalIncome - totalExpenses;
 
   return (
     <section>
@@ -75,7 +81,11 @@ const cashflowDeficit = totalIncome - totalExpenses;
           </div>
         </div>
 
-        <div className="flex items-center justify-between bg-black text-white px-[1.25rem] text-[1.25rem] rounded-[10px] h-[50px]">
+        <div
+          className={`flex items-center justify-between text-white px-[1.25rem] text-[1.25rem] rounded-[10px] h-[50px] ${
+            totalIncome < totalExpenses ? "bg-[#FF0000]" : "bg-[#06D206]"
+          }`}
+        >
           <p className="text-[1.25rem] font-medium">Cashflow Deficit</p>
           <div className="flex items-center gap-[2px]">
             <p>$</p>

@@ -267,7 +267,7 @@ export default function RRIFForm() {
           <input
             className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
             type="number"
-            placeholder="66"
+            placeholder="Enter your start age"
             onWheel={(e) => e.currentTarget.blur()}
             onChange={(e) =>
               dispatch(
@@ -288,7 +288,7 @@ export default function RRIFForm() {
           <input
             className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
             type="number"
-            placeholder="80"
+            placeholder="Enter your end age"
             onWheel={(e) => e.currentTarget.blur()}
             onChange={(e) =>
               dispatch(

@@ -5,6 +5,7 @@ import Select from "react-select";
 import { StylesConfig } from "react-select";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { calculate, setInput } from "../../redux/features/RRSP/RRSPSlice";
+import { useEffect, useState } from "react";
 
 type TOptions = {
   label: string;
@@ -71,12 +72,39 @@ export default function RRSPForm() {
   const { input } = useAppSelector((state) => state.rrspCalculator);
   const {
     currentAge,
+    retirementAge,
     currentRRSP,
     ongoingContribution,
     preTaxIncome,
     rateOfReturn,
-    retirementAge,
+    contributionFrequency,
   } = input;
+
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    if (
+      !currentAge ||
+      !retirementAge ||
+      !currentRRSP ||
+      !ongoingContribution ||
+      !preTaxIncome ||
+      !rateOfReturn ||
+      !contributionFrequency
+    ) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+  }, [
+    currentAge,
+    retirementAge,
+    currentRRSP,
+    ongoingContribution,
+    preTaxIncome,
+    rateOfReturn,
+    contributionFrequency,
+  ]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -177,7 +205,12 @@ export default function RRSPForm() {
           <CustomTooltip title="Choose how often you want to withdraw from your RRIF: Monthly, Yearly, or Weekly." />
         </div>
         <Select
-          onChange={(value) => console.log(value)}
+          name="contributionFrequency"
+          onChange={(value) =>
+            dispatch(setInput({ ...input, contributionFrequency: value }))
+          }
+          value={contributionFrequency}
+          // defaultValue={{ label: "Annually", value: "Annually" }}
           options={withdrawalFrequencyOptions}
           styles={customStyles}
           isMulti={false}
@@ -193,7 +226,7 @@ export default function RRSPForm() {
             <p>Assumed Rate of Return</p>
             <CustomTooltip title="Enter the year you plan to begin withdrawals from your RRIF." />
           </div>
-          <div className="max-w-[80px]">
+          <div className="max-w-[80px] relative">
             <input
               className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
               type="number"
@@ -203,6 +236,7 @@ export default function RRSPForm() {
               value={rateOfReturn}
               onChange={handleChange}
             />
+            <p className="absolute right-8 top-2">%</p>
           </div>
         </div>
         <ReactSlider
@@ -210,13 +244,16 @@ export default function RRSPForm() {
           thumbClassName="example-thumb"
           trackClassName="example-track"
           thumbActiveClassName="active-thumb"
-          min={1}
-          max={50}
+          min={0}
+          max={15}
           minDistance={10}
-          onChange={(newValue) => newValue}
+          value={rateOfReturn}
+          onChange={(newValue) =>
+            dispatch(setInput({ ...input, rateOfReturn: newValue }))
+          }
         />
         <div className="flex justify-between items-center text-[1rem] font-medium text-[#696969] pt-5">
-          <p>0.05%</p>
+          <p>0%</p>
           <p>15%</p>
         </div>
       </div>
@@ -224,7 +261,8 @@ export default function RRSPForm() {
       <div className="flex justify-end">
         <button
           onClick={handleCalculate}
-          className="bg-black text-white p-[0.8rem] rounded-[10px] w-[200px]"
+          disabled={error}
+          className={`text-white p-[0.8rem] rounded-[10px] w-[200px] ${error ? 'bg-gray-300' : 'bg-black'}`}
         >
           Calculate
         </button>
