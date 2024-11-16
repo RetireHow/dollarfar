@@ -10,6 +10,7 @@ export default function Header() {
       <Link to="/">
         <img className="w-[100px] h-[100px]" src={siteLogo} alt="Logo Image" />
       </Link>
+      {/* <Link to="/research">Research</Link> */}
     </div>
   );
 }

@@ -1,37 +1,29 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { Modal } from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { generatePDF } from "./generatePdf";
-import { generatePDFWithoutDetails } from "./generatePDFWithoutDetails";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { useAppSelector } from "../redux/hooks";
+import { CIRCPdf } from "../pages/CIRC/CIRCPdf";
 
-const DownloadModal = ({fileName }: { id: string, fileName:string }) => {
+const DownloadModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [checked, setChecked] = useState(false);
-  const [showError, setShowError] = useState(false);
+
+  const {
+    rate,
+    time,
+    principal,
+    frequencyName,
+    compoundInterest,
+    chartBase64,
+  } = useAppSelector((state) => state.compoundInterest);
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!checked) {
-      return setShowError(true);
-    }
-    generatePDF(name, email, fileName);
-    setIsModalOpen(false);
-  };
-
-  const handleDownload = (e: FormEvent) => {
-    e.preventDefault();
-    if (!checked) {
-      return setShowError(true);
-    }
-    generatePDFWithoutDetails(fileName);
-    setIsModalOpen(false);
-  };
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -105,26 +97,64 @@ const DownloadModal = ({fileName }: { id: string, fileName:string }) => {
               </span>
               <span>Terms and Conditions & Privacy Policy.</span>
             </div>
-            {showError && !checked && (
+            {!checked && (
               <p className="text-red-500 text-[12px] mt-1">
                 Please check Terms and Conditions & Privacy Policy
               </p>
             )}
           </div>
-          <button
-            onClick={handleSubmit}
-            className="bg-black text-white w-full rounded-[10px] py-[0.8rem]"
-            type="button"
-          >
-            Submit
-          </button>
-          <button
-            onClick={handleDownload}
-            className="bg-black text-white w-full rounded-[10px] py-[0.8rem]"
-            type="button"
-          >
-            Download
-          </button>
+          <div className="my-5">
+            <PDFDownloadLink
+              document={
+                <CIRCPdf
+                  data={{
+                    rate,
+                    time,
+                    principal,
+                    frequencyName,
+                    compoundInterest,
+                    chartBase64,
+                    name,
+                    email,
+                  }}
+                />
+              }
+              fileName="dynamic_document.pdf"
+            >
+              <button
+                className="bg-black text-white w-full rounded-[10px] py-[0.8rem]"
+                type="button"
+              >
+                Submit
+              </button>
+            </PDFDownloadLink>
+          </div>
+
+          <div>
+            <PDFDownloadLink
+              document={
+                <CIRCPdf
+                  data={{
+                    rate,
+                    time,
+                    principal,
+                    frequencyName,
+                    compoundInterest,
+                    chartBase64,
+                  }}
+                />
+              }
+              fileName="dynamic_document.pdf"
+            >
+              <button
+                className={`text-white w-full rounded-[10px] py-[0.8rem] ${checked ? 'bg-black' : 'bg-gray-300'}`}
+                type="button"
+                disabled={checked ? false : true}
+              >
+                Download
+              </button>
+            </PDFDownloadLink>
+          </div>
         </div>
       </Modal>
     </>

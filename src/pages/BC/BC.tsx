@@ -35,7 +35,7 @@ const cashflowDeficit = totalIncome - totalExpenses;
         id="NWReport"
         className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem]"
       >
-        <SectionHeader id="budgetReport" title="Budget Calculator" fileName="Budget Calculator Report"/>
+        <SectionHeader title="Budget Calculator"/>
         <BudgetCalcLayout/>
 
         <BudgetPieChart />

@@ -27,9 +27,7 @@ export default function RRSP() {
       <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[1.5rem] p-[1rem] mb-[5rem] max-w-[1200px]">
         {/* Header  */}
         <SectionHeader
-          id="report"
           title="Registered Retirement Savings Plan (RRSP) Calculator"
-          fileName="RRSP Calculator"
         />
 
         <div className="grid md:grid-cols-2 grid-cols-1 gap-[5rem] mb-[5rem]">

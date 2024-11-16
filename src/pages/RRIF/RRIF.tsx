@@ -28,9 +28,7 @@ export default function RRIF() {
       <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem] max-w-[1200px]">
         {/* Header  */}
         <SectionHeader
-          id="report"
           title="Registered Retirement Income Fund (RRIF) Calculator"
-          fileName="RRIF Calculator"
         />
 
         <div className="grid md:grid-cols-2 grid-cols-1 gap-[5rem] mb-[5rem]">

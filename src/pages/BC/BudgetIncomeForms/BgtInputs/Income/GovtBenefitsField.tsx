@@ -70,7 +70,7 @@ const GovtBenefitsField = () => {
 
         <div className="flex gap-1">
           <input
-            className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+            className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full cursor-not-allowed"
             type="text"
             value={govtBenefits}
             disabled

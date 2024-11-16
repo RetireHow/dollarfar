@@ -10,6 +10,7 @@ import { CompoundInterestState } from "./CompoundInterestTypes";
   frequencyName: "Annually", // default frequency name
   compoundInterest: 0,
   interestBreakdown: [],
+  chartBase64:""
 };
 
 // Create the slice
@@ -53,6 +54,9 @@ const compoundInterestSlice = createSlice({
           state.frequencyName = "Unknown Frequency";
           break;
       }
+    },
+    setChartBase64: (state, action: PayloadAction<string>) => {
+      state.chartBase64 = action.payload;
     },
     calculateCompoundInterest: (state) => {
       const P = state.principal;
@@ -160,6 +164,7 @@ export const {
   calculateCompoundInterest,
   resetCalculator,
   calculateInterestBreakdown,
+  setChartBase64
 } = compoundInterestSlice.actions;
 
 export default compoundInterestSlice.reducer;

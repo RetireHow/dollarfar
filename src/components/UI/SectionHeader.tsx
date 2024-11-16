@@ -2,13 +2,9 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import DownloadModal from "../DownloadModal";
 
 export default function SectionHeader({
-  id,
   title,
-  fileName
 }: {
-  id: string;
   title: string;
-  fileName:string;
 }) {
   return (
     <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">
@@ -24,7 +20,7 @@ export default function SectionHeader({
               icon="iconamoon:arrow-down-2"
             />
           </div>
-          <DownloadModal id={id} fileName={fileName}/>
+          <DownloadModal />
         </div>
       </div>
     </div>

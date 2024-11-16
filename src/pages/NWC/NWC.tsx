@@ -23,9 +23,7 @@ export default function NWC() {
       <PageHero data={data} />
       <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem] max-w-[1200px]">
         <SectionHeader
-          id="NWReport"
           title="Net worth Calculator"
-          fileName="Net Worth Calculator"
         />
         <NWForm />
         <div

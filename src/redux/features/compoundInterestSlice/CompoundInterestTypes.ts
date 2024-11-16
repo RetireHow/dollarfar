@@ -6,7 +6,8 @@ export interface CompoundInterestState {
     frequency: number;
     frequencyName: string; // default frequency name
     compoundInterest: number;
-    interestBreakdown: Array<{ period: string; interest: number }>; // for chart data
+    interestBreakdown: Array<{ period: string; interest: number }>; 
+    chartBase64:string;
   }
   
  
