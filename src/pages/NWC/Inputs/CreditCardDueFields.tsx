@@ -4,6 +4,7 @@ import CustomTooltip from "../../../components/UI/CustomTooltip";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { updateLiabilities } from "../../../redux/features/NWSlice/NWSlice";
 import useDynamicInput from "../../../hooks/useDynamicInput";
+import DisplayTotal from "../../../components/UI/DisplayTotal";
 
 const CreditCardDueFields = () => {
   const dispatch = useAppDispatch();
@@ -34,36 +35,15 @@ const CreditCardDueFields = () => {
   return (
     <div>
       {/* Main Input Field */}
-      <div className="flex justify-between items-center text-[1rem] mb-1">
-        <label
-          className="flex items-center gap-1 font-semibold"
-          htmlFor="property"
-        >
-          <span>Credit Card Dues</span>{" "}
-          <CustomTooltip title="Total credit card debt" />
-        </label>
-        {/* No functionality on "Add Properties" button */}
-        <button
-          onClick={() => setShowSubInputs(!showSubInputs)}
-          className="font-semibold flex items-center gap-1"
-        >
-          {showSubInputs ? (
-            // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
-            <Icon className="text-[1.5rem]" icon="iconamoon:arrow-up-2-light" />
-          ) : (
-            <Icon className="text-[1.25rem]" icon="ic:round-plus" />
-          )}
-          <span>Add Credit Card Dues</span>
-        </button>
-      </div>
-      <input
-        className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full cursor-not-allowed"
-        type="text"
-        value={creditCardDuesTotal}
-        disabled
-        onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
-          e.currentTarget.blur()
-        }
+      <DisplayTotal
+        data={{
+          showSubInputs,
+          setShowSubInputs,
+          total: creditCardDuesTotal,
+          fieldTitle: "Credit Card Dues",
+          buttonText: "Add Credit Card Dues",
+          infoText: "Total credit card debt",
+        }}
       />
 
       {/* Sub Input Fields */}
@@ -75,12 +55,13 @@ const CreditCardDueFields = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Credit card 1</span>{" "}
-              <CustomTooltip title="Outstanding balance on your first credit card."/>
+              <CustomTooltip title="Outstanding balance on your first credit card." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
               placeholder="$0"
+              autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -101,10 +82,10 @@ const CreditCardDueFields = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">Credit card 2</span>{" "}
-              <CustomTooltip title="Outstanding balance on your second credit card."/>
+              <CustomTooltip title="Outstanding balance on your second credit card." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
               placeholder="$0"
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -128,10 +109,10 @@ const CreditCardDueFields = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">Credit card 3</span>{" "}
-              <CustomTooltip title="Outstanding balance on your third credit card, if applicable."/>
+              <CustomTooltip title="Outstanding balance on your third credit card, if applicable." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
               placeholder="$0"
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -159,11 +140,11 @@ const CreditCardDueFields = () => {
                 <span className="text-nowrap">{input.label}</span>{" "}
                 <Icon
                   className="text-[#838383] text-[1rem]"
-                  icon="material-symbols:info-outline"
+                  icon="material-symbols:info-"
                 />
               </label>
               <input
-                className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+                className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
                 type="number"
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
@@ -182,7 +163,7 @@ const CreditCardDueFields = () => {
               <div className="flex items-center justify-between gap-4">
                 <input
                   ref={dynamicFieldTitleRef}
-                  className="border-[1px] border-[#838383] rounded-[5px] outline-none px-1 py-[2px] flex-1"
+                  className="border-[1px] border-[#838383] rounded-[5px]  px-1 py-[2px] flex-1"
                   type="text"
                   name="label"
                   value={newInput.label}
@@ -205,7 +186,7 @@ const CreditCardDueFields = () => {
                 </div>
               </div>
               <input
-                className="border-[1px] border-[#838383] rounded-[8px] px-2 py-[2px] outline-none mt-[2px] w-full"
+                className="border-[1px] border-[#838383] rounded-[8px] px-2 py-[2px]  mt-[2px] w-full"
                 type="number"
                 name="value"
                 value={newInput.value}
@@ -228,7 +209,7 @@ const CreditCardDueFields = () => {
                 <span className="text-nowrap">Real Estate Assets</span>{" "}
                 <Icon
                   className="text-[#838383] text-[1rem] min-w-[1rem] min-h-[1rem]"
-                  icon="material-symbols:info-outline"
+                  icon="material-symbols:info-"
                 />
               </label>
             </div>

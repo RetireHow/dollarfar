@@ -14,8 +14,10 @@ type DynamicInputItem = {
 
 const useBudgetDynamicInput = ({
   dynamicFieldTitleRef,
+  categoryActive
 }: {
   dynamicFieldTitleRef: MutableRefObject<HTMLInputElement | null>;
+  categoryActive?:string;
 }) => {
   const dispatch = useDispatch();
   const [newInput, setNewInput] = useState<{ label: string; value: string }>({
@@ -24,7 +26,7 @@ const useBudgetDynamicInput = ({
   });
   const [dynamicInputs, setDynamicInputs] = useState<DynamicInputItem[]>([]);
   const [showNewInputField, setShowNewInputField] = useState(false);
-  const [showSubInputs, setShowSubInputs] = useState(false);
+  const [showSubInputs, setShowSubInputs] = useState(categoryActive == "SalaryWages" ? true : false);
 
   const handleSaveInput = ({category, subCategory}:{category:keyof BudgetState;subCategory?:keyof SubCategory}) => {
     if (newInput.label) {

@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { updateLiabilities } from "../../../redux/features/NWSlice/NWSlice";
 import { useRef } from "react";
 import useDynamicInput from "../../../hooks/useDynamicInput";
+import DisplayTotal from "../../../components/UI/DisplayTotal";
 
 const PAndOLoanFields = () => {
   const dispatch = useAppDispatch();
@@ -34,36 +35,16 @@ const PAndOLoanFields = () => {
   return (
     <div>
       {/* Main Input Field */}
-      <div className="flex justify-between items-center text-[1rem] mb-1">
-        <label
-          className="flex items-center gap-1 font-semibold"
-          htmlFor="property"
-        >
-          <span>Personal & Other Loans</span>{" "}
-          <CustomTooltip title="Personal loan balance and other loan balances (e.g., student loans)" />
-        </label>
-        {/* No functionality on "Add Properties" button */}
-        <button
-          onClick={() => setShowSubInputs(!showSubInputs)}
-          className="font-semibold flex items-center gap-1"
-        >
-          {showSubInputs ? (
-            // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
-            <Icon className="text-[1.5rem]" icon="iconamoon:arrow-up-2-light" />
-          ) : (
-            <Icon className="text-[1.25rem]" icon="ic:round-plus" />
-          )}
-          <span>Add Personal & Other Loans</span>
-        </button>
-      </div>
-      <input
-        className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full cursor-not-allowed"
-        type="text"
-        value={personalOtherLoansTotal}
-        disabled
-        onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
-          e.currentTarget.blur()
-        }
+      <DisplayTotal
+        data={{
+          showSubInputs,
+          setShowSubInputs,
+          total: personalOtherLoansTotal,
+          fieldTitle: "Personal & Other Loans",
+          buttonText: "Add Personal & Other Loans",
+          infoText:
+            "Personal loan balance and other loan balances (e.g., student loans)",
+        }}
       />
 
       {/* Sub Input Fields */}
@@ -75,12 +56,13 @@ const PAndOLoanFields = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Personal Loan</span>{" "}
-              <CustomTooltip title="Outstanding balance of personal loans, excluding specific mortgage or vehicle loans."/>
+              <CustomTooltip title="Outstanding balance of personal loans, excluding specific mortgage or vehicle loans." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
               placeholder="$0"
+              autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -101,10 +83,10 @@ const PAndOLoanFields = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">Student Loan</span>{" "}
-              <CustomTooltip title="Outstanding balance of educational or student loans."/>
+              <CustomTooltip title="Outstanding balance of educational or student loans." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
               placeholder="$0"
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -136,7 +118,7 @@ const PAndOLoanFields = () => {
                 />
               </label>
               <input
-                className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+                className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
                 type="number"
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
@@ -155,7 +137,7 @@ const PAndOLoanFields = () => {
               <div className="flex items-center justify-between gap-4">
                 <input
                   ref={dynamicFieldTitleRef}
-                  className="border-[1px] border-[#838383] rounded-[5px] outline-none px-1 py-[2px] flex-1"
+                  className="border-[1px] border-[#838383] rounded-[5px]  px-1 py-[2px] flex-1"
                   type="text"
                   name="label"
                   value={newInput.label}
@@ -178,7 +160,7 @@ const PAndOLoanFields = () => {
                 </div>
               </div>
               <input
-                className="border-[1px] border-[#838383] rounded-[8px] px-2 py-[2px] outline-none mt-[2px] w-full"
+                className="border-[1px] border-[#838383] rounded-[8px] px-2 py-[2px]  mt-[2px] w-full"
                 type="number"
                 name="value"
                 value={newInput.value}

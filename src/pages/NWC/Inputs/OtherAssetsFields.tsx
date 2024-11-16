@@ -33,7 +33,7 @@ const OtherAssetsFields = () => {
         </label>
       </div>
       <input
-        className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+        className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
         type="number"
         placeholder="$0"
         onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -62,11 +62,11 @@ const OtherAssetsFields = () => {
               <span className="text-nowrap">{input.label}</span>{" "}
               <Icon
                 className="text-[#838383] text-[1rem]"
-                icon="material-symbols:info-outline"
+                icon="material-symbols:info-"
               />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
               name={input.label.trim().split(" ").join("")}
               value={input.value}
@@ -85,7 +85,7 @@ const OtherAssetsFields = () => {
             <div className="flex items-center justify-between gap-4 w-full">
               <input
                 ref={dynamicFieldTitleRef}
-                className="border-[1px] border-[#838383] rounded-[5px] outline-none px-1 py-[2px] flex-1"
+                className="border-[1px] border-[#838383] rounded-[5px]  px-1 py-[2px] flex-1"
                 type="text"
                 name="label"
                 value={newInput.label}
@@ -108,7 +108,7 @@ const OtherAssetsFields = () => {
               </div>
             </div>
             <input
-              className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none mt-1 w-full"
+              className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem]  mt-1 w-full"
               type="number"
               name="value"
               value={newInput.value}

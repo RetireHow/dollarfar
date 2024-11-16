@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { updateAsset } from "../../../redux/features/NWSlice/NWSlice";
 import useDynamicInput from "../../../hooks/useDynamicInput";
 import { useRef } from "react";
+import DisplayTotal from "../../../components/UI/DisplayTotal";
 
 const PropertyInputFields = () => {
   const dispatch = useAppDispatch();
@@ -25,51 +26,22 @@ const PropertyInputFields = () => {
     showSubInputs,
     setShowSubInputs,
     handleAddNewInput,
-  } = useDynamicInput({category:"property", dynamicFieldTitleRef});
+  } = useDynamicInput({ category: "property", dynamicFieldTitleRef });
 
   return (
     <div>
       {/* Main Input Field */}
-      <div className="flex justify-between items-center text-[1rem] mb-1">
-        <label
-          className="flex items-center gap-1 font-semibold"
-          htmlFor="property"
-        >
-          <span>Property</span>
-          <CustomTooltip title="Current market value of primary residence and Current market value of any other properties (e.g., vacation home, rental property)." />
-        </label>
-        {/* No functionality on "Add Properties" button */}
-        <button
-          onClick={() => setShowSubInputs(!showSubInputs)}
-          className="font-semibold flex items-center gap-1"
-        >
-          {showSubInputs ? (
-            // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
-            <Icon className="text-[1.5rem]" icon="iconamoon:arrow-up-2-light" />
-          ) : (
-            <Icon className="text-[1.25rem]" icon="ic:round-plus" />
-          )}
-          <span>Add Properties</span>
-        </button>
-      </div>
-      {/* <input
-        className="border-[1px] border-[#83838345] rounded-[8px] p-[0.6rem] outline-none w-full cursor-not-allowed"
-        type="text"
-        value={totalProperty || "Auto-calculated value based on subfields: $0.00"}
-        disabled
-        onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
-          e.currentTarget.blur()
-        }
-      /> */}
-
-      {/* display  */}
-      <div
-        onClick={() => setShowSubInputs(!showSubInputs)}
-        className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full cursor-pointer"
-      >
-        Total Value: ${totalProperty || "0.00"}
-      </div>
-
+      <DisplayTotal
+        data={{
+          showSubInputs,
+          setShowSubInputs,
+          total: totalProperty,
+          fieldTitle: "Property",
+          buttonText: "Add Properties",
+          infoText:
+            "Current market value of primary residence and Current market value of any other properties (e.g., vacation home, rental property).",
+        }}
+      />
       {/* Sub Input Fields */}
       {showSubInputs && (
         <div className="mt-3 text-[14px] flex gap-[1.5rem] overflow-x-auto pb-2">
@@ -79,10 +51,10 @@ const PropertyInputFields = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Principal Residence</span>{" "}
-              <CustomTooltip title="The current market value of your primary home or residence."/>
+              <CustomTooltip title="The current market value of your primary home or residence." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] w-full"
               type="number"
               placeholder="$0"
               autoFocus
@@ -106,10 +78,10 @@ const PropertyInputFields = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">Cottage</span>{" "}
-              <CustomTooltip title="The estimated market value of your secondary residence or vacation property."/>
+              <CustomTooltip title="The estimated market value of your secondary residence or vacation property." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] w-full"
               type="number"
               placeholder="$0"
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -132,10 +104,10 @@ const PropertyInputFields = () => {
               htmlFor="realEstate"
             >
               <span className="text-nowrap">Real Estate Assets</span>{" "}
-              <CustomTooltip title="Any additional real estate holdings or properties you own, excluding your primary residence and cottage."/>
+              <CustomTooltip title="Any additional real estate holdings or properties you own, excluding your primary residence and cottage." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] w-full"
               type="number"
               placeholder="$0"
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -167,7 +139,7 @@ const PropertyInputFields = () => {
                 />
               </label>
               <input
-                className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+                className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] w-full"
                 type="number"
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
@@ -186,7 +158,7 @@ const PropertyInputFields = () => {
               <div className="flex items-center justify-between gap-4">
                 <input
                   ref={dynamicFieldTitleRef}
-                  className="border-[1px] border-[#838383] rounded-[5px] outline-none px-1 py-[2px] flex-1"
+                  className="border-[1px] border-[#838383] rounded-[5px]  px-1 py-[2px] flex-1"
                   type="text"
                   name="label"
                   value={newInput.label}
@@ -209,7 +181,7 @@ const PropertyInputFields = () => {
                 </div>
               </div>
               <input
-                className="border-[1px] border-[#838383] rounded-[8px] px-2 py-[2px] outline-none mt-[2px] w-full"
+                className="border-[1px] border-[#838383] rounded-[8px] px-2 py-[2px]  mt-[2px] w-full"
                 type="number"
                 name="value"
                 value={newInput.value}

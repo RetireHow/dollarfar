@@ -4,6 +4,7 @@ import CustomTooltip from "../../../components/UI/CustomTooltip";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { updateLiabilities } from "../../../redux/features/NWSlice/NWSlice";
 import useDynamicInput from "../../../hooks/useDynamicInput";
+import DisplayTotal from "../../../components/UI/DisplayTotal";
 
 const TaxLiabilityFields = () => {
   const dispatch = useAppDispatch();
@@ -34,36 +35,15 @@ const TaxLiabilityFields = () => {
   return (
     <div>
       {/* Main Input Field */}
-      <div className="flex justify-between items-center text-[1rem] mb-1">
-        <label
-          className="flex items-center gap-1 font-semibold"
-          htmlFor="property"
-        >
-          <span>Tax liability</span>{" "}
-          <CustomTooltip title="Student loan balance"/>
-        </label>
-        {/* No functionality on "Add Properties" button */}
-        <button
-          onClick={() => setShowSubInputs(!showSubInputs)}
-          className="font-semibold flex items-center gap-1"
-        >
-          {showSubInputs ? (
-            // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
-            <Icon className="text-[1.5rem]" icon="iconamoon:arrow-up-2-light" />
-          ) : (
-            <Icon className="text-[1.25rem]" icon="ic:round-plus" />
-          )}
-          <span>Add Tax liability</span>
-        </button>
-      </div>
-      <input
-        className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full cursor-not-allowed"
-        type="text"
-        value={taxLiabilityTotal}
-        disabled
-        onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
-          e.currentTarget.blur()
-        }
+      <DisplayTotal
+        data={{
+          showSubInputs,
+          setShowSubInputs,
+          total: taxLiabilityTotal,
+          fieldTitle: "Tax liability",
+          buttonText: "Add Tax liability",
+          infoText: "Student loan balance",
+        }}
       />
 
       {/* Sub Input Fields */}
@@ -75,22 +55,25 @@ const TaxLiabilityFields = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">EG Capital Gains</span>{" "}
-              <CustomTooltip title="Estimated taxes on any unrealized capital gains from investment sales."/>
+              <CustomTooltip title="Estimated taxes on any unrealized capital gains from investment sales." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
               placeholder="$0"
+              autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(
-                updateLiabilities({
-                  category: "taxLiability",
-                  key: "egCapitalGains",
-                  value: Number(e.target.value),
-                })
-              )}
+              onChange={(e) =>
+                dispatch(
+                  updateLiabilities({
+                    category: "taxLiability",
+                    key: "egCapitalGains",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
           <div>
@@ -99,22 +82,24 @@ const TaxLiabilityFields = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">Any other tax liability</span>{" "}
-              <CustomTooltip title="Other tax obligations, including overdue amounts or expected liabilities not accounted for."/>
+              <CustomTooltip title="Other tax obligations, including overdue amounts or expected liabilities not accounted for." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
               placeholder="$0"
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onChange={(e)=>dispatch(
-                updateLiabilities({
-                  category: "taxLiability",
-                  key: "anyOtherTaxLiability",
-                  value: Number(e.target.value),
-                })
-              )}
+              onChange={(e) =>
+                dispatch(
+                  updateLiabilities({
+                    category: "taxLiability",
+                    key: "anyOtherTaxLiability",
+                    value: Number(e.target.value),
+                  })
+                )
+              }
             />
           </div>
 
@@ -132,7 +117,7 @@ const TaxLiabilityFields = () => {
                 />
               </label>
               <input
-                className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+                className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
                 type="number"
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
@@ -151,7 +136,7 @@ const TaxLiabilityFields = () => {
               <div className="flex items-center justify-between gap-4">
                 <input
                   ref={dynamicFieldTitleRef}
-                  className="border-[1px] border-[#838383] rounded-[5px] outline-none px-1 py-[2px] flex-1"
+                  className="border-[1px] border-[#838383] rounded-[5px]  px-1 py-[2px] flex-1"
                   type="text"
                   name="label"
                   value={newInput.label}
@@ -174,7 +159,7 @@ const TaxLiabilityFields = () => {
                 </div>
               </div>
               <input
-                className="border-[1px] border-[#838383] rounded-[8px] px-2 py-[2px] outline-none mt-[2px] w-full"
+                className="border-[1px] border-[#838383] rounded-[8px] px-2 py-[2px]  mt-[2px] w-full"
                 type="number"
                 name="value"
                 value={newInput.value}
@@ -215,4 +200,3 @@ const TaxLiabilityFields = () => {
 };
 
 export default TaxLiabilityFields;
-

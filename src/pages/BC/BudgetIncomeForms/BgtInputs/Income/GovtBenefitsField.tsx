@@ -2,27 +2,18 @@ import { useRef } from "react";
 import { Icon } from "@iconify/react";
 import useBudgetDynamicInput from "../../../../../hooks/useBudgetDynamicInput";
 import CustomTooltip from "../../../../../components/UI/CustomTooltip";
-import { Select } from "antd";
 import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
-
-type TOption = {
-  label: string;
-  value: string;
-};
-const selectOptions: TOption[] = [
-  { value: "Weekly", label: "Weekly" },
-  { value: "Biweekly", label: "Biweekly" },
-  { value: "Twice a month", label: "Twice a month" },
-  { value: "Monthly", label: "Monthly" },
-  { value: "Annually", label: "Annually" },
-  { value: "Other", label: "Other" },
-];
+import BCTotalDisplay from "../../../../../components/UI/BCTotalDisplay";
 
 const GovtBenefitsField = () => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
-  const {income:{totals:{govtBenefits}}} = useAppSelector(state => state.budgetCalculator)
+  const {
+    income: {
+      totals: { govtBenefits },
+    },
+  } = useAppSelector((state) => state.budgetCalculator);
   const {
     newInput,
     dynamicInputs,
@@ -41,60 +32,17 @@ const GovtBenefitsField = () => {
   return (
     <div>
       {/* Main Input Field */}
-      <div>
-        <div className="flex justify-between items-center text-[1rem] mb-1">
-          <label
-            className="flex items-center gap-1 font-semibold"
-            htmlFor="property"
-          >
-            <span>Government Benefits</span>{" "}
-            <CustomTooltip title="Enter any government assistance received, such as child benefits, unemployment insurance, or other aid." />
-          </label>
-          {/* No functionality on "Add Properties" button */}
-          <button
-            onClick={() => setShowSubInputs(!showSubInputs)}
-            className="font-semibold flex items-center gap-1"
-          >
-            {showSubInputs ? (
-              // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
-              <Icon
-                className="text-[1.5rem]"
-                icon="iconamoon:arrow-up-2-light"
-                />
-              ) : (
-                <Icon className="text-[1.25rem]" icon="ic:round-plus" />
-              )}
-              <span>Add Government Benefits</span>
-          </button>
-        </div>
-
-        <div className="flex gap-1">
-          <input
-            className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full cursor-not-allowed"
-            type="text"
-            value={govtBenefits}
-            disabled
-            onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
-              e.currentTarget.blur()
-            }
-          />
-          <div>
-            <Select
-              defaultValue="Weekly"
-              size="large"
-              style={{ width: 130, height: 45, border: "1px solid gray" }}
-              className="rounded-[9px]"
-              options={selectOptions}
-              suffixIcon={
-                <Icon
-                  className="text-[1.5rem] text-gray-600"
-                  icon="iconamoon:arrow-down-2"
-                />
-              }
-            ></Select>
-          </div>
-        </div>
-      </div>
+      <BCTotalDisplay
+        data={{
+          showSubInputs,
+          setShowSubInputs,
+          total: govtBenefits as number,
+          buttonText: "Add Government Benefits",
+          fieldTitle: "Government Benefits",
+          infoText:
+            "Enter any government assistance received, such as child benefits, unemployment insurance, or other aid.",
+        }}
+      />
 
       {/* Sub Input Fields */}
       {showSubInputs && (
@@ -108,9 +56,10 @@ const GovtBenefitsField = () => {
               <CustomTooltip title="For monthly support received to help with child-related expenses" />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
               placeholder="$0"
+              autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -140,12 +89,20 @@ const GovtBenefitsField = () => {
                 />
               </label>
               <input
-                className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+                className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
                 type="number"
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
                 placeholder="$0"
-                onChange={(e) => handleDynamicInputChange(e, input.id, 'income', 'govtBenefits')}
+                autoFocus
+                onChange={(e) =>
+                  handleDynamicInputChange(
+                    e,
+                    input.id,
+                    "income",
+                    "govtBenefits"
+                  )
+                }
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
@@ -159,17 +116,23 @@ const GovtBenefitsField = () => {
               <div className="flex items-center justify-between gap-4">
                 <input
                   ref={dynamicFieldTitleRef}
-                  className="border-[1px] border-[#838383] rounded-[5px] outline-none px-1 py-[2px] flex-1"
+                  className="border-[1px] border-[#838383] rounded-[5px]  px-1 py-[2px] flex-1"
                   type="text"
                   name="label"
                   value={newInput.label}
                   placeholder="Enter name"
+                  autoFocus
                   onChange={handleInputChange}
                 />
                 <div className="flex items-center gap-3">
                   <button
                     className="bg-[#000000] text-white font-semibold rounded px-2 py-[2px]"
-                    onClick={()=>handleSaveInput({category:'income', subCategory:'govtBenefits'})}
+                    onClick={() =>
+                      handleSaveInput({
+                        category: "income",
+                        subCategory: "govtBenefits",
+                      })
+                    }
                   >
                     Save
                   </button>
@@ -182,7 +145,7 @@ const GovtBenefitsField = () => {
                 </div>
               </div>
               <input
-                className="border-[1px] border-[#838383] rounded-[8px] px-2 py-[2px] outline-none mt-[2px] w-full"
+                className="border-[1px] border-[#838383] rounded-[8px] px-2 py-[2px]  mt-[2px] w-full"
                 type="number"
                 name="value"
                 value={newInput.value}

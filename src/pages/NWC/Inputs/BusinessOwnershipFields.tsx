@@ -4,6 +4,7 @@ import CustomTooltip from "../../../components/UI/CustomTooltip";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { updateAsset } from "../../../redux/features/NWSlice/NWSlice";
 import useDynamicInput from "../../../hooks/useDynamicInput";
+import DisplayTotal from "../../../components/UI/DisplayTotal";
 
 const BusinessOwnershipFields = () => {
   const dispatch = useAppDispatch();
@@ -25,44 +26,23 @@ const BusinessOwnershipFields = () => {
     showSubInputs,
     setShowSubInputs,
     handleAddNewInput,
-  } = useDynamicInput({ category: "businessOwnershipInterest", dynamicFieldTitleRef });
+  } = useDynamicInput({
+    category: "businessOwnershipInterest",
+    dynamicFieldTitleRef,
+  });
 
   return (
     <div>
       {/* Main Input Field */}
-      <div className="flex justify-between items-center text-[1rem] mb-1 overflow-x-auto">
-        <label
-          className="flex items-center gap-1 font-semibold"
-          htmlFor="property"
-        >
-          <p className="text-nowrap">
-            Business Ownership/Partnership Interest (if applicable)
-          </p>{" "}
-          <CustomTooltip title="Value of any businesses or equity in businesses." />
-        </label>
-        {/* No functionality on "Add Properties" button */}
-        <button
-          onClick={() => setShowSubInputs(!showSubInputs)}
-          className="font-semibold flex items-center gap-1"
-        >
-          {showSubInputs ? (
-            // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
-            <Icon className="text-[1.5rem]" icon="iconamoon:arrow-up-2-light" />
-          ) : (
-            <Icon className="text-[1.25rem]" icon="ic:round-plus" />
-          )}
-          <p className="text-nowrap">Add Ownership/Partnership</p>
-        </button>
-      </div>
-      <input
-        className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full cursor-not-allowed"
-        type="number"
-        placeholder="$0"
-        value={businessOwnershipInterestTotal}
-        disabled
-        onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
-          e.currentTarget.blur()
-        }
+      <DisplayTotal
+        data={{
+          showSubInputs,
+          setShowSubInputs,
+          total: businessOwnershipInterestTotal,
+          fieldTitle: "Business Ownership/Partnership Interest (if applicable)",
+          buttonText: "Add Ownership/Partnership",
+          infoText: "Value of any businesses or equity in businesses.",
+        }}
       />
 
       {/* Sub Input Fields */}
@@ -74,12 +54,13 @@ const BusinessOwnershipFields = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Ownership</span>{" "}
-              <CustomTooltip title="Value of any businesses or private corporations you own directly."/>
+              <CustomTooltip title="Value of any businesses or private corporations you own directly." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] w-full"
               type="number"
               placeholder="$0"
+              autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -100,10 +81,10 @@ const BusinessOwnershipFields = () => {
               htmlFor="cottage"
             >
               <span className="text-nowrap">Partnership</span>{" "}
-              <CustomTooltip title="Your share in partnerships or joint ventures, estimated at current market value."/>
+              <CustomTooltip title="Your share in partnerships or joint ventures, estimated at current market value." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
               placeholder="$0"
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -126,10 +107,10 @@ const BusinessOwnershipFields = () => {
               htmlFor="realEstate"
             >
               <span className="text-nowrap">Equity</span>{" "}
-              <CustomTooltip title="Any additional financial equity holdings, outside of specific retirement or registered accounts."/>
+              <CustomTooltip title="Any additional financial equity holdings, outside of specific retirement or registered accounts." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
               placeholder="$0"
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -157,11 +138,11 @@ const BusinessOwnershipFields = () => {
                 <span className="text-nowrap">{input.label}</span>{" "}
                 <Icon
                   className="text-[#838383] text-[1rem]"
-                  icon="material-symbols:info-outline"
+                  icon="material-symbols:info-"
                 />
               </label>
               <input
-                className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
+                className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
                 type="number"
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
@@ -180,7 +161,7 @@ const BusinessOwnershipFields = () => {
               <div className="flex items-center justify-between gap-4">
                 <input
                   ref={dynamicFieldTitleRef}
-                  className="border-[1px] border-[#838383] rounded-[5px] outline-none px-1 py-[2px] flex-1"
+                  className="border-[1px] border-[#838383] rounded-[5px]  px-1 py-[2px] flex-1"
                   type="text"
                   name="label"
                   value={newInput.label}
@@ -203,7 +184,7 @@ const BusinessOwnershipFields = () => {
                 </div>
               </div>
               <input
-                className="border-[1px] border-[#838383] rounded-[8px] px-2 py-[2px] outline-none mt-[2px] w-full"
+                className="border-[1px] border-[#838383] rounded-[8px] px-2 py-[2px]  mt-[2px] w-full"
                 type="number"
                 name="value"
                 value={newInput.value}
@@ -226,7 +207,7 @@ const BusinessOwnershipFields = () => {
                 <span className="text-nowrap">Real Estate Assets</span>{" "}
                 <Icon
                   className="text-[#838383] text-[1rem] min-w-[1rem] min-h-[1rem]"
-                  icon="material-symbols:info-outline"
+                  icon="material-symbols:info-"
                 />
               </label>
             </div>
