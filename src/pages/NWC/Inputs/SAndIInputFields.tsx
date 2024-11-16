@@ -53,16 +53,21 @@ const SAndIInputFields = () => {
           <span>Add Savings & Investments</span>
         </button>
       </div>
-      <input
-        className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full cursor-not-allowed"
+      {/* <input
+        onClick={() => setShowSubInputs(!showSubInputs)}
+        className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full cursor-pointer"
         type="number"
         placeholder="$0"
         value={savingsInvestmentTotal}
-        disabled
-        onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
-          e.currentTarget.blur()
-        }
-      />
+      /> */}
+
+      {/* display  */}
+      <div
+        onClick={() => setShowSubInputs(!showSubInputs)}
+        className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full cursor-pointer"
+      >
+        Total Value: ${savingsInvestmentTotal || "0.00"}
+      </div>
 
       {/* Sub Input Fields */}
       {showSubInputs && (
@@ -79,6 +84,7 @@ const SAndIInputFields = () => {
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
               type="number"
               placeholder="$0"
+              autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }

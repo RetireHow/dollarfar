@@ -52,7 +52,7 @@ const PropertyInputFields = () => {
           <span>Add Properties</span>
         </button>
       </div>
-      <input
+      {/* <input
         className="border-[1px] border-[#83838345] rounded-[8px] p-[0.6rem] outline-none w-full cursor-not-allowed"
         type="text"
         value={totalProperty || "Auto-calculated value based on subfields: $0.00"}
@@ -60,7 +60,15 @@ const PropertyInputFields = () => {
         onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
           e.currentTarget.blur()
         }
-      />
+      /> */}
+
+      {/* display  */}
+      <div
+        onClick={() => setShowSubInputs(!showSubInputs)}
+        className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full cursor-pointer"
+      >
+        Total Value: ${totalProperty || "0.00"}
+      </div>
 
       {/* Sub Input Fields */}
       {showSubInputs && (
