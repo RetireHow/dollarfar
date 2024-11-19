@@ -5,16 +5,16 @@ import TimePeriodSlider from "./Sliders/TimePeriodSlider";
 import { BarGraphChart } from "./BarGraphChart";
 import CalculationCard from "./CalculationCard";
 import Description from "./Description";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   calculateCompoundInterest,
   calculateInterestBreakdown,
-  setChartBase64,
 } from "../../redux/features/compoundInterestSlice/compoundInterestSlice";
 import PageHero from "../../components/UI/PageHero";
-import SectionHeader from "../../components/UI/SectionHeader";
-import html2canvas from "html2canvas";
+import { CIRCPdf } from "./CIRCPdf";
+import DownloadModal from "../../components/DownloadModal";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 const data = {
   title: "Compound Interest Rate Calculator",
@@ -35,43 +35,25 @@ export default function CIRC() {
     interestBreakdown,
   } = useAppSelector((state) => state.compoundInterest);
 
-  const chartRef = useRef<HTMLDivElement | null>(null);
-  const isChartCaptured = useRef(false); // Tracks if the chart is already captured
+  const calculatorData = {
+    rate,
+    time,
+    principal,
+    frequency,
+    frequencyName,
+    byYear: Number(interestBreakdown[interestBreakdown.length - 1]?.period),
+    compoundInterest,
+    interestBreakdown,
+  };
 
   useEffect(() => {
     dispatch(calculateCompoundInterest());
     dispatch(calculateInterestBreakdown());
-
-    console.log("Changed Frequency=========>", frequency);
-
-    if (chartRef.current) {
-      html2canvas(chartRef.current).then((canvas) => {
-        const imgData = canvas.toDataURL("image/png");
-        dispatch(setChartBase64(imgData));
-      });
-    }
   }, [rate, time, principal, frequency, dispatch]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-
-  useEffect(() => {
-    // Capture the chart after it's fully rendered
-    const captureChart = () => {
-      if (chartRef.current && !isChartCaptured.current) {
-        setTimeout(() => {
-          html2canvas(chartRef.current as HTMLElement).then((canvas) => {
-            const imgData = canvas.toDataURL("image/png");
-            dispatch(setChartBase64(imgData));
-            isChartCaptured.current = true; // Mark as captured to prevent duplicate work
-          });
-        }, 500); // Delay ensures the chart is rendered
-      }
-    };
-
-    captureChart();
-  }, [dispatch, rate, time, principal, frequency]);
 
   return (
     <main className="mb-[5rem]">
@@ -81,9 +63,30 @@ export default function CIRC() {
 
       <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem] max-w-[1200px]">
         {/* Header  */}
-        <SectionHeader
-          title="Compound Interest Calculator"
-        />
+        <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">
+          <div className="flex justify-between items-center flex-wrap">
+            <h3 className="text-[1.5rem] font-bold md:mb-0 mb-3">
+              Compound Interest Rate Calculator
+            </h3>
+            <div className="flex items-center flex-wrap gap-5">
+              <div className="flex items-center md:gap-2 gap-1 border-[1px] border-[#0000001A] md:px-[1.25rem] px-[0.5rem] md:py-[10px] py-[8px] rounded-[10px] font-medium md:w-[140px] w-[110px] cursor-pointer">
+                {/* <Icon className="w-[1.5rem] h-[1.5rem]" icon="mdi:dollar" /> */}
+                <p>$</p>
+                <p>CAD</p>
+                <Icon
+                  className="w-[1.5rem] h-[1.5rem]"
+                  icon="iconamoon:arrow-down-2"
+                />
+              </div>
+              <DownloadModal
+                calculatorData={calculatorData}
+                fileName="CIRC Report"
+                id="circ-report"
+                PdfComponent={CIRCPdf}
+              />
+            </div>
+          </div>
+        </div>
 
         <div className="flex items-center justify-between gap-[5rem] lg:flex-row flex-col">
           {/* ==========================|| Sliders Container ||===================================  */}
@@ -97,10 +100,7 @@ export default function CIRC() {
           <CalculationCard />
         </div>
 
-        <div
-          ref={chartRef}
-          className="lg:flex items-center gap-5 ml-[1rem] mt-[5rem]"
-        >
+        <div className="lg:flex items-center gap-5 ml-[1rem] mt-[5rem]">
           <section className="border-[1px] border-[#EAECF0] rounded-[10px] p-[1rem]">
             <div className="flex justify-center items-center">
               <p className="font-bold text-gray-500 text-[1.2rem]">

@@ -87,6 +87,7 @@ export const NWBarChart = () => {
     <div className="col-span-2 overflow-x-auto">
       <div className="min-w-[400px]">
         <div
+         id="NWC-Chart"
           style={{ boxShadow: "0px 0px 5px 1px rgba(0, 0, 0, 0.05)" }}
           className="max-h-[300px] bg-white shadow-md rounded-lg border-[1px] border-gray-200 p-[1rem]"
         >

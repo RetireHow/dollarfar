@@ -90,6 +90,7 @@ const OtherAssetsFields = () => {
                 name="label"
                 value={newInput.label}
                 placeholder="Asset Name"
+                autoFocus
                 onChange={handleInputChange}
               />
               <div className="flex items-center gap-3">

@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CompoundInterestState } from "./CompoundInterestTypes";
 
- // Initial state
- export const initialState: CompoundInterestState = {
+// Initial state
+export const initialState: CompoundInterestState = {
   principal: 5000,
   rate: 5,
   time: 5,
@@ -10,7 +10,6 @@ import { CompoundInterestState } from "./CompoundInterestTypes";
   frequencyName: "Annually", // default frequency name
   compoundInterest: 0,
   interestBreakdown: [],
-  chartBase64:""
 };
 
 // Create the slice
@@ -55,9 +54,6 @@ const compoundInterestSlice = createSlice({
           break;
       }
     },
-    setChartBase64: (state, action: PayloadAction<string>) => {
-      state.chartBase64 = action.payload;
-    },
     calculateCompoundInterest: (state) => {
       const P = state.principal;
       const r = state.rate / 100; // convert to decimal
@@ -90,7 +86,7 @@ const compoundInterestSlice = createSlice({
           let periodLabel = "";
           switch (n) {
             case 1: // Annually
-            periodLabel = `${new Date().getFullYear()+(i-1)}`;
+              periodLabel = `${new Date().getFullYear() + (i - 1)}`;
               break;
             default:
               periodLabel = `Period ${i}`;
@@ -164,7 +160,6 @@ export const {
   calculateCompoundInterest,
   resetCalculator,
   calculateInterestBreakdown,
-  setChartBase64
 } = compoundInterestSlice.actions;
 
 export default compoundInterestSlice.reducer;

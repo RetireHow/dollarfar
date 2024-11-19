@@ -30,7 +30,7 @@ export default function RRIFBarChart() {
   return (
     <div className="lg:flex items-center gap-5 my-[5rem]">
       <div
-        id="chart-container"
+        id="RRIF-Chart"
         className="lg:max-w-[800px] lg:min-h-[400px] overflow-x-auto border-[1px] border-gray-300 rounded-[10px] p-5"
       >
         <div className="w-[800px] h-[400px]">

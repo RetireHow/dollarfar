@@ -94,6 +94,7 @@ const OtherDebtsFields = () => {
                 name="label"
                 value={newInput.label}
                 placeholder="Debt Name"
+                autoFocus
                 onChange={handleInputChange}
               />
               <div className="flex items-center gap-3">

@@ -1,11 +1,34 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Icon } from "@iconify/react/dist/iconify.js";
 import DownloadModal from "../DownloadModal";
+import { useAppSelector } from "../../redux/hooks";
+import React from "react";
 
 export default function SectionHeader({
   title,
+  id,
+  PdfComponent,
 }: {
   title: string;
+  id: string;
+  PdfComponent:React.FC<any>
 }) {
+  const {
+    rate,
+    time,
+    principal,
+    frequencyName,
+    compoundInterest,
+    interestBreakdown,
+  } = useAppSelector((state) => state.compoundInterest);
+  const calculatorData = {
+    rate,
+    time,
+    principal,
+    frequencyName,
+    compoundInterest,
+    interestBreakdown,
+  };
   return (
     <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">
       <div className="flex justify-between items-center flex-wrap">
@@ -20,7 +43,12 @@ export default function SectionHeader({
               icon="iconamoon:arrow-down-2"
             />
           </div>
-          <DownloadModal />
+          <DownloadModal
+            calculatorData={calculatorData}
+            fileName={title}
+            id={id}
+            PdfComponent={PdfComponent}
+          />
         </div>
       </div>
     </div>

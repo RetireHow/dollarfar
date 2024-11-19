@@ -14,26 +14,6 @@ import VehiclesFields from "./Inputs/VehiclesFields";
 import { useDispatch } from "react-redux";
 import { calculateNetWorth } from "../../redux/features/NWSlice/NWSlice";
 
-// const checkEmpty = (
-//   assets: Record<string, Record<string, number>>,
-//   liabilities: Record<string, Record<string, number>>
-// ): boolean => {
-//   const hasNonZeroValue = (
-//     categories: Record<string, Record<string, number>>
-//   ): boolean => {
-//     return Object.values(categories).some((category) =>
-//       Object.values(category).some((value) => value > 0)
-//     );
-//   };
-
-//   // Check if either assets or liabilities are entirely zero
-//   const hasAssets = hasNonZeroValue(assets);
-//   const hasLiabilities = hasNonZeroValue(liabilities);
-
-//   // Return true if either assets or liabilities are all zero
-//   return !(hasAssets && hasLiabilities);
-// };
-
 export default function NWForm() {
   const dispatch = useDispatch();
   useEffect(() => {

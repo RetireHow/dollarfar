@@ -48,7 +48,7 @@ export default function RRSPBarChart() {
       {rrspBalanceAtRetirement ? (
         <div className="lg:flex items-center justify-center gap-5 my-[5rem]">
           <div
-            id="chart-container"
+            id="RRSP-Chart"
             className="lg:max-w-[800px] lg:min-h-[300px] overflow-x-auto border-[1px] border-gray-300 rounded-[10px] p-5"
           >
             <div className="w-[500px] h-[300px]">
@@ -113,7 +113,8 @@ export default function RRSPBarChart() {
             <div className="w-[150px] h-[100px] bg-gray-100 rounded-md"></div>
           </div>
           <p className="text-gray-500 text-center mt-5">
-            Please enter your data and press 'Calculate' button to generate the chart.
+            Please enter your data and press 'Calculate' button to generate the
+            chart.
           </p>
         </div>
       )}

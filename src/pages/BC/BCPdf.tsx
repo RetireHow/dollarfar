@@ -43,12 +43,38 @@ const styles = StyleSheet.create({
   },
 });
 
+type TCalculatorData = {
+  totalIncome: number;
+  houseExpenses: number;
+  transportExpenses: number;
+  educationalExpenses: number;
+  otherExpenses: number;
+  totalLoans: number;
+  totalSavings: number;
+  totalExpenses: number;
+  cashflowDeficit: number;
+  base64: string;
+  name?: string;
+  email?: string;
+};
+
 // Define a new PDF document component
-export const BCPdf = () => {
-  const { name, email } = {
-    name: "Siam Ahmed",
-    email: "siam.ahmed77@gmail.com",
-  };
+export const BCPdf = ({ data }: { data: TCalculatorData }) => {
+  const {
+    name,
+    email,
+    totalIncome,
+    totalSavings,
+    totalLoans,
+    educationalExpenses,
+    houseExpenses,
+    otherExpenses,
+    transportExpenses,
+    totalExpenses,
+    cashflowDeficit,
+    base64,
+  } = data || {};
+
   return (
     <Document>
       <Page style={{ position: "relative" }}>
@@ -101,7 +127,7 @@ export const BCPdf = () => {
               gap: 16,
               fontSize: 12,
               width: "100%",
-              marginBottom: 20,
+              marginBottom: 5,
             }}
           >
             <Text style={{ fontWeight: "extrabold", fontSize: 14 }}>
@@ -114,7 +140,7 @@ export const BCPdf = () => {
               }}
             >
               <Text style={{ color: "#696969" }}>Income</Text>
-              <Text>$9999</Text>
+              <Text>${totalIncome}</Text>
             </View>
             <View
               style={{
@@ -123,7 +149,7 @@ export const BCPdf = () => {
               }}
             >
               <Text style={{ color: "#696969" }}>Housing Expenses</Text>
-              <Text>$9999</Text>
+              <Text>${houseExpenses}</Text>
             </View>
             <View
               style={{
@@ -132,7 +158,7 @@ export const BCPdf = () => {
               }}
             >
               <Text style={{ color: "#696969" }}>Transport Expenses</Text>
-              <Text>$9999</Text>
+              <Text>${transportExpenses}</Text>
             </View>
             <View
               style={{
@@ -141,7 +167,7 @@ export const BCPdf = () => {
               }}
             >
               <Text style={{ color: "#696969" }}>Educational Expenses</Text>
-              <Text>$9999</Text>
+              <Text>${educationalExpenses}</Text>
             </View>
             <View
               style={{
@@ -150,7 +176,7 @@ export const BCPdf = () => {
               }}
             >
               <Text style={{ color: "#696969" }}>Other Expenses</Text>
-              <Text>$9999</Text>
+              <Text>${otherExpenses}</Text>
             </View>
             <View
               style={{
@@ -159,7 +185,7 @@ export const BCPdf = () => {
               }}
             >
               <Text style={{ color: "#696969" }}>Loans</Text>
-              <Text>$9999</Text>
+              <Text>${totalLoans}</Text>
             </View>
             <View
               style={{
@@ -168,7 +194,7 @@ export const BCPdf = () => {
               }}
             >
               <Text style={{ color: "#696969" }}>Savings</Text>
-              <Text>$9999</Text>
+              <Text>${totalSavings}</Text>
             </View>
 
             <View
@@ -182,14 +208,26 @@ export const BCPdf = () => {
               }}
             >
               <Text>Cashflow Deficit</Text>
-              <Text>$5555</Text>
+              <Text>${cashflowDeficit}</Text>
             </View>
           </View>
 
           {/* Chart Container  */}
-          <View style={{ flexDirection: "row" }}>
-            <View style={{ flex: 1 }}>
-              <Text>Chart Image</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "400px",
+              margin: "auto",
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+              }}
+            >
+              <Image style={{ width: "90%", height: 250 }} src={base64} />
             </View>
 
             {/* Legends Container  */}
@@ -199,6 +237,7 @@ export const BCPdf = () => {
                 flexDirection: "column",
                 gap: 10,
                 fontWeight: "extrabold",
+                color: "#475569",
               }}
             >
               <View
@@ -212,7 +251,7 @@ export const BCPdf = () => {
                     height: "6px",
                   }}
                 ></Text>
-                <Text>Housing Expenses ($123)</Text>
+                <Text>Housing Expenses (${houseExpenses})</Text>
               </View>
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
@@ -225,7 +264,7 @@ export const BCPdf = () => {
                     height: "6px",
                   }}
                 ></Text>
-                <Text>Transport Expenses ($142)</Text>
+                <Text>Transport Expenses (${transportExpenses})</Text>
               </View>
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
@@ -238,7 +277,7 @@ export const BCPdf = () => {
                     height: "6px",
                   }}
                 ></Text>
-                <Text>Educational Expenses ($1450)</Text>
+                <Text>Educational Expenses (${educationalExpenses})</Text>
               </View>
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
@@ -251,7 +290,7 @@ export const BCPdf = () => {
                     height: "6px",
                   }}
                 ></Text>
-                <Text>Other Expenses ($1477)</Text>
+                <Text>Other Expenses (${otherExpenses})</Text>
               </View>
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
@@ -264,7 +303,7 @@ export const BCPdf = () => {
                     height: "6px",
                   }}
                 ></Text>
-                <Text>Loans ($1477)</Text>
+                <Text>Loans (${totalLoans})</Text>
               </View>
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
@@ -277,7 +316,7 @@ export const BCPdf = () => {
                     height: "6px",
                   }}
                 ></Text>
-                <Text>Savings ($1478)</Text>
+                <Text>Savings (${totalSavings})</Text>
               </View>
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
@@ -290,21 +329,9 @@ export const BCPdf = () => {
                     height: "6px",
                   }}
                 ></Text>
-                <Text>Cashflow Deficit ($8050)</Text>
+                <Text>Cashflow Deficit (${cashflowDeficit})</Text>
               </View>
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
-              >
-                <Text
-                  style={{
-                    width: "20px",
-                    backgroundColor: "#1E88E5",
-                    borderRadius: "30px",
-                    height: "6px",
-                  }}
-                ></Text>
-                <Text>Cashflow Deficit ($8050)</Text>
-              </View>
+
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
               >
@@ -324,12 +351,12 @@ export const BCPdf = () => {
             style={{
               fontSize: 12,
               textAlign: "left",
-              marginTop: 12,
-              lineHeight: "1.5px",
+              lineHeight: "20px",
             }}
           >
-            "An investment of $1,000 today will grow to $1,276.28 by 2029, based
-            on an interest rate of 5% compounded annually."
+            "Your total annual income is ${totalIncome}, and after your expenses
+            of ${totalExpenses}, you have ${cashflowDeficit} left for savings or
+            investments."
           </Text>
         </View>
 

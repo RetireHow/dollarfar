@@ -16,13 +16,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20
+    marginBottom: 20,
   },
   title: {
     border: "1px solid #EAECF0",
     padding: "5px 10px",
     borderRadius: "5px",
-    fontSize:12
+    fontSize: 12,
   },
   section2: {
     flexDirection: "row",
@@ -43,12 +43,60 @@ const styles = StyleSheet.create({
   },
 });
 
+type TAssets = {
+  property: number;
+  savingsInvestment: number;
+  personalItems: number;
+  businessOwnershipInterest: number;
+  vehicles: number;
+  otherAssets: number;
+  totalAssets: number;
+};
+
+type TLiabilities = {
+  homeLoan: number;
+  personalOtherLoans: number;
+  vehicleLoans: number;
+  taxLiability: number;
+  creditCardDues: number;
+  otherDebts: number;
+  totalLiabilities: number;
+};
+
+type TData = {
+  assets: TAssets;
+  liabilities: TLiabilities;
+  name?: string;
+  email?: string;
+  base64: string;
+};
+
 // Define a new PDF document component
-export const NWCPdf = () => {
-  const { name, email } = {
-    name: "Siam Ahmed",
-    email: "siam.ahmed77@gmail.com",
-  };
+export const NWCPdf = ({ data }: { data: TData }) => {
+  const {
+    name,
+    email,
+    base64,
+    assets: {
+      property,
+      vehicles,
+      personalItems,
+      businessOwnershipInterest,
+      otherAssets,
+      savingsInvestment,
+      totalAssets,
+    },
+    liabilities: {
+      creditCardDues,
+      homeLoan,
+      otherDebts,
+      personalOtherLoans,
+      taxLiability,
+      vehicleLoans,
+      totalLiabilities,
+    },
+  } = data || {};
+
   return (
     <Document>
       <Page style={{ position: "relative" }}>
@@ -121,7 +169,7 @@ export const NWCPdf = () => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Property</Text>
-                  <Text>$9999</Text>
+                  <Text>${property}</Text>
                 </View>
                 <View
                   style={{
@@ -132,7 +180,7 @@ export const NWCPdf = () => {
                   <Text style={{ color: "#696969" }}>
                     Savings & Investments
                   </Text>
-                  <Text>5%</Text>
+                  <Text>{savingsInvestment}</Text>
                 </View>
                 <View
                   style={{
@@ -141,7 +189,7 @@ export const NWCPdf = () => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Personal Items</Text>
-                  <Text>$999</Text>
+                  <Text>${personalItems}</Text>
                 </View>
                 <View
                   style={{
@@ -150,7 +198,7 @@ export const NWCPdf = () => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Business Ownership</Text>
-                  <Text>$999</Text>
+                  <Text>${businessOwnershipInterest}</Text>
                 </View>
                 <View
                   style={{
@@ -159,7 +207,7 @@ export const NWCPdf = () => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Vehicles</Text>
-                  <Text>$999</Text>
+                  <Text>${vehicles}</Text>
                 </View>
                 <View
                   style={{
@@ -168,7 +216,7 @@ export const NWCPdf = () => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Other Assets</Text>
-                  <Text>$999</Text>
+                  <Text>${otherAssets}</Text>
                 </View>
               </View>
             </View>
@@ -202,7 +250,7 @@ export const NWCPdf = () => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Home Loan</Text>
-                  <Text>$9999</Text>
+                  <Text>${homeLoan}</Text>
                 </View>
                 <View
                   style={{
@@ -213,7 +261,7 @@ export const NWCPdf = () => {
                   <Text style={{ color: "#696969" }}>
                     Personal & Other Loans
                   </Text>
-                  <Text>$9999</Text>
+                  <Text>${personalOtherLoans}</Text>
                 </View>
                 <View
                   style={{
@@ -222,7 +270,7 @@ export const NWCPdf = () => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Vehicle Loans</Text>
-                  <Text>$9999</Text>
+                  <Text>${vehicleLoans}</Text>
                 </View>
                 <View
                   style={{
@@ -231,7 +279,7 @@ export const NWCPdf = () => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Tax liability</Text>
-                  <Text>$5555</Text>
+                  <Text>${taxLiability}</Text>
                 </View>
                 <View
                   style={{
@@ -240,7 +288,7 @@ export const NWCPdf = () => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Credit Card Dues</Text>
-                  <Text>$5555</Text>
+                  <Text>${creditCardDues}</Text>
                 </View>
                 <View
                   style={{
@@ -249,7 +297,7 @@ export const NWCPdf = () => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Other Debts</Text>
-                  <Text>$5555</Text>
+                  <Text>${otherDebts}</Text>
                 </View>
               </View>
             </View>
@@ -279,7 +327,7 @@ export const NWCPdf = () => {
               }}
             >
               <Text style={{ color: "#696969" }}>Assets</Text>
-              <Text>$9999</Text>
+              <Text>${totalAssets}</Text>
             </View>
             <View
               style={{
@@ -288,7 +336,7 @@ export const NWCPdf = () => {
               }}
             >
               <Text style={{ color: "#696969" }}>Liabilities</Text>
-              <Text>$9999</Text>
+              <Text>${totalLiabilities}</Text>
             </View>
 
             <View
@@ -302,14 +350,14 @@ export const NWCPdf = () => {
               }}
             >
               <Text>Net Worth</Text>
-              <Text>$5555</Text>
+              <Text>${totalAssets - totalLiabilities}</Text>
             </View>
           </View>
 
           {/* Chart Container  */}
           <View style={{ flexDirection: "row" }}>
             <View style={{ flex: 1 }}>
-              <Text>Chart Image</Text>
+              <Image style={{ width: "90%", height: 150 }} src={base64} />
             </View>
 
             {/* Legends Container  */}
@@ -375,10 +423,17 @@ export const NWCPdf = () => {
               </View>
             </View>
           </View>
-          <Text style={{fontSize:12, textAlign:"left", marginTop:12, lineHeight:"1.5px"}}>
-            "Based on the information provided, your total assets are $9000, and
-            your total liabilities are $5000. This gives you a net worth of
-            $4000."
+          <Text
+            style={{
+              fontSize: 12,
+              textAlign: "left",
+              marginTop: 12,
+              lineHeight: "20px",
+            }}
+          >
+            "Based on the information provided, your total assets are $
+            {totalAssets}, and your total liabilities are ${totalLiabilities}.
+            This gives you a net worth of ${totalAssets - totalLiabilities}."
           </Text>
         </View>
 

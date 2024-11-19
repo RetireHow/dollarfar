@@ -1,32 +1,87 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from "react";
 import { Modal } from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { useAppSelector } from "../redux/hooks";
-import { CIRCPdf } from "../pages/CIRC/CIRCPdf";
+import html2canvas from "html2canvas";
 
-const DownloadModal = () => {
+interface DownloadModalProps {
+  calculatorData: any;
+  PdfComponent: React.FC<any>;
+  fileName: string;
+  id: string;
+}
+
+const DownloadModal = ({
+  calculatorData,
+  PdfComponent,
+  fileName,
+  id,
+}: DownloadModalProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [checked, setChecked] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [base64, setBase64] = useState("");
 
-  const {
-    rate,
-    time,
-    principal,
-    frequencyName,
-    compoundInterest,
-    chartBase64,
-  } = useAppSelector((state) => state.compoundInterest);
+  const pdfData = {
+    ...calculatorData,
+    base64,
+    name,
+    email,
+  };
+
+  useEffect(() => {
+    const captureChart = async () => {
+      const chartId = document.getElementById(id);
+      if (chartId) {
+        try {
+          const canvas = await html2canvas(chartId as HTMLElement);
+          const imgData = canvas.toDataURL("image/png");
+          setBase64(imgData);
+        } catch (error) {
+          console.error("Error capturing chart: ", error);
+        }
+      }
+    };
+    captureChart();
+  }, [isModalOpen, id]);
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-
   const handleCancel = () => {
     setIsModalOpen(false);
+    setShowError(false);
+    setChecked(false);
+    setIsLoading(false);
+    setEmail("");
+    setName("");
+  };
+
+  const handleDownloadPdf = async () => {
+    setIsLoading(true);
+    if (!checked) {
+      return setShowError(true);
+    }
+
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setIsLoading(false);
+      setShowError(false);
+      setChecked(false);
+      setEmail("");
+      setName("");
+    }, 300);
+  };
+
+  const handleValidateCheck = () => {
+    if (!checked) {
+      return setShowError(true);
+    }
   };
 
   return (
@@ -97,63 +152,45 @@ const DownloadModal = () => {
               </span>
               <span>Terms and Conditions & Privacy Policy.</span>
             </div>
-            {!checked && (
+            {showError && !checked && (
               <p className="text-red-500 text-[12px] mt-1">
                 Please check Terms and Conditions & Privacy Policy
               </p>
             )}
           </div>
-          <div className="my-5">
-            <PDFDownloadLink
-              document={
-                <CIRCPdf
-                  data={{
-                    rate,
-                    time,
-                    principal,
-                    frequencyName,
-                    compoundInterest,
-                    chartBase64,
-                    name,
-                    email,
-                  }}
-                />
-              }
-              fileName="dynamic_document.pdf"
-            >
-              <button
-                className="bg-black text-white w-full rounded-[10px] py-[0.8rem]"
-                type="button"
-              >
-                Submit
-              </button>
-            </PDFDownloadLink>
-          </div>
 
           <div>
-            <PDFDownloadLink
-              document={
-                <CIRCPdf
-                  data={{
-                    rate,
-                    time,
-                    principal,
-                    frequencyName,
-                    compoundInterest,
-                    chartBase64,
-                  }}
-                />
-              }
-              fileName="dynamic_document.pdf"
-            >
+            {base64 && checked ? (
+              <PDFDownloadLink
+                document={<PdfComponent data={pdfData} />}
+                fileName={fileName}
+              >
+                <button
+                  className={`text-white w-full rounded-[10px] py-[0.8rem] flex justify-center items-center h-[50px] ${
+                    checked ? "bg-black" : "bg-gray-300"
+                  }`}
+                  type="button"
+                  disabled={!checked || isLoading ? true : false}
+                  onClick={handleDownloadPdf}
+                >
+                  {isLoading ? (
+                    <Icon
+                      className="text-white text-[2rem]"
+                      icon="line-md:loading-loop"
+                    />
+                  ) : (
+                    "Download"
+                  )}
+                </button>
+              </PDFDownloadLink>
+            ) : (
               <button
-                className={`text-white w-full rounded-[10px] py-[0.8rem] ${checked ? 'bg-black' : 'bg-gray-300'}`}
-                type="button"
-                disabled={checked ? false : true}
+                onClick={handleValidateCheck}
+                className="text-white w-full rounded-[10px] py-[0.8rem] flex justify-center items-center h-[50px] bg-black"
               >
                 Download
               </button>
-            </PDFDownloadLink>
+            )}
           </div>
         </div>
       </Modal>
