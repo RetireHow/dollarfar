@@ -8,6 +8,7 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import { assets } from "../../assets/assets";
+import { RRSPInput, RRSPResult } from "../../redux/features/RRSP/RRSP.types";
 
 // Define styles for the PDF
 const styles = StyleSheet.create({
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
   },
   watermark: {
     position: "absolute",
-    top: "55%",
+    top: "48%",
     left: "35%",
     transform: "translate(-50%, -50%) rotate(-20deg)",
     fontSize: 50,
@@ -44,9 +45,27 @@ const styles = StyleSheet.create({
   },
 });
 
+interface TRRSPPdfData {
+  input: RRSPInput;
+  result: RRSPResult;
+  name?: string;
+  email?: string;
+  base64: string;
+}
+
 // Define a new PDF document component
-export const RRSPPdf = ({ data }: { data: any }) => {
-  const { name, email, base64 } = data || {};
+export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
+  const { name, email, base64, input, result } = data || {};
+  const {
+    contributionAmount,
+    contributionFrequency,
+    currentAge,
+    currentRRSPSavings,
+    rateOfReturn,
+    retirementAge,
+  } = input || {};
+
+  const { investmentEarnings, totalContributions, totalSavings } = result || {};
 
   return (
     <Document>
@@ -89,10 +108,133 @@ export const RRSPPdf = ({ data }: { data: any }) => {
             <Text style={styles.title}>$ - CAD</Text>
           </View>
 
+          {/* Card Container  */}
+          <View style={styles.section2}>
+            <View
+              style={{
+                border: "1px solid #EAECF0",
+                width: "50%",
+                padding: 16,
+                borderRadius: 5,
+                backgroundColor: "#F8F8F8",
+                flexDirection: "column",
+                gap: 16,
+                fontSize: 12,
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>Current Age (Years)</Text>
+                <Text>{currentAge}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>
+                  Your plan to Retire in (Years)
+                </Text>
+                <Text>{retirementAge}</Text>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>
+                  Ongoing Contribution Amount
+                </Text>
+                <Text>${contributionAmount}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>Current RRSP Savings</Text>
+                <Text>${currentRRSPSavings}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>Contribution Frequency</Text>
+                <Text>{contributionFrequency.value}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>Assumed rate of Return</Text>
+                <Text>{rateOfReturn}%</Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                border: "1px solid #EAECF0",
+                width: "50%",
+                padding: 16,
+                borderRadius: 5,
+                backgroundColor: "#F8F8F8",
+                flexDirection: "column",
+                gap: 16,
+                fontSize: 12,
+                height: "130px",
+              }}
+            >
+              <View style={{ fontWeight: "bold", color: "#000" }}>
+                <Text>Totals</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>
+                  RRSP Balance at Retirement
+                </Text>
+                <Text>${totalSavings}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>Investment Earnings</Text>
+                <Text>${investmentEarnings}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>Total Contributions</Text>
+                <Text>${totalContributions}</Text>
+              </View>
+            </View>
+          </View>
+
           {/* Chart Container  */}
           <View style={{ flexDirection: "row" }}>
             <View style={{ flex: 1 }}>
-              <Image style={{ width: "90%", height: 150 }} src={base64} />
+              <Image style={{ width: "100%", height: 300 }} src={base64} />
             </View>
           </View>
         </View>

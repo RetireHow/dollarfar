@@ -3,7 +3,7 @@ import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function RRSPCard() {
   const { result } = useAppSelector((state) => state.rrspCalculator);
-  const { investmentEarnings, rrspBalanceAtRetirement, totalSavings } =
+  const { investmentEarnings, totalContributions, totalSavings } =
     result || {};
   return (
     <section className="flex flex-col justify-center">
@@ -14,7 +14,7 @@ export default function RRSPCard() {
 
         <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4 font-medium">
           <p>RRSP Balance at Retirement</p>
-          <p>${numberWithCommas(rrspBalanceAtRetirement as number)}</p>
+          <p>${numberWithCommas(totalSavings as number)}</p>
         </div>
 
         <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4 font-medium">
@@ -23,8 +23,8 @@ export default function RRSPCard() {
         </div>
 
         <div className="flex items-center justify-between text-[1.25rem] font-medium">
-          <p>Savings</p>
-          <p>${numberWithCommas(totalSavings as number)}</p>
+          <p>Total Contributions</p>
+          <p>${numberWithCommas(totalContributions as number)}</p>
         </div>
       </div>
     </section>

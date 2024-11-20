@@ -1,44 +1,64 @@
-// utils/calculateRRSP.ts
-import { RRSPCalculatorInput, RRSPCalculatorResult } from "./RRSP.types";
+import { RRSPBreakdown, RRSPInput, RRSPResult } from "./RRSP.types";
 
-export const calculateRRSP = (
-  input: RRSPCalculatorInput
-): RRSPCalculatorResult => {
-  const {
-    currentAge,
-    retirementAge,
-    ongoingContribution,
-    currentRRSP,
-    contributionFrequency, // "Monthly" or "Annually"
-    rateOfReturn // Annual rate in decimal form, e.g., 5% as 0.05
-  } = input;
+export function calculateRRSPTotalSavings({
+  currentAge,
+  retirementAge,
+  contributionAmount,
+  contributionFrequency,
+  rateOfReturn,
+  currentRRSPSavings,
+}: RRSPInput): RRSPResult {
+  // Constants
+  const compoundingPeriods = contributionFrequency.value === "Monthly" ? 12 : 1;
+  const rateOfReturnDecimal = rateOfReturn / 100;
+  const ratePerPeriod = rateOfReturnDecimal / compoundingPeriods;
 
-  //Convert return to decimal
-  const decimalRateOfReturn = rateOfReturn/100;
+  // Total savings and contribution accumulators
+  let totalSavings = currentRRSPSavings; // Start with current savings
+  let totalContributions = 0; // Initialize contributions
+  const savingsByAge: RRSPBreakdown[] = [];
 
-  const yearsToRetirement = retirementAge - currentAge;
-  const totalPeriods = contributionFrequency.value === "Monthly" ? yearsToRetirement * 12 : yearsToRetirement;
-  const ratePerPeriod = contributionFrequency.value === "Monthly" ? decimalRateOfReturn / 12 : decimalRateOfReturn;
-  
-  // Future Value of current RRSP balance with compound interest
-  const futureValueCurrentSavings = currentRRSP * Math.pow((1 + ratePerPeriod), totalPeriods);
+  // Loop through each year
+  for (let age = currentAge; age < retirementAge; age++) {
+    let yearSavings = 0;
 
-  // Future Value of contributions
-  const futureValueContributions = ongoingContribution * 
-    ((Math.pow(1 + ratePerPeriod, totalPeriods) - 1) / ratePerPeriod);
+    // Calculate future value for each period within the year
+    for (let period = 0; period < compoundingPeriods; period++) {
+      const periodsRemaining =
+        (retirementAge - age) * compoundingPeriods - period;
 
-  // Total RRSP Balance at Retirement
-  const rrspBalanceAtRetirement = futureValueCurrentSavings + futureValueContributions;
+      // Contribution compounding at the end of the period
+      yearSavings +=
+        contributionAmount * Math.pow(1 + ratePerPeriod, periodsRemaining);
+    }
 
-  // Total Contributions made
-  const totalContributions = ongoingContribution * totalPeriods;
+    // Add the year's contributions to the total contributions
+    totalContributions += contributionAmount * compoundingPeriods;
 
-  // Investment Earnings
-  const investmentEarnings = rrspBalanceAtRetirement - totalContributions;
+    // Add the year's savings to the total
+    totalSavings += yearSavings;
 
+    // Store cumulative savings by age, rounding to 2 decimal places
+    savingsByAge.push({
+      age,
+      Savings: totalSavings.toFixed(2), // Gradual increase
+    });
+  }
+
+  // Round total savings to match online calculator's result more closely
+  totalSavings = Number(totalSavings.toFixed(2));
+  console.log("Total Savings==> ", totalSavings);
+
+  // Calculate investment earnings
+  const investmentEarnings = (
+    Number(totalSavings) - totalContributions
+  ).toFixed(2);
+
+  // Return final total savings, total contributions, investment earnings, and breakdown
   return {
-    rrspBalanceAtRetirement: rrspBalanceAtRetirement,
-    investmentEarnings: investmentEarnings,
-    totalSavings: totalContributions
+    totalSavings, // RRSP Balance at Retirement
+    totalContributions,
+    investmentEarnings: Number(investmentEarnings),
+    savingsByAge,
   };
-};
+}

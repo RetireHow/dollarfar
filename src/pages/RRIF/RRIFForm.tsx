@@ -197,8 +197,8 @@ export default function RRIFForm() {
               )
             }
           >
-            <Radio value="Government">Government</Radio>
-            <Radio value="Mannual">Mannual</Radio>
+            <Radio value="Government">Required minimum based on age</Radio>
+            <Radio value="Mannual">Optional Amount</Radio>
           </Radio.Group>
         </div>
       </div>

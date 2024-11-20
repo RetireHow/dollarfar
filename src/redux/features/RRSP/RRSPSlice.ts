@@ -1,27 +1,27 @@
 // slices/rrspCalculatorSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RRSPCalculatorInput, RRSPCalculatorResult } from "./RRSP.types";
-import { calculateRRSP } from "./RRSP.utils";
+import { RRSPInput, RRSPResult } from "./RRSP.types";
+import { calculateRRSPTotalSavings } from "./RRSP.utils";
 
 interface RRSPCalculatorState {
-  input: RRSPCalculatorInput;
-  result: RRSPCalculatorResult | null;
+  input: RRSPInput;
+  result: RRSPResult | null;
 }
 
 const initialState: RRSPCalculatorState = {
   input: {
-    currentAge: 25,
-    retirementAge: 55,
-    preTaxIncome: 100000,
-    ongoingContribution: 1000,
-    currentRRSP: 150000,
+    currentAge: 30,
+    retirementAge: 50,
+    contributionAmount: 300,
+    currentRRSPSavings: 0,
     contributionFrequency: { label: "Monthly", value: "Monthly" },
     rateOfReturn: 5,
   },
   result: {
-    investmentEarnings: 0,
-    rrspBalanceAtRetirement: 0,
     totalSavings: 0,
+    totalContributions: 0,
+    investmentEarnings: 0,
+    savingsByAge: [],
   },
 };
 
@@ -29,11 +29,11 @@ const rrspCalculatorSlice = createSlice({
   name: "rrspCalculator",
   initialState,
   reducers: {
-    setInput: (state, action: PayloadAction<RRSPCalculatorInput>) => {
+    setInput: (state, action: PayloadAction<RRSPInput>) => {
       state.input = action.payload;
     },
     calculate: (state) => {
-      state.result = calculateRRSP(state.input);
+      state.result = calculateRRSPTotalSavings(state.input);
     },
   },
 });

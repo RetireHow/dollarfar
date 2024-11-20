@@ -1,18 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// types.ts
-export interface RRSPCalculatorInput {
-    currentAge: number;
-    retirementAge: number;
-    preTaxIncome: number;
-    ongoingContribution: number;
-    currentRRSP: number;
-    contributionFrequency:any;
-    rateOfReturn: number; // e.g., 5% should be passed as 0.05
-  }
-  
-  export interface RRSPCalculatorResult {
-    investmentEarnings: number;
-    rrspBalanceAtRetirement: number;
-    totalSavings: number;
-  }
-  
+export interface RRSPInput {
+  currentAge: number;
+  retirementAge: number;
+  contributionAmount: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  contributionFrequency: any;
+  rateOfReturn: number; // Annual rate of return as a decimal (e.g., 0.05 for 5%)
+  currentRRSPSavings: number; // Initial savings in RRSP
+}
+
+export interface RRSPBreakdown {
+  age: number;
+  Savings: string; // Cumulative savings as a formatted string
+}
+
+export interface RRSPResult {
+  totalSavings: number; // RRSP Balance at Retirement as a formatted string
+  totalContributions: number; // Total contributions made
+  investmentEarnings: number; // Earnings from investments as a formatted string
+  savingsByAge: RRSPBreakdown[]; // Yearly savings breakdown
+}

@@ -14,6 +14,8 @@ import comprehensiveRetirement from "./comprehensive-retirement.svg";
 import registeredRetirementSavings from "./registered-retirement-savings.svg";
 import registeredRetirementIncome from "./registered-retirement-income.svg";
 import dollarfarPngLogo from "./dollarfar-png-logo.png";
+import costOfLeavingFrame from "./cost-of-leaving-frame.png";
+import comprehensiveRetirementFrame from "./comprehensive-retirement-frame.png";
 
 export const assets = {
   siteLogo,
@@ -31,5 +33,7 @@ export const assets = {
   comprehensiveRetirement,
   registeredRetirementIncome,
   registeredRetirementSavings,
-  dollarfarPngLogo
+  dollarfarPngLogo,
+  costOfLeavingFrame,
+  comprehensiveRetirementFrame,
 };

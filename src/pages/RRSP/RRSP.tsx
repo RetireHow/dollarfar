@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import { assets } from "../../assets/assets";
 import PageHero from "../../components/UI/PageHero";
-import RRSPBarChart from "./RRSPBarChart";
 import RRSPCard from "./RRSPCard";
 import RRSPDescription from "./RRSPDescription";
 import RRSPForm from "./RRSPForm";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import DownloadModal from "../../components/DownloadModal";
 import { RRSPPdf } from "./RRSPPdf";
+import RRSPAreaChart from "./RRSPAreaChart";
+import { useAppSelector } from "../../redux/hooks";
 
 const data = {
   title: "Registered Retirement Savings Plan (RRSP) Calculator",
@@ -20,6 +21,7 @@ export default function RRSP() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+  const { result, input } = useAppSelector((state) => state.rrspCalculator);
   return (
     <main className="mb-[5rem]">
       <div data-html2canvas-ignore>
@@ -44,7 +46,7 @@ export default function RRSP() {
                 />
               </div>
               <DownloadModal
-                calculatorData={{}}
+                calculatorData={{result, input}}
                 fileName="RRSP Report"
                 id="RRSP-Chart"
                 PdfComponent={RRSPPdf}
@@ -57,7 +59,7 @@ export default function RRSP() {
           <RRSPForm />
           <RRSPCard />
         </div>
-        <RRSPBarChart />
+        <RRSPAreaChart />
       </section>
 
       <div data-html2canvas-ignore>

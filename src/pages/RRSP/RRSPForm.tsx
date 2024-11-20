@@ -71,13 +71,12 @@ export default function RRSPForm() {
   const dispatch = useAppDispatch();
   const { input } = useAppSelector((state) => state.rrspCalculator);
   const {
-    currentAge,
-    retirementAge,
-    currentRRSP,
-    ongoingContribution,
-    preTaxIncome,
-    rateOfReturn,
+    contributionAmount,
     contributionFrequency,
+    currentAge,
+    currentRRSPSavings,
+    rateOfReturn,
+    retirementAge,
   } = input;
 
   const [error, setError] = useState(false);
@@ -86,11 +85,10 @@ export default function RRSPForm() {
     if (
       !currentAge ||
       !retirementAge ||
-      !currentRRSP ||
-      !ongoingContribution ||
-      !preTaxIncome ||
+      !contributionAmount ||
       !rateOfReturn ||
-      !contributionFrequency
+      !contributionFrequency ||
+      currentAge >= retirementAge
     ) {
       setError(true);
     } else {
@@ -99,9 +97,7 @@ export default function RRSPForm() {
   }, [
     currentAge,
     retirementAge,
-    currentRRSP,
-    ongoingContribution,
-    preTaxIncome,
+    contributionAmount,
     rateOfReturn,
     contributionFrequency,
   ]);
@@ -112,6 +108,9 @@ export default function RRSPForm() {
   };
 
   const handleCalculate = () => {
+    if (isNaN(currentRRSPSavings)) {
+      dispatch(setInput({ ...input, currentRRSPSavings: 0 }));
+    }
     dispatch(calculate());
   };
 
@@ -148,23 +147,12 @@ export default function RRSPForm() {
             value={retirementAge}
             onChange={handleChange}
           />
+          {error && currentAge >= retirementAge && (
+            <p className="text-[14px] text-red-500 font-bold mt-1">
+              Must be greater than current age.
+            </p>
+          )}
         </div>
-      </div>
-
-      <div>
-        <div className="flex items-center gap-2 font-semibold mb-2">
-          <p>Pre-tax Income</p>
-          <CustomTooltip title="Enter the year you plan to begin withdrawals from your RRIF." />
-        </div>
-        <input
-          className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
-          type="number"
-          placeholder="$0"
-          onWheel={(e) => e.currentTarget.blur()}
-          name="preTaxIncome"
-          value={preTaxIncome}
-          onChange={handleChange}
-        />
       </div>
 
       <div>
@@ -177,8 +165,8 @@ export default function RRSPForm() {
           type="number"
           placeholder="$0"
           onWheel={(e) => e.currentTarget.blur()}
-          name="ongoingContribution"
-          value={ongoingContribution}
+          name="contributionAmount"
+          value={contributionAmount}
           onChange={handleChange}
         />
       </div>
@@ -193,8 +181,8 @@ export default function RRSPForm() {
           type="number"
           placeholder="$0"
           onWheel={(e) => e.currentTarget.blur()}
-          name="currentRRSP"
-          value={currentRRSP}
+          name="currentRRSPSavings"
+          value={currentRRSPSavings}
           onChange={handleChange}
         />
       </div>
@@ -262,7 +250,9 @@ export default function RRSPForm() {
         <button
           onClick={handleCalculate}
           disabled={error}
-          className={`text-white p-[0.8rem] rounded-[10px] w-[200px] ${error ? 'bg-gray-300' : 'bg-black'}`}
+          className={`text-white p-[0.8rem] rounded-[10px] w-[200px] ${
+            error ? "bg-gray-300" : "bg-black"
+          }`}
         >
           Calculate
         </button>

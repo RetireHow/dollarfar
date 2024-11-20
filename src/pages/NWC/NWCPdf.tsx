@@ -180,7 +180,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   <Text style={{ color: "#696969" }}>
                     Savings & Investments
                   </Text>
-                  <Text>{savingsInvestment}</Text>
+                  <Text>${savingsInvestment}</Text>
                 </View>
                 <View
                   style={{
