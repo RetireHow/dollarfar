@@ -17,10 +17,14 @@ export const calcBalanceAgeByAge = (
     const balanceAtEndOfYear: number =
       balanceAtBeginningOfYear + interest - annualWithdrawalAmount;
 
+    const mannualWithdrawalPercentage =
+      (annualWithdrawalAmount * 100) / balanceAtBeginningOfYear;
+
     ageBreakdownData.push({
       balanceAtBeginningOfTheYear: Number(balanceAtBeginningOfYear.toFixed(2)),
       balanceAtEndOfTheYear: Number(balanceAtEndOfYear.toFixed(2)),
       annualWithdrawalAmount,
+      mannualWithdrawalPercentage:mannualWithdrawalPercentage.toFixed(2),
       age: year,
     });
 
@@ -77,7 +81,7 @@ export const calcBalanceAgeByAgeGovernmentAge = (
   endYear: number
 ) => {
   const ageBreakdownData: TAgePeriod[] = [];
-  let totalWithdrawanOverLifeTime:number = 0;
+  let totalWithdrawanOverLifeTime: number = 0;
   let balanceAtBeginningOfYear: number = initialBalance;
 
   for (let year = startYear; year <= endYear; year++) {
@@ -88,8 +92,9 @@ export const calcBalanceAgeByAgeGovernmentAge = (
       interest -
       balanceAtBeginningOfYear * withdrawalAgeDecimal;
 
-      //calculate total withdrawal
-      totalWithdrawanOverLifeTime += (balanceAtBeginningOfYear * withdrawalAgeDecimal)
+    //calculate total withdrawal
+    totalWithdrawanOverLifeTime +=
+      balanceAtBeginningOfYear * withdrawalAgeDecimal;
 
     ageBreakdownData.push({
       balanceAtBeginningOfTheYear: Number(balanceAtBeginningOfYear.toFixed(2)),
@@ -98,12 +103,12 @@ export const calcBalanceAgeByAgeGovernmentAge = (
         (balanceAtBeginningOfYear * withdrawalAgeDecimal).toFixed(2)
       ),
       age: year,
-      minWithdrawalPercentage:ageWithdrawalPercentages[year]
+      minWithdrawalPercentage: ageWithdrawalPercentages[year],
     });
 
     // Update the beginning balance for the next year
     balanceAtBeginningOfYear = balanceAtEndOfYear;
   }
 
-  return {ageBreakdownData, totalWithdrawanOverLifeTime};
+  return { ageBreakdownData, totalWithdrawanOverLifeTime };
 };

@@ -8,7 +8,6 @@ export default function RRIFTable() {
     withdrawalStartYear,
     withdrawalEndYear,
     remainingRRRIFBalanceEndOfPeriod,
-    withdrawType,
   } = useAppSelector((state) => state.RRIF);
   const years = withdrawalEndYear - withdrawalStartYear;
   return (
@@ -19,10 +18,8 @@ export default function RRIFTable() {
             <tr className="border-b-[1px] border-b-[#0000001A]">
               <th className="p-3">Age</th>
               <th className="p-3">Balance at Beginning of the Year</th>
-              {withdrawType === "Government" && (
-                <th className="p-3">Min Withdrawal Percentage</th>
-              )}
               <th className="p-3">Min Withdrawal Amount</th>
+              <th className="p-3">Min Withdrawal Percentage</th>
               <th className="p-3">Rate of Interest</th>
               <th className="p-3">Balance at End of the Year</th>
             </tr>
@@ -32,10 +29,12 @@ export default function RRIFTable() {
               <tr key={index} className="border-b-[1px] border-b-[#0000001A]">
                 <td className="p-3">{item.age}</td>
                 <td className="p-3">${item.balanceAtBeginningOfTheYear}</td>
-                {item.minWithdrawalPercentage && (
-                  <td className="p-3">{item.minWithdrawalPercentage}%</td>
-                )}
                 <td className="p-3">${item.annualWithdrawalAmount}</td>
+                <td className="p-3">
+                  {item.minWithdrawalPercentage ||
+                    item.mannualWithdrawalPercentage}
+                  %
+                </td>
                 <td className="p-3">{rateOfReturn}%</td>
                 <td className="p-3">${item.balanceAtEndOfTheYear}</td>
               </tr>

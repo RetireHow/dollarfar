@@ -3,7 +3,7 @@ import { assets } from "../../assets/assets";
 import PageHero from "../../components/UI/PageHero";
 import DownloadModal from "../../components/DownloadModal";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { CRICPdf } from "./CIRCPdf";
+import { CRICPdf } from "./CRICPdf";
 
 const data = {
   title: "Comprehensive Retirement Income Calculator",
