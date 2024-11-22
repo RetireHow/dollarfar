@@ -27,6 +27,8 @@ export default function RRIFBarChart() {
     (state) => state.RRIF
   );
 
+  const { currency, currencyFullName } = useAppSelector((state) => state.globalCurrency);
+
   return (
     <div className="lg:flex items-center gap-5 my-[5rem]">
       <div
@@ -51,7 +53,7 @@ export default function RRIFBarChart() {
               />
 
               <XAxis dataKey="age" name="Age" fontSize={12} />
-              <YAxis tickFormatter={(value) => `$${value}`} fontSize={12} />
+              <YAxis tickFormatter={(value) => `${currency}${value}`} fontSize={12} />
               <Tooltip />
               <Bar
                 dataKey="annualWithdrawalAmount"
@@ -82,8 +84,8 @@ export default function RRIFBarChart() {
           <p>Minimum Withdrawal Amount</p>
         </li>
         <li className="flex items-center gap-[0.5rem] font-semibold">
-          <p className="min-w-[30px]">$</p>
-          <p>CAD - Canadian Dollar</p>
+          <p className="min-w-[30px]">{currency}</p>
+          <p>{currencyFullName}</p>
         </li>
       </ul>
     </div>

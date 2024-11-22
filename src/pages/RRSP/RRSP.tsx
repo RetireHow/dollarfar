@@ -8,7 +8,10 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import DownloadModal from "../../components/DownloadModal";
 import { RRSPPdf } from "./RRSPPdf";
 import RRSPAreaChart from "./RRSPAreaChart";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { Select } from "antd";
+import { setCurrency } from "../../redux/features/other/globalCurrency";
+import { currencyOptions } from "../options/currencyOptions";
 
 const data = {
   title: "Registered Retirement Savings Plan (RRSP) Calculator",
@@ -21,7 +24,11 @@ export default function RRSP() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+  const dispatch = useAppDispatch();
   const { result, input } = useAppSelector((state) => state.rrspCalculator);
+  const { currency, currencyFullName } = useAppSelector(
+    (state) => state.globalCurrency
+  );
   return (
     <main className="mb-[5rem]">
       <div data-html2canvas-ignore>
@@ -36,17 +43,26 @@ export default function RRSP() {
               Registered Retirement Savings Plan (RRSP) Calculator
             </h3>
             <div className="flex items-center flex-wrap gap-5">
-              <div className="flex items-center md:gap-2 gap-1 border-[1px] border-[#0000001A] md:px-[1.25rem] px-[0.5rem] md:py-[10px] py-[8px] rounded-[10px] font-medium md:w-[140px] w-[110px] cursor-pointer">
-                {/* <Icon className="w-[1.5rem] h-[1.5rem]" icon="mdi:dollar" /> */}
-                <p>$</p>
-                <p>CAD</p>
-                <Icon
-                  className="w-[1.5rem] h-[1.5rem]"
-                  icon="iconamoon:arrow-down-2"
-                />
+              <div>
+                <Select
+                  value={currency}
+                  size="large"
+                  style={{ width: 130, height: 45, border: "1px solid gray" }}
+                  className="!border-none"
+                  onChange={(value) => {
+                    dispatch(setCurrency(value));
+                  }}
+                  options={currencyOptions}
+                  suffixIcon={
+                    <Icon
+                      className="text-[1.5rem] text-gray-600"
+                      icon="iconamoon:arrow-down-2"
+                    />
+                  }
+                ></Select>
               </div>
               <DownloadModal
-                calculatorData={{result, input}}
+                calculatorData={{ result, input, currency, currencyFullName }}
                 fileName="RRSP Report"
                 id="RRSP-Chart"
                 PdfComponent={RRSPPdf}

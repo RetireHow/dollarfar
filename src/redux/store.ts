@@ -6,6 +6,7 @@ import budgetReducer from "./features/BgtSlice/BgtSlice";
 import stepperReducer from "./features/stepperSlice/stepperSclie";
 import RRIFReducer from "./features/RRIF/RRIFSlice";
 import RRSPReducer from "./features/RRSP/RRSPSlice";
+import globalCurrencyReducer from "./features/other/globalCurrency";
 
 // Create and configure the store
 const store = configureStore({
@@ -16,6 +17,7 @@ const store = configureStore({
     budgetCalculator: budgetReducer,
     RRIF: RRIFReducer,
     rrspCalculator: RRSPReducer,
+    globalCurrency: globalCurrencyReducer,
     stepper: stepperReducer,
   },
 });

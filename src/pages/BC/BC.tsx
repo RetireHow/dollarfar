@@ -2,11 +2,14 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { assets } from "../../assets/assets";
 import DownloadModal from "../../components/DownloadModal";
 import PageHero from "../../components/UI/PageHero";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { BCPdf } from "./BCPdf";
 import BudgetCalcLayout from "./BudgetCalcLayout";
 import BudgetDescription from "./BudgetDescription";
 import BudgetPieChart from "./BudgetPieChart";
+import { Select } from "antd";
+import { currencyOptions } from "../options/currencyOptions";
+import { setCurrency } from "../../redux/features/other/globalCurrency";
 
 const data = {
   title: "Budget calculator/cash flow calculator",
@@ -16,6 +19,7 @@ const data = {
 };
 
 export default function BC() {
+  const dispatch = useAppDispatch();
   const {
     income: { subTotal: totalIncome },
     housing: { subTotal: houseExpenses },
@@ -25,6 +29,10 @@ export default function BC() {
     loans: { subTotal: totalLoans },
     savings: { subTotal: totalSavings },
   } = useAppSelector((state) => state.budgetCalculator);
+
+  const { currency, currencyFullName } = useAppSelector(
+    (state) => state.globalCurrency
+  );
 
   // Calculate cashflow deficit
   const totalExpenses =
@@ -46,6 +54,8 @@ export default function BC() {
     totalSavings,
     totalExpenses,
     cashflowDeficit,
+    currency,
+    currencyFullName,
   };
 
   return (
@@ -63,14 +73,23 @@ export default function BC() {
               Compound Interest Rate Calculator
             </h3>
             <div className="flex items-center flex-wrap gap-5">
-              <div className="flex items-center md:gap-2 gap-1 border-[1px] border-[#0000001A] md:px-[1.25rem] px-[0.5rem] md:py-[10px] py-[8px] rounded-[10px] font-medium md:w-[140px] w-[110px] cursor-pointer">
-                {/* <Icon className="w-[1.5rem] h-[1.5rem]" icon="mdi:dollar" /> */}
-                <p>$</p>
-                <p>CAD</p>
-                <Icon
-                  className="w-[1.5rem] h-[1.5rem]"
-                  icon="iconamoon:arrow-down-2"
-                />
+              <div>
+                <Select
+                  value={currency}
+                  size="large"
+                  style={{ width: 130, height: 45, border: "1px solid gray" }}
+                  className="!border-none"
+                  onChange={(value) => {
+                    dispatch(setCurrency(value));
+                  }}
+                  options={currencyOptions}
+                  suffixIcon={
+                    <Icon
+                      className="text-[1.5rem] text-gray-600"
+                      icon="iconamoon:arrow-down-2"
+                    />
+                  }
+                ></Select>
               </div>
               <DownloadModal
                 calculatorData={calculatorData}
@@ -87,9 +106,10 @@ export default function BC() {
         <BudgetPieChart />
 
         <p className="md:text-[1.25rem] text-[1rem] font-semibold text-left mt-5">
-          "Your total annual income is ${totalIncome}, and after your expenses
-          of ${totalExpenses}, you have ${cashflowDeficit} left for savings or
-          investments."
+          "Your total annual income is {currency}
+          {totalIncome}, and after your expenses of {currency}
+          {totalExpenses}, you have {currency}
+          {cashflowDeficit} left for savings or investments."
         </p>
       </section>
 

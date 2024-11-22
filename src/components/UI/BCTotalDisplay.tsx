@@ -1,6 +1,7 @@
 import { Select } from "antd";
 import CustomTooltip from "./CustomTooltip";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useAppSelector } from "../../redux/hooks";
 
 type TOption = {
   label: string;
@@ -36,6 +37,7 @@ export default function BCTotalDisplay({ data }: { data: TData }) {
   const handleShowInputs = () => {
     setShowSubInputs(!showSubInputs);
   };
+  const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <div>
       <div className="flex justify-between items-center text-[1rem] mb-1 overflow-x-auto">
@@ -65,7 +67,8 @@ export default function BCTotalDisplay({ data }: { data: TData }) {
           onClick={handleShowInputs}
           className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] cursor-pointer w-full"
         >
-          Total Value: ${total || "0.00"}
+          Total Value: {currency}
+          {total || "0.00"}
         </div>
         <div>
           <Select

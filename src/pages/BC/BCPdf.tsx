@@ -56,6 +56,8 @@ type TCalculatorData = {
   base64: string;
   name?: string;
   email?: string;
+  currency: string;
+  currencyFullName: string;
 };
 
 // Define a new PDF document component
@@ -73,6 +75,8 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
     totalExpenses,
     cashflowDeficit,
     base64,
+    currency,
+    currencyFullName,
   } = data || {};
 
   return (
@@ -113,7 +117,9 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
           {/* Title  */}
           <View style={styles.section}>
             <Text>Budget Calculator</Text>
-            <Text style={styles.title}>$ - CAD</Text>
+            <Text style={styles.title}>
+              {currency} - {currencyFullName}
+            </Text>
           </View>
 
           {/* Totals Card  */}
@@ -140,7 +146,10 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
               }}
             >
               <Text style={{ color: "#696969" }}>Income</Text>
-              <Text>${totalIncome}</Text>
+              <Text>
+                {currency}
+                {totalIncome}
+              </Text>
             </View>
             <View
               style={{
@@ -149,7 +158,10 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
               }}
             >
               <Text style={{ color: "#696969" }}>Housing Expenses</Text>
-              <Text>${houseExpenses}</Text>
+              <Text>
+                {currency}
+                {houseExpenses}
+              </Text>
             </View>
             <View
               style={{
@@ -158,7 +170,10 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
               }}
             >
               <Text style={{ color: "#696969" }}>Transport Expenses</Text>
-              <Text>${transportExpenses}</Text>
+              <Text>
+                {currency}
+                {transportExpenses}
+              </Text>
             </View>
             <View
               style={{
@@ -167,7 +182,10 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
               }}
             >
               <Text style={{ color: "#696969" }}>Educational Expenses</Text>
-              <Text>${educationalExpenses}</Text>
+              <Text>
+                {currency}
+                {educationalExpenses}
+              </Text>
             </View>
             <View
               style={{
@@ -176,7 +194,10 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
               }}
             >
               <Text style={{ color: "#696969" }}>Other Expenses</Text>
-              <Text>${otherExpenses}</Text>
+              <Text>
+                {currency}
+                {otherExpenses}
+              </Text>
             </View>
             <View
               style={{
@@ -185,7 +206,10 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
               }}
             >
               <Text style={{ color: "#696969" }}>Loans</Text>
-              <Text>${totalLoans}</Text>
+              <Text>
+                {currency}
+                {totalLoans}
+              </Text>
             </View>
             <View
               style={{
@@ -194,7 +218,10 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
               }}
             >
               <Text style={{ color: "#696969" }}>Savings</Text>
-              <Text>${totalSavings}</Text>
+              <Text>
+                {currency}
+                {totalSavings}
+              </Text>
             </View>
 
             <View
@@ -208,7 +235,10 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
               }}
             >
               <Text>Cashflow Deficit</Text>
-              <Text>${cashflowDeficit}</Text>
+              <Text>
+                {currency}
+                {cashflowDeficit}
+              </Text>
             </View>
           </View>
 
@@ -251,7 +281,10 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                     height: "6px",
                   }}
                 ></Text>
-                <Text>Housing Expenses (${houseExpenses})</Text>
+                <Text>
+                  Housing Expenses ({currency}
+                  {houseExpenses})
+                </Text>
               </View>
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
@@ -264,7 +297,10 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                     height: "6px",
                   }}
                 ></Text>
-                <Text>Transport Expenses (${transportExpenses})</Text>
+                <Text>
+                  Transport Expenses ({currency}
+                  {transportExpenses})
+                </Text>
               </View>
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
@@ -277,7 +313,10 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                     height: "6px",
                   }}
                 ></Text>
-                <Text>Educational Expenses (${educationalExpenses})</Text>
+                <Text>
+                  Educational Expenses ({currency}
+                  {educationalExpenses})
+                </Text>
               </View>
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
@@ -290,7 +329,10 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                     height: "6px",
                   }}
                 ></Text>
-                <Text>Other Expenses (${otherExpenses})</Text>
+                <Text>
+                  Other Expenses ({currency}
+                  {otherExpenses})
+                </Text>
               </View>
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
@@ -303,7 +345,10 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                     height: "6px",
                   }}
                 ></Text>
-                <Text>Loans (${totalLoans})</Text>
+                <Text>
+                  Loans ({currency}
+                  {totalLoans})
+                </Text>
               </View>
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
@@ -316,7 +361,10 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                     height: "6px",
                   }}
                 ></Text>
-                <Text>Savings (${totalSavings})</Text>
+                <Text>
+                  Savings ({currency}
+                  {totalSavings})
+                </Text>
               </View>
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
@@ -329,7 +377,10 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                     height: "6px",
                   }}
                 ></Text>
-                <Text>Cashflow Deficit (${cashflowDeficit})</Text>
+                <Text>
+                  Cashflow Deficit ({currency}
+                  {cashflowDeficit})
+                </Text>
               </View>
 
               <View
@@ -341,9 +392,9 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                     width: 20,
                   }}
                 >
-                  $
+                  {currency}
                 </Text>
-                <Text>CAD - Canadian Dollar</Text>
+                <Text>{currencyFullName}</Text>
               </View>
             </View>
           </View>
@@ -354,9 +405,10 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
               lineHeight: "20px",
             }}
           >
-            "Your total annual income is ${totalIncome}, and after your expenses
-            of ${totalExpenses}, you have ${cashflowDeficit} left for savings or
-            investments."
+            "Your total annual income is {currency}
+            {totalIncome}, and after your expenses of {currency}
+            {totalExpenses}, you have {currency}
+            {cashflowDeficit} left for savings or investments."
           </Text>
         </View>
 

@@ -7,12 +7,13 @@ import CustomTooltip from "../../../components/UI/CustomTooltip";
 export default function PrincipalAmountSlider() {
   const dispatch = useAppDispatch();
   const { principal } = useAppSelector((state) => state.compoundInterest);
+  const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <div>
       <div className="flex justify-between items-center mb-[1.25rem]">
         <div className="flex items-center gap-2">
-        <p className="font-semibold text-[1.3rem]">Principle Amount</p>
-        <CustomTooltip title="This is the initial sum of money invested or loaned, before interest. Enter the base amount for the compound interest calculation."/>
+          <p className="font-semibold text-[1.3rem]">Principle Amount</p>
+          <CustomTooltip title="This is the initial sum of money invested or loaned, before interest. Enter the base amount for the compound interest calculation." />
         </div>
         <div className="relative">
           <input
@@ -24,7 +25,9 @@ export default function PrincipalAmountSlider() {
               e.currentTarget.blur()
             }
           />
-          <p className="absolute left-3 top-3 font-semibold text-[1.2rem]">$</p>
+          <p className="absolute left-3 top-3 font-semibold text-[1.2rem]">
+            {currency}
+          </p>
         </div>
       </div>
       <ReactSlider

@@ -26,6 +26,9 @@ export const NWBarChart = () => {
   const { totalAssets, totalLiabilities, netWorth } = useAppSelector(
     (state) => state.NWCalculator
   );
+  const { currency, currencyFullName } = useAppSelector(
+    (state) => state.globalCurrency
+  );
   // Data for the chart
   const data: ChartData<"bar", number[], string> = {
     labels: ["Assets", "Liabilities", "Net Worth"],
@@ -57,7 +60,7 @@ export const NWBarChart = () => {
       x: {
         ticks: {
           callback: function (value: number | string) {
-            return `$${value}`; // Format the ticks with a dollar sign
+            return `${currency}${value}`; // Format the ticks with a dollar sign
           },
         },
         grid: {
@@ -87,7 +90,7 @@ export const NWBarChart = () => {
     <div className="col-span-2 overflow-x-auto">
       <div className="min-w-[400px]">
         <div
-         id="NWC-Chart"
+          id="NWC-Chart"
           style={{ boxShadow: "0px 0px 5px 1px rgba(0, 0, 0, 0.05)" }}
           className="max-h-[300px] bg-white shadow-md rounded-lg border-[1px] border-gray-200 p-[1rem]"
         >
@@ -107,8 +110,8 @@ export const NWBarChart = () => {
             <p>Net Worth</p>
           </div>
           <div className="flex items-center md:gap-3 gap-1">
-            <p className="">$</p>
-            <p>CAD - Canadian Dollar</p>
+            <p className="">{currency}</p>
+            <p>{currencyFullName}</p>
           </div>
         </div>
       </div>

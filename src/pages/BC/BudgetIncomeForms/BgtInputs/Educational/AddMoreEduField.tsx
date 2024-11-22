@@ -1,9 +1,12 @@
 import { Icon } from "@iconify/react";
 import { useRef } from "react";
 import useBudgetDynamicInput from "../../../../../hooks/useBudgetDynamicInput";
+import { useAppSelector } from "../../../../../redux/hooks";
 
 export const AddMoreEduField = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
+
+  const { currency } = useAppSelector((state) => state.globalCurrency);
 
   const {
     newInput,
@@ -38,7 +41,7 @@ export const AddMoreEduField = () => {
               type="number"
               name={input.label.trim().split(" ").join("")}
               value={input.value}
-              placeholder="$0"
+              placeholder={`${currency}0`}
               onChange={(e) =>
                 handleDynamicInputChange(e, input.id, "educational")
               }
@@ -82,7 +85,7 @@ export const AddMoreEduField = () => {
               type="number"
               name="value"
               value={newInput.value}
-              placeholder="$0"
+              placeholder={`${currency}0`}
               onChange={handleInputChange}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()

@@ -2,12 +2,15 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { assets } from "../../assets/assets";
 import DownloadModal from "../../components/DownloadModal";
 import PageHero from "../../components/UI/PageHero";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { NWBarChart } from "./NWBarchart";
 import { NWCPdf } from "./NWCPdf";
 import NWDescription from "./NWDescription";
 import NWForm from "./NWForm";
 import NWTotal from "./NWTotal";
+import { Select } from "antd";
+import { currencyOptions } from "../options/currencyOptions";
+import { setCurrency } from "../../redux/features/other/globalCurrency";
 
 const data = {
   title: "Net worth Calculator",
@@ -17,14 +20,19 @@ const data = {
 };
 
 export default function NWC() {
+  const dispatch = useAppDispatch();
   const { totalAssets, totalLiabilities, netWorth, assets, liabilities } =
     useAppSelector((state) => state.NWCalculator);
+
+  const { currency, currencyFullName } = useAppSelector((state) => state.globalCurrency);
 
   console.log({ assets }, { liabilities });
 
   const calculatorData = {
     assets: { ...assets.totals, totalAssets },
     liabilities: { ...liabilities.totals, totalLiabilities },
+    currency, 
+    currencyFullName
   };
 
   return (
@@ -38,14 +46,23 @@ export default function NWC() {
               Net worth Calculator
             </h3>
             <div className="flex items-center flex-wrap gap-5">
-              <div className="flex items-center md:gap-2 gap-1 border-[1px] border-[#0000001A] md:px-[1.25rem] px-[0.5rem] md:py-[10px] py-[8px] rounded-[10px] font-medium md:w-[140px] w-[110px] cursor-pointer">
-                {/* <Icon className="w-[1.5rem] h-[1.5rem]" icon="mdi:dollar" /> */}
-                <p>$</p>
-                <p>CAD</p>
-                <Icon
-                  className="w-[1.5rem] h-[1.5rem]"
-                  icon="iconamoon:arrow-down-2"
-                />
+              <div>
+                <Select
+                  value={currency}
+                  size="large"
+                  style={{ width: 130, height: 45, border: "1px solid gray" }}
+                  className="!border-none"
+                  onChange={(value) => {
+                    dispatch(setCurrency(value))
+                  }}
+                  options={currencyOptions}
+                  suffixIcon={
+                    <Icon
+                      className="text-[1.5rem] text-gray-600"
+                      icon="iconamoon:arrow-down-2"
+                    />
+                  }
+                ></Select>
               </div>
               <DownloadModal
                 calculatorData={calculatorData}
@@ -66,9 +83,9 @@ export default function NWC() {
           <NWTotal />
         </div>
         <p className="md:text-[1.1rem] text-[1rem] font-semibold text-center mt-5">
-          "Based on the information provided, your total assets are $
-          {totalAssets}, and your total liabilities are ${totalLiabilities}.
-          This gives you a net worth of ${netWorth}."
+          "Based on the information provided, your total assets are {currency}
+          {totalAssets}, and your total liabilities are {currency}{totalLiabilities}.
+          This gives you a net worth of {currency}{netWorth}."
         </p>
       </section>
       <NWDescription />

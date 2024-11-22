@@ -10,11 +10,14 @@ import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 export const EntertainmentEvents = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
+
   const {
     other: {
       totals: { entertainmentEvents },
     },
   } = useAppSelector((state) => state.budgetCalculator);
+
+  const { currency } = useAppSelector((state) => state.globalCurrency);
 
   const {
     newInput,
@@ -103,7 +106,7 @@ export const EntertainmentEvents = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
               type="number"
-              placeholder="$0"
+              placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -130,7 +133,7 @@ export const EntertainmentEvents = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
               type="number"
-              placeholder="$0"
+              placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -164,7 +167,7 @@ export const EntertainmentEvents = () => {
                 type="number"
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
-                placeholder="$0"
+                placeholder={`${currency}0`}
                 onChange={(e) =>
                   handleDynamicInputChange(
                     e,
@@ -218,7 +221,7 @@ export const EntertainmentEvents = () => {
                 type="number"
                 name="value"
                 value={newInput.value}
-                placeholder="$0"
+                placeholder={`${currency}0`}
                 onChange={handleInputChange}
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()

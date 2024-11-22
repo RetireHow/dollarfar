@@ -18,6 +18,13 @@ import COLC from "../pages/COLC/COLC";
 import RRSP from "../pages/RRSP/RRSP";
 import RRIF from "../pages/RRIF/RRIF";
 import CRIC from "../pages/CRIC/CRIC";
+import GeneralInformation from "../pages/CRIC/Forms/GeneralInformation";
+import CanadaPensionPlan from "../pages/CRIC/Forms/CanadaPensionPlan";
+import EmployerPension from "../pages/CRIC/Forms/EmployerPension";
+import RetirementSavings from "../pages/CRIC/Forms/RetirementSavings";
+import OtherIncome from "../pages/CRIC/Forms/OtherIncome";
+import OldAgeSecurity from "../pages/CRIC/Forms/OldAgeSecurity";
+import Summary from "../pages/CRIC/Summary";
 
 export const router = createBrowserRouter([
   {
@@ -91,9 +98,40 @@ export const router = createBrowserRouter([
         path: "registered-retirement-income-fund-calculator",
         element: <RRIF />,
       },
+
       {
         path: "comprehensive-retirement-calculator",
         element: <CRIC />,
+        children: [
+          {
+            index: true,
+            element: <GeneralInformation />,
+          },
+          {
+            path: "canada-pension-plan",
+            element: <CanadaPensionPlan />,
+          },
+          {
+            path: "employer-pension",
+            element: <EmployerPension />,
+          },
+          {
+            path: "retirement-savings",
+            element: <RetirementSavings />,
+          },
+          {
+            path: "other-income",
+            element: <OtherIncome />,
+          },
+          {
+            path: "old-age-security",
+            element: <OldAgeSecurity />,
+          },
+          {
+            path: "summary",
+            element: <Summary />,
+          },
+        ],
       },
       {
         path: "research",

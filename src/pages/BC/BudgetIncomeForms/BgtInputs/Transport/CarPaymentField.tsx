@@ -2,10 +2,11 @@ import { Select } from "antd";
 import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { selectOptions } from "../../../BgtSelectOptions";
-import { useAppDispatch } from "../../../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 export default function CarPaymentField() {
   const dispatch = useAppDispatch()
+  const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <div>
       <div className="flex justify-between items-center text-[1rem] mb-1">
@@ -22,7 +23,7 @@ export default function CarPaymentField() {
         <input
           className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
           type="number"
-          placeholder="$0"
+          placeholder={`${currency}0`}
           autoFocus
           onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
             e.currentTarget.blur()

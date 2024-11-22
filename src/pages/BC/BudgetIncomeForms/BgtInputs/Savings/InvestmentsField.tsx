@@ -10,6 +10,7 @@ import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 export const InvestmentsField = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
+  const { currency } = useAppSelector((state) => state.globalCurrency);
   const {
     savings: {
       totals: { investments },
@@ -103,7 +104,7 @@ export const InvestmentsField = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
               type="number"
-              placeholder="$0"
+              placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -130,7 +131,7 @@ export const InvestmentsField = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
               type="number"
-              placeholder="$0"
+              placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -164,7 +165,7 @@ export const InvestmentsField = () => {
                 type="number"
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
-                placeholder="$0"
+                placeholder={`${currency}0`}
                 onChange={(e) =>
                   handleDynamicInputChange(
                     e,
@@ -218,7 +219,7 @@ export const InvestmentsField = () => {
                 type="number"
                 name="value"
                 value={newInput.value}
-                placeholder="$0"
+                placeholder={`${currency}0`}
                 onChange={handleInputChange}
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()

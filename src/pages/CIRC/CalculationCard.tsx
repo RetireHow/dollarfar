@@ -23,6 +23,7 @@ export default function CalculationCard() {
   const { frequency, compoundInterest, principal } = useAppSelector(
     (state) => state.compoundInterest
   );
+  const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <div className="space-y-[2rem] bg-[#F8F8F8] md:p-[1.5rem] p-[1rem] rounded-[10px] lg:w-[50%] w-full">
       <div className="flex justify-between items-center flex-wrap">
@@ -48,7 +49,7 @@ export default function CalculationCard() {
         <p className="font-medium">Principle Amount</p>
         <div className="flex items-center">
           {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
-          <p>$</p>
+          <p>{currency}</p>
           <p>{numberWithCommas(principal)}</p>
         </div>
       </div>
@@ -57,7 +58,7 @@ export default function CalculationCard() {
         <p className="text-[1.25rem] font-medium">Total Interest</p>
         <div className="flex items-center">
           {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
-          <p>$</p>
+          <p>{currency}</p>
           <p>{compoundInterest}</p>
         </div>
       </div>
@@ -66,7 +67,7 @@ export default function CalculationCard() {
         <p className="text-[1.25rem] font-medium">Total Amount</p>
         <div className="flex items-center gap-[2px]">
           {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
-          <p>$</p>
+          <p>{currency}</p>
           <p>{(compoundInterest + principal).toFixed(2)}</p>
         </div>
       </div>

@@ -11,6 +11,8 @@ export default function BudgetCalcCard() {
     savings: { subTotal: totalSavings },
   } = useAppSelector((state) => state.budgetCalculator);
 
+  const { currency } = useAppSelector((state) => state.globalCurrency);
+
   // Calculate cashflow deficit
   const totalExpenses =
     houseExpenses +
@@ -28,7 +30,7 @@ export default function BudgetCalcCard() {
         <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4">
           <p className="font-medium">Income</p>
           <div className="flex items-center">
-            <p>$</p>
+            <p>{currency}</p>
             <p>{totalIncome}</p>
           </div>
         </div>
@@ -36,7 +38,7 @@ export default function BudgetCalcCard() {
         <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4">
           <p className="text-[1.25rem] font-medium">House Expenses</p>
           <div className="flex items-center">
-            <p>$</p>
+            <p>{currency}</p>
             <p>{houseExpenses}</p>
           </div>
         </div>
@@ -44,7 +46,7 @@ export default function BudgetCalcCard() {
         <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4">
           <p className="text-[1.25rem] font-medium">Transport Expenses</p>
           <div className="flex items-center">
-            <p>$</p>
+            <p>{currency}</p>
             <p>{transportExpenses}</p>
           </div>
         </div>
@@ -52,7 +54,7 @@ export default function BudgetCalcCard() {
         <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4">
           <p className="text-[1.25rem] font-medium">Educational Expenses</p>
           <div className="flex items-center">
-            <p>$</p>
+            <p>{currency}</p>
             <p>{educationalExpenses}</p>
           </div>
         </div>
@@ -60,7 +62,7 @@ export default function BudgetCalcCard() {
         <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4">
           <p className="text-[1.25rem] font-medium">Other Expenses</p>
           <div className="flex items-center">
-            <p>$</p>
+            <p>{currency}</p>
             <p>{otherExpenses}</p>
           </div>
         </div>
@@ -68,7 +70,7 @@ export default function BudgetCalcCard() {
         <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4">
           <p className="text-[1.25rem] font-medium">Loans</p>
           <div className="flex items-center">
-            <p>$</p>
+            <p>{currency}</p>
             <p>{totalLoans}</p>
           </div>
         </div>
@@ -76,19 +78,19 @@ export default function BudgetCalcCard() {
         <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4">
           <p className="text-[1.25rem] font-medium">Savings</p>
           <div className="flex items-center">
-            <p>$</p>
+            <p>{currency}</p>
             <p>{totalSavings}</p>
           </div>
         </div>
 
         <div
-          className={`flex items-center justify-between text-white px-[1.25rem] text-[1.25rem] rounded-[10px] h-[50px] ${
+          className={`flex items-center justify-between text-white px-[1.25rem] text-[1.25rem] rounded-[10px] h-[50px] {currency}{
             totalIncome < totalExpenses ? "bg-[#FF0000]" : "bg-[#06D206]"
           }`}
         >
           <p className="text-[1.25rem] font-medium">Cashflow Deficit</p>
           <div className="flex items-center gap-[2px]">
-            <p>$</p>
+            <p>{currency}</p>
             <p>{cashflowDeficit}</p>
           </div>
         </div>

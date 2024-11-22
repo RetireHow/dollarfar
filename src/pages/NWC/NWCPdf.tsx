@@ -69,6 +69,8 @@ type TData = {
   name?: string;
   email?: string;
   base64: string;
+  currency: string;
+  currencyFullName: string;
 };
 
 // Define a new PDF document component
@@ -77,6 +79,8 @@ export const NWCPdf = ({ data }: { data: TData }) => {
     name,
     email,
     base64,
+    currency,
+    currencyFullName,
     assets: {
       property,
       vehicles,
@@ -135,7 +139,9 @@ export const NWCPdf = ({ data }: { data: TData }) => {
           {/* Title  */}
           <View style={styles.section}>
             <Text>Net Worth Calculator</Text>
-            <Text style={styles.title}>$ - CAD</Text>
+            <Text style={styles.title}>
+              {currency} - {currencyFullName}
+            </Text>
           </View>
 
           {/* Card Container  */}
@@ -169,7 +175,10 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Property</Text>
-                  <Text>${property}</Text>
+                  <Text>
+                    {currency}
+                    {property}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -180,7 +189,10 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   <Text style={{ color: "#696969" }}>
                     Savings & Investments
                   </Text>
-                  <Text>${savingsInvestment}</Text>
+                  <Text>
+                    {currency}
+                    {savingsInvestment}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -189,7 +201,10 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Personal Items</Text>
-                  <Text>${personalItems}</Text>
+                  <Text>
+                    {currency}
+                    {personalItems}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -198,7 +213,10 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Business Ownership</Text>
-                  <Text>${businessOwnershipInterest}</Text>
+                  <Text>
+                    {currency}
+                    {businessOwnershipInterest}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -207,7 +225,10 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Vehicles</Text>
-                  <Text>${vehicles}</Text>
+                  <Text>
+                    {currency}
+                    {vehicles}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -216,7 +237,10 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Other Assets</Text>
-                  <Text>${otherAssets}</Text>
+                  <Text>
+                    {currency}
+                    {otherAssets}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -250,7 +274,10 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Home Loan</Text>
-                  <Text>${homeLoan}</Text>
+                  <Text>
+                    {currency}
+                    {homeLoan}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -261,7 +288,10 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   <Text style={{ color: "#696969" }}>
                     Personal & Other Loans
                   </Text>
-                  <Text>${personalOtherLoans}</Text>
+                  <Text>
+                    {currency}
+                    {personalOtherLoans}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -270,7 +300,10 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Vehicle Loans</Text>
-                  <Text>${vehicleLoans}</Text>
+                  <Text>
+                    {currency}
+                    {vehicleLoans}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -279,7 +312,10 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Tax liability</Text>
-                  <Text>${taxLiability}</Text>
+                  <Text>
+                    {currency}
+                    {taxLiability}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -288,7 +324,10 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Credit Card Dues</Text>
-                  <Text>${creditCardDues}</Text>
+                  <Text>
+                    {currency}
+                    {creditCardDues}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -297,7 +336,10 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Other Debts</Text>
-                  <Text>${otherDebts}</Text>
+                  <Text>
+                    {currency}
+                    {otherDebts}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -327,7 +369,10 @@ export const NWCPdf = ({ data }: { data: TData }) => {
               }}
             >
               <Text style={{ color: "#696969" }}>Assets</Text>
-              <Text>${totalAssets}</Text>
+              <Text>
+                {currency}
+                {totalAssets}
+              </Text>
             </View>
             <View
               style={{
@@ -336,7 +381,10 @@ export const NWCPdf = ({ data }: { data: TData }) => {
               }}
             >
               <Text style={{ color: "#696969" }}>Liabilities</Text>
-              <Text>${totalLiabilities}</Text>
+              <Text>
+                {currency}
+                {totalLiabilities}
+              </Text>
             </View>
 
             <View
@@ -350,7 +398,10 @@ export const NWCPdf = ({ data }: { data: TData }) => {
               }}
             >
               <Text>Net Worth</Text>
-              <Text>${totalAssets - totalLiabilities}</Text>
+              <Text>
+                {currency}
+                {totalAssets - totalLiabilities}
+              </Text>
             </View>
           </View>
 
@@ -417,9 +468,9 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                     width: 20,
                   }}
                 >
-                  $
+                  {currency}
                 </Text>
-                <Text>CAD - Canadian Dollar</Text>
+                <Text>{currencyFullName}</Text>
               </View>
             </View>
           </View>
@@ -431,9 +482,10 @@ export const NWCPdf = ({ data }: { data: TData }) => {
               lineHeight: "20px",
             }}
           >
-            "Based on the information provided, your total assets are $
-            {totalAssets}, and your total liabilities are ${totalLiabilities}.
-            This gives you a net worth of ${totalAssets - totalLiabilities}."
+            "Based on the information provided, your total assets are {currency}
+            {totalAssets}, and your total liabilities are {currency}
+            {totalLiabilities}. This gives you a net worth of {currency}
+            {totalAssets - totalLiabilities}."
           </Text>
         </View>
 

@@ -69,7 +69,7 @@ const withdrawalFrequencyOptions = [
 
 export default function RRIFForm() {
   const dispatch = useAppDispatch();
-  const { currentAge, rateOfReturn, withdrawType } = useAppSelector(
+  const { rateOfReturn, withdrawType } = useAppSelector(
     (state) => state.RRIF
   );
 
@@ -96,7 +96,7 @@ export default function RRIFForm() {
       </div>
 
       {/* Slider - 1  */}
-      <div>
+      {/* <div>
         <div className="flex justify-between items-center mb-[1rem]">
           <h3 className="mb-[0.5rem] font-semibold">Current Age</h3>
           <div className="max-w-[80px]">
@@ -134,7 +134,7 @@ export default function RRIFForm() {
           <p>0</p>
           <p>100</p>
         </div>
-      </div>
+      </div> */}
 
       {/* Slider - 2  */}
       <div>

@@ -79,6 +79,8 @@ export default function RRSPForm() {
     retirementAge,
   } = input;
 
+  const { currency } = useAppSelector((state) => state.globalCurrency);
+
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -125,7 +127,7 @@ export default function RRSPForm() {
           <input
             className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
             type="number"
-            placeholder="$0"
+            placeholder={`${currency}0`}
             onWheel={(e) => e.currentTarget.blur()}
             name="currentAge"
             value={currentAge}
@@ -141,7 +143,7 @@ export default function RRSPForm() {
           <input
             className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
             type="number"
-            placeholder="$0"
+            placeholder={`${currency}0`}
             onWheel={(e) => e.currentTarget.blur()}
             name="retirementAge"
             value={retirementAge}
@@ -163,7 +165,7 @@ export default function RRSPForm() {
         <input
           className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
           type="number"
-          placeholder="$0"
+          placeholder={`${currency}0`}
           onWheel={(e) => e.currentTarget.blur()}
           name="contributionAmount"
           value={contributionAmount}
@@ -179,7 +181,7 @@ export default function RRSPForm() {
         <input
           className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
           type="number"
-          placeholder="$0"
+          placeholder={`${currency}0`}
           onWheel={(e) => e.currentTarget.blur()}
           name="currentRRSPSavings"
           value={currentRRSPSavings}
@@ -218,7 +220,7 @@ export default function RRSPForm() {
             <input
               className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
               type="number"
-              placeholder="$0"
+              placeholder={`${currency}0`}
               onWheel={(e) => e.currentTarget.blur()}
               name="rateOfReturn"
               value={rateOfReturn}
@@ -232,7 +234,7 @@ export default function RRSPForm() {
           thumbClassName="example-thumb"
           trackClassName="example-track"
           thumbActiveClassName="active-thumb"
-          min={0}
+          min={1}
           max={15}
           minDistance={10}
           value={rateOfReturn}
@@ -241,7 +243,7 @@ export default function RRSPForm() {
           }
         />
         <div className="flex justify-between items-center text-[1rem] font-medium text-[#696969] pt-5">
-          <p>0%</p>
+          <p>1%</p>
           <p>15%</p>
         </div>
       </div>

@@ -51,11 +51,14 @@ interface TRRSPPdfData {
   name?: string;
   email?: string;
   base64: string;
+  currency: string;
+  currencyFullName: string;
 }
 
 // Define a new PDF document component
 export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
-  const { name, email, base64, input, result } = data || {};
+  const { name, email, base64, input, result, currency, currencyFullName } =
+    data || {};
   const {
     contributionAmount,
     contributionFrequency,
@@ -105,7 +108,7 @@ export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
           {/* Title  */}
           <View style={styles.section}>
             <Text>Registered Retirement Savings Plan (RRSP) Calculator</Text>
-            <Text style={styles.title}>$ - CAD</Text>
+            <Text style={styles.title}>{currency} - {currencyFullName}</Text>
           </View>
 
           {/* Card Container  */}
@@ -152,7 +155,7 @@ export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
                 <Text style={{ color: "#696969" }}>
                   Ongoing Contribution Amount
                 </Text>
-                <Text>${contributionAmount}</Text>
+                <Text>{currency}{contributionAmount}</Text>
               </View>
               <View
                 style={{
@@ -161,7 +164,7 @@ export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>Current RRSP Savings</Text>
-                <Text>${currentRRSPSavings}</Text>
+                <Text>{currency}{currentRRSPSavings}</Text>
               </View>
               <View
                 style={{
@@ -208,7 +211,7 @@ export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
                 <Text style={{ color: "#696969" }}>
                   RRSP Balance at Retirement
                 </Text>
-                <Text>${totalSavings}</Text>
+                <Text>{currency}{totalSavings}</Text>
               </View>
               <View
                 style={{
@@ -217,7 +220,7 @@ export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>Investment Earnings</Text>
-                <Text>${investmentEarnings}</Text>
+                <Text>{currency}{investmentEarnings}</Text>
               </View>
               <View
                 style={{
@@ -226,7 +229,7 @@ export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>Total Contributions</Text>
-                <Text>${totalContributions}</Text>
+                <Text>{currency}{totalContributions}</Text>
               </View>
             </View>
           </View>

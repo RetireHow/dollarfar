@@ -44,6 +44,8 @@ type TData = {
   byYear: number;
   name?: string;
   email?: string;
+  currency: string;
+  currencyFullName: string;
 };
 
 // Define a new PDF document component
@@ -58,6 +60,8 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
     byYear,
     name,
     email,
+    currency,
+    currencyFullName,
   } = data || {};
   return (
     <Document>
@@ -98,7 +102,9 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
             {/* Title  */}
             <View style={styles.section}>
               <Text>Compound Interest Rate</Text>
-              <Text style={styles.title}>$ - CAD</Text>
+              <Text style={styles.title}>
+                {currency} - {currencyFullName}
+              </Text>
             </View>
 
             {/* Card Container  */}
@@ -122,7 +128,10 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Principle Amount</Text>
-                  <Text>${principal}</Text>
+                  <Text>
+                    {currency}
+                    {principal}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -177,7 +186,10 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Principle Amount</Text>
-                  <Text>{principal}</Text>
+                  <Text>
+                    {currency}
+                    {principal}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -186,7 +198,10 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Total Interest</Text>
-                  <Text>{compoundInterest}</Text>
+                  <Text>
+                    {currency}
+                    {compoundInterest}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -199,7 +214,10 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text>Total Amount</Text>
-                  <Text>${(compoundInterest + principal).toFixed(2)}</Text>
+                  <Text>
+                    {currency}
+                    {(compoundInterest + principal).toFixed(2)}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -256,9 +274,9 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
                       width: 20,
                     }}
                   >
-                    $
+                    {currency}
                   </Text>
-                  <Text>CAD - Canadian Dollar</Text>
+                  <Text>{currencyFullName}</Text>
                 </View>
               </View>
             </View>
@@ -272,7 +290,8 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
                 lineHeight: "20px",
               }}
             >
-              "An investment of ${principal} today will grow to $
+              "An investment of {currency}
+              {principal} today will grow to {currency}
               {compoundInterest + principal} by {byYear}, based on an interest
               rate of {rate}% compounded annually."
             </Text>

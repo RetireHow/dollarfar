@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import CustomTooltip from "../../../components/UI/CustomTooltip";
-import { useAppDispatch } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { updateLiabilities } from "../../../redux/features/NWSlice/NWSlice";
 import { useRef } from "react";
 import useDynamicInput from "../../../hooks/useDynamicInput";
@@ -8,6 +8,8 @@ import useDynamicInput from "../../../hooks/useDynamicInput";
 const OtherDebtsFields = () => {
   const dispatch = useAppDispatch();
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
+
+  const { currency } = useAppSelector((state) => state.globalCurrency);
 
   const {
     newInput,
@@ -39,7 +41,7 @@ const OtherDebtsFields = () => {
       <input
         className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
         type="number"
-        placeholder="$0"
+        placeholder={`${currency}0`}
         onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
           e.currentTarget.blur()
         }
@@ -74,7 +76,7 @@ const OtherDebtsFields = () => {
               type="number"
               name={input.label.trim().split(" ").join("")}
               value={input.value}
-              placeholder="$0"
+              placeholder={`${currency}0`}
               onChange={(e) => handleDynamicInputChange(e, input.id)}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
@@ -117,7 +119,7 @@ const OtherDebtsFields = () => {
               type="number"
               name="value"
               value={newInput.value}
-              placeholder="$0"
+              placeholder={`${currency}0`}
               onChange={handleInputChange}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()

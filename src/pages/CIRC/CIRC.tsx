@@ -1,3 +1,4 @@
+import { Select } from "antd";
 import { assets } from "../../assets/assets";
 import PrincipalAmountSlider from "./Sliders/PrincipalAmountSlider";
 import InterestRateSlider from "./Sliders/InterestRateSlider";
@@ -15,6 +16,8 @@ import PageHero from "../../components/UI/PageHero";
 import { CIRCPdf } from "./CIRCPdf";
 import DownloadModal from "../../components/DownloadModal";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { setCurrency } from "../../redux/features/other/globalCurrency";
+import { currencyOptions } from "../options/currencyOptions";
 
 const data = {
   title: "Compound Interest Rate Calculator",
@@ -22,6 +25,8 @@ const data = {
     "This calculator helps you determine how much an investment will grow over time when interest is applied not just to the principal amount but also to the accumulated interest. It's useful for understanding the power of compounding in savings accounts or investments.",
   image: assets.whiteBarChart,
 };
+
+
 
 export default function CIRC() {
   const dispatch = useAppDispatch();
@@ -34,6 +39,7 @@ export default function CIRC() {
     compoundInterest,
     interestBreakdown,
   } = useAppSelector((state) => state.compoundInterest);
+  const { currency, currencyFullName } = useAppSelector((state) => state.globalCurrency);
 
   const calculatorData = {
     rate,
@@ -44,6 +50,8 @@ export default function CIRC() {
     byYear: Number(interestBreakdown[interestBreakdown.length - 1]?.period),
     compoundInterest,
     interestBreakdown,
+    currency, 
+    currencyFullName
   };
 
   useEffect(() => {
@@ -69,14 +77,21 @@ export default function CIRC() {
               Compound Interest Rate Calculator
             </h3>
             <div className="flex items-center flex-wrap gap-5">
-              <div className="flex items-center md:gap-2 gap-1 border-[1px] border-[#0000001A] md:px-[1.25rem] px-[0.5rem] md:py-[10px] py-[8px] rounded-[10px] font-medium md:w-[140px] w-[110px] cursor-pointer">
-                {/* <Icon className="w-[1.5rem] h-[1.5rem]" icon="mdi:dollar" /> */}
-                <p>$</p>
-                <p>CAD</p>
-                <Icon
-                  className="w-[1.5rem] h-[1.5rem]"
-                  icon="iconamoon:arrow-down-2"
-                />
+              <div>
+                <Select
+                  value={currency}
+                  size="large"
+                  style={{ width: 130, height: 45, border: "1px solid gray" }}
+                  className="!border-none"
+                  onChange={(value) => dispatch(setCurrency(value))}
+                  options={currencyOptions}
+                  suffixIcon={
+                    <Icon
+                      className="text-[1.5rem] text-gray-600"
+                      icon="iconamoon:arrow-down-2"
+                    />
+                  }
+                ></Select>
               </div>
               <DownloadModal
                 calculatorData={calculatorData}
@@ -109,7 +124,7 @@ export default function CIRC() {
             </div>
             <BarGraphChart />
             <p className="md:text-[1rem] font-semibold text-center mt-5">
-              "An investment of ${principal} today will grow to $
+              "An investment of {currency}{principal} today will grow to {currency}
               {(compoundInterest + principal)?.toFixed(2)} by{" "}
               {interestBreakdown[interestBreakdown.length - 1]?.period}, based
               on an interest rate of {rate}% compounded{" "}
@@ -127,8 +142,8 @@ export default function CIRC() {
               <p>Total Interest/Total Return</p>
             </li>
             <li className="flex items-center gap-[0.5rem] font-semibold">
-              <p className="min-w-[30px]">$</p>
-              <p>CAD - Canadian Dollar</p>
+              <p className="min-w-[30px]">{currency}</p>
+              <p>{currencyFullName}</p>
             </li>
           </ul>
         </div>

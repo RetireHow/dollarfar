@@ -15,6 +15,8 @@ const BudgetPieChart = () => {
     savings: { subTotal: totalSavings },
   } = useAppSelector((state) => state.budgetCalculator);
 
+  const { currency, currencyFullName } = useAppSelector((state) => state.globalCurrency);
+
   // Calculate cashflow deficit
   const totalExpenses =
     houseExpenses +
@@ -71,7 +73,7 @@ const BudgetPieChart = () => {
                         fontFamily: "geist",
                       }}
                     >
-                      ${totalIncome}
+                      {currency}{totalIncome}
                     </text>
                     {/* Total Income Label */}
                     <text
@@ -87,11 +89,11 @@ const BudgetPieChart = () => {
                 )}
               >
                 {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
+                  <Cell key={`cell-${currency}${index}`} fill={entry.color} />
                 ))}
               </Pie>
               <Tooltip
-                formatter={(value: number, name: string) => [`$${value}`, name]}
+                formatter={(value: number, name: string) => [`${currency}${value}`, name]}
               />
             </PieChart>
           </ResponsiveContainer>
@@ -100,35 +102,35 @@ const BudgetPieChart = () => {
         <ul className="space-y-[1.5rem] text-[14px] text-[#475569]">
           <li className="flex items-center gap-[0.5rem] font-semibold">
             <div className="bg-[#2196F3] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p className="text-nowrap">Housing Expenses (${houseExpenses})</p>
+            <p className="text-nowrap">Housing Expenses ({currency}{houseExpenses})</p>
           </li>
           <li className="flex items-center gap-[0.5rem] font-semibold">
             <div className="bg-[#FF9800] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p>Transport Expenses (${transportExpenses})</p>
+            <p>Transport Expenses ({currency}{transportExpenses})</p>
           </li>
           <li className="flex items-center gap-[0.5rem] font-semibold">
             <div className="bg-[#03A9F4] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p className="text-nowrap">Educational Expenses (${educationalExpenses})</p>
+            <p className="text-nowrap">Educational Expenses ({currency}{educationalExpenses})</p>
           </li>
           <li className="flex items-center gap-[0.5rem] font-semibold">
             <div className="bg-[#FF5722] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p>Other Expenses (${otherExpenses})</p>
+            <p>Other Expenses ({currency}{otherExpenses})</p>
           </li>
           <li className="flex items-center gap-[0.5rem] font-semibold">
             <div className="bg-[#F44336] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p>Loans (${totalLoans})</p>
+            <p>Loans ({currency}{totalLoans})</p>
           </li>
           <li className="flex items-center gap-[0.5rem] font-semibold">
             <div className="bg-[#9C27B0] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p>Savings (${totalSavings})</p>
+            <p>Savings ({currency}{totalSavings})</p>
           </li>
           <li className="flex items-center gap-[0.5rem] font-semibold">
             <div className="bg-[#009688] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p>Cashflow Deficit (${cashflowDeficit})</p>
+            <p>Cashflow Deficit ({currency}{cashflowDeficit})</p>
           </li>
           <li className="flex items-center gap-[0.5rem] font-semibold">
-            <p className="min-w-[30px]">$</p>
-            <p>CAD - Canadian Dollar</p>
+            <p className="min-w-[30px]">{currency}</p>
+            <p>{currencyFullName}</p>
           </li>
         </ul>
       </div>

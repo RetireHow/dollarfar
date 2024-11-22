@@ -4,9 +4,10 @@ import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { selectOptions } from "../../../BgtSelectOptions";
 import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
-import { useAppDispatch } from "../../../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 export default function HomeLoanField() {
   const dispatch = useAppDispatch()
+  const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <div>
       <div className="flex justify-between items-center text-[1rem] mb-1">
@@ -23,7 +24,7 @@ export default function HomeLoanField() {
         <input
           className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
           type="number"
-          placeholder="$0"
+          placeholder={`${currency}0`}
           onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
             e.currentTarget.blur()
           }
