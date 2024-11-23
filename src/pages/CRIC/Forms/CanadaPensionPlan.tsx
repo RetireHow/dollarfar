@@ -413,13 +413,30 @@ const annualEmploymentEarningsOptions = [
   { label: "69500", value: "69500" },
 ];
 
+const monthlyQPPAmounts = [
+  { label: "100", value: "100" },
+  { label: "200", value: "200" },
+  { label: "300", value: "300" },
+  { label: "400", value: "400" },
+  { label: "500", value: "500" },
+  { label: "600", value: "600" },
+  { label: "700", value: "700" },
+  { label: "800", value: "800" },
+  { label: "900", value: "900" },
+  { label: "1000", value: "1000" },
+  { label: "1100", value: "1100" },
+  { label: "1200", value: "1200" },
+  { label: "1300", value: "1300" },
+  { label: "1364", value: "1364" },
+];
+
 export default function CanadaPensionPlan() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleNext = () => {
     dispatch(nextStep());
-    navigate("/comprehensive-retirement-calculator/canada-pension-plan");
+    navigate("/comprehensive-retirement-calculator/employer-pension");
   };
 
   const [pensionPlan, setPensionPlan] = useState<string | undefined>("");
@@ -433,6 +450,14 @@ export default function CanadaPensionPlan() {
   >("");
 
   const [useAverageCPPEstimate, setUseAverageCPPEstimate] = useState<
+    string | undefined
+  >("");
+
+  const [hasStatementOfParticipation, setHasStatementOfParticipation] =
+    useState<string | undefined>("");
+
+  // Second step plans to work after cpp
+  const [plansToWorkAfterCPP2, setPlansToWorkAfterCPP2] = useState<
     string | undefined
   >("");
 
@@ -458,7 +483,8 @@ export default function CanadaPensionPlan() {
         ></Select>
       </div>
 
-      {pensionPlan === "Canada Pension Plan" ? (
+      {/* ================|| Canada Pension Plan and Yes ||================= */}
+      {pensionPlan === "Canada Pension Plan" && (
         <div>
           <div className="flex items-center gap-2 font-semibold mb-2">
             <p>
@@ -476,13 +502,9 @@ export default function CanadaPensionPlan() {
             className="rounded-md border-[1px] duration-300 border-[#838383] z-[40]"
           ></Select>
         </div>
-      ) : pensionPlan === "Quebec Pension Plan" ? (
-        "Quebec Plan"
-      ) : (
-        ""
       )}
 
-      {hasCPPStatement === "Yes" ? (
+      {pensionPlan === "Canada Pension Plan" && hasCPPStatement === "Yes" && (
         <>
           <div>
             <div className="flex items-center gap-2 font-semibold mb-2">
@@ -543,57 +565,60 @@ export default function CanadaPensionPlan() {
             ></Select>
           </div>
 
-          {plansToWorkAfterCPP === "Yes" && (
-            <>
-              <div>
-                <div className="flex items-center gap-2 font-semibold mb-2">
-                  <p>Until what age will you receive employment income?</p>
+          {plansToWorkAfterCPP === "Yes" &&
+            pensionPlan === "Canada Pension Plan" && (
+              <>
+                <div>
+                  <div className="flex items-center gap-2 font-semibold mb-2">
+                    <p>Until what age will you receive employment income?</p>
+                  </div>
+                  <Select
+                    onChange={(option) => setPensionPlan(option?.value)}
+                    options={employmentIncomeEndAgeOptions}
+                    styles={customStyles}
+                    isMulti={false}
+                    placeholder="Select One"
+                    className="rounded-md border-[1px] duration-300 border-[#838383] z-[8]"
+                  ></Select>
                 </div>
-                <Select
-                  onChange={(option) => setPensionPlan(option?.value)}
-                  options={employmentIncomeEndAgeOptions}
-                  styles={customStyles}
-                  isMulti={false}
-                  placeholder="Select One"
-                  className="rounded-md border-[1px] duration-300 border-[#838383] z-[8]"
-                ></Select>
-              </div>
-              <div>
-                <div className="flex items-center gap-2 font-semibold mb-2">
-                  <p>
-                    On average, what will be your annual employment earnings
-                    from age 60 to age 69?
-                  </p>
+                <div>
+                  <div className="flex items-center gap-2 font-semibold mb-2">
+                    <p>
+                      On average, what will be your annual employment earnings
+                      from age 60 to age 69?
+                    </p>
+                  </div>
+                  <Select
+                    onChange={(option) => setPensionPlan(option?.value)}
+                    options={annualEmploymentEarningsOptions}
+                    styles={customStyles}
+                    isMulti={false}
+                    placeholder="Select One"
+                    className="rounded-md border-[1px] duration-300 border-[#838383] z-[7]"
+                  ></Select>
                 </div>
-                <Select
-                  onChange={(option) => setPensionPlan(option?.value)}
-                  options={annualEmploymentEarningsOptions}
-                  styles={customStyles}
-                  isMulti={false}
-                  placeholder="Select One"
-                  className="rounded-md border-[1px] duration-300 border-[#838383] z-[7]"
-                ></Select>
-              </div>
-              <div>
-                <div className="flex items-center gap-2 font-semibold mb-2">
-                  <p>
-                    Would you like to contribute to the CPP Post Retirement
-                    Benefit when you reach age 65?
-                  </p>
+                <div>
+                  <div className="flex items-center gap-2 font-semibold mb-2">
+                    <p>
+                      Would you like to contribute to the CPP Post Retirement
+                      Benefit when you reach age 65?
+                    </p>
+                  </div>
+                  <Select
+                    onChange={(option) => option}
+                    options={yesNoOptions}
+                    styles={customStyles}
+                    isMulti={false}
+                    placeholder="Select One"
+                    className="rounded-md border-[1px] duration-300 border-[#838383] z-[6]"
+                  ></Select>
                 </div>
-                <Select
-                  onChange={(option) => setPensionPlan(option?.value)}
-                  options={yesNoOptions}
-                  styles={customStyles}
-                  isMulti={false}
-                  placeholder="Select One"
-                  className="rounded-md border-[1px] duration-300 border-[#838383] z-[6]"
-                ></Select>
-              </div>
-            </>
-          )}
+              </>
+            )}
         </>
-      ) : hasCPPStatement === "No" ? (
+      )}
+
+      {hasCPPStatement === "No" && pensionPlan === "Canada Pension Plan" && (
         <>
           <div>
             <div className="flex items-center gap-2 font-semibold mb-2">
@@ -613,43 +638,213 @@ export default function CanadaPensionPlan() {
             ></Select>
           </div>
 
-          {useAverageCPPEstimate === "Yes" && (
-            <>
-              <div>
-                <div className="flex items-center gap-2 font-semibold mb-2">
-                  <p>At what age do you plan to receive your CPP benefit?</p>
+          {useAverageCPPEstimate === "Yes" &&
+            pensionPlan === "Canada Pension Plan" && (
+              <>
+                <div>
+                  <div className="flex items-center gap-2 font-semibold mb-2">
+                    <p>At what age do you plan to receive your CPP benefit?</p>
+                  </div>
+                  <Select
+                    onChange={(option) => option}
+                    options={cppBenefitAgeOptions}
+                    styles={customStyles}
+                    isMulti={false}
+                    placeholder="Select One"
+                    className="rounded-md border-[1px] duration-300 border-[#838383] z-[6]"
+                  ></Select>
                 </div>
-                <Select
-                  onChange={(option) => option}
-                  options={cppBenefitAgeOptions}
-                  styles={customStyles}
-                  isMulti={false}
-                  placeholder="Select One"
-                  className="rounded-md border-[1px] duration-300 border-[#838383] z-[6]"
-                ></Select>
-              </div>
 
-              <div>
-                <div className="flex items-center gap-2 font-semibold mb-2">
-                  <p>
-                    Do you plan on working after you start receiving your CPP?
-                  </p>
+                <div>
+                  <div className="flex items-center gap-2 font-semibold mb-2">
+                    <p>
+                      Do you plan on working after you start receiving your CPP?
+                    </p>
+                  </div>
+                  <Select
+                    onChange={(option) =>
+                      setPlansToWorkAfterCPP2(option?.value)
+                    }
+                    options={yesNoOptions}
+                    styles={customStyles}
+                    isMulti={false}
+                    placeholder="Select One"
+                    className="rounded-md border-[1px] duration-300 border-[#838383] z-[5]"
+                  ></Select>
                 </div>
-                <Select
-                  onChange={(option) => option}
-                  options={yesNoOptions}
-                  styles={customStyles}
-                  isMulti={false}
-                  placeholder="Select One"
-                  className="rounded-md border-[1px] duration-300 border-[#838383] z-[5]"
-                ></Select>
-              </div>
-            </>
-          )}
+              </>
+            )}
         </>
-      ) : (
-        ""
       )}
+
+      {hasCPPStatement === "No" &&
+        pensionPlan === "Canada Pension Plan" &&
+        plansToWorkAfterCPP2 === "Yes" && (
+          <>
+            <div>
+              <div className="flex items-center gap-2 font-semibold mb-2">
+                <p>Until what age will you receive employment income?</p>
+              </div>
+              <Select
+                onChange={(option) => option}
+                options={[
+                  { label: "65", value: "65" },
+                  { label: "66", value: "66" },
+                  { label: "67", value: "67" },
+                  { label: "68", value: "68" },
+                  { label: "69", value: "69" },
+                  { label: "70", value: "70" },
+                ]}
+                styles={customStyles}
+                isMulti={false}
+                placeholder="Select One"
+                className="rounded-md border-[1px] duration-300 border-[#838383] z-[4]"
+              ></Select>
+            </div>
+            <div>
+              <div className="flex items-center gap-2 font-semibold mb-2">
+                <p>
+                  On average, what will be your annual employment earnings from
+                  age 65 to age 65?
+                </p>
+              </div>
+              <Select
+                onChange={(option) => option}
+                options={annualEmploymentEarningsOptions}
+                styles={customStyles}
+                isMulti={false}
+                placeholder="Select One"
+                className="rounded-md border-[1px] duration-300 border-[#838383] z-[3]"
+              ></Select>
+            </div>
+            <div>
+              <div className="flex items-center gap-2 font-semibold mb-2">
+                <p>
+                  Would you like to contribute to the CPP Post Retirement
+                  Benefit when you reach age 65?
+                </p>
+              </div>
+              <Select
+                onChange={(option) => option}
+                options={yesNoOptions}
+                styles={customStyles}
+                isMulti={false}
+                placeholder="Select One"
+                className="rounded-md border-[1px] duration-300 border-[#838383] z-[2]"
+              ></Select>
+            </div>
+          </>
+        )}
+
+      {/* ================|| Quebec Pension Plan and Yes ||================= */}
+      {pensionPlan === "Quebec Pension Plan" && (
+        <div>
+          <div className="flex items-center gap-2 font-semibold mb-2">
+            <p>
+              Do you have a Statement of Participation that states your
+              retirement pension estimate based on your past contributions?
+            </p>
+          </div>
+          <Select
+            onChange={(option) => setHasStatementOfParticipation(option?.value)}
+            options={yesNoOptions}
+            styles={customStyles}
+            isMulti={false}
+            placeholder="Select One"
+            className="rounded-md border-[1px] duration-300 border-[#838383] z-[40]"
+          ></Select>
+        </div>
+      )}
+
+      {pensionPlan === "Quebec Pension Plan" &&
+        hasStatementOfParticipation === "Yes" && (
+          <>
+            <div>
+              <div className="flex items-center gap-2 font-semibold mb-2">
+                <p>Enter the year of your statement</p>
+              </div>
+              <Select
+                onChange={(option) => option}
+                options={[
+                  { label: "2020", value: "2020" },
+                  { label: "2021", value: "2021" },
+                  { label: "2022", value: "2022" },
+                  { label: "2023", value: "2023" },
+                  { label: "2024", value: "2024" },
+                ]}
+                styles={customStyles}
+                isMulti={false}
+                placeholder="Select One"
+                className="rounded-md border-[1px] duration-300 border-[#838383] z-[39]"
+              ></Select>
+            </div>
+            <div>
+              <div className="flex items-center gap-2 font-semibold mb-2">
+                <p>
+                  Enter your monthly retirement pension estimate (at age 65)
+                  indicated on your statement.
+                </p>
+              </div>
+              <Select
+                onChange={(option) => option}
+                options={monthlyRetirementPensionOptions}
+                styles={customStyles}
+                isMulti={false}
+                placeholder="Select One"
+                className="rounded-md border-[1px] duration-300 border-[#838383] z-[38]"
+              ></Select>
+            </div>
+            <div>
+              <div className="flex items-center gap-2 font-semibold mb-2">
+                <p>At what age do you plan to receive your QPP benefit?</p>
+              </div>
+              <Select
+                onChange={(option) => option}
+                options={cppBenefitAgeOptions}
+                styles={customStyles}
+                isMulti={false}
+                placeholder="Select One"
+                className="rounded-md border-[1px] duration-300 border-[#838383] z-[37]"
+              ></Select>
+            </div>
+          </>
+        )}
+
+      {pensionPlan === "Quebec Pension Plan" &&
+        hasStatementOfParticipation === "No" && (
+          <>
+            <div>
+              <div className="flex items-center gap-2 font-semibold mb-2">
+                <p>
+                  Please select the monthly amount of QPP you expect to receive
+                  at age 65.
+                </p>
+              </div>
+              <Select
+                onChange={(option) => option}
+                options={monthlyQPPAmounts}
+                styles={customStyles}
+                isMulti={false}
+                placeholder="Select One"
+                className="rounded-md border-[1px] duration-300 border-[#838383] z-[39]"
+              ></Select>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2 font-semibold mb-2">
+                <p>At what age do you plan to receive your QPP benefit?</p>
+              </div>
+              <Select
+                onChange={(option) => option}
+                options={cppBenefitAgeOptions}
+                styles={customStyles}
+                isMulti={false}
+                placeholder="Select One"
+                className="rounded-md border-[1px] duration-300 border-[#838383] z-[38]"
+              ></Select>
+            </div>
+          </>
+        )}
 
       <div className="flex justify-end">
         <button
