@@ -126,13 +126,15 @@ export const router = createBrowserRouter([
           {
             path: "old-age-security",
             element: <OldAgeSecurity />,
-          },
-          {
-            path: "summary",
-            element: <Summary />,
-          },
+          }
         ],
       },
+
+      {
+        path: "CRIC/summary",
+        element: <Summary />,
+      },
+
       {
         path: "research",
         element: <Research />,
