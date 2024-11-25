@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { resetActiveStep } from "../../redux/features/stepperSlice/stepperSclie";
 import Stepper from "../BC/Stepper";
 import CRICResultCard from "./CRICResultCard";
+import CRICBarChart from "./CRICBarChart";
 
 export default function CRICLayout() {
   const dispatch = useAppDispatch();
@@ -17,6 +18,7 @@ export default function CRICLayout() {
         <Outlet />
         <CRICResultCard />
       </div>
+      <CRICBarChart />
     </section>
   );
 }

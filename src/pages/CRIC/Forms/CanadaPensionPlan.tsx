@@ -71,6 +71,19 @@ const yesNoOptions = [
   { label: "No", value: "No" },
 ];
 
+const yesNoOptionsWithExtraInto = [
+  { label: "Yes", value: "Yes" },
+  { label: "No", value: "No" },
+  {
+    label: "No-Estimate based on my expected earnings",
+    value: "No-Estimate based on my expected earnings",
+  },
+  {
+    label: "No-Let me select a different value",
+    value: "No-Let me select a different value",
+  },
+];
+
 const statementYearOptions = [
   { label: "2020", value: "2020" },
   { label: "2021", value: "2021" },
@@ -630,7 +643,7 @@ export default function CanadaPensionPlan() {
             </div>
             <Select
               onChange={(option) => setUseAverageCPPEstimate(option?.value)}
-              options={yesNoOptions}
+              options={yesNoOptionsWithExtraInto}
               styles={customStyles}
               isMulti={false}
               placeholder="Select One"

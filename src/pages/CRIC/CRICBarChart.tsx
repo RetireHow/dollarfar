@@ -1,8 +1,6 @@
 import {
   BarChart,
   Bar,
-  XAxis,
-  YAxis,
   Tooltip,
   CartesianGrid,
   ResponsiveContainer,
@@ -23,7 +21,9 @@ export default function CRICBarChart() {
     { period: "59", principal: 50000, interest: 7500 },
   ];
 
-  const { currency, currencyFullName } = useAppSelector((state) => state.globalCurrency);
+  const { currency, currencyFullName } = useAppSelector(
+    (state) => state.globalCurrency
+  );
 
   return (
     <div className="lg:flex items-center gap-5 my-[5rem]">
@@ -48,8 +48,13 @@ export default function CRICBarChart() {
                 strokeDasharray={5}
               />
 
-              <XAxis dataKey="age" name="Age" fontSize={12} />
-              <YAxis tickFormatter={(value) => `${currency}${value}`} fontSize={12} />
+              {/* <XAxis dataKey="age" name="Age" fontSize={12} />
+              <YAxis
+                tickFormatter={(value) => `${currency}${value}`}
+                fontSize={12}
+              /> */}
+              
+
               <Tooltip />
               <Bar
                 dataKey="principal"
@@ -70,14 +75,18 @@ export default function CRICBarChart() {
         </div>
       </div>
 
-      <ul className="space-y-[1.5rem] lg:mt-0 mt-[2rem] text-[14px]">
+      <ul className="space-y-[1rem] lg:mt-0 mt-[2rem] text-[14px]">
         <li className="flex items-center gap-[0.5rem] font-semibold">
-          <div className="bg-[#2196F3] min-w-[30px] h-[10px] rounded-[10px]"></div>
-          <p className="text-nowrap">Balance at the End of the Year</p>
+          <div className="bg-[#AA5656] min-w-[30px] h-[10px] rounded-[10px]"></div>
+          <p className="text-nowrap">Annual Retirement Income goal : $5,000</p>
         </li>
         <li className="flex items-center gap-[0.5rem] font-semibold">
           <div className="bg-[#FF9800] min-w-[30px] h-[10px] rounded-[10px]"></div>
-          <p>Minimum Withdrawal Amount</p>
+          <p>Old age security : $2,000 (from age 71 - 75)</p>
+        </li>
+        <li className="flex items-center gap-[0.5rem] font-semibold">
+          <div className="bg-[#03A9F4] min-w-[30px] h-[10px] rounded-[10px]"></div>
+          <p>Old age security : $3,000 (from age 76 - 79)</p>
         </li>
         <li className="flex items-center gap-[0.5rem] font-semibold">
           <p className="min-w-[30px]">{currency}</p>

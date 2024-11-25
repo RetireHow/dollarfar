@@ -648,9 +648,8 @@ export default function GeneralInformation() {
       <div>
         <div className="flex items-center gap-2 font-semibold mb-2">
           <p>
-            Based on your current age and sex assigned at birth, your estimated
-            life expectancy is age 86. Would you like to use a different age for
-            your calculations(Consider your family and health history)
+            Based on your current age and sex assigned at birth, your life
+            expectancy is age 86. Would you like to use 86 as your estimate?
           </p>
           <CustomTooltip title="Choose how often you want to withdraw from your RRIF: Monthly, Yearly, or Weekly." />
         </div>

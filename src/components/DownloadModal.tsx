@@ -160,15 +160,13 @@ const DownloadModal = ({
           </div>
 
           <div>
-            {base64 && checked ? (
+            {base64 && checked && !isLoading ? (
               <PDFDownloadLink
                 document={<PdfComponent data={pdfData} />}
                 fileName={fileName}
               >
                 <button
-                  className={`text-white w-full rounded-[10px] py-[0.8rem] flex justify-center items-center h-[50px] ${
-                    checked ? "bg-black" : "bg-gray-300"
-                  }`}
+                  className="text-white w-full rounded-[10px] py-[0.8rem] flex justify-center items-center h-[50px] bg-black"
                   type="button"
                   disabled={!checked || isLoading ? true : false}
                   onClick={handleDownloadPdf}
