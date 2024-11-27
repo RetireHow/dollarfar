@@ -1,0 +1,109 @@
+// step-1: General Information
+===========================================
+
+DOB : month and year field 
+
+Gender
+
+Current Annual Income of all Sources (Before Tax)
+
+What would you like to set as your annual retirement income goal (Net of tax, in today’s dollars)?
+
+Based on your current age and sex assigned at birth, your life expectancy is age 86. Would you like to use 86 as your estimate?
+
+Please enter the age you would like your retirement income to stop.
+
+
+// step-2: Canada Pension Plan
+====================================
+
+Individuals who contribute to the Quebec Pension Plan (QPP) or the Canada Pension Plan (CPP) may be eligible to receive pension benefits at retirement. Which pension applies to you?
+
+Do you have a Canada Pension Plan (CPP) Statement of Contributions that states your retirement pension estimate based on your past contributions?*
+
+Enter the year of your statement*
+
+Enter your monthly retirement pension estimate (at age 65) indicated on your statement.
+
+At what age do you plan to receive your CPP benefit?
+
+Do you plan on working after you start receiving your CPP?
+
+Until what age will you receive employment income?
+
+On average, what will be your annual employment earnings from age 60 to age 69?
+
+Would you like to contribute to the CPP Post Retirement Benefit when you reach age 65?
+
+The average monthly amount for a new CPP retirement pension (taken at age 65) is approximately $717 per month ($8,604 per year). Would you like to use this as your estimate?
+
+At what age do you plan to receive your CPP benefit?
+
+Do you plan on working after you start receiving your CPP?
+
+
+On average, what will be your annual employment earnings from age 65 to age 65?
+
+Do you have a Statement of Participation that states your retirement pension estimate based on your past contributions?
+
+Please select the monthly amount of QPP you expect to receive at age 65.
+
+At what age do you plan to receive your QPP benefit?
+
+
+
+Step-3: Employer Pension
+=====================================
+
+Are you a member of an employer pension plan?
+
+What type of pension plan is it?
+
+What is your estimated annual pension from your Defined Benefit Plan?
+
+At what age do you plan to receive your pension?
+
+Is your pension indexed to inflation?
+
+What is the current value of your plan?
+
+At what age do you plan to receive your pension?
+
+How much does your employer contribute to your plan each year?
+
+How much do you contribute to the plan each year?
+
+What do you think your plan's average annual rate of return will be until you start to receive your pension?
+
+
+Step-4: Retirement Savings
+=====================================
+Do you have a registered retirement savings plan (RRSP)?
+
+What is the current total value of your RRSP(s)? (max. 10000000)
+
+On average, how much do you plan to contribute to your RRSP(s) from now until retirement?
+Frequency of your contribution: , Amount of your contribution:
+
+At what age do you plan to start receiving an annual income from your RRSP(s)?
+
+At what age do you plan to stop receiving an annual income from your RRSP(s)?
+
+What average annual rate of return do you believe you can earn on your investments until you start to receive a monthly income from your RRSP(s)?
+
+Do you have any other savings, such as a Tax-Free Savings Account (TFSA), that you plan on using for your retirement?
+
+
+Step-5: Other Income
+=========================
+Will you have other income?
+
+What type of income is it?
+
+Select the frequency of your estimated income.
+
+What is your estimated income?
+
+At what age will you start receiving your estimated income?
+
+At what age will you stop receiving your estimated income?

@@ -10,6 +10,10 @@ import { setCurrency } from "../../redux/features/other/globalCurrency";
 import DownloadModal from "../../components/DownloadModal";
 import { CRICPdf } from "./CRICPdf";
 import CRICBarChart from "./CRICBarChart";
+import {
+  calculateAverageAnnualRetirementIncome,
+  calculateOASBreakdown,
+} from "../../redux/features/CRIC/CRICSlice";
 
 const data = {
   title: "Comprehensive Retirement Income Calculator",
@@ -21,6 +25,25 @@ const data = {
 export default function Summary() {
   const dispatch = useAppDispatch();
   const { currency } = useAppSelector((state) => state.globalCurrency);
+  const { generalInfo, oldAgeSecurity } = useAppSelector(
+    (state) => state.CRICalculator
+  );
+  const {
+    annualRetirementIncomeGoal,
+    currentAnnualIncome,
+    customRetirementAge,
+    dobMonth,
+    dobYear,
+    gender,
+  } = generalInfo;
+
+  const { receivingOASPensionAge, yearsLivedInCanadaBetween18To65 } =
+    oldAgeSecurity;
+
+  const handleCalculate = () => {
+    dispatch(calculateOASBreakdown());
+    dispatch(calculateAverageAnnualRetirementIncome());
+  };
   return (
     <>
       <div data-html2canvas-ignore>
@@ -79,23 +102,25 @@ export default function Summary() {
               <ul className="space-y-[1rem]">
                 <li className="flex justify-between items-center">
                   <p>Date of Birth</p>
-                  <p>May, 1989</p>
+                  <p>
+                    {dobMonth}, {dobYear}
+                  </p>
                 </li>
                 <li className="flex justify-between items-center">
                   <p>Life Expectancy</p>
-                  <p>85</p>
+                  <p>{customRetirementAge}</p>
                 </li>
                 <li className="flex justify-between items-center">
                   <p>Gender</p>
-                  <p>M</p>
+                  <p>{gender}</p>
                 </li>
                 <li className="flex justify-between items-center">
                   <p>Annual Retirement Income Goal</p>
-                  <p>$30,000</p>
+                  <p>${annualRetirementIncomeGoal}</p>
                 </li>
                 <li className="flex justify-between items-center">
                   <p>Current Annual Income</p>
-                  <p>$42,000</p>
+                  <p>${currentAnnualIncome}</p>
                 </li>
               </ul>
             </div>
@@ -223,6 +248,7 @@ export default function Summary() {
                   icon="material-symbols:keyboard-arrow-up-rounded"
                 />
               </div>
+
               <ul className="space-y-[1rem]">
                 <li className="flex justify-between items-center">
                   <p>OAS Age Eligibility</p>
@@ -230,7 +256,7 @@ export default function Summary() {
                 </li>
                 <li className="flex justify-between items-center">
                   <p>Receiving at Age</p>
-                  <p>Not Eligible</p>
+                  <p>{receivingOASPensionAge}</p>
                 </li>
                 <li className="flex justify-between items-center">
                   <p>OAS Pension (Ages Not Eligible to 74)</p>
@@ -242,13 +268,16 @@ export default function Summary() {
                 </li>
                 <li className="flex justify-between items-center">
                   <p>Years lived in Canada</p>
-                  <p>0</p>
+                  <p>{yearsLivedInCanadaBetween18To65}</p>
                 </li>
               </ul>
             </div>
 
             <div className="flex justify-end">
-              <button className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black">
+              <button
+                onClick={handleCalculate}
+                className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black"
+              >
                 Calculate
               </button>
             </div>

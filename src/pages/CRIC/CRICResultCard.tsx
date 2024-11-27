@@ -2,6 +2,9 @@ import { useAppSelector } from "../../redux/hooks";
 
 export default function CRICResultCard() {
   const { currency } = useAppSelector((state) => state.globalCurrency);
+  const { averageAnnualRetirementIncome, generalInfo } = useAppSelector(
+    (state) => state.CRICalculator
+  );
   return (
     <section>
       <h3 className="text-[2rem] font-bold mb-[1.25rem]">Result</h3>
@@ -10,7 +13,7 @@ export default function CRICResultCard() {
           <p className="font-medium">Annual Retirement Income Goal</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{0}</p>
+            <p>{generalInfo.annualRetirementIncomeGoal}</p>
           </div>
         </div>
 
@@ -20,7 +23,7 @@ export default function CRICResultCard() {
           </p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{0}</p>
+            <p>{averageAnnualRetirementIncome}</p>
           </div>
         </div>
 

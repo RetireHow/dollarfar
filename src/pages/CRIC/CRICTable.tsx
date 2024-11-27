@@ -1,4 +1,7 @@
+import { useAppSelector } from "../../redux/hooks";
+
 export default function CRICTable() {
+  const { oasBreakdown } = useAppSelector((state) => state.CRICalculator);
   return (
     <section className="mt-[5rem]">
       <div className="overflow-x-auto">
@@ -7,30 +10,26 @@ export default function CRICTable() {
             <tr className="border-b-[1px] border-b-[#0000001A]">
               <th className="p-3">Age</th>
               <th className="p-3">Canada Pension Plan</th>
-              <th className="p-3">Employer Pension</th>
               <th className="p-3">Retirement savings</th>
-              <th className="p-3">Other Income</th>
-              <th className="p-3">Old Age Security</th>
-
-              <th className="p-3">OAS Recovery Tax</th>
               <th className="p-3">Total Estimated Retirement Income</th>
-              <th className="p-3">
-                Difference Between Your Income Goal and Estimated Income
-              </th>
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b-[1px] border-b-[#0000001A]">
-              <td className="p-3">50</td>
-              <td className="p-3">$9000</td>
-              <td className="p-3">$12000</td>
-              <td className="p-3">5 %</td>
-              <td className="p-3">3.5%</td>
-              <td className="p-3">$8000</td>
-              <td className="p-3">$8000</td>
-              <td className="p-3">$8000</td>
-              <td className="p-3">$8000</td>
-            </tr>
+            {oasBreakdown.map(
+              (item: {
+                age: number;
+                annualCPPAmount: number;
+                annualRetirementSavingsAmount: number;
+                totalEstimatedRetirementIncome: number;
+              }) => (
+                <tr className="border-b-[1px] border-b-[#0000001A]">
+                  <td className="p-3">{item.age}</td>
+                  <td className="p-3">${item.annualCPPAmount}</td>
+                  <td className="p-3">${item.annualRetirementSavingsAmount}</td>
+                  <td className="p-3">${item.totalEstimatedRetirementIncome}</td>
+                </tr>
+              )
+            )}
           </tbody>
         </table>
       </div>
