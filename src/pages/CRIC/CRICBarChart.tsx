@@ -18,7 +18,7 @@ function CRICBarChart() {
   return (
     <div className="overflow-x-auto mt-[5rem]">
       <div
-        id="RRIF-Chart"
+        id="CRIC-Chart"
         className="min-w-[900px] flex items-center gap-5"
       >
         <div

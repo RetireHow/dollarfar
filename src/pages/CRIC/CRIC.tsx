@@ -23,6 +23,17 @@ export default function CRIC() {
   }, []);
   const dispatch = useAppDispatch();
   const { currency } = useAppSelector((state) => state.globalCurrency);
+  const { generalInfo, CPP, retirementSavings, otherIncome, oldAgeSecurity, employerPension } = useAppSelector((state) => state.CRICalculator);
+
+  const calculatorData = {
+    generalInfo,
+    CPP,
+    retirementSavings,
+    otherIncome,
+    oldAgeSecurity,
+    employerPension
+  }
+
   return (
     <main className="mb-[5rem]">
       <div data-html2canvas-ignore>
@@ -56,7 +67,7 @@ export default function CRIC() {
                 ></Select>
               </div>
               <DownloadModal
-                calculatorData={{}}
+                calculatorData={calculatorData}
                 fileName="CRIC Report"
                 id="CRIC-Chart"
                 PdfComponent={CRICPdf}

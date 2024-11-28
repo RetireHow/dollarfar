@@ -25,9 +25,14 @@ const data = {
 export default function Summary() {
   const dispatch = useAppDispatch();
   const { currency } = useAppSelector((state) => state.globalCurrency);
-  const { generalInfo, oldAgeSecurity } = useAppSelector(
-    (state) => state.CRICalculator
-  );
+  const {
+    generalInfo,
+    oldAgeSecurity,
+    CPP,
+    retirementSavings,
+    otherIncome,
+    employerPension,
+  } = useAppSelector((state) => state.CRICalculator);
   const {
     annualRetirementIncomeGoal,
     currentAnnualIncome,
@@ -44,6 +49,16 @@ export default function Summary() {
     dispatch(calculateOASBreakdown());
     dispatch(calculateAverageAnnualRetirementIncome());
   };
+
+  const calculatorData = {
+    generalInfo,
+    CPP,
+    retirementSavings,
+    otherIncome,
+    oldAgeSecurity,
+    employerPension,
+  };
+
   return (
     <>
       <div data-html2canvas-ignore>
@@ -76,7 +91,7 @@ export default function Summary() {
                 ></Select>
               </div>
               <DownloadModal
-                calculatorData={{}}
+                calculatorData={calculatorData}
                 fileName="CRIC Report"
                 id="CRIC-Chart"
                 PdfComponent={CRICPdf}

@@ -160,7 +160,7 @@ const DownloadModal = ({
           </div>
 
           <div>
-            {base64 && checked && !isLoading ? (
+            {base64 && checked  ? (
               <PDFDownloadLink
                 document={<PdfComponent data={pdfData} />}
                 fileName={fileName}
