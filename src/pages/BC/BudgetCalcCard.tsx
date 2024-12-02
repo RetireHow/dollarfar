@@ -22,6 +22,7 @@ export default function BudgetCalcCard() {
     totalLoans +
     totalSavings;
   const cashflowDeficit = totalIncome - totalExpenses;
+  console.log({totalExpenses, totalIncome})
 
   return (
     <section>
@@ -84,9 +85,7 @@ export default function BudgetCalcCard() {
         </div>
 
         <div
-          className={`flex items-center justify-between text-white px-[1.25rem] text-[1.25rem] rounded-[10px] h-[50px] {currency}{
-            totalIncome < totalExpenses ? "bg-[#FF0000]" : "bg-[#06D206]"
-          }`}
+          className={`flex items-center justify-between text-white px-[1.25rem] text-[1.25rem] rounded-[10px] h-[50px] ${totalIncome < totalExpenses ? 'bg-red-500' : 'bg-green-500'}`}
         >
           <p className="text-[1.25rem] font-medium">Cashflow Deficit</p>
           <div className="flex items-center gap-[2px]">

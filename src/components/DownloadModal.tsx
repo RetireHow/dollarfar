@@ -69,6 +69,7 @@ const DownloadModal = ({
     }
 
     setTimeout(() => {
+      console.log("Close the modal");
       setIsModalOpen(false);
       setIsLoading(false);
       setShowError(false);
@@ -117,10 +118,12 @@ const DownloadModal = ({
               Name
             </label>
             <input
-              className="p-[0.8rem] border-[1px] border-[#838383] rounded-[8px] outline-none w-full"
+              className={`p-[0.8rem] border-[1px] border-[#838383] rounded-[8px] outline-none w-full ${checked && 'bg-gray-100 disabled:cursor-not-allowed'}`}
+              autoFocus
               type="text"
               placeholder="Enter Name"
               onChange={(e) => setName(e.target.value)}
+              disabled={checked}
             />
           </div>
           <div>
@@ -128,10 +131,11 @@ const DownloadModal = ({
               Email Address
             </label>
             <input
-              className="p-[0.8rem] border-[1px] border-[#838383] rounded-[8px] outline-none w-full"
+              className={`p-[0.8rem] border-[1px] border-[#838383] rounded-[8px] outline-none w-full ${checked && 'bg-gray-100 disabled:cursor-not-allowed'}`}
               type="email"
               placeholder="Enter Email Address"
               onChange={(e) => setEmail(e.target.value)}
+              disabled={checked}
             />
           </div>
           <div>
@@ -160,7 +164,7 @@ const DownloadModal = ({
           </div>
 
           <div>
-            {base64 && checked  ? (
+            {base64 && checked && (
               <PDFDownloadLink
                 document={<PdfComponent data={pdfData} />}
                 fileName={fileName}
@@ -168,6 +172,7 @@ const DownloadModal = ({
                 <button
                   className="text-white w-full rounded-[10px] py-[0.8rem] flex justify-center items-center h-[50px] bg-black"
                   type="button"
+                  id="download-pdf"
                   disabled={!checked || isLoading ? true : false}
                   onClick={handleDownloadPdf}
                 >
@@ -181,9 +186,13 @@ const DownloadModal = ({
                   )}
                 </button>
               </PDFDownloadLink>
-            ) : (
+            )}
+
+            {!checked && (
               <button
-                onClick={handleValidateCheck}
+                onClick={() => {
+                  handleValidateCheck();
+                }}
                 className="text-white w-full rounded-[10px] py-[0.8rem] flex justify-center items-center h-[50px] bg-black"
               >
                 Download

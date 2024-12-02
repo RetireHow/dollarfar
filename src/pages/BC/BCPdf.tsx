@@ -228,7 +228,7 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
-                backgroundColor: "#000000",
+                backgroundColor: `${totalIncome < totalExpenses ? 'red' : 'green'}`,
                 color: "#fff",
                 padding: "8px",
                 borderRadius: "5px",

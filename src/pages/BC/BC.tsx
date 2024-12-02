@@ -93,7 +93,7 @@ export default function BC() {
               </div>
               <DownloadModal
                 calculatorData={calculatorData}
-                fileName="CIRC Report"
+                fileName="Budget Calculator Report"
                 id="BC-Chart"
                 PdfComponent={BCPdf}
               />
