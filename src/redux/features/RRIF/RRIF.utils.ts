@@ -13,22 +13,54 @@ export const calcBalanceAgeByAge = (
   let balanceAtBeginningOfYear: number = initialBalance;
 
   for (let year = startYear; year <= endYear; year++) {
-    const interest = balanceAtBeginningOfYear * (rateOfReturn / 100);
-    const balanceAtEndOfYear: number =
-      balanceAtBeginningOfYear + interest - annualWithdrawalAmount;
+    let balanceAtEndOfYear: number = balanceAtBeginningOfYear;
 
-    const mannualWithdrawalPercentage =
-      (annualWithdrawalAmount * 100) / balanceAtBeginningOfYear;
+    if (year === startYear) {
+      balanceAtEndOfYear = balanceAtEndOfYear - annualWithdrawalAmount;
+      const interest = balanceAtEndOfYear * (rateOfReturn / 100);
+      balanceAtEndOfYear = balanceAtEndOfYear + interest;
 
-    ageBreakdownData.push({
-      balanceAtBeginningOfTheYear: Number(balanceAtBeginningOfYear.toFixed(2)),
-      balanceAtEndOfTheYear: Number(balanceAtEndOfYear.toFixed(2)),
-      annualWithdrawalAmount,
-      mannualWithdrawalPercentage:mannualWithdrawalPercentage.toFixed(2),
-      age: year,
-    });
+      const mannualWithdrawalPercentage =
+        (annualWithdrawalAmount * 100) / balanceAtBeginningOfYear;
+
+      ageBreakdownData.push({
+        balanceAtBeginningOfTheYear: Math.round(balanceAtBeginningOfYear),
+        balanceAtEndOfTheYear: Math.round(balanceAtEndOfYear),
+        annualWithdrawalAmount,
+        mannualWithdrawalPercentage: mannualWithdrawalPercentage.toFixed(2),
+        age: year,
+      });
+    } else {
+      const mannualWithdrawalPercentage = (
+        (annualWithdrawalAmount * 100) /
+        balanceAtBeginningOfYear
+      ).toFixed(2);
+
+      const governmentWithdrawalAmount =
+        (balanceAtBeginningOfYear * ageWithdrawalPercentages[year]) / 100;
+
+      const actualWithdrawal = Math.round(
+        Math.max(governmentWithdrawalAmount, annualWithdrawalAmount)
+      );
+
+      balanceAtEndOfYear = balanceAtEndOfYear - actualWithdrawal;
+      const interest = balanceAtEndOfYear * (rateOfReturn / 100);
+      balanceAtEndOfYear = balanceAtEndOfYear + interest;
+
+      ageBreakdownData.push({
+        balanceAtBeginningOfTheYear: Math.round(balanceAtBeginningOfYear),
+        balanceAtEndOfTheYear: Math.round(balanceAtEndOfYear),
+        annualWithdrawalAmount: actualWithdrawal,
+        mannualWithdrawalPercentage:
+          governmentWithdrawalAmount > annualWithdrawalAmount
+            ? ageWithdrawalPercentages[year].toFixed(2)
+            : mannualWithdrawalPercentage,
+        age: year,
+      });
+    }
 
     // Update the beginning balance for the next year
+
     balanceAtBeginningOfYear = balanceAtEndOfYear;
   }
 
@@ -86,22 +118,22 @@ export const calcBalanceAgeByAgeGovernmentAge = (
 
   for (let year = startYear; year <= endYear; year++) {
     const withdrawalAgeDecimal = ageWithdrawalPercentages[year] / 100;
-    const interest = balanceAtBeginningOfYear * (rateOfReturn / 100);
-    const balanceAtEndOfYear: number =
-      balanceAtBeginningOfYear +
-      interest -
-      balanceAtBeginningOfYear * withdrawalAgeDecimal;
+
+    const annualWithdrawalAmount: number = Number(
+      (balanceAtBeginningOfYear * withdrawalAgeDecimal).toFixed(2)
+    );
+    let balanceAtEndOfYear = balanceAtBeginningOfYear - annualWithdrawalAmount;
+    const interest = balanceAtEndOfYear * (rateOfReturn / 100);
+    balanceAtEndOfYear = balanceAtEndOfYear + interest;
 
     //calculate total withdrawal
     totalWithdrawanOverLifeTime +=
       balanceAtBeginningOfYear * withdrawalAgeDecimal;
 
     ageBreakdownData.push({
-      balanceAtBeginningOfTheYear: Number(balanceAtBeginningOfYear.toFixed(2)),
-      balanceAtEndOfTheYear: Number(balanceAtEndOfYear.toFixed(2)),
-      annualWithdrawalAmount: Number(
-        (balanceAtBeginningOfYear * withdrawalAgeDecimal).toFixed(2)
-      ),
+      balanceAtBeginningOfTheYear: Math.round(Number(balanceAtBeginningOfYear.toFixed(2))),
+      balanceAtEndOfTheYear: Math.round(Number(balanceAtEndOfYear.toFixed(2))),
+      annualWithdrawalAmount:Math.round(annualWithdrawalAmount),
       age: year,
       minWithdrawalPercentage: ageWithdrawalPercentages[year],
     });

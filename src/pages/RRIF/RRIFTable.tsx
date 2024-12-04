@@ -1,5 +1,6 @@
 import { TAgePeriod } from "../../redux/features/RRIF/RRIF.types";
 import { useAppSelector } from "../../redux/hooks";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function RRIFTable() {
   const {
@@ -28,15 +29,15 @@ export default function RRIFTable() {
             {data?.map((item: TAgePeriod, index) => (
               <tr key={index} className="border-b-[1px] border-b-[#0000001A]">
                 <td className="p-3">{item.age}</td>
-                <td className="p-3">${item.balanceAtBeginningOfTheYear}</td>
-                <td className="p-3">${item.annualWithdrawalAmount}</td>
+                <td className="p-3">${numberWithCommas(item.balanceAtBeginningOfTheYear)}</td>
+                <td className="p-3">${numberWithCommas(Number(item.annualWithdrawalAmount))}</td>
                 <td className="p-3">
                   {item.minWithdrawalPercentage ||
                     item.mannualWithdrawalPercentage}
                   %
                 </td>
                 <td className="p-3">{rateOfReturn}%</td>
-                <td className="p-3">${item.balanceAtEndOfTheYear}</td>
+                <td className="p-3">${numberWithCommas(item.balanceAtEndOfTheYear)}</td>
               </tr>
             ))}
           </tbody>

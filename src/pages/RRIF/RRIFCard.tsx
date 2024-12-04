@@ -1,4 +1,5 @@
 import { useAppSelector } from "../../redux/hooks";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function RRIFCard() {
   const {
@@ -23,7 +24,7 @@ export default function RRIFCard() {
 
         <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4 font-medium">
           <p>Initial RRIF Balance</p>
-          <p>{currency}{RRIFInitalBalance}</p>
+          <p>{currency}{numberWithCommas(RRIFInitalBalance)}</p>
         </div>
 
         <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4 font-medium">
@@ -34,20 +35,20 @@ export default function RRIFCard() {
         {withdrawType === "Mannual" && (
           <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4 font-medium">
             <p>Monthly Withdrawal Amount</p>
-            <p>{currency}{Math.round(annualWithdrawalAmount / 12)}</p>
+            <p>{currency}{numberWithCommas(Math.round(annualWithdrawalAmount / 12))}</p>
           </div>
         )}
 
         {withdrawType === "Mannual" && (
           <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4 font-medium">
             <p>Annual Withdrawal Amount</p>
-            <p>{currency}{annualWithdrawalAmount}</p>
+            <p>{currency}{numberWithCommas(annualWithdrawalAmount)}</p>
           </div>
         )}
 
         <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4 font-medium">
           <p>Remaining RRIF Balance (End of Withdrawal Period)</p>
-          <p>{currency}{remainingRRRIFBalanceEndOfPeriod}</p>
+          <p>{currency}{numberWithCommas(remainingRRRIFBalanceEndOfPeriod)}</p>
         </div>
 
         <div className="flex items-center justify-between text-[1.25rem] font-medium">
@@ -55,7 +56,7 @@ export default function RRIFCard() {
             Total Withdrawn Over Lifetime (Age {withdrawalStartYear} to{" "}
             {withdrawalEndYear})
           </p>
-          <p>{currency}{totalWithdrawnOverLifeTime}</p>
+          <p>{currency}{numberWithCommas(totalWithdrawnOverLifeTime)}</p>
         </div>
       </div>
     </section>

@@ -5,7 +5,12 @@ import Select from "react-select";
 import { StylesConfig } from "react-select";
 import { Radio } from "antd";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { updateRRIFState } from "../../redux/features/RRIF/RRIFSlice";
+import {
+  ageWithdrawalPercentages,
+  updateRRIFState,
+} from "../../redux/features/RRIF/RRIFSlice";
+import { useEffect, useState } from "react";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 type TOptions = {
   label: string;
@@ -69,9 +74,26 @@ const withdrawalFrequencyOptions = [
 
 export default function RRIFForm() {
   const dispatch = useAppDispatch();
-  const { rateOfReturn, withdrawType } = useAppSelector(
-    (state) => state.RRIF
-  );
+  const {
+    rateOfReturn,
+    withdrawType,
+    withdrawalStartYear,
+    annualWithdrawalAmount,
+    RRIFInitalBalance,
+  } = useAppSelector((state) => state.RRIF);
+
+  const [minWithdrowalAmount, setMinWithdrawalAbmount] = useState<number>(0);
+
+  useEffect(() => {
+    if (ageWithdrawalPercentages[withdrawalStartYear]) {
+      const result =
+        RRIFInitalBalance *
+        (ageWithdrawalPercentages[withdrawalStartYear] / 100);
+      setMinWithdrawalAbmount(Math.round(result));
+    }
+  }, [annualWithdrawalAmount, withdrawalStartYear]);
+
+  console.log(minWithdrowalAmount);
 
   return (
     <section className="space-y-[2rem]">
@@ -94,47 +116,6 @@ export default function RRIFForm() {
           }
         />
       </div>
-
-      {/* Slider - 1  */}
-      {/* <div>
-        <div className="flex justify-between items-center mb-[1rem]">
-          <h3 className="mb-[0.5rem] font-semibold">Current Age</h3>
-          <div className="max-w-[80px]">
-            <input
-              className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
-              type="number"
-              placeholder="$0"
-              onWheel={(e) => e.currentTarget.blur()}
-              value={currentAge}
-              onChange={(e) =>
-                dispatch(
-                  updateRRIFState({
-                    key: "currentAge",
-                    value: Number(e.target.value),
-                  })
-                )
-              }
-            />
-          </div>
-        </div>
-        <ReactSlider
-          className="horizontal-slider"
-          thumbClassName="example-thumb"
-          trackClassName="example-track"
-          thumbActiveClassName="active-thumb"
-          min={0}
-          max={100}
-          value={currentAge}
-          minDistance={10}
-          onChange={(newValue) =>
-            dispatch(updateRRIFState({ key: "currentAge", value: newValue }))
-          }
-        />
-        <div className="flex justify-between items-center text-[1rem] font-medium text-[#696969] pt-5">
-          <p>0</p>
-          <p>100</p>
-        </div>
-      </div> */}
 
       {/* Slider - 2  */}
       <div>
@@ -203,61 +184,6 @@ export default function RRIFForm() {
         </div>
       </div>
 
-      <div>
-        <div className="flex items-center gap-2 mb-2">
-          <p
-            className={`font-semibold ${
-              withdrawType === "Government" && "text-gray-300"
-            }`}
-          >
-            Annual Withdrawal Amount
-          </p>
-          {withdrawType === "Mannual" && (
-            <CustomTooltip title="Specify the amount you'd like to withdraw from your RRIF annually." />
-          )}
-        </div>
-        <input
-          className={`outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383] ${
-            withdrawType === "Government" &&
-            "cursor-not-allowed border-gray-200 text-gray-200"
-          } duration-300`}
-          type="number"
-          placeholder="$0"
-          onWheel={(e) => e.currentTarget.blur()}
-          disabled={withdrawType === "Government" ? true : false}
-          onChange={(e) =>
-            dispatch(
-              updateRRIFState({
-                key: "annualWithdrawalAmount",
-                value: Number(e.target.value),
-              })
-            )
-          }
-        />
-      </div>
-
-      <div>
-        <div className="flex items-center gap-2 font-semibold mb-2">
-          <p>Withdrawal Frequency</p>
-          <CustomTooltip title="Choose how often you want to withdraw from your RRIF: Monthly, Yearly, or Weekly." />
-        </div>
-        <Select
-          onChange={(value) =>
-            dispatch(
-              updateRRIFState({
-                key: "withdrawalFrequency",
-                value: value,
-              })
-            )
-          }
-          options={withdrawalFrequencyOptions}
-          styles={customStyles}
-          isMulti={false}
-          placeholder="Select withdrawal frequency"
-          className="rounded-md border-[1px] duration-300 border-[#838383]"
-        ></Select>
-      </div>
-
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
         <div>
           <div className="flex items-center gap-2 font-semibold mb-2">
@@ -300,6 +226,66 @@ export default function RRIFForm() {
             }
           />
         </div>
+      </div>
+
+      <div>
+        <div className="flex items-center gap-2 font-semibold mb-2">
+          <p>Withdrawal Frequency</p>
+          <CustomTooltip title="Choose how often you want to withdraw from your RRIF: Monthly, Yearly, or Weekly." />
+        </div>
+        <Select
+          onChange={(value) =>
+            dispatch(
+              updateRRIFState({
+                key: "withdrawalFrequency",
+                value: value,
+              })
+            )
+          }
+          options={withdrawalFrequencyOptions}
+          styles={customStyles}
+          isMulti={false}
+          placeholder="Select withdrawal frequency"
+          className="rounded-md border-[1px] duration-300 border-[#838383]"
+        ></Select>
+      </div>
+
+      <div>
+        <div className="flex items-center gap-2 mb-2">
+          <p
+            className={`font-semibold ${
+              withdrawType === "Government" && "text-gray-300"
+            }`}
+          >
+            Annual Withdrawal Amount
+          </p>
+          {withdrawType === "Mannual" && (
+            <CustomTooltip title="Specify the amount you'd like to withdraw from your RRIF annually." />
+          )}
+        </div>
+        <input
+          className={`outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383] ${
+            withdrawType === "Government" &&
+            "cursor-not-allowed border-gray-200 text-gray-200"
+          } duration-300`}
+          type="number"
+          placeholder="$0"
+          onWheel={(e) => e.currentTarget.blur()}
+          disabled={withdrawType === "Government" ? true : false}
+          onChange={(e) => {
+            dispatch(
+              updateRRIFState({
+                key: "annualWithdrawalAmount",
+                value: Number(e.target.value),
+              })
+            );
+          }}
+        />
+        {annualWithdrawalAmount > 0 && annualWithdrawalAmount < minWithdrowalAmount && (
+          <p className="font-semibold text-[14px]  border-[1px] border-gray-500 p-3 rounded-md mt-1">
+            Please select an income stream that is greater than the required minimum {numberWithCommas(minWithdrowalAmount)}
+          </p>
+        )}
       </div>
 
       {/* <button

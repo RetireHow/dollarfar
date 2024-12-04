@@ -58,7 +58,7 @@ export const cardsData = [
 
   {
     id: 7,
-    title: "Comprehensive Retirement Calculator",
+    title: "Comprehensive Retirement Income Calculator",
     description:
       "This calculator estimates helps users estimate how much money they need to save to comfortably retire based on their current financial situation, income, savings, lifestyle, and future expenses.....",
     arrowIcon: assets.arrowUpIcon,

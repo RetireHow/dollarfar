@@ -89,6 +89,148 @@ export const RRIFPdf = ({ data }: { data: any }) => {
             <Text style={styles.title}>$ - CAD</Text>
           </View>
 
+
+
+           {/* Card Container  */}
+           <View style={styles.section2}>
+            <View
+              style={{
+                border: "1px solid #EAECF0",
+                width: "50%",
+                padding: 16,
+                borderRadius: 5,
+                backgroundColor: "#F8F8F8",
+                flexDirection: "column",
+                gap: 16,
+                fontSize: 12,
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>Initial RRIF Balance</Text>
+                <Text>{0}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>Current Age</Text>
+                <Text>{0}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>
+                Rate of Return(maximum value 16%)
+                </Text>
+                <Text>{0}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>
+                Annual Withdrawal Amount
+                </Text>
+                <Text>{0}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>
+                Monthly Withdrawal Amount
+                </Text>
+                <Text>{0}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>
+                Withdrawal Frequency
+                </Text>
+                <Text>{0}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>
+                Withdrawal Start Year
+                </Text>
+                <Text>{0}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>
+                Withdrawal End Year
+                </Text>
+                <Text>{0}</Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                border: "1px solid #EAECF0",
+                width: "50%",
+                padding: 16,
+                borderRadius: 5,
+                backgroundColor: "#F8F8F8",
+                flexDirection: "column",
+                gap: 16,
+                fontSize: 12,
+                height: "130px",
+              }}
+            >
+              <View style={{ fontWeight: "bold", color: "#000" }}>
+                <Text>Totals</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969", marginRight:"20px" }}>Total Withdrawn Over Lifetime (Age 70 to 80)</Text>
+                <Text>{0}{0}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>Remaining RRIF Balance (End of Withdrawal Period)</Text>
+                <Text>{0}{0}</Text>
+              </View>
+            </View>
+          </View>
+
+
+
+
           {/* Chart Container  */}
           <View style={{ flexDirection: "row" }}>
             <View style={{ flex: 1 }}>
