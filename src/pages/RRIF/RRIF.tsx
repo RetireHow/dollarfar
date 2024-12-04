@@ -26,7 +26,46 @@ export default function RRIF() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
   const dispatch = useAppDispatch();
-  const { currency } = useAppSelector((state) => state.globalCurrency);
+  const { currency, currencyFullName } = useAppSelector((state) => state.globalCurrency);
+  const {
+    RRIFInitalBalance,
+    currentAge,
+    rateOfReturn,
+    annualWithdrawalAmount,
+    withdrawalFrequency,
+    withdrawalStartYear,
+    withdrawalEndYear,
+    withdrawType,
+    ageBreakdownDataOverLifeTimeManually
+  } = useAppSelector((state) => state.RRIF);
+
+
+  const remainingBalanceInRRIF =
+    ageBreakdownDataOverLifeTimeManually[
+      ageBreakdownDataOverLifeTimeManually.length - 1
+    ]?.balanceAtEndOfTheYear;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const totalWithdrawnAmount = ageBreakdownDataOverLifeTimeManually?.reduce((total, curr:any)=>{
+    return total + curr.annualWithdrawalAmount;
+  }, 0)
+
+
+  const calculatorData = {
+    RRIFInitalBalance,
+    currentAge,
+    rateOfReturn,
+    annualWithdrawalAmount,
+    withdrawalFrequency,
+    withdrawalStartYear,
+    withdrawalEndYear,
+    withdrawType,
+    totalWithdrawnOverLifeTime:totalWithdrawnAmount,
+    remainingRRRIFBalanceEndOfPeriod:remainingBalanceInRRIF,
+    currency,
+    currencyFullName
+  };
+
+
   return (
     <main className="mb-[5rem]">
       <div data-html2canvas-ignore>
@@ -41,7 +80,7 @@ export default function RRIF() {
               Registered Retirement Income Fund (RRIF) Calculator
             </h3>
             <div className="flex items-center flex-wrap gap-5">
-            <div>
+              <div>
                 <Select
                   value={currency}
                   size="large"
@@ -60,7 +99,7 @@ export default function RRIF() {
                 ></Select>
               </div>
               <DownloadModal
-                calculatorData={{}}
+                calculatorData={calculatorData}
                 fileName="RRIF Report"
                 id="RRIF-Chart"
                 PdfComponent={RRIFPdf}

@@ -8,6 +8,7 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import { assets } from "../../assets/assets";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 // Define styles for the PDF
 const styles = StyleSheet.create({
@@ -44,9 +45,42 @@ const styles = StyleSheet.create({
   },
 });
 
+type TData = {
+  RRIFInitalBalance: number;
+  currentAge: number;
+  rateOfReturn: number;
+  annualWithdrawalAmount: number;
+  withdrawalFrequency: { label: string; value: string };
+  withdrawalStartYear: number;
+  withdrawalEndYear: number;
+  totalWithdrawnOverLifeTime: number;
+  remainingRRRIFBalanceEndOfPeriod: number;
+  withdrawType: string;
+  currency: string;
+  currencyFullName:string;
+  name: string;
+  email: string;
+  base64: string;
+};
+
 // Define a new PDF document component
-export const RRIFPdf = ({ data }: { data: any }) => {
-  const { name, email, base64 } = data || {};
+export const RRIFPdf = ({ data }: { data: TData }) => {
+  const {
+    name,
+    email,
+    base64,
+    RRIFInitalBalance,
+    rateOfReturn,
+    annualWithdrawalAmount,
+    withdrawalFrequency,
+    withdrawalStartYear,
+    withdrawalEndYear,
+    remainingRRRIFBalanceEndOfPeriod,
+    totalWithdrawnOverLifeTime,
+    currency,
+    currencyFullName,
+    withdrawType,
+  } = data || {};
 
   return (
     <Document>
@@ -89,10 +123,8 @@ export const RRIFPdf = ({ data }: { data: any }) => {
             <Text style={styles.title}>$ - CAD</Text>
           </View>
 
-
-
-           {/* Card Container  */}
-           <View style={styles.section2}>
+          {/* Card Container  */}
+          <View style={styles.section2}>
             <View
               style={{
                 border: "1px solid #EAECF0",
@@ -112,16 +144,10 @@ export const RRIFPdf = ({ data }: { data: any }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>Initial RRIF Balance</Text>
-                <Text>{0}</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={{ color: "#696969" }}>Current Age</Text>
-                <Text>{0}</Text>
+                <Text>
+                  {currency}
+                  {numberWithCommas(RRIFInitalBalance)}
+                </Text>
               </View>
               <View
                 style={{
@@ -130,9 +156,53 @@ export const RRIFPdf = ({ data }: { data: any }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>
-                Rate of Return(maximum value 16%)
+                  Rate of Return(maximum value 16%)
                 </Text>
-                <Text>{0}</Text>
+                <Text>{rateOfReturn}%</Text>
+              </View>
+
+              {withdrawType === "Mannual" && (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ color: "#696969" }}>
+                    Annual Withdrawal Amount
+                  </Text>
+                  <Text>
+                    {currency}
+                    {numberWithCommas(annualWithdrawalAmount)}
+                  </Text>
+                </View>
+              )}
+
+              {withdrawType == "Mannual" && (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ color: "#696969" }}>
+                    Monthly Withdrawal Amount
+                  </Text>
+                  <Text>
+                    {currency}
+                    {numberWithCommas(Math.round(annualWithdrawalAmount / 12))}
+                  </Text>
+                </View>
+              )}
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={{ color: "#696969" }}>Withdrawal Frequency</Text>
+                <Text>{withdrawalFrequency?.value}</Text>
               </View>
               <View
                 style={{
@@ -140,10 +210,8 @@ export const RRIFPdf = ({ data }: { data: any }) => {
                   justifyContent: "space-between",
                 }}
               >
-                <Text style={{ color: "#696969" }}>
-                Annual Withdrawal Amount
-                </Text>
-                <Text>{0}</Text>
+                <Text style={{ color: "#696969" }}>Withdrawal Start Year</Text>
+                <Text>{withdrawalStartYear}</Text>
               </View>
               <View
                 style={{
@@ -151,43 +219,8 @@ export const RRIFPdf = ({ data }: { data: any }) => {
                   justifyContent: "space-between",
                 }}
               >
-                <Text style={{ color: "#696969" }}>
-                Monthly Withdrawal Amount
-                </Text>
-                <Text>{0}</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={{ color: "#696969" }}>
-                Withdrawal Frequency
-                </Text>
-                <Text>{0}</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={{ color: "#696969" }}>
-                Withdrawal Start Year
-                </Text>
-                <Text>{0}</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={{ color: "#696969" }}>
-                Withdrawal End Year
-                </Text>
-                <Text>{0}</Text>
+                <Text style={{ color: "#696969" }}>Withdrawal End Year</Text>
+                <Text>{withdrawalEndYear}</Text>
               </View>
             </View>
 
@@ -201,7 +234,7 @@ export const RRIFPdf = ({ data }: { data: any }) => {
                 flexDirection: "column",
                 gap: 16,
                 fontSize: 12,
-                height: "130px",
+                height: "170px",
               }}
             >
               <View style={{ fontWeight: "bold", color: "#000" }}>
@@ -211,32 +244,98 @@ export const RRIFPdf = ({ data }: { data: any }) => {
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
+                  flexWrap: "wrap",
+                  gap: "5px",
                 }}
               >
-                <Text style={{ color: "#696969", marginRight:"20px" }}>Total Withdrawn Over Lifetime (Age 70 to 80)</Text>
-                <Text>{0}{0}</Text>
+                <Text style={{ color: "#696969" }}>
+                  Total Withdrawn Over Lifetime (Age 70 to 80)
+                </Text>
+                <Text>
+                  {currency}
+                  {numberWithCommas(totalWithdrawnOverLifeTime)}
+                </Text>
               </View>
               <View
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
+                  flexWrap: "wrap",
+                  gap: "5px",
                 }}
               >
-                <Text style={{ color: "#696969" }}>Remaining RRIF Balance (End of Withdrawal Period)</Text>
-                <Text>{0}{0}</Text>
+                <Text style={{ color: "#696969" }}>
+                  Remaining RRIF Balance (End of Withdrawal Period)
+                </Text>
+                <Text>
+                  {currency}
+                  {numberWithCommas(
+                    Math.round(remainingRRRIFBalanceEndOfPeriod)
+                  )}
+                </Text>
               </View>
             </View>
           </View>
 
+           {/* Chart Container  */}
+           <View style={{ flexDirection: "row", gap:"10px" }}>
+              <View style={{ flex: 1 }}>
+                <Image style={{ width: "100%", height: 300 }} src={base64} />
+              </View>
 
+              {/* Legends Container  */}
+              <View
+                style={{
+                  fontSize: 10,
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  gap: 20,
+                  fontWeight: "extrabold",
+                }}
+              >
+                <View
+                  style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+                >
+                  <Text
+                    style={{
+                      width: "20px",
+                      backgroundColor: "#2196F3",
+                      borderRadius: "30px",
+                      height: "6px",
+                    }}
+                  ></Text>
+                  <Text>Balance at the End of the Year</Text>
+                </View>
 
+                <View
+                  style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+                >
+                  <Text
+                    style={{
+                      width: "20px",
+                      backgroundColor: "#FF9800",
+                      borderRadius: "30px",
+                      height: "6px",
+                    }}
+                  ></Text>
+                  <Text>Minimum Withdrawal Amount</Text>
+                </View>
 
-          {/* Chart Container  */}
-          <View style={{ flexDirection: "row" }}>
-            <View style={{ flex: 1 }}>
-              <Image style={{ width: "90%", height: 150 }} src={base64} />
+                <View
+                  style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+                >
+                  <Text
+                    style={{
+                      color: "#000",
+                      width: 20,
+                    }}
+                  >
+                    {currency}
+                  </Text>
+                  <Text>{currencyFullName}</Text>
+                </View>
+              </View>
             </View>
-          </View>
         </View>
 
         {/* Watermark */}

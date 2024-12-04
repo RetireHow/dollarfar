@@ -64,7 +64,6 @@ interface TData {
 // Define a new PDF document component
 export const CRICPdf = ({ data }: { data: TData }) => {
   const { name, email, base64, generalInfo } = data || {};
-  console.log('I am from CRIC PDF file==========> ', data)
   const {
     dobMonth,
     dobYear,
