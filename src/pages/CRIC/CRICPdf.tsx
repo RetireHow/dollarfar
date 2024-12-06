@@ -8,6 +8,7 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import { assets } from "../../assets/assets";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 // Define styles for the PDF
 const styles = StyleSheet.create({
@@ -44,34 +45,51 @@ const styles = StyleSheet.create({
   },
 });
 
-interface GeneralInfo {
-  dobMonth: string;
-  dobYear: string;
-  gender: string;
-  currentAnnualIncome: number;
-  annualRetirementIncomeGoal: number;
-  useLifeExpectancy: "Yes" | "No";
-  customRetirementAge: number;
-}
-
 interface TData {
-  generalInfo: GeneralInfo;
-  name: string;
-  email: string;
+  annualRetirementIncomeGoal: number;
+  currentAnnualIncome: number;
+  dobMonth: string;
+  dobYear: number;
+  gender: string;
+  isFortyYears: number;
+  lifeExpectency: number;
+  oas: { oldAgeSecurityBefore75: number; oldAgeSecurityAfter75: number };
+  oasStartYear: number;
+  ppAnnualAmount: number;
+  ppBenefitAmount: number;
+  ppStartYear: number;
+  selectedPP: string;
+  yearsInCanada: number;
+  name?: string;
+  email?: string;
   base64: string;
+  currency: string;
+  currencyFullName: string;
+  annualAverageRetirementIncome: number;
 }
 
 // Define a new PDF document component
 export const CRICPdf = ({ data }: { data: TData }) => {
-  const { name, email, base64, generalInfo } = data || {};
   const {
+    annualRetirementIncomeGoal,
+    currentAnnualIncome,
     dobMonth,
     dobYear,
     gender,
-    annualRetirementIncomeGoal,
-    currentAnnualIncome,
-    useLifeExpectancy,
-  } = generalInfo || {};
+    lifeExpectency,
+    oas,
+    oasStartYear,
+    ppAnnualAmount,
+    ppStartYear,
+    selectedPP,
+    yearsInCanada,
+    name,
+    email,
+    base64,
+    currency,
+    currencyFullName,
+    annualAverageRetirementIncome,
+  } = data || {};
 
   return (
     <Document>
@@ -111,7 +129,9 @@ export const CRICPdf = ({ data }: { data: TData }) => {
           {/* Title  */}
           <View style={styles.section}>
             <Text>Comprehensive Retirement Income Calculator</Text>
-            <Text style={styles.title}>$ - CAD</Text>
+            <Text style={styles.title}>
+              {currency}-{currencyFullName}
+            </Text>
           </View>
 
           {/* Card Container  */}
@@ -124,7 +144,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 borderRadius: 5,
                 backgroundColor: "#F8F8F8",
                 flexDirection: "row",
-                gap: 30,
+                gap: 10,
                 fontSize: 12,
               }}
             >
@@ -147,7 +167,18 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                     }}
                   >
                     <Text style={{ color: "#696969" }}>Date of Birth</Text>
-                    <Text>{dobMonth}, {dobYear}</Text>
+                    <Text>
+                      {dobMonth}, {dobYear}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text style={{ color: "#696969" }}>Current Age</Text>
+                    <Text>{new Date().getFullYear() - dobYear}</Text>
                   </View>
                   <View
                     style={{
@@ -156,7 +187,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                     }}
                   >
                     <Text style={{ color: "#696969" }}>Life Expectancy</Text>
-                    <Text>{useLifeExpectancy}</Text>
+                    <Text>{lifeExpectency}</Text>
                   </View>
                   <View
                     style={{
@@ -171,12 +202,16 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                     style={{
                       flexDirection: "row",
                       justifyContent: "space-between",
+                      gap: 20,
                     }}
                   >
                     <Text style={{ color: "#696969" }}>
                       Annual Retirement Income Goal
                     </Text>
-                    <Text>{annualRetirementIncomeGoal}</Text>
+                    <Text>
+                      {currency}
+                      {numberWithCommas(annualRetirementIncomeGoal)}
+                    </Text>
                   </View>
                   <View
                     style={{
@@ -187,111 +222,10 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                     <Text style={{ color: "#696969" }}>
                       Current Annual Income
                     </Text>
-                    <Text>{currentAnnualIncome}</Text>
-                  </View>
-                </View>
-
-                {/* Step-2  */}
-                <View
-                  style={{
-                    flexDirection: "column",
-                    gap: 10,
-                    marginTop: "16px",
-                  }}
-                >
-                  <View
-                    style={{
-                      color: "#000",
-                      fontWeight: "bold",
-                      fontSize: "16px",
-                    }}
-                  >
-                    <Text>Canada Pension Plan (CPP)</Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Text style={{ color: "#696969" }}>Receiving at Age</Text>
-                    <Text>65</Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Text style={{ color: "#696969" }}>
-                      Average PRB Annual Pension
+                    <Text>
+                      {currency}
+                      {numberWithCommas(currentAnnualIncome)}
                     </Text>
-                    <Text>N/A</Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Text style={{ color: "#696969" }}>CPP Annual Pension</Text>
-                    <Text>N/A</Text>
-                  </View>
-                </View>
-
-                {/* Step-3  */}
-                <View
-                  style={{
-                    flexDirection: "column",
-                    gap: 10,
-                    marginTop: "16px",
-                  }}
-                >
-                  <View
-                    style={{
-                      color: "#000",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    <Text style={{ fontSize: "16px" }}>Employer Pension</Text>
-                    <Text
-                      style={{
-                        color: "#000",
-                        fontWeight: "bold",
-                        marginTop: "10px",
-                      }}
-                    >
-                      Defined Benefit Plan
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Text style={{ color: "#696969" }}>Receiving at Age</Text>
-                    <Text>65</Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Text style={{ color: "#696969" }}>Index of Inflation</Text>
-                    <Text>N/A</Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Text style={{ color: "#696969" }}>
-                      Employer Annual Pension
-                    </Text>
-                    <Text>N/A</Text>
                   </View>
                 </View>
               </View>
@@ -305,79 +239,6 @@ export const CRICPdf = ({ data }: { data: TData }) => {
               ></Text>
 
               <View>
-                {/* Step-4  */}
-                <View style={{ flexDirection: "column", gap: 10 }}>
-                  <View
-                    style={{
-                      color: "#000",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    <Text style={{ fontSize: "16px" }}>Retirement Savings</Text>
-                    <Text
-                      style={{
-                        color: "#000",
-                        fontWeight: "bold",
-                        marginTop: "10px",
-                      }}
-                    >
-                      N/A
-                    </Text>
-                  </View>
-                </View>
-                {/* Step-5  */}
-                <View
-                  style={{
-                    flexDirection: "column",
-                    gap: 10,
-                    marginTop: "16px",
-                  }}
-                >
-                  <View
-                    style={{
-                      color: "#000",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    <Text style={{ fontSize: "16px" }}>Other Income</Text>
-                    <Text
-                      style={{
-                        color: "#000",
-                        fontWeight: "bold",
-                        marginTop: "10px",
-                      }}
-                    >
-                      Other Income Type: Employment
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Text style={{ color: "#696969" }}>Starting at Age</Text>
-                    <Text>65</Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Text style={{ color: "#696969" }}>Ending at Age</Text>
-                    <Text>N/A</Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Text style={{ color: "#696969" }}>Annual Income</Text>
-                    <Text>N/A</Text>
-                  </View>
-                </View>
                 {/* Step-6  */}
                 <View
                   style={{
@@ -402,42 +263,42 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                       justifyContent: "space-between",
                     }}
                   >
-                    <Text style={{ color: "#696969" }}>
-                      OAS Age Eligibility
-                    </Text>
-                    <Text>65</Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
                     <Text style={{ color: "#696969" }}>Receiving at Age</Text>
-                    <Text>Not Eligible</Text>
+                    <Text>{oasStartYear}</Text>
                   </View>
                   <View
                     style={{
                       flexDirection: "row",
                       justifyContent: "space-between",
-                    }}
-                  >
-                    <Text style={{ color: "#696969" }}>
-                      OAS Pension (Ages Not Eligible to 74)
-                    </Text>
-                    <Text>Not Eligible</Text>
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
+                      gap: 20,
                     }}
                   >
                     <Text style={{ color: "#696969" }}>
                       OAS Pension (Ages 75 and up)
                     </Text>
-                    <Text>Not Eligible</Text>
+                    <Text>
+                      {currency}
+                      {numberWithCommas(Math.round(oas?.oldAgeSecurityAfter75))}
+                    </Text>
                   </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      gap: 20,
+                    }}
+                  >
+                    <Text style={{ color: "#696969" }}>
+                      OAS Pension (Ages from {oasStartYear} to 74)
+                    </Text>
+                    <Text>
+                      {currency}
+                      {numberWithCommas(
+                        Math.round(oas?.oldAgeSecurityBefore75)
+                      )}
+                    </Text>
+                  </View>
+
                   <View
                     style={{
                       flexDirection: "row",
@@ -447,7 +308,48 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                     <Text style={{ color: "#696969" }}>
                       Years lived in Canada
                     </Text>
-                    <Text>0</Text>
+                    <Text>{yearsInCanada}</Text>
+                  </View>
+                </View>
+                {/* Step-2  */}
+                <View
+                  style={{
+                    flexDirection: "column",
+                    gap: 10,
+                    marginTop: "16px",
+                  }}
+                >
+                  <View
+                    style={{
+                      color: "#000",
+                      fontWeight: "bold",
+                      fontSize: "16px",
+                    }}
+                  >
+                    <Text>{selectedPP}</Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text style={{ color: "#696969" }}>Receiving at Age</Text>
+                    <Text>{ppStartYear}</Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text style={{ color: "#696969" }}>
+                      {selectedPP} Annual
+                    </Text>
+                    <Text>
+                      {currency}
+                      {numberWithCommas(ppAnnualAmount)}
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -468,7 +370,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
             }}
           >
             <View style={{ fontWeight: "bold", color: "#000" }}>
-              <Text>Totals</Text>
+              <Text style={{ fontSize: "16px" }}>Totals</Text>
             </View>
             <View
               style={{
@@ -479,7 +381,10 @@ export const CRICPdf = ({ data }: { data: TData }) => {
               <Text style={{ color: "#696969" }}>
                 Annual Retirement Income Goal
               </Text>
-              <Text>${0}</Text>
+              <Text>
+                {currency}
+                {numberWithCommas(annualRetirementIncomeGoal)}
+              </Text>
             </View>
             <View
               style={{
@@ -490,7 +395,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
               <Text style={{ color: "#696969" }}>
                 Annual Average Retirement Income Estimate
               </Text>
-              <Text>${0}</Text>
+              <Text>${numberWithCommas(annualAverageRetirementIncome)}</Text>
             </View>
             <View
               style={{
@@ -503,7 +408,12 @@ export const CRICPdf = ({ data }: { data: TData }) => {
               }}
             >
               <Text>Difference</Text>
-              <Text>${0 + 0}</Text>
+              <Text>
+                {currency}
+                {numberWithCommas(
+                  annualRetirementIncomeGoal - annualAverageRetirementIncome
+                )}
+              </Text>
             </View>
           </View>
         </View>
@@ -515,8 +425,88 @@ export const CRICPdf = ({ data }: { data: TData }) => {
       {/* page 2  */}
       <Page style={{ position: "relative" }}>
         {/* Chart Container  */}
-        <View style={{ padding: 15 }}>
+        <View style={{ padding: 15, marginTop: 30 }}>
           <Image style={{ width: "100%", height: 250 }} src={base64} />
+
+          {/* Legends Container  */}
+          <View
+            style={{
+              fontSize: 10,
+              flexDirection: "column",
+              justifyContent: "center",
+              gap: 10,
+              fontWeight: "extrabold",
+              marginLeft: 40,
+            }}
+          >
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+            >
+              <Text
+                style={{
+                  width: "20px",
+                  backgroundColor: "#AA5656",
+                  borderRadius: "30px",
+                  height: "6px",
+                }}
+              ></Text>
+              <Text>
+                Annual Retirement Income goal : {currency}
+                {numberWithCommas(annualRetirementIncomeGoal)}
+              </Text>
+            </View>
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+            >
+              <Text
+                style={{
+                  width: "20px",
+                  backgroundColor: "#FF9800",
+                  borderRadius: "30px",
+                  height: "6px",
+                }}
+              ></Text>
+              <Text>
+                Old Age Security: {currency}
+                {numberWithCommas(oas?.oldAgeSecurityBefore75)} annually (from
+                age {oasStartYear} to 74); {currency}
+                {numberWithCommas(oas?.oldAgeSecurityAfter75)} annually (from
+                age 75 to {lifeExpectency})
+              </Text>
+            </View>
+
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+            >
+              <Text
+                style={{
+                  width: "20px",
+                  backgroundColor: "#03A9F4",
+                  borderRadius: "30px",
+                  height: "6px",
+                }}
+              ></Text>
+              <Text>
+                {selectedPP} : {currency}
+                {numberWithCommas(ppAnnualAmount)} Annually (starting at age{" "}
+                {ppStartYear} - {lifeExpectency})
+              </Text>
+            </View>
+
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+            >
+              <Text
+                style={{
+                  color: "#000",
+                  width: 20,
+                }}
+              >
+                {currency}
+              </Text>
+              <Text>{currencyFullName}</Text>
+            </View>
+          </View>
         </View>
 
         {/* Watermark */}
@@ -540,7 +530,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
           }}
         >
           <Text>dollarfar.com</Text>
-          <Text>Copyright © 2024 - Dollarfar</Text>
+          <Text>Copyright © {new Date().getFullYear()} - Dollarfar</Text>
         </View>
       </Page>
     </Document>

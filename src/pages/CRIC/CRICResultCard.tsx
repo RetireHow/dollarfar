@@ -36,7 +36,7 @@ export default function CRICResultCard() {
           </p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{numberWithCommas(annualAverageRetirementIncome)}</p>
+            <p>{numberWithCommas(annualAverageRetirementIncome || 0)}</p>
           </div>
         </div>
 
@@ -46,7 +46,7 @@ export default function CRICResultCard() {
             <p>{currency}</p>
             <p>
               {numberWithCommas(
-                annualRetirementIncomeGoal - annualAverageRetirementIncome
+                annualRetirementIncomeGoal - annualAverageRetirementIncome || 0
               )}
             </p>
           </div>

@@ -12,6 +12,8 @@ import { CRICPdf } from "./CRICPdf";
 import CRICBarChart from "./CRICBarChart";
 import Stepper from "../BC/Stepper";
 import { numberWithCommas } from "../../utils/numberWithCommas";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const data = {
   title: "Comprehensive Retirement Income Calculator",
@@ -22,21 +24,46 @@ const data = {
 
 export default function Summary() {
   const dispatch = useAppDispatch();
-  const { currency } = useAppSelector((state) => state.globalCurrency);
+  const navigate = useNavigate()
+
+
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  const { currency, currencyFullName } = useAppSelector((state) => state.globalCurrency);
   const {
     annualRetirementIncomeGoal,
     currentAnnualIncome,
     dobMonth,
     dobYear,
     gender,
-    selectedPP,
+    isFortyYears,
     lifeExpectency,
-    oasStartYear,
-    ppStartYear,
-    yearsInCanada,
-    ppAnnualAmount,
     oas,
+    oasStartYear,
+    ppAnnualAmount,
+    ppBenefitAmount,
+    ppStartYear,
+    selectedPP,
+    yearsInCanada,
+    CRIBreakdownData
   } = useAppSelector((state) => state.CRICalculator);
+
+
+  const totalAmount = CRIBreakdownData.reduce(
+    (
+      total: number,
+      curr: { year: number; oasAmount: number; cppAmount: number }
+    ) => {
+      return total + (curr.oasAmount + curr.cppAmount);
+    },
+    0
+  );
+  const annualAverageRetirementIncome = Math.round(
+    totalAmount / CRIBreakdownData.length
+  );
 
   const calculatorData = {
     annualRetirementIncomeGoal,
@@ -44,7 +71,20 @@ export default function Summary() {
     dobMonth,
     dobYear,
     gender,
+    isFortyYears,
+    lifeExpectency,
+    oas,
+    oasStartYear,
+    ppAnnualAmount,
+    ppBenefitAmount,
+    ppStartYear,
+    selectedPP,
+    yearsInCanada,
+    currency,
+    currencyFullName,
+    annualAverageRetirementIncome
   };
+  console.log({calculatorData})
 
   return (
     <>
@@ -87,7 +127,7 @@ export default function Summary() {
           </div>
         </div>
 
-        <Stepper steps={[1, 2, 3, 4]}/>
+        <Stepper steps={[1, 2, 3, 4]} />
 
         <section className="flex md:flex-row flex-col gap-10 justify-between">
           <div className="space-y-[2rem] flex-1">
@@ -112,9 +152,7 @@ export default function Summary() {
                 </li>
                 <li className="flex justify-between items-center">
                   <p>Current Age</p>
-                  <p>
-                    {new Date().getFullYear()-dobYear}
-                  </p>
+                  <p>{new Date().getFullYear() - dobYear}</p>
                 </li>
                 <li className="flex justify-between items-center">
                   <p>Life Expectancy</p>
@@ -126,20 +164,24 @@ export default function Summary() {
                 </li>
                 <li className="flex justify-between items-center">
                   <p>Annual Retirement Income Goal</p>
-                  <p>{currency}{numberWithCommas(annualRetirementIncomeGoal)}</p>
+                  <p>
+                    {currency}
+                    {numberWithCommas(annualRetirementIncomeGoal)}
+                  </p>
                 </li>
                 <li className="flex justify-between items-center">
                   <p>Current Annual Income</p>
-                  <p>{currency}{numberWithCommas(currentAnnualIncome)}</p>
+                  <p>
+                    {currency}
+                    {numberWithCommas(currentAnnualIncome)}
+                  </p>
                 </li>
               </ul>
             </div>
 
             <div>
               <div className="flex justify-between items-center mb-5">
-                <h3 className="font-semibold text-[1.2rem]">
-                  {selectedPP}
-                </h3>
+                <h3 className="font-semibold text-[1.2rem]">{selectedPP}</h3>
                 <Icon
                   className="text-[2rem] font-bold"
                   icon="material-symbols:keyboard-arrow-up-rounded"
@@ -153,7 +195,10 @@ export default function Summary() {
 
                 <li className="flex justify-between items-center">
                   <p>{selectedPP} Annual</p>
-                  <p>{currency}{numberWithCommas(ppAnnualAmount)}</p>
+                  <p>
+                    {currency}
+                    {numberWithCommas(ppAnnualAmount)}
+                  </p>
                 </li>
               </ul>
             </div>
@@ -264,12 +309,18 @@ export default function Summary() {
 
                 <li className="flex justify-between items-center">
                   <p>OAS Pension (Ages 75 and up)</p>
-                  <p>{currency}{numberWithCommas(oas?.oldAgeSecurityAfter75)}</p>
+                  <p>
+                    {currency}
+                    {numberWithCommas(oas?.oldAgeSecurityAfter75)}
+                  </p>
                 </li>
 
                 <li className="flex justify-between items-center">
                   <p>OAS Pension (Ages from {oasStartYear} to 74)</p>
-                  <p>{currency}{numberWithCommas(oas?.oldAgeSecurityBefore75)}</p>
+                  <p>
+                    {currency}
+                    {numberWithCommas(oas?.oldAgeSecurityBefore75)}
+                  </p>
                 </li>
 
                 <li className="flex justify-between items-center">
@@ -279,13 +330,14 @@ export default function Summary() {
               </ul>
             </div>
 
-            {/* <div className="flex justify-end">
+            <div className="flex justify-end gap-10">
               <button
+                onClick={() => navigate(-1)}
                 className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black"
               >
-                Calculate
+                Back
               </button>
-            </div> */}
+            </div>
           </div>
           <CRICResultCard />
         </section>

@@ -1,9 +1,7 @@
 import { useEffect } from "react";
 import { assets } from "../../assets/assets";
 import PageHero from "../../components/UI/PageHero";
-import DownloadModal from "../../components/DownloadModal";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { CRICPdf } from "./CRICPdf";
 import CRICLayout from "./CRICLayout";
 import { Select } from "antd";
 import { setCurrency } from "../../redux/features/other/globalCurrency";
@@ -23,8 +21,6 @@ export default function CRIC() {
   }, []);
   const dispatch = useAppDispatch();
   const { currency } = useAppSelector((state) => state.globalCurrency);
-
-
   return (
     <main className="mb-[5rem]">
       <div data-html2canvas-ignore>
@@ -39,7 +35,7 @@ export default function CRIC() {
               Comprehensive Retirement Income Calculator
             </h3>
             <div className="flex items-center flex-wrap gap-5">
-            <div>
+              <div>
                 <Select
                   value={currency}
                   size="large"
@@ -57,17 +53,11 @@ export default function CRIC() {
                   }
                 ></Select>
               </div>
-              <DownloadModal
-                calculatorData={{}}
-                fileName="CRIC Report"
-                id="CRIC-Chart"
-                PdfComponent={CRICPdf}
-              />
             </div>
           </div>
         </div>
 
-        <CRICLayout/>
+        <CRICLayout />
       </section>
     </main>
   );

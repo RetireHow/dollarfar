@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { useNavigate } from "react-router-dom";
 import { nextStep } from "../../../redux/features/stepperSlice/stepperSclie";
 import { updateField } from "../../../redux/features/CRIC/CRICSlice";
+import { useEffect } from "react";
 
 export default function CanadaPensionPlanRough() {
   const dispatch = useAppDispatch();
@@ -15,6 +16,10 @@ export default function CanadaPensionPlanRough() {
   const { selectedPP, ppStartYear, ppBenefitAmount } = useAppSelector(
     (state) => state.CRICalculator
   );
+
+  useEffect(() => {
+    window.scrollTo({ top: 330, behavior: "smooth" });
+  }, []);
 
   return (
     <section className="space-y-[2rem]">
@@ -120,7 +125,13 @@ export default function CanadaPensionPlanRough() {
         </>
       )}
 
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-10">
+        <button
+          onClick={()=>navigate(-1)}
+          className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black"
+        >
+          Back
+        </button>
         <button
           onClick={handleNext}
           className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black"

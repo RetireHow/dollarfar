@@ -7,6 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  ReferenceLine,
 } from "recharts";
 import { useAppSelector } from "../../redux/hooks";
 import { numberWithCommas } from "../../utils/numberWithCommas";
@@ -22,12 +23,15 @@ function CRICBarChart() {
     selectedPP,
     ppAnnualAmount,
   } = useAppSelector((state) => state.CRICalculator);
-  const { currency } = useAppSelector((state) => state.globalCurrency);
+  const { currency, currencyFullName } = useAppSelector(
+    (state) => state.globalCurrency
+  );
   console.log({ oas });
   return (
     <div className="overflow-x-auto mt-[5rem]">
-      <div id="CRIC-Chart" className="flex items-center gap-3">
+      <div className="flex items-center gap-3">
         <div
+          id="CRIC-Chart"
           className="border-[1px] border-gray-200 min-w-[800px] shadow-sm rounded-lg p-2"
           style={{ width: "100%", height: 500 }}
         >
@@ -47,8 +51,13 @@ function CRICBarChart() {
                 // domain={[0, 50000]} // Dynamically scale Y-axis
                 tickFormatter={(value) => `${currency}${value}`}
                 fontSize={12}
+                dataKey="annualRetirementIncomeGoal"
               />
-              <Tooltip formatter={(value: number) => `${currency}${value}`} />
+              <Tooltip
+                formatter={(value: number) =>
+                  `${currency}${numberWithCommas(value)}`
+                }
+              />
 
               <Bar
                 dataKey="oasAmount"
@@ -65,7 +74,7 @@ function CRICBarChart() {
                 stackId="a"
                 barSize={20}
               />
-              {/* 
+
               <ReferenceLine
                 y={annualRetirementIncomeGoal}
                 stroke="#AA5656"
@@ -76,12 +85,12 @@ function CRICBarChart() {
                   fontSize: 12,
                 }}
                 isFront={true}
-              /> */}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
-        <ul className="space-y-[1rem] lg:mt-0 mt-[2rem] text-[14px]">
+        <ul className="space-y-[1rem] lg:mt-0 mt-[2rem] text-[14px] font-semibold">
           <li className="flex items-center gap-[0.5rem]">
             <div className="bg-[#AA5656] min-w-[30px] h-[10px] rounded-[10px]"></div>
             <p className="text-nowrap">
@@ -110,7 +119,7 @@ function CRICBarChart() {
           </li>
           <li className="flex items-center gap-[0.5rem]">
             <p className="min-w-[30px]">{currency}</p>
-            <p>Canadian Dollar</p>
+            <p>{currencyFullName}</p>
           </li>
         </ul>
       </div>

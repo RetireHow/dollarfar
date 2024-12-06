@@ -14,14 +14,14 @@ type CRICState = {
   selectedPP: string;
   ppStartYear: number;
   ppBenefitAmount: number;
-  ppAnnualAmount:number;
+  ppAnnualAmount: number;
 
   isFortyYears: number;
   oasStartYear: number;
   yearsInCanada: number;
 
   CRIBreakdownData: any;
-  oas:any;
+  oas: any;
 };
 
 // Initial state
@@ -38,7 +38,7 @@ const initialState: CRICState = {
   selectedPP: "Canada Pension Plan",
   ppStartYear: 65,
   ppBenefitAmount: 300,
-  ppAnnualAmount:0,
+  ppAnnualAmount: 0,
 
   // OAS
   isFortyYears: 1,
@@ -46,7 +46,7 @@ const initialState: CRICState = {
   yearsInCanada: 20,
 
   CRIBreakdownData: [],
-  oas:{}
+  oas: {},
 };
 
 // Create the slice
@@ -71,51 +71,75 @@ const CRICSlice = createSlice({
         state.ppAnnualAmount = cpp;
       }
 
-      // Calculate OAS Benefit
-      const { isFortyYears, yearsInCanada, oasStartYear } = state;
-      const oas = calculateOAS(isFortyYears, oasStartYear, yearsInCanada);
-      state.oas = oas;
 
-      const years = [];
-      for (
-        let year = Math.min(ppStartYear, oasStartYear);
-        year <= state.lifeExpectency;
-        year++
-      ) {
-        years.push(year);
+      if (selectedPP !== "Not Applicable") {
+        // Calculate OAS Benefit
+        const { isFortyYears, yearsInCanada, oasStartYear } = state;
+        const oas = calculateOAS(isFortyYears, oasStartYear, yearsInCanada);
+        state.oas = oas;
+
+        const years = [];
+        for (
+          let year = Math.min(ppStartYear, oasStartYear);
+          year <= state.lifeExpectency;
+          year++
+        ) {
+          years.push(year);
+        }
+
+        // Generate OAS list with the condition for before and after age 75
+        const oasList = [];
+        for (let year = oasStartYear; year <= 74; year++) {
+          oasList.push({ oas: oas.oldAgeSecurityBefore75, oasAge: year });
+        }
+        for (let year = 75; year <= state.lifeExpectency; year++) {
+          oasList.push({ oas: oas.oldAgeSecurityAfter75, oasAge: year });
+        }
+
+        // Build breakdown data
+        const breakdownData = years.map((year) => {
+          const isCPPActive = year >= ppStartYear;
+          const isOASActive = year >= oasStartYear;
+
+          // Determine OAS based on age
+          const oasAmount =
+            isOASActive && year >= 75
+              ? oas.oldAgeSecurityAfter75
+              : isOASActive
+              ? oas.oldAgeSecurityBefore75
+              : 0;
+
+          return {
+            year,
+            cppAmount: isCPPActive ? cpp : 0, // Add CPP benefit if the year matches or exceeds ppStartYear
+            oasAmount: oasAmount, // Add OAS benefit if the year matches or exceeds oasStartYear
+            currentAnnualIncome: state.currentAnnualIncome,
+            annualRetirementIncomeGoal: state.annualRetirementIncomeGoal,
+          };
+        });
+        state.CRIBreakdownData = breakdownData;
+      } else {
+        const oas = calculateOAS(state.isFortyYears, state.oasStartYear, state.yearsInCanada);
+        state.oas = oas;
+        const oasList = [];
+        for (let year = state.oasStartYear; year <= 74; year++) {
+          oasList.push({
+            oasAmount: state.oas.oldAgeSecurityBefore75,
+            year,
+            currentAnnualIncome: state.currentAnnualIncome,
+            annualRetirementIncomeGoal: state.annualRetirementIncomeGoal,
+          });
+        }
+        for (let year = 75; year <= state.lifeExpectency; year++) {
+          oasList.push({
+            oasAmount: state.oas.oldAgeSecurityAfter75,
+            year,
+            currentAnnualIncome: state.currentAnnualIncome,
+            annualRetirementIncomeGoal: state.annualRetirementIncomeGoal,
+          });
+        }
+        state.CRIBreakdownData = oasList;
       }
-
-       // Generate OAS list with the condition for before and after age 75
-  const oasList = [];
-  for (let year = oasStartYear; year <= 74; year++) {
-    oasList.push({ oas:oas.oldAgeSecurityBefore75, oasAge: year });
-  }
-  for (let year = 75; year <= state.lifeExpectency; year++) {
-    oasList.push({ oas: oas.oldAgeSecurityAfter75, oasAge: year });
-  }
-
-  // Build breakdown data
-  const breakdownData = years.map((year) => {
-    const isCPPActive = year >= ppStartYear;
-    const isOASActive = year >= oasStartYear;
-
-    // Determine OAS based on age
-    const oasAmount =
-      isOASActive && year >= 75
-        ? oas.oldAgeSecurityAfter75
-        : isOASActive
-        ? oas.oldAgeSecurityBefore75
-        : 0;
-
-    return {
-      year,
-      cppAmount: isCPPActive ? cpp : 0, // Add CPP benefit if the year matches or exceeds ppStartYear
-      oasAmount: oasAmount, // Add OAS benefit if the year matches or exceeds oasStartYear
-    };
-  });
-
-  state.CRIBreakdownData = breakdownData; // Update the state with the breakdown data
-
     },
   },
 });

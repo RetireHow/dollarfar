@@ -2,19 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { nextStep } from "../../../redux/features/stepperSlice/stepperSclie";
 import { updateField } from "../../../redux/features/CRIC/CRICSlice";
+import { useEffect } from "react";
 
-const OASAgeOptions = [
-  65, 66, 67, 68,
-  69, 70,
-];
+const OASAgeOptions = [65, 66, 67, 68, 69, 70];
 
 const canadaLivingAgeOptions = [
-  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-  11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-  21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-  31, 32, 33, 34, 35, 36, 37, 38, 39, 40
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+  22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
 ];
-
 
 export default function OldAgeSecurity() {
   const dispatch = useAppDispatch();
@@ -28,6 +23,10 @@ export default function OldAgeSecurity() {
     dispatch(nextStep());
     navigate("/CRIC/summary");
   };
+
+  useEffect(() => {
+    window.scrollTo({ top: 330, behavior: "smooth" });
+  }, []);
 
   return (
     <section className="space-y-[2rem]">
@@ -73,7 +72,6 @@ export default function OldAgeSecurity() {
         </select>
       </div>
 
-
       {!Number(isFortyYears) && (
         <>
           <div>
@@ -104,8 +102,6 @@ export default function OldAgeSecurity() {
         </>
       )}
 
-      
-
       {isFortyYears && (
         <>
           <div>
@@ -133,7 +129,13 @@ export default function OldAgeSecurity() {
         </>
       )}
 
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-10">
+        <button
+          onClick={() => navigate(-1)}
+          className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black"
+        >
+          Back
+        </button>
         <button
           onClick={handleNext}
           className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black"

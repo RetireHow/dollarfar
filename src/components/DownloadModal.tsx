@@ -33,6 +33,8 @@ const DownloadModal = ({
     email,
   };
 
+  console.log("I am from modal ========> ", pdfData)
+
   useEffect(() => {
     const captureChart = async () => {
       const chartId = document.getElementById(id);
