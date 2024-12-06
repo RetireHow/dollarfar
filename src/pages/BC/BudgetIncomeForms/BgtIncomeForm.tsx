@@ -8,26 +8,6 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { toast } from "react-toastify";
 import { nextStep } from "../../../redux/features/stepperSlice/stepperSclie";
-import { steps } from "../Stepper";
-
-
-
-{/* <div className="flex gap-4">
-        <button
-          onClick={() => dispatch(previousStep())}
-          disabled={activeStep === 0}
-          className="px-4 py-2 bg-gray-200 rounded disabled:bg-gray-100"
-        >
-          Previous
-        </button>
-        <button
-          onClick={() => dispatch(nextStep())}
-          disabled={activeStep === steps.length - 1}
-          className="px-4 py-2 bg-gray-200 rounded disabled:bg-gray-100"
-        >
-          Next
-        </button>
-      </div> */}
 
 export default function BgtIncomeForm() {
   const navigate = useNavigate();
@@ -55,7 +35,7 @@ export default function BgtIncomeForm() {
       <div className="flex justify-end">
         <button
           onClick={handleNext}
-          disabled={activeStep === steps.length - 1}
+          disabled={activeStep === [1, 2, 3, 4, 5, 6, 7].length - 1}
           className="bg-black text-[1.25rem] text-white rounded-[10px] px-[1.5rem] py-[10px]"
         >
           Next

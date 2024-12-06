@@ -1,8 +1,6 @@
-import { useAppSelector } from "../../redux/hooks";
+import {useAppSelector } from "../../redux/hooks";
 
-export const steps = [1, 2, 3, 4, 5, 6, 7];
-
-export default function Stepper() {
+export default function Stepper({steps}:{steps:number[]}) {
   const activeStep = useAppSelector((state) => state.stepper.activeStep);
 
   // Calculate width percentage for completed steps
@@ -11,7 +9,6 @@ export default function Stepper() {
   return (
     <main className="overflow-scroll py-[1rem] my-[1.5rem]">
       <section className="relative w-full flex flex-col items-center min-w-[500px]">
-        
         {/* Progress Bar */}
         <div className="relative h-[10px] w-full bg-gray-300 rounded-full mt-[1.25rem]">
           <div
@@ -26,11 +23,11 @@ export default function Stepper() {
             <div
               key={index}
               className={`w-[2.5rem] h-[2.5rem] rounded-full border-[1px] border-gray-500 flex justify-center items-center font-extrabold text-[1.25rem] ${
-                index < activeStep 
-                  ? "bg-black text-white"                    // Completed steps
-                  : index === activeStep 
-                  ? "bg-gray-800 text-white"                // Active step
-                  : "bg-white text-gray-800"                // Incomplete steps
+                index < activeStep
+                  ? "bg-black text-white" // Completed steps
+                  : index === activeStep
+                  ? "bg-gray-800 text-white" // Active step
+                  : "bg-white text-gray-800" // Incomplete steps
               }`}
             >
               {step}

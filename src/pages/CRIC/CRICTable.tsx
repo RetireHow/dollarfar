@@ -1,7 +1,10 @@
 import { useAppSelector } from "../../redux/hooks";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function CRICTable() {
-  const { oasBreakdown } = useAppSelector((state) => state.CRICalculator);
+  const { CRIBreakdownData } = useAppSelector((state) => state.CRICalculator);
+  const { currency } = useAppSelector((state) => state.globalCurrency);
+
   return (
     <section className="mt-[5rem]">
       <div className="overflow-x-auto">
@@ -10,23 +13,28 @@ export default function CRICTable() {
             <tr className="border-b-[1px] border-b-[#0000001A]">
               <th className="p-3">Age</th>
               <th className="p-3">Canada Pension Plan</th>
-              <th className="p-3">Retirement savings</th>
+              <th className="p-3">Old Age Security</th>
               <th className="p-3">Total Estimated Retirement Income</th>
             </tr>
           </thead>
           <tbody>
-            {oasBreakdown.map(
-              (item: {
-                age: number;
-                annualCPPAmount: number;
-                annualRetirementSavingsAmount: number;
-                totalEstimatedRetirementIncome: number;
+            {CRIBreakdownData?.map(
+              ({
+                year,
+                cppAmount,
+                oasAmount,
+              }: {
+                year: number;
+                cppAmount: number;
+                oasAmount: number;
               }) => (
                 <tr className="border-b-[1px] border-b-[#0000001A]">
-                  <td className="p-3">{item.age}</td>
-                  <td className="p-3">${item.annualCPPAmount}</td>
-                  <td className="p-3">${item.annualRetirementSavingsAmount}</td>
-                  <td className="p-3">${item.totalEstimatedRetirementIncome}</td>
+                  <td className="p-3">{year}</td>
+                  <td className="p-3">{currency}{numberWithCommas(Math.round(cppAmount))}</td>
+                  <td className="p-3">{currency}{numberWithCommas(Math.round(oasAmount))}</td>
+                  <td className="p-3">
+                    {currency}{numberWithCommas(Math.round(cppAmount + oasAmount))}
+                  </td>
                 </tr>
               )
             )}
@@ -34,10 +42,10 @@ export default function CRICTable() {
         </table>
       </div>
 
-      <p className="font-semibold text-[1.1rem] text-center leading-[2rem]">
+      {/* <p className="font-semibold text-[1.1rem] text-center leading-[2rem]">
         By age 65, you will need approximately $1.125 million in retirement
         savings to maintain your desired lifestyle.
-      </p>
+      </p> */}
     </section>
   );
 }

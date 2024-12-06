@@ -1,9 +1,22 @@
 import { useAppSelector } from "../../redux/hooks";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function CRICResultCard() {
   const { currency } = useAppSelector((state) => state.globalCurrency);
-  const { averageAnnualRetirementIncome, generalInfo } = useAppSelector(
+  const { annualRetirementIncomeGoal, CRIBreakdownData } = useAppSelector(
     (state) => state.CRICalculator
+  );
+  const totalAmount = CRIBreakdownData.reduce(
+    (
+      total: number,
+      curr: { year: number; oasAmount: number; cppAmount: number }
+    ) => {
+      return total + (curr.oasAmount + curr.cppAmount);
+    },
+    0
+  );
+  const annualAverageRetirementIncome = Math.round(
+    totalAmount / CRIBreakdownData.length
   );
   return (
     <section>
@@ -13,17 +26,17 @@ export default function CRICResultCard() {
           <p className="font-medium">Annual Retirement Income Goal</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{generalInfo.annualRetirementIncomeGoal}</p>
+            <p>{numberWithCommas(annualRetirementIncomeGoal)}</p>
           </div>
         </div>
 
-        <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4">
+        <div className="flex items-center justify-between gap-5 border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4">
           <p className="text-[1.25rem] font-medium">
             Annual Average Retirement Income Estimate
           </p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{averageAnnualRetirementIncome}</p>
+            <p>{numberWithCommas(annualAverageRetirementIncome)}</p>
           </div>
         </div>
 
@@ -31,7 +44,11 @@ export default function CRICResultCard() {
           <p className="text-[1.25rem] font-medium">Difference</p>
           <div className="flex items-center gap-[2px]">
             <p>{currency}</p>
-            <p>{0}</p>
+            <p>
+              {numberWithCommas(
+                annualRetirementIncomeGoal - annualAverageRetirementIncome
+              )}
+            </p>
           </div>
         </div>
       </div>

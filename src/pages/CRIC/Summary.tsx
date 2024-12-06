@@ -10,10 +10,8 @@ import { setCurrency } from "../../redux/features/other/globalCurrency";
 import DownloadModal from "../../components/DownloadModal";
 import { CRICPdf } from "./CRICPdf";
 import CRICBarChart from "./CRICBarChart";
-import {
-  calculateAverageAnnualRetirementIncome,
-  calculateOASBreakdown,
-} from "../../redux/features/CRIC/CRICSlice";
+import Stepper from "../BC/Stepper";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 const data = {
   title: "Comprehensive Retirement Income Calculator",
@@ -26,37 +24,26 @@ export default function Summary() {
   const dispatch = useAppDispatch();
   const { currency } = useAppSelector((state) => state.globalCurrency);
   const {
-    generalInfo,
-    oldAgeSecurity,
-    CPP,
-    retirementSavings,
-    otherIncome,
-    employerPension,
-  } = useAppSelector((state) => state.CRICalculator);
-  const {
     annualRetirementIncomeGoal,
     currentAnnualIncome,
-    customRetirementAge,
     dobMonth,
     dobYear,
     gender,
-  } = generalInfo;
-
-  const { receivingOASPensionAge, yearsLivedInCanadaBetween18To65 } =
-    oldAgeSecurity;
-
-  const handleCalculate = () => {
-    dispatch(calculateOASBreakdown());
-    dispatch(calculateAverageAnnualRetirementIncome());
-  };
+    selectedPP,
+    lifeExpectency,
+    oasStartYear,
+    ppStartYear,
+    yearsInCanada,
+    ppAnnualAmount,
+    oas,
+  } = useAppSelector((state) => state.CRICalculator);
 
   const calculatorData = {
-    generalInfo,
-    CPP,
-    retirementSavings,
-    otherIncome,
-    oldAgeSecurity,
-    employerPension,
+    annualRetirementIncomeGoal,
+    currentAnnualIncome,
+    dobMonth,
+    dobYear,
+    gender,
   };
 
   return (
@@ -100,6 +87,8 @@ export default function Summary() {
           </div>
         </div>
 
+        <Stepper steps={[1, 2, 3, 4]}/>
+
         <section className="flex md:flex-row flex-col gap-10 justify-between">
           <div className="space-y-[2rem] flex-1">
             <h3 className="font-extrabold text-[2rem]">Summary</h3>
@@ -122,8 +111,14 @@ export default function Summary() {
                   </p>
                 </li>
                 <li className="flex justify-between items-center">
+                  <p>Current Age</p>
+                  <p>
+                    {new Date().getFullYear()-dobYear}
+                  </p>
+                </li>
+                <li className="flex justify-between items-center">
                   <p>Life Expectancy</p>
-                  <p>{customRetirementAge}</p>
+                  <p>{lifeExpectency}</p>
                 </li>
                 <li className="flex justify-between items-center">
                   <p>Gender</p>
@@ -131,11 +126,11 @@ export default function Summary() {
                 </li>
                 <li className="flex justify-between items-center">
                   <p>Annual Retirement Income Goal</p>
-                  <p>${annualRetirementIncomeGoal}</p>
+                  <p>{currency}{numberWithCommas(annualRetirementIncomeGoal)}</p>
                 </li>
                 <li className="flex justify-between items-center">
                   <p>Current Annual Income</p>
-                  <p>${currentAnnualIncome}</p>
+                  <p>{currency}{numberWithCommas(currentAnnualIncome)}</p>
                 </li>
               </ul>
             </div>
@@ -143,7 +138,7 @@ export default function Summary() {
             <div>
               <div className="flex justify-between items-center mb-5">
                 <h3 className="font-semibold text-[1.2rem]">
-                  Canada Pension Plan (CPP)
+                  {selectedPP}
                 </h3>
                 <Icon
                   className="text-[2rem] font-bold"
@@ -153,20 +148,17 @@ export default function Summary() {
               <ul className="space-y-[1rem]">
                 <li className="flex justify-between items-center">
                   <p>Receiving at Age</p>
-                  <p>65</p>
+                  <p>{ppStartYear}</p>
                 </li>
+
                 <li className="flex justify-between items-center">
-                  <p>Average PRB Annual Pension</p>
-                  <p>N/A</p>
-                </li>
-                <li className="flex justify-between items-center">
-                  <p>CPP Annual Pension</p>
-                  <p>N/A</p>
+                  <p>{selectedPP} Annual</p>
+                  <p>{currency}{numberWithCommas(ppAnnualAmount)}</p>
                 </li>
               </ul>
             </div>
 
-            <div>
+            {/* <div>
               <div className="flex justify-between items-center mb-5">
                 <h3 className="font-semibold text-[1.2rem]">
                   Employer Pension
@@ -251,7 +243,7 @@ export default function Summary() {
                   <p>$90000</p>
                 </li>
               </ul>
-            </div>
+            </div> */}
 
             <div>
               <div className="flex justify-between items-center mb-5">
@@ -266,36 +258,34 @@ export default function Summary() {
 
               <ul className="space-y-[1rem]">
                 <li className="flex justify-between items-center">
-                  <p>OAS Age Eligibility</p>
-                  <p>65</p>
-                </li>
-                <li className="flex justify-between items-center">
                   <p>Receiving at Age</p>
-                  <p>{receivingOASPensionAge}</p>
+                  <p>{oasStartYear}</p>
                 </li>
-                <li className="flex justify-between items-center">
-                  <p>OAS Pension (Ages Not Eligible to 74)</p>
-                  <p>Not Eligible</p>
-                </li>
+
                 <li className="flex justify-between items-center">
                   <p>OAS Pension (Ages 75 and up)</p>
-                  <p>Not Eligible</p>
+                  <p>{currency}{numberWithCommas(oas?.oldAgeSecurityAfter75)}</p>
                 </li>
+
+                <li className="flex justify-between items-center">
+                  <p>OAS Pension (Ages from {oasStartYear} to 74)</p>
+                  <p>{currency}{numberWithCommas(oas?.oldAgeSecurityBefore75)}</p>
+                </li>
+
                 <li className="flex justify-between items-center">
                   <p>Years lived in Canada</p>
-                  <p>{yearsLivedInCanadaBetween18To65}</p>
+                  <p>{yearsInCanada}</p>
                 </li>
               </ul>
             </div>
 
-            <div className="flex justify-end">
+            {/* <div className="flex justify-end">
               <button
-                onClick={handleCalculate}
                 className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black"
               >
                 Calculate
               </button>
-            </div>
+            </div> */}
           </div>
           <CRICResultCard />
         </section>

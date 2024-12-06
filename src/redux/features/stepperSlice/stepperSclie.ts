@@ -27,6 +27,9 @@ const stepperSlice = createSlice({
     resetActiveStep: (state) => {
       state.activeStep = 0;
     },
+    setTotalSteps: (state, action) => {
+      state.totalSteps = action.payload;
+    },
     goToStep: (state, action: PayloadAction<number>) => {
       const step = action.payload;
       if (step >= 0 && step < state.totalSteps) {
@@ -37,5 +40,6 @@ const stepperSlice = createSlice({
 });
 
 // Export actions and reducer
-export const { nextStep, previousStep, resetActiveStep,  goToStep } = stepperSlice.actions;
+export const { nextStep, previousStep, resetActiveStep, goToStep, setTotalSteps } =
+  stepperSlice.actions;
 export default stepperSlice.reducer;

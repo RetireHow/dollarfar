@@ -7,94 +7,113 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Cell,
-  ReferenceLine,
 } from "recharts";
 import { useAppSelector } from "../../redux/hooks";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 function CRICBarChart() {
-  const {generalInfo, oasBreakdown} = useAppSelector(state => state.CRICalculator)
-
+  const {
+    CRIBreakdownData,
+    oasStartYear,
+    ppStartYear,
+    oas,
+    lifeExpectency,
+    annualRetirementIncomeGoal,
+    selectedPP,
+    ppAnnualAmount,
+  } = useAppSelector((state) => state.CRICalculator);
+  const { currency } = useAppSelector((state) => state.globalCurrency);
+  console.log({ oas });
   return (
     <div className="overflow-x-auto mt-[5rem]">
-      <div
-        id="CRIC-Chart"
-        className="min-w-[900px] flex items-center gap-5"
-      >
+      <div id="CRIC-Chart" className="flex items-center gap-3">
         <div
-          className="border-[1px] border-gray-200 shadow-sm rounded-lg p-2"
+          className="border-[1px] border-gray-200 min-w-[800px] shadow-sm rounded-lg p-2"
           style={{ width: "100%", height: 500 }}
         >
           <ResponsiveContainer>
             <BarChart
-              data={oasBreakdown}
+              data={CRIBreakdownData}
               margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
             >
               {/* Grid and Axes */}
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="age"
-                label={{ value: "Age", position: "insideBottom", offset: -5 }}
-              />
+              <XAxis dataKey="year" name="Age" />
               <YAxis
                 label={{
                   angle: -90,
                   position: "insideLeft",
                 }}
-                domain={[0, 20000]} // Dynamically scale Y-axis
-                tickFormatter={(value) => `$${value}`}
+                // domain={[0, 50000]} // Dynamically scale Y-axis
+                tickFormatter={(value) => `${currency}${value}`}
                 fontSize={12}
               />
-              <Tooltip formatter={(value: number) => `CAD $${value}`} />
+              <Tooltip formatter={(value: number) => `${currency}${value}`} />
 
-              {/* Bars for Old Age Security */}
-              <Bar dataKey="annualOASAmount" barSize={30} name="Old Age Security">
-                {oasBreakdown.map((entry:any, index:number) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={parseInt(entry.age) <= 75 ? "#FF9800" : "#2196F3"} // Yellow for 71-75, Green for 76+
-                  />
-                ))}
-              </Bar>
+              <Bar
+                dataKey="oasAmount"
+                name="Old Age Security"
+                fill="#FF9800"
+                stackId="a"
+                barSize={20}
+              />
 
-              {/* Reference Line */}
+              <Bar
+                dataKey="cppAmount"
+                name={selectedPP}
+                fill="#2196F3"
+                stackId="a"
+                barSize={20}
+              />
+              {/* 
               <ReferenceLine
-                y={generalInfo.annualRetirementIncomeGoal}
+                y={annualRetirementIncomeGoal}
                 stroke="#AA5656"
                 strokeWidth={3}
                 label={{
-                  // value: `Annual Goal: CAD $${AnnualGoal}`,
                   position: "right",
                   fill: "#AA5656",
                   fontSize: 12,
                 }}
-                isFront={true} // Ensure the line is in front of bars
-              />
+                isFront={true}
+              /> */}
             </BarChart>
           </ResponsiveContainer>
         </div>
 
         <ul className="space-y-[1rem] lg:mt-0 mt-[2rem] text-[14px]">
-        <li className="flex items-center gap-[0.5rem] font-semibold">
-          <div className="bg-[#AA5656] min-w-[30px] h-[10px] rounded-[10px]"></div>
-          <p className="text-nowrap">Annual Retirement Income goal : ${generalInfo.annualRetirementIncomeGoal}</p>
-        </li>
-        <li className="flex items-center gap-[0.5rem] font-semibold">
-          <div className="bg-[#FF9800] min-w-[30px] h-[10px] rounded-[10px]"></div>
-          <p>Old age security : $2,000 (from age 71 - 75)</p>
-        </li>
-        <li className="flex items-center gap-[0.5rem] font-semibold">
-          <div className="bg-[#03A9F4] min-w-[30px] h-[10px] rounded-[10px]"></div>
-          <p>Old age security : $3,000 (from age 76 - 79)</p>
-        </li>
-        <li className="flex items-center gap-[0.5rem] font-semibold">
-          <p className="min-w-[30px]">C$</p>
-          <p>Canadian Dollar</p>
-        </li>
-      </ul>
+          <li className="flex items-center gap-[0.5rem]">
+            <div className="bg-[#AA5656] min-w-[30px] h-[10px] rounded-[10px]"></div>
+            <p className="text-nowrap">
+              Annual Retirement Income goal : {currency}
+              {numberWithCommas(annualRetirementIncomeGoal)}
+            </p>
+          </li>
+          <li className="flex items-center gap-[0.5rem]">
+            <div className="bg-[#FF9800] min-w-[30px] h-[10px] rounded-[10px]"></div>
+            <p>
+              Old Age Security: {currency}
+              {numberWithCommas(oas.oldAgeSecurityBefore75)} annually (from{" "}
+              <span className="mx-1">age</span>
+              {oasStartYear} to 74); {currency}
+              {numberWithCommas(oas.oldAgeSecurityAfter75)} annually (from age
+              75 to 86)
+            </p>
+          </li>
+          <li className="flex items-center gap-[0.5rem]">
+            <div className="bg-[#03A9F4] min-w-[30px] h-[10px] rounded-[10px]"></div>
+            <p>
+              {selectedPP} : {currency}
+              {numberWithCommas(ppAnnualAmount)} Annually (starting at age{" "}
+              {ppStartYear} - {lifeExpectency})
+            </p>
+          </li>
+          <li className="flex items-center gap-[0.5rem]">
+            <p className="min-w-[30px]">{currency}</p>
+            <p>Canadian Dollar</p>
+          </li>
+        </ul>
       </div>
-
-     
     </div>
   );
 }

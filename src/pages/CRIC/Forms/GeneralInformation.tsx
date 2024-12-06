@@ -137,9 +137,8 @@ export default function GeneralInformation() {
     gender,
     currentAnnualIncome,
     annualRetirementIncomeGoal,
-    useLifeExpectancy,
-    customRetirementAge,
-  } = useAppSelector((state) => state.CRICalculator.generalInfo);
+    lifeExpectency,
+  } = useAppSelector((state) => state.CRICalculator);
 
   const handleNext = () => {
     dispatch(nextStep());
@@ -162,7 +161,6 @@ export default function GeneralInformation() {
             onChange={(e) =>
               dispatch(
                 updateField({
-                  section: "generalInfo",
                   field: "dobMonth",
                   value: e.target.value,
                 })
@@ -186,7 +184,6 @@ export default function GeneralInformation() {
             onChange={(e) =>
               dispatch(
                 updateField({
-                  section: "generalInfo",
                   field: "dobYear",
                   value: e.target.value,
                 })
@@ -212,7 +209,6 @@ export default function GeneralInformation() {
           onChange={(e) =>
             dispatch(
               updateField({
-                section: "generalInfo",
                 field: "gender",
                 value: e.target.value,
               })
@@ -237,7 +233,6 @@ export default function GeneralInformation() {
           onChange={(e) =>
             dispatch(
               updateField({
-                section: "generalInfo",
                 field: "currentAnnualIncome",
                 value: e.target.value,
               })
@@ -265,7 +260,6 @@ export default function GeneralInformation() {
           onChange={(e) =>
             dispatch(
               updateField({
-                section: "generalInfo",
                 field: "annualRetirementIncomeGoal",
                 value: e.target.value,
               })
@@ -281,35 +275,6 @@ export default function GeneralInformation() {
       </div>
 
       <div>
-        <div className="flex items-center gap-2 font-semibold mb-2">
-          <p>
-            Based on your current age and sex assigned at birth, your life
-            expectancy is age 86. Would you like to use 86 as your estimate?
-          </p>
-          <CustomTooltip title="Choose how often you want to withdraw from your RRIF: Monthly, Yearly, or Weekly." />
-        </div>
-        <select
-          id="options"
-          className="w-full border-[1px] border-gray-400 rounded-[5px] p-[0.6rem] outline-none"
-          value={useLifeExpectancy}
-          onChange={(e) =>
-            dispatch(
-              updateField({
-                section: "generalInfo",
-                field: "useLifeExpectancy",
-                value: e.target.value,
-              })
-            )
-          }
-        >
-          <option value="">Select One</option>
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
-      </div>
-
-      {useLifeExpectancy == "No" && (
-        <div>
           <div className="font-semibold mb-2">
             <p>
               Please enter the age you would like your retirement income to
@@ -321,19 +286,17 @@ export default function GeneralInformation() {
             type="number"
             placeholder="Enter age"
             onWheel={(e) => e.currentTarget.blur()}
-            value={customRetirementAge}
+            value={lifeExpectency}
             onChange={(e) =>
               dispatch(
                 updateField({
-                  section: "generalInfo",
-                  field: "customRetirementAge",
+                  field: "lifeExpectency",
                   value: e.target.value,
                 })
               )
             }
           />
         </div>
-      )}
 
       <div className="flex justify-end">
         <button
