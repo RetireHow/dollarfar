@@ -1,8 +1,10 @@
+import { useLocation } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function CRICResultCard() {
   const { currency } = useAppSelector((state) => state.globalCurrency);
+  const location = useLocation()?.pathname;
   const { annualRetirementIncomeGoal, CRIBreakdownData } = useAppSelector(
     (state) => state.CRICalculator
   );
@@ -36,7 +38,11 @@ export default function CRICResultCard() {
           </p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{numberWithCommas(annualAverageRetirementIncome || 0)}</p>
+            <p>
+              {location === "/CRIC/summary"
+                ? numberWithCommas(annualAverageRetirementIncome)
+                : 0}
+            </p>
           </div>
         </div>
 
@@ -45,9 +51,11 @@ export default function CRICResultCard() {
           <div className="flex items-center gap-[2px]">
             <p>{currency}</p>
             <p>
-              {numberWithCommas(
-                annualRetirementIncomeGoal - annualAverageRetirementIncome || 0
-              )}
+              {location === "/CRIC/summary"
+                ? numberWithCommas(
+                    annualRetirementIncomeGoal - annualAverageRetirementIncome
+                  )
+                : 0}
             </p>
           </div>
         </div>
