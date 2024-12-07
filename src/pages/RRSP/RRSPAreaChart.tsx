@@ -8,6 +8,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useAppSelector } from "../../redux/hooks";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function RRSPAreaChart() {
   const { result } = useAppSelector((state) => state.rrspCalculator);
@@ -43,7 +44,7 @@ export default function RRSPAreaChart() {
               tickFormatter={(value) => `${currency}${value}`}
               domain={[0, maxSavings]}
             />
-            <Tooltip />
+            <Tooltip formatter={(value:number)=>`${currency}${numberWithCommas(Math.round(value))}`}/>
             <Area
               type="monotone"
               dataKey="Savings"

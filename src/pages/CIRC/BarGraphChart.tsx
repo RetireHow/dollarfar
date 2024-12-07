@@ -10,8 +10,13 @@ import {
 import { useAppSelector } from "../../redux/hooks";
 
 export const BarGraphChart = () => {
-  const { interestBreakdown, frequency} =
-    useAppSelector((state) => state.compoundInterest);
+  const { interestBreakdown, frequency } = useAppSelector(
+    (state) => state.compoundInterest
+  );
+
+  const { currency } = useAppSelector(
+    (state) => state.globalCurrency
+  );
 
   return (
     <div
@@ -46,19 +51,23 @@ export const BarGraphChart = () => {
             />
 
             <XAxis dataKey="period" fontSize={12} />
-            <YAxis tickFormatter={(value) => `$${value}`} fontSize={12} />
+            <YAxis tickFormatter={(value) => `${currency}${value}`} fontSize={12} />
             {/* <Tooltip cursor={{ fill: "transparent" }} content={renderTooltip} /> */}
-            <Tooltip
-              formatter={(value: number, name: string, props) => {
-                console.log(props);
-                return [
-                  value,
-                  name == "interest" ? "Total Interest" : "Total Principal",
-                ];
-              }}
+            <Tooltip formatter={(value: number) => `${currency}${value}`} />
+            <Bar
+              dataKey="principal"
+              name="Total Principal"
+              fill="#22C55E"
+              stackId="a"
+              barSize={20}
             />
-            <Bar dataKey="principal" fill="#22C55E" stackId="a" barSize={20} />
-            <Bar dataKey="interest" fill="#EAB308" stackId="a" barSize={20} />
+            <Bar
+              dataKey="interest"
+              name="Total Interest"
+              fill="#EAB308"
+              stackId="a"
+              barSize={20}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>

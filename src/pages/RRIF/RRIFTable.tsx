@@ -11,6 +11,7 @@ export default function RRIFTable() {
     remainingRRRIFBalanceEndOfPeriod,
   } = useAppSelector((state) => state.RRIF);
   const years = withdrawalEndYear - withdrawalStartYear;
+  const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <section>
       <div className="overflow-x-auto">
@@ -29,15 +30,15 @@ export default function RRIFTable() {
             {data?.map((item: TAgePeriod, index) => (
               <tr key={index} className="border-b-[1px] border-b-[#0000001A]">
                 <td className="p-3">{item.age}</td>
-                <td className="p-3">${numberWithCommas(item.balanceAtBeginningOfTheYear)}</td>
-                <td className="p-3">${numberWithCommas(Number(item.annualWithdrawalAmount))}</td>
+                <td className="p-3">{currency}{numberWithCommas(item.balanceAtBeginningOfTheYear)}</td>
+                <td className="p-3">{currency}{numberWithCommas(Number(item.annualWithdrawalAmount))}</td>
                 <td className="p-3">
                   {item.minWithdrawalPercentage ||
                     item.mannualWithdrawalPercentage}
                   %
                 </td>
                 <td className="p-3">{rateOfReturn}%</td>
-                <td className="p-3">${numberWithCommas(item.balanceAtEndOfTheYear)}</td>
+                <td className="p-3">{currency}{numberWithCommas(item.balanceAtEndOfTheYear)}</td>
               </tr>
             ))}
           </tbody>
@@ -47,8 +48,8 @@ export default function RRIFTable() {
       <p className="font-semibold text-[1.1rem] text-center leading-[2rem]">
         After {years} years, the RRIF balance will reduce gradually, providing
         steady withdrawals and accounting for the return rate. At the end of{" "}
-        {years} years, the remaining balance may be $
-        {remainingRRRIFBalanceEndOfPeriod}, depending on actual return rates and
+        {years} years, the remaining balance may be {currency}
+        {numberWithCommas(Math.round(remainingRRRIFBalanceEndOfPeriod))}, depending on actual return rates and
         withdrawals.
       </p>
     </section>

@@ -59,7 +59,7 @@ export default function CalculationCard() {
         <div className="flex items-center">
           {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
           <p>{currency}</p>
-          <p>{compoundInterest}</p>
+          <p>{numberWithCommas(Math.round(compoundInterest))}</p>
         </div>
       </div>
 
@@ -68,7 +68,7 @@ export default function CalculationCard() {
         <div className="flex items-center gap-[2px]">
           {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
           <p>{currency}</p>
-          <p>{(compoundInterest + principal).toFixed(2)}</p>
+          <p>{numberWithCommas(Math.round(compoundInterest + principal))}</p>
         </div>
       </div>
     </div>

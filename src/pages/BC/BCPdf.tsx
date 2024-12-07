@@ -432,7 +432,7 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
           }}
         >
           <Text>dollarfar.com</Text>
-          <Text>Copyright © 2024 - Dollarfar</Text>
+          <Text>Copyright © {new Date().getFullYear()} - Dollarfar</Text>
         </View>
       </Page>
     </Document>

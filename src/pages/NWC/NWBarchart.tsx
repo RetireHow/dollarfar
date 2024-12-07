@@ -11,6 +11,7 @@ import {
   ChartData,
 } from "chart.js";
 import { useAppSelector } from "../../redux/hooks";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 // Register the necessary components
 ChartJS.register(
@@ -60,7 +61,7 @@ export const NWBarChart = () => {
       x: {
         ticks: {
           callback: function (value: number | string) {
-            return `${currency}${value}`; // Format the ticks with a dollar sign
+            return `${currency}${numberWithCommas(value as number)}`; // Format the ticks with a dollar sign
           },
         },
         grid: {

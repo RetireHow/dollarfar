@@ -11,6 +11,7 @@ import NWTotal from "./NWTotal";
 import { Select } from "antd";
 import { currencyOptions } from "../options/currencyOptions";
 import { setCurrency } from "../../redux/features/other/globalCurrency";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 const data = {
   title: "Net worth Calculator",
@@ -24,15 +25,15 @@ export default function NWC() {
   const { totalAssets, totalLiabilities, netWorth, assets, liabilities } =
     useAppSelector((state) => state.NWCalculator);
 
-  const { currency, currencyFullName } = useAppSelector((state) => state.globalCurrency);
-
-  console.log({ assets }, { liabilities });
+  const { currency, currencyFullName } = useAppSelector(
+    (state) => state.globalCurrency
+  );
 
   const calculatorData = {
     assets: { ...assets.totals, totalAssets },
     liabilities: { ...liabilities.totals, totalLiabilities },
-    currency, 
-    currencyFullName
+    currency,
+    currencyFullName,
   };
 
   return (
@@ -53,7 +54,7 @@ export default function NWC() {
                   style={{ width: 130, height: 45, border: "1px solid gray" }}
                   className="!border-none"
                   onChange={(value) => {
-                    dispatch(setCurrency(value))
+                    dispatch(setCurrency(value));
                   }}
                   options={currencyOptions}
                   suffixIcon={
@@ -84,8 +85,11 @@ export default function NWC() {
         </div>
         <p className="md:text-[1.1rem] text-[1rem] font-semibold text-center mt-5">
           "Based on the information provided, your total assets are {currency}
-          {totalAssets}, and your total liabilities are {currency}{totalLiabilities}.
-          This gives you a net worth of {currency}{netWorth}."
+          {numberWithCommas(totalAssets)}, and your total liabilities are{" "}
+          {currency}
+          {numberWithCommas(totalLiabilities)}. This gives you a net worth of{" "}
+          {currency}
+          {numberWithCommas(netWorth)}."
         </p>
       </section>
       <NWDescription />

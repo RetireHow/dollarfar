@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { useAppSelector } from "../../redux/hooks";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 // Sample data for the chart
 
@@ -73,7 +74,7 @@ const BudgetPieChart = () => {
                         fontFamily: "geist",
                       }}
                     >
-                      {currency}{totalIncome}
+                      {currency}{numberWithCommas(totalIncome)}
                     </text>
                     {/* Total Income Label */}
                     <text
@@ -102,31 +103,31 @@ const BudgetPieChart = () => {
         <ul className="space-y-[1.5rem] text-[14px] text-[#475569]">
           <li className="flex items-center gap-[0.5rem] font-semibold">
             <div className="bg-[#2196F3] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p className="text-nowrap">Housing Expenses ({currency}{houseExpenses})</p>
+            <p className="text-nowrap">Housing Expenses ({currency}{numberWithCommas(houseExpenses)})</p>
           </li>
           <li className="flex items-center gap-[0.5rem] font-semibold">
             <div className="bg-[#FF9800] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p>Transport Expenses ({currency}{transportExpenses})</p>
+            <p>Transport Expenses ({currency}{numberWithCommas(transportExpenses)})</p>
           </li>
           <li className="flex items-center gap-[0.5rem] font-semibold">
             <div className="bg-[#03A9F4] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p className="text-nowrap">Educational Expenses ({currency}{educationalExpenses})</p>
+            <p className="text-nowrap">Educational Expenses ({currency}{numberWithCommas(educationalExpenses)})</p>
           </li>
           <li className="flex items-center gap-[0.5rem] font-semibold">
             <div className="bg-[#FF5722] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p>Other Expenses ({currency}{otherExpenses})</p>
+            <p>Other Expenses ({currency}{numberWithCommas(otherExpenses)})</p>
           </li>
           <li className="flex items-center gap-[0.5rem] font-semibold">
             <div className="bg-[#F44336] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p>Loans ({currency}{totalLoans})</p>
+            <p>Loans ({currency}{numberWithCommas(totalLoans)})</p>
           </li>
           <li className="flex items-center gap-[0.5rem] font-semibold">
             <div className="bg-[#9C27B0] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p>Savings ({currency}{totalSavings})</p>
+            <p>Savings ({currency}{numberWithCommas(totalSavings)})</p>
           </li>
           <li className="flex items-center gap-[0.5rem] font-semibold">
             <div className="bg-[#009688] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p>Cashflow Deficit ({currency}{cashflowDeficit})</p>
+            <p>Cashflow Deficit ({currency}{numberWithCommas(cashflowDeficit)})</p>
           </li>
           <li className="flex items-center gap-[0.5rem] font-semibold">
             <p className="min-w-[30px]">{currency}</p>

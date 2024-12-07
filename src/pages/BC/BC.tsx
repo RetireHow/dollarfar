@@ -10,6 +10,7 @@ import BudgetPieChart from "./BudgetPieChart";
 import { Select } from "antd";
 import { currencyOptions } from "../options/currencyOptions";
 import { setCurrency } from "../../redux/features/other/globalCurrency";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 const data = {
   title: "Budget calculator/cash flow calculator",
@@ -107,9 +108,9 @@ export default function BC() {
 
         <p className="md:text-[1.25rem] text-[1rem] font-semibold text-left mt-5">
           "Your total annual income is {currency}
-          {totalIncome}, and after your expenses of {currency}
-          {totalExpenses}, you have {currency}
-          {cashflowDeficit} left for savings or investments."
+          {numberWithCommas(totalIncome)}, and after your expenses of {currency}
+          {numberWithCommas(totalExpenses)}, you have {currency}
+          {numberWithCommas(cashflowDeficit)} left for savings or investments."
         </p>
       </section>
 

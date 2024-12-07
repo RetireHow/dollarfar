@@ -14,12 +14,12 @@ export default function RRSPCard() {
 
         <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4 font-medium">
           <p>RRSP Balance at Retirement</p>
-          <p>{currency}{numberWithCommas(totalSavings as number)}</p>
+          <p>{currency}{numberWithCommas(Math.round(totalSavings as number))}</p>
         </div>
 
         <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4 font-medium">
           <p>Investment Earnings</p>
-          <p>{currency}{numberWithCommas(investmentEarnings as number)}</p>
+          <p>{currency}{numberWithCommas(Math.round(investmentEarnings as number))}</p>
         </div>
 
         <div className="flex items-center justify-between text-[1.25rem] font-medium">

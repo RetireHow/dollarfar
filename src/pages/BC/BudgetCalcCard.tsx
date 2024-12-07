@@ -1,4 +1,5 @@
 import { useAppSelector } from "../../redux/hooks";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function BudgetCalcCard() {
   const {
@@ -32,7 +33,7 @@ export default function BudgetCalcCard() {
           <p className="font-medium">Income</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{totalIncome}</p>
+            <p>{numberWithCommas(totalIncome)}</p>
           </div>
         </div>
 
@@ -40,7 +41,7 @@ export default function BudgetCalcCard() {
           <p className="text-[1.25rem] font-medium">House Expenses</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{houseExpenses}</p>
+            <p>{numberWithCommas(houseExpenses)}</p>
           </div>
         </div>
 
@@ -48,7 +49,7 @@ export default function BudgetCalcCard() {
           <p className="text-[1.25rem] font-medium">Transport Expenses</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{transportExpenses}</p>
+            <p>{numberWithCommas(transportExpenses)}</p>
           </div>
         </div>
 
@@ -56,7 +57,7 @@ export default function BudgetCalcCard() {
           <p className="text-[1.25rem] font-medium">Educational Expenses</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{educationalExpenses}</p>
+            <p>{numberWithCommas(educationalExpenses)}</p>
           </div>
         </div>
 
@@ -64,7 +65,7 @@ export default function BudgetCalcCard() {
           <p className="text-[1.25rem] font-medium">Other Expenses</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{otherExpenses}</p>
+            <p>{numberWithCommas(otherExpenses)}</p>
           </div>
         </div>
 
@@ -72,7 +73,7 @@ export default function BudgetCalcCard() {
           <p className="text-[1.25rem] font-medium">Loans</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{totalLoans}</p>
+            <p>{numberWithCommas(totalLoans)}</p>
           </div>
         </div>
 
@@ -80,7 +81,7 @@ export default function BudgetCalcCard() {
           <p className="text-[1.25rem] font-medium">Savings</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{totalSavings}</p>
+            <p>{numberWithCommas(totalSavings)}</p>
           </div>
         </div>
 
@@ -90,7 +91,7 @@ export default function BudgetCalcCard() {
           <p className="text-[1.25rem] font-medium">Cashflow Deficit</p>
           <div className="flex items-center gap-[2px]">
             <p>{currency}</p>
-            <p>{cashflowDeficit}</p>
+            <p>{numberWithCommas(cashflowDeficit)}</p>
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { useAppSelector } from "../../redux/hooks";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function NWTotal() {
   const { totalAssets, totalLiabilities, netWorth } = useAppSelector(
@@ -13,7 +14,7 @@ export default function NWTotal() {
           <p>Assets</p>
           <p>
             {currency}
-            {totalAssets}
+            {numberWithCommas(totalAssets)}
           </p>
         </div>
         <div className="border-b-[1px] border-b-gray-300 my-[1.5rem]"></div>
@@ -21,14 +22,14 @@ export default function NWTotal() {
           <p>Liabilities</p>
           <p>
             {currency}
-            {totalLiabilities}
+            {numberWithCommas(totalLiabilities)}
           </p>
         </div>
         <div className="bg-black text-white text-[1.25rem] flex items-center justify-between px-[1rem] py-[0.6rem] rounded-[10px]">
           <p>Net Worth</p>
           <p>
             {currency}
-            {netWorth}
+            {numberWithCommas(netWorth)}
           </p>
         </div>
       </div>
