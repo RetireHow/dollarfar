@@ -47,7 +47,6 @@ export function calculateRRSPTotalSavings({
 
   // Round total savings to match online calculator's result more closely
   totalSavings = Number(totalSavings.toFixed(2));
-  console.log("Total Savings==> ", totalSavings);
 
   // Calculate investment earnings
   const investmentEarnings = (

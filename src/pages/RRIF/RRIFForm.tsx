@@ -93,7 +93,6 @@ export default function RRIFForm() {
     }
   }, [annualWithdrawalAmount, withdrawalStartYear]);
 
-  console.log(minWithdrowalAmount);
 
   return (
     <section className="space-y-[2rem]">

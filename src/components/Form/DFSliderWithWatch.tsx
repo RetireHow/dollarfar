@@ -19,7 +19,7 @@ export default function DFSliderWithWatch({ name, setValue }: TSliderProps) {
     control: method.control,
     name,
   });
-  console.log("Slider value of age=========>", value)
+
   useEffect(() => {
     if (setValue) {
       dispatch(setValue(value));

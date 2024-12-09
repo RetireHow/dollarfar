@@ -26,7 +26,6 @@ function CRICBarChart() {
   const { currency, currencyFullName } = useAppSelector(
     (state) => state.globalCurrency
   );
-  console.log({ oas });
   return (
     <div className="overflow-x-auto mt-[5rem]">
       <div className="flex items-center gap-3">

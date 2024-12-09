@@ -9,6 +9,7 @@ import { currencyOptions } from "../options/currencyOptions";
 import { setCurrency } from "../../redux/features/other/globalCurrency";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
+import COLDescription from "./COLDescription";
 
 const data = {
   title: "Cost of Living Calculator",
@@ -71,6 +72,7 @@ export default function COLC() {
           <h3 className="text-center py-10 text-[2rem]">Coming soon.......</h3>
         </div>
       </section>
+        <COLDescription/>
     </main>
   );
 }

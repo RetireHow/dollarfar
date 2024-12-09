@@ -33,7 +33,6 @@ const DownloadModal = ({
     email,
   };
 
-  console.log("I am from modal ========> ", pdfData)
 
   useEffect(() => {
     const captureChart = async () => {
@@ -71,7 +70,6 @@ const DownloadModal = ({
     }
 
     setTimeout(() => {
-      console.log("Close the modal");
       setIsModalOpen(false);
       setIsLoading(false);
       setShowError(false);

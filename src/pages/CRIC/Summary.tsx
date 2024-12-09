@@ -84,7 +84,6 @@ export default function Summary() {
     currencyFullName,
     annualAverageRetirementIncome
   };
-  console.log({calculatorData})
 
   return (
     <>

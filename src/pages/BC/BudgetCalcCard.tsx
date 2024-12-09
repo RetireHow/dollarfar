@@ -23,7 +23,6 @@ export default function BudgetCalcCard() {
     totalLoans +
     totalSavings;
   const cashflowDeficit = totalIncome - totalExpenses;
-  console.log({totalExpenses, totalIncome})
 
   return (
     <section>

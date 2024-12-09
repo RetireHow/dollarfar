@@ -44,8 +44,6 @@ export const calculateOAS = (
   for (let year = 75; year <= lifeExpectency; year++) {
     oasList.push({ oas: oldAgeSecurityAfter75, oasAge: year });
   }
-
-  //   console.log({ oasList });
 };
 
 export function calculateCPPBenefit(fullBenefit: number, startAge: number) {
