@@ -4,8 +4,8 @@ export default function DynamicFields() {
   const { control, register } = useForm();
   const { fields, append, remove } = useFieldArray(
     {
-      control, // control props comes from useForm (optional: if you are using FormProvider)
-      name: "test", // unique name for your Field Array
+      control,
+      name: "test",
     }
   );
 
