@@ -13,7 +13,7 @@ export default function CRICResultCard() {
       total: number,
       curr: { year: number; oasAmount: number; cppAmount: number }
     ) => {
-      return total + (curr.oasAmount + curr.cppAmount);
+      return total + (curr.oasAmount + (curr.cppAmount || 0));
     },
     0
   );
@@ -40,7 +40,7 @@ export default function CRICResultCard() {
             <p>{currency}</p>
             <p>
               {location === "/CRIC/summary"
-                ? numberWithCommas(annualAverageRetirementIncome)
+                ? numberWithCommas(annualAverageRetirementIncome | 0)
                 : 0}
             </p>
           </div>
@@ -53,7 +53,7 @@ export default function CRICResultCard() {
             <p>
               {location === "/CRIC/summary"
                 ? numberWithCommas(
-                    annualRetirementIncomeGoal - annualAverageRetirementIncome
+                    annualRetirementIncomeGoal - annualAverageRetirementIncome | 0
                   )
                 : 0}
             </p>

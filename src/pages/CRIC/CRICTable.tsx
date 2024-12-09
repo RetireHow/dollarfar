@@ -30,10 +30,10 @@ export default function CRICTable() {
               }) => (
                 <tr className="border-b-[1px] border-b-[#0000001A]">
                   <td className="p-3">{year}</td>
-                  <td className="p-3">{currency}{numberWithCommas(Math.round(cppAmount))}</td>
+                  <td className="p-3">{currency}{numberWithCommas(Math.round(cppAmount || 0))}</td>
                   <td className="p-3">{currency}{numberWithCommas(Math.round(oasAmount))}</td>
                   <td className="p-3">
-                    {currency}{numberWithCommas(Math.round(cppAmount + oasAmount))}
+                    {currency}{numberWithCommas(Math.round((cppAmount || 0) + oasAmount))}
                   </td>
                 </tr>
               )

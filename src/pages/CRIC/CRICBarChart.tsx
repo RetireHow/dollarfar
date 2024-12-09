@@ -108,14 +108,16 @@ function CRICBarChart() {
               75 to 86)
             </p>
           </li>
-          <li className="flex items-center gap-[0.5rem]">
-            <div className="bg-[#03A9F4] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p>
-              {selectedPP} : {currency}
-              {numberWithCommas(ppAnnualAmount)} Annually (starting at age{" "}
-              {ppStartYear} - {lifeExpectency})
-            </p>
-          </li>
+          {selectedPP !== "Not Applicable" && (
+            <li className="flex items-center gap-[0.5rem]">
+              <div className="bg-[#03A9F4] min-w-[30px] h-[10px] rounded-[10px]"></div>
+              <p>
+                {selectedPP} : {currency}
+                {numberWithCommas(ppAnnualAmount)} Annually (starting at age{" "}
+                {ppStartYear} - {lifeExpectency})
+              </p>
+            </li>
+          )}
           <li className="flex items-center gap-[0.5rem]">
             <p className="min-w-[30px]">{currency}</p>
             <p>{currencyFullName}</p>
