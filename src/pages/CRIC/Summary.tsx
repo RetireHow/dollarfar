@@ -93,6 +93,24 @@ export default function Summary() {
     dispatch(calculateCRI());
   }, []);
 
+  useEffect(() => {
+    // Set up the beforeunload event listener
+    const handleBeforeUnload = (event:BeforeUnloadEvent) => {
+      // Display a warning message to the user
+      const message = "Hi user, your data will be lost after refreshing.";
+      event.returnValue = message; // For most browsers
+      return message; // For some older browsers (e.g., Firefox)
+    };
+
+    // Add the event listener for beforeunload
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    // Cleanup the event listener when component unmounts
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
   return (
     <>
       <div data-html2canvas-ignore>
