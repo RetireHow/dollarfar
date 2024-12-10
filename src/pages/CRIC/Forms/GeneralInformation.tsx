@@ -509,9 +509,7 @@ export default function GeneralInformation() {
     if (
       !dobMonth ||
       !dobYear ||
-      // !gender ||
-      // !currentAnnualIncome ||
-      // !annualRetirementIncomeGoal ||
+      !annualRetirementIncomeGoal ||
       !lifeExpectency
     ) {
       return setShowError(true);
@@ -581,7 +579,6 @@ export default function GeneralInformation() {
       <div>
         <div className="flex items-center gap-1 font-semibold">
           <p>Gender</p>
-          <RedStar />
         </div>
         <select
           id="options"
@@ -631,6 +628,7 @@ export default function GeneralInformation() {
           <p>
             What would you like to set as your annual retirement income goal
             (Net of tax, in today’s dollars)?
+            <RedStar />
           </p>
           <CustomTooltip title="Set your annual retirement income goal (after tax) in today’s dollars to reflect your desired lifestyle." />
         </div>
@@ -653,12 +651,16 @@ export default function GeneralInformation() {
             </option>
           ))}
         </select>
+        {showError && !annualRetirementIncomeGoal && (
+          <Error message="This field is required" />
+        )}
       </div>
 
       <div>
         <div className="font-semibold mb-2">
           <p>
-            Please enter the age you would like your retirement income to stop.
+            Please enter the age you would like your retirement income to stop
+            <RedStar />
           </p>
         </div>
         <input

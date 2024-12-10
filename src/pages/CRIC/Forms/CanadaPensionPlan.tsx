@@ -4,6 +4,7 @@ import { nextStep } from "../../../redux/features/stepperSlice/stepperSclie";
 import { updateField } from "../../../redux/features/CRIC/CRICSlice";
 import { useEffect, useState } from "react";
 import Error from "../../../components/UI/Error";
+import RedStar from "../../../components/UI/RedStar";
 
 export default function CanadaPensionPlanRough() {
   const dispatch = useAppDispatch();
@@ -16,7 +17,7 @@ export default function CanadaPensionPlanRough() {
   );
 
   const handleNext = () => {
-    if (!selectedPP || !ppStartYear || !ppBenefitAmount) {
+    if ((!selectedPP || !ppStartYear || !ppBenefitAmount) && selectedPP !== "Not Applicable") {
       return setShowError(true);
     }
     dispatch(nextStep());
@@ -36,7 +37,7 @@ export default function CanadaPensionPlanRough() {
           <p>
             Individuals who contribute to the Quebec Pension Plan (QPP) or the
             Canada Pension Plan (CPP) may be eligible to receive pension
-            benefits at retirement. Which pension applies to you?
+            benefits at retirement. Which pension applies to you?<RedStar/>
           </p>
         </div>
         <select
@@ -67,7 +68,7 @@ export default function CanadaPensionPlanRough() {
               <p>
                 Enter your monthly retirement pension estimate (at age 65)
                 indicated on your Statement that states your retirement pension
-                estimate based on your past contributions
+                estimate based on your past contributions<RedStar/>
               </p>
             </div>
             <select
@@ -106,7 +107,7 @@ export default function CanadaPensionPlanRough() {
             <div className="flex items-center gap-2 font-semibold mb-2">
               <p>
                 At what age do you plan to receive your{" "}
-                {selectedPP == "Canada Pension Plan" ? "CPP" : "QPP"} benefit?
+                {selectedPP == "Canada Pension Plan" ? "CPP" : "QPP"} benefit?<RedStar/>
               </p>
             </div>
             <select

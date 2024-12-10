@@ -85,9 +85,13 @@ export default function Summary() {
     annualAverageRetirementIncome,
   };
 
-  const handleCalculate = ()=>{
-    dispatch(calculateCRI())
-  }
+  // const handleCalculate = () => {
+  //   dispatch(calculateCRI());
+  // };
+
+  useEffect(() => {
+    dispatch(calculateCRI());
+  }, []);
 
   return (
     <>
@@ -206,93 +210,6 @@ export default function Summary() {
               </ul>
             </div>
 
-            {/* <div>
-              <div className="flex justify-between items-center mb-5">
-                <h3 className="font-semibold text-[1.2rem]">
-                  Employer Pension
-                </h3>
-                <Icon
-                  className="text-[2rem] font-bold"
-                  icon="material-symbols:keyboard-arrow-up-rounded"
-                />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between items-center mb-5">
-                <h3 className="font-semibold text-[1.2rem]">
-                  Defined Benefit Plan
-                </h3>
-                <Icon
-                  className="text-[2rem] font-bold"
-                  icon="material-symbols:keyboard-arrow-up-rounded"
-                />
-              </div>
-              <ul className="space-y-[1rem]">
-                <li className="flex justify-between items-center">
-                  <p>Receiving at Age</p>
-                  <p>65</p>
-                </li>
-                <li className="flex justify-between items-center">
-                  <p>Index of Inflation</p>
-                  <p>Yes</p>
-                </li>
-                <li className="flex justify-between items-center">
-                  <p>Employer Annual Pension</p>
-                  <p>N/A</p>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <div className="flex justify-between items-center mb-5">
-                <h3 className="font-semibold text-[1.2rem]">
-                  Retirement Savings
-                </h3>
-                <Icon
-                  className="text-[2rem] font-bold"
-                  icon="material-symbols:keyboard-arrow-up-rounded"
-                />
-              </div>
-              <p>N/A</p>
-            </div>
-
-            <div>
-              <div className="flex justify-between items-center mb-5">
-                <h3 className="font-semibold text-[1.2rem]">Other Income</h3>
-                <Icon
-                  className="text-[2rem] font-bold"
-                  icon="material-symbols:keyboard-arrow-up-rounded"
-                />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between items-center mb-5">
-                <h3 className="font-semibold text-[1.2rem]">
-                  Other Income Type: Employment
-                </h3>
-                <Icon
-                  className="text-[2rem] font-bold"
-                  icon="material-symbols:keyboard-arrow-up-rounded"
-                />
-              </div>
-              <ul className="space-y-[1rem]">
-                <li className="flex justify-between items-center">
-                  <p>Starting at Age</p>
-                  <p>65</p>
-                </li>
-                <li className="flex justify-between items-center">
-                  <p>Ending at Age</p>
-                  <p>65</p>
-                </li>
-                <li className="flex justify-between items-center">
-                  <p>Annual Income</p>
-                  <p>$90000</p>
-                </li>
-              </ul>
-            </div> */}
-
             <div>
               <div className="flex justify-between items-center mb-5">
                 <h3 className="font-semibold text-[1.2rem]">
@@ -340,9 +257,12 @@ export default function Summary() {
               >
                 Back
               </button>
-              <button onClick={handleCalculate} className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black">
+              {/* <button
+                onClick={handleCalculate}
+                className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black"
+              >
                 Calculate
-              </button>
+              </button> */}
             </div>
           </div>
           <CRICResultCard />
