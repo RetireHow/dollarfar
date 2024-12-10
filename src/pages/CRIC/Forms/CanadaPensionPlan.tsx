@@ -2,20 +2,26 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { useNavigate } from "react-router-dom";
 import { nextStep } from "../../../redux/features/stepperSlice/stepperSclie";
 import { updateField } from "../../../redux/features/CRIC/CRICSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Error from "../../../components/UI/Error";
 
 export default function CanadaPensionPlanRough() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleNext = () => {
-    dispatch(nextStep());
-    navigate("/CRIC/OAS");
-  };
+  const [showError, setShowError] = useState(false);
 
   const { selectedPP, ppStartYear, ppBenefitAmount } = useAppSelector(
     (state) => state.CRICalculator
   );
+
+  const handleNext = () => {
+    if (!selectedPP || !ppStartYear || !ppBenefitAmount) {
+      return setShowError(true);
+    }
+    dispatch(nextStep());
+    navigate("/CRIC/OAS");
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 330, behavior: "smooth" });
@@ -46,10 +52,12 @@ export default function CanadaPensionPlanRough() {
             )
           }
         >
+          <option value="Select One">Select One</option>
           <option value="Not Applicable">Not Applicable</option>
           <option value="Canada Pension Plan">Canada Pension Plan</option>
           <option value="Quebec Pension Plan">Quebec Pension Plan</option>
         </select>
+        {showError && !selectedPP && <Error message="This field is required*."/>}
       </div>
 
       {selectedPP !== "Not Applicable" && (
@@ -75,6 +83,7 @@ export default function CanadaPensionPlanRough() {
                 )
               }
             >
+              <option value="Select One">Select One</option>
               <option value="100">100</option>
               <option value="200">200</option>
               <option value="300">300</option>
@@ -90,11 +99,15 @@ export default function CanadaPensionPlanRough() {
               <option value="1300">1300</option>
               <option value="1364">1364</option>
             </select>
+            {showError && !ppBenefitAmount && <Error message="This field is required*"/>}
           </div>
 
           <div>
             <div className="flex items-center gap-2 font-semibold mb-2">
-              <p>At what age do you plan to receive your {selectedPP == "Canada Pension Plan" ? "CPP" : "QPP"} benefit?</p>
+              <p>
+                At what age do you plan to receive your{" "}
+                {selectedPP == "Canada Pension Plan" ? "CPP" : "QPP"} benefit?
+              </p>
             </div>
             <select
               id="options"
@@ -109,6 +122,7 @@ export default function CanadaPensionPlanRough() {
                 )
               }
             >
+              <option value="Select One">Select One</option>
               <option value="60">60</option>
               <option value="61">61</option>
               <option value="62">62</option>
@@ -121,13 +135,14 @@ export default function CanadaPensionPlanRough() {
               <option value="69">69</option>
               <option value="70">70</option>
             </select>
+            {showError && !ppStartYear && <Error message="This field is required*"/>}
           </div>
         </>
       )}
 
       <div className="flex justify-end gap-10">
         <button
-          onClick={()=>navigate(-1)}
+          onClick={() => navigate(-1)}
           className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black"
         >
           Back

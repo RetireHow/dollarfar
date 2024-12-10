@@ -2,9 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { nextStep } from "../../../redux/features/stepperSlice/stepperSclie";
 import { updateField } from "../../../redux/features/CRIC/CRICSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import RedStar from "../../../components/UI/RedStar";
+import Error from "../../../components/UI/Error";
 
-const OASAgeOptions = [65, 66, 67, 68, 69, 70];
+const OASAgeOptions = ["Select One", 65, 66, 67, 68, 69, 70];
 
 const canadaLivingAgeOptions = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
@@ -19,7 +21,12 @@ export default function OldAgeSecurity() {
     (state) => state.CRICalculator
   );
 
+  const [showError, setShowError] = useState(false);
+
   const handleNext = () => {
+    if (!oasStartYear) {
+      return setShowError(true);
+    }
     dispatch(nextStep());
     navigate("/CRIC/summary");
   };
@@ -51,7 +58,7 @@ export default function OldAgeSecurity() {
         <div className="flex items-center gap-2 font-semibold mb-2">
           <p>
             Will you have lived in Canada for at least 40 years between age 18
-            and 65? *
+            and 65?<RedStar/>
           </p>
         </div>
         <select
@@ -106,7 +113,7 @@ export default function OldAgeSecurity() {
         <>
           <div>
             <div className="flex items-center gap-2 font-semibold mb-2">
-              <p>At what age do you plan to receive your OAS pension?</p>
+              <p>At what age do you plan to receive your OAS pension?<RedStar/></p>
             </div>
             <select
               id="options"
@@ -125,6 +132,7 @@ export default function OldAgeSecurity() {
                 <option value={value}>{value}</option>
               ))}
             </select>
+            {showError && !oasStartYear && <Error message="This field is required*"/>}
           </div>
         </>
       )}

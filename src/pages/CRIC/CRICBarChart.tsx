@@ -11,10 +11,8 @@ import {
 } from "recharts";
 import { useAppSelector } from "../../redux/hooks";
 import { numberWithCommas } from "../../utils/numberWithCommas";
-import { useLocation } from "react-router-dom";
 
 function CRICBarChart() {
-  const locaction = useLocation()?.pathname;
   const {
     CRIBreakdownData,
     oasStartYear,
@@ -28,6 +26,7 @@ function CRICBarChart() {
   const { currency, currencyFullName } = useAppSelector(
     (state) => state.globalCurrency
   );
+  console.log({CRIBreakdownData})
   return (
     <div className="overflow-x-auto mt-[5rem]">
       <div className="flex items-center gap-3">
@@ -38,7 +37,7 @@ function CRICBarChart() {
         >
           <ResponsiveContainer>
             <BarChart
-              data={locaction != "/CRIC" ? CRIBreakdownData : []}
+              data={CRIBreakdownData}
               margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
             >
               {/* Grid and Axes */}
@@ -91,8 +90,7 @@ function CRICBarChart() {
           </ResponsiveContainer>
         </div>
 
-        {locaction != "/CRIC" && (
-          <ul className="space-y-[1rem] lg:mt-0 mt-[2rem] text-[14px] font-semibold">
+        <ul className="space-y-[1rem] lg:mt-0 mt-[2rem] text-[14px] font-semibold">
             <li className="flex items-center gap-[0.5rem]">
               <div className="bg-[#AA5656] min-w-[30px] h-[10px] rounded-[10px]"></div>
               <p className="text-nowrap">
@@ -126,7 +124,6 @@ function CRICBarChart() {
               <p>{currencyFullName}</p>
             </li>
           </ul>
-        )}
       </div>
     </div>
   );

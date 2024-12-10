@@ -14,6 +14,7 @@ import Stepper from "../BC/Stepper";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { calculateCRI } from "../../redux/features/CRIC/CRICSlice";
 
 const data = {
   title: "Comprehensive Retirement Income Calculator",
@@ -24,15 +25,15 @@ const data = {
 
 export default function Summary() {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate()
-
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  const { currency, currencyFullName } = useAppSelector((state) => state.globalCurrency);
+  const { currency, currencyFullName } = useAppSelector(
+    (state) => state.globalCurrency
+  );
   const {
     annualRetirementIncomeGoal,
     currentAnnualIncome,
@@ -48,9 +49,8 @@ export default function Summary() {
     ppStartYear,
     selectedPP,
     yearsInCanada,
-    CRIBreakdownData
+    CRIBreakdownData,
   } = useAppSelector((state) => state.CRICalculator);
-
 
   const totalAmount = CRIBreakdownData.reduce(
     (
@@ -82,8 +82,12 @@ export default function Summary() {
     yearsInCanada,
     currency,
     currencyFullName,
-    annualAverageRetirementIncome
+    annualAverageRetirementIncome,
   };
+
+  const handleCalculate = ()=>{
+    dispatch(calculateCRI())
+  }
 
   return (
     <>
@@ -329,12 +333,15 @@ export default function Summary() {
               </ul>
             </div>
 
-            <div className="flex justify-end gap-10">
+            <div className="flex justify-end gap-5">
               <button
                 onClick={() => navigate(-1)}
                 className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black"
               >
                 Back
+              </button>
+              <button onClick={handleCalculate} className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black">
+                Calculate
               </button>
             </div>
           </div>
