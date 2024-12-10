@@ -142,7 +142,7 @@ export default function GeneralInformation() {
 
   const handleNext = () => {
     dispatch(nextStep());
-    navigate("/comprehensive-retirement-calculator/canada-pension-plan");
+    navigate("/CRIC/PP");
   };
 
   return (
@@ -251,7 +251,7 @@ export default function GeneralInformation() {
             What would you like to set as your annual retirement income goal
             (Net of tax, in today’s dollars)?
           </p>
-          <CustomTooltip title="Choose how often you want to withdraw from your RRIF: Monthly, Yearly, or Weekly." />
+          <CustomTooltip title="Set your annual retirement income goal (after tax) in today’s dollars to reflect your desired lifestyle." />
         </div>
         <select
           id="options"

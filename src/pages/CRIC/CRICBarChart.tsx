@@ -11,8 +11,10 @@ import {
 } from "recharts";
 import { useAppSelector } from "../../redux/hooks";
 import { numberWithCommas } from "../../utils/numberWithCommas";
+import { useLocation } from "react-router-dom";
 
 function CRICBarChart() {
+  const locaction = useLocation()?.pathname;
   const {
     CRIBreakdownData,
     oasStartYear,
@@ -36,7 +38,7 @@ function CRICBarChart() {
         >
           <ResponsiveContainer>
             <BarChart
-              data={CRIBreakdownData}
+              data={locaction != "/CRIC" ? CRIBreakdownData : []}
               margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
             >
               {/* Grid and Axes */}
@@ -89,40 +91,42 @@ function CRICBarChart() {
           </ResponsiveContainer>
         </div>
 
-        <ul className="space-y-[1rem] lg:mt-0 mt-[2rem] text-[14px] font-semibold">
-          <li className="flex items-center gap-[0.5rem]">
-            <div className="bg-[#AA5656] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p className="text-nowrap">
-              Annual Retirement Income goal : {currency}
-              {numberWithCommas(annualRetirementIncomeGoal)}
-            </p>
-          </li>
-          <li className="flex items-center gap-[0.5rem]">
-            <div className="bg-[#FF9800] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p>
-              Old Age Security: {currency}
-              {numberWithCommas(oas.oldAgeSecurityBefore75)} annually (from{" "}
-              <span className="mx-1">age</span>
-              {oasStartYear} to 74); {currency}
-              {numberWithCommas(oas.oldAgeSecurityAfter75)} annually (from age
-              75 to 86)
-            </p>
-          </li>
-          {selectedPP !== "Not Applicable" && (
+        {locaction != "/CRIC" && (
+          <ul className="space-y-[1rem] lg:mt-0 mt-[2rem] text-[14px] font-semibold">
             <li className="flex items-center gap-[0.5rem]">
-              <div className="bg-[#03A9F4] min-w-[30px] h-[10px] rounded-[10px]"></div>
-              <p>
-                {selectedPP} : {currency}
-                {numberWithCommas(ppAnnualAmount)} Annually (starting at age{" "}
-                {ppStartYear} - {lifeExpectency})
+              <div className="bg-[#AA5656] min-w-[30px] h-[10px] rounded-[10px]"></div>
+              <p className="text-nowrap">
+                Annual Retirement Income goal : {currency}
+                {numberWithCommas(annualRetirementIncomeGoal)}
               </p>
             </li>
-          )}
-          <li className="flex items-center gap-[0.5rem]">
-            <p className="min-w-[30px]">{currency}</p>
-            <p>{currencyFullName}</p>
-          </li>
-        </ul>
+            <li className="flex items-center gap-[0.5rem]">
+              <div className="bg-[#FF9800] min-w-[30px] h-[10px] rounded-[10px]"></div>
+              <p>
+                Old Age Security: {currency}
+                {numberWithCommas(oas.oldAgeSecurityBefore75)} annually (from{" "}
+                <span className="mx-1">age</span>
+                {oasStartYear} to 74); {currency}
+                {numberWithCommas(oas.oldAgeSecurityAfter75)} annually (from age
+                75 to 86)
+              </p>
+            </li>
+            {selectedPP !== "Not Applicable" && (
+              <li className="flex items-center gap-[0.5rem]">
+                <div className="bg-[#03A9F4] min-w-[30px] h-[10px] rounded-[10px]"></div>
+                <p>
+                  {selectedPP} : {currency}
+                  {numberWithCommas(ppAnnualAmount)} Annually (starting at age{" "}
+                  {ppStartYear} - {lifeExpectency})
+                </p>
+              </li>
+            )}
+            <li className="flex items-center gap-[0.5rem]">
+              <p className="min-w-[30px]">{currency}</p>
+              <p>{currencyFullName}</p>
+            </li>
+          </ul>
+        )}
       </div>
     </div>
   );

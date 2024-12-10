@@ -10,7 +10,7 @@ export default function CanadaPensionPlanRough() {
 
   const handleNext = () => {
     dispatch(nextStep());
-    navigate("/comprehensive-retirement-calculator/old-age-security");
+    navigate("/CRIC/OAS");
   };
 
   const { selectedPP, ppStartYear, ppBenefitAmount } = useAppSelector(

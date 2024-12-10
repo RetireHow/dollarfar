@@ -2,8 +2,6 @@ import { assets } from "../../assets/assets";
 import { cardsData } from "../../data/cardsData";
 import CalculatorCard from "./CalculatorCard";
 import heroEllipseImage from "../../assets/hero-ellipse.svg";
-// import { MyPDFDocument } from "../../MyPdfDocument";
-// import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 export default function Landing() {
   const handleGetStarted = () => {
     window.scrollTo({ top: 630, behavior: "smooth" });

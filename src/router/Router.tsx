@@ -97,7 +97,7 @@ export const router = createBrowserRouter([
       },
 
       {
-        path: "comprehensive-retirement-calculator",
+        path: "CRIC",
         element: <CRIC />,
         children: [
           {
@@ -105,11 +105,11 @@ export const router = createBrowserRouter([
             element: <GeneralInformation />,
           },
           {
-            path: "canada-pension-plan",
+            path: "PP",
             element: <CanadaPensionPlan />,
           },
           {
-            path: "old-age-security",
+            path: "OAS",
             element: <OldAgeSecurity />,
           }
         ],

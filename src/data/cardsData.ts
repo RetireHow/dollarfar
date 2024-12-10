@@ -23,17 +23,6 @@ export const cardsData = [
     navLink: "net-worth-calculator",
   },
 
-  // {
-  //   id: 3,
-  //   title: "Mortgage/Loan Calculator",
-  //   description:
-  //     "This calculator estimates the monthly payments you need to make on a mortgage or loan based on the principal amount, interest rate, and loan term.....",
-  //   arrowIcon: assets.arrowUpIcon,
-  //   calcIcon: assets.loanCalcIcon,
-  //   btnText: "Calculate",
-  //   navLink: "loan-calculator",
-  // },
-
   {
     id: 4,
     title: "Budget calculator",
@@ -45,17 +34,6 @@ export const cardsData = [
     navLink: "budget-calculator",
   },
 
-  // {
-  //   id: 5,
-  //   title: "Registered Education Savings Plan (RESP) Calculator",
-  //   description:
-  //     "This calculator estimates how much money you will accumulate in an RESP, which is designed to save for a child's post-secondary education. It considers initial contributions, ongoing contributions, and.....",
-  //   arrowIcon: assets.arrowUpIcon,
-  //   calcIcon: assets.educationCalcIcon,
-  //   btnText: "Calculate",
-  //   navLink: "education-savings-plan-calculator",
-  // },
-
   {
     id: 7,
     title: "Comprehensive Retirement Income Calculator",
@@ -64,7 +42,7 @@ export const cardsData = [
     arrowIcon: assets.arrowUpIcon,
     calcIcon: assets.comprehensiveRetirement,
     btnText: "Calculate",
-    navLink: "comprehensive-retirement-calculator",
+    navLink: "CRIC",
   },
   {
     id: 8,

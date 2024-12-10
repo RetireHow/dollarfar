@@ -18,6 +18,7 @@ import DownloadModal from "../../components/DownloadModal";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { setCurrency } from "../../redux/features/other/globalCurrency";
 import { currencyOptions } from "../options/currencyOptions";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 const data = {
   title: "Compound Interest Rate Calculator",
@@ -124,8 +125,8 @@ export default function CIRC() {
             </div>
             <BarGraphChart />
             <p className="md:text-[1rem] font-semibold text-center mt-5">
-              "An investment of {currency}{principal} today will grow to {currency}
-              {(compoundInterest + principal)?.toFixed(2)} by{" "}
+              "An investment of {currency}{numberWithCommas(principal)} today will grow to {currency}
+              {numberWithCommas(Math.round(compoundInterest + principal))} by{" "}
               {interestBreakdown[interestBreakdown.length - 1]?.period}, based
               on an interest rate of {rate}% compounded{" "}
               {frequencyName?.toLowerCase()}."
