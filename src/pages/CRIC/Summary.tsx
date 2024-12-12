@@ -95,7 +95,7 @@ export default function Summary() {
 
   useEffect(() => {
     // Set up the beforeunload event listener
-    const handleBeforeUnload = (event:BeforeUnloadEvent) => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       // Display a warning message to the user
       const message = "Hi user, your data will be lost after refreshing.";
       event.returnValue = message; // For most browsers
@@ -271,16 +271,10 @@ export default function Summary() {
             <div className="flex justify-end gap-5">
               <button
                 onClick={() => navigate(-1)}
-                className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black"
+                className="border-[1px] w-[200px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px] text-[1.25rem]"
               >
                 Back
               </button>
-              {/* <button
-                onClick={handleCalculate}
-                className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black"
-              >
-                Calculate
-              </button> */}
             </div>
           </div>
           <CRICResultCard />

@@ -113,7 +113,10 @@ export default function OldAgeSecurity() {
         <>
           <div>
             <div className="flex items-center gap-2 font-semibold mb-2">
-              <p>At what age do you plan to receive your OAS pension?<RedStar/></p>
+              <p>
+                At what age do you plan to receive your OAS pension?
+                <RedStar />
+              </p>
             </div>
             <select
               id="options"
@@ -132,7 +135,9 @@ export default function OldAgeSecurity() {
                 <option value={value}>{value}</option>
               ))}
             </select>
-            {showError && !oasStartYear && <Error message="This field is required*"/>}
+            {showError && !oasStartYear && (
+              <Error message="This field is required*" />
+            )}
           </div>
         </>
       )}
@@ -140,7 +145,7 @@ export default function OldAgeSecurity() {
       <div className="flex justify-end gap-10">
         <button
           onClick={() => navigate(-1)}
-          className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black"
+          className="border-[1px] w-[200px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px] text-[1.25rem]"
         >
           Back
         </button>

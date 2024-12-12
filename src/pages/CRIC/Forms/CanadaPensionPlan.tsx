@@ -17,7 +17,10 @@ export default function CanadaPensionPlanRough() {
   );
 
   const handleNext = () => {
-    if ((!selectedPP || !ppStartYear || !ppBenefitAmount) && selectedPP !== "Not Applicable") {
+    if (
+      (!selectedPP || !ppStartYear || !ppBenefitAmount) &&
+      selectedPP !== "Not Applicable"
+    ) {
       return setShowError(true);
     }
     dispatch(nextStep());
@@ -37,7 +40,8 @@ export default function CanadaPensionPlanRough() {
           <p>
             Individuals who contribute to the Quebec Pension Plan (QPP) or the
             Canada Pension Plan (CPP) may be eligible to receive pension
-            benefits at retirement. Which pension applies to you?<RedStar/>
+            benefits at retirement. Which pension applies to you?
+            <RedStar />
           </p>
         </div>
         <select
@@ -58,7 +62,9 @@ export default function CanadaPensionPlanRough() {
           <option value="Canada Pension Plan">Canada Pension Plan</option>
           <option value="Quebec Pension Plan">Quebec Pension Plan</option>
         </select>
-        {showError && !selectedPP && <Error message="This field is required*."/>}
+        {showError && !selectedPP && (
+          <Error message="This field is required*." />
+        )}
       </div>
 
       {selectedPP !== "Not Applicable" && (
@@ -68,7 +74,8 @@ export default function CanadaPensionPlanRough() {
               <p>
                 Enter your monthly retirement pension estimate (at age 65)
                 indicated on your Statement that states your retirement pension
-                estimate based on your past contributions<RedStar/>
+                estimate based on your past contributions
+                <RedStar />
               </p>
             </div>
             <select
@@ -100,14 +107,17 @@ export default function CanadaPensionPlanRough() {
               <option value="1300">1300</option>
               <option value="1364">1364</option>
             </select>
-            {showError && !ppBenefitAmount && <Error message="This field is required*"/>}
+            {showError && !ppBenefitAmount && (
+              <Error message="This field is required*" />
+            )}
           </div>
 
           <div>
             <div className="flex items-center gap-2 font-semibold mb-2">
               <p>
                 At what age do you plan to receive your{" "}
-                {selectedPP == "Canada Pension Plan" ? "CPP" : "QPP"} benefit?<RedStar/>
+                {selectedPP == "Canada Pension Plan" ? "CPP" : "QPP"} benefit?
+                <RedStar />
               </p>
             </div>
             <select
@@ -136,7 +146,9 @@ export default function CanadaPensionPlanRough() {
               <option value="69">69</option>
               <option value="70">70</option>
             </select>
-            {showError && !ppStartYear && <Error message="This field is required*"/>}
+            {showError && !ppStartYear && (
+              <Error message="This field is required*" />
+            )}
           </div>
         </>
       )}
@@ -144,7 +156,7 @@ export default function CanadaPensionPlanRough() {
       <div className="flex justify-end gap-10">
         <button
           onClick={() => navigate(-1)}
-          className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black"
+          className="border-[1px] w-[200px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px] text-[1.25rem]"
         >
           Back
         </button>
