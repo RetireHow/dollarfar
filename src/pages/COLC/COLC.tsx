@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { assets } from "../../assets/assets";
 import PageHero from "../../components/UI/PageHero";
 import DownloadModal from "../../components/DownloadModal";
@@ -10,6 +9,7 @@ import { setCurrency } from "../../redux/features/other/globalCurrency";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
 import COLDescription from "./COLDescription";
+import COLCForm from "./COLCForm";
 
 const data = {
   title: "Cost of Living Calculator",
@@ -19,15 +19,8 @@ const data = {
 };
 
 export default function COLC() {
-  const dispatch = useDispatch()
-
-  const { currency } = useAppSelector(
-    (state) => state.globalCurrency
-  );
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+  const dispatch = useDispatch();
+  const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <main className="mb-[5rem]">
       <div data-html2canvas-ignore>
@@ -39,10 +32,10 @@ export default function COLC() {
         <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">
           <div className="flex justify-between items-center flex-wrap">
             <h3 className="text-[1.5rem] font-bold md:mb-0 mb-3">
-            Cost of Living Calculator
+              Cost of Living Calculator
             </h3>
             <div className="flex items-center flex-wrap gap-5">
-            <div>
+              <div>
                 <Select
                   value={currency}
                   size="large"
@@ -68,13 +61,10 @@ export default function COLC() {
               />
             </div>
           </div>
-
-          <h3 className="text-center py-10 text-[2rem]">Coming soon.......</h3>
+          <COLCForm/>
         </div>
       </section>
-        <COLDescription/>
+      <COLDescription />
     </main>
   );
 }
-
-

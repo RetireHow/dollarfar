@@ -72,13 +72,13 @@ This calculator helps users compare the cost of living between two cities by sho
 
 # Running the Application
 ## Development Environment
-To run the application in the development environment, use:
-npm run dev
+To run the application in the development environment, use:<br>
+npm run dev<br>
 This will start a local development server, typically accessible at http://localhost:5173. Any changes made to the code will automatically be reflected in the browser thanks to hot module replacement (HMR).
 
 # Building and Deployment
-To build the project for production, run:
+To build the project for production, run:<br>
 npm run build
 
-This will generate an optimized production build in the dist directory. To serve the production build, use:
+This will generate an optimized production build in the dist directory. To serve the production build, use:<br>
 npm run serve
