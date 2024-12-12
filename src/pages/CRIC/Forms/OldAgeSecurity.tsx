@@ -58,7 +58,7 @@ export default function OldAgeSecurity() {
         <div className="flex items-center gap-2 font-semibold mb-2">
           <p>
             Will you have lived in Canada for at least 40 years between age 18
-            and 65?<RedStar/>
+            and 65?
           </p>
         </div>
         <select
