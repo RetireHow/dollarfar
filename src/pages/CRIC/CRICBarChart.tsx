@@ -106,7 +106,7 @@ function CRICBarChart() {
                 <span className="mx-1">age</span>
                 {oasStartYear} to 74); {currency}
                 {numberWithCommas(oas.oldAgeSecurityAfter75)} annually (from age
-                75 to 86)
+                75 to {lifeExpectency})
               </p>
             </li>
             {selectedPP !== "Not Applicable" && (
