@@ -29,7 +29,7 @@ export default function COLCForm() {
       const fetchCities1 = async (debouncedCityName: string) => {
         try {
           const response = await fetch(
-            `http://localhost:3000/cities?cityName=${debouncedCityName.trim()}`
+            `https://city-api-iota.vercel.app/cities?cityName=${debouncedCityName.trim()}`
           );
           const data = await response.json();
           setCities1(data?.data);
@@ -44,7 +44,7 @@ export default function COLCForm() {
       const fetchCities2 = async (debouncedCityName: string) => {
         try {
           const response = await fetch(
-            `http://localhost:3000/cities?cityName=${debouncedCityName.trim()}`
+            `https://city-api-iota.vercel.app/cities?cityName=${debouncedCityName.trim()}`
           );
           const data = await response.json();
           setCities2(data?.data);
