@@ -23,8 +23,8 @@ export default function COLCForm() {
       const [cities2, setCities2] = useState([]);
     
     
-      const debouncedCityName1 = useDebounce(cityName1, 300);
-      const debouncedCityName2 = useDebounce(cityName2, 300);
+      const debouncedCityName1 = useDebounce(cityName1, 500);
+      const debouncedCityName2 = useDebounce(cityName2, 500);
     
       const fetchCities1 = async (debouncedCityName: string) => {
         try {
