@@ -96,7 +96,7 @@ export default function CanadaPensionPlanRough() {
               <option value="900">900</option>
               <option value="1000">1000</option>
               <option value="1100">1100</option>
-              <option value="200">200</option>
+              <option value="200">1200</option>
               <option value="1300">1300</option>
               <option value="1364">1364</option>
             </select>
