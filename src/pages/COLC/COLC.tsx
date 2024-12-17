@@ -61,8 +61,9 @@ export default function COLC() {
               />
             </div>
           </div>
-          <COLCForm/>
         </div>
+
+        <COLCForm />
       </section>
       <COLDescription />
     </main>
