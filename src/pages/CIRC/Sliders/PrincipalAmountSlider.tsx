@@ -25,7 +25,7 @@ export default function PrincipalAmountSlider() {
               e.currentTarget.blur()
             }
           />
-          <p className="absolute left-3 top-3 font-semibold text-[1.2rem]">
+          <p className="absolute left-3 top-[10px] font-semibold text-[1.2rem]">
             {currency}
           </p>
         </div>

@@ -24,7 +24,7 @@ export default function InterestRateSlider() {
               e.currentTarget.blur()
             }
           />
-          <p className="absolute right-3 top-3 font-semibold text-[1.2rem]">%</p>
+          <p className="absolute right-10 top-3 font-semibold text-[1.2rem]">%</p>
         </div>
       </div>
       <ReactSlider

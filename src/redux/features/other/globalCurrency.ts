@@ -8,14 +8,14 @@ interface CurrencyState {
 
 // Initial state
 const initialState: CurrencyState = {
-  currency: "C$",
+  currency: "$",
   currencyFullName: "Canadian Dollar",
 };
 
 // Map of G7 currency symbols to full names
 const G7CurrencyMap: Record<string, string> = {
-  C$: "Canadian Dollar",
-  $: "United States Dollar",
+  $: "Canadian Dollar",
+  // $: "United States Dollar",
   "€": "Euro",
   "£": "British Pound Sterling",
   "¥": "Japanese Yen",

@@ -71,7 +71,7 @@ export default function BC() {
         <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">
           <div className="flex justify-between items-center flex-wrap">
             <h3 className="text-[1.5rem] font-bold md:mb-0 mb-3">
-              Compound Interest Rate Calculator
+              Budget Calculator
             </h3>
             <div className="flex items-center flex-wrap gap-5">
               <div>

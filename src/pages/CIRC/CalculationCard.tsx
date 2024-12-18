@@ -35,11 +35,16 @@ export default function CalculationCard() {
             <Select
               defaultValue={frequency}
               size="large"
-              style={{ width: 130, height: 45, border: "1px solid gray"}}
+              style={{ width: 130, height: 45, border: "1px solid gray" }}
               className="!border-none"
               onChange={(value) => dispatch(setFrequency(value))}
               options={frequencyOptions}
-              suffixIcon={<Icon className="text-[1.5rem] text-gray-600" icon="iconamoon:arrow-down-2" />}
+              suffixIcon={
+                <Icon
+                  className="text-[1.5rem] text-gray-600"
+                  icon="iconamoon:arrow-down-2"
+                />
+              }
             ></Select>
           </div>
         </div>
@@ -59,7 +64,7 @@ export default function CalculationCard() {
         <div className="flex items-center">
           {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
           <p>{currency}</p>
-          <p>{numberWithCommas(Math.round(compoundInterest))}</p>
+          <p>{numberWithCommas(compoundInterest)}</p>
         </div>
       </div>
 
@@ -68,7 +73,7 @@ export default function CalculationCard() {
         <div className="flex items-center gap-[2px]">
           {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
           <p>{currency}</p>
-          <p>{numberWithCommas(Math.round(compoundInterest + principal))}</p>
+          <p>{numberWithCommas(compoundInterest + principal)}</p>
         </div>
       </div>
     </div>
