@@ -2,10 +2,9 @@ import { useRef } from "react";
 import { Icon } from "@iconify/react";
 import useBudgetDynamicInput from "../../../../../hooks/useBudgetDynamicInput";
 import CustomTooltip from "../../../../../components/UI/CustomTooltip";
-import { Select } from "antd";
-import { selectOptions } from "../../../BgtSelectOptions";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
+import BCTotalDisplay from "../../../../../components/UI/BCTotalDisplay";
 
 export const EntertainmentEvents = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
@@ -37,60 +36,17 @@ export const EntertainmentEvents = () => {
   return (
     <div>
       {/* Main Input Field */}
-      <div>
-        <div className="flex justify-between items-center text-[1rem] mb-1">
-          <label
-            className="flex items-center gap-1 font-semibold"
-            htmlFor="property"
-          >
-            <span>Entertainment/Events</span>{" "}
-            <CustomTooltip title="Specify your take-home pay after taxes, deductions, and other adjustments." />
-          </label>
-          {/* No functionality on "Add Properties" button */}
-          <button
-            onClick={() => setShowSubInputs(!showSubInputs)}
-            className="font-semibold flex items-center gap-1"
-          >
-            {showSubInputs ? (
-              // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
-              <Icon
-                className="text-[1.5rem]"
-                icon="iconamoon:arrow-up-2-light"
-              />
-            ) : (
-              <Icon className="text-[1.25rem]" icon="ic:round-plus" />
-            )}
-            <span>Add Expenses</span>
-          </button>
-        </div>
-
-        <div className="flex gap-1">
-          <input
-            className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full cursor-not-allowed"
-            type="text"
-            value={entertainmentEvents}
-            disabled
-            onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
-              e.currentTarget.blur()
-            }
-          />
-          <div>
-            <Select
-              defaultValue="Weekly"
-              size="large"
-              style={{ width: 130, height: 45, border: "1px solid gray" }}
-              className="rounded-[9px]"
-              options={selectOptions}
-              suffixIcon={
-                <Icon
-                  className="text-[1.5rem] text-gray-600"
-                  icon="iconamoon:arrow-down-2"
-                />
-              }
-            ></Select>
-          </div>
-        </div>
-      </div>
+      <BCTotalDisplay
+        data={{
+          showSubInputs,
+          setShowSubInputs,
+          total: entertainmentEvents as number,
+          buttonText: "Add Expenses",
+          fieldTitle: "Entertainment/Events",
+          infoText:
+            "Enter any government assistance received, such as child benefits, unemployment insurance, or other aid.",
+        }}
+      />
 
       {/* Sub Input Fields */}
       {showSubInputs && (

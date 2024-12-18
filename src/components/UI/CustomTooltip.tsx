@@ -5,6 +5,7 @@ export default function CustomTooltip({ title }: { title: string }) {
   return (
     <Tooltip
       color="#F8F8F8"
+      trigger={["click"]}
       placement="topRight"
       title={title}
       overlayInnerStyle={{
