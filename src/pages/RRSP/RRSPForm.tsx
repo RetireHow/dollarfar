@@ -122,7 +122,7 @@ export default function RRSPForm() {
         <div>
           <div className="flex items-center gap-2 font-semibold mb-2">
             <p>Current Age (Years)</p>
-            <CustomTooltip title="Enter the year you plan to begin withdrawals from your RRIF." />
+            <CustomTooltip title="Enter your current age in years. This helps calculate the time available for your savings to grow before retirement." />
           </div>
           <input
             className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
@@ -138,7 +138,7 @@ export default function RRSPForm() {
         <div>
           <div className="flex items-center gap-2 font-semibold mb-2">
             <p>Your plan to Retire in (Years)</p>
-            <CustomTooltip title="Specify the year you plan to end withdrawals." />
+            <CustomTooltip title="Specify the number of years from now when you plan to retire. This determines your investment horizon." />
           </div>
           <input
             className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
@@ -157,26 +157,11 @@ export default function RRSPForm() {
         </div>
       </div>
 
-      <div>
-        <div className="flex items-center gap-2 font-semibold mb-2">
-          <p>Ongoing Contribution Amount</p>
-          <CustomTooltip title="Enter the year you plan to begin withdrawals from your RRIF." />
-        </div>
-        <input
-          className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
-          type="number"
-          placeholder={`${currency}0`}
-          onWheel={(e) => e.currentTarget.blur()}
-          name="contributionAmount"
-          value={contributionAmount}
-          onChange={handleChange}
-        />
-      </div>
 
       <div>
         <div className="flex items-center gap-2 font-semibold mb-2">
           <p>Current RRSP Savings</p>
-          <CustomTooltip title="Enter the year you plan to begin withdrawals from your RRIF." />
+          <CustomTooltip title="Provide the current total amount saved in your RRSP. This will serve as the starting point for calculations." />
         </div>
         <input
           className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
@@ -191,8 +176,24 @@ export default function RRSPForm() {
 
       <div>
         <div className="flex items-center gap-2 font-semibold mb-2">
+          <p>Ongoing Contribution Amount</p>
+          <CustomTooltip title="Enter the amount you plan to contribute regularly to your RRSP. This can be weekly, monthly, or annually based on your selected frequency." />
+        </div>
+        <input
+          className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
+          type="number"
+          placeholder={`${currency}0`}
+          onWheel={(e) => e.currentTarget.blur()}
+          name="contributionAmount"
+          value={contributionAmount}
+          onChange={handleChange}
+        />
+      </div>
+
+      <div>
+        <div className="flex items-center gap-2 font-semibold mb-2">
           <p>Contribution Frequency</p>
-          <CustomTooltip title="Choose how often you want to withdraw from your RRIF: Monthly, Yearly, or Weekly." />
+          <CustomTooltip title="Select how often you will contribute to your RRSP (e.g., weekly, bi-weekly, monthly, or annually). This affects the growth of your savings over time." />
         </div>
         <Select
           name="contributionFrequency"
@@ -214,7 +215,7 @@ export default function RRSPForm() {
         <div className="flex justify-between items-center mb-[1rem]">
           <div className="flex items-center gap-2 font-semibold mb-2">
             <p>Assumed Rate of Return</p>
-            <CustomTooltip title="Enter the year you plan to begin withdrawals from your RRIF." />
+            <CustomTooltip title="Estimate the annual rate of return you expect on your RRSP investments (e.g., 5%, 7%). Consider a realistic rate based on your investment strategy and risk tolerance." />
           </div>
           <div className="max-w-[80px] relative">
             <input
