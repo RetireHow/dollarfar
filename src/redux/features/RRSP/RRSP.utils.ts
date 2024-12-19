@@ -30,7 +30,7 @@ export function calculateRRSPTotalSavings({
       // Contribution compounding at the end of the period
       yearSavings +=
         contributionAmount * Math.pow(1 + ratePerPeriod, periodsRemaining);
-    }
+      }
 
     // Add the year's contributions to the total contributions
     totalContributions += contributionAmount * compoundingPeriods;
@@ -60,4 +60,5 @@ export function calculateRRSPTotalSavings({
     investmentEarnings: Number(investmentEarnings),
     savingsByAge,
   };
+ 
 }

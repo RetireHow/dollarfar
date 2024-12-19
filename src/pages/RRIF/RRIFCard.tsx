@@ -17,9 +17,12 @@ export default function RRIFCard() {
       ageBreakdownDataOverLifeTimeManually.length - 1
     ]?.balanceAtEndOfTheYear;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const totalWithdrawnAmount = ageBreakdownDataOverLifeTimeManually?.reduce((total, curr:any)=>{
-    return total + curr.annualWithdrawalAmount;
-  }, 0)
+  const totalWithdrawnAmount = ageBreakdownDataOverLifeTimeManually?.reduce(
+    (total, curr: any) => {
+      return total + curr.annualWithdrawalAmount;
+    },
+    0
+  );
 
   const { currency } = useAppSelector((state) => state.globalCurrency);
 
@@ -63,14 +66,6 @@ export default function RRIFCard() {
           </div>
         )}
 
-        <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4 font-medium">
-          <p>Remaining RRIF Balance (End of Withdrawal Period)</p>
-          <p>
-            {currency}
-            {numberWithCommas(remainingBalanceInRRIF)}
-          </p>
-        </div>
-
         <div className="flex items-center justify-between text-[1.25rem] font-medium">
           <p>
             Total Withdrawn Over Lifetime (Age {withdrawalStartYear} to{" "}
@@ -79,6 +74,14 @@ export default function RRIFCard() {
           <p>
             {currency}
             {numberWithCommas(totalWithdrawnAmount)}
+          </p>
+        </div>
+
+        <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4 font-medium">
+          <p>Remaining RRIF Balance (End of Withdrawal Period)</p>
+          <p>
+            {currency}
+            {numberWithCommas(remainingBalanceInRRIF)}
           </p>
         </div>
       </div>

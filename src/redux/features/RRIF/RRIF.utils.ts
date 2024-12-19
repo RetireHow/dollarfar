@@ -107,11 +107,6 @@ export const calculateTotalWithdrawnOverLifeTime = (
 
 
 
-
-
-
-
-
 // Calculation function for age breakdown data in government mode
 export const calcBalanceAgeByAgeGovernmentAge = (
   initialBalance: number,
