@@ -120,10 +120,10 @@ export default function Summary() {
         {/* Header  */}
         <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">
           <div className="flex justify-between items-center flex-wrap">
-            <h3 className="text-[1.5rem] font-bold md:mb-0 mb-3">
+            <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
               Comprehensive Retirement Income Calculator
             </h3>
-            <div className="flex items-center flex-wrap gap-5">
+            <div className="flex items-center flex-wrap gap-5 md:text-[16px] text-[14px]">
               <div>
                 <Select
                   value={currency}
@@ -156,11 +156,13 @@ export default function Summary() {
 
         <section className="flex md:flex-row flex-col gap-10 justify-between">
           <div className="space-y-[2rem] flex-1">
-            <h3 className="font-extrabold text-[2rem]">Summary</h3>
+            <h3 className="font-extrabold md:text-[2rem] text-[18px]">
+              Summary
+            </h3>
 
             <div>
               <div className="flex justify-between items-center mb-5">
-                <h3 className="font-semibold text-[1.2rem]">
+                <h3 className="font-semibold md:text-[1.2rem] text-[1rem]">
                   General information
                 </h3>
                 <Icon
@@ -168,33 +170,33 @@ export default function Summary() {
                   icon="material-symbols:keyboard-arrow-up-rounded"
                 />
               </div>
-              <ul className="space-y-[1rem]">
-                <li className="flex justify-between items-center">
+              <ul className="space-y-[1rem] md:text-[1rem] text-[14px]">
+                <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>Date of Birth</p>
                   <p>
                     {dobMonth}, {dobYear}
                   </p>
                 </li>
-                <li className="flex justify-between items-center">
+                <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>Current Age</p>
                   <p>{new Date().getFullYear() - dobYear}</p>
                 </li>
-                <li className="flex justify-between items-center">
+                <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>Life Expectancy</p>
                   <p>{lifeExpectency}</p>
                 </li>
-                <li className="flex justify-between items-center">
+                <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>Gender</p>
                   <p>{gender}</p>
                 </li>
-                <li className="flex justify-between items-center">
+                <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>Annual Retirement Income Goal</p>
                   <p>
                     {currency}
                     {numberWithCommas(annualRetirementIncomeGoal)}
                   </p>
                 </li>
-                <li className="flex justify-between items-center">
+                <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>Current Annual Income</p>
                   <p>
                     {currency}
@@ -206,19 +208,21 @@ export default function Summary() {
 
             <div>
               <div className="flex justify-between items-center mb-5">
-                <h3 className="font-semibold text-[1.2rem]">{selectedPP}</h3>
+                <h3 className="font-semibold md:text-[1.2rem] text-[1rem]">
+                  {selectedPP}
+                </h3>
                 <Icon
                   className="text-[2rem] font-bold"
                   icon="material-symbols:keyboard-arrow-up-rounded"
                 />
               </div>
-              <ul className="space-y-[1rem]">
-                <li className="flex justify-between items-center">
+              <ul className="space-y-[1rem] md:text-[1rem] text-[14px]">
+                <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>Receiving at Age</p>
                   <p>{ppStartYear}</p>
                 </li>
 
-                <li className="flex justify-between items-center">
+                <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>{selectedPP} Annual</p>
                   <p>
                     {currency}
@@ -230,7 +234,7 @@ export default function Summary() {
 
             <div>
               <div className="flex justify-between items-center mb-5">
-                <h3 className="font-semibold text-[1.2rem]">
+                <h3 className="font-semibold md:text-[1.2rem] text-[1rem]">
                   Old Age Security (OAS)
                 </h3>
                 <Icon
@@ -239,13 +243,13 @@ export default function Summary() {
                 />
               </div>
 
-              <ul className="space-y-[1rem]">
-                <li className="flex justify-between items-center">
+              <ul className="space-y-[1rem] md:text-[1rem] text-[14px]">
+                <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>Receiving at Age</p>
                   <p>{oasStartYear}</p>
                 </li>
 
-                <li className="flex justify-between items-center">
+                <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>OAS Pension (Ages 75 and up)</p>
                   <p>
                     {currency}
@@ -253,7 +257,7 @@ export default function Summary() {
                   </p>
                 </li>
 
-                <li className="flex justify-between items-center">
+                <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>OAS Pension (Ages from {oasStartYear} to 74)</p>
                   <p>
                     {currency}
@@ -261,24 +265,24 @@ export default function Summary() {
                   </p>
                 </li>
 
-                <li className="flex justify-between items-center">
+                <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>Years lived in Canada</p>
                   <p>{yearsInCanada}</p>
                 </li>
               </ul>
             </div>
-
-            <div className="flex justify-end gap-5">
-              <button
-                onClick={() => navigate(-1)}
-                className="border-[1px] w-[200px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px] text-[1.25rem]"
-              >
-                Back
-              </button>
-            </div>
           </div>
           <CRICResultCard />
         </section>
+
+        <div className="flex justify-center gap-5 mt-[3rem]">
+          <button
+            onClick={() => navigate(-1)}
+            className="border-[1px] w-[200px]  md:text-[1.25rem] text-[18px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px]"
+          >
+            Back
+          </button>
+        </div>
 
         <CRICBarChart />
 

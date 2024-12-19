@@ -13,6 +13,7 @@ export const GFETField = () => {
   const {
     transport: {
       totals: { gasFuelEtrToll },
+      gasFuelEtrToll:{etrToll, fuel, gas}
     },
   } = useAppSelector((state) => state.budgetCalculator);
   const {
@@ -59,6 +60,7 @@ export const GFETField = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
+              value={gas}
               placeholder={`${currency}0`}
               autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -87,6 +89,7 @@ export const GFETField = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
+              value={fuel}
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
@@ -114,6 +117,7 @@ export const GFETField = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
+              value={etrToll}
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()

@@ -27,8 +27,8 @@ export default function NWForm() {
   return (
     <section className="mb-[5rem] grid md:grid-cols-2 grid-cols-1 gap-[2.5rem]">
       <div>
-        <h3 className="font-bold text-[2rem] mb-[1.5rem]">Assets</h3>
-        <div className="space-y-[2.5rem]">
+        <h3 className="font-bold md:text-[2rem] text-[18px] mb-[1.5rem]">Assets</h3>
+        <div className="space-y-[2.5rem] md:text-[1rem] text-[14px]">
           <PropertyInputFields />
           <SAndIInputFields />
           <PersonalItemsInputFields />
@@ -39,7 +39,7 @@ export default function NWForm() {
       </div>
 
       <div>
-        <h3 className="font-bold text-[2rem] mb-[1.5rem]">Liabilities</h3>
+        <h3 className="font-bold md:text-[2rem] text-[18px] mb-[1.5rem]">Liabilities</h3>
         <div className="space-y-[2.5rem]">
           <HomeLoanFields />
           <PAndOLoanFields />
@@ -53,7 +53,7 @@ export default function NWForm() {
       <div className="md:col-span-2 flex justify-center items-center">
         <button
           onClick={handleCalculate}
-          className="bg-black text-white p-[0.8rem] rounded-[10px] w-[300px]"
+          className="bg-black text-[18px] text-white p-[0.8rem] rounded-[10px] w-[300px]"
         >
           Calculate
         </button>

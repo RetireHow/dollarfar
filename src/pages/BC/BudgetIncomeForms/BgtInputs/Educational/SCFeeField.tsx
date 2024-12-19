@@ -12,6 +12,7 @@ export const SCFeeField = () => {
   const {
     educational: {
       totals: { schoolCollegeFee },
+      schoolCollegeFee:{collegeFee, schoolFee}
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
@@ -61,6 +62,7 @@ export const SCFeeField = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
+              value={schoolFee}
               placeholder={`${currency}0`}
               autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -89,6 +91,7 @@ export const SCFeeField = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
+              value={collegeFee}
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()

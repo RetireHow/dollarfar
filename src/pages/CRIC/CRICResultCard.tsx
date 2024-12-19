@@ -22,9 +22,9 @@ export default function CRICResultCard() {
   );
   return (
     <section>
-      <h3 className="text-[2rem] font-bold mb-[1.25rem]">Result</h3>
+      <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">Result</h3>
       <div className="space-y-[1rem] bg-[#F8F8F8] md:p-[1.5rem] p-[1rem] rounded-[10px] w-full">
-        <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4">
+        <div className="flex md:gap-0 gap-5 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[14px] pb-4">
           <p className="font-medium">Annual Retirement Income Goal</p>
           <div className="flex items-center">
             <p>{currency}</p>
@@ -32,8 +32,8 @@ export default function CRICResultCard() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-5 border-b-[1px] border-[#0000001A] text-[1.25rem] pb-4">
-          <p className="text-[1.25rem] font-medium">
+        <div className="flex md:gap-0 gap-5 items-center justify-between  border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[14px] pb-4">
+          <p className="md:text-[1.25rem] text-[14px] font-medium">
             Annual Average Retirement Income Estimate
           </p>
           <div className="flex items-center">
@@ -46,8 +46,8 @@ export default function CRICResultCard() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between text-white px-[1.25rem] text-[1.25rem] rounded-[10px] h-[50px] bg-black">
-          <p className="text-[1.25rem] font-medium">Difference</p>
+        <div className="flex md:gap-0 gap-5 items-center justify-between text-white px-[1.25rem] md:text-[1.25rem] text-[14px] rounded-[10px] h-[50px] bg-black">
+          <p className="md:text-[1.25rem] text-[18px] font-medium">Difference</p>
           <div className="flex items-center gap-[2px]">
             <p>{currency}</p>
             <p>

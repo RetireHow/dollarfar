@@ -16,13 +16,13 @@ export default function Landing() {
             backgroundRepeat: "no-repeat",
             backgroundSize: "contain",
           }}
-          className="max-w-[700px]"
+          className="md:max-w-[700px] max-w-[330px]"
         >
           <div className="lg:ml-[5rem] md:ml-[2rem] ml-[1rem]">
-            <h3 className="font-extrabold lg:text-[54px] text-[2rem] leading-tight mb-[1rem]">
+            <h3 className="font-extrabold lg:text-[54px] md:text-[2rem] text-[20px] leading-tight mb-[1rem]">
               Master Your Finances with Powerful Calculators
             </h3>
-            <p className="text-[20px] text-[#696969]">
+            <p className="md:text-[20px] text-[14px] text-[#696969]">
               Explore our suite of financial calculators to plan, save, and grow
               your wealth. From budgeting and investments to loans and
               retirement, we've got the tools you need for a smarter financial
@@ -47,16 +47,16 @@ export default function Landing() {
 
       <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem]">
         <div className="text-center mt-[5rem] mb-[2.5rem]">
-          <h1 className="font-bold md:text-[2.5rem] text-[1.8rem]">
+          <h1 className="font-bold md:text-[2.5rem] text-[18px] md:mb-0 mb-2">
             Our calculators and tools for you
           </h1>
-          <h3 className="text-[1.25rem] text-[#696969]">
+          <h3 className="md:text-[1.25rem] text-[14px] text-[#696969]">
             Choose the calculator that fits your needs and start making informed
             financial decisions today!
           </h3>
         </div>
 
-        <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-[1.5rem]">
+        <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-[2.5rem]">
           {cardsData.map((item) => (
             <CalculatorCard key={item.id} item={item} />
           ))}

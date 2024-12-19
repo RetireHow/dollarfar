@@ -97,7 +97,7 @@ export const NWBarChart = () => {
         >
           <Bar data={data} options={options} />
         </div>
-        <div className="flex items-center flex-wrap md:gap-x-10 gap-x-5 my-5 gap-y-[1rem] font-semibold">
+        <div className="md:text-[1rem] text-[14px] flex items-center flex-wrap md:gap-x-10 gap-x-3 my-5 gap-y-[1rem] font-semibold">
           <div className="flex items-center md:gap-3 gap-1">
             <p className="bg-[#4CAF50] w-[30px] h-[10px] rounded-[10px]"></p>
             <p>Assets</p>

@@ -29,7 +29,7 @@ const OtherDebtsFields = () => {
   return (
     <div>
       {/* Main Input Field */}
-      <div className="flex justify-between items-center text-[1rem] mb-1">
+      <div className="flex justify-between items-center md:text-[1rem] text-[14px] mb-1">
         <label
           className="flex items-center gap-1 font-semibold"
           htmlFor="property"

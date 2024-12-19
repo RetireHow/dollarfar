@@ -27,7 +27,7 @@ export default function CalculationCard() {
   return (
     <div className="space-y-[2rem] bg-[#F8F8F8] md:p-[1.5rem] p-[1rem] rounded-[10px] lg:w-[50%] w-full">
       <div className="flex justify-between items-center flex-wrap">
-        <p className="text-[1.25rem] font-bold md:mb-0 mb-3">
+        <p className="md:text-[1.25rem] text-[18px] font-bold md:mb-0 mb-3">
           Compounding Frequency
         </p>
         <div>
@@ -50,7 +50,7 @@ export default function CalculationCard() {
         </div>
       </div>
 
-      <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-8">
+      <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[14px] pb-8">
         <p className="font-medium">Principle Amount</p>
         <div className="flex items-center">
           {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
@@ -59,8 +59,8 @@ export default function CalculationCard() {
         </div>
       </div>
 
-      <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] text-[1.25rem] pb-8">
-        <p className="text-[1.25rem] font-medium">Total Interest</p>
+      <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[14px] pb-8">
+        <p className="md:text-[1.25rem] text-[14px] font-medium">Total Interest</p>
         <div className="flex items-center">
           {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
           <p>{currency}</p>
@@ -68,8 +68,8 @@ export default function CalculationCard() {
         </div>
       </div>
 
-      <div className="flex items-center justify-between bg-black text-white px-[1.25rem] text-[1.25rem] rounded-[10px] h-[50px]">
-        <p className="text-[1.25rem] font-medium">Total Amount</p>
+      <div className="flex items-center justify-between bg-black text-white px-[1.25rem] md:text-[1.25rem] text-[14px] rounded-[10px] h-[50px]">
+        <p className="md:text-[1.25rem] text-[18px] font-medium">Total Amount</p>
         <div className="flex items-center gap-[2px]">
           {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
           <p>{currency}</p>

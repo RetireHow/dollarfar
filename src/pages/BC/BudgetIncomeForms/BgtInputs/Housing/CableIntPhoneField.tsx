@@ -12,6 +12,7 @@ export const CableIntPhoneField = () => {
   const {
     housing: {
       totals: { cableTvInternetPhone },
+      cableTvInternetPhone:{cableTv, cellPhone, homePhone, internet}
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
@@ -61,6 +62,7 @@ export const CableIntPhoneField = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
+              value={cableTv}
               placeholder={`${currency}0`}
               autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -89,6 +91,7 @@ export const CableIntPhoneField = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
+              value={internet}
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
@@ -116,6 +119,7 @@ export const CableIntPhoneField = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
+              value={homePhone}
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
@@ -143,6 +147,7 @@ export const CableIntPhoneField = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
+              value={cellPhone}
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()

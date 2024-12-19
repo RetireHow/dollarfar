@@ -36,8 +36,8 @@ export default function OldAgeSecurity() {
   }, []);
 
   return (
-    <section className="space-y-[2rem]">
-      <h3 className="font-extrabold text-[2rem]">Old Age Security</h3>
+    <section className="space-y-[2rem] md:text-[1rem] text-[14px]">
+      <h3 className="font-extrabold md:text-[2rem] text-[18px]">Old Age Security</h3>
 
       <div>
         <div className="flex items-center gap-2 font-semibold mb-2">
@@ -145,13 +145,13 @@ export default function OldAgeSecurity() {
       <div className="flex justify-end gap-10">
         <button
           onClick={() => navigate(-1)}
-          className="border-[1px] w-[200px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px] text-[1.25rem]"
+          className="border-[1px] md:text-[1.25rem] text-[18px] w-[200px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px]"
         >
           Back
         </button>
         <button
           onClick={handleNext}
-          className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black"
+          className="text-white md:text-[1.25rem] text-[18px] p-[0.8rem] rounded-[10px] w-[200px] bg-black"
         >
           Next
         </button>

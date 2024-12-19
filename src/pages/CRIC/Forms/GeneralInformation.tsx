@@ -520,8 +520,8 @@ export default function GeneralInformation() {
   };
 
   return (
-    <section className="space-y-[2rem]">
-      <h3 className="font-extrabold text-[2rem]">General Information</h3>
+    <section className="space-y-[2rem] md:text-[1rem] text-[14px]">
+      <h3 className="font-extrabold md:text-[2rem] text-[18px]">General Information</h3>
       <div>
         <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
           <div>
@@ -548,8 +548,8 @@ export default function GeneralInformation() {
             </select>
           </div>
 
-          <div>
-            <div className="flex items-center gap-2 font-semibold mb-[9px]">
+          <div className="mt-[0.8rem]">
+            <div className="flex items-center gap-2 font-semibold">
               <p className="opacity-0">For Nothing</p>
             </div>
             <select
@@ -686,7 +686,7 @@ export default function GeneralInformation() {
       <div className="flex justify-end">
         <button
           onClick={handleNext}
-          className="text-white p-[0.8rem] rounded-[10px] w-[200px] bg-black"
+          className="text-white p-[0.8rem] rounded-[10px] w-[200px] text-[18px] bg-black"
         >
           Next
         </button>

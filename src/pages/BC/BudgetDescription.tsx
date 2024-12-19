@@ -2,10 +2,10 @@ export default function BudgetDescription() {
   return (
     <article data-html2canvas-ignore>
       <section className="md:mx-[5rem] mx-[1rem]">
-        <h3 className="text-[28px] font-extrabold mb-[1.5rem]">
+        <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
           What is a Budget Calculator?
         </h3>
-        <p className="text-[#696969] text-[18px] leading-[27px]">
+        <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
           A budget calculator is a tool used to help individuals or households
           plan their finances by tracking income, expenses, and savings. It
           allows users to allocate funds to different spending categories,
@@ -16,19 +16,21 @@ export default function BudgetDescription() {
       </section>
 
       <section className="md:mx-[5rem] mx-[1rem] mt-[3rem]">
-        <h3 className="text-[28px] font-extrabold mb-[1.5rem]">
+        <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
           Formula to Calculate a Budget
         </h3>
-        <p className="text-[#696969] text-[18px] leading-[27px]">
+        <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
           The general formula for a budget is based on balancing income with
           expenses and savings:
         </p>
-        <p className="text-[18px] leading-[27px] mt-5 font-semibold">
+        <p className="md:text-[18px] text-[14px] leading-[27px] mt-5 font-semibold">
           Net Income − Expenses = Surplus (Savings) or Deficit (Overspending)
         </p>
 
-        <p className="text-[#696969] text-[18px] leading-[27px] my-5">Where:</p>
-        <ul className="list-disc list-inside">
+        <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] my-5">
+          Where:
+        </p>
+        <ul className="list-disc list-inside md:text-[1rem] text-[14px]">
           <li>
             <span className="text-black font-bold mx-1">Net Income:</span>
             <span className="text-[#696969]">
@@ -50,11 +52,11 @@ export default function BudgetDescription() {
           </li>
         </ul>
 
-        <p className="text-[#696969] text-[18px] leading-[27px] my-5">
+        <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] my-5">
           A simple budget formula is the{" "}
           <span className="text-black font-semibold">50/30/20 rule:</span>
         </p>
-        <ul className="list-disc list-inside">
+        <ul className="list-disc list-inside md:text-[1rem] text-[14px]">
           <li>
             <span className="text-black font-bold mx-1">50%</span>
             <span className="text-[#696969]">
@@ -83,10 +85,10 @@ export default function BudgetDescription() {
       </section>
 
       <section className="md:mx-[5rem] mx-[1rem] mt-[3rem]">
-        <h3 className="text-[28px] font-extrabold mb-[1.5rem]">
+        <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
           Budget Calculation Example
         </h3>
-        <ul className="list-decimal list-inside">
+        <ul className="list-decimal list-inside md:text-[1rem] text-[14px]">
           <li>
             <span className="text-black font-bold mx-1">Income:</span>
             <span className="text-[#696969]">₹80,000 (Green)</span>
@@ -160,7 +162,12 @@ export default function BudgetDescription() {
             <li> - Surplus: ₹1,500</li>
           </ul>
         </ul>
-        <p className="mt-5"><span className="font-semibold text-black">Surplus:</span> After covering expenses, loans, and savings, there's ₹1,500 left.</p>
+        <p className="mt-5">
+          <span className="font-semibold text-black md:text-[1rem] text-[14px] ">
+            Surplus:
+          </span>{" "}
+          After covering expenses, loans, and savings, there's ₹1,500 left.
+        </p>
       </section>
     </article>
   );

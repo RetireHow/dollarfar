@@ -12,6 +12,7 @@ const SalaryWagesInputFields = () => {
   const {
     income: {
       totals: { salaryOrWages },
+      salaryOrWages:{salary1, wages}
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
@@ -63,6 +64,7 @@ const SalaryWagesInputFields = () => {
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               autoFocus
               type="number"
+              value={salary1}
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
@@ -90,6 +92,7 @@ const SalaryWagesInputFields = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
+              value={wages}
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()

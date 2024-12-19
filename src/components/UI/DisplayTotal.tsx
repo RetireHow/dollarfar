@@ -25,7 +25,7 @@ export default function DisplayTotal({ data }: { data: TData }) {
   const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <div>
-      <div className="flex justify-between items-center text-[1rem] mb-1 overflow-x-auto">
+      <div className="flex justify-between items-center md:text-[1rem] text-[14px] mb-1 overflow-x-auto">
         <label
           className="flex items-center gap-1 font-semibold text-nowrap"
           htmlFor="property"

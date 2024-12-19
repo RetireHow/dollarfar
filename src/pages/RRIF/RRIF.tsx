@@ -76,7 +76,7 @@ export default function RRIF() {
         {/* Header  */}
         <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">
           <div className="flex justify-between items-center flex-wrap">
-            <h3 className="text-[1.5rem] font-bold md:mb-0 mb-3">
+            <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
               Registered Retirement Income Fund (RRIF) Calculator
             </h3>
             <div className="flex items-center flex-wrap gap-5">

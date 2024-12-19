@@ -13,6 +13,7 @@ const NetIncomeField = () => {
   const {
     income: {
       totals: { netIncome },
+      netIncome:{businessProfit}
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
@@ -62,6 +63,7 @@ const NetIncomeField = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
+              value={businessProfit}
               placeholder={`${currency}0`}
               autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>

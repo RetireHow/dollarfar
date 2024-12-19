@@ -12,12 +12,12 @@ export default function PrincipalAmountSlider() {
     <div>
       <div className="flex justify-between items-center mb-[1.25rem]">
         <div className="flex items-center gap-2">
-          <p className="font-semibold text-[1.3rem]">Principle Amount</p>
+          <p className="font-semibold md:text-[1.3rem] text-[14px]">Principle Amount</p>
           <CustomTooltip title="This is the initial sum of money invested or loaned, before interest. Enter the base amount for the compound interest calculation." />
         </div>
         <div className="relative">
           <input
-            className="font-bold text-[1.2rem] text-right bg-[#F8F8F8] rounded-[10px] px-[1.25rem] py-[10px] max-w-[150px] outline-none"
+            className="font-bold md:text-[1.2rem] text-[14px] text-right bg-[#F8F8F8] rounded-[10px] px-[1.25rem] py-[10px] md:max-w-[200px] max-w-[150px] outline-none"
             type="number"
             value={principal}
             onChange={(e) => dispatch(setPrincipal(Number(e.target.value)))}
@@ -25,7 +25,7 @@ export default function PrincipalAmountSlider() {
               e.currentTarget.blur()
             }
           />
-          <p className="absolute left-3 top-[10px] font-semibold text-[1.2rem]">
+          <p className="absolute left-3 top-[10px] font-semibold md:text-[1.2rem] text-[14px]">
             {currency}
           </p>
         </div>

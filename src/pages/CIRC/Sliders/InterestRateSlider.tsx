@@ -11,12 +11,12 @@ export default function InterestRateSlider() {
     <div>
       <div className="flex justify-between items-center mb-[1.25rem]">
         <div className="flex items-center gap-2">
-        <p className="font-semibold text-[1.3rem]">Rate of Interest</p>
+        <p className="font-semibold md:text-[1.3rem] text-[14px]">Rate of Interest</p>
         <CustomTooltip title="The annual interest rate or rate of return. This is the percentage at which your principal amount grows each year."/>
         </div>
         <div className="relative">
           <input
-            className="font-bold text-[1.2rem] text-left bg-[#F8F8F8] rounded-[10px] px-[1.25rem] py-[10px] max-w-[130px] outline-none"
+            className="font-bold md:text-[1.2rem] text-[14px] text-left bg-[#F8F8F8] rounded-[10px] md:px-[1.25rem] px-[0.5rem] py-[10px] md:max-w-[130px] max-w-[80px] outline-none"
             type="number"
             value={rate}
             onChange={(e) => dispatch(setRate(Number(e.target.value)))}
@@ -24,7 +24,7 @@ export default function InterestRateSlider() {
               e.currentTarget.blur()
             }
           />
-          <p className="absolute right-10 top-3 font-semibold text-[1.2rem]">%</p>
+          <p className="absolute md:right-10 right-2 top-3 font-semibold md:text-[1.2rem] text-[14px]">%</p>
         </div>
       </div>
       <ReactSlider

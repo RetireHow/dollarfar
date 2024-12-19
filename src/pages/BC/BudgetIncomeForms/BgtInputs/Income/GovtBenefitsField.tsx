@@ -12,6 +12,7 @@ const GovtBenefitsField = () => {
   const {
     income: {
       totals: { govtBenefits },
+      govtBenefits:{childTaxBenefit}
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
@@ -61,6 +62,7 @@ const GovtBenefitsField = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
+              value={childTaxBenefit}
               placeholder={`${currency}0`}
               autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>

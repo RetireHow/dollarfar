@@ -70,10 +70,10 @@ export default function BC() {
         {/* Header  */}
         <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">
           <div className="flex justify-between items-center flex-wrap">
-            <h3 className="text-[1.5rem] font-bold md:mb-0 mb-3">
+            <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
               Budget Calculator
             </h3>
-            <div className="flex items-center flex-wrap gap-5">
+            <div className="flex md:text-[1rem] text-[14px] items-center flex-wrap gap-5">
               <div>
                 <Select
                   value={currency}
@@ -106,7 +106,7 @@ export default function BC() {
 
         <BudgetPieChart />
 
-        <p className="md:text-[1.25rem] text-[1rem] font-semibold text-left mt-5">
+        <p className="md:text-[1.25rem] text-[14px] font-semibold text-left mt-5">
           "Your total annual income is {currency}
           {numberWithCommas(totalIncome)}, and after your expenses of {currency}
           {numberWithCommas(totalExpenses)}, you have {currency}

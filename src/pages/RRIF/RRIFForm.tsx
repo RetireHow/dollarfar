@@ -95,7 +95,7 @@ export default function RRIFForm() {
 
 
   return (
-    <section className="space-y-[2rem]">
+    <section className="space-y-[2rem] md:text-[1rem] text-[14px]">
       <div>
         <label className="block mb-[0.5rem] font-semibold">
           Initial RRIF Balance
@@ -122,9 +122,9 @@ export default function RRIFForm() {
           <h3 className="mb-[0.5rem] font-semibold">
             Rate of return (maximum value 16%)
           </h3>
-          <div className="max-w-[80px] relative">
+          <div className="md:max-w-[80px] max-w-[60px] relative">
             <input
-              className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
+              className="outline-none border-[1px] md:px-[12px] px-[5px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
               type="number"
               placeholder="%0"
               onWheel={(e) => e.currentTarget.blur()}
@@ -138,7 +138,7 @@ export default function RRIFForm() {
                 )
               }
             />
-            <span className="absolute top-2 right-8 font-extrabold">%</span>
+            <span className="absolute top-2 md:right-8 right-3 font-extrabold">%</span>
           </div>
         </div>
         <ReactSlider

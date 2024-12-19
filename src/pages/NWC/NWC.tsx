@@ -43,7 +43,7 @@ export default function NWC() {
         {/* Header  */}
         <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">
           <div className="flex justify-between items-center flex-wrap">
-            <h3 className="text-[1.5rem] font-bold md:mb-0 mb-3">
+            <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
               Net worth Calculator
             </h3>
             <div className="flex items-center flex-wrap gap-5">
@@ -83,7 +83,7 @@ export default function NWC() {
           <NWBarChart />
           <NWTotal />
         </div>
-        <p className="md:text-[1.1rem] text-[1rem] font-semibold text-center mt-5">
+        <p className="md:text-[1.1rem] text-[14px] font-semibold text-center mt-5">
           "Based on the information provided, your total assets are {currency}
           {numberWithCommas(totalAssets)}, and your total liabilities are{" "}
           {currency}

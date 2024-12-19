@@ -2,10 +2,10 @@ export default function NWDescription() {
   return (
     <article data-html2canvas-ignore>
       <section className="md:mx-[5rem] mx-[1rem]">
-        <h3 className="text-[28px] font-extrabold mb-[1.5rem]">
+        <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
           What is Net Worth?
         </h3>
-        <div className="text-[#696969] text-[18px] leading-[27px]">
+        <div className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
           <p>
           The net worth of an individual or company constitutes the total assets owned by them. In other words, net worth can also be described as the total value of all the assets owned minus the total value of all the liabilities.																									
           </p>
@@ -25,10 +25,10 @@ export default function NWDescription() {
       </section>
 
       <section className="md:mx-[5rem] mx-[1rem] mt-[3rem]">
-        <h3 className="text-[28px] font-extrabold mb-[1.5rem]">
+        <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
           How to Calculate Net Worth
         </h3>
-        <div className="text-[#696969] text-[18px] leading-[27px]">
+        <div className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
           <p>
           The net worth can be calculated for any company, group, or individual using a simple formula. Every individual or company owns resources that are either responsible for bringing in financial benefit for them or draining it out.																									
           </p>
@@ -40,24 +40,24 @@ export default function NWDescription() {
       </section>
 
       <section className="md:mx-[5rem] mx-[1rem] mt-[3rem]">
-        <h3 className="text-[28px] font-extrabold mb-[1.5rem]">
+        <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
           Net Worth Calculation Formula
         </h3>
-        <p className="text-[#696969] text-[18px] leading-[27px]">
+        <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
         The measurement of net worth is based on a simple formula that includes the total value of assets and the total value of liabilities of an individual or company.																									
         </p>
-        <p className="text-[#696969] text-[18px] leading-[27px] mt-5">
+        <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
         The net worth calculation formula is as stated below:																									
         </p>
-        <p className="font-bold text-black mt-5">
+        <p className="font-bold text-black md:text-[18px] text-[14px] mt-5">
         Net worth = [Value of Asset 1 + Value of Asset 2 + Value of Asset 3 + Value of Asset N] [Value of Liability 1 + Value of Liability 2 + Value of Liability 3 + Value of Liability N]																									
         </p>
-        <p className="text-[#696969] text-[18px] leading-[27px] mt-5">
+        <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
         Let us understand this formula in detail:																									
         </p>
 
         <div className="text-[18px] leading-[27px] mt-5">
-          <ul className="list-disc list-inside">
+          <ul className="list-disc list-inside md:text-[1rem] text-[14px]">
             <li>
               <span className="text-black font-bold mx-1">Assets:</span>
               <span className="text-[#696969]">
@@ -71,35 +71,35 @@ export default function NWDescription() {
               </span>
             </li>
           </ul>
-          <p className="text-[#696969] text-[18px] leading-[27px] mt-5">
+          <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
           Hence, summing up all the assets as well as the liabilities separately and then calculating the difference between them will ultimately yield the net worth of an individual or company.																									
           </p>
         </div>
       </section>
 
       <section className="md:mx-[5rem] mx-[1rem] mt-[3rem]">
-        <h3 className="text-[28px] font-extrabold mb-[1.5rem]">
+        <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
           Net Worth Calculation Example
         </h3>
-        <p className="text-[#696969] text-[18px] leading-[27px] mt-5">
+        <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] md:mt-5">
           Now that we know the formula for calculating net worth, let us
           understand it more clearly with the help of an example.
         </p>
-        <p className="text-[#696969] text-[18px] leading-[27px] mt-5">
+        <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
           Let us consider that Mr. A is a businessman who owns a bunch of assets
           and liabilities.
         </p>
-        <p className="text-[#696969] text-[18px] leading-[27px] mt-5">
+        <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
           Here is the list of all the assets that he owns and their value.
         </p>
 
-        <ul className="text-[#696969] text-[18px] leading-[27px] mt-5 list-disc list-inside">
+        <ul className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5 list-disc list-inside">
           <li> Rented Property: Rs 5,00,000</li>
           <li> Shares and Funds: Rs 7,00,000</li>
           <li> Farming Land: Rs 15,00,000</li>
         </ul>
 
-        <p className="text-[#696969] text-[18px] leading-[27px] mt-5">
+        <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
           Whereas, here are all the liabilities that Mr. A owns and their
           respective values.
         </p>

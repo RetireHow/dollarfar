@@ -117,7 +117,7 @@ export default function RRSPForm() {
   };
 
   return (
-    <section className="space-y-[2rem]">
+    <section className="space-y-[2rem] md:text-[1rem] text-[14px]">
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
         <div>
           <div className="flex items-center gap-2 font-semibold mb-2">
@@ -253,7 +253,7 @@ export default function RRSPForm() {
         <button
           onClick={handleCalculate}
           disabled={error}
-          className={`text-white p-[0.8rem] rounded-[10px] w-[200px] ${
+          className={`text-white p-[0.8rem] rounded-[10px] text-[18px] w-[200px] ${
             error ? "bg-gray-300" : "bg-black"
           }`}
         >

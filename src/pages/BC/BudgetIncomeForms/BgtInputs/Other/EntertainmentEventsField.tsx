@@ -13,6 +13,7 @@ export const EntertainmentEvents = () => {
   const {
     other: {
       totals: { entertainmentEvents },
+      entertainmentEvents:{entertainment, events}
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
@@ -62,6 +63,7 @@ export const EntertainmentEvents = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
               type="number"
+              value={entertainment}
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
@@ -89,6 +91,7 @@ export const EntertainmentEvents = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
               type="number"
+              value={events}
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()

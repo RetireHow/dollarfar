@@ -25,7 +25,7 @@ export default function BgtOtherForm() {
   }, []);
   return (
     <div className="space-y-[2rem]">
-      <h3 className="text-[2rem] font-bold mb-[1.25rem]">Other Expenses</h3>
+      <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">Other Expenses</h3>
       <HouseholdField/>
       <ClothingField/>
       <EntertainmentEvents/>
@@ -35,13 +35,13 @@ export default function BgtOtherForm() {
       <div className="flex justify-between items-center">
         <button
           onClick={handleBack}
-          className="border-[1px] text-[1.25rem] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px]"
+          className="border-[1px] md:text-[1.25rem] text-[18px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px]"
         >
           Back
         </button>
         <button
           onClick={handleNext}
-          className="bg-black text-[1.25rem] text-white rounded-[10px] px-[1.5rem] py-[10px]"
+          className="bg-black md:text-[1.25rem] text-[18px] text-white rounded-[10px] px-[1.5rem] py-[10px]"
         >
           Next
         </button>

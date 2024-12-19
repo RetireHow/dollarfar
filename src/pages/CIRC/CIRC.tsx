@@ -28,7 +28,6 @@ const data = {
 };
 
 
-
 export default function CIRC() {
   const dispatch = useAppDispatch();
   const {
@@ -74,10 +73,10 @@ export default function CIRC() {
         {/* Header  */}
         <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">
           <div className="flex justify-between items-center flex-wrap">
-            <h3 className="text-[1.5rem] font-bold md:mb-0 mb-3">
+            <h3 className="md:text-[1.5rem] text-[1rem] font-bold md:mb-0 mb-3">
               Compound Interest Rate Calculator
             </h3>
-            <div className="flex items-center flex-wrap gap-5">
+            <div className="flex items-center flex-wrap gap-5 md:text-[1rem] text-[14px]">
               <div>
                 <Select
                   value={currency}
@@ -119,7 +118,7 @@ export default function CIRC() {
         <div className="lg:flex items-center gap-5 ml-[1rem] mt-[5rem]">
           <section className="border-[1px] border-[#EAECF0] rounded-[10px] p-[1rem]">
             <div className="flex justify-center items-center">
-              <p className="font-bold text-gray-500 text-[1.2rem]">
+              <p className="font-bold text-gray-500 md:text-[1.2rem] text-[14px]">
                 {frequencyName} Breakdown Data
               </p>
             </div>

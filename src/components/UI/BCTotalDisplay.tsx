@@ -1,20 +1,7 @@
-import { Select } from "antd";
 import CustomTooltip from "./CustomTooltip";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useAppSelector } from "../../redux/hooks";
-
-type TOption = {
-  label: string;
-  value: string;
-};
-const selectOptions: TOption[] = [
-  { value: "Weekly", label: "Weekly" },
-  { value: "Biweekly", label: "Biweekly" },
-  { value: "Twice a month", label: "Twice a month" },
-  { value: "Monthly", label: "Monthly" },
-  { value: "Annually", label: "Annually" },
-  { value: "Other", label: "Other" },
-];
+import AntSelect from "./AntSelect";
 
 type TData = {
   fieldTitle?: string;
@@ -40,7 +27,7 @@ export default function BCTotalDisplay({ data }: { data: TData }) {
   const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <div>
-      <div className="flex justify-between items-center text-[1rem] mb-1 overflow-x-auto">
+      <div className="flex justify-between items-center md:text-[1rem] text-[14px] mb-1 overflow-x-auto">
         <label
           className="flex items-center gap-1 font-semibold text-nowrap"
           htmlFor="property"
@@ -65,25 +52,24 @@ export default function BCTotalDisplay({ data }: { data: TData }) {
       <div className="flex gap-1">
         <div
           onClick={handleShowInputs}
-          className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] cursor-pointer w-full"
+          className="border-[1px] md:text-[1rem] text-[14px] border-[#838383] rounded-[8px] p-[0.6rem] cursor-pointer w-full"
         >
-          Total Value: {currency}
+          Total: {currency}
           {total || "0.00"}
         </div>
         <div>
-          <Select
-            defaultValue="Weekly"
-            size="large"
-            style={{ width: 130, height: 45, border: "1px solid gray" }}
-            className="rounded-[9px]"
-            options={selectOptions}
-            suffixIcon={
-              <Icon
-                className="text-[1.5rem] text-gray-600"
-                icon="iconamoon:arrow-down-2"
-              />
-            }
-          ></Select>
+          <AntSelect />
+          {/* <select
+            className="border-[1px] border-gray-400 md:px-[0.8rem] px-[0.3rem] py-[0.8rem] rounded-[8px] md:text-[1rem] text-[14px]"
+            name=""
+            id=""
+          >
+            <option value="Weekly">Weekly</option>
+            <option value="Biweekly">Biweekly</option>
+            <option value="Monthly">Monthly</option>
+            <option value="Annually">Annually</option>
+            <option value="Other">Weekly</option>
+          </select> */}
         </div>
       </div>
     </div>

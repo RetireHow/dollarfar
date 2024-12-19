@@ -13,6 +13,7 @@ export const InvestmentsField = () => {
   const {
     savings: {
       totals: { investments },
+      investments:{bonds, mutalFunds}
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
@@ -60,6 +61,7 @@ export const InvestmentsField = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
               type="number"
+              value={mutalFunds}
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
@@ -87,6 +89,7 @@ export const InvestmentsField = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
               type="number"
+              value={bonds}
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()

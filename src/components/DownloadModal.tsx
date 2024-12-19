@@ -103,7 +103,7 @@ const DownloadModal = ({
       >
         <div className="space-y-[1rem]">
           <div className="flex items-center justify-between">
-            <h3 className="text-[1.5rem] font-bold">
+            <h3 className="md:text-[1.5rem] text-[18px] font-bold">
               Enter your details to reflect on pdf
             </h3>
             <Icon
@@ -113,7 +113,7 @@ const DownloadModal = ({
             />
           </div>
 
-          <div>
+          <div className="md:text-[1rem] text-[14px]">
             <label className="block font-semibold mb-2" htmlFor="name">
               Name
             </label>
@@ -126,7 +126,7 @@ const DownloadModal = ({
               disabled={checked}
             />
           </div>
-          <div>
+          <div className="md:text-[1rem] text-[14px]">
             <label className="block font-semibold mb-2" htmlFor="name">
               Email Address
             </label>
@@ -141,7 +141,7 @@ const DownloadModal = ({
           <div>
             <div
               onClick={() => setChecked(!checked)}
-              className="text-[12px] flex items-center gap-1 cursor-pointer select-none"
+              className="text-[12px] flex flex-wrap items-center gap-1 cursor-pointer select-none"
             >
               {checked ? (
                 <Icon className="text-[1.2rem]" icon="mingcute:checkbox-fill" />

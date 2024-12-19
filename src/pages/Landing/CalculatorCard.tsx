@@ -20,10 +20,10 @@ export default function CalculatorCard({
   return (
     <div className="border-[1px] border-[#EAECF0] hover:border-[#b5b8bd] duration-300 rounded-[10px] flex flex-col justify-between hover:scale-105">
       <div className="pt-[1.5rem] px-[1.5rem]">
-        <h3 className="md:text-[28px] text-[1.25rem] font-bold mb-[1rem]">
+        <h3 className="md:text-[28px] text-[18px] font-bold mb-[1rem]">
           {title}
         </h3>
-        <p className="text-[18px] text-[#696969]">{description}</p>
+        <p className="md:text-[18px] text-[14px] text-[#696969]">{description}</p>
       </div>
       <Link to={navLink}>
         <div className="flex justify-between items-center">
@@ -38,7 +38,7 @@ export default function CalculatorCard({
             />
           </div>
           <img
-            className="w-[150px] h-[90px]"
+            className="md:w-[150px] w-[100px] md:h-[90px] h-[50px]"
             src={calcIcon}
             alt="Calculator Icon"
           />

@@ -12,6 +12,7 @@ const OtherIncomeField = () => {
   const {
     income: {
       totals: { otherIncome },
+      otherIncome:{rentalIncome}
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
@@ -61,6 +62,7 @@ const OtherIncomeField = () => {
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
+              value={rentalIncome}
               placeholder={`${currency}0`}
               autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>

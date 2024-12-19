@@ -45,7 +45,7 @@ export default function RRIFTable() {
         </table>
       </div>
 
-      <p className="font-semibold text-[1.1rem] text-center leading-[2rem]">
+      <p className="font-semibold md:text-[1.1rem] text-[14px] text-center leading-[2rem]">
         After {years} years, the RRIF balance will reduce gradually, providing
         steady withdrawals and accounting for the return rate. At the end of{" "}
         {years} years, the remaining balance may be {currency}

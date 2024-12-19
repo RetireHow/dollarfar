@@ -2,24 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @font-face {
-    font-family: Geist;
-    src: url(./webfonts/Geist-Regular.woff2);
-  }
-  
-  body {
-    font-family: Geist;
-  }
+  font-family: Geist;
+  src: url(./webfonts/Geist-Regular.woff2);
+}
 
-  .geist{
-    font-family: Geist;
-  }
+body {
+  font-family: Geist;
+}
 
+.geist {
+  font-family: Geist;
+}
 
-
-
-  /* For custom scroll bar */
+/* For custom scroll bar */
 *::-webkit-scrollbar {
   width: 12px;
 }
@@ -38,8 +34,11 @@
   /* background-color: #25BF17; */
 }
 
-
-
+@media only screen and (max-width: 600px) {
+  *::-webkit-scrollbar {
+    display: none;
+  }
+}
 
 /* In your component CSS file or global CSS */
 .custom-select {
@@ -63,16 +62,13 @@
   color: #000 !important; /* Change color on hover */
 }
 
-
-
 /* Customize the radio button color */
 .ant-radio-checked .ant-radio-inner {
   border-color: #000 !important; /* Change the border color for checked state */
   background-color: #000 !important; /* Change the background color for checked state */
 }
 
-.ant-radio:hover 
-.ant-radio-input:focus + .ant-radio-inner {
+.ant-radio:hover .ant-radio-input:focus + .ant-radio-inner {
   border-color: #000 !important; /* Change the hover border color */
 }
 
@@ -81,7 +77,8 @@
   border-color: #000 !important;
 }
 
-
-
-
-@layer base { img { display: initial; } }
+@layer base {
+  img {
+    display: initial;
+  }
+}
