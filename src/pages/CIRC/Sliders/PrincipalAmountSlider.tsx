@@ -20,7 +20,9 @@ export default function PrincipalAmountSlider() {
             className="font-bold md:text-[1.2rem] text-[14px] text-right bg-[#F8F8F8] rounded-[10px] px-[1.25rem] py-[10px] md:max-w-[200px] max-w-[150px] outline-none"
             type="number"
             value={principal}
-            onChange={(e) => dispatch(setPrincipal(Number(e.target.value)))}
+            onChange={(e) => {
+              dispatch(setPrincipal(e.target.value ? Number(e.target.value) : ''))
+            }}
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()
             }

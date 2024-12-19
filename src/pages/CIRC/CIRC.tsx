@@ -27,7 +27,6 @@ const data = {
   image: assets.whiteBarChart,
 };
 
-
 export default function CIRC() {
   const dispatch = useAppDispatch();
   const {
@@ -39,7 +38,9 @@ export default function CIRC() {
     compoundInterest,
     interestBreakdown,
   } = useAppSelector((state) => state.compoundInterest);
-  const { currency, currencyFullName } = useAppSelector((state) => state.globalCurrency);
+  const { currency, currencyFullName } = useAppSelector(
+    (state) => state.globalCurrency
+  );
 
   const calculatorData = {
     rate,
@@ -50,14 +51,14 @@ export default function CIRC() {
     byYear: Number(interestBreakdown[interestBreakdown.length - 1]?.period),
     compoundInterest,
     interestBreakdown,
-    currency, 
-    currencyFullName
+    currency,
+    currencyFullName,
   };
 
-  useEffect(() => {
+  const handleCalculate = () => {
     dispatch(calculateCompoundInterest());
     dispatch(calculateInterestBreakdown());
-  }, [rate, time, principal, frequency, dispatch]);
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -109,6 +110,17 @@ export default function CIRC() {
             <PrincipalAmountSlider />
             <InterestRateSlider />
             <TimePeriodSlider />
+            <div className="md:col-span-2 flex justify-end items-center">
+              <button
+                onClick={handleCalculate}
+                disabled={!rate || !time || !principal ? true : false}
+                className={`text-[18px] text-white p-[0.8rem] rounded-[10px] w-[200px] ${
+                  !rate || !time || !principal ? "bg-gray-300" : "bg-black"
+                }`}
+              >
+                Calculate
+              </button>
+            </div>
           </div>
 
           {/* =============================|| Calculated Card ||==================================== */}
@@ -124,10 +136,12 @@ export default function CIRC() {
             </div>
             <BarGraphChart />
             <p className="md:text-[1rem] font-semibold text-center mt-5">
-              "An investment of {currency}{numberWithCommas(principal)} today will grow to {currency}
-              {numberWithCommas(Math.round(compoundInterest + principal))} by{" "}
-              {interestBreakdown[interestBreakdown.length - 1]?.period}, based
-              on an interest rate of {rate}% compounded{" "}
+              "An investment of {currency}
+              {numberWithCommas(principal)} today will grow to {currency}
+              {numberWithCommas(
+                Math.round(compoundInterest + principal)
+              )} by {interestBreakdown[interestBreakdown.length - 1]?.period},
+              based on an interest rate of {rate}% compounded{" "}
               {frequencyName?.toLowerCase()}."
             </p>
           </section>

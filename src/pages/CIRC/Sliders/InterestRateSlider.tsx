@@ -19,7 +19,7 @@ export default function InterestRateSlider() {
             className="font-bold md:text-[1.2rem] text-[14px] text-left bg-[#F8F8F8] rounded-[10px] md:px-[1.25rem] px-[0.5rem] py-[10px] md:max-w-[130px] max-w-[80px] outline-none"
             type="number"
             value={rate}
-            onChange={(e) => dispatch(setRate(Number(e.target.value)))}
+            onChange={(e) => dispatch(setRate(e.target.value ? Number(e.target.value) : ''))}
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()
             }

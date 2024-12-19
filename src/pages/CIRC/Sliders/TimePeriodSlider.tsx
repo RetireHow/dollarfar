@@ -11,20 +11,26 @@ export default function TimePeriodSlider() {
     <div>
       <div className="flex justify-between items-center mb-[1.25rem]">
         <div className="flex items-center gap-2">
-        <p className="font-semibold md:text-[1.3rem] text-[14px]">Time Period</p>
-        <CustomTooltip title="The total time the money is invested or borrowed for, usually in years. Enter the number of years you want to calculate compound interest for."/>
+          <p className="font-semibold md:text-[1.3rem] text-[14px]">
+            Time Period
+          </p>
+          <CustomTooltip title="The total time the money is invested or borrowed for, usually in years. Enter the number of years you want to calculate compound interest for." />
         </div>
         <div className="relative">
           <input
             className="font-bold md:text-[1.2rem] text-[14px] text-left bg-[#F8F8F8] rounded-[10px] md:px-[1.25rem] px-[0.5rem] py-[10px] md:max-w-[130px] max-w-[100px] outline-none"
             type="number"
             value={time}
-            onChange={(e) => dispatch(setTime(Number(e.target.value)))}
+            onChange={(e) =>
+              dispatch(setTime(e.target.value ? Number(e.target.value) : ""))
+            }
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()
             }
           />
-          <p className="absolute right-3 top-2 font-semibold md:text-[1.2rem] text-[14px]">years</p>
+          <p className="absolute right-3 top-2 font-semibold md:text-[1.2rem] text-[14px]">
+            years
+          </p>
         </div>
       </div>
       <ReactSlider

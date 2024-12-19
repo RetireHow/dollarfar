@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CompoundInterestState } from "./CompoundInterestTypes";
 
@@ -9,6 +10,7 @@ export const initialState: CompoundInterestState = {
   frequency: 1, // compounding frequency (e.g., annually, quarterly, monthly)
   frequencyName: "Annually", // default frequency name
   compoundInterest: 0,
+  totalAmount: 0,
   interestBreakdown: [],
 };
 
@@ -17,16 +19,16 @@ const compoundInterestSlice = createSlice({
   name: "compoundInterest",
   initialState,
   reducers: {
-    setPrincipal: (state, action: PayloadAction<number>) => {
+    setPrincipal: (state, action: PayloadAction<any>) => {
       state.principal = action.payload;
     },
-    setRate: (state, action: PayloadAction<number>) => {
+    setRate: (state, action: PayloadAction<any>) => {
       state.rate = action.payload;
     },
-    setTime: (state, action: PayloadAction<number>) => {
+    setTime: (state, action: PayloadAction<any>) => {
       state.time = action.payload;
     },
-    setFrequency: (state, action: PayloadAction<number>) => {
+    setFrequency: (state, action: PayloadAction<any>) => {
       state.frequency = action.payload;
 
       // Map numeric frequency to corresponding frequency name
@@ -67,6 +69,7 @@ const compoundInterestSlice = createSlice({
       // state.compoundInterest = interest;
       // Set compoundInterest rounded to 2 decimal places
       state.compoundInterest = parseFloat(interest.toFixed(2));
+      state.totalAmount = parseFloat((interest+state.principal)?.toFixed(2));
     },
 
     // New function to calculate frequency breakdown
