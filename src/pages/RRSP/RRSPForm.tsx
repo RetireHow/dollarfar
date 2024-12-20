@@ -5,7 +5,8 @@ import Select from "react-select";
 import { StylesConfig } from "react-select";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { calculate, setInput } from "../../redux/features/RRSP/RRSPSlice";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 type TOptions = {
   label: string;
@@ -71,7 +72,6 @@ export default function RRSPForm() {
   const dispatch = useAppDispatch();
   const { input } = useAppSelector((state) => state.rrspCalculator);
   const {
-    contributionAmount,
     contributionFrequency,
     currentAge,
     currentRRSPSavings,
@@ -81,28 +81,7 @@ export default function RRSPForm() {
 
   const { currency } = useAppSelector((state) => state.globalCurrency);
 
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    if (
-      !currentAge ||
-      !retirementAge ||
-      !contributionAmount ||
-      !rateOfReturn ||
-      !contributionFrequency ||
-      currentAge >= retirementAge
-    ) {
-      setError(true);
-    } else {
-      setError(false);
-    }
-  }, [
-    currentAge,
-    retirementAge,
-    contributionAmount,
-    rateOfReturn,
-    contributionFrequency,
-  ]);
+  const [showError, setShowError] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -110,6 +89,19 @@ export default function RRSPForm() {
   };
 
   const handleCalculate = () => {
+    if(currentAge >= retirementAge){
+      toast.error("Current age can not be greater than retirement age.")
+    }
+    if (
+      !currentAge ||
+      !retirementAge ||
+      !rateOfReturn ||
+      !contributionFrequency.value ||
+      currentAge >= retirementAge
+    ) {
+      return setShowError(true);
+    }
+
     if (isNaN(currentRRSPSavings)) {
       dispatch(setInput({ ...input, currentRRSPSavings: 0 }));
     }
@@ -127,10 +119,9 @@ export default function RRSPForm() {
           <input
             className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
             type="number"
-            placeholder={`${currency}0`}
+            placeholder="Enter current age"
             onWheel={(e) => e.currentTarget.blur()}
             name="currentAge"
-            value={currentAge}
             onChange={handleChange}
           />
         </div>
@@ -143,20 +134,18 @@ export default function RRSPForm() {
           <input
             className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
             type="number"
-            placeholder={`${currency}0`}
+            placeholder="Enter retirement age"
             onWheel={(e) => e.currentTarget.blur()}
             name="retirementAge"
-            value={retirementAge}
             onChange={handleChange}
           />
-          {error && currentAge >= retirementAge && (
+          {showError && currentAge >= retirementAge && (
             <p className="text-[14px] text-red-500 font-bold mt-1">
               Must be greater than current age.
             </p>
           )}
         </div>
       </div>
-
 
       <div>
         <div className="flex items-center gap-2 font-semibold mb-2">
@@ -169,7 +158,6 @@ export default function RRSPForm() {
           placeholder={`${currency}0`}
           onWheel={(e) => e.currentTarget.blur()}
           name="currentRRSPSavings"
-          value={currentRRSPSavings}
           onChange={handleChange}
         />
       </div>
@@ -185,7 +173,6 @@ export default function RRSPForm() {
           placeholder={`${currency}0`}
           onWheel={(e) => e.currentTarget.blur()}
           name="contributionAmount"
-          value={contributionAmount}
           onChange={handleChange}
         />
       </div>
@@ -221,7 +208,7 @@ export default function RRSPForm() {
             <input
               className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
               type="number"
-              placeholder={`${currency}0`}
+              placeholder="0"
               onWheel={(e) => e.currentTarget.blur()}
               name="rateOfReturn"
               value={rateOfReturn}
@@ -252,9 +239,21 @@ export default function RRSPForm() {
       <div className="flex justify-end">
         <button
           onClick={handleCalculate}
-          disabled={error}
+          disabled={
+            !currentAge ||
+            !retirementAge ||
+            !rateOfReturn ||
+            !contributionFrequency.value
+              ? true
+              : false
+          }
           className={`text-white p-[0.8rem] rounded-[10px] text-[18px] w-[200px] ${
-            error ? "bg-gray-300" : "bg-black"
+            !currentAge ||
+            !retirementAge ||
+            !rateOfReturn ||
+            !contributionFrequency.value
+              ? "bg-gray-300"
+              : "bg-black"
           }`}
         >
           Calculate

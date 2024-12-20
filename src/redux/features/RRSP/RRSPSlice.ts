@@ -10,12 +10,12 @@ interface RRSPCalculatorState {
 
 const initialState: RRSPCalculatorState = {
   input: {
-    currentAge: 30,
-    retirementAge: 50,
-    contributionAmount: 300,
+    currentAge: 0,
+    retirementAge: 0,
+    contributionAmount: 0,
     currentRRSPSavings: 0,
     contributionFrequency: { label: "Monthly", value: "Monthly" },
-    rateOfReturn: 5,
+    rateOfReturn: 0,
   },
   result: {
     totalSavings: 0,

@@ -6,18 +6,13 @@ import OtherIncomeField from "./BgtInputs/Income/OtherIncomeField";
 import AddMoreIncomeField from "./BgtInputs/Income/AddMoreIncomeField";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { toast } from "react-toastify";
 import { nextStep } from "../../../redux/features/stepperSlice/stepperSclie";
 
 export default function BgtIncomeForm() {
   const navigate = useNavigate();
-  const {income:{subTotal}} = useAppSelector(state => state.budgetCalculator);
   const {activeStep} = useAppSelector(state => state.stepper);
   const dispatch = useAppDispatch()
   const handleNext = () => {
-    if(!subTotal){
-      return toast.error('Please enter your income.', {position:'top-center'})
-    }
     dispatch(nextStep())
     navigate("housing-expenses");
   };
