@@ -37,7 +37,7 @@ export default function CalculationCard() {
   }, [frequency]);
 
   return (
-    <div className="space-y-[2rem] bg-[#F8F8F8] md:p-[1.5rem] p-[1rem] rounded-[10px] lg:w-[50%] w-full">
+    <div className="space-y-[2rem] bg-[#F8F8F8] md:p-[1.5rem] p-[0.8rem] rounded-[10px] lg:w-[50%] w-full">
       <div className="flex justify-between items-center flex-wrap">
         <p className="md:text-[1.25rem] text-[18px] font-bold md:mb-0 mb-3">
           Compounding Frequency
@@ -82,8 +82,8 @@ export default function CalculationCard() {
         </div>
       </div>
 
-      <div className="flex items-center justify-between bg-black text-white px-[1.25rem] md:text-[1.25rem] text-[14px] rounded-[10px] h-[50px]">
-        <p className="md:text-[1.25rem] text-[18px] font-medium">
+      <div className="flex gap-2 items-center justify-between bg-black text-white md:px-[1.25rem] px-[0.5rem] md:text-[1.25rem] text-[14px] rounded-[10px] h-[50px]">
+        <p className="md:text-[1.25rem] text-[1rem] font-medium">
           Total Amount
         </p>
         <div className="flex items-center gap-[2px] md:text-[1.25rem] text-[18px]">

@@ -31,10 +31,10 @@ export default function COLC() {
         {/* Header  */}
         <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">
           <div className="flex justify-between items-center flex-wrap">
-            <h3 className="text-[1.5rem] font-bold md:mb-0 mb-3">
+            <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
               Cost of Living Calculator
             </h3>
-            <div className="flex items-center flex-wrap gap-5">
+            <div className="flex items-center flex-wrap gap-5 md:text-[1rem] text-[14px]">
               <div>
                 <Select
                   value={currency}
