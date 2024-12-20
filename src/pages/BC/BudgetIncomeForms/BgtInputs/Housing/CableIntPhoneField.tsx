@@ -42,7 +42,7 @@ export const CableIntPhoneField = () => {
           setShowSubInputs,
           total: cableTvInternetPhone as number,
           buttonText: "Add Expenses",
-          fieldTitle: "Cable Tv / Internet / Home Phone / Cell Phone",
+          fieldTitle: "Telecom Services",
           infoText:
             "Combined cost of cable TV, internet, home phone, and cell phone services.",
         }}

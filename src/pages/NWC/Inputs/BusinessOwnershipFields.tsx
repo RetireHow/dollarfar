@@ -41,7 +41,7 @@ const BusinessOwnershipFields = () => {
           showSubInputs,
           setShowSubInputs,
           total: businessOwnershipInterestTotal,
-          fieldTitle: "Business Ownership/Partnership Interest (if applicable)",
+          fieldTitle: "Business Interest",
           buttonText: "Add Ownership/Partnership",
           infoText: "Value of any businesses or equity in businesses.",
         }}
