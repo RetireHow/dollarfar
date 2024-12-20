@@ -46,9 +46,9 @@ export default function CRICResultCard() {
           </div>
         </div>
 
-        <div className="flex md:gap-0 gap-5 items-center justify-between text-white px-[1.25rem] md:text-[1.25rem] text-[14px] rounded-[10px] h-[50px] bg-black">
+        <div className="flex flex-wrap md:gap-0 gap-2 items-center justify-between text-white md:px-[1.25rem] px-[1rem] md:text-[1.25rem] text-[14px] rounded-[10px] py-[1rem] bg-black">
           <p className="md:text-[1.25rem] text-[18px] font-medium">Difference</p>
-          <div className="flex items-center gap-[2px]">
+          <div className="flex items-center gap-[2px] md:text-[1.25rem] text-[18px]">
             <p>{currency}</p>
             <p>
               {location === "/CRIC/summary"
