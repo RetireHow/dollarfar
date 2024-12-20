@@ -62,6 +62,13 @@ body {
   color: #000 !important; /* Change color on hover */
 }
 
+@media only screen and (max-width: 600px) {
+  /* Adjust the font size of the selected item */
+  .ant-select-selector {
+    font-size: 14px !important; /* Customize this size as needed */
+  }
+}
+
 /* Customize the radio button color */
 .ant-radio-checked .ant-radio-inner {
   border-color: #000 !important; /* Change the border color for checked state */
