@@ -104,24 +104,24 @@ export default function NWDescription() {
           respective values.
         </p>
 
-        <ul className="text-[#696969] text-[18px] leading-[27px] mt-5 list-disc list-inside">
+        <ul className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5 list-disc list-inside">
           <li> Outstanding Loan: Rs 4,50,000</li>
           <li> A tax due: Rs 1,25,000</li>
         </ul>
 
-        <p className="text-[#696969] text-[18px] leading-[27px] mt-5">
+        <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
           Using the formula mentioned above to calculate the net worth of Mr. A,
           here is what we can derive.
         </p>
-        <p className="text-[#696969] text-[18px] leading-[27px] mt-5">
+        <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
           Net Worth of Mr. A = [5,00,000 + 7,00,000 + 15,00,000] - [4,50,000 +
           1,25,000] = Rs 21,25,000
         </p>
-        <p className="text-[#696969] text-[18px] leading-[27px] mt-5">
+        <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
           Hence, as of today, the total net worth of Mr. A will be Rs 21,25,000.
           This is how to calculate the net worth of a person.
         </p>
-        <p className="text-[#696969] text-[18px] leading-[27px] mt-5">
+        <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
           However, the net worth does not remain the same and keeps on
           fluctuating. It can be assumed that five years later Mr. A has added
           more assets and liabilities to his portfolio or vice versa. In such a

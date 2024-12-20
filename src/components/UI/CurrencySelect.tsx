@@ -13,7 +13,7 @@ export default function CurrencySelect() {
       <Select
         value={currency}
         size="large"
-        className="!border-none md:w-[130px] w-full md:!h-[45px] border-[1px] border-gray-300"
+        className="!border-none md:w-[130px] w-full md:!h-[45px] !h-[42px] border-[1px] border-gray-300"
         onChange={(value) => {
           dispatch(setCurrency(value));
         }}

@@ -19,7 +19,7 @@ export default function Landing() {
           className="md:max-w-[700px] max-w-[330px]"
         >
           <div className="lg:ml-[5rem] md:ml-[2rem] ml-[1rem]">
-            <h3 className="font-extrabold lg:text-[54px] md:text-[2rem] text-[20px] leading-tight mb-[1rem]">
+            <h3 className="font-extrabold lg:text-[54px] md:text-[2rem] text-[22px] md:leading-tight leading-[35px] mb-[1rem]">
               Master Your Finances with Powerful Calculators
             </h3>
             <p className="md:text-[20px] text-[14px] text-[#696969]">
@@ -31,7 +31,7 @@ export default function Landing() {
             <div className="flex md:justify-start justify-center">
               <button
                 onClick={handleGetStarted}
-                className="bg-black text-white text-[18px] font-bold flex items-center justify-center gap-3 px-8 py-2 rounded-[10px] mt-[2.5rem] hover:scale-105 duration-300 animate-bounce hover:animate-none"
+                className="bg-black text-white md:text-[18px] text-[1rem] font-bold flex items-center justify-center gap-3 px-8 py-2 rounded-[10px] mt-[2.5rem] hover:scale-105 duration-300 animate-bounce hover:animate-none"
               >
                 <span>Get Started</span>
                 <img src={assets.arrowWhite} alt="Arrow Icon" />
@@ -40,14 +40,14 @@ export default function Landing() {
           </div>
         </div>
 
-        <div className="lg:mb-0 mb-[2rem]">
-          <img src={assets.heroImage} alt="Hero Image" />
+        <div className="lg:mb-0 mb-[2rem] md:mt-0 mt-[-2rem]">
+          <img className="md:max-w-auto max-w-[250px]" src={assets.heroImage} alt="Hero Image" />
         </div>
       </section>
 
       <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem]">
-        <div className="text-center mt-[5rem] mb-[2.5rem]">
-          <h1 className="font-bold md:text-[2.5rem] text-[18px] md:mb-0 mb-2">
+        <div className="text-center md:mt-[5rem] mt-[3rem] md:mb-[2.5rem] mb-[1.5rem]">
+          <h1 className="font-bold md:text-[2.5rem] text-[20px] md:mb-0 mb-2">
             Our calculators and tools for you
           </h1>
           <h3 className="md:text-[1.25rem] text-[14px] text-[#696969]">

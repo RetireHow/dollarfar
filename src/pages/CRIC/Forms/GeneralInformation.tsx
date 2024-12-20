@@ -691,7 +691,7 @@ export default function GeneralInformation() {
         <div className="flex justify-end">
           <button
             onClick={handleNext}
-            className="text-white p-[0.8rem] rounded-[10px] w-[200px] text-[18px] bg-black"
+            className="text-white p-[0.8rem] rounded-[10px] md:w-[200px] w-full text-[18px] bg-black"
           >
             Next
           </button>

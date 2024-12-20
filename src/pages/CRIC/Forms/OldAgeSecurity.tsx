@@ -154,16 +154,16 @@ export default function OldAgeSecurity() {
           </>
         )}
 
-        <div className="flex justify-end gap-10">
+        <div className="grid grid-cols-2 md:gap-5 gap-3">
           <button
             onClick={handleBack}
-            className="border-[1px] md:text-[1.25rem] text-[18px] w-[200px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px]"
+            className="border-[1px] md:text-[1.25rem] text-[18px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px]"
           >
             Back
           </button>
           <button
             onClick={handleNext}
-            className="text-white md:text-[1.25rem] text-[18px] p-[0.8rem] rounded-[10px] w-[200px] bg-black"
+            className="text-white md:text-[1.25rem] text-[18px] p-[0.8rem] rounded-[10px] bg-black"
           >
             Next
           </button>

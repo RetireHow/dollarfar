@@ -171,7 +171,7 @@ export default function Summary() {
         <div className="flex justify-center gap-5 mt-[3rem]">
           <button
             onClick={handleBack}
-            className="border-[1px] w-[200px]  md:text-[1.25rem] text-[18px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px]"
+            className="border-[1px] md:w-[200px] w-full  md:text-[1.25rem] text-[18px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px]"
           >
             Back
           </button>
