@@ -1,8 +1,13 @@
 import { Select } from "antd";
-import { setFrequency } from "../../redux/features/compoundInterestSlice/compoundInterestSlice";
+import {
+  calculateCompoundInterest,
+  calculateInterestBreakdown,
+  setFrequency,
+} from "../../redux/features/compoundInterestSlice/compoundInterestSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useEffect } from "react";
 
 type TOption = {
   label: string;
@@ -23,6 +28,14 @@ export default function CalculationCard() {
   const { frequency, compoundInterest, totalAmount, principal } =
     useAppSelector((state) => state.compoundInterest);
   const { currency } = useAppSelector((state) => state.globalCurrency);
+
+  useEffect(() => {
+    if (totalAmount) {
+      dispatch(calculateCompoundInterest());
+      dispatch(calculateInterestBreakdown());
+    }
+  }, [frequency]);
+
   return (
     <div className="space-y-[2rem] bg-[#F8F8F8] md:p-[1.5rem] p-[1rem] rounded-[10px] lg:w-[50%] w-full">
       <div className="flex justify-between items-center flex-wrap">
@@ -73,7 +86,7 @@ export default function CalculationCard() {
         <p className="md:text-[1.25rem] text-[18px] font-medium">
           Total Amount
         </p>
-        <div className="flex items-center gap-[2px]">
+        <div className="flex items-center gap-[2px] md:text-[1.25rem] text-[18px]">
           {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
           <p>{currency}</p>
           <p>{numberWithCommas(totalAmount)}</p>
