@@ -38,17 +38,17 @@ export default function CalculationCard() {
 
   return (
     <div className="space-y-[2rem] bg-[#F8F8F8] md:p-[1.5rem] p-[0.8rem] rounded-[10px] lg:w-[50%] w-full">
-      <div className="flex justify-between items-center flex-wrap">
+      <div className="flex justify-between items-center flex-wrap gap-1">
         <p className="md:text-[1.25rem] text-[18px] font-bold md:mb-0 mb-3">
           Compounding Frequency
         </p>
-        <div>
+        <div className="lg:w-auto w-full">
           <div>
             <Select
               defaultValue={frequency}
               size="large"
-              style={{ width: 130, height: 45, border: "1px solid gray" }}
-              className="!border-none"
+              // style={{ width: 130, height: 45, border: "1px solid gray" }}
+              className="!border-none md:w-[130px] w-full h-[45px] border-[1px] border-gray-300"
               onChange={(value) => dispatch(setFrequency(value))}
               options={frequencyOptions}
               suffixIcon={

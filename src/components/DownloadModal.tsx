@@ -89,7 +89,7 @@ const DownloadModal = ({
     <>
       <div
         onClick={showModal}
-        className="flex items-center gap-2 border-[1px] border-[#0000001A] md:px-[1.25rem] px-[0.5rem] md:py-[10px] py-[8px] rounded-[10px] font-medium md:w-[140px] w-[110px] cursor-pointer"
+        className="flex items-center justify-between gap-2 border-[1px] border-gray-300 md:px-[1.25rem] px-[0.5rem] md:py-[10px] py-[8px] rounded-[10px] font-medium md:w-[140px] w-full cursor-pointer"
         data-html2canvas-ignore
       >
         <p>Download</p>

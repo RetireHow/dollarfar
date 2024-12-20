@@ -177,7 +177,7 @@ export default function RRIFForm() {
               )
             }
           >
-            <Radio value="Government">Required minimum based on age</Radio>
+            <Radio className="md:mb-0 mb-3" value="Government">Required minimum based on age</Radio>
             <Radio value="Mannual">Optional Amount</Radio>
           </Radio.Group>
         </div>

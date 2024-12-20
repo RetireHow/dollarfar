@@ -25,7 +25,7 @@ export const BarGraphChart = () => {
       id="circ-report"
     >
       <div
-        className={`lg:w-full  h-[400px] min-w-[800px] ${
+        className={`lg:w-full h-[400px] min-w-[800px] ${
           frequency == 365
             ? "min-w-[18000px]"
             : frequency == 52

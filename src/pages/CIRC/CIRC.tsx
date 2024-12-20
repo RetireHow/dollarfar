@@ -1,4 +1,3 @@
-import { Select } from "antd";
 import { assets } from "../../assets/assets";
 import PrincipalAmountSlider from "./Sliders/PrincipalAmountSlider";
 import InterestRateSlider from "./Sliders/InterestRateSlider";
@@ -15,10 +14,8 @@ import {
 import PageHero from "../../components/UI/PageHero";
 import { CIRCPdf } from "./CIRCPdf";
 import DownloadModal from "../../components/DownloadModal";
-import { Icon } from "@iconify/react/dist/iconify.js";
-import { setCurrency } from "../../redux/features/other/globalCurrency";
-import { currencyOptions } from "../options/currencyOptions";
 import { numberWithCommas } from "../../utils/numberWithCommas";
+import CurrencySelect from "../../components/UI/CurrencySelect";
 
 const data = {
   title: "Compound Interest Rate Calculator",
@@ -77,23 +74,8 @@ export default function CIRC() {
             <h3 className="md:text-[1.5rem] text-[1rem] font-bold md:mb-0 mb-3">
               Compound Interest Rate Calculator
             </h3>
-            <div className="flex items-center flex-wrap gap-5 md:text-[1rem] text-[14px]">
-              <div>
-                <Select
-                  value={currency}
-                  size="large"
-                  style={{ width: 130, height: 45, border: "1px solid gray" }}
-                  className="!border-none"
-                  onChange={(value) => dispatch(setCurrency(value))}
-                  options={currencyOptions}
-                  suffixIcon={
-                    <Icon
-                      className="text-[1.5rem] text-gray-600"
-                      icon="iconamoon:arrow-down-2"
-                    />
-                  }
-                ></Select>
-              </div>
+            <div className="md:flex grid grid-cols-2 items-center flex-wrap md:gap-5 gap-3 md:text-[1rem] text-[14px] md:w-auto w-full">
+              <CurrencySelect />
               <DownloadModal
                 calculatorData={calculatorData}
                 fileName="CIRC Report"
@@ -127,7 +109,7 @@ export default function CIRC() {
           <CalculationCard />
         </div>
 
-        <div className="lg:flex items-center gap-5 ml-[1rem] mt-[5rem]">
+        <div className="lg:flex items-center gap-5 md:ml-[1rem] mt-[5rem]">
           <section className="border-[1px] border-[#EAECF0] rounded-[10px] p-[1rem]">
             <div className="flex justify-center items-center">
               <p className="font-bold text-gray-500 md:text-[1.2rem] text-[14px]">

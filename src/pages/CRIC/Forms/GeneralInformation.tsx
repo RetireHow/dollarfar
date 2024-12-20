@@ -535,7 +535,7 @@ export default function GeneralInformation() {
               </div>
               <select
                 id="options"
-                className="w-full border-[1px] border-gray-400 rounded-[5px] p-[0.6rem] outline-none"
+                className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
                 value={dobMonth}
                 onChange={(e) =>
                   dispatch(
@@ -559,7 +559,7 @@ export default function GeneralInformation() {
               </div>
               <select
                 id="options"
-                className="w-full border-[1px] border-gray-400 rounded-[5px] p-[0.6rem] outline-none"
+                className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
                 value={dobYear}
                 onChange={(e) =>
                   dispatch(
@@ -587,7 +587,7 @@ export default function GeneralInformation() {
           </div>
           <select
             id="options"
-            className="w-full border-[1px] border-gray-400 rounded-[5px] p-[0.6rem] outline-none"
+            className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
             value={gender}
             onChange={(e) =>
               dispatch(
@@ -611,7 +611,7 @@ export default function GeneralInformation() {
           </div>
           <select
             id="options"
-            className="w-full border-[1px] border-gray-400 rounded-[5px] p-[0.6rem] outline-none"
+            className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
             value={currentAnnualIncome}
             onChange={(e) =>
               dispatch(
@@ -639,7 +639,7 @@ export default function GeneralInformation() {
           </div>
           <select
             id="options"
-            className="w-full border-[1px] border-gray-400 rounded-[5px] p-[0.6rem] outline-none"
+            className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
             value={annualRetirementIncomeGoal}
             onChange={(e) =>
               dispatch(

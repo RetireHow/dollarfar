@@ -4,14 +4,11 @@ import PageHero from "../../components/UI/PageHero";
 import RRSPCard from "./RRSPCard";
 import RRSPDescription from "./RRSPDescription";
 import RRSPForm from "./RRSPForm";
-import { Icon } from "@iconify/react/dist/iconify.js";
 import DownloadModal from "../../components/DownloadModal";
 import { RRSPPdf } from "./RRSPPdf";
 import RRSPAreaChart from "./RRSPAreaChart";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { Select } from "antd";
-import { setCurrency } from "../../redux/features/other/globalCurrency";
-import { currencyOptions } from "../options/currencyOptions";
+import { useAppSelector } from "../../redux/hooks";
+import CurrencySelect from "../../components/UI/CurrencySelect";
 
 const data = {
   title: "Registered Retirement Savings Plan (RRSP) Calculator",
@@ -24,7 +21,6 @@ export default function RRSP() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-  const dispatch = useAppDispatch();
   const { result, input } = useAppSelector((state) => state.rrspCalculator);
   const { currency, currencyFullName } = useAppSelector(
     (state) => state.globalCurrency
@@ -42,25 +38,8 @@ export default function RRSP() {
             <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
               Registered Retirement Savings Plan (RRSP) Calculator
             </h3>
-            <div className="flex items-center flex-wrap gap-5 md:text-[1rem] text-[14px]">
-              <div>
-                <Select
-                  value={currency}
-                  size="large"
-                  style={{ width: 130, height: 45, border: "1px solid gray" }}
-                  className="!border-none"
-                  onChange={(value) => {
-                    dispatch(setCurrency(value));
-                  }}
-                  options={currencyOptions}
-                  suffixIcon={
-                    <Icon
-                      className="text-[1.5rem] text-gray-600"
-                      icon="iconamoon:arrow-down-2"
-                    />
-                  }
-                ></Select>
-              </div>
+            <div className="md:flex grid grid-cols-2 items-center flex-wrap md:gap-5 gap-3 md:text-[1rem] text-[14px] md:w-auto w-full">
+              <CurrencySelect />
               <DownloadModal
                 calculatorData={{ result, input, currency, currencyFullName }}
                 fileName="RRSP Report"

@@ -1,17 +1,14 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { assets } from "../../assets/assets";
 import DownloadModal from "../../components/DownloadModal";
 import PageHero from "../../components/UI/PageHero";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import { NWBarChart } from "./NWBarchart";
 import { NWCPdf } from "./NWCPdf";
 import NWDescription from "./NWDescription";
 import NWForm from "./NWForm";
 import NWTotal from "./NWTotal";
-import { Select } from "antd";
-import { currencyOptions } from "../options/currencyOptions";
-import { setCurrency } from "../../redux/features/other/globalCurrency";
 import { numberWithCommas } from "../../utils/numberWithCommas";
+import CurrencySelect from "../../components/UI/CurrencySelect";
 
 const data = {
   title: "Net worth Calculator",
@@ -21,7 +18,6 @@ const data = {
 };
 
 export default function NWC() {
-  const dispatch = useAppDispatch();
   const { totalAssets, totalLiabilities, netWorth, assets, liabilities } =
     useAppSelector((state) => state.NWCalculator);
 
@@ -46,25 +42,8 @@ export default function NWC() {
             <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
               Net worth Calculator
             </h3>
-            <div className="flex items-center flex-wrap gap-5">
-              <div>
-                <Select
-                  value={currency}
-                  size="large"
-                  style={{ width: 130, height: 45, border: "1px solid gray" }}
-                  className="!border-none"
-                  onChange={(value) => {
-                    dispatch(setCurrency(value));
-                  }}
-                  options={currencyOptions}
-                  suffixIcon={
-                    <Icon
-                      className="text-[1.5rem] text-gray-600"
-                      icon="iconamoon:arrow-down-2"
-                    />
-                  }
-                ></Select>
-              </div>
+            <div className="md:flex grid grid-cols-2 items-center flex-wrap md:gap-5 gap-3 md:text-[1rem] text-[14px] md:w-auto w-full">
+              <CurrencySelect />
               <DownloadModal
                 calculatorData={calculatorData}
                 fileName="NWC Report"

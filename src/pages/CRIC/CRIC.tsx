@@ -1,14 +1,11 @@
 import { useEffect } from "react";
 import { assets } from "../../assets/assets";
 import PageHero from "../../components/UI/PageHero";
-import { Icon } from "@iconify/react/dist/iconify.js";
 import CRICLayout from "./CRICLayout";
-import { Select } from "antd";
-import { setCurrency } from "../../redux/features/other/globalCurrency";
-import { currencyOptions } from "../options/currencyOptions";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import DownloadModal from "../../components/DownloadModal";
 import { CRICPdf } from "./CRICPdf";
+import CurrencySelect from "../../components/UI/CurrencySelect";
 
 const data = {
   title: "Comprehensive Retirement Income Calculator",
@@ -21,9 +18,9 @@ export default function CRIC() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-  const dispatch = useAppDispatch();
-  const { currency, currencyFullName } = useAppSelector((state) => state.globalCurrency);
-
+  const { currency, currencyFullName } = useAppSelector(
+    (state) => state.globalCurrency
+  );
 
   const {
     annualRetirementIncomeGoal,
@@ -76,8 +73,6 @@ export default function CRIC() {
     annualAverageRetirementIncome,
   };
 
-
-
   return (
     <main className="mb-[5rem]">
       <div data-html2canvas-ignore>
@@ -91,25 +86,8 @@ export default function CRIC() {
             <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
               Comprehensive Retirement Income Calculator
             </h3>
-            <div className="flex items-center flex-wrap gap-5 md:text-[1rem] text-[14px]">
-              <div>
-                <Select
-                  value={currency}
-                  size="large"
-                  style={{ width: 130, height: 45, border: "1px solid gray" }}
-                  className="!border-none"
-                  onChange={(value) => {
-                    dispatch(setCurrency(value));
-                  }}
-                  options={currencyOptions}
-                  suffixIcon={
-                    <Icon
-                      className="text-[1.5rem] text-gray-600"
-                      icon="iconamoon:arrow-down-2"
-                    />
-                  }
-                ></Select>
-              </div>
+            <div className="md:flex grid grid-cols-2 items-center flex-wrap md:gap-5 gap-3 md:text-[1rem] text-[14px] md:w-auto w-full">
+              <CurrencySelect />
               <DownloadModal
                 calculatorData={calculatorData}
                 fileName="Comprehensive Retirement Income Calculator"
