@@ -29,7 +29,7 @@ export default function BgtSavingsForm() {
       <div className="flex justify-between items-center">
         <button
           onClick={handleBack}
-          className="border-[1px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px] md:text-[1.25rem] text-[18px]"
+          className="border-[1px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px] md:text-[1.25rem] text-[18px] md:w-[200px] w-full"
         >
           Back
         </button>

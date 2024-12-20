@@ -1,15 +1,10 @@
 import { assets } from "../../assets/assets";
 import PageHero from "../../components/UI/PageHero";
 import DownloadModal from "../../components/DownloadModal";
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { COLCPdf } from "./COLCPdf";
-import { Select } from "antd";
-import { currencyOptions } from "../options/currencyOptions";
-import { setCurrency } from "../../redux/features/other/globalCurrency";
-import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../redux/hooks";
 import COLDescription from "./COLDescription";
 import COLCForm from "./COLCForm";
+import CurrencySelect from "../../components/UI/CurrencySelect";
 
 const data = {
   title: "Cost of Living Calculator",
@@ -19,8 +14,6 @@ const data = {
 };
 
 export default function COLC() {
-  const dispatch = useDispatch();
-  const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <main className="mb-[5rem]">
       <div data-html2canvas-ignore>
@@ -34,25 +27,8 @@ export default function COLC() {
             <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
               Cost of Living Calculator
             </h3>
-            <div className="flex items-center flex-wrap gap-5 md:text-[1rem] text-[14px]">
-              <div>
-                <Select
-                  value={currency}
-                  size="large"
-                  style={{ width: 130, height: 45, border: "1px solid gray" }}
-                  className="!border-none"
-                  onChange={(value) => {
-                    dispatch(setCurrency(value));
-                  }}
-                  options={currencyOptions}
-                  suffixIcon={
-                    <Icon
-                      className="text-[1.5rem] text-gray-600"
-                      icon="iconamoon:arrow-down-2"
-                    />
-                  }
-                ></Select>
-              </div>
+            <div className="md:flex grid grid-cols-2 items-center flex-wrap md:gap-5 gap-3 md:text-[1rem] text-[14px] md:w-auto w-full">
+              <CurrencySelect />
               <DownloadModal
                 calculatorData={{}}
                 fileName="CRIC Report"

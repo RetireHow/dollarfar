@@ -31,7 +31,7 @@ export default function BgtIncomeForm() {
         <button
           onClick={handleNext}
           disabled={activeStep === [1, 2, 3, 4, 5, 6, 7].length - 1}
-          className="bg-black md:text-[1.25rem] text-[18px] text-white rounded-[10px] px-[1.5rem] py-[10px]"
+          className="bg-black md:text-[1.25rem] text-[18px] text-white rounded-[10px] px-[1.5rem] py-[10px] md:w-[200px] w-full"
         >
           Next
         </button>

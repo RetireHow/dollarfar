@@ -26,7 +26,7 @@ export default function BgtEduForm() {
       </h3>
       <SCFeeField />
       <AddMoreEduField />
-      <div className="flex justify-between items-center">
+      <div className="grid grid-cols-2 md:gap-10 gap-3">
         <button
           onClick={handleBack}
           className="border-[1px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px] md:text-[1.25rem] text-[18px]"

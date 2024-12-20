@@ -96,7 +96,7 @@ export default function CIRC() {
               <button
                 onClick={handleCalculate}
                 disabled={!rate || !time || !principal ? true : false}
-                className={`text-[18px] text-white p-[0.8rem] rounded-[10px] w-[200px] ${
+                className={`text-[18px] text-white p-[0.8rem] rounded-[10px] md:w-[200px] w-full ${
                   !rate || !time || !principal ? "bg-gray-300" : "bg-black"
                 }`}
               >
