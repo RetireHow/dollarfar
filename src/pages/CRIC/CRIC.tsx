@@ -7,6 +7,8 @@ import { Select } from "antd";
 import { setCurrency } from "../../redux/features/other/globalCurrency";
 import { currencyOptions } from "../options/currencyOptions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import DownloadModal from "../../components/DownloadModal";
+import { CRICPdf } from "./CRICPdf";
 
 const data = {
   title: "Comprehensive Retirement Income Calculator",
@@ -20,7 +22,62 @@ export default function CRIC() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
   const dispatch = useAppDispatch();
-  const { currency } = useAppSelector((state) => state.globalCurrency);
+  const { currency, currencyFullName } = useAppSelector((state) => state.globalCurrency);
+
+
+  const {
+    annualRetirementIncomeGoal,
+    currentAnnualIncome,
+    dobMonth,
+    dobYear,
+    gender,
+    isFortyYears,
+    lifeExpectency,
+    oas,
+    oasStartYear,
+    ppAnnualAmount,
+    ppBenefitAmount,
+    ppStartYear,
+    selectedPP,
+    yearsInCanada,
+    CRIBreakdownData,
+  } = useAppSelector((state) => state.CRICalculator);
+
+  const totalAmount = CRIBreakdownData.reduce(
+    (
+      total: number,
+      curr: { year: number; oasAmount: number; cppAmount: number }
+    ) => {
+      return total + (curr.oasAmount + curr.cppAmount);
+    },
+    0
+  );
+  const annualAverageRetirementIncome = Math.round(
+    totalAmount / CRIBreakdownData.length
+  );
+
+  const calculatorData = {
+    annualRetirementIncomeGoal,
+    currentAnnualIncome,
+    dobMonth,
+    dobYear,
+    gender,
+    isFortyYears,
+    lifeExpectency,
+    oas,
+    oasStartYear,
+    ppAnnualAmount,
+    ppBenefitAmount,
+    ppStartYear,
+    selectedPP,
+    yearsInCanada,
+    currency,
+    currencyFullName,
+    annualAverageRetirementIncome,
+  };
+
+
+
   return (
     <main className="mb-[5rem]">
       <div data-html2canvas-ignore>
@@ -53,6 +110,12 @@ export default function CRIC() {
                   }
                 ></Select>
               </div>
+              <DownloadModal
+                calculatorData={calculatorData}
+                fileName="Comprehensive Retirement Income Calculator"
+                id="CRIC-Chart"
+                PdfComponent={CRICPdf}
+              />
             </div>
           </div>
         </div>

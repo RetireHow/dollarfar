@@ -6,6 +6,7 @@ import RedStar from "../../../components/UI/RedStar";
 import { updateField } from "../../../redux/features/CRIC/CRICSlice";
 import { useState } from "react";
 import Error from "../../../components/UI/Error";
+import CRICResultCard from "../CRICResultCard";
 
 const yearOptions = [
   "Select One",
@@ -520,177 +521,183 @@ export default function GeneralInformation() {
   };
 
   return (
-    <section className="space-y-[2rem] md:text-[1rem] text-[14px]">
-      <h3 className="font-extrabold md:text-[2rem] text-[18px]">General Information</h3>
-      <div>
-        <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
-          <div>
-            <div className="flex items-center gap-1 font-semibold">
-              <p>DOB</p>
+    <main className="grid md:grid-cols-2 grid-cols-1 gap-10 mb-[3rem]">
+      <section className="space-y-[2rem] md:text-[1rem] text-[14px]">
+        <h3 className="font-extrabold md:text-[2rem] text-[18px]">
+          General Information
+        </h3>
+        <div>
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
+            <div>
+              <div className="flex items-center gap-1 font-semibold">
+                <p>DOB Month</p>
+                <RedStar />
+              </div>
+              <select
+                id="options"
+                className="w-full border-[1px] border-gray-400 rounded-[5px] p-[0.6rem] outline-none"
+                value={dobMonth}
+                onChange={(e) =>
+                  dispatch(
+                    updateField({
+                      field: "dobMonth",
+                      value: e.target.value,
+                    })
+                  )
+                }
+              >
+                {monthOptions.map((month) => (
+                  <option value={month}>{month}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-1 font-semibold">
+                <p>DOB Year</p>
+                <RedStar />
+              </div>
+              <select
+                id="options"
+                className="w-full border-[1px] border-gray-400 rounded-[5px] p-[0.6rem] outline-none"
+                value={dobYear}
+                onChange={(e) =>
+                  dispatch(
+                    updateField({
+                      field: "dobYear",
+                      value: e.target.value,
+                    })
+                  )
+                }
+              >
+                {yearOptions.map((year) => (
+                  <option value={year}>{year}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          {showError && (!dobYear || !dobMonth) && (
+            <Error message="Please select both DOB month and year." />
+          )}
+        </div>
+
+        <div>
+          <div className="flex items-center gap-1 font-semibold">
+            <p>Gender</p>
+          </div>
+          <select
+            id="options"
+            className="w-full border-[1px] border-gray-400 rounded-[5px] p-[0.6rem] outline-none"
+            value={gender}
+            onChange={(e) =>
+              dispatch(
+                updateField({
+                  field: "gender",
+                  value: e.target.value,
+                })
+              )
+            }
+          >
+            <option value="Select One">Select One</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+
+        <div>
+          <div className="flex items-center gap-2 font-semibold mb-2">
+            <p>Current Annual Income of all Sources (Before Tax)</p>
+            <CustomTooltip title="Choose how often you want to withdraw from your RRIF: Monthly, Yearly, or Weekly." />
+          </div>
+          <select
+            id="options"
+            className="w-full border-[1px] border-gray-400 rounded-[5px] p-[0.6rem] outline-none"
+            value={currentAnnualIncome}
+            onChange={(e) =>
+              dispatch(
+                updateField({
+                  field: "currentAnnualIncome",
+                  value: e.target.value,
+                })
+              )
+            }
+          >
+            {annualIncomeOptions.map((income) => (
+              <option value={income}>{income}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <div className="flex items-center gap-2 font-semibold mb-2">
+            <p>
+              What would you like to set as your annual retirement income goal
+              (Net of tax, in today’s dollars)?
               <RedStar />
-            </div>
-            <select
-              id="options"
-              className="w-full border-[1px] border-gray-400 rounded-[5px] p-[0.6rem] outline-none"
-              value={dobMonth}
-              onChange={(e) =>
-                dispatch(
-                  updateField({
-                    field: "dobMonth",
-                    value: e.target.value,
-                  })
-                )
-              }
-            >
-              {monthOptions.map((month) => (
-                <option value={month}>{month}</option>
-              ))}
-            </select>
+            </p>
+            <CustomTooltip title="Set your annual retirement income goal (after tax) in today’s dollars to reflect your desired lifestyle." />
           </div>
+          <select
+            id="options"
+            className="w-full border-[1px] border-gray-400 rounded-[5px] p-[0.6rem] outline-none"
+            value={annualRetirementIncomeGoal}
+            onChange={(e) =>
+              dispatch(
+                updateField({
+                  field: "annualRetirementIncomeGoal",
+                  value: e.target.value,
+                })
+              )
+            }
+          >
+            {annualRetirementIncomeOptions.map((annualRetirementIncome) => (
+              <option value={annualRetirementIncome}>
+                {annualRetirementIncome}
+              </option>
+            ))}
+          </select>
+          {showError && !annualRetirementIncomeGoal && (
+            <Error message="This field is required" />
+          )}
+        </div>
 
-          <div className="mt-[0.8rem]">
-            <div className="flex items-center gap-2 font-semibold">
-              <p className="opacity-0">For Nothing</p>
-            </div>
-            <select
-              id="options"
-              className="w-full border-[1px] border-gray-400 rounded-[5px] p-[0.6rem] outline-none"
-              value={dobYear}
-              onChange={(e) =>
-                dispatch(
-                  updateField({
-                    field: "dobYear",
-                    value: e.target.value,
-                  })
-                )
-              }
-            >
-              {yearOptions.map((year) => (
-                <option value={year}>{year}</option>
-              ))}
-            </select>
+        <div>
+          <div className="font-semibold mb-2">
+            <p>
+              Please enter the age you would like your retirement income to stop
+              <RedStar />
+            </p>
           </div>
+          <input
+            className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383]"
+            type="number"
+            placeholder="Enter your life expectancy"
+            onWheel={(e) => e.currentTarget.blur()}
+            value={lifeExpectency || ""}
+            onChange={(e) =>
+              dispatch(
+                updateField({
+                  field: "lifeExpectency",
+                  value: e.target.value,
+                })
+              )
+            }
+          />
+          {showError && !lifeExpectency && (
+            <Error message="Life expectancy is required" />
+          )}
         </div>
-        {showError && (!dobYear || !dobMonth) && (
-          <Error message="Please select both DOB month and year." />
-        )}
-      </div>
 
-      <div>
-        <div className="flex items-center gap-1 font-semibold">
-          <p>Gender</p>
+        <div className="flex justify-end">
+          <button
+            onClick={handleNext}
+            className="text-white p-[0.8rem] rounded-[10px] w-[200px] text-[18px] bg-black"
+          >
+            Next
+          </button>
         </div>
-        <select
-          id="options"
-          className="w-full border-[1px] border-gray-400 rounded-[5px] p-[0.6rem] outline-none"
-          value={gender}
-          onChange={(e) =>
-            dispatch(
-              updateField({
-                field: "gender",
-                value: e.target.value,
-              })
-            )
-          }
-        >
-          <option value="Select One">Select One</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-      </div>
-
-      <div>
-        <div className="flex items-center gap-2 font-semibold mb-2">
-          <p>Current Annual Income of all Sources (Before Tax)</p>
-          <CustomTooltip title="Choose how often you want to withdraw from your RRIF: Monthly, Yearly, or Weekly." />
-        </div>
-        <select
-          id="options"
-          className="w-full border-[1px] border-gray-400 rounded-[5px] p-[0.6rem] outline-none"
-          value={currentAnnualIncome}
-          onChange={(e) =>
-            dispatch(
-              updateField({
-                field: "currentAnnualIncome",
-                value: e.target.value,
-              })
-            )
-          }
-        >
-          {annualIncomeOptions.map((income) => (
-            <option value={income}>{income}</option>
-          ))}
-        </select>
-      </div>
-
-      <div>
-        <div className="flex items-center gap-2 font-semibold mb-2">
-          <p>
-            What would you like to set as your annual retirement income goal
-            (Net of tax, in today’s dollars)?
-            <RedStar />
-          </p>
-          <CustomTooltip title="Set your annual retirement income goal (after tax) in today’s dollars to reflect your desired lifestyle." />
-        </div>
-        <select
-          id="options"
-          className="w-full border-[1px] border-gray-400 rounded-[5px] p-[0.6rem] outline-none"
-          value={annualRetirementIncomeGoal}
-          onChange={(e) =>
-            dispatch(
-              updateField({
-                field: "annualRetirementIncomeGoal",
-                value: e.target.value,
-              })
-            )
-          }
-        >
-          {annualRetirementIncomeOptions.map((annualRetirementIncome) => (
-            <option value={annualRetirementIncome}>
-              {annualRetirementIncome}
-            </option>
-          ))}
-        </select>
-        {showError && !annualRetirementIncomeGoal && (
-          <Error message="This field is required" />
-        )}
-      </div>
-
-      <div>
-        <div className="font-semibold mb-2">
-          <p>
-            Please enter the age you would like your retirement income to stop
-            <RedStar />
-          </p>
-        </div>
-        <input
-          className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383]"
-          type="number"
-          placeholder="Enter your life expectancy"
-          onWheel={(e) => e.currentTarget.blur()}
-          value={lifeExpectency || ""}
-          onChange={(e) =>
-            dispatch(
-              updateField({
-                field: "lifeExpectency",
-                value: e.target.value,
-              })
-            )
-          }
-        />
-        {showError && !lifeExpectency && (
-          <Error message="Life expectancy is required" />
-        )}
-      </div>
-
-      <div className="flex justify-end">
-        <button
-          onClick={handleNext}
-          className="text-white p-[0.8rem] rounded-[10px] w-[200px] text-[18px] bg-black"
-        >
-          Next
-        </button>
-      </div>
-    </section>
+      </section>
+      <CRICResultCard />
+    </main>
   );
 }

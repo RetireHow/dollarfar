@@ -111,14 +111,18 @@ export const router = createBrowserRouter([
           {
             path: "OAS",
             element: <OldAgeSecurity />,
-          }
+          },
+          {
+            path: "summary",
+            element: <Summary />,
+          },
         ],
       },
 
-      {
-        path: "CRIC/summary",
-        element: <Summary />,
-      },
+      // {
+      //   path: "CRIC/summary",
+      //   element: <Summary />,
+      // },
 
       {
         path: "research",

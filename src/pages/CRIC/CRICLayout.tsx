@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useAppDispatch } from "../../redux/hooks";
 import { useEffect } from "react";
 import {
@@ -6,11 +6,11 @@ import {
   setTotalSteps,
 } from "../../redux/features/stepperSlice/stepperSclie";
 import Stepper from "../BC/Stepper";
-import CRICResultCard from "./CRICResultCard";
-import CRICBarChart from "./CRICBarChart";
 
 export default function CRICLayout() {
   const dispatch = useAppDispatch();
+  const location = useLocation().pathname;
+  console.log({location})
 
   useEffect(() => {
     dispatch(resetActiveStep());
@@ -20,11 +20,9 @@ export default function CRICLayout() {
   return (
     <section>
       <Stepper steps={[1, 2, 3, 4]}/>
-      <div className="grid md:grid-cols-2 grid-cols-1 gap-10 mb-[3rem]">
+      <div>
         <Outlet />
-        <CRICResultCard />
       </div>
-      <CRICBarChart />
     </section>
   );
 }
