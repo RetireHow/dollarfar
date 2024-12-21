@@ -96,10 +96,11 @@ export const NWBarChart = () => {
       >
         <div className="overflow-x-auto">
         <div className="min-w-[400px]">
-          <Bar className="!w-full" data={data} options={options} />
+          <Bar className="!w-full mb-8 !h-[260px]" data={data} options={options} />
         </div>
         </div>
       </div>
+
       <div className="md:text-[1rem] text-[14px] mt-3 flex items-center flex-wrap md:gap-x-10 gap-x-3 my-5 gap-y-[1rem] font-semibold">
         <div className="flex items-center md:gap-3 gap-1">
           <p className="bg-[#4CAF50] w-[30px] h-[10px] rounded-[10px]"></p>
