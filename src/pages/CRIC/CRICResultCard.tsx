@@ -33,7 +33,7 @@ export default function CRICResultCard() {
         </div>
 
         <div className="flex md:gap-3 gap-5 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4">
-          <p className="md:text-[1.25rem] text-[14px] gap-3 font-medium">
+          <p className="md:text-[1.25rem] text-[1rem] gap-3 font-medium">
             Annual Average Retirement Income Estimate
           </p>
           <div className="flex items-center">
