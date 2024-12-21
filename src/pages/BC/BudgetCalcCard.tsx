@@ -88,7 +88,7 @@ export default function BudgetCalcCard() {
           className={`flex flex-wrap items-center gap-3 justify-between text-white px-[1.25rem] md:text-[1.25rem] text-[1rem] rounded-[10px] py-[1.2rem] ${totalIncome < totalExpenses ? 'bg-red-500' : 'bg-green-500'}`}
         >
           <p className="md:text-[1.25rem] text-[1rem] font-medium">Cashflow Deficit</p>
-          <div className="md:text-[1rem] text-[1rem] flex items-center gap-[2px]">
+          <div className="md:text-[1.25rem] text-[1rem] flex items-center gap-[2px]">
             <p>{currency}</p>
             <p>{numberWithCommas(cashflowDeficit)}</p>
           </div>
