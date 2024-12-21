@@ -8,7 +8,7 @@ export default function CRICTable() {
   return (
     <section className="mt-[5rem]">
       <div className="overflow-x-auto">
-        <table className="mb-[1.5rem] bg-[#F8F8F8] w-full rounded-[8px] text-center min-w-[600px] text-[14px]">
+        <table className="mb-[1.5rem] bg-[#F8F8F8] w-full rounded-[8px] text-center min-w-[350px] text-[14px]">
           <thead>
             <tr className="border-b-[1px] border-b-[#0000001A]">
               <th className="p-3">Age</th>
@@ -41,11 +41,6 @@ export default function CRICTable() {
           </tbody>
         </table>
       </div>
-
-      {/* <p className="font-semibold text-[1.1rem] text-center leading-[2rem]">
-        By age 65, you will need approximately $1.125 million in retirement
-        savings to maintain your desired lifestyle.
-      </p> */}
     </section>
   );
 }
