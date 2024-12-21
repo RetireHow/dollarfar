@@ -92,7 +92,7 @@ function CRICBarChart() {
         </div>
         </div>
 
-        <ul className="space-y-[1rem] text-[14px] font-semibold lg:max-w-[250px]">
+        <ul className="md:space-y-[1rem] space-y-[0.5rem] md:mt-0 mt-[-0.5rem] text-[14px] font-semibold lg:max-w-[250px]">
             <li className="flex items-center gap-[0.5rem]">
               <div className="bg-[#AA5656] min-w-[30px] h-[10px] rounded-[10px]"></div>
               <p>

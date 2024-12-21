@@ -11,7 +11,7 @@ import { numberWithCommas } from "../../utils/numberWithCommas";
 import CurrencySelect from "../../components/UI/CurrencySelect";
 
 const data = {
-  title: "Net worth Calculator",
+  title: "Net Worth Calculator",
   description:
     "This tool calculates your net worth by subtracting your total liabilities from your total assets. It gives you a snapshot of your financial health and helps you understand your financial standing.",
   image: assets.netWorthCalcIcon,
@@ -40,7 +40,7 @@ export default function NWC() {
         <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">
           <div className="flex justify-between items-center flex-wrap">
             <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
-              Net worth Calculator
+              Net Worth Calculator
             </h3>
             <div className="md:flex grid grid-cols-2 items-center flex-wrap md:gap-5 gap-3 md:text-[1rem] text-[14px] md:w-auto w-full">
               <CurrencySelect />

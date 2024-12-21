@@ -128,7 +128,7 @@ export default function CIRC() {
             </p>
           </section>
 
-          <ul className="space-y-[1.5rem] lg:mt-0 mt-[2rem] text-[14px]">
+          <ul className="md:space-y-[1.5rem] space-y-[0.5rem] lg:mt-0 mt-[0.5rem] text-[14px]">
             <li className="flex items-center gap-[0.5rem] font-semibold">
               <div className="bg-[#427B3C] min-w-[30px] h-[10px] rounded-[10px]"></div>
               <p className="text-nowrap">Principle Amount</p>

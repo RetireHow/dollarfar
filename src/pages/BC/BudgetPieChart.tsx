@@ -99,7 +99,7 @@ const BudgetPieChart = () => {
       </ResponsiveContainer>
     </div>
 
-    <ul className="space-y-[1.5rem] md:mt-0 mt-[-3rem] text-[14px] text-[#475569]">
+    <ul className="md:space-y-[1.5rem] space-y-[0.5rem] md:mt-0 mt-[-4rem] text-[14px] text-[#475569]">
       <li className="flex items-center gap-[0.5rem] font-semibold">
         <div className="bg-[#2196F3] min-w-[30px] h-[10px] rounded-[10px]"></div>
         <p className="text-nowrap">Housing Expenses ({currency}{numberWithCommas(houseExpenses)})</p>

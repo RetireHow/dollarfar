@@ -29,7 +29,7 @@ export default function RRIFBarChart() {
               width={500}
               height={400}
               data={data}
-              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
               barGap={50}
             >
               <CartesianGrid
@@ -62,7 +62,7 @@ export default function RRIFBarChart() {
         </div>
       </div>
 
-      <ul className="space-y-[1.5rem] lg:mt-0 mt-[2rem] text-[14px]">
+      <ul className="md:space-y-[1.5rem] space-y-[0.5rem] lg:mt-0 mt-[0.8rem] text-[14px]">
         <li className="flex items-center gap-[0.5rem] font-semibold">
           <div className="bg-[#2196F3] min-w-[30px] h-[10px] rounded-[10px]"></div>
           <p className="text-nowrap">Balance at the End of the Year</p>
