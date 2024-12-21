@@ -34,7 +34,7 @@ export default function RRIFCard() {
           <p>Result</p>
         </div>
 
-        <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[14px] pb-4 font-medium">
+        <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4 font-medium">
           <p>Initial RRIF Balance</p>
           <p>
             {currency}
@@ -42,13 +42,13 @@ export default function RRIFCard() {
           </p>
         </div>
 
-        <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[14px] pb-4 font-medium">
+        <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4 font-medium">
           <p>Rate of Return</p>
           <p>{rateOfReturn}%</p>
         </div>
 
         {withdrawType === "Mannual" && (
-          <div className="flex md:gap-0 gap-8 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[14px] pb-4 font-medium">
+          <div className="flex md:gap-0 gap-8 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4 font-medium">
             <p>Monthly Withdrawal Amount</p>
             <p>
               {currency}
@@ -58,7 +58,7 @@ export default function RRIFCard() {
         )}
 
         {withdrawType === "Mannual" && (
-          <div className="flex md:gap-0 gap-8 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[14px] pb-4 font-medium">
+          <div className="flex md:gap-0 gap-8 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4 font-medium">
             <p>Annual Withdrawal Amount</p>
             <p>
               {currency}
@@ -67,7 +67,7 @@ export default function RRIFCard() {
           </div>
         )}
 
-        <div className="flex md:gap-0 gap-8 items-center justify-between md:text-[1.25rem] text-[14px] font-medium">
+        <div className="flex md:gap-0 gap-8 items-center justify-between md:text-[1.25rem] text-[1rem] font-medium">
           <p>
             Total Withdrawn Over Lifetime (Age {withdrawalStartYear} to{" "}
             {withdrawalEndYear})
@@ -78,7 +78,7 @@ export default function RRIFCard() {
           </p>
         </div>
 
-        <div className="flex md:gap-0 gap-8 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[14px] pb-4 font-medium">
+        <div className="flex md:gap-0 gap-8 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4 font-medium">
           <p>Remaining RRIF Balance (End of Withdrawal Period)</p>
           <p>
             {currency}
