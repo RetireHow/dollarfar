@@ -82,7 +82,7 @@ export default function CalculationCard() {
         </div>
       </div>
 
-      <div className="flex gap-2 items-center justify-between bg-black text-white md:px-[1.25rem] px-[0.5rem] md:text-[1.25rem] text-[14px] rounded-[10px] h-[50px]">
+      <div className="flex gap-2 items-center justify-between bg-black text-white md:px-[1.25rem] px-[0.5rem] md:text-[1.25rem] text-[1rem] rounded-[10px] h-[50px]">
         <p className="md:text-[1.25rem] text-[1rem] font-medium">
           Total Amount
         </p>

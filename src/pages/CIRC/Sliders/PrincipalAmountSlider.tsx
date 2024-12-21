@@ -43,7 +43,7 @@ export default function PrincipalAmountSlider() {
         minDistance={10}
         onChange={(newValue) => dispatch(setPrincipal(newValue))}
       />
-      <div className="flex justify-between items-center text-[1rem] font-medium text-[#696969] pt-5">
+      <div className="flex justify-between items-center md:text-[1rem] text-[14px] font-medium text-[#696969] pt-5">
         <p>500</p>
         <p>10,000</p>
       </div>

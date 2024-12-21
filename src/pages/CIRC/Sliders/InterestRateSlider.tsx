@@ -38,7 +38,7 @@ export default function InterestRateSlider() {
         minDistance={10}
         onChange={(newValue) => dispatch(setRate(newValue))}
       />
-      <div className="flex justify-between items-center text-[1rem] font-medium text-[#696969] pt-5">
+      <div className="flex justify-between md:text-[1rem] text-[14px] items-center font-medium text-[#696969] pt-5">
         <p>1%</p>
         <p>50%</p>
       </div>

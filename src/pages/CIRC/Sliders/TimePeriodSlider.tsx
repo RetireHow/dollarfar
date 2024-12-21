@@ -44,7 +44,7 @@ export default function TimePeriodSlider() {
         minDistance={10}
         onChange={(newValue) => dispatch(setTime(newValue))}
       />
-      <div className="flex justify-between items-center text-[1rem] font-medium text-[#696969] pt-5">
+      <div className="flex justify-between items-center md:text-[1rem] text-[14px] font-medium text-[#696969] pt-5">
         <p>1 Year</p>
         <p>50 Years</p>
       </div>
