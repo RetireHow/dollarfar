@@ -38,7 +38,7 @@ export default function CalculatorCard({
             />
           </div>
           <img
-            className="md:w-[150px] w-[80px] md:h-[90px] h-[40px]"
+            className="md:w-[150px] w-[80px] h-[90px]"
             src={calcIcon}
             alt="Calculator Icon"
           />
