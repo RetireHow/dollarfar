@@ -62,7 +62,7 @@ export default function NWC() {
           <NWBarChart />
           <NWTotal />
         </div>
-        <p className="md:text-[1.1rem] text-[14px] font-semibold text-center mt-5">
+        <p className="md:text-[1.1rem] text-[14px] font-semibold text-center md:mt-5">
           "Based on the information provided, your total assets are {currency}
           {numberWithCommas(totalAssets)}, and your total liabilities are{" "}
           {currency}

@@ -39,7 +39,7 @@ export default function CalculationCard() {
   return (
     <div className="space-y-[2rem] bg-[#F8F8F8] md:p-[1.5rem] p-[0.8rem] rounded-[10px] lg:w-[50%] w-full">
       <div className="flex justify-between items-center flex-wrap gap-1">
-        <p className="md:text-[1.25rem] text-[18px] font-bold md:mb-0 mb-3">
+        <p className="md:text-[1.25rem] text-[18px] font-bold md:mb-0 mb-1">
           Compounding Frequency
         </p>
         <div className="lg:w-auto w-full">

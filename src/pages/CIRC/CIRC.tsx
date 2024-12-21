@@ -109,8 +109,8 @@ export default function CIRC() {
           <CalculationCard />
         </div>
 
-        <div className="lg:flex items-center gap-5 md:ml-[1rem] mt-[5rem]">
-          <section className="border-[1px] border-[#EAECF0] rounded-[10px] p-[1rem]">
+        <div className="flex lg:flex-row flex-col lg:items-center lg:gap-5 mt-[5rem]">
+          <section className="border-[1px] border-gray-300 rounded-[10px] p-[1rem] flex-1">
             <div className="flex justify-center items-center">
               <p className="font-bold text-gray-500 md:text-[1.2rem] text-[14px]">
                 {frequencyName} Breakdown Data

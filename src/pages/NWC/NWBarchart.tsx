@@ -88,32 +88,34 @@ export const NWBarChart = () => {
   };
 
   return (
-    <div className="col-span-2 overflow-x-auto">
-      <div className="min-w-[400px]">
-        <div
-          id="NWC-Chart"
-          style={{ boxShadow: "0px 0px 5px 1px rgba(0, 0, 0, 0.05)" }}
-          className="max-h-[300px] bg-white shadow-md rounded-lg border-[1px] border-gray-200 p-[1rem]"
-        >
-          <Bar data={data} options={options} />
+    <div className="col-span-2">
+      <div
+        id="NWC-Chart"
+        style={{ boxShadow: "0px 0px 5px 1px rgba(0, 0, 0, 0.05)" }}
+        className="md:max-h-[300px] bg-white shadow-md rounded-lg border-[1px] border-gray-200 p-[1rem]"
+      >
+        <div className="overflow-x-auto">
+        <div className="min-w-[400px]">
+          <Bar className="!w-full" data={data} options={options} />
         </div>
-        <div className="md:text-[1rem] text-[14px] flex items-center flex-wrap md:gap-x-10 gap-x-3 my-5 gap-y-[1rem] font-semibold">
-          <div className="flex items-center md:gap-3 gap-1">
-            <p className="bg-[#4CAF50] w-[30px] h-[10px] rounded-[10px]"></p>
-            <p>Assets</p>
-          </div>
-          <div className="flex items-center md:gap-3 gap-1">
-            <p className="bg-[#F44336] w-[30px] h-[10px] rounded-[10px]"></p>
-            <p>Liabilities</p>
-          </div>
-          <div className="flex items-center md:gap-3 gap-1">
-            <p className="bg-[#1E88E5] w-[30px] h-[10px] rounded-[10px]"></p>
-            <p>Net Worth</p>
-          </div>
-          <div className="flex items-center md:gap-3 gap-1">
-            <p className="">{currency}</p>
-            <p>{currencyFullName}</p>
-          </div>
+        </div>
+      </div>
+      <div className="md:text-[1rem] text-[14px] mt-3 flex items-center flex-wrap md:gap-x-10 gap-x-3 my-5 gap-y-[1rem] font-semibold">
+        <div className="flex items-center md:gap-3 gap-1">
+          <p className="bg-[#4CAF50] w-[30px] h-[10px] rounded-[10px]"></p>
+          <p>Assets</p>
+        </div>
+        <div className="flex items-center md:gap-3 gap-1">
+          <p className="bg-[#F44336] w-[30px] h-[10px] rounded-[10px]"></p>
+          <p>Liabilities</p>
+        </div>
+        <div className="flex items-center md:gap-3 gap-1">
+          <p className="bg-[#1E88E5] w-[30px] h-[10px] rounded-[10px]"></p>
+          <p>Net Worth</p>
+        </div>
+        <div className="flex items-center md:gap-3 gap-1">
+          <p className="">{currency}</p>
+          <p>{currencyFullName}</p>
         </div>
       </div>
     </div>

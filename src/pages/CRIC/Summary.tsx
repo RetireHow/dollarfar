@@ -46,9 +46,9 @@ export default function Summary() {
 
   return (
     <>
-      <main className="border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem] max-w-[1200px]">
-        <section className="flex md:flex-row flex-col gap-10 justify-between">
-          <div className="space-y-[2rem] flex-1">
+      <main className="border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem]">
+        <section className="grid md:grid-cols-2 grid-cols-1 gap-10">
+          <div className="space-y-[2rem] w-full">
             <h3 className="font-extrabold md:text-[2rem] text-[18px]">
               Summary
             </h3>

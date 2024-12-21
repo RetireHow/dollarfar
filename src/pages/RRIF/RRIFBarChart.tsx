@@ -10,18 +10,6 @@ import {
 import { useAppSelector } from "../../redux/hooks";
 
 export default function RRIFBarChart() {
-  // const interestBreakdown = [
-  //   { period: "50", principal: 5000, interest: 300 },
-  //   { period: "51", principal: 10000, interest: 700 },
-  //   { period: "52", principal: 15000, interest: 1200 },
-  //   { period: "53", principal: 20000, interest: 1800 },
-  //   { period: "54", principal: 25000, interest: 2500 },
-  //   { period: "55", principal: 30000, interest: 3300 },
-  //   { period: "56", principal: 35000, interest: 4200 },
-  //   { period: "57", principal: 40000, interest: 5200 },
-  //   { period: "58", principal: 45000, interest: 6300 },
-  //   { period: "59", principal: 50000, interest: 7500 },
-  // ];
 
   const { ageBreakdownDataOverLifeTimeManually: data } = useAppSelector(
     (state) => state.RRIF
@@ -33,9 +21,9 @@ export default function RRIFBarChart() {
     <div className="lg:flex items-center gap-5 my-[5rem]">
       <div
         id="RRIF-Chart"
-        className="lg:max-w-[800px] lg:min-h-[400px] overflow-x-auto border-[1px] border-gray-300 rounded-[10px] p-5"
+        className="lg:min-h-[400px] overflow-x-auto border-[1px] border-gray-300 rounded-[10px] p-5 flex-1"
       >
-        <div className="w-[800px] h-[400px]">
+        <div className="h-[400px] min-w-[800px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               width={500}

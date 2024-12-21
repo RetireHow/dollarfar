@@ -28,8 +28,9 @@ function CRICBarChart() {
   );
   console.log({CRIBreakdownData})
   return (
-    <div className="overflow-x-auto mt-[5rem]">
-      <div className="flex md:flex-row flex-col items-center gap-3">
+    <div className="mt-[5rem]">
+      <div className="flex lg:flex-row flex-col lg:items-center gap-5">
+        <div className="overflow-x-auto flex-1">
         <div
           id="CRIC-Chart"
           className="border-[1px] border-gray-200 min-w-[800px] shadow-sm rounded-lg p-2"
@@ -89,11 +90,12 @@ function CRICBarChart() {
             </BarChart>
           </ResponsiveContainer>
         </div>
+        </div>
 
-        <ul className="space-y-[1rem] md:ml-0 ml-[5rem] lg:mt-0 mt-[2rem] text-[14px] font-semibold">
+        <ul className="space-y-[1rem] text-[14px] font-semibold lg:max-w-[250px]">
             <li className="flex items-center gap-[0.5rem]">
               <div className="bg-[#AA5656] min-w-[30px] h-[10px] rounded-[10px]"></div>
-              <p className="text-nowrap">
+              <p>
                 Annual Retirement Income goal : {currency}
                 {numberWithCommas(annualRetirementIncomeGoal)}
               </p>

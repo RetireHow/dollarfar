@@ -9,16 +9,16 @@ export default function Landing() {
   return (
     <main className="mb-[3rem] mt-[5rem]">
       {/* Hero Section  */}
-      <section className="flex items-center justify-between lg:flex-row flex-col-reverse md:text-left text-center">
+      <section className="flex items-center lg:gap-8 justify-between lg:flex-row flex-col-reverse md:text-left text-center">
         <div
           style={{
             backgroundImage: `url(${heroEllipseImage})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "contain",
           }}
-          className="md:max-w-[700px] max-w-[330px]"
+          className="md:max-w-full md:px-0 px-4 flex-1"
         >
-          <div className="lg:ml-[5rem] md:ml-[2rem] ml-[1rem]">
+          <div className="lg:ml-[5rem] md:ml-[2rem] ml-0 lg:text-left text-center">
             <h3 className="font-extrabold lg:text-[54px] md:text-[2rem] text-[22px] md:leading-tight leading-[35px] mb-[1rem]">
               Master Your Finances with Powerful Calculators
             </h3>
@@ -28,7 +28,7 @@ export default function Landing() {
               retirement, we've got the tools you need for a smarter financial
               future.
             </p>
-            <div className="flex md:justify-start justify-center">
+            <div className="flex lg:justify-start justify-center">
               <button
                 onClick={handleGetStarted}
                 className="bg-black text-white md:text-[18px] text-[1rem] font-bold flex items-center justify-center gap-3 px-8 py-2 rounded-[10px] mt-[2.5rem] hover:scale-105 duration-300 animate-bounce hover:animate-none"
@@ -40,8 +40,8 @@ export default function Landing() {
           </div>
         </div>
 
-        <div className="lg:mb-0 mb-[2rem] md:mt-0 mt-[-2rem]">
-          <img className="md:max-w-auto max-w-[250px]" src={assets.heroImage} alt="Hero Image" />
+        <div className="lg:mb-0 mb-[2rem] md:mt-0 mt-[-2rem] md:max-w-[40%] max-w-full">
+          <img className="md:w-full w-[80%]" src={assets.heroImage} alt="Hero Image" />
         </div>
       </section>
 

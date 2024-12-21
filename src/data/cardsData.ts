@@ -14,7 +14,7 @@ export const cardsData = [
 
   {
     id: 2,
-    title: "Net worth Calculator",
+    title: "Net Worth Calculator",
     description:
       "This tool calculates your net worth by subtracting your total liabilities from your total assets. It gives you a snapshot of your financial health and helps you understand your financial standing.....",
     arrowIcon: assets.arrowUpIcon,
@@ -25,7 +25,7 @@ export const cardsData = [
 
   {
     id: 4,
-    title: "Budget calculator",
+    title: "Budget Calculator",
     description:
       "This calculator aids in managing personal finances by tracking income and expenses. It helps you allocate your funds wisely and ensure you’re living within your means while saving for future goals.....",
     arrowIcon: assets.arrowUpIcon,

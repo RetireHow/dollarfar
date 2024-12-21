@@ -18,7 +18,7 @@ export default function CalculatorCard({
 }) {
   const { title, description, calcIcon, navLink } = item;
   return (
-    <div className="border-[1px] border-[#EAECF0] hover:border-[#b5b8bd] duration-300 rounded-[10px] flex flex-col justify-between hover:scale-105">
+    <div className="border-[1px] border-[#EAECF0] shadow-sm hover:border-[#b5b8bd] duration-300 rounded-[10px] flex flex-col justify-between hover:scale-105">
       <div className="pt-[1.5rem] px-[1.5rem]">
         <h3 className="md:text-[28px] text-[18px] font-bold mb-[1rem]">
           {title}
@@ -38,7 +38,7 @@ export default function CalculatorCard({
             />
           </div>
           <img
-            className="md:w-[150px] w-[100px] md:h-[90px] h-[50px]"
+            className="md:w-[150px] w-[80px] md:h-[90px] h-[40px]"
             src={calcIcon}
             alt="Calculator Icon"
           />

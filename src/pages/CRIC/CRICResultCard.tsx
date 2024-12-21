@@ -21,9 +21,9 @@ export default function CRICResultCard() {
     totalAmount / CRIBreakdownData.length
   );
   return (
-    <section>
+    <section className="w-full">
       <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">Result</h3>
-      <div className="space-y-[1rem] bg-[#F8F8F8] md:p-[1.5rem] p-[1rem] rounded-[10px] w-full">
+      <div className="space-y-[1rem] bg-[#F8F8F8] md:p-[1.5rem] p-[1rem] rounded-[10px]">
         <div className="flex md:gap-0 gap-5 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[14px] pb-4">
           <p className="font-medium">Annual Retirement Income Goal</p>
           <div className="flex items-center">

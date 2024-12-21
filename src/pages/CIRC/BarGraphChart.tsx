@@ -21,7 +21,7 @@ export const BarGraphChart = () => {
 
   return (
     <div
-      className="lg:max-w-[800px] lg:h-[400px] overflow-x-auto"
+      className="lg:h-[400px] overflow-x-auto"
       id="circ-report"
     >
       <div

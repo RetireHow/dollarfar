@@ -85,7 +85,7 @@ export default function BC() {
 
         <BudgetPieChart />
 
-        <p className="md:text-[1.25rem] text-[14px] font-semibold text-left mt-5">
+        <p className="md:text-[1.25rem] text-[14px] font-semibold text-center mt-5">
           "Your total annual income is {currency}
           {numberWithCommas(totalIncome)}, and after your expenses of {currency}
           {numberWithCommas(totalExpenses)}, you have {currency}
