@@ -8,6 +8,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useAppSelector } from "../../redux/hooks";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function RRIFBarChart() {
 
@@ -42,17 +43,20 @@ export default function RRIFBarChart() {
 
               <XAxis dataKey="age" name="Age" fontSize={12} />
               <YAxis tickFormatter={(value) => `${currency}${value}`} fontSize={12} />
-              <Tooltip />
+              <Tooltip 
+            formatter={(value: number) => `${currency}${numberWithCommas(value)}`} 
+            contentStyle={{fontSize:'12px'}}
+            />
               <Bar
                 dataKey="annualWithdrawalAmount"
-                name="Minimum Withdrawal Amount"
+                name="Withdraw Amount"
                 fill="#FF9800"
                 stackId="a"
                 barSize={20}
               />
               <Bar
                 dataKey="balanceAtEndOfTheYear"
-                name="Balance at the End of the Year"
+                name="Balance"
                 fill="#2196F3"
                 stackId="a"
                 barSize={20}

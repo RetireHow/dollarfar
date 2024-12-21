@@ -76,7 +76,6 @@ export default function CalculationCard() {
           Total Interest
         </p>
         <div className="flex items-center">
-          {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
           <p>{currency}</p>
           <p>{numberWithCommas(compoundInterest)}</p>
         </div>
@@ -86,8 +85,7 @@ export default function CalculationCard() {
         <p className="md:text-[1.25rem] text-[1rem] font-medium">
           Total Amount
         </p>
-        <div className="flex items-center gap-[2px] md:text-[1.25rem] text-[18px]">
-          {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
+        <div className="flex items-center gap-[2px] md:text-[1.25rem] text-[1rem]">
           <p>{currency}</p>
           <p>{numberWithCommas(totalAmount)}</p>
         </div>

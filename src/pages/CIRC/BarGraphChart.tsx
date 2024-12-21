@@ -10,6 +10,8 @@ import {
 import { useAppSelector } from "../../redux/hooks";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 
+
+
 export const BarGraphChart = () => {
   const { interestBreakdown, frequency } = useAppSelector(
     (state) => state.compoundInterest
@@ -53,18 +55,20 @@ export const BarGraphChart = () => {
 
             <XAxis dataKey="period" fontSize={12} />
             <YAxis tickFormatter={(value) => `${currency}${value}`} fontSize={12} />
-            {/* <Tooltip cursor={{ fill: "transparent" }} content={renderTooltip} /> */}
-            <Tooltip formatter={(value: number) => `${currency}${numberWithCommas(value)}`} />
+            <Tooltip 
+            formatter={(value: number) => `${currency}${numberWithCommas(value)}`} 
+            contentStyle={{fontSize:'12px'}}
+            />
             <Bar
               dataKey="principal"
-              name="Total Principal"
+              name="Principal"
               fill="#22C55E"
               stackId="a"
               barSize={20}
             />
             <Bar
               dataKey="interest"
-              name="Total Interest"
+              name="Interest"
               fill="#EAB308"
               stackId="a"
               barSize={20}
