@@ -33,7 +33,7 @@ export default function ClothingField() {
               updateField({
                 category: "other",
                 field: "clothing",
-                value: Number(e.target.value),
+                value: e.target.value,
               })
             )
           }

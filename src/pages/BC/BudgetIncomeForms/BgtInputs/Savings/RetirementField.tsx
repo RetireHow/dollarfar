@@ -33,7 +33,7 @@ export default function RetirementField() {
               updateField({
                 category: "savings",
                 field: "retirement",
-                value: Number(e.target.value),
+                value: e.target.value,
               })
             )
           }

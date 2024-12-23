@@ -34,7 +34,7 @@ export default function StudentLoanField() {
               updateField({
                 category: "loans",
                 field: "studentLoan",
-                value: Number(e.target.value),
+                value: e.target.value,
               })
             )
           }

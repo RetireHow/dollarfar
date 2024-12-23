@@ -34,7 +34,7 @@ export default function HomeInsuranceField() {
               updateField({
                 category: "housing",
                 field: "homeInsurance",
-                value: Number(e.target.value),
+                value: e.target.value,
               })
             )
           }

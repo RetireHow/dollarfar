@@ -74,7 +74,7 @@ export const CableIntPhoneField = () => {
                     category: "housing",
                     subCategory: "cableTvInternetPhone",
                     field: "cableTv",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }
@@ -102,7 +102,7 @@ export const CableIntPhoneField = () => {
                     category: "housing",
                     subCategory: "cableTvInternetPhone",
                     field: "internet",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }
@@ -130,7 +130,7 @@ export const CableIntPhoneField = () => {
                     category: "housing",
                     subCategory: "cableTvInternetPhone",
                     field: "homePhone",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }
@@ -158,7 +158,7 @@ export const CableIntPhoneField = () => {
                     category: "housing",
                     subCategory: "cableTvInternetPhone",
                     field: "cellPhone",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }

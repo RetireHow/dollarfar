@@ -33,7 +33,7 @@ export default function HouseholdField() {
               updateField({
                 category: "other",
                 field: "househole",
-                value: Number(e.target.value),
+                value: e.target.value,
               })
             )
           }

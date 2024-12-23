@@ -26,7 +26,7 @@ const BudgetPieChart = () => {
     otherExpenses +
     totalLoans +
     totalSavings;
-  const cashflowDeficit = totalIncome - totalExpenses;
+  const cashflowDeficit = totalIncome - Number(totalExpenses);
 
   const data = [
     { name: "Housing Expenses", value: houseExpenses, color: "#2196F3" },
@@ -118,7 +118,7 @@ const BudgetPieChart = () => {
       </li>
       <li className="flex items-center gap-[0.5rem] font-semibold">
         <div className="bg-[#F44336] min-w-[30px] h-[10px] rounded-[10px]"></div>
-        <p>Loans ({currency}{numberWithCommas(totalLoans)})</p>
+        <p>Loans ({currency}{numberWithCommas(Number(totalLoans))})</p>
       </li>
       <li className="flex items-center gap-[0.5rem] font-semibold">
         <div className="bg-[#9C27B0] min-w-[30px] h-[10px] rounded-[10px]"></div>

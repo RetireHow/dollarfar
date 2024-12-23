@@ -3,9 +3,11 @@ import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 import AntSelect from "../../../../../components/UI/AntSelect";
 export default function VacationFundField() {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const { currency } = useAppSelector((state) => state.globalCurrency);
-  const {savings:{vacationFund}} = useAppSelector((state) => state.budgetCalculator);
+  const {
+    savings: { vacationFund },
+  } = useAppSelector((state) => state.budgetCalculator);
   return (
     <div>
       <div className="flex justify-between items-center md:text-[1rem] text-[14px] mb-1">
@@ -32,12 +34,12 @@ export default function VacationFundField() {
               updateField({
                 category: "savings",
                 field: "vacationFund",
-                value: Number(e.target.value),
+                value: e.target.value,
               })
             )
           }
         />
-        <AntSelect/>
+        <AntSelect />
       </div>
     </div>
   );

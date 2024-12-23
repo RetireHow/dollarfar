@@ -4,10 +4,10 @@ import { BudgetState, SubCategory, UpdatePayload } from "./BgtTypes";
 
 const initialState: BudgetState = {
   income: {
-    salaryOrWages: { salary1: 0, wages: 0 },
-    govtBenefits: { childTaxBenefit: 0 },
-    netIncome: { businessProfit: 0 },
-    otherIncome: { rentalIncome: 0 },
+    salaryOrWages: { salary1: "", wages: "" },
+    govtBenefits: { childTaxBenefit: "" },
+    netIncome: { businessProfit: "" },
+    otherIncome: { rentalIncome: "" },
     totals: {
       salaryOrWages: 0,
       govtBenefits: 0,
@@ -18,17 +18,17 @@ const initialState: BudgetState = {
   },
 
   housing: {
-    mortgage: 0,
-    rent: 0,
-    homeInsurance: 0,
-    wge: { water: 0, gas: 0, electricity: 0 },
+    mortgage: "",
+    rent: "",
+    homeInsurance: "",
+    wge: { water: "", gas: "", electricity: "" },
     cableTvInternetPhone: {
-      cableTv: 0,
-      internet: 0,
-      homePhone: 0,
-      cellPhone: 0,
+      cableTv: "",
+      internet: "",
+      homePhone: "",
+      cellPhone: "",
     },
-    repairsOrMaintenance: { repairs: 0, maintenances: 0 },
+    repairsOrMaintenance: { repairs: "", maintenances: "" },
     totals: {
       wge: 0,
       cableTvInternetPhone: 0,
@@ -38,10 +38,10 @@ const initialState: BudgetState = {
   },
 
   transport: {
-    carPayment: 0,
-    carInsurance: 0,
-    carRepairs: 0,
-    gasFuelEtrToll: { gas: 0, fuel: 0, etrToll: 0 },
+    carPayment: "",
+    carInsurance: "",
+    carRepairs: "",
+    gasFuelEtrToll: { gas: "", fuel: "", etrToll: "" },
     totals: {
       gasFuelEtrToll: 0,
     },
@@ -49,7 +49,7 @@ const initialState: BudgetState = {
   },
 
   educational: {
-    schoolCollegeFee: { schoolFee: 0, collegeFee: 0 },
+    schoolCollegeFee: { schoolFee: "", collegeFee: "" },
     totals: {
       schoolCollegeFee: 0,
     },
@@ -57,11 +57,11 @@ const initialState: BudgetState = {
   },
 
   other: {
-    househole: 0,
-    clothing: 0,
-    eatingOut: 0,
-    medical: 0,
-    entertainmentEvents: { entertainment: 0, events: 0 },
+    househole: "",
+    clothing: "",
+    eatingOut: "",
+    medical: "",
+    entertainmentEvents: { entertainment: "", events: "" },
     totals: {
       entertainmentEvents: 0,
     },
@@ -69,19 +69,19 @@ const initialState: BudgetState = {
   },
 
   loans: {
-    personalLoan: 0,
-    homeLoan: 0,
-    studentLoan: 0,
-    subTotal: 0,
+    personalLoan: "",
+    homeLoan: "",
+    studentLoan: "",
+    subTotal: "",
   },
 
   savings: {
-    vacationFund: 0,
-    emergency: 0,
-    retirement: 0,
+    vacationFund: "",
+    emergency: "",
+    retirement: "",
     investments: {
-      mutalFunds: 0,
-      bonds: 0,
+      mutalFunds: "",
+      bonds: "",
     },
     totals: {
       investments: 0,
@@ -92,9 +92,9 @@ const initialState: BudgetState = {
 
 // Helper function to calculate the total of fields within a subcategory
 const calculateSubCategoryTotal = (subCategory: {
-  [key: string]: number;
+  [key: string]: string;
 }): number => {
-  return Object.values(subCategory).reduce((acc, curr) => acc + curr, 0);
+  return Object.values(subCategory).reduce((acc, curr) => acc + Number(curr), 0);
 };
 
 // Helper function to calculate the total of a main category's fields, including subcategory totals
@@ -103,15 +103,15 @@ const calculateMainCategoryTotal = (category: any): number => {
 
   // Sum all direct numeric fields within the main category
   for (const key in category) {
-    if (typeof category[key] === "number" && key !== "subTotal") {
-      total += category[key];
+    if (typeof category[key] === "string" && key !== "subTotal") {
+      total += Number(category[key]);
     }
   }
 
   // Sum all totals within subcategories
   if (category.totals) {
     total += Object.values(category.totals as []).reduce(
-      (acc, curr) => acc + curr,
+      (acc, curr) => acc + Number(curr),
       0
     );
   }

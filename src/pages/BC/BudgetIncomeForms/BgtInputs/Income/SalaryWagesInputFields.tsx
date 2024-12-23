@@ -12,7 +12,7 @@ const SalaryWagesInputFields = () => {
   const {
     income: {
       totals: { salaryOrWages },
-      salaryOrWages:{salary1, wages}
+      salaryOrWages: { salary1, wages },
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
@@ -31,7 +31,7 @@ const SalaryWagesInputFields = () => {
     handleAddNewInput,
   } = useBudgetDynamicInput({
     dynamicFieldTitleRef,
-    categoryActive:"SalaryWages"
+    categoryActive: "SalaryWages",
   });
 
   return (
@@ -75,7 +75,7 @@ const SalaryWagesInputFields = () => {
                     category: "income",
                     subCategory: "salaryOrWages",
                     field: "salary1",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }
@@ -103,7 +103,7 @@ const SalaryWagesInputFields = () => {
                     category: "income",
                     subCategory: "salaryOrWages",
                     field: "wages",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }

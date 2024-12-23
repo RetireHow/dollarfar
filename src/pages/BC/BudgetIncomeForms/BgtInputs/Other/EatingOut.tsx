@@ -32,7 +32,7 @@ export default function EatingOutField() {
               updateField({
                 category: "other",
                 field: "eatingOut",
-                value: Number(e.target.value),
+                value: e.target.value,
               })
             )
           }

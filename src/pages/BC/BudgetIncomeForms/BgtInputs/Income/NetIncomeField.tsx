@@ -75,7 +75,7 @@ const NetIncomeField = () => {
                     category: "income",
                     subCategory: "netIncome",
                     field: "businessProfit",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }

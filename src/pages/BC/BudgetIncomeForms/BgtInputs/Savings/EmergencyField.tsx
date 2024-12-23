@@ -33,7 +33,7 @@ export default function EmergencyField() {
               updateField({
                 category: "savings",
                 field: "emergency",
-                value: Number(e.target.value),
+                value: e.target.value,
               })
             )
           }

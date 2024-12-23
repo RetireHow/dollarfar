@@ -74,7 +74,7 @@ const OtherIncomeField = () => {
                     category: "income",
                     subCategory: "otherIncome",
                     field: "rentalIncome",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }

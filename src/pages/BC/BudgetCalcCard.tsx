@@ -20,13 +20,16 @@ export default function BudgetCalcCard() {
     transportExpenses +
     educationalExpenses +
     otherExpenses +
-    totalLoans +
+    Number(totalLoans) +
     totalSavings;
-  const cashflowDeficit = totalIncome - totalExpenses;
+  const cashflowDeficit = totalIncome - Number(totalExpenses);
+  console.log({ houseExpenses });
 
   return (
     <section>
-      <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">Budget</h3>
+      <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">
+        Budget
+      </h3>
       <div className="space-y-[1rem] bg-[#F8F8F8] md:p-[1.5rem] p-[1rem] rounded-[10px] w-full">
         <div className="flex gap-3 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4">
           <p className="font-medium">Income</p>
@@ -72,7 +75,7 @@ export default function BudgetCalcCard() {
           <p className="font-medium">Loans</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{numberWithCommas(totalLoans)}</p>
+            <p>{numberWithCommas(Number(totalLoans))}</p>
           </div>
         </div>
 
@@ -85,9 +88,22 @@ export default function BudgetCalcCard() {
         </div>
 
         <div
-          className={`flex flex-wrap items-center gap-3 justify-between text-white px-[1.25rem] md:text-[1.25rem] text-[1rem] rounded-[10px] py-[1.2rem] ${totalIncome < totalExpenses ? 'bg-red-500' : 'bg-green-500'}`}
+          className={`flex flex-wrap items-center gap-3 justify-between text-white px-[1.25rem] md:text-[1.25rem] text-[1rem] rounded-[10px] py-[0.8rem] ${
+            totalIncome < Number(totalExpenses)
+              ? "bg-red-500"
+              : totalIncome > Number(totalExpenses)
+              ? "bg-green-500"
+              : "bg-black"
+          }`}
         >
-          <p className="md:text-[1.25rem] text-[1rem] font-medium">Cashflow Deficit</p>
+          <p className="md:text-[1.25rem] text-[1rem] font-medium">
+            {" "}
+            {totalIncome < Number(totalExpenses)
+              ? "Cashflow Deficit"
+              : totalIncome > Number(totalExpenses)
+              ? "Cashflow Surplus"
+              : "Cashflow"}
+          </p>
           <div className="md:text-[1.25rem] text-[1rem] flex items-center gap-[2px]">
             <p>{currency}</p>
             <p>{numberWithCommas(cashflowDeficit)}</p>

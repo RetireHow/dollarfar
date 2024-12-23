@@ -72,7 +72,7 @@ export const InvestmentsField = () => {
                     category: "savings",
                     subCategory: "investments",
                     field: "mutalFunds",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }
@@ -100,7 +100,7 @@ export const InvestmentsField = () => {
                     category: "savings",
                     subCategory: "investments",
                     field: "bonds",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }

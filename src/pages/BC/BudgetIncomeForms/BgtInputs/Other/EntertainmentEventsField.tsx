@@ -74,7 +74,7 @@ export const EntertainmentEvents = () => {
                     category: "other",
                     field: "entertainment",
                     subCategory: "entertainmentEvents",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }
@@ -102,7 +102,7 @@ export const EntertainmentEvents = () => {
                     category: "other",
                     subCategory: "entertainmentEvents",
                     field: "events",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }

@@ -33,7 +33,7 @@ export default function MedicalField() {
               updateField({
                 category: "other",
                 field: "medical",
-                value: Number(e.target.value),
+                value: e.target.value,
               })
             )
           }

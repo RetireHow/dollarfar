@@ -3,28 +3,28 @@ export interface UpdatePayload {
   category: keyof BudgetState;
   subCategory?: keyof SubCategory;
   field: keyof Field;
-  value: number;
+  value: string;
 }
 
 export interface SalaryOrWages {
-  salary1: number;
-  wages: number;
-  [key: string]: number;
+  salary1: string;
+  wages: string;
+  [key: string]: string;
 }
 
 export interface GovtBenefits {
-  childTaxBenefit: number;
-  [key: string]: number;
+  childTaxBenefit: string;
+  [key: string]: string;
 }
 
 export interface NetIncome {
-  businessProfit: number;
-  [key: string]: number;
+  businessProfit: string;
+  [key: string]: string;
 }
 
 export interface OtherIncome {
-  rentalIncome: number;
-  [key: string]: number;
+  rentalIncome: string;
+  [key: string]: string;
 }
 
 // Define income type at all
@@ -39,30 +39,30 @@ export interface Income {
 }
 
 export interface WGE {
-  water: number;
-  gas: number;
-  electricity: number;
-  [key: string]: number;
+  water: string;
+  gas: string;
+  electricity: string;
+  [key: string]: string;
 }
 
 export interface CableTvInternetPhone {
-  cableTv: number;
-  internet: number;
-  homePhone: number;
-  cellPhone: number;
-  [key: string]: number;
+  cableTv: string;
+  internet: string;
+  homePhone: string;
+  cellPhone: string;
+  [key: string]: string;
 }
 
 export interface RepairsOrMaintenance {
-  repairs: number;
-  maintenances: number;
-  [key: string]: number;
+  repairs: string;
+  maintenances: string;
+  [key: string]: string;
 }
 
 export interface Housing {
-  mortgage: number;
-  rent: number;
-  homeInsurance: number;
+  mortgage: string;
+  rent: string;
+  homeInsurance: string;
   wge: WGE;
   cableTvInternetPhone: CableTvInternetPhone;
   repairsOrMaintenance: RepairsOrMaintenance;
@@ -72,16 +72,16 @@ export interface Housing {
 }
 
 export interface GasFuelEtrToll {
-  gas: number;
-  fuel: number;
-  etrToll: number;
-  [key: string]: number;
+  gas: string;
+  fuel: string;
+  etrToll: string;
+  [key: string]: string;
 }
 
 export interface Transport {
-  carPayment: number;
-  carInsurance: number;
-  carRepairs: number;
+  carPayment: string;
+  carInsurance: string;
+  carRepairs: string;
   gasFuelEtrToll: GasFuelEtrToll;
   [key: string]: any;
   totals: { [K in keyof SubCategory]?: number };
@@ -89,8 +89,8 @@ export interface Transport {
 }
 
 export interface SchoolCollegeFee {
-  schoolFee: number;
-  collegeFee: number;
+  schoolFee: string;
+  collegeFee: string;
 }
 
 export interface Educational {
@@ -101,16 +101,16 @@ export interface Educational {
 }
 
 export interface EntertainmentEvents {
-  entertainment: number;
-  events: number;
-  [key: string]: number;
+  entertainment: string;
+  events: string;
+  [key: string]: string;
 }
 
 export interface Other {
-  househole: number;
-  clothing: number;
-  eatingOut: number;
-  medical: number;
+  househole: string;
+  clothing: string;
+  eatingOut: string;
+  medical: string;
   entertainmentEvents: EntertainmentEvents;
   [key: string]: any;
   totals: { [K in keyof SubCategory]?: number };
@@ -118,22 +118,23 @@ export interface Other {
 }
 
 export interface Loans {
-  personalLoan: number;
-  homeLoan: number;
-  studentLoan: number;
-  [key: string]: number;
+  personalLoan: string;
+  homeLoan: string;
+  studentLoan: string;
+  [key: string]: string;
+  subTotal: string;
 }
 
 export interface Investments {
-  mutalFunds: number;
-  bonds: number;
-  [key: string]: number;
+  mutalFunds: string;
+  bonds: string;
+  [key: string]: string;
 }
 
 export interface Savings {
-  vacationFund: number;
-  emergency: number;
-  retirement: number;
+  vacationFund: string;
+  emergency: string;
+  retirement: string;
   investments: Investments;
   [key: string]: any;
   totals: { [K in keyof SubCategory]?: number };

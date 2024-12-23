@@ -74,7 +74,7 @@ export const SCFeeField = () => {
                     category: "educational",
                     subCategory: "schoolCollegeFee",
                     field: "schoolFee",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }
@@ -102,7 +102,7 @@ export const SCFeeField = () => {
                     category: "educational",
                     subCategory: "schoolCollegeFee",
                     field: "collegeFee",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }

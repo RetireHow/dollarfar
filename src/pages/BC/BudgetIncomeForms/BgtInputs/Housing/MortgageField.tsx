@@ -4,9 +4,11 @@ import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 import AntSelect from "../../../../../components/UI/AntSelect";
 
 export default function MortgageField() {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const { currency } = useAppSelector((state) => state.globalCurrency);
-  const {housing:{mortgage}} = useAppSelector((state) => state.budgetCalculator);
+  const {
+    housing: { mortgage },
+  } = useAppSelector((state) => state.budgetCalculator);
   return (
     <div>
       <div className="flex justify-between items-center md:text-[1rem] text-[14px] mb-1">
@@ -33,12 +35,12 @@ export default function MortgageField() {
               updateField({
                 category: "housing",
                 field: "mortgage",
-                value: Number(e.target.value),
+                value: e.target.value,
               })
             )
           }
         />
-        <AntSelect/>
+        <AntSelect />
       </div>
     </div>
   );

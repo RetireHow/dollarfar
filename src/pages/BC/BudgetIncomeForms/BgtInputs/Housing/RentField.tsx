@@ -33,7 +33,7 @@ export default function RentField() {
               updateField({
                 category: "housing",
                 field: "rent",
-                value: Number(e.target.value),
+                value: e.target.value,
               })
             )
           }

@@ -72,7 +72,7 @@ export const GFETField = () => {
                     category: "transport",
                     subCategory: "gasFuelEtrToll",
                     field: "gas",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }
@@ -100,7 +100,7 @@ export const GFETField = () => {
                     category: "transport",
                     subCategory: "gasFuelEtrToll",
                     field: "fuel",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }
@@ -128,7 +128,7 @@ export const GFETField = () => {
                     category: "transport",
                     subCategory: "gasFuelEtrToll",
                     field: "etrToll",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }

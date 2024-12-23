@@ -73,7 +73,7 @@ export const RepairsField = () => {
                     category: "housing",
                     subCategory:"repairsOrMaintenance",
                     field: "repairs",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }
@@ -101,7 +101,7 @@ export const RepairsField = () => {
                     category: "housing",
                     subCategory:"repairsOrMaintenance",
                     field: "maintenances",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }

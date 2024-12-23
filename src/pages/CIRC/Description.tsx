@@ -68,9 +68,9 @@ export default function Description() {
           annually.
         </p>
         <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mb-[1rem]">
-          So, in the first year, you earn Rs. 20,000 on your investment of Rs.
+          So, in the first year, you earn Rs. 2,000 on your investment of Rs.
           20,000. In the second year, your principal amount changes to Rs.
-          220000. You now earn Rs. 22000 as interest on your new principal
+          22,000. You now earn Rs. 22000 as interest on your new principal
           amount, so you now have a total of 220000 + 22000 = 242000. By using
           the above formula, you can easily understand the calculation of the
           coming years.

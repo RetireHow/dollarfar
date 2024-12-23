@@ -33,7 +33,7 @@ export default function CarPaymentField() {
               updateField({
                 category: "transport",
                 field: "carPayment",
-                value: Number(e.target.value),
+                value: e.target.value,
               })
             )
           }

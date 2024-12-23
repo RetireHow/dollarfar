@@ -32,7 +32,7 @@ export default function HomeLoanField() {
               updateField({
                 category: "loans",
                 field: "homeLoan",
-                value: Number(e.target.value),
+                value: e.target.value,
               })
             )
           }

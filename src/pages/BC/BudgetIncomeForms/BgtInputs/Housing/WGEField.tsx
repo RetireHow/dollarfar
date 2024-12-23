@@ -73,7 +73,7 @@ export const WGEField = () => {
                     category: "housing",
                     subCategory: "wge",
                     field: "water",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }
@@ -101,7 +101,7 @@ export const WGEField = () => {
                     category: "housing",
                     subCategory: "wge",
                     field: "gas",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }
@@ -129,7 +129,7 @@ export const WGEField = () => {
                     category: "housing",
                     subCategory: "wge",
                     field: "electricity",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }

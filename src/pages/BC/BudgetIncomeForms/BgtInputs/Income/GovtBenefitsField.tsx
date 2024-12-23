@@ -74,7 +74,7 @@ const GovtBenefitsField = () => {
                     category: "income",
                     subCategory: "govtBenefits",
                     field: "childTaxBenefit",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }

@@ -44,7 +44,7 @@ const useBudgetDynamicInput = ({
           category: category as keyof BudgetState,
           subCategory: subCategory as keyof SubCategory,
           field: removeSpacesFromKey(newInput.label) as keyof Field,
-          value: Number(newInput.value),
+          value: newInput.value,
         })
       );
 
@@ -92,7 +92,7 @@ const useBudgetDynamicInput = ({
         category: category as keyof BudgetState,
         subCategory: subCategory as keyof SubCategory,
         field: removeSpacesFromKey(name) as keyof Field,
-        value: Number(value),
+        value: value,
       })
     );
     setDynamicInputs((prevInputs) =>

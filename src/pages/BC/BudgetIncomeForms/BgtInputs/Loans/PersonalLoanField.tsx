@@ -33,7 +33,7 @@ export default function PersonalLoanField() {
               updateField({
                 category: "loans",
                 field: "personalLoan",
-                value: Number(e.target.value),
+                value: e.target.value,
               })
             )
           }

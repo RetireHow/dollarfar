@@ -32,7 +32,7 @@ export default function CarRepairField() {
               updateField({
                 category: "transport",
                 field: "carRepairs",
-                value: Number(e.target.value),
+                value: e.target.value,
               })
             )
           }
