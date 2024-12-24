@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { setPrincipal } from "../../../redux/features/compoundInterestSlice/compoundInterestSlice";
 import CustomTooltip from "../../../components/UI/CustomTooltip";
 import { handleKeyDown } from "../../../utils/handleKeyDown";
+import { isNegative } from "../../../utils/isNegative";
 
 export default function PrincipalAmountSlider({
   showError,
@@ -61,6 +62,11 @@ export default function PrincipalAmountSlider({
       {!principal && showError && (
         <p className="text-red-500 text-[14px] text-right font-bold">
           Principal Amount is requred.
+        </p>
+      )}
+      {isNegative(principal) && showError && (
+        <p className="text-red-500 text-[14px] font-bold text-right">
+          Principal Amount can not be negative
         </p>
       )}
     </div>
