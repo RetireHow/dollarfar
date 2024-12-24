@@ -2,8 +2,16 @@ import { useState, MutableRefObject } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { removeSpacesFromKey } from "../utils/removeSpaceFromKey";
-import { updateField } from "../redux/features/BgtSlice/BgtSlice";
-import { BudgetState, Field, SubCategory } from "../redux/features/BgtSlice/BgtTypes";
+import {
+  changeDynamicFields,
+  updateDynamicFields,
+  updateField,
+} from "../redux/features/BgtSlice/BgtSlice";
+import {
+  BudgetState,
+  Field,
+  SubCategory,
+} from "../redux/features/BgtSlice/BgtTypes";
 
 // Define a type for the dynamic input items
 type DynamicInputItem = {
@@ -14,10 +22,10 @@ type DynamicInputItem = {
 
 const useBudgetDynamicInput = ({
   dynamicFieldTitleRef,
-  categoryActive
+  categoryActive,
 }: {
   dynamicFieldTitleRef: MutableRefObject<HTMLInputElement | null>;
-  categoryActive?:string;
+  categoryActive?: string;
 }) => {
   const dispatch = useDispatch();
   const [newInput, setNewInput] = useState<{ label: string; value: string }>({
@@ -26,9 +34,17 @@ const useBudgetDynamicInput = ({
   });
   const [dynamicInputs, setDynamicInputs] = useState<DynamicInputItem[]>([]);
   const [showNewInputField, setShowNewInputField] = useState(false);
-  const [showSubInputs, setShowSubInputs] = useState(categoryActive == "SalaryWages" ? true : false);
+  const [showSubInputs, setShowSubInputs] = useState(
+    categoryActive == "SalaryWages" ? true : false
+  );
 
-  const handleSaveInput = ({category, subCategory}:{category:keyof BudgetState;subCategory?:keyof SubCategory}) => {
+  const handleSaveInput = ({
+    category,
+    subCategory,
+  }: {
+    category: keyof BudgetState;
+    subCategory?: keyof SubCategory;
+  }) => {
     if (newInput.label) {
       if (!isNaN(Number(newInput.label))) {
         if (dynamicFieldTitleRef.current) {
@@ -52,6 +68,19 @@ const useBudgetDynamicInput = ({
         ...prev,
         { id: Date.now(), label: newInput.label, value: newInput.value },
       ]);
+      if (category && subCategory) {
+        dispatch(
+          updateDynamicFields({
+            category,
+            subCategory,
+            value: {
+              id: Date.now(),
+              label: newInput.label,
+              value: newInput.value,
+            },
+          })
+        );
+      }
       setNewInput({ label: "", value: "" });
       setShowNewInputField(false);
     } else {
@@ -83,8 +112,8 @@ const useBudgetDynamicInput = ({
   const handleDynamicInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     id: number,
-    category:keyof BudgetState,
-    subCategory?:keyof SubCategory
+    category: keyof BudgetState,
+    subCategory?: keyof SubCategory
   ) => {
     const { value, name } = e.target;
     dispatch(
@@ -98,6 +127,17 @@ const useBudgetDynamicInput = ({
     setDynamicInputs((prevInputs) =>
       prevInputs.map((input) => (input.id === id ? { ...input, value } : input))
     );
+    // Redux Store Change
+    if (category && subCategory && value && id) {
+      dispatch(
+        changeDynamicFields({
+          category,
+          subCategory,
+          id,
+          value,
+        })
+      );
+    }
   };
 
   const handleAddNewInput = () => {

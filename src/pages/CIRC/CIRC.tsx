@@ -5,7 +5,7 @@ import TimePeriodSlider from "./Sliders/TimePeriodSlider";
 import { BarGraphChart } from "./BarGraphChart";
 import CalculationCard from "./CalculationCard";
 import Description from "./Description";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   calculateCompoundInterest,
@@ -16,6 +16,7 @@ import { CIRCPdf } from "./CIRCPdf";
 import DownloadModal from "../../components/DownloadModal";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import CurrencySelect from "../../components/UI/CurrencySelect";
+import { isNegative } from "../../utils/isNegative";
 
 const data = {
   title: "Compound Interest Rate Calculator",
@@ -52,7 +53,18 @@ export default function CIRC() {
     currencyFullName,
   };
 
+  const [showError, setShowError] = useState(false);
+
   const handleCalculate = () => {
+    if (
+      !time ||
+      !principal ||
+      isNegative(rate) ||
+      isNegative(time) ||
+      isNegative(principal)
+    ) {
+      return setShowError(true);
+    }
     dispatch(calculateCompoundInterest());
     dispatch(calculateInterestBreakdown());
   };
@@ -89,16 +101,13 @@ export default function CIRC() {
         <div className="flex items-center justify-between gap-[5rem] lg:flex-row flex-col">
           {/* ==========================|| Sliders Container ||===================================  */}
           <div className="space-y-[3rem] lg:w-[50%] w-full">
-            <PrincipalAmountSlider />
-            <InterestRateSlider />
-            <TimePeriodSlider />
+            <PrincipalAmountSlider showError={showError} />
+            <InterestRateSlider showError={showError} />
+            <TimePeriodSlider showError={showError} />
             <div className="md:col-span-2 flex justify-end items-center">
               <button
                 onClick={handleCalculate}
-                disabled={!rate || !time || !principal ? true : false}
-                className={`text-[18px] text-white p-[0.8rem] rounded-[10px] md:w-[200px] w-full ${
-                  !rate || !time || !principal ? "bg-gray-300" : "bg-black"
-                }`}
+                className={`text-[18px] text-white p-[0.8rem] rounded-[10px] md:w-[200px] w-ful bg-black`}
               >
                 Calculate
               </button>

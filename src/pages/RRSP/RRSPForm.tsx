@@ -6,7 +6,8 @@ import { StylesConfig } from "react-select";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { calculate, setInput } from "../../redux/features/RRSP/RRSPSlice";
 import { useState } from "react";
-import { toast } from "react-toastify";
+import { handleKeyDown } from "../../utils/handleKeyDown";
+import { isNegative } from "../../utils/isNegative";
 
 type TOptions = {
   label: string;
@@ -77,6 +78,7 @@ export default function RRSPForm() {
     currentRRSPSavings,
     rateOfReturn,
     retirementAge,
+    contributionAmount,
   } = input;
 
   const { currency } = useAppSelector((state) => state.globalCurrency);
@@ -89,15 +91,16 @@ export default function RRSPForm() {
   };
 
   const handleCalculate = () => {
-    if(currentAge >= retirementAge){
-      toast.error("Current age can not be greater than retirement age.")
-    }
     if (
       !currentAge ||
       !retirementAge ||
-      !rateOfReturn ||
       !contributionFrequency.value ||
-      currentAge >= retirementAge
+      currentAge >= retirementAge ||
+      isNegative(currentAge) ||
+      isNegative(retirementAge) ||
+      isNegative(rateOfReturn) ||
+      isNegative(contributionAmount) ||
+      isNegative(currentRRSPSavings)
     ) {
       return setShowError(true);
     }
@@ -123,7 +126,18 @@ export default function RRSPForm() {
             onWheel={(e) => e.currentTarget.blur()}
             name="currentAge"
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
           />
+          {isNegative(currentAge) && showError && (
+            <p className="text-red-500 text-[14px] font-bold">
+              Current age can not be negative
+            </p>
+          )}
+          {!currentAge && showError && (
+            <p className="text-red-500 text-[14px] font-bold">
+              This field is required.
+            </p>
+          )}
         </div>
 
         <div>
@@ -138,10 +152,21 @@ export default function RRSPForm() {
             onWheel={(e) => e.currentTarget.blur()}
             name="retirementAge"
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
           />
-          {showError && currentAge >= retirementAge && (
+          {showError && currentAge > 0 && currentAge >= retirementAge && (
             <p className="text-[14px] text-red-500 font-bold mt-1">
               Must be greater than current age.
+            </p>
+          )}
+          {isNegative(retirementAge) && showError && (
+            <p className="text-red-500 text-[14px] font-bold">
+              Retriement age can not be negative
+            </p>
+          )}
+          {!retirementAge && showError && (
+            <p className="text-red-500 text-[14px] font-bold">
+              This field is required.
             </p>
           )}
         </div>
@@ -159,7 +184,13 @@ export default function RRSPForm() {
           onWheel={(e) => e.currentTarget.blur()}
           name="currentRRSPSavings"
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
         />
+        {isNegative(currentRRSPSavings) && showError && (
+          <p className="text-red-500 text-[14px] font-bold">
+            Current RRSP Savings can not be negative
+          </p>
+        )}
       </div>
 
       <div>
@@ -174,7 +205,13 @@ export default function RRSPForm() {
           onWheel={(e) => e.currentTarget.blur()}
           name="contributionAmount"
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
         />
+        {isNegative(contributionAmount) && showError && (
+          <p className="text-red-500 text-[14px] font-bold">
+            Ongoing Contribution Amount can not be negative
+          </p>
+        )}
       </div>
 
       <div>
@@ -234,27 +271,17 @@ export default function RRSPForm() {
           <p>1%</p>
           <p>15%</p>
         </div>
+        {isNegative(rateOfReturn) && showError && (
+          <p className="text-red-500 font-bold text-right">
+            Assumed Rate of Return can not be negative
+          </p>
+        )}
       </div>
 
       <div className="flex justify-end">
         <button
           onClick={handleCalculate}
-          disabled={
-            !currentAge ||
-            !retirementAge ||
-            !rateOfReturn ||
-            !contributionFrequency.value
-              ? true
-              : false
-          }
-          className={`text-white p-[0.8rem] rounded-[10px] text-[18px] w-[200px] ${
-            !currentAge ||
-            !retirementAge ||
-            !rateOfReturn ||
-            !contributionFrequency.value
-              ? "bg-gray-300"
-              : "bg-black"
-          }`}
+          className={`text-white p-[0.8rem] rounded-[10px] text-[18px] w-[200px] bg-black`}
         >
           Calculate
         </button>

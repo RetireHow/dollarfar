@@ -15,6 +15,9 @@ const initialState: BudgetState = {
       otherIncome: 0,
     },
     subTotal: 0,
+    dynamicInputs: {
+      salaryOrWages: [],
+    },
   },
 
   housing: {
@@ -94,7 +97,10 @@ const initialState: BudgetState = {
 const calculateSubCategoryTotal = (subCategory: {
   [key: string]: string;
 }): number => {
-  return Object.values(subCategory).reduce((acc, curr) => acc + Number(curr), 0);
+  return Object.values(subCategory).reduce(
+    (acc, curr) => acc + Number(curr),
+    0
+  );
 };
 
 // Helper function to calculate the total of a main category's fields, including subcategory totals
@@ -158,10 +164,49 @@ const budgetSlice = createSlice({
         }
       }
     },
+
+    updateDynamicFields: (
+      state,
+      action: PayloadAction<{
+        category: string;
+        subCategory: string;
+        value: { id: number; label: string; value: string };
+      }>
+    ) => {
+      const { category, subCategory, value } = action.payload;
+      if (category) {
+        state[category as keyof BudgetState]["dynamicInputs"][subCategory].push(
+          value
+        );
+      }
+    },
+
+    changeDynamicFields: (
+      state,
+      action: PayloadAction<{
+        category: string;
+        subCategory: string;
+        value: string;
+        id: number;
+      }>
+    ) => {
+      const { category, subCategory, value, id } = action.payload;
+      if (category && subCategory && value && id) {
+        const updateIndex = state[category as keyof BudgetState][
+          "dynamicInputs"
+        ][subCategory].findIndex((item:any) => {
+          return item.id == id;
+        });
+        state[category as keyof BudgetState]["dynamicInputs"][subCategory][
+          updateIndex
+        ] = value;
+      }
+    },
   },
 });
 
 // Export actions and reducer
-export const { updateField } = budgetSlice.actions;
+export const { updateField, updateDynamicFields, changeDynamicFields } =
+  budgetSlice.actions;
 
 export default budgetSlice.reducer;

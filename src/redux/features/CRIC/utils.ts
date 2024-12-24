@@ -8,7 +8,6 @@ export const calculateOAS = (
   oasStartYear: number,
   yearsInCanada: number
 ) => {
-  const lifeExpectency = 90;
 
   //Check if Canada living years is 40
   let oasPercentage = 100;
@@ -36,14 +35,6 @@ export const calculateOAS = (
   }
 
   return { oldAgeSecurityBefore75, oldAgeSecurityAfter75 };
-
-  const oasList = [];
-  for (let year = oasStartYear; year <= 74; year++) {
-    oasList.push({ oas: oldAgeSecurityBefore75, oasAge: year });
-  }
-  for (let year = 75; year <= lifeExpectency; year++) {
-    oasList.push({ oas: oldAgeSecurityAfter75, oasAge: year });
-  }
 };
 
 export function calculateCPPBenefit(fullBenefit: number, startAge: number) {

@@ -7,6 +7,8 @@ import { updateField } from "../../../redux/features/CRIC/CRICSlice";
 import { useState } from "react";
 import Error from "../../../components/UI/Error";
 import CRICResultCard from "../CRICResultCard";
+import { handleKeyDown } from "../../../utils/handleKeyDown";
+import { isNegative } from "../../../utils/isNegative";
 
 const yearOptions = [
   "Select One",
@@ -511,7 +513,8 @@ export default function GeneralInformation() {
       !dobMonth ||
       !dobYear ||
       !annualRetirementIncomeGoal ||
-      !lifeExpectency
+      !lifeExpectency ||
+      Number(lifeExpectency) <= 0
     ) {
       return setShowError(true);
     }
@@ -673,7 +676,7 @@ export default function GeneralInformation() {
             type="number"
             placeholder="Enter your life expectancy"
             onWheel={(e) => e.currentTarget.blur()}
-            value={lifeExpectency || ""}
+            value={lifeExpectency}
             onChange={(e) =>
               dispatch(
                 updateField({
@@ -682,9 +685,15 @@ export default function GeneralInformation() {
                 })
               )
             }
+            onKeyDown={handleKeyDown}
           />
-          {showError && !lifeExpectency && (
+          {showError && !Number(lifeExpectency) && (
             <Error message="Life expectancy is required" />
+          )}
+          {isNegative(Number(lifeExpectency)) && (
+            <p className="text-red-500 text-[14px] font-bold">
+              Life expectancy can not be negative
+            </p>
           )}
         </div>
 

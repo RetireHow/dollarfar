@@ -8,7 +8,7 @@ type CRICState = {
   gender: string;
   currentAnnualIncome: number;
   annualRetirementIncomeGoal: number;
-  lifeExpectency: number;
+  lifeExpectency: string;
 
   // CPP or QPP
   selectedPP: string;
@@ -32,7 +32,7 @@ const initialState: CRICState = {
   gender: "",
   currentAnnualIncome: 0,
   annualRetirementIncomeGoal: 0,
-  lifeExpectency: 0,
+  lifeExpectency: "",
 
   //CPP or QPP
   selectedPP: "",
@@ -84,7 +84,7 @@ const CRICSlice = createSlice({
          const years = [];
          for (
            let year = Math.min(ppStartYear, oasStartYear);
-           year <= state.lifeExpectency;
+           year <= Number(state.lifeExpectency);
            year++
          ) {
            years.push(year);
@@ -95,7 +95,7 @@ const CRICSlice = createSlice({
          for (let year = oasStartYear; year <= 74; year++) {
            oasList.push({ oas: oas.oldAgeSecurityBefore75, oasAge: year });
          }
-         for (let year = 75; year <= state.lifeExpectency; year++) {
+         for (let year = 75; year <= Number(state.lifeExpectency); year++) {
            oasList.push({ oas: oas.oldAgeSecurityAfter75, oasAge: year });
          }
  
@@ -133,7 +133,7 @@ const CRICSlice = createSlice({
              annualRetirementIncomeGoal: state.annualRetirementIncomeGoal,
            });
          }
-         for (let year = 75; year <= state.lifeExpectency; year++) {
+         for (let year = 75; year <= Number(state.lifeExpectency); year++) {
            oasList.push({
              oasAmount: state.oas.oldAgeSecurityAfter75,
              year,

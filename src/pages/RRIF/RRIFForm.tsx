@@ -11,6 +11,8 @@ import {
 } from "../../redux/features/RRIF/RRIFSlice";
 import { useEffect, useState } from "react";
 import { numberWithCommas } from "../../utils/numberWithCommas";
+import { handleKeyDown } from "../../utils/handleKeyDown";
+import { isNegative } from "../../utils/isNegative";
 
 type TOptions = {
   label: string;
@@ -78,6 +80,7 @@ export default function RRIFForm() {
     rateOfReturn,
     withdrawType,
     withdrawalStartYear,
+    withdrawalEndYear,
     annualWithdrawalAmount,
     RRIFInitalBalance,
   } = useAppSelector((state) => state.RRIF);
@@ -92,7 +95,6 @@ export default function RRIFForm() {
       setMinWithdrawalAbmount(Math.round(result));
     }
   }, [annualWithdrawalAmount, withdrawalStartYear]);
-
 
   return (
     <section className="space-y-[2rem] md:text-[1rem] text-[14px]">
@@ -113,7 +115,13 @@ export default function RRIFForm() {
               })
             )
           }
+          onKeyDown={handleKeyDown}
         />
+        {isNegative(RRIFInitalBalance) && (
+          <p className="text-red-500 text-[14px] font-bold">
+            Initial RRIF Balance can not be negative
+          </p>
+        )}
       </div>
 
       {/* Slider - 2  */}
@@ -122,13 +130,13 @@ export default function RRIFForm() {
           <h3 className="mb-[0.5rem] font-semibold">
             Rate of return (maximum value 16%)
           </h3>
-          <div className="md:max-w-[80px] max-w-[60px] relative">
+          <div className="md:max-w-[90px] max-w-[60px] relative">
             <input
               className="outline-none border-[1px] md:px-[12px] px-[5px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
               type="number"
-              placeholder="%0"
+              placeholder="0"
               onWheel={(e) => e.currentTarget.blur()}
-              value={rateOfReturn}
+              // value={rateOfReturn}
               onChange={(e) =>
                 dispatch(
                   updateRRIFState({
@@ -137,8 +145,11 @@ export default function RRIFForm() {
                   })
                 )
               }
+              onKeyDown={handleKeyDown}
             />
-            <span className="absolute top-2 md:right-8 right-3 font-extrabold">%</span>
+            <span className="absolute top-2 md:right-8 right-3 font-extrabold">
+              %
+            </span>
           </div>
         </div>
         <ReactSlider
@@ -158,6 +169,11 @@ export default function RRIFForm() {
           <p>0%</p>
           <p>16%</p>
         </div>
+        {isNegative(rateOfReturn) && (
+          <p className="text-red-500 text-[14px] font-bold">
+            Rate of return can not be negative
+          </p>
+        )}
       </div>
 
       <div>
@@ -177,7 +193,9 @@ export default function RRIFForm() {
               )
             }
           >
-            <Radio className="md:mb-0 mb-3" value="Government">Required minimum based on age</Radio>
+            <Radio className="md:mb-0 mb-3" value="Government">
+              Required minimum based on age
+            </Radio>
             <Radio value="Mannual">Optional Amount</Radio>
           </Radio.Group>
         </div>
@@ -202,7 +220,13 @@ export default function RRIFForm() {
                 })
               )
             }
+            onKeyDown={handleKeyDown}
           />
+          {isNegative(withdrawalStartYear) && (
+            <p className="text-red-500 text-[14px] font-bold">
+              Withdrawal Start Age can not be negative
+            </p>
+          )}
         </div>
 
         <div>
@@ -223,7 +247,13 @@ export default function RRIFForm() {
                 })
               )
             }
+            onKeyDown={handleKeyDown}
           />
+          {isNegative(withdrawalEndYear) && (
+            <p className="text-red-500 text-[14px] font-bold">
+              Withdrawal End Age can not be negative
+            </p>
+          )}
         </div>
       </div>
 
@@ -279,20 +309,16 @@ export default function RRIFForm() {
               })
             );
           }}
+          onKeyDown={handleKeyDown}
         />
-        {annualWithdrawalAmount > 0 && annualWithdrawalAmount < minWithdrowalAmount && (
-          <p className="font-semibold text-[14px]  border-[1px] border-gray-500 p-3 rounded-md mt-1">
-            Please select an income stream that is greater than the required minimum {numberWithCommas(minWithdrowalAmount)}
-          </p>
-        )}
+        {annualWithdrawalAmount > 0 &&
+          annualWithdrawalAmount < minWithdrowalAmount && (
+            <p className="font-semibold text-[14px]  border-[1px] border-gray-500 p-3 rounded-md mt-1">
+              Please select an income stream that is greater than the required
+              minimum {numberWithCommas(minWithdrowalAmount)}
+            </p>
+          )}
       </div>
-
-      {/* <button
-        onClick={handleCalculate}
-        className="bg-black text-white p-[0.8rem] rounded-[10px] w-[300px]"
-      >
-        Calculate
-      </button> */}
     </section>
   );
 }

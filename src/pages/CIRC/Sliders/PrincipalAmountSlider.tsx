@@ -3,16 +3,24 @@ import "./Slider.css";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { setPrincipal } from "../../../redux/features/compoundInterestSlice/compoundInterestSlice";
 import CustomTooltip from "../../../components/UI/CustomTooltip";
+import { handleKeyDown } from "../../../utils/handleKeyDown";
 
-export default function PrincipalAmountSlider() {
+export default function PrincipalAmountSlider({
+  showError,
+}: {
+  showError: boolean;
+}) {
   const dispatch = useAppDispatch();
   const { principal } = useAppSelector((state) => state.compoundInterest);
   const { currency } = useAppSelector((state) => state.globalCurrency);
+
   return (
     <div>
       <div className="flex justify-between items-center mb-[1.25rem]">
         <div className="flex items-center gap-2">
-          <p className="font-semibold md:text-[1.3rem] text-[14px]">Principle Amount</p>
+          <p className="font-semibold md:text-[1.3rem] text-[14px]">
+            Principle Amount
+          </p>
           <CustomTooltip title="This is the initial sum of money invested or loaned, before interest. Enter the base amount for the compound interest calculation." />
         </div>
         <div className="relative">
@@ -21,11 +29,14 @@ export default function PrincipalAmountSlider() {
             type="number"
             value={principal}
             onChange={(e) => {
-              dispatch(setPrincipal(e.target.value ? Number(e.target.value) : ''))
+              dispatch(
+                setPrincipal(e.target.value ? Number(e.target.value) : "")
+              );
             }}
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()
             }
+            onKeyDown={handleKeyDown}
           />
           <p className="absolute left-3 top-[10px] font-semibold md:text-[1.2rem] text-[14px]">
             {currency}
@@ -47,6 +58,11 @@ export default function PrincipalAmountSlider() {
         <p>500</p>
         <p>10,000</p>
       </div>
+      {!principal && showError && (
+        <p className="text-red-500 text-[14px] text-right font-bold">
+          Principal Amount is requred.
+        </p>
+      )}
     </div>
   );
 }

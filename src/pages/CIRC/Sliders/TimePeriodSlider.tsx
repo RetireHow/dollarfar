@@ -3,8 +3,13 @@ import "./Slider.css";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { setTime } from "../../../redux/features/compoundInterestSlice/compoundInterestSlice";
 import CustomTooltip from "../../../components/UI/CustomTooltip";
+import { isNegative } from "../../../utils/isNegative";
 
-export default function TimePeriodSlider() {
+export default function TimePeriodSlider({
+  showError,
+}: {
+  showError: boolean;
+}) {
   const dispatch = useAppDispatch();
   const { time } = useAppSelector((state) => state.compoundInterest);
   return (
@@ -18,7 +23,7 @@ export default function TimePeriodSlider() {
         </div>
         <div className="relative">
           <input
-            className="font-bold md:text-[1.2rem] text-[14px] text-left bg-[#F8F8F8] rounded-[10px] md:px-[1.25rem] px-[0.5rem] py-[10px] md:max-w-[130px] max-w-[100px] outline-none"
+            className={`font-bold md:text-[1.2rem] text-[14px] text-left bg-[#F8F8F8] rounded-[10px] md:px-[1.25rem] px-[0.5rem] py-[10px] md:max-w-[130px] max-w-[100px] outline-none`}
             type="number"
             value={time}
             onChange={(e) =>
@@ -28,8 +33,8 @@ export default function TimePeriodSlider() {
               e.currentTarget.blur()
             }
           />
-          <p className="absolute right-3 top-2 font-semibold md:text-[1.2rem] text-[14px]">
-            years
+          <p className="absolute right-10 top-2 font-semibold md:text-[1.2rem] text-[14px]">
+            y
           </p>
         </div>
       </div>
@@ -48,6 +53,16 @@ export default function TimePeriodSlider() {
         <p>1 Year</p>
         <p>50 Years</p>
       </div>
+      {isNegative(time) && showError && (
+        <p className="text-red-500 text-[14px] font-bold text-right">
+          Time Period can not be negative
+        </p>
+      )}
+      {!time && showError && (
+        <p className="text-red-500 text-[14px] font-bold text-right">
+          Time Period is required.
+        </p>
+      )}
     </div>
   );
 }

@@ -13,6 +13,7 @@ const SalaryWagesInputFields = () => {
     income: {
       totals: { salaryOrWages },
       salaryOrWages: { salary1, wages },
+      // dynamicInputs:{salaryOrWages:salaryOrWagesDynamicInputs}
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
@@ -126,7 +127,7 @@ const SalaryWagesInputFields = () => {
               <input
                 className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
                 type="number"
-                name={input.label.trim().split(" ").join("")}
+                name={input.label?.trim().split(" ").join("")}
                 value={input.value}
                 placeholder={`${currency}0`}
                 onChange={(e) =>
