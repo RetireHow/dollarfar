@@ -94,7 +94,32 @@ const RRIFSlice = createSlice({
       if (key) {
         state[key] = value;
       }
+    },
 
+    calcBalanceAgeByAgeBreakdown(state) {
+      const {
+        RRIFInitalBalance,
+        withdrawalStartYear,
+        withdrawalEndYear,
+        rateOfReturn,
+        annualWithdrawalAmount,
+      } = state;
+      const ageBreakdownData: TAgePeriod[] = [];
+      let balanceAtBeginningOfYear = RRIFInitalBalance;
+
+      for (let year = withdrawalStartYear; year <= withdrawalEndYear; year++) {
+        const interest = balanceAtBeginningOfYear * (rateOfReturn / 100);
+        const balanceAtEndOfYear =
+          balanceAtBeginningOfYear + interest - annualWithdrawalAmount;
+
+        // Update the beginning balance for the next year
+        balanceAtBeginningOfYear = balanceAtEndOfYear;
+      }
+
+      state.ageBreakdownDataOverLifeTimeManually = ageBreakdownData;
+    },
+
+    calculateRRIF(state){
       //Calculate balance age by age
       const {
         RRIFInitalBalance,
@@ -176,34 +201,12 @@ const RRIFSlice = createSlice({
           withdrawalEndYear
         );
       }
-    },
+    }
 
-    calcBalanceAgeByAgeBreakdown(state) {
-      const {
-        RRIFInitalBalance,
-        withdrawalStartYear,
-        withdrawalEndYear,
-        rateOfReturn,
-        annualWithdrawalAmount,
-      } = state;
-      const ageBreakdownData: TAgePeriod[] = [];
-      let balanceAtBeginningOfYear = RRIFInitalBalance;
-
-      for (let year = withdrawalStartYear; year <= withdrawalEndYear; year++) {
-        const interest = balanceAtBeginningOfYear * (rateOfReturn / 100);
-        const balanceAtEndOfYear =
-          balanceAtBeginningOfYear + interest - annualWithdrawalAmount;
-
-        // Update the beginning balance for the next year
-        balanceAtBeginningOfYear = balanceAtEndOfYear;
-      }
-
-      state.ageBreakdownDataOverLifeTimeManually = ageBreakdownData;
-    },
   },
 });
 
 // Export actions and reducer
-export const { updateRRIFState, calcBalanceAgeByAgeBreakdown } =
+export const { updateRRIFState, calcBalanceAgeByAgeBreakdown, calculateRRIF } =
   RRIFSlice.actions;
 export default RRIFSlice.reducer;

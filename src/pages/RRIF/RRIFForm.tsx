@@ -7,9 +7,10 @@ import { Radio } from "antd";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   ageWithdrawalPercentages,
+  calculateRRIF,
   updateRRIFState,
 } from "../../redux/features/RRIF/RRIFSlice";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import { handleKeyDown } from "../../utils/handleKeyDown";
 import { isNegative } from "../../utils/isNegative";
@@ -82,19 +83,46 @@ export default function RRIFForm() {
     withdrawalStartYear,
     withdrawalEndYear,
     annualWithdrawalAmount,
-    RRIFInitalBalance,
+    RRIFInitalBalance
   } = useAppSelector((state) => state.RRIF);
 
   const [minWithdrowalAmount, setMinWithdrawalAbmount] = useState<number>(0);
 
   useEffect(() => {
+    // if (ageWithdrawalPercentages[withdrawalStartYear]) {
+    //   const result =
+    //     RRIFInitalBalance *
+    //     (ageWithdrawalPercentages[withdrawalStartYear] / 100);
+    //   setMinWithdrawalAbmount(Math.round(result));
+    // }
+  }, [annualWithdrawalAmount, withdrawalStartYear]);
+
+  const [showError, setShowError] = useState(false);
+
+  const handleCalculate = (e: FormEvent) => {
+    e.preventDefault();
+    if (
+      !RRIFInitalBalance ||
+      !withdrawType ||
+      !withdrawalStartYear ||
+      !withdrawalEndYear ||
+      isNegative(RRIFInitalBalance) ||
+      isNegative(withdrawalStartYear) ||
+      isNegative(withdrawalEndYear) ||
+      isNegative(rateOfReturn) ||
+      isNegative(annualWithdrawalAmount) 
+    ) {
+      return setShowError(true);
+    }
+
     if (ageWithdrawalPercentages[withdrawalStartYear]) {
       const result =
         RRIFInitalBalance *
         (ageWithdrawalPercentages[withdrawalStartYear] / 100);
       setMinWithdrawalAbmount(Math.round(result));
     }
-  }, [annualWithdrawalAmount, withdrawalStartYear]);
+    dispatch(calculateRRIF());
+  };
 
   return (
     <section className="space-y-[2rem] md:text-[1rem] text-[14px]">
@@ -117,9 +145,14 @@ export default function RRIFForm() {
           }
           onKeyDown={handleKeyDown}
         />
-        {isNegative(RRIFInitalBalance) && (
+        {isNegative(RRIFInitalBalance) && showError && (
           <p className="text-red-500 text-[14px] font-bold">
             Initial RRIF Balance can not be negative
+          </p>
+        )}
+        {showError && !RRIFInitalBalance && (
+          <p className="text-red-500 text-[14px] font-bold">
+            This field is required.
           </p>
         )}
       </div>
@@ -169,7 +202,7 @@ export default function RRIFForm() {
           <p>0%</p>
           <p>16%</p>
         </div>
-        {isNegative(rateOfReturn) && (
+        {isNegative(rateOfReturn) && showError && (
           <p className="text-red-500 text-[14px] font-bold">
             Rate of return can not be negative
           </p>
@@ -222,11 +255,16 @@ export default function RRIFForm() {
             }
             onKeyDown={handleKeyDown}
           />
-          {isNegative(withdrawalStartYear) && (
+          {isNegative(withdrawalStartYear) && showError && (
             <p className="text-red-500 text-[14px] font-bold">
               Withdrawal Start Age can not be negative
             </p>
           )}
+          {showError && !withdrawalStartYear && (
+          <p className="text-red-500 text-[14px] font-bold">
+            This field is required.
+          </p>
+        )}
         </div>
 
         <div>
@@ -249,11 +287,16 @@ export default function RRIFForm() {
             }
             onKeyDown={handleKeyDown}
           />
-          {isNegative(withdrawalEndYear) && (
+          {isNegative(withdrawalEndYear) && showError && (
             <p className="text-red-500 text-[14px] font-bold">
               Withdrawal End Age can not be negative
             </p>
           )}
+          {showError && !withdrawalEndYear && (
+          <p className="text-red-500 text-[14px] font-bold">
+            This field is required.
+          </p>
+        )}
         </div>
       </div>
 
@@ -277,6 +320,11 @@ export default function RRIFForm() {
           placeholder="Select withdrawal frequency"
           className="rounded-md border-[1px] duration-300 border-[#838383]"
         ></Select>
+        {showError && !RRIFInitalBalance && (
+          <p className="text-red-500 text-[14px] font-bold">
+            This field is required.
+          </p>
+        )}
       </div>
 
       <div>
@@ -318,11 +366,20 @@ export default function RRIFForm() {
               minimum {numberWithCommas(minWithdrowalAmount)}
             </p>
           )}
-          {isNegative(annualWithdrawalAmount) && (
-            <p className="text-red-500 text-[14px] font-bold">
-              Withdrawal Amount can not be negative
-            </p>
-          )}
+        {isNegative(annualWithdrawalAmount) && showError && (
+          <p className="text-red-500 text-[14px] font-bold">
+            Withdrawal Amount can not be negative
+          </p>
+        )}
+      </div>
+
+      <div className="md:col-span-2 flex justify-end items-center">
+        <button
+          onClick={handleCalculate}
+          className={`text-[18px] text-white p-[0.8rem] rounded-[10px] md:w-[200px] w-ful bg-black`}
+        >
+          Calculate
+        </button>
       </div>
     </section>
   );

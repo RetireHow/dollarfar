@@ -4,9 +4,9 @@ import { CompoundInterestState } from "./CompoundInterestTypes";
 
 // Initial state
 export const initialState: CompoundInterestState = {
-  principal: 0,
-  rate: 0,
-  time: 0,
+  principal: "",
+  rate: "",
+  time: "",
   frequency: 1, // compounding frequency (e.g., annually, quarterly, monthly)
   frequencyName: "Annually", // default frequency name
   compoundInterest: 0,
