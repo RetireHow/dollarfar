@@ -318,6 +318,11 @@ export default function RRIFForm() {
               minimum {numberWithCommas(minWithdrowalAmount)}
             </p>
           )}
+          {isNegative(annualWithdrawalAmount) && (
+            <p className="text-red-500 text-[14px] font-bold">
+              Withdrawal Amount can not be negative
+            </p>
+          )}
       </div>
     </section>
   );
