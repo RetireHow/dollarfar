@@ -83,10 +83,12 @@ export default function RRIFForm() {
     withdrawalStartYear,
     withdrawalEndYear,
     annualWithdrawalAmount,
-    RRIFInitalBalance
+    RRIFInitalBalance,
+    withdrawalFrequency
   } = useAppSelector((state) => state.RRIF);
 
   const [minWithdrowalAmount, setMinWithdrawalAbmount] = useState<number>(0);
+  console.log({withdrawalFrequency})
 
   useEffect(() => {
     // if (ageWithdrawalPercentages[withdrawalStartYear]) {
@@ -315,16 +317,12 @@ export default function RRIFForm() {
             )
           }
           options={withdrawalFrequencyOptions}
+          value={withdrawalFrequency as TOptions}
           styles={customStyles}
           isMulti={false}
           placeholder="Select withdrawal frequency"
           className="rounded-md border-[1px] duration-300 border-[#838383]"
         ></Select>
-        {showError && !RRIFInitalBalance && (
-          <p className="text-red-500 text-[14px] font-bold">
-            This field is required.
-          </p>
-        )}
       </div>
 
       <div>
