@@ -104,10 +104,10 @@ export default function CIRC() {
             <PrincipalAmountSlider showError={showError} />
             <InterestRateSlider showError={showError} />
             <TimePeriodSlider showError={showError} />
-            <div className="md:col-span-2 flex justify-end items-center">
+            <div className="md:col-span-2 flex md:justify-end items-center">
               <button
                 onClick={handleCalculate}
-                className={`text-[18px] text-white p-[0.8rem] rounded-[10px] md:w-[200px] w-ful bg-black`}
+                className={`text-[18px] text-white p-[0.8rem] rounded-[10px] md:w-[200px] w-full bg-black`}
               >
                 Calculate
               </button>
