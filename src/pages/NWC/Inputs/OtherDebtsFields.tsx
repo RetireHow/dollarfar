@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { updateLiabilities } from "../../../redux/features/NWSlice/NWSlice";
 import { useRef } from "react";
 import useDynamicInput from "../../../hooks/useDynamicInput";
+import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
 
 const OtherDebtsFields = () => {
   const dispatch = useAppDispatch();
@@ -54,6 +55,7 @@ const OtherDebtsFields = () => {
             })
           )
         }
+        onKeyDown={handleKeyDownUtil}
       />
 
       {/* Sub Input Fields */}
@@ -81,6 +83,7 @@ const OtherDebtsFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
         ))}
@@ -124,6 +127,7 @@ const OtherDebtsFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
         )}

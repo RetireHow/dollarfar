@@ -5,6 +5,7 @@ import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 import BCTotalDisplay from "../../../../../components/UI/BCTotalDisplay";
+import { handleKeyDownUtil } from "../../../../../utils/handleKeyDownUtil";
 
 export const CableIntPhoneField = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
@@ -78,6 +79,7 @@ export const CableIntPhoneField = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -106,6 +108,7 @@ export const CableIntPhoneField = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -134,6 +137,7 @@ export const CableIntPhoneField = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -162,6 +166,7 @@ export const CableIntPhoneField = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           {/* Dynamic Input Fields */}
@@ -194,6 +199,7 @@ export const CableIntPhoneField = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           ))}
@@ -242,6 +248,7 @@ export const CableIntPhoneField = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           )}

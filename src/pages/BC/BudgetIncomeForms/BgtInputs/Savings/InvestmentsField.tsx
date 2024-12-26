@@ -5,6 +5,7 @@ import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 import BCTotalDisplay from "../../../../../components/UI/BCTotalDisplay";
+import { handleKeyDownUtil } from "../../../../../utils/handleKeyDownUtil";
 
 export const InvestmentsField = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
@@ -76,6 +77,7 @@ export const InvestmentsField = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -104,6 +106,7 @@ export const InvestmentsField = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           {/* Dynamic Input Fields */}
@@ -136,6 +139,7 @@ export const InvestmentsField = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           ))}
@@ -183,6 +187,7 @@ export const InvestmentsField = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           )}

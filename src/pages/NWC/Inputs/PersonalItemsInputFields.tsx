@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { useRef } from "react";
 import useDynamicInput from "../../../hooks/useDynamicInput";
 import DisplayTotal from "../../../components/UI/DisplayTotal";
+import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
 
 const PersonalItemsInputFields = () => {
   const dispatch = useAppDispatch();
@@ -72,6 +73,7 @@ const PersonalItemsInputFields = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -98,6 +100,7 @@ const PersonalItemsInputFields = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -124,6 +127,7 @@ const PersonalItemsInputFields = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
 
@@ -150,6 +154,7 @@ const PersonalItemsInputFields = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           ))}
@@ -192,6 +197,7 @@ const PersonalItemsInputFields = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           )}

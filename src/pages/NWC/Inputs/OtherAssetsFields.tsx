@@ -4,6 +4,7 @@ import { updateAsset } from "../../../redux/features/NWSlice/NWSlice";
 import useDynamicInput from "../../../hooks/useDynamicInput";
 import { useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
 
 const OtherAssetsFields = () => {
   const dispatch = useAppDispatch();
@@ -50,6 +51,7 @@ const OtherAssetsFields = () => {
             })
           )
         }
+        onKeyDown={handleKeyDownUtil}
       />
 
       {/* Sub Input Fields */}
@@ -77,6 +79,7 @@ const OtherAssetsFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
         ))}
@@ -120,6 +123,7 @@ const OtherAssetsFields = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
         )}

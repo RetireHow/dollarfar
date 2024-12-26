@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { updateAsset } from "../../../redux/features/NWSlice/NWSlice";
 import useDynamicInput from "../../../hooks/useDynamicInput";
 import DisplayTotal from "../../../components/UI/DisplayTotal";
+import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
 
 const BusinessOwnershipFields = () => {
   const dispatch = useAppDispatch();
@@ -75,6 +76,7 @@ const BusinessOwnershipFields = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -101,6 +103,7 @@ const BusinessOwnershipFields = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -127,6 +130,7 @@ const BusinessOwnershipFields = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
 
@@ -153,6 +157,7 @@ const BusinessOwnershipFields = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           ))}
@@ -195,6 +200,7 @@ const BusinessOwnershipFields = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           )}

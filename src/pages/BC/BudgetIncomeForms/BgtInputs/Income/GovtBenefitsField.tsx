@@ -5,6 +5,7 @@ import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import BCTotalDisplay from "../../../../../components/UI/BCTotalDisplay";
+import { handleKeyDownUtil } from "../../../../../utils/handleKeyDownUtil";
 
 const GovtBenefitsField = () => {
   const dispatch = useAppDispatch();
@@ -78,6 +79,7 @@ const GovtBenefitsField = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           {/* Dynamic Input Fields */}
@@ -111,6 +113,7 @@ const GovtBenefitsField = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           ))}
@@ -159,6 +162,7 @@ const GovtBenefitsField = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           )}

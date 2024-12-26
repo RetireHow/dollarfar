@@ -5,6 +5,7 @@ import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 import BCTotalDisplay from "../../../../../components/UI/BCTotalDisplay";
+import { handleKeyDownUtil } from "../../../../../utils/handleKeyDownUtil";
 
 export const WGEField = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
@@ -77,6 +78,7 @@ export const WGEField = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -105,6 +107,7 @@ export const WGEField = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -133,6 +136,7 @@ export const WGEField = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           {/* Dynamic Input Fields */}
@@ -160,6 +164,7 @@ export const WGEField = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           ))}
@@ -208,6 +213,7 @@ export const WGEField = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           )}

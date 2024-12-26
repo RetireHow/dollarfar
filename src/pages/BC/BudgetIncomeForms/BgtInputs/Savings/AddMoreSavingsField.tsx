@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import { useRef } from "react";
 import useBudgetDynamicInput from "../../../../../hooks/useBudgetDynamicInput";
 import { useAppSelector } from "../../../../../redux/hooks";
+import { handleKeyDownUtil } from "../../../../../utils/handleKeyDownUtil";
 
 export const AddMoreSavingsField = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
@@ -46,6 +47,7 @@ export const AddMoreSavingsField = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
         ))}
@@ -88,6 +90,7 @@ export const AddMoreSavingsField = () => {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
         )}

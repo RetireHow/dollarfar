@@ -2,6 +2,7 @@ import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import AntSelect from "../../../../../components/UI/AntSelect";
+import { handleKeyDownUtil } from "../../../../../utils/handleKeyDownUtil";
 
 export default function RentField() {
   const dispatch = useAppDispatch()
@@ -37,6 +38,7 @@ export default function RentField() {
               })
             )
           }
+          onKeyDown={handleKeyDownUtil}
         />
         <AntSelect/>
       </div>

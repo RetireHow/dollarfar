@@ -5,6 +5,7 @@ import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 import BCTotalDisplay from "../../../../../components/UI/BCTotalDisplay";
+import { handleKeyDownUtil } from "../../../../../utils/handleKeyDownUtil";
 
 export const SCFeeField = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
@@ -78,6 +79,7 @@ export const SCFeeField = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -106,6 +108,7 @@ export const SCFeeField = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           {/* Dynamic Input Fields */}

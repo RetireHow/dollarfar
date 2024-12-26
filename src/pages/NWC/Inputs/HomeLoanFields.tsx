@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { updateLiabilities } from "../../../redux/features/NWSlice/NWSlice";
 import useDynamicInput from "../../../hooks/useDynamicInput";
 import DisplayTotal from "../../../components/UI/DisplayTotal";
+import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
 
 const HomeLoanFields = () => {
   const dispatch = useAppDispatch();
@@ -77,6 +78,7 @@ const HomeLoanFields = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -103,6 +105,7 @@ const HomeLoanFields = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -129,6 +132,7 @@ const HomeLoanFields = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
 
@@ -155,6 +159,7 @@ const HomeLoanFields = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           ))}
@@ -197,6 +202,7 @@ const HomeLoanFields = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           )}

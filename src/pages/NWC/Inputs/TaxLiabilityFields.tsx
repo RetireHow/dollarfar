@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { updateLiabilities } from "../../../redux/features/NWSlice/NWSlice";
 import useDynamicInput from "../../../hooks/useDynamicInput";
 import DisplayTotal from "../../../components/UI/DisplayTotal";
+import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
 
 const TaxLiabilityFields = () => {
   const dispatch = useAppDispatch();
@@ -76,6 +77,7 @@ const TaxLiabilityFields = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -102,6 +104,7 @@ const TaxLiabilityFields = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
 
@@ -128,6 +131,7 @@ const TaxLiabilityFields = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           ))}
@@ -170,6 +174,7 @@ const TaxLiabilityFields = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           )}

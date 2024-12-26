@@ -3,6 +3,7 @@ import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 import AntSelect from "../../../../../components/UI/AntSelect";
+import { handleKeyDownUtil } from "../../../../../utils/handleKeyDownUtil";
 
 export default function HomeInsuranceField() {
   const dispatch = useAppDispatch()
@@ -38,6 +39,7 @@ export default function HomeInsuranceField() {
               })
             )
           }
+          onKeyDown={handleKeyDownUtil}
         />
         <AntSelect/>
       </div>

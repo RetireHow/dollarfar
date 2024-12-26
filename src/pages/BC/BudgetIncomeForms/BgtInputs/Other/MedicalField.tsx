@@ -2,6 +2,7 @@ import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 import AntSelect from "../../../../../components/UI/AntSelect";
+import { handleKeyDownUtil } from "../../../../../utils/handleKeyDownUtil";
 export default function MedicalField() {
   const dispatch = useAppDispatch();
   const { currency } = useAppSelector((state) => state.globalCurrency);
@@ -38,6 +39,7 @@ export default function MedicalField() {
               })
             )
           }
+          onKeyDown={handleKeyDownUtil}
         />
         <AntSelect />
       </div>

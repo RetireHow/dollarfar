@@ -5,6 +5,7 @@ import { updateAsset } from "../../../redux/features/NWSlice/NWSlice";
 import { useRef } from "react";
 import useDynamicInput from "../../../hooks/useDynamicInput";
 import DisplayTotal from "../../../components/UI/DisplayTotal";
+import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
 
 const VehiclesFields = () => {
   const dispatch = useAppDispatch();
@@ -73,6 +74,7 @@ const VehiclesFields = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -99,6 +101,7 @@ const VehiclesFields = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -125,6 +128,7 @@ const VehiclesFields = () => {
                   })
                 )
               }
+              onKeyDown={handleKeyDownUtil}
             />
           </div>
 
@@ -151,6 +155,7 @@ const VehiclesFields = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           ))}
@@ -193,6 +198,7 @@ const VehiclesFields = () => {
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
                 }
+                onKeyDown={handleKeyDownUtil}
               />
             </div>
           )}
