@@ -610,7 +610,7 @@ export default function GeneralInformation() {
         <div>
           <div className="flex items-center gap-2 font-semibold mb-2">
             <p>Current Annual Income of all Sources (Before Tax)</p>
-            <CustomTooltip title="Choose how often you want to withdraw from your RRIF: Monthly, Yearly, or Weekly." />
+            <CustomTooltip title="Please select your current annual income from all sources before taxes. Include all earnings such as salary, investments, pensions, and any other income sources to ensure accurate calculations." />
           </div>
           <select
             id="options"
