@@ -1,4 +1,7 @@
+import { useAppSelector } from "../../redux/hooks";
+
 export default function NWDescription() {
+  const {currency} = useAppSelector(state => state.globalCurrency)
   return (
     <article data-html2canvas-ignore>
       <section className="md:mx-[5rem] mx-[1rem]">
@@ -94,9 +97,9 @@ export default function NWDescription() {
         </p>
 
         <ul className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5 list-disc list-inside">
-          <li> Rented Property: Rs 5,00,000</li>
-          <li> Shares and Funds: Rs 7,00,000</li>
-          <li> Farming Land: Rs 15,00,000</li>
+          <li> Rented Property: {currency}5,00,000</li>
+          <li> Shares and Funds: {currency}7,00,000</li>
+          <li> Farming Land: {currency}15,00,000</li>
         </ul>
 
         <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
@@ -105,8 +108,8 @@ export default function NWDescription() {
         </p>
 
         <ul className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5 list-disc list-inside">
-          <li> Outstanding Loan: Rs 4,50,000</li>
-          <li> A tax due: Rs 1,25,000</li>
+          <li> Outstanding Loan: {currency}4,50,000</li>
+          <li> A tax due: {currency}1,25,000</li>
         </ul>
 
         <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
@@ -115,10 +118,10 @@ export default function NWDescription() {
         </p>
         <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
           Net Worth of Mr. A = [5,00,000 + 7,00,000 + 15,00,000] - [4,50,000 +
-          1,25,000] = Rs 21,25,000
+          1,25,000] = {currency}21,25,000
         </p>
         <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
-          Hence, as of today, the total net worth of Mr. A will be Rs 21,25,000.
+          Hence, as of today, the total net worth of Mr. A will be {currency}21,25,000.
           This is how to calculate the net worth of a person.
         </p>
         <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
