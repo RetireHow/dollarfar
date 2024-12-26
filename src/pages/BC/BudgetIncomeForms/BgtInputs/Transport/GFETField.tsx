@@ -42,7 +42,7 @@ export const GFETField = () => {
           buttonText: "Add Expenses",
           fieldTitle: "Gas / Fuel / ETR Toll Roads",
           infoText:
-            "Specify your take-home pay after taxes, deductions, and other adjustments.",
+            "Provide your monthly spending on fuel and toll roads combined.",
         }}
       />
 
@@ -55,7 +55,7 @@ export const GFETField = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Gas</span>{" "}
-              <CustomTooltip title="For net earnings from a business after expenses are deducted" />
+              <CustomTooltip title="Enter your average monthly expenses for gas" />
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
@@ -84,7 +84,7 @@ export const GFETField = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Fuel</span>{" "}
-              <CustomTooltip title="For net earnings from a business after expenses are deducted" />
+              <CustomTooltip title="Enter your average monthly expenses for fuel" />
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
@@ -112,7 +112,7 @@ export const GFETField = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">ETR Toll Roads</span>{" "}
-              <CustomTooltip title="For net earnings from a business after expenses are deducted" />
+              <CustomTooltip title="Enter your average monthly expenses for ETR Toll Roads" />
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"

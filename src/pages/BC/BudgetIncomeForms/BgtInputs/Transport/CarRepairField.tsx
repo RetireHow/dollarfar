@@ -14,7 +14,7 @@ export default function CarRepairField() {
           htmlFor="property"
         >
           <span>Car Repairs</span>{" "}
-          <CustomTooltip title="Monthly payment towards your home loan principal and interest." />
+          <CustomTooltip title="Estimate your average monthly expenses for car repairs and maintenance." />
         </label>
       </div>
 

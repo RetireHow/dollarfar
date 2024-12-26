@@ -15,7 +15,7 @@ export default function RetirementField() {
           htmlFor="property"
         >
           <span>Retirement</span>{" "}
-          <CustomTooltip title="Monthly payment towards your home loan principal and interest." />
+          <CustomTooltip title="Include your monthly savings or investments designated for retirement." />
         </label>
       </div>
 

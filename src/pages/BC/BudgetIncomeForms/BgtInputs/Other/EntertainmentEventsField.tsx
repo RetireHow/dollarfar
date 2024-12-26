@@ -13,7 +13,7 @@ export const EntertainmentEvents = () => {
   const {
     other: {
       totals: { entertainmentEvents },
-      entertainmentEvents:{entertainment, events}
+      entertainmentEvents: { entertainment, events },
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
@@ -58,7 +58,7 @@ export const EntertainmentEvents = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Entertainment</span>{" "}
-              <CustomTooltip title="For net earnings from a business after expenses are deducted" />
+              <CustomTooltip title="Enter your monthly spending on recreational activities such as movies, games, or hobbies." />
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -86,7 +86,7 @@ export const EntertainmentEvents = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Events</span>{" "}
-              <CustomTooltip title="For net earnings from a business after expenses are deducted" />
+              <CustomTooltip title="Provide your average monthly expenses for attending events like concerts, parties, or festivals." />
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"

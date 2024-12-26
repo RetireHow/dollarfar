@@ -16,7 +16,7 @@ export default function StudentLoanField() {
           htmlFor="property"
         >
           <span>Student Loan</span>{" "}
-          <CustomTooltip title="Monthly payment towards your home loan principal and interest." />
+          <CustomTooltip title="Include your monthly repayment for student loans." />
         </label>
       </div>
 

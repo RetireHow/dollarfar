@@ -16,7 +16,7 @@ export default function VacationFundField() {
           htmlFor="property"
         >
           <span>Vacation Fund</span>{" "}
-          <CustomTooltip title="Monthly payment towards your home loan principal and interest." />
+          <CustomTooltip title="Enter the amount you save monthly for vacations or travel plans." />
         </label>
       </div>
 

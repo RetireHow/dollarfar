@@ -15,7 +15,7 @@ export default function ClothingField() {
           htmlFor="property"
         >
           <span>Clothing</span>{" "}
-          <CustomTooltip title="Monthly payment towards your home loan principal and interest." />
+          <CustomTooltip title="Provide your average monthly spending on clothing and accessories." />
         </label>
       </div>
 

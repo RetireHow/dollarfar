@@ -43,7 +43,7 @@ export const InvestmentsField = () => {
           buttonText: "Add Expenses",
           fieldTitle: "Investments",
           infoText:
-            "Enter any government assistance received, such as child benefits, unemployment insurance, or other aid.",
+            "Enter your average monthly contributions to general investments.",
         }}
       />
 
@@ -56,7 +56,7 @@ export const InvestmentsField = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Mutual Funds</span>{" "}
-              <CustomTooltip title="For net earnings from a business after expenses are deducted" />
+              <CustomTooltip title="Provide the amount you invest monthly in mutual funds." />
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"
@@ -84,7 +84,7 @@ export const InvestmentsField = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">Bonds</span>{" "}
-              <CustomTooltip title="For net earnings from a business after expenses are deducted" />
+              <CustomTooltip title="Enter your monthly investment amount in bonds." />
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] outline-none w-full"

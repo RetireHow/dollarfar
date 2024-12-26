@@ -15,7 +15,7 @@ export default function CarInsuranceField() {
           htmlFor="property"
         >
           <span>Car Insurance</span>{" "}
-          <CustomTooltip title="Monthly payment towards your home loan principal and interest." />
+          <CustomTooltip title="Include your monthly car insurance premium." />
         </label>
       </div>
 

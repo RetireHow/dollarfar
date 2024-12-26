@@ -15,7 +15,7 @@ export default function HouseholdField() {
           htmlFor="property"
         >
           <span>Household</span>{" "}
-          <CustomTooltip title="Monthly payment towards your home loan principal and interest." />
+          <CustomTooltip title="Enter your monthly expenses for household items and utilities." />
         </label>
       </div>
 

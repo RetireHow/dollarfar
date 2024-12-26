@@ -1,12 +1,13 @@
-
 import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
 import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
 import AntSelect from "../../../../../components/UI/AntSelect";
 export default function MedicalField() {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const { currency } = useAppSelector((state) => state.globalCurrency);
-  const {other:{medical}} = useAppSelector((state) => state.budgetCalculator);
+  const {
+    other: { medical },
+  } = useAppSelector((state) => state.budgetCalculator);
   return (
     <div>
       <div className="flex justify-between items-center md:text-[1rem] text-[14px] mb-1">
@@ -15,7 +16,7 @@ export default function MedicalField() {
           htmlFor="property"
         >
           <span>Medical</span>{" "}
-          <CustomTooltip title="Monthly payment towards your home loan principal and interest." />
+          <CustomTooltip title="Provide your average monthly medical expenses, including prescriptions and check-ups." />
         </label>
       </div>
 
@@ -38,9 +39,8 @@ export default function MedicalField() {
             )
           }
         />
-        <AntSelect/>
+        <AntSelect />
       </div>
     </div>
   );
 }
-

@@ -15,7 +15,7 @@ export default function PersonalLoanField() {
           htmlFor="property"
         >
           <span>Personal Loan</span>{" "}
-          <CustomTooltip title="Monthly payment towards your home loan principal and interest." />
+          <CustomTooltip title="Enter your monthly repayment amount for personal loans." />
         </label>
       </div>
 

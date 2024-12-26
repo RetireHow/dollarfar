@@ -44,7 +44,7 @@ export const SCFeeField = () => {
           buttonText: "Add Expenses",
           fieldTitle: "School / College Fee",
           infoText:
-            "Specify your take-home pay after taxes, deductions, and other adjustments.",
+            "Enter the total monthly fees for school or college expenses.",
         }}
       />
 
@@ -57,7 +57,7 @@ export const SCFeeField = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">School Fee</span>{" "}
-              <CustomTooltip title="For net earnings from a business after expenses are deducted" />
+              <CustomTooltip title="Provide the monthly fee amount for school-related expenses." />
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
@@ -86,7 +86,7 @@ export const SCFeeField = () => {
               htmlFor="principalResidence"
             >
               <span className="text-nowrap">College Fee</span>{" "}
-              <CustomTooltip title="For net earnings from a business after expenses are deducted" />
+              <CustomTooltip title="Enter the monthly cost of college tuition and related fees." />
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"

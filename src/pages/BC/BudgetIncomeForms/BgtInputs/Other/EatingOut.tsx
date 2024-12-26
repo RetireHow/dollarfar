@@ -14,7 +14,7 @@ export default function EatingOutField() {
           htmlFor="property"
         >
           <span>Eating Out</span>{" "}
-          <CustomTooltip title="Monthly payment towards your home loan principal and interest." />
+          <CustomTooltip title="Enter your monthly expenses for dining at restaurants or ordering food." />
         </label>
       </div>
 

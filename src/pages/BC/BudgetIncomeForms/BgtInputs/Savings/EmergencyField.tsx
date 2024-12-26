@@ -15,7 +15,7 @@ export default function EmergencyField() {
           htmlFor="property"
         >
           <span>Emergency</span>{" "}
-          <CustomTooltip title="Monthly payment towards your home loan principal and interest." />
+          <CustomTooltip title="Provide your monthly contributions to an emergency savings fund." />
         </label>
       </div>
 

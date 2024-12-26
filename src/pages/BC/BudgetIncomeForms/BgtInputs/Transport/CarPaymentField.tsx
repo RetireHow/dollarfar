@@ -14,7 +14,7 @@ export default function CarPaymentField() {
           htmlFor="property"
         >
           <span>Car Payment</span>{" "}
-          <CustomTooltip title="Monthly payment towards your home loan principal and interest." />
+          <CustomTooltip title="Enter your monthly car loan or lease payment amount." />
         </label>
       </div>
 
