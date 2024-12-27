@@ -4,9 +4,9 @@ import { CompoundInterestState } from "./CompoundInterestTypes";
 
 // Initial state
 export const initialState: CompoundInterestState = {
-  principal: 0,
-  rate: 0,
-  time: 0,
+  principal: "",
+  rate: "",
+  time: "",
   frequency: 1, // compounding frequency (e.g., annually, quarterly, monthly)
   frequencyName: "Annually", // default frequency name
   compoundInterest: 0,
@@ -19,13 +19,13 @@ const compoundInterestSlice = createSlice({
   name: "compoundInterest",
   initialState,
   reducers: {
-    setPrincipal: (state, action: PayloadAction<number>) => {
+    setPrincipal: (state, action: PayloadAction<any>) => {
       state.principal = action.payload;
     },
-    setRate: (state, action: PayloadAction<number>) => {
+    setRate: (state, action: PayloadAction<any>) => {
       state.rate = action.payload;
     },
-    setTime: (state, action: PayloadAction<number>) => {
+    setTime: (state, action: PayloadAction<any>) => {
       state.time = action.payload;
     },
     setFrequency: (state, action: PayloadAction<number>) => {
@@ -57,9 +57,9 @@ const compoundInterestSlice = createSlice({
       }
     },
     calculateCompoundInterest: (state) => {
-      const P = state.principal;
-      const r = state.rate / 100; // convert to decimal
-      const t = state.time;
+      const P = Number(state.principal);
+      const r = Number(state.rate) / 100; // convert to decimal
+      const t = Number(state.time);
       const n = state.frequency;
 
       // Compound Interest Formula: A = P(1 + r/n)^(nt)
@@ -69,7 +69,7 @@ const compoundInterestSlice = createSlice({
       // state.compoundInterest = interest;
       // Set compoundInterest rounded to 2 decimal places
       state.compoundInterest = parseFloat(interest.toFixed(2));
-      state.totalAmount = parseFloat((interest+state.principal)?.toFixed(2));
+      state.totalAmount = parseFloat((interest + state.principal)?.toFixed(2));
     },
 
     // New function to calculate frequency breakdown

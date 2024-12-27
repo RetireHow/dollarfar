@@ -5,7 +5,11 @@ import { setRate } from "../../../redux/features/compoundInterestSlice/compoundI
 import CustomTooltip from "../../../components/UI/CustomTooltip";
 import { isNegative } from "../../../utils/isNegative";
 
-export default function InterestRateSlider({showError}:{showError:boolean}) {
+export default function InterestRateSlider({
+  showError,
+}: {
+  showError: boolean;
+}) {
   const dispatch = useAppDispatch();
   const { rate } = useAppSelector((state) => state.compoundInterest);
   return (
@@ -24,7 +28,7 @@ export default function InterestRateSlider({showError}:{showError:boolean}) {
             placeholder="0"
             value={rate}
             onChange={(e) =>
-              dispatch(setRate(Number(e.target.value)))
+              dispatch(setRate(e.target.value ? e.target.value : ""))
             }
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()

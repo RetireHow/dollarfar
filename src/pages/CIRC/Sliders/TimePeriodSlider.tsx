@@ -28,7 +28,7 @@ export default function TimePeriodSlider({
             value={time}
             placeholder="0"
             onChange={(e) =>
-              dispatch(setTime(Number(e.target.value)))
+              dispatch(setTime(e.target.value ? e.target.value : ""))
             }
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()
