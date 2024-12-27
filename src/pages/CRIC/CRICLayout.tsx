@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useAppDispatch } from "../../redux/hooks";
 import { useEffect } from "react";
 import {
@@ -9,8 +9,6 @@ import Stepper from "../BC/Stepper";
 
 export default function CRICLayout() {
   const dispatch = useAppDispatch();
-  const location = useLocation().pathname;
-  console.log({location})
 
   useEffect(() => {
     dispatch(resetActiveStep());

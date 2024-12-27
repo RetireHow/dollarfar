@@ -29,7 +29,6 @@ export default function COLCForm() {
 
   const handleCompare = (e: FormEvent) => {
     e.preventDefault();
-    console.log({ cityName1, cityName2 });
   };
 
   return (

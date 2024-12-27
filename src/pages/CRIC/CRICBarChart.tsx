@@ -26,7 +26,7 @@ function CRICBarChart() {
   const { currency, currencyFullName } = useAppSelector(
     (state) => state.globalCurrency
   );
-  console.log({ CRIBreakdownData });
+
   return (
     <div className="mt-[5rem]">
       <div className="flex lg:flex-row flex-col lg:items-center gap-5">

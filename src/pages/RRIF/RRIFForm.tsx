@@ -88,7 +88,6 @@ export default function RRIFForm() {
   } = useAppSelector((state) => state.RRIF);
 
   const [minWithdrowalAmount, setMinWithdrawalAbmount] = useState<number>(0);
-  console.log({withdrawalFrequency})
 
   useEffect(() => {
     // if (ageWithdrawalPercentages[withdrawalStartYear]) {
