@@ -32,7 +32,7 @@ export default function PrincipalAmountSlider({
             placeholder="0"
             onChange={(e) => {
               dispatch(
-                setPrincipal(e.target.value ? Number(e.target.value) : "")
+                setPrincipal(Number(e.target.value))
               );
             }}
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>

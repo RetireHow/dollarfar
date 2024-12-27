@@ -24,7 +24,7 @@ export default function InterestRateSlider({showError}:{showError:boolean}) {
             placeholder="0"
             value={rate}
             onChange={(e) =>
-              dispatch(setRate(e.target.value ? Number(e.target.value) : ""))
+              dispatch(setRate(Number(e.target.value)))
             }
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()

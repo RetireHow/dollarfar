@@ -4,9 +4,9 @@ import { CompoundInterestState } from "./CompoundInterestTypes";
 
 // Initial state
 export const initialState: CompoundInterestState = {
-  principal: "",
-  rate: "",
-  time: "",
+  principal: 0,
+  rate: 0,
+  time: 0,
   frequency: 1, // compounding frequency (e.g., annually, quarterly, monthly)
   frequencyName: "Annually", // default frequency name
   compoundInterest: 0,
@@ -19,16 +19,16 @@ const compoundInterestSlice = createSlice({
   name: "compoundInterest",
   initialState,
   reducers: {
-    setPrincipal: (state, action: PayloadAction<any>) => {
+    setPrincipal: (state, action: PayloadAction<number>) => {
       state.principal = action.payload;
     },
-    setRate: (state, action: PayloadAction<any>) => {
+    setRate: (state, action: PayloadAction<number>) => {
       state.rate = action.payload;
     },
-    setTime: (state, action: PayloadAction<any>) => {
+    setTime: (state, action: PayloadAction<number>) => {
       state.time = action.payload;
     },
-    setFrequency: (state, action: PayloadAction<any>) => {
+    setFrequency: (state, action: PayloadAction<number>) => {
       state.frequency = action.payload;
 
       // Map numeric frequency to corresponding frequency name

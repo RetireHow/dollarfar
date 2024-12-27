@@ -49,7 +49,9 @@ export default function CalculationCard() {
               size="large"
               // style={{ width: 130, height: 45, border: "1px solid gray" }}
               className="!border-none md:w-[130px] w-full h-[45px] border-[1px] border-gray-300"
-              onChange={(value) => dispatch(setFrequency(value))}
+              onChange={(value) => {
+                dispatch(setFrequency(value))
+              }}
               options={frequencyOptions}
               suffixIcon={
                 <Icon
