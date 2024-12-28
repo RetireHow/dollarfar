@@ -98,7 +98,7 @@ const OtherDebtsFields = () => {
                 type="text"
                 name="label"
                 value={newInput.label}
-                placeholder="Debt Name"
+                placeholder="Enter Liability Name"
                 onChange={handleInputChange}
               />
               <div className="flex items-center gap-3">

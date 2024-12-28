@@ -62,7 +62,7 @@ export const AddMoreSavingsField = () => {
                 type="text"
                 name="label"
                 value={newInput.label}
-                placeholder="Loan Title"
+                placeholder="Savings Name"
                 onChange={handleInputChange}
               />
               <div className="flex items-center gap-3">

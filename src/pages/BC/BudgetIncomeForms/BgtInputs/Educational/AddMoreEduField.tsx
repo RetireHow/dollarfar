@@ -64,7 +64,7 @@ export const AddMoreEduField = () => {
                 type="text"
                 name="label"
                 value={newInput.label}
-                placeholder="Transport Expense Title"
+                placeholder="Educational Expense Name"
                 onChange={handleInputChange}
               />
               <div className="flex items-center gap-3">

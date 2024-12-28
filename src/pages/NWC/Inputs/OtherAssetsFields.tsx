@@ -94,7 +94,7 @@ const OtherAssetsFields = () => {
                 type="text"
                 name="label"
                 value={newInput.label}
-                placeholder="Asset Name"
+                placeholder="Enter Asset Name"
                 onChange={handleInputChange}
               />
               <div className="flex items-center gap-3">

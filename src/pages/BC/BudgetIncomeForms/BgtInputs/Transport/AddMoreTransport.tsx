@@ -63,7 +63,7 @@ export const AddMoreTransportField = () => {
                 type="text"
                 name="label"
                 value={newInput.label}
-                placeholder="Transport Expense Title"
+                placeholder="Transport Expense Name"
                 onChange={handleInputChange}
               />
               <div className="flex items-center gap-3">
