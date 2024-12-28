@@ -64,7 +64,6 @@ export const RepairsField = () => {
               type="number"
               value={repairs}
               placeholder={`${currency}0`}
-              autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -156,7 +155,6 @@ export const RepairsField = () => {
                   name="label"
                   value={newInput.label}
                   placeholder="Enter name"
-                  autoFocus
                   onChange={handleInputChange}
                 />
                 <div className="flex items-center gap-3">

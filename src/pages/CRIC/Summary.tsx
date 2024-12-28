@@ -33,6 +33,7 @@ export default function Summary() {
     ppStartYear,
     selectedPP,
     yearsInCanada,
+    isFortyYears
   } = useAppSelector((state) => state.CRICalculator);
 
   useEffect(() => {
@@ -160,7 +161,7 @@ export default function Summary() {
 
                 <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>Years lived in Canada</p>
-                  <p>{yearsInCanada}</p>
+                  <p>{Number(isFortyYears) ? 40 : yearsInCanada}</p>
                 </li>
               </ul>
             </div>

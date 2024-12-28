@@ -65,7 +65,6 @@ export const SCFeeField = () => {
               type="number"
               value={schoolFee}
               placeholder={`${currency}0`}
-              autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -130,7 +129,6 @@ export const SCFeeField = () => {
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
                 placeholder={`${currency}0`}
-                autoFocus
                 onChange={(e) =>
                   handleDynamicInputChange(
                     e,
@@ -157,7 +155,6 @@ export const SCFeeField = () => {
                   name="label"
                   value={newInput.label}
                   placeholder="Enter name"
-                  autoFocus
                   onChange={handleInputChange}
                 />
                 <div className="flex items-center gap-3">

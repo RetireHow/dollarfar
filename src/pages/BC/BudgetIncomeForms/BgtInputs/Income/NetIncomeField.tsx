@@ -66,7 +66,6 @@ const NetIncomeField = () => {
               type="number"
               value={businessProfit}
               placeholder={`${currency}0`}
-              autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -102,7 +101,6 @@ const NetIncomeField = () => {
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
                 placeholder={`${currency}0`}
-                autoFocus
                 onChange={(e) =>
                   handleDynamicInputChange(e, input.id, "income", "netIncome")
                 }
@@ -125,7 +123,6 @@ const NetIncomeField = () => {
                   name="label"
                   value={newInput.label}
                   placeholder="Enter name"
-                  autoFocus
                   onChange={handleInputChange}
                 />
                 <div className="flex items-center gap-3">

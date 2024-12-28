@@ -21,7 +21,7 @@ export default function RRSPAreaChart() {
   );
   return (
     <div
-      className="w-[90%] lg:min-h-[400px] overflow-x-auto mx-auto border-[1px] border-gray-300 p-5 rounded-md"
+      className="md:w-[90%] lg:min-h-[400px] overflow-x-auto mx-auto border-[1px] border-gray-300 p-5 rounded-md"
       id="RRSP-Chart"
     >
       <div className="min-w-[800px] h-[400px]">
@@ -31,10 +31,10 @@ export default function RRSPAreaChart() {
             height={200}
             data={savingsByAge}
             margin={{
-              top: 0,
-              right: 30,
-              left: 30,
-              bottom: 0,
+              top: 10,
+              right: 10,
+              left: 10,
+              bottom: 10,
             }}
           >
             <CartesianGrid strokeDasharray="3 3" vertical={false} />

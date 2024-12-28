@@ -65,7 +65,6 @@ const OtherIncomeField = () => {
               type="number"
               value={rentalIncome}
               placeholder={`${currency}0`}
-              autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -101,7 +100,6 @@ const OtherIncomeField = () => {
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
                 placeholder={`${currency}0`}
-                autoFocus
                 onChange={(e) =>
                   handleDynamicInputChange(e, input.id, "income", "otherIncome")
                 }
@@ -124,7 +122,6 @@ const OtherIncomeField = () => {
                   name="label"
                   value={newInput.label}
                   placeholder="Enter name"
-                  autoFocus
                   onChange={handleInputChange}
                 />
                 <div className="flex items-center gap-3">

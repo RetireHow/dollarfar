@@ -99,11 +99,10 @@ export const AddMoreTransportField = () => {
         {/* "+ Add More" button in Sub-menu Container */}
         <div>
           <button
-            className="font-semibold text-nowrap border-[1px] border-[#E5E5E5] rounded-[8px] py-[0.2rem] px-[1rem]"
+            className="font-semibold md:w-auto w-full text-nowrap border-[1px] border-[#E5E5E5] rounded-[8px] py-[0.2rem] px-[1rem]"
             onClick={handleAddNewInput}
           >
-            <span className="text-[1.3rem] pr-1">+</span> Add more transport
-            expenses
+            <span className="text-[1.3rem] pr-1">+</span> Add More Transport Expenses
           </button>
         </div>
       </div>

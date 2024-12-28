@@ -25,7 +25,6 @@ export default function CarPaymentField() {
           type="number"
           value={carPayment}
           placeholder={`${currency}0`}
-          autoFocus
           onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
             e.currentTarget.blur()
           }

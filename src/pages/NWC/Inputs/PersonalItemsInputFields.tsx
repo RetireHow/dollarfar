@@ -60,7 +60,6 @@ const PersonalItemsInputFields = () => {
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
               placeholder={`${currency}0`}
-              autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }

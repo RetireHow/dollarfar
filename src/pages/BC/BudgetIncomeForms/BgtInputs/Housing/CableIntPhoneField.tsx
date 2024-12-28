@@ -65,7 +65,6 @@ export const CableIntPhoneField = () => {
               type="number"
               value={cableTv}
               placeholder={`${currency}0`}
-              autoFocus
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -215,7 +214,6 @@ export const CableIntPhoneField = () => {
                   name="label"
                   value={newInput.label}
                   placeholder="Enter name"
-                  autoFocus
                   onChange={handleInputChange}
                 />
                 <div className="flex items-center gap-3">

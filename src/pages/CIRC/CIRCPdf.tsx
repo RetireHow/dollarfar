@@ -216,7 +216,7 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
                   <Text>Total Amount</Text>
                   <Text>
                     {currency}
-                    {(compoundInterest + principal).toFixed(2)}
+                    {(compoundInterest + principal)?.toFixed(2)}
                   </Text>
                 </View>
               </View>

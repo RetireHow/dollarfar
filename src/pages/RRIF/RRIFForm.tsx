@@ -170,7 +170,7 @@ export default function RRIFForm() {
               type="number"
               placeholder="0"
               onWheel={(e) => e.currentTarget.blur()}
-              // value={rateOfReturn}
+              value={rateOfReturn || ""}
               onChange={(e) =>
                 dispatch(
                   updateRRIFState({
@@ -373,7 +373,7 @@ export default function RRIFForm() {
       <div className="md:col-span-2 flex justify-end items-center">
         <button
           onClick={handleCalculate}
-          className={`text-[18px] text-white p-[0.8rem] rounded-[10px] md:w-[200px] w-ful bg-black`}
+          className={`text-[18px] text-white p-[0.8rem] rounded-[10px] md:w-[200px] w-full bg-black`}
         >
           Calculate
         </button>

@@ -64,7 +64,6 @@ const SalaryWagesInputFields = () => {
             </label>
             <input
               className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
-              autoFocus
               type="number"
               value={salary1}
               placeholder={`${currency}0`}
@@ -160,7 +159,6 @@ const SalaryWagesInputFields = () => {
                   name="label"
                   value={newInput.label}
                   placeholder="Enter name"
-                  autoFocus
                   onChange={handleInputChange}
                 />
                 <div className="flex items-center gap-3">

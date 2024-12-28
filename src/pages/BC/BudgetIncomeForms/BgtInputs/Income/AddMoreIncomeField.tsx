@@ -43,7 +43,6 @@ const AddMoreIncomeField = () => {
               name={input.label.trim().split(" ").join("")}
               value={input.value}
               placeholder={`${currency}0`}
-              autoFocus
               onChange={(e) => handleDynamicInputChange(e, input.id, 'income')}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
@@ -64,7 +63,6 @@ const AddMoreIncomeField = () => {
                 name="label"
                 value={newInput.label}
                 placeholder="Income Title"
-                autoFocus
                 onChange={handleInputChange}
               />
               <div className="flex items-center gap-3">
@@ -100,7 +98,7 @@ const AddMoreIncomeField = () => {
         {/* "+ Add More" button in Sub-menu Container */}
         <div>
           <button
-            className="font-semibold text-nowrap border-[1px] border-[#E5E5E5] rounded-[8px] py-[0.2rem] px-[1rem]"
+            className="font-semibold md:w-auto w-full text-nowrap border-[1px] border-[#E5E5E5] rounded-[8px] py-[0.2rem] px-[1rem]"
             onClick={handleAddNewInput}
           >
             <span className="text-[1.3rem] pr-1">+</span> Add More Income

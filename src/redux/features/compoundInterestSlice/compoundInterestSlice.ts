@@ -68,7 +68,7 @@ const compoundInterestSlice = createSlice({
 
       // state.compoundInterest = interest;
       // Set compoundInterest rounded to 2 decimal places
-      state.compoundInterest = parseFloat(interest.toFixed(2));
+      state.compoundInterest = parseFloat(interest?.toFixed(2));
       state.totalAmount = parseFloat((interest + state.principal)?.toFixed(2));
     },
 
@@ -99,7 +99,7 @@ const compoundInterestSlice = createSlice({
           breakdown.push({
             period: periodLabel,
             principal: P,
-            interest: parseFloat(interest.toFixed(2)),
+            interest: parseFloat(interest?.toFixed(2)),
           });
         }
       } else {
@@ -136,7 +136,7 @@ const compoundInterestSlice = createSlice({
           breakdown.push({
             period: periodLabel,
             principal: P,
-            interest: parseFloat(interest.toFixed(2)),
+            interest: parseFloat(interest?.toFixed(2)),
           });
         }
       }

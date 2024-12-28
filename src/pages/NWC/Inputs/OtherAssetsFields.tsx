@@ -95,7 +95,6 @@ const OtherAssetsFields = () => {
                 name="label"
                 value={newInput.label}
                 placeholder="Asset Name"
-                autoFocus
                 onChange={handleInputChange}
               />
               <div className="flex items-center gap-3">
@@ -131,10 +130,10 @@ const OtherAssetsFields = () => {
         {/* "+ Add More" button in Sub-menu Container */}
         <div className="mt-5">
           <button
-            className="font-semibold text-nowrap border-[1px] border-[#E5E5E5] rounded-[8px] py-[0.2rem] px-[1rem]"
+            className="font-semibold text-nowrap border-[1px] border-[#E5E5E5] rounded-[8px] py-[0.2rem] px-[1rem] md:w-auto w-full"
             onClick={handleAddNewInput}
           >
-            <span className="text-[1.3rem] pr-1">+</span> Add More
+            <span className="text-[1.3rem] pr-1">+</span> Add More Assets
           </button>
         </div>
       </div>

@@ -18,7 +18,7 @@ export default function Stepper({steps}:{steps:number[]}) {
         </div>
 
         {/* Step Indicators with overlap */}
-        <div className="absolute md:top-[2px] top-[10px] left-0 right-0 flex justify-between items-center">
+        <div className="absolute md:top-[2px] top-[12px] left-0 right-0 flex justify-between items-center">
           {steps.map((step, index) => (
             <div
               key={index}
