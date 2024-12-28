@@ -228,13 +228,13 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
-                backgroundColor: `${totalIncome < totalExpenses ? 'red' : 'green'}`,
+                backgroundColor: `${totalIncome < totalExpenses ? 'red' : totalIncome > totalExpenses ? 'green' : 'black'}`,
                 color: "#fff",
                 padding: "8px",
                 borderRadius: "5px",
               }}
             >
-              <Text>Cashflow Deficit</Text>
+              <Text>{totalIncome < totalExpenses ? 'Cashflow Deficit' : totalIncome > totalExpenses ? 'Cashflow Surplus' : "Cashflow"}</Text>
               <Text>
                 {currency}
                 {cashflowDeficit}
