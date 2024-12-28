@@ -23,7 +23,7 @@ export default function InterestRateSlider({
         </div>
         <div className="relative">
           <input
-            className="font-bold md:text-[1.2rem] text-[14px] text-left bg-[#F8F8F8] rounded-[10px] md:px-[1.25rem] px-[0.5rem] py-[10px] md:max-w-[130px] max-w-[80px] outline-none"
+            className="font-bold md:text-[1.2rem] no-spinner text-right text-[14px] bg-[#F8F8F8] rounded-[10px] pr-[1.8rem] py-[0.5rem] max-w-[80px] outline-none"
             type="number"
             placeholder="0"
             value={rate}
@@ -34,7 +34,7 @@ export default function InterestRateSlider({
               e.currentTarget.blur()
             }
           />
-          <p className="absolute md:right-10 right-2 top-3 font-semibold md:text-[1.2rem] text-[14px]">
+          <p className="absolute right-3 top-[7px] font-semibold md:text-[1.2rem] text-[14px]">
             %
           </p>
         </div>

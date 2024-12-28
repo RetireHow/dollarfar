@@ -52,7 +52,7 @@ export default function COLCForm() {
       <button
         onClick={handleCompare}
         disabled={cityName1 && cityName2 ? false : true}
-        className={`text-white p-[0.8rem] rounded-[10px] w-[150px] mt-[2rem] ${cityName1 && cityName2 ? 'bg-black' : 'bg-gray-300'}`}
+        className={`text-white p-[0.8rem] rounded-[10px] md:w-[150px] w-full mt-[2rem] ${cityName1 && cityName2 ? 'bg-black' : 'bg-gray-300'}`}
       >
         Compare
       </button>

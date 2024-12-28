@@ -64,7 +64,7 @@ export default function CalculationCard() {
         </div>
       </div>
 
-      <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-8">
+      <div className="flex flex-wrap gap-1 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-8">
         <p className="font-medium">Principle Amount</p>
         <div className="flex items-center">
           {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}

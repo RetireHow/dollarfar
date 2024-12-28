@@ -23,10 +23,10 @@ export default function TimePeriodSlider({
         </div>
         <div className="relative">
           <input
-            className={`font-bold md:text-[1.2rem] text-[14px] text-left bg-[#F8F8F8] rounded-[10px] md:px-[1.25rem] px-[0.5rem] py-[10px] md:max-w-[130px] max-w-[100px] outline-none`}
+            className="font-bold md:text-[1.2rem] no-spinner text-right text-[14px] bg-[#F8F8F8] rounded-[10px] pr-[1.8rem] py-[0.5rem] max-w-[80px] outline-none"
             type="number"
-            value={time}
             placeholder="0"
+            value={time}
             onChange={(e) =>
               dispatch(setTime(e.target.value ? e.target.value : ""))
             }
@@ -34,7 +34,7 @@ export default function TimePeriodSlider({
               e.currentTarget.blur()
             }
           />
-          <p className="absolute right-10 top-2 font-semibold md:text-[1.2rem] text-[14px]">
+          <p className="absolute right-4 top-[6px] font-semibold md:text-[1.2rem] text-[14px]">
             y
           </p>
         </div>

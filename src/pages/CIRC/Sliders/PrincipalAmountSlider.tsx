@@ -26,7 +26,7 @@ export default function PrincipalAmountSlider({
         </div>
         <div className="relative">
           <input
-            className="font-bold md:text-[1.2rem] text-[14px] bg-[#F8F8F8] rounded-[10px] md:px-[1.5rem] px-[1.20rem] py-[10px] md:max-w-[200px] max-w-[150px] outline-none"
+            className="font-bold md:text-[1.2rem] text-[14px] text-right no-spinner bg-[#F8F8F8] rounded-[10px] pr-[0.8rem] py-[0.5rem] md:max-w-[200px] max-w-[150px] outline-none"
             type="number"
             value={principal}
             placeholder="0"
@@ -40,7 +40,7 @@ export default function PrincipalAmountSlider({
             }
             onKeyDown={handleKeyDown}
           />
-          <p className="absolute md:top-[10px] top-[10px] left-2 md:text-[1.2rem] text-[14px]">{currency}</p>
+          <p className="absolute top-[8px] left-[10px] md:text-[1.2rem] text-[14px]">{currency}</p>
         </div>
       </div>
       <ReactSlider
