@@ -28,11 +28,11 @@ export default function PrincipalAmountSlider({
           <input
             className="font-bold md:text-[1.2rem] text-[14px] text-right no-spinner bg-[#F8F8F8] rounded-[10px] pr-[0.8rem] py-[0.5rem] md:max-w-[200px] max-w-[150px] outline-none"
             type="number"
-            value={principal}
+            value={principal || ""}
             placeholder="0"
             onChange={(e) => {
               dispatch(
-                setPrincipal(e.target.value ? e.target.value : "")
+                setPrincipal(Number(e.target.value))
               );
             }}
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>

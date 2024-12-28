@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { setRate } from "../../../redux/features/compoundInterestSlice/compoundInterestSlice";
 import CustomTooltip from "../../../components/UI/CustomTooltip";
 import { isNegative } from "../../../utils/isNegative";
+import { handleKeyDown } from "../../../utils/handleKeyDown";
 
 export default function InterestRateSlider({
   showError,
@@ -26,15 +27,16 @@ export default function InterestRateSlider({
             className="font-bold md:text-[1.2rem] no-spinner text-right text-[14px] bg-[#F8F8F8] rounded-[10px] pr-[1.8rem] py-[0.5rem] max-w-[80px] outline-none"
             type="number"
             placeholder="0"
-            value={rate}
+            value={rate || ""}
             onChange={(e) =>
-              dispatch(setRate(e.target.value ? e.target.value : ""))
+              dispatch(setRate(Number(e.target.value)))
             }
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()
             }
+            onKeyDown={handleKeyDown}
           />
-          <p className="absolute right-3 top-[7px] font-semibold md:text-[1.2rem] text-[14px]">
+          <p className="absolute right-3 top-[8px] font-semibold md:text-[1.2rem] text-[14px]">
             %
           </p>
         </div>

@@ -164,9 +164,9 @@ export default function RRIFForm() {
           <h3 className="mb-[0.5rem] font-semibold">
             Rate of return (maximum value 16%)
           </h3>
-          <div className="md:max-w-[90px] max-w-[60px] relative">
+          <div className="relative">
             <input
-              className="outline-none border-[1px] md:px-[12px] px-[5px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
+              className="font-bold md:text-[1.2rem] no-spinner text-right text-[14px] bg-[#F8F8F8] rounded-[10px] pr-[1.8rem] py-[0.5rem] max-w-[80px] outline-none"
               type="number"
               placeholder="0"
               onWheel={(e) => e.currentTarget.blur()}
@@ -181,9 +181,9 @@ export default function RRIFForm() {
               }
               onKeyDown={handleKeyDown}
             />
-            <span className="absolute top-2 md:right-8 right-3 font-extrabold">
+            <p className="absolute right-3 top-[8px] font-semibold md:text-[1.2rem] text-[14px]">
               %
-            </span>
+            </p>
           </div>
         </div>
         <ReactSlider

@@ -241,17 +241,22 @@ export default function RRSPForm() {
             <p>Assumed Rate of Return</p>
             <CustomTooltip title="Estimate the annual rate of return you expect on your RRSP investments (e.g., 5%, 7%). Consider a realistic rate based on your investment strategy and risk tolerance." />
           </div>
-          <div className="max-w-[80px] relative">
+          <div className="relative">
             <input
-              className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
+              className="font-bold md:text-[1.2rem] no-spinner text-right text-[14px] bg-[#F8F8F8] rounded-[10px] pr-[1.8rem] py-[0.5rem] max-w-[80px] outline-none"
               type="number"
               placeholder="0"
-              onWheel={(e) => e.currentTarget.blur()}
               name="rateOfReturn"
               value={rateOfReturn}
               onChange={handleChange}
+              onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
+                e.currentTarget.blur()
+              }
+              onKeyDown={handleKeyDown}
             />
-            <p className="absolute right-8 top-2">%</p>
+            <p className="absolute right-3 top-[8px] font-semibold md:text-[1.2rem] text-[14px]">
+              %
+            </p>
           </div>
         </div>
         <ReactSlider

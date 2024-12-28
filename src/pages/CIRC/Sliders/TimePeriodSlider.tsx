@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { setTime } from "../../../redux/features/compoundInterestSlice/compoundInterestSlice";
 import CustomTooltip from "../../../components/UI/CustomTooltip";
 import { isNegative } from "../../../utils/isNegative";
+import { handleKeyDown } from "../../../utils/handleKeyDown";
 
 export default function TimePeriodSlider({
   showError,
@@ -26,13 +27,14 @@ export default function TimePeriodSlider({
             className="font-bold md:text-[1.2rem] no-spinner text-right text-[14px] bg-[#F8F8F8] rounded-[10px] pr-[1.8rem] py-[0.5rem] max-w-[80px] outline-none"
             type="number"
             placeholder="0"
-            value={time}
+            value={time || ""}
             onChange={(e) =>
-              dispatch(setTime(e.target.value ? e.target.value : ""))
+              dispatch(setTime(Number(e.target.value)))
             }
             onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
               e.currentTarget.blur()
             }
+            onKeyDown={handleKeyDown}
           />
           <p className="absolute right-4 top-[6px] font-semibold md:text-[1.2rem] text-[14px]">
             y
