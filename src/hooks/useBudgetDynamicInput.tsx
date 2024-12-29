@@ -2,11 +2,7 @@ import { useState, MutableRefObject } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { removeSpacesFromKey } from "../utils/removeSpaceFromKey";
-import {
-  changeDynamicFields,
-  updateDynamicFields,
-  updateField,
-} from "../redux/features/BgtSlice/BgtSlice";
+import { updateField } from "../redux/features/BgtSlice/BgtSlice";
 import {
   BudgetState,
   Field,
@@ -68,19 +64,7 @@ const useBudgetDynamicInput = ({
         ...prev,
         { id: Date.now(), label: newInput.label, value: newInput.value },
       ]);
-      if (category && subCategory) {
-        dispatch(
-          updateDynamicFields({
-            category,
-            subCategory,
-            value: {
-              id: Date.now(),
-              label: newInput.label,
-              value: newInput.value,
-            },
-          })
-        );
-      }
+
       setNewInput({ label: "", value: "" });
       setShowNewInputField(false);
     } else {
@@ -127,17 +111,6 @@ const useBudgetDynamicInput = ({
     setDynamicInputs((prevInputs) =>
       prevInputs.map((input) => (input.id === id ? { ...input, value } : input))
     );
-    // Redux Store Change
-    if (category && subCategory && value && id) {
-      dispatch(
-        changeDynamicFields({
-          category,
-          subCategory,
-          id,
-          value,
-        })
-      );
-    }
   };
 
   const handleAddNewInput = () => {

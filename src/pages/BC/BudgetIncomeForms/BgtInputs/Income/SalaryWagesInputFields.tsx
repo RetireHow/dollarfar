@@ -13,8 +13,7 @@ const SalaryWagesInputFields = () => {
   const {
     income: {
       totals: { salaryOrWages },
-      salaryOrWages: { salary1, wages },
-      // dynamicInputs:{salaryOrWages:salaryOrWagesDynamicInputs}
+      salaryOrWages: { salary1, wages }
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
@@ -114,7 +113,7 @@ const SalaryWagesInputFields = () => {
           </div>
 
           {/* Dynamic Input Fields */}
-          {dynamicInputs.map((input) => (
+          {dynamicInputs?.map((input) => (
             <div key={input.id}>
               <label
                 className="flex items-center gap-1 font-semibold"

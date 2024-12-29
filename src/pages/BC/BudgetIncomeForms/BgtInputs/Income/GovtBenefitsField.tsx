@@ -31,7 +31,7 @@ const GovtBenefitsField = () => {
     setShowSubInputs,
     handleAddNewInput,
   } = useBudgetDynamicInput({
-    dynamicFieldTitleRef,
+    dynamicFieldTitleRef
   });
 
   return (
