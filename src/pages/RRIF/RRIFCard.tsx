@@ -67,7 +67,7 @@ export default function RRIFCard() {
           </div>
         )}
 
-        <div className="flex md:gap-0 gap-8 items-center justify-between md:text-[1.25rem] text-[1rem] font-medium">
+        <div className="flex md:gap-0 gap-8 items-center justify-between border-b-[1px] border-[#0000001A] pb-4 md:text-[1.25rem] text-[1rem] font-medium">
           <p>
             Total Withdrawn Over Lifetime (Age {withdrawalStartYear} to{" "}
             {withdrawalEndYear})
