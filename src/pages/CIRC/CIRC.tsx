@@ -17,6 +17,7 @@ import DownloadModal from "../../components/DownloadModal";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import CurrencySelect from "../../components/UI/CurrencySelect";
 import { isNegative } from "../../utils/isNegative";
+import { toast } from "react-toastify";
 
 const data = {
   title: "Compound Interest Rate Calculator",
@@ -63,6 +64,12 @@ export default function CIRC() {
       isNegative(time) ||
       isNegative(principal)
     ) {
+      if(!time){
+        toast.error("Time period is required.")
+      }
+      if(!principal){
+        toast.error("Principal amount is required.")
+      }
       return setShowError(true);
     }
     dispatch(calculateCompoundInterest());

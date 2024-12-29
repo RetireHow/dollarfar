@@ -8,6 +8,7 @@ import { calculate, setInput } from "../../redux/features/RRSP/RRSPSlice";
 import { useState } from "react";
 import { handleKeyDown } from "../../utils/handleKeyDown";
 import { isNegative } from "../../utils/isNegative";
+import { toast } from "react-toastify";
 
 type TOptions = {
   label: string;
@@ -102,6 +103,12 @@ export default function RRSPForm() {
       isNegative(contributionAmount) ||
       isNegative(currentRRSPSavings)
     ) {
+      if(!currentAge){
+        toast.error('Current age is required.')
+      }
+      if(!retirementAge){
+        toast.error('Retirement age is required.')
+      }
       return setShowError(true);
     }
 

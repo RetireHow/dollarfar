@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Error from "../../../components/UI/Error";
 import RedStar from "../../../components/UI/RedStar";
 import CRICResultCard from "../CRICResultCard";
+import { toast } from "react-toastify";
 
 export default function CanadaPensionPlanRough() {
   const dispatch = useAppDispatch();
@@ -22,6 +23,15 @@ export default function CanadaPensionPlanRough() {
       (!selectedPP || !ppStartYear || !ppBenefitAmount) &&
       selectedPP !== "Not Applicable"
     ) {
+      if(!selectedPP){
+        toast.error('Pension plan is required.')
+      }
+      if(!ppStartYear){
+        toast.error('Receiving pension plan benefit age is required.')
+      }
+      if(!ppBenefitAmount){
+        toast.error('Monthly retirement pension estimate is required.')
+      }
       return setShowError(true);
     }
     dispatch(nextStep());

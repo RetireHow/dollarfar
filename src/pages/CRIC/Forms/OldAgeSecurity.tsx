@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import RedStar from "../../../components/UI/RedStar";
 import Error from "../../../components/UI/Error";
 import CRICResultCard from "../CRICResultCard";
+import { toast } from "react-toastify";
 
 const OASAgeOptions = ["Select One", 65, 66, 67, 68, 69, 70];
 
@@ -29,6 +30,9 @@ export default function OldAgeSecurity() {
 
   const handleNext = () => {
     if (!oasStartYear) {
+      if(!oasStartYear){
+        toast.error("Receiving OAS pension age is required.")
+      }
       return setShowError(true);
     }
     dispatch(nextStep());

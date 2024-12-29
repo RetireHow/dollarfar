@@ -14,6 +14,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import { handleKeyDown } from "../../utils/handleKeyDown";
 import { isNegative } from "../../utils/isNegative";
+import { toast } from "react-toastify";
 
 type TOptions = {
   label: string;
@@ -84,7 +85,7 @@ export default function RRIFForm() {
     withdrawalEndYear,
     annualWithdrawalAmount,
     RRIFInitalBalance,
-    withdrawalFrequency
+    withdrawalFrequency,
   } = useAppSelector((state) => state.RRIF);
 
   const [minWithdrowalAmount, setMinWithdrawalAbmount] = useState<number>(0);
@@ -111,8 +112,17 @@ export default function RRIFForm() {
       isNegative(withdrawalStartYear) ||
       isNegative(withdrawalEndYear) ||
       isNegative(rateOfReturn) ||
-      isNegative(annualWithdrawalAmount) 
+      isNegative(annualWithdrawalAmount)
     ) {
+      if (!RRIFInitalBalance) {
+        toast.error("Initial RRIF balance is required.");
+      }
+      if (!withdrawalStartYear) {
+        toast.error("Withdrawal start age is required.");
+      }
+      if (!withdrawalEndYear) {
+        toast.error("Withdrawal end age is required.");
+      }
       return setShowError(true);
     }
 
@@ -262,10 +272,10 @@ export default function RRIFForm() {
             </p>
           )}
           {showError && !withdrawalStartYear && (
-          <p className="text-red-500 text-[14px] font-bold">
-            This field is required.
-          </p>
-        )}
+            <p className="text-red-500 text-[14px] font-bold">
+              This field is required.
+            </p>
+          )}
         </div>
 
         <div>
@@ -294,10 +304,10 @@ export default function RRIFForm() {
             </p>
           )}
           {showError && !withdrawalEndYear && (
-          <p className="text-red-500 text-[14px] font-bold">
-            This field is required.
-          </p>
-        )}
+            <p className="text-red-500 text-[14px] font-bold">
+              This field is required.
+            </p>
+          )}
         </div>
       </div>
 

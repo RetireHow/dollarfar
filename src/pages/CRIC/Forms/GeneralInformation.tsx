@@ -9,6 +9,7 @@ import Error from "../../../components/UI/Error";
 import CRICResultCard from "../CRICResultCard";
 import { handleKeyDown } from "../../../utils/handleKeyDown";
 import { isNegative } from "../../../utils/isNegative";
+import { toast } from "react-toastify";
 
 const yearOptions = [
   "Select One",
@@ -516,6 +517,18 @@ export default function GeneralInformation() {
       !lifeExpectency ||
       Number(lifeExpectency) <= 0
     ) {
+      if (!dobMonth) {
+        toast.error("DOB month is required.");
+      }
+      if (!dobYear) {
+        toast.error("DOB year is required.");
+      }
+      if (!annualRetirementIncomeGoal) {
+        toast.error("Annual retirement income goal is required.");
+      }
+      if (!Number(lifeExpectency)) {
+        toast.error("Life expectency is required.");
+      }
       return setShowError(true);
     }
 
