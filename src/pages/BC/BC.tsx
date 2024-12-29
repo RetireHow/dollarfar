@@ -61,7 +61,7 @@ export default function BC() {
 
       <section
         id="NWReport"
-        className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem]"
+        className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] md:mb-[5rem] mb-[3rem]"
       >
         {/* Header  */}
         <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">

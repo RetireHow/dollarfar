@@ -56,7 +56,7 @@ export default function Landing() {
           </h3>
         </div>
 
-        <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-[2.5rem]">
+        <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 md:gap-[2.5rem] gap-[2rem]">
           {cardsData.map((item) => (
             <CalculatorCard key={item.id} item={item} />
           ))}

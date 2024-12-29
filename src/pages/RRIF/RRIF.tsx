@@ -72,7 +72,7 @@ export default function RRIF() {
         <PageHero data={data} />
       </div>
 
-      <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem]">
+      <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] md:mb-[5rem] mb-[3rem]">
         {/* Header  */}
         <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">
           <div className="flex justify-between items-center flex-wrap">
@@ -91,7 +91,7 @@ export default function RRIF() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 grid-cols-1 gap-[5rem] mb-[5rem]">
+        <div className="grid md:grid-cols-2 grid-cols-1 md:gap-[5rem] gap-[3rem] md:mb-[5rem] mb-[3rem]">
           <RRIFForm />
           <RRIFCard />
         </div>

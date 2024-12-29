@@ -25,7 +25,7 @@ export default function NWForm() {
   };
 
   return (
-    <section className="mb-[5rem] grid md:grid-cols-2 grid-cols-1 gap-[2.5rem]">
+    <section className="md:mb-[5rem] mb-[3rem] grid md:grid-cols-2 grid-cols-1 gap-[2.5rem]">
       <div>
         <h3 className="font-bold md:text-[2rem] text-[18px] mb-[1.5rem]">Assets</h3>
         <div className="space-y-[2.5rem] md:text-[1rem] text-[14px]">

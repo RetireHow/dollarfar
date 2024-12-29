@@ -35,7 +35,7 @@ export default function NWC() {
   return (
     <main className="mb-[5rem]">
       <PageHero data={data} />
-      <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem]">
+      <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] md:mb-[5rem] mb-[3rem]">
         {/* Header  */}
         <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">
           <div className="flex justify-between items-center flex-wrap">
@@ -57,7 +57,7 @@ export default function NWC() {
         <NWForm />
         <div
           id="NWReport"
-          className="lg:grid flex flex-col-reverse lg:grid-cols-3 grid-cols-1 gap-[2rem]"
+          className="lg:grid flex flex-col-reverse lg:grid-cols-3 grid-cols-1 md:gap-[2rem] gap-[3rem]"
         >
           <NWBarChart />
           <NWTotal />

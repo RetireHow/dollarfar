@@ -86,7 +86,7 @@ export default function CIRC() {
         <PageHero data={data} />
       </div>
 
-      <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem]">
+      <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] md:mb-[5rem] mb-[3rem]">
         {/* Header  */}
         <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">
           <div className="flex justify-between items-center flex-wrap">
@@ -105,7 +105,7 @@ export default function CIRC() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-[5rem] lg:flex-row flex-col">
+        <div className="flex items-center justify-between md:gap-[5rem] gap-[3rem] lg:flex-row flex-col">
           {/* ==========================|| Sliders Container ||===================================  */}
           <div className="space-y-[3rem] lg:w-[50%] w-full">
             <PrincipalAmountSlider showError={showError} />
@@ -125,7 +125,7 @@ export default function CIRC() {
           <CalculationCard />
         </div>
 
-        <div className="flex lg:flex-row flex-col lg:items-center lg:gap-5 mt-[5rem]">
+        <div className="flex lg:flex-row flex-col lg:items-center lg:gap-5 md:mt-[5rem] mt-[3rem]">
           <section className="border-[1px] border-gray-300 rounded-[10px] p-[1rem] flex-1">
             <div className="flex justify-center items-center">
               <p className="font-bold text-gray-500 md:text-[1.2rem] text-[14px]">

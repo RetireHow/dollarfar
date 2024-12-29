@@ -22,7 +22,7 @@ export default function RRSPDescription() {
         </div>
       </section>
 
-      <section className="md:mx-[5rem] mx-[1rem] mt-[3rem]">
+      <section className="md:mx-[5rem] mx-[1rem] md:mt-[3rem] mt-[2rem]">
         <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
           Formula to Calculate RRSP?
         </h3>
@@ -78,7 +78,7 @@ export default function RRSPDescription() {
         </div>
       </section>
 
-      <section className="md:mx-[5rem] mx-[1rem] mt-[3rem]">
+      <section className="md:mx-[5rem] mx-[1rem] md:mt-[3rem] mt-[2rem]">
         <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
           How does RRSP Work?
         </h3>

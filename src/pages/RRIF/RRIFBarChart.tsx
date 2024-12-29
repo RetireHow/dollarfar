@@ -19,7 +19,7 @@ export default function RRIFBarChart() {
   const { currency, currencyFullName } = useAppSelector((state) => state.globalCurrency);
 
   return (
-    <div className="lg:flex items-center gap-5 my-[5rem]">
+    <div className="lg:flex items-center gap-5 md:my-[5rem] my-[3rem]">
       <div
         id="RRIF-Chart"
         className="lg:min-h-[400px] overflow-x-auto border-[1px] border-gray-300 rounded-[10px] p-5 flex-1"

@@ -30,7 +30,7 @@ export default function Description() {
         </div>
       </section>
 
-      <section className="md:mx-[5rem] mx-[1rem] mt-[3rem]">
+      <section className="md:mx-[5rem] mx-[1rem] md:mt-[3rem] mt-[2rem]">
         <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
           What is Compound Interest Calculator?
         </h3>
@@ -42,7 +42,7 @@ export default function Description() {
         </p>
       </section>
 
-      <section className="md:mx-[5rem] mx-[1rem] mt-[3rem]">
+      <section className="md:mx-[5rem] mx-[1rem] md:mt-[3rem] mt-[2rem]">
         <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
           How is Compound Interest Calculator Work?
         </h3>
@@ -61,7 +61,7 @@ export default function Description() {
         </div>
       </section>
 
-      <section className="md:mx-[5rem] mx-[1rem] mt-[3rem]">
+      <section className="md:mx-[5rem] mx-[1rem] md:mt-[3rem] mt-[2rem]">
         <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
           Example of Compound Interest Calculation
         </h3>

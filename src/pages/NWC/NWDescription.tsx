@@ -27,7 +27,7 @@ export default function NWDescription() {
         </div>
       </section>
 
-      <section className="md:mx-[5rem] mx-[1rem] mt-[3rem]">
+      <section className="md:mx-[5rem] mx-[1rem] md:mt-[3rem] mt-[2rem]">
         <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
           How to Calculate Net Worth
         </h3>
@@ -42,7 +42,7 @@ export default function NWDescription() {
         </div>
       </section>
 
-      <section className="md:mx-[5rem] mx-[1rem] mt-[3rem]">
+      <section className="md:mx-[5rem] mx-[1rem] md:mt-[3rem] mt-[2rem]">
         <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
           Net Worth Calculation Formula
         </h3>
@@ -80,7 +80,7 @@ export default function NWDescription() {
         </div>
       </section>
 
-      <section className="md:mx-[5rem] mx-[1rem] mt-[3rem]">
+      <section className="md:mx-[5rem] mx-[1rem] md:mt-[3rem] mt-[2rem]">
         <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
           Net Worth Calculation Example
         </h3>
