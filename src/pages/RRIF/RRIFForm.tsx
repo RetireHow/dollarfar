@@ -72,8 +72,7 @@ const customStyles: StylesConfig<TOptions, boolean> = {
 };
 
 const withdrawalFrequencyOptions = [
-  { label: "Monthly", value: "Monthly" },
-  { label: "Annually", value: "Annually" },
+  { label: "Annually", value: "Annually" }
 ];
 
 export default function RRIFForm() {
