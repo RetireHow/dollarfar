@@ -14,8 +14,6 @@ export default function RRIFTable() {
   data[
     data.length - 1
   ]?.balanceAtEndOfTheYear || 0
-  
-  console.log({data})
 
   const years = withdrawalEndYear - withdrawalStartYear;
   const { currency } = useAppSelector((state) => state.globalCurrency);

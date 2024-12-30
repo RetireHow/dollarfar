@@ -92,7 +92,7 @@ export default function RRIFDescription() {
 
       <section className="md:mx-[5rem] mx-[1rem] md:mt-[3rem] mt-[2rem]">
         <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
-          How is RRIF Work?
+          How does RRIF Work?
         </h3>
         <div className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
