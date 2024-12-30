@@ -16,7 +16,7 @@ export default function RRIFCard() {
   const remainingBalanceInRRIF =
     ageBreakdownDataOverLifeTimeManually[
       ageBreakdownDataOverLifeTimeManually.length - 1
-    ]?.balanceAtEndOfTheYear;
+    ]?.balanceAtEndOfTheYear || 0;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const totalWithdrawnAmount = ageBreakdownDataOverLifeTimeManually?.reduce(
     (total, curr: any) => {

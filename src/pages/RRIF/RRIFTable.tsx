@@ -8,8 +8,15 @@ export default function RRIFTable() {
     rateOfReturn,
     withdrawalStartYear,
     withdrawalEndYear,
-    remainingRRRIFBalanceEndOfPeriod,
   } = useAppSelector((state) => state.RRIF);
+
+  const remainingBalanceInRRIF =
+  data[
+    data.length - 1
+  ]?.balanceAtEndOfTheYear || 0
+  
+  console.log({data})
+
   const years = withdrawalEndYear - withdrawalStartYear;
   const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
@@ -49,7 +56,7 @@ export default function RRIFTable() {
         After {years} years, the RRIF balance will reduce gradually, providing
         steady withdrawals and accounting for the return rate. At the end of{" "}
         {years} years, the remaining balance may be {currency}
-        {numberWithCommas(Math.round(remainingRRRIFBalanceEndOfPeriod))}, depending on actual return rates and
+        {numberWithCommas(remainingBalanceInRRIF)}, depending on actual return rates and
         withdrawals.
       </p>
     </section>
