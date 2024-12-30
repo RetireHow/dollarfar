@@ -126,6 +126,10 @@ export default function RRIFForm() {
       return setShowError(true);
     }
 
+    if(withdrawalStartYear && withdrawalStartYear < 50){
+      return toast.error("Withdrawal start age must be greater than or equal to 50.")
+    }
+
     if (ageWithdrawalPercentages[withdrawalStartYear]) {
       const result =
         RRIFInitalBalance *

@@ -53,7 +53,7 @@ export default function NWDescription() {
         The net worth calculation formula is as stated below:																									
         </p>
         <p className="font-bold text-black md:text-[18px] text-[14px] mt-5">
-        Net worth = [Value of Asset 1 + Value of Asset 2 + Value of Asset 3 + Value of Asset N] [Value of Liability 1 + Value of Liability 2 + Value of Liability 3 + Value of Liability N]																									
+        Net worth = [Value of Asset 1 + Value of Asset 2 + Value of Asset 3 + Value of Asset N] - [Value of Liability 1 + Value of Liability 2 + Value of Liability 3 + Value of Liability N]																									
         </p>
         <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
         Let us understand this formula in detail:																									

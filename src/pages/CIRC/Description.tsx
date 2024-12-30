@@ -73,13 +73,13 @@ export default function Description() {
         <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mb-[1rem]">
           So, in the first year, you earn {currency}2,000 on your investment of {currency}
           20,000. In the second year, your principal amount changes to {currency}
-          22,000. You now earn {currency}22000 as interest on your new principal
-          amount, so you now have a total of 220000 + 22000 = 242000. By using
+          22,000. You now earn {currency}2,200 as interest on your new principal
+          amount, so you now have a total of 22,000 + 2,200 = 24,200. By using
           the above formula, you can easily understand the calculation of the
           coming years.
         </p>
         <p className="font-bold text-black md:text-[1rem] text-[14px]">
-          A = 200000 (1 + 10/1) ^ 5 = 322000
+          A = 20,000 (1 + 10/1) ^ 5 = 32,210.20
         </p>
       </section>
     </article>
