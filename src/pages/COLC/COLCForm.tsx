@@ -148,7 +148,7 @@ export default function COLCForm() {
       <div className="md:text-[1rem] text-[14px]">
         <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
           <p>Your Income</p>
-          <CustomTooltip title="Your total income" />
+          <CustomTooltip title="Enter your income to see how far your money will go in the new city." />
         </div>
         <input
           className="outline-none border-[1px] bg-white px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
@@ -168,7 +168,7 @@ export default function COLCForm() {
       <div className="md:text-[1rem] text-[14px]">
         <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
           <p>City your are moving from</p>
-          <CustomTooltip title="The city you are moving from" />
+          <CustomTooltip title="Select the city you’re currently living in to start the comparison." />
         </div>
         <Select
           size="large"
@@ -193,7 +193,7 @@ export default function COLCForm() {
       <div className="md:text-[1rem] text-[14px]">
         <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
           <p>City your are moving to</p>
-          <CustomTooltip title="The city you are moving to" />
+          <CustomTooltip title="Select the city you’re moving to for a detailed cost of living comparison." />
         </div>
         <Select
           size="large"
