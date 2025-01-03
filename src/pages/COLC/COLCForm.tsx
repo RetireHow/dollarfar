@@ -156,7 +156,7 @@ export default function COLCForm() {
           name="income"
           value={storedIncome}
           onChange={(e) => setStoredIncome(e.target.value)}
-          placeholder="Type and Pick City"
+          placeholder="Enter income"
         />
         {showError && !storedIncome && (
           <p className="text-red-600 font-bold text-[14px] mt-[2px]">
