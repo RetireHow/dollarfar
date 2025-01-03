@@ -38,8 +38,10 @@ export default function COLCForm() {
   const [apiDataLoading, setApiDataLoading] = useState(false);
   const [selectOptions, setSelectOptions] = useState<TOption[]>([]);
   const [showError, setShowError] = useState(false);
+  const [isCitiesLoading, setIsCitiesLoading] = useState(false);
 
   useEffect(() => {
+    setIsCitiesLoading(true);
     fetch("https://www.numbeo.com/api/cities?api_key=qtnt20fj2vhykj")
       .then((res) => res.json())
       .then((data) => {
@@ -54,9 +56,11 @@ export default function COLCForm() {
           }
         );
         setSelectOptions(options);
+        setIsCitiesLoading(false);
       })
       .catch((err) => {
         toast.error(err.message);
+        setIsCitiesLoading(false);
       });
   }, []);
 
@@ -170,6 +174,7 @@ export default function COLCForm() {
           <p>City your are moving from</p>
           <CustomTooltip title="Select the city you’re currently living in to start the comparison." />
         </div>
+        <div className="relative">
         <Select
           size="large"
           // style={{ width: 130, height: 45, border: "1px solid gray" }}
@@ -187,7 +192,18 @@ export default function COLCForm() {
           placeholder="Type and Pick City"
           showSearch={true}
           allowClear
+          loading={isCitiesLoading}
+          disabled={isCitiesLoading}
         ></Select>
+        {isCitiesLoading && (
+            <Icon
+              className="absolute left-3 top-2"
+              icon="line-md:loading-loop"
+              width="24"
+              height="24"
+            />
+          )}
+        </div>
       </div>
 
       <div className="md:text-[1rem] text-[14px]">
@@ -195,24 +211,36 @@ export default function COLCForm() {
           <p>City your are moving to</p>
           <CustomTooltip title="Select the city you’re moving to for a detailed cost of living comparison." />
         </div>
-        <Select
-          size="large"
-          // style={{ width: 130, height: 45, border: "1px solid gray" }}
-          className="w-full h-[50px] border-[1px] !border-[#838383] rounded-[8px]"
-          onChange={(value) => {
-            setCityName2(value);
-          }}
-          options={selectOptions}
-          suffixIcon={
+        <div className="relative">
+          <Select
+            size="large"
+            // style={{ width: 130, height: 45, border: "1px solid gray" }}
+            className="w-full h-[50px] border-[1px] !border-[#838383] rounded-[8px]"
+            onChange={(value) => {
+              setCityName2(value);
+            }}
+            options={selectOptions}
+            suffixIcon={
+              <Icon
+                className="text-[1.5rem] text-gray-600"
+                icon="iconamoon:arrow-down-2"
+              />
+            }
+            placeholder="Type and Pick City"
+            showSearch={true}
+            allowClear
+            loading={isCitiesLoading}
+            disabled={isCitiesLoading}
+          ></Select>
+          {isCitiesLoading && (
             <Icon
-              className="text-[1.5rem] text-gray-600"
-              icon="iconamoon:arrow-down-2"
+              className="absolute left-3 top-2"
+              icon="line-md:loading-loop"
+              width="24"
+              height="24"
             />
-          }
-          placeholder="Type and Pick City"
-          showSearch={true}
-          allowClear
-        ></Select>
+          )}
+        </div>
       </div>
 
       {apiDataLoading ? (
