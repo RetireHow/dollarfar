@@ -41,7 +41,7 @@ const CitySearch = ({
   };
 
   return (
-    <div className="mt-[1.5rem] relative md:text-[1rem] text-[14px]">
+    <div className="relative md:text-[1rem] text-[14px]">
       <label className="block mb-[0.5rem] font-semibold">{title}</label>
       <div className="relative">
         <input
@@ -50,8 +50,8 @@ const CitySearch = ({
           placeholder="Type and Pick City"
           value={cityName}
           onChange={(e) => {
-            setQuery(e.target.value);
-            setCityName(e.target.value);
+            setQuery(e.target.value?.trim());
+            setCityName(e.target.value?.trim());
           }}
         />
         {loading && (
