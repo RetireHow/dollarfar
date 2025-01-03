@@ -21,7 +21,7 @@ export default function CostTable() {
 
       <div className="overflow-x-auto">
         <div className="min-w-[500px]">
-          <div className="grid grid-cols-4 font-bold border-[1px] border-gray-300 px-4 py-3 bg-gray-100 md:text-[18px] text-[14px] rounded-t-lg">
+          <div className="grid grid-cols-4 font-bold border-[1px] border-gray-300 px-4 py-3 bg-gray-100 md:text-[18px] text-[16px] rounded-t-lg">
             <p>Name</p>
             <p className="ml-[6px]">{selectedCityName1}</p>
             <p className="ml-[6px]">{selectedCityName2}</p>
@@ -29,7 +29,7 @@ export default function CostTable() {
           </div>
 
           <CustomCollapese />
-          <div className="grid grid-cols-4 font-bold border-[1px] border-gray-300 px-4 py-3 bg-black md:text-[17px] text-[14px] text-white">
+          <div className="grid grid-cols-4 font-bold border-[1px] border-gray-300 px-4 py-3 bg-black md:text-[17px] text-[16px] text-white">
             <p>Total</p>
             <p className="ml-[6px]">
               {currency}

@@ -22,7 +22,7 @@ export default function CustomCollapese() {
       return {
         key: category,
         label: (
-          <div className="grid grid-cols-4 gap-5 font-bold md:text-[18px] text-[14px]">
+          <div className="grid grid-cols-4 gap-5 font-bold md:text-[18px] text-[16px]">
             <p>{category}</p>
             <p className="ml-3">
               {currency}
@@ -45,7 +45,7 @@ export default function CustomCollapese() {
             {items?.map((item, index) => (
               <div
                 key={index}
-                className="grid grid-cols-4 gap-5 text-[16px] border-b-[1px] border-gray-300 pb-3 font-medium"
+                className="grid grid-cols-4 gap-5 md:text-[16px] text-[14px] border-b-[1px] border-gray-300 pb-3 font-medium"
               >
                 <p>{item?.itemName}</p>
                 <p>
