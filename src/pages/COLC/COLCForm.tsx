@@ -127,6 +127,7 @@ export default function COLCForm() {
           setCityName1("");
           setCityName2("");
           setStoredIncome("");
+          setShowError(false);
         } else {
           toast.error(
             "No information is available for the selected cities. Please try other cities."
