@@ -1,5 +1,9 @@
 import { useAppSelector } from "../../redux/hooks";
 import { numberWithCommas } from "../../utils/numberWithCommas";
+import sadEmosee from "../../assets/sad.gif"
+// import happyEmosee from "../../assets/happy.gif"
+import happyEmosee from "../../assets/happy2.gif"
+import neutralEmosee from "../../assets/neutral.gif"
 
 export default function BudgetCalcCard() {
   const {
@@ -105,7 +109,16 @@ export default function BudgetCalcCard() {
           </p>
           <div className="md:text-[1.25rem] text-[1rem] flex items-center gap-[2px]">
             <p>{currency}</p>
-            <p>{numberWithCommas(cashflowDeficit)}</p>
+            <div className="flex items-center gap-1">
+              <p>{numberWithCommas(cashflowDeficit)}</p>
+              {totalIncome < Number(totalExpenses) ? (
+                <p> <img src={sadEmosee} className="md:w-8 w-6 md:h-8 h-6" alt="Sad Emosee Icon" /> </p>
+              ) : totalIncome > Number(totalExpenses) ? (
+                <p> <img src={happyEmosee} className="md:w-8 w-6 md:h-8 h-6" alt="Happy Emosee Icon" /> </p>
+              ) : (
+                <p> <img src={neutralEmosee} className="md:w-8 w-6 md:h-8 h-6" alt="Neutral Emosee Icon" /> </p>
+              )}
+            </div>
           </div>
         </div>
       </div>
