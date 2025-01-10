@@ -92,12 +92,12 @@ export default function COLCForm() {
       try {
         setApiDataLoading(true);
         const res1 = await fetch(
-          `https://www.numbeo.com/api/city_prices?api_key=qtnt20fj2vhykj&city=${selectedCity1}&country=${selectedCountry1}&currency=USD`
+          `https://www.numbeo.com/api/city_prices?api_key=qtnt20fj2vhykj&city=${selectedCity1}&country=${selectedCountry1}&currency=CAD`
         );
         const city1CostData = await res1.json();
 
         const res2 = await fetch(
-          `https://www.numbeo.com/api/city_prices?api_key=qtnt20fj2vhykj&city=${selectedCity2}&country=${selectedCountry2}&currency=USD`
+          `https://www.numbeo.com/api/city_prices?api_key=qtnt20fj2vhykj&city=${selectedCity2}&country=${selectedCountry2}&currency=CAD`
         );
         const city2CostData = await res2.json();
 
