@@ -56,7 +56,7 @@ export default function PrincipalAmountSlider({
       />
       <div className="flex justify-between items-center md:text-[1rem] text-[14px] font-medium text-[#696969] pt-5">
         <p>500</p>
-        <p>10,000</p>
+        <p>100000</p>
       </div>
       {!principal && showError && (
         <p className="text-red-500 text-[14px] text-right font-bold">

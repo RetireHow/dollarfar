@@ -23,6 +23,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 // import { city1CostData, city2CostData } from "../../data/db";
 import { Select } from "antd";
 import CustomTooltip from "../../components/UI/CustomTooltip";
+import RedStar from "../../components/UI/RedStar";
 
 export default function COLCForm() {
   useEffect(() => {
@@ -128,8 +129,6 @@ export default function COLCForm() {
 
           dispatch(setCOLCModifiedCostData(modifiedCostData));
           // reset input fields
-          setCityName1("");
-          setCityName2("");
           setStoredIncome("");
           setShowError(false);
         } else {
@@ -151,7 +150,9 @@ export default function COLCForm() {
     <form className="grid lg:grid-cols-3 grid-cols-1 gap-6 mb-[3rem]">
       <div className="md:text-[1rem] text-[14px]">
         <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
-          <p>Your Income</p>
+          <p>
+            Your Income <RedStar />
+          </p>
           <CustomTooltip title="Enter your income to see how far your money will go in the new city." />
         </div>
         <input
@@ -175,27 +176,27 @@ export default function COLCForm() {
           <CustomTooltip title="Select the city you’re currently living in to start the comparison." />
         </div>
         <div className="relative">
-        <Select
-          size="large"
-          // style={{ width: 130, height: 45, border: "1px solid gray" }}
-          className="w-full h-[50px] border-[1px] !border-[#838383] rounded-[8px]"
-          onChange={(value) => {
-            setCityName1(value);
-          }}
-          options={selectOptions}
-          suffixIcon={
-            <Icon
-              className="text-[1.5rem] text-gray-600"
-              icon="iconamoon:arrow-down-2"
-            />
-          }
-          placeholder="Type and Pick City"
-          showSearch={true}
-          allowClear
-          loading={isCitiesLoading}
-          disabled={isCitiesLoading}
-        ></Select>
-        {isCitiesLoading && (
+          <Select
+            size="large"
+            // style={{ width: 130, height: 45, border: "1px solid gray" }}
+            className="w-full h-[50px] border-[1px] !border-[#838383] rounded-[8px]"
+            onChange={(value) => {
+              setCityName1(value);
+            }}
+            options={selectOptions}
+            suffixIcon={
+              <Icon
+                className="text-[1.5rem] text-gray-600"
+                icon="iconamoon:arrow-down-2"
+              />
+            }
+            placeholder="Type and Pick City"
+            showSearch={true}
+            allowClear
+            loading={isCitiesLoading}
+            disabled={isCitiesLoading}
+          ></Select>
+          {isCitiesLoading && (
             <Icon
               className="absolute left-3 top-2"
               icon="line-md:loading-loop"
@@ -254,15 +255,15 @@ export default function COLCForm() {
         </div>
       ) : (
         <div className="flex justify-end lg:col-span-3">
-          <button
-            onClick={handleCompare}
-            disabled={cityName1 && cityName2 ? false : true}
-            className={`text-white p-[0.8rem] rounded-[10px] lg:w-[180px] w-full ${
-              cityName1 && cityName2 ? "bg-black" : "bg-gray-300"
-            }`}
-          >
-            Compare
-          </button>
+            <button
+              onClick={handleCompare}
+              disabled={cityName1 && cityName2 ? false : true}
+              className={`text-white p-[0.8rem] rounded-[10px] lg:w-[180px] w-full ${
+                cityName1 && cityName2 ? "bg-black" : "bg-gray-300"
+              }`}
+            >
+              Compare
+            </button>
         </div>
       )}
     </form>

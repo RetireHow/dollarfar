@@ -22,7 +22,7 @@ export default function CustomCollapese() {
       return {
         key: category,
         label: (
-          <div className="grid grid-cols-4 gap-5 font-bold md:text-[18px] text-[16px]">
+          <div className="grid grid-cols-4 gap-5 font-medium md:text-[18px] text-[16px]">
             <p>{category}</p>
             <p className="ml-3">
               {currency}
