@@ -156,8 +156,8 @@ export default function COLCForm() {
           <CustomTooltip title="Enter your income to see how far your money will go in the new city." />
         </div>
         <input
-          className="outline-none border-[1px] bg-white px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
-          type="text"
+          className={`outline-none bg-white px-[12px] py-2 w-full duration-300 rounded-[8px] border-[1px] ${!storedIncome && showError ? 'border-red-600' : 'border-[#838383]'}`}
+          type="number"
           name="income"
           value={storedIncome}
           onChange={(e) => setStoredIncome(e.target.value)}
