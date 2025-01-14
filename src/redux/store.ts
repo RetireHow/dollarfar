@@ -8,7 +8,7 @@ import RRIFReducer from "./features/RRIF/RRIFSlice";
 import RRSPReducer from "./features/RRSP/RRSPSlice";
 import globalCurrencyReducer from "./features/other/globalCurrency";
 import CRICReducer from "./features/CRIC/CRICSlice";
-import COLCReducer from "./features/COLC/COLCSlice"
+import COLCReducer from "./features/COLC/COLCSlice";
 
 // Create and configure the store
 const store = configureStore({
@@ -19,11 +19,12 @@ const store = configureStore({
     budgetCalculator: budgetReducer,
     RRIF: RRIFReducer,
     rrspCalculator: RRSPReducer,
-    CRICalculator:CRICReducer,
-    COLCalculator:COLCReducer,
+    CRICalculator: CRICReducer,
+    COLCalculator: COLCReducer,
     globalCurrency: globalCurrencyReducer,
     stepper: stepperReducer,
   },
+  devTools: import.meta.env.MODE === "development",
 });
 
 // Export the store type

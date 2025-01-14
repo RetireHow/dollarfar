@@ -13,3 +13,5 @@ createRoot(document.getElementById("root")!).render(
     </Provider>
   </StrictMode>
 );
+
+console.log("Dev Mode=========> ", import.meta.env.MODE)
