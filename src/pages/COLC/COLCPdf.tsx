@@ -8,6 +8,7 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import { assets } from "../../assets/assets";
+import { isNegative } from "../../utils/isNegative";
 
 // Define styles for the PDF
 const styles = StyleSheet.create({
@@ -41,9 +42,54 @@ const styles = StyleSheet.create({
   },
 });
 
+type TItem = {
+  itemName: string;
+  city1ItemPrice: number;
+  city2ItemPrice: number;
+  livingIndex: number;
+};
+
+type TCOLCModifiedCostDataItem = {
+  category: string;
+  city1TotalCost: number;
+  city2TotalCost: number;
+  totalLivingIndex: number;
+  city1Currency: string;
+  city2Currency: string;
+  items: TItem[];
+};
+
+type TData = {
+  city1SubTotalCost: number;
+  city2SubTotalCost: number;
+  selectedCityName1: string;
+  selectedCityName2: string;
+  COLCModifiedCostData: TCOLCModifiedCostDataItem[];
+  income: number;
+  subTotalIndex: number;
+  base64: string;
+  name: string;
+  email: string;
+  currency: string;
+  currencyFullName: string;
+};
+
 // Define a new PDF document component
-export const COLCPdf = ({ data }: { data: any }) => {
-  const { name, email } = data || {};
+export const COLCPdf = ({ data }: { data: TData }) => {
+  const {
+    name,
+    email,
+    currency,
+    currencyFullName,
+    selectedCityName1,
+    selectedCityName2,
+    income,
+    COLCModifiedCostData,
+    city1SubTotalCost,
+    city2SubTotalCost,
+    subTotalIndex,
+    base64,
+  } = data || {};
 
   return (
     <Document>
@@ -83,7 +129,9 @@ export const COLCPdf = ({ data }: { data: any }) => {
           {/* Title  */}
           <View style={styles.section}>
             <Text>Cost of Living Calculator</Text>
-            <Text style={styles.title}>$ - CAD</Text>
+            <Text style={styles.title}>
+              {currency} - {currencyFullName}
+            </Text>
           </View>
 
           {/* Card Container  */}
@@ -109,7 +157,7 @@ export const COLCPdf = ({ data }: { data: any }) => {
                 <Text style={{ color: "#696969" }}>
                   City your are moving from
                 </Text>
-                <Text>Toronto</Text>
+                <Text>{selectedCityName1}</Text>
               </View>
               <View
                 style={{
@@ -117,10 +165,8 @@ export const COLCPdf = ({ data }: { data: any }) => {
                   justifyContent: "space-between",
                 }}
               >
-                <Text style={{ color: "#696969" }}>
-                  City youar are moving to
-                </Text>
-                <Text>Vancouver</Text>
+                <Text style={{ color: "#696969" }}>City you are moving to</Text>
+                <Text>{selectedCityName2}</Text>
               </View>
               <View
                 style={{
@@ -129,11 +175,11 @@ export const COLCPdf = ({ data }: { data: any }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>Your Income</Text>
-                <Text>$12,345</Text>
+                <Text>${income}</Text>
               </View>
             </View>
 
-            <View style={{marginTop:"25px", marginBottom:"8px"}}>
+            <View style={{ marginTop: "25px", marginBottom: "8px" }}>
               <Text style={{ fontWeight: "bold", fontSize: "14px" }}>
                 Cost Difference
               </Text>
@@ -142,7 +188,7 @@ export const COLCPdf = ({ data }: { data: any }) => {
               style={{
                 border: "1px solid #EAECF0",
                 width: "100%",
-                padding: 16,
+                paddingTop: 16,
                 borderRadius: 5,
                 backgroundColor: "#F8F8F8",
                 flexDirection: "column",
@@ -156,170 +202,174 @@ export const COLCPdf = ({ data }: { data: any }) => {
                   justifyContent: "space-between",
                   borderBottom: "1px solid #EAECF0",
                   paddingBottom: "8px",
+                  fontSize: "14px",
+                  paddingLeft: 16,
+                  paddingRight: 16,
                 }}
               >
-                <Text style={{ width: "200px"}}>Name</Text>
-                <Text style={{ width: "120px"}}>Toronto</Text>
-                <Text style={{ width: "120px"}}>Vancouver</Text>
-                <Text style={{ width: "50px"}}>Change</Text>
+                <Text style={{ width: "170px" }}>Name</Text>
+                <Text style={{ width: "120px" }}>{selectedCityName1}</Text>
+                <Text style={{ width: "120px" }}>{selectedCityName2}</Text>
+                <Text style={{ width: "80px" }}>Change</Text>
               </View>
 
               {/* Table Body  */}
               {/* row-1  */}
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  borderBottom: "1px solid #EAECF0",
-                  paddingBottom: "8px",
-                  paddingTop: "8px",
-                }}
-              >
-                <Text style={{ width: "200px" }}>Restaurants</Text>
-                <Text style={{ width: "120px" }}>$80</Text>
-                <Text style={{ width: "120px" }}>$150</Text>
-                <Text style={{ width: "50px", color: "#4CAF50" }}>88.50%</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  borderBottom: "1px solid #EAECF0",
-                  paddingBottom: "8px",
-                  paddingTop: "8px",
-                }}
-              >
-                <Text style={{ width: "200px" }}>Markets</Text>
-                <Text style={{ width: "120px" }}>$180</Text>
-                <Text style={{ width: "120px" }}>$250</Text>
-                <Text style={{ width: "50px", color: "#4CAF50" }}>88.50%</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  borderBottom: "1px solid #EAECF0",
-                  paddingBottom: "8px",
-                  paddingTop: "8px",
-                }}
-              >
-                <Text style={{ width: "200px" }}>Transportation</Text>
-                <Text style={{ width: "120px" }}>$280</Text>
-                <Text style={{ width: "120px" }}>$150</Text>
-                <Text style={{ width: "50px", color: "#4CAF50" }}>88.50%</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  borderBottom: "1px solid #EAECF0",
-                  paddingBottom: "8px",
-                  paddingTop: "8px",
-                }}
-              >
-                <Text style={{ width: "200px" }}>Utilities (Monthly)</Text>
-                <Text style={{ width: "120px" }}>$70</Text>
-                <Text style={{ width: "120px" }}>$50</Text>
-                <Text style={{ width: "50px", color: "#4CAF50" }}>88.50%</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  borderBottom: "1px solid #EAECF0",
-                  paddingBottom: "8px",
-                  paddingTop: "8px",
-                }}
-              >
-                <Text style={{ width: "200px" }}>Sports And Leisure</Text>
-                <Text style={{ width: "120px" }}>$80</Text>
-                <Text style={{ width: "120px" }}>$150</Text>
-                <Text style={{ width: "50px", color: "#4CAF50" }}>88.50%</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  borderBottom: "1px solid #EAECF0",
-                  paddingBottom: "8px",
-                  paddingTop: "8px",
-                }}
-              >
-                <Text style={{ width: "200px" }}>Childcare</Text>
-                <Text style={{ width: "120px" }}>$60</Text>
-                <Text style={{ width: "120px" }}>$50</Text>
-                <Text style={{ width: "50px", color: "#4CAF50" }}>88.50%</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  borderBottom: "1px solid #EAECF0",
-                  paddingBottom: "8px",
-                  paddingTop: "8px",
-                }}
-              >
-                <Text style={{ width: "200px" }}>Clothing And Shoes</Text>
-                <Text style={{ width: "120px" }}>$580</Text>
-                <Text style={{ width: "120px" }}>$450</Text>
-                <Text style={{ width: "50px", color: "#4CAF50" }}>88.50%</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  borderBottom: "1px solid #EAECF0",
-                  paddingBottom: "8px",
-                  paddingTop: "8px",
-                }}
-              >
-                <Text style={{ width: "200px" }}>Rent Per Month</Text>
-                <Text style={{ width: "120px" }}>$80</Text>
-                <Text style={{ width: "120px" }}>$150</Text>
-                <Text style={{ width: "50px", color: "#4CAF50" }}>88.50%</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  borderBottom: "1px solid #EAECF0",
-                  paddingBottom: "8px",
-                  paddingTop: "8px",
-                }}
-              >
-                <Text style={{ width: "200px" }}>Buy Apartment Price</Text>
-                <Text style={{ width: "120px" }}>$680</Text>
-                <Text style={{ width: "120px" }}>$350</Text>
-                <Text style={{ width: "50px", color: "#4CAF50" }}>88.50%</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  borderBottom: "1px solid #EAECF0",
-                  paddingBottom: "8px",
-                  paddingTop: "8px",
-                }}
-              >
-                <Text style={{ width: "200px" }}>Salaries And Financing</Text>
-                <Text style={{ width: "120px" }}>$80</Text>
-                <Text style={{ width: "120px" }}>$150</Text>
-                <Text style={{ width: "50px", color: "#4CAF50" }}>88.50%</Text>
-              </View>
-            </View>
-          </View>
+              {COLCModifiedCostData?.map((item) => {
+                const {
+                  category,
+                  city1TotalCost,
+                  city2TotalCost,
+                  totalLivingIndex,
+                } = item || {};
+                return (
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      borderBottom: "1px solid #EAECF0",
+                      paddingBottom: "8px",
+                      paddingTop: "8px",
+                      paddingLeft: 16,
+                      paddingRight: 16,
+                    }}
+                  >
+                    <Text style={{ width: "170px" }}>{category}</Text>
+                    <Text style={{ width: "120px" }}>${city1TotalCost}</Text>
+                    <Text style={{ width: "120px" }}>${city2TotalCost}</Text>
+                    <Text style={{ width: "80px", color: "#4CAF50" }}>
+                      {isNegative(totalLivingIndex)
+                        ? `${totalLivingIndex}`
+                        : `+${totalLivingIndex}`}{" "}
+                      %
+                    </Text>
+                  </View>
+                );
+              })}
 
-          {/* Chart Container  */}
-          <View style={{ flexDirection: "row" }}>
-            <View style={{ flex: 1 }}>
-              {/* <Image style={{ width: "90%", height: 150 }} src={base64} /> */}
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingBottom: "8px",
+                  paddingTop: "8px",
+                  backgroundColor: "black",
+                  color: "#fff",
+                  paddingLeft: 16,
+                  paddingRight: 16,
+                  borderLeft: "1px solid #EAECF0",
+                  borderRight: "1px solid #EAECF0",
+                }}
+              >
+                <Text style={{ width: "170px" }}>Total</Text>
+                <Text style={{ width: "120px" }}>${city1SubTotalCost}</Text>
+                <Text style={{ width: "120px" }}>${city2SubTotalCost}</Text>
+                <Text style={{ width: "80px", color: "#4CAF50" }}>
+                  {isNegative(subTotalIndex)
+                    ? `${subTotalIndex}`
+                    : `+${subTotalIndex}`}{" "}
+                  %
+                </Text>
+              </View>
             </View>
           </View>
         </View>
 
         {/* Watermark */}
         <Text style={styles.watermark}>Dollarfar.com</Text>
+      </Page>
 
+      {/* page 2  */}
+      <Page style={{ position: "relative" }}>
+        {/* Chart Container  */}
+        <View
+          style={{
+            padding: 15,
+            marginTop: 30,
+            marginLeft: 30,
+            marginRight: 30,
+          }}
+        >
+          <Image style={{ width: "100%", height: 250 }} src={base64} />
+
+          {/* Legends Container  */}
+          <View
+            style={{
+              fontSize: 12,
+              flexDirection: "row",
+              justifyContent: "center",
+              gap: 16,
+              fontWeight: "extrabold",
+              flexWrap: "wrap",
+              marginTop: "8px",
+            }}
+          >
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+            >
+              <Text
+                style={{
+                  width: "20px",
+                  backgroundColor: "#1E88E5",
+                  borderRadius: "30px",
+                  height: "6px",
+                }}
+              ></Text>
+              <Text>
+                Income : {currency}
+                {income}
+              </Text>
+            </View>
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+            >
+              <Text
+                style={{
+                  width: "20px",
+                  backgroundColor: "#F44336",
+                  borderRadius: "30px",
+                  height: "6px",
+                }}
+              ></Text>
+              <Text>
+                {selectedCityName1}(${city1SubTotalCost})
+              </Text>
+            </View>
+
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+            >
+              <Text
+                style={{
+                  width: "20px",
+                  backgroundColor: "#4CAF50",
+                  borderRadius: "30px",
+                  height: "6px",
+                }}
+              ></Text>
+              <Text>
+                {selectedCityName2}(${city2SubTotalCost})
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          style={{ fontSize: "14px", textAlign: "center", marginTop: "10px" }}
+        >
+          <Text>
+            Living in {selectedCityName2} is approximately{" "}
+            {isNegative(subTotalIndex)
+              ? `${subTotalIndex}`
+              : `+${subTotalIndex}`}
+            % {isNegative(subTotalIndex) ? "cheaper" : "more expensive"} than
+            living in {selectedCityName1}.
+          </Text>
+        </View>
+
+        {/* Watermark */}
+        <Text style={styles.watermark}>Dollarfar.com</Text>
+
+        {/* Footer  */}
         <View
           style={{
             flexDirection: "row",

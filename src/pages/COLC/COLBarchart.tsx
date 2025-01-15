@@ -97,7 +97,7 @@ export const COLBarChart = () => {
     <section>
       <div className="col-span-2 flex md:flex-row flex-col justify-center md:items-center gap-5 mt-[3.5rem]">
         <div
-          id="NWC-Chart"
+          id="COLC-Chart"
           style={{ boxShadow: "0px 0px 5px 1px rgba(0, 0, 0, 0.05)" }}
           className="md:max-h-[300px] bg-white shadow-md rounded-lg border-[1px] border-gray-200 p-[1rem]"
         >

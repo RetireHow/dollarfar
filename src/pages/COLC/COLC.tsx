@@ -7,6 +7,7 @@ import COLCForm from "./COLCForm";
 import CurrencySelect from "../../components/UI/CurrencySelect";
 import CostTable from "./CostTable";
 import { COLBarChart } from "./COLBarchart";
+import { useAppSelector } from "../../redux/hooks";
 
 const data = {
   title: "Cost of Living Calculator",
@@ -16,6 +17,32 @@ const data = {
 };
 
 export default function COLC() {
+  const {
+    city1SubTotalCost,
+    city2SubTotalCost,
+    selectedCityName1,
+    selectedCityName2,
+    COLCModifiedCostData,
+    income,
+    subTotalIndex,
+  } = useAppSelector((state) => state.COLCalculator);
+
+  const { currency, currencyFullName } = useAppSelector(
+    (state) => state.globalCurrency
+  );
+
+  const calculatorData = {
+    city1SubTotalCost,
+    city2SubTotalCost,
+    selectedCityName1,
+    selectedCityName2,
+    COLCModifiedCostData,
+    income,
+    subTotalIndex,
+    currency,
+    currencyFullName,
+  };
+
   return (
     <main className="mb-[5rem]">
       <div data-html2canvas-ignore>
@@ -32,9 +59,9 @@ export default function COLC() {
             <div className="md:flex grid grid-cols-2 items-center flex-wrap md:gap-5 gap-3 md:text-[1rem] text-[14px] md:w-auto w-full">
               <CurrencySelect />
               <DownloadModal
-                calculatorData={{}}
-                fileName="CRIC Report"
-                id="CRIC-Chart"
+                calculatorData={calculatorData}
+                fileName="COLC Report"
+                id="COLC-Chart"
                 PdfComponent={COLCPdf}
               />
             </div>
