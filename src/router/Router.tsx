@@ -17,11 +17,11 @@ import ESP from "../pages/ESP/ESP";
 import COLC from "../pages/COLC/COLC";
 import RRSP from "../pages/RRSP/RRSP";
 import RRIF from "../pages/RRIF/RRIF";
-import CRIC from "../pages/CRIC/CRIC";
-import GeneralInformation from "../pages/CRIC/Forms/GeneralInformation";
-import CanadaPensionPlan from "../pages/CRIC/Forms/CanadaPensionPlan";
-import OldAgeSecurity from "../pages/CRIC/Forms/OldAgeSecurity";
-import Summary from "../pages/CRIC/Summary";
+// import CRIC from "../pages/CRIC/CRIC";
+// import GeneralInformation from "../pages/CRIC/Forms/GeneralInformation";
+// import CanadaPensionPlan from "../pages/CRIC/Forms/CanadaPensionPlan";
+// import OldAgeSecurity from "../pages/CRIC/Forms/OldAgeSecurity";
+// import Summary from "../pages/CRIC/Summary";
 
 export const router = createBrowserRouter([
   {
@@ -98,25 +98,26 @@ export const router = createBrowserRouter([
 
       {
         path: "CRIC",
-        element: <CRIC />,
-        children: [
-          {
-            index: true,
-            element: <GeneralInformation />,
-          },
-          {
-            path: "PP",
-            element: <CanadaPensionPlan />,
-          },
-          {
-            path: "OAS",
-            element: <OldAgeSecurity />,
-          },
-          {
-            path: "summary",
-            element: <Summary />,
-          },
-        ],
+        // element: <CRIC />,
+        // children: [
+        //   {
+        //     index: true,
+        //     element: <GeneralInformation />,
+        //   },
+        //   {
+        //     path: "PP",
+        //     element: <CanadaPensionPlan />,
+        //   },
+        //   {
+        //     path: "OAS",
+        //     element: <OldAgeSecurity />,
+        //   },
+        //   {
+        //     path: "summary",
+        //     element: <Summary />,
+        //   },
+        // ],
+        element: <h1 className="md:text-[1.5rem] text-[1.2rem] text-center md:m-5 m-2">The Comprehensive Retirement Income Calculator will be available soon...</h1>,
       },
 
       // {
