@@ -49,7 +49,7 @@ export default function PrincipalAmountSlider({
         trackClassName="example-track"
         thumbActiveClassName="active-thumb"
         min={500}
-        max={10000}
+        max={100000}
         value={principal}
         minDistance={10}
         onChange={(newValue) => dispatch(setPrincipal(newValue))}
