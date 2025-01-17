@@ -7,6 +7,7 @@ import educationCalcIcon from "./Education-calc-icon.svg";
 import costOfLivingCalcIcon from "./cost-of-living-calc.svg";
 import arrowUpIcon from "./up-arrow.svg";
 import heroImage from "./hero-image.svg";
+import heroImageOptimized from "./hero-image-optimized.jpg";
 import arrowWhite from "./arrow-white.svg";
 import leftArrow from "./left-arrow.svg";
 import whiteBarChart from "./white-bar-chart.svg";
@@ -31,6 +32,7 @@ export const assets = {
   costOfLivingCalcIcon,
   arrowUpIcon,
   heroImage,
+  heroImageOptimized,
   arrowWhite,
   leftArrow,
   whiteBarChart,
