@@ -17,6 +17,10 @@ import dollarfarPngLogo from "./dollarfar-png-logo.png";
 import costOfLeavingFrame from "./cost-of-leaving-frame.png";
 import comprehensiveRetirementFrame from "./comprehensive-retirement-frame.png";
 
+import happyImg from "./happy.gif";
+import neutralImg from "./neutral.gif";
+import sadImg from "./sad.gif";
+
 export const assets = {
   siteLogo,
   compoundInterestCalcIcon,
@@ -36,4 +40,7 @@ export const assets = {
   dollarfarPngLogo,
   costOfLeavingFrame,
   comprehensiveRetirementFrame,
+  happyImg,
+  neutralImg,
+  sadImg,
 };

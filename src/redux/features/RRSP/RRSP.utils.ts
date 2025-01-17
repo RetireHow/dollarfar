@@ -37,7 +37,6 @@ export function calculateRRSPTotalSavings({
 
     // Add the year's savings to the total
     totalSavings += yearSavings;
-    console.log({yearSavings})
 
     // Store cumulative savings by age, rounding to 2 decimal places
     savingsByAge.push({

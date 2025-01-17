@@ -4,7 +4,7 @@ import {
   View,
   Document,
   StyleSheet,
-  Image,
+  Image
 } from "@react-pdf/renderer";
 import { assets } from "../../assets/assets";
 
@@ -228,13 +228,25 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
-                backgroundColor: `${totalIncome < totalExpenses ? 'red' : totalIncome > totalExpenses ? 'green' : 'black'}`,
+                backgroundColor: `${
+                  totalIncome < totalExpenses
+                    ? "red"
+                    : totalIncome > totalExpenses
+                    ? "green"
+                    : "black"
+                }`,
                 color: "#fff",
                 padding: "8px",
                 borderRadius: "5px",
               }}
             >
-              <Text>{totalIncome < totalExpenses ? 'Cashflow Deficit' : totalIncome > totalExpenses ? 'Cashflow Surplus' : "Cashflow"}</Text>
+              <Text>
+                {totalIncome < totalExpenses
+                  ? "Cashflow Deficit"
+                  : totalIncome > totalExpenses
+                  ? "Cashflow Surplus"
+                  : "Cashflow"}
+              </Text>
               <Text>
                 {currency}
                 {cashflowDeficit}
