@@ -9,6 +9,7 @@ import NWForm from "./NWForm";
 import NWTotal from "./NWTotal";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import CurrencySelect from "../../components/UI/CurrencySelect";
+import useTitle from "../../hooks/useTitle";
 
 const data = {
   title: "Net Worth Calculator",
@@ -18,6 +19,7 @@ const data = {
 };
 
 export default function NWC() {
+  useTitle("Dollarfar | NWC");
   const { totalAssets, totalLiabilities, netWorth, assets, liabilities } =
     useAppSelector((state) => state.NWCalculator);
 

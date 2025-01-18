@@ -18,6 +18,7 @@ import { numberWithCommas } from "../../utils/numberWithCommas";
 import CurrencySelect from "../../components/UI/CurrencySelect";
 import { isNegative } from "../../utils/isNegative";
 import { toast } from "react-toastify";
+import useTitle from "../../hooks/useTitle";
 
 const data = {
   title: "Compound Interest Rate Calculator",
@@ -27,6 +28,7 @@ const data = {
 };
 
 export default function CIRC() {
+  useTitle("Dollarfar | CIRC");
   const dispatch = useAppDispatch();
   const {
     rate,

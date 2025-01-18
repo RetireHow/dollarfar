@@ -2,10 +2,12 @@ import { assets } from "../../assets/assets";
 import { cardsData } from "../../data/cardsData";
 import CalculatorCard from "./CalculatorCard";
 import heroEllipseImage from "../../assets/hero-ellipse.svg";
+import useTitle from "../../hooks/useTitle";
 export default function Landing() {
   const handleGetStarted = () => {
     window.scrollTo({ top: 630, behavior: "smooth" });
   };
+  useTitle("Dollarfar | Home");
   return (
     <main className="mb-[3rem] mt-[5rem]">
       {/* Hero Section  */}
@@ -41,7 +43,11 @@ export default function Landing() {
         </div>
 
         <div className="lg:mb-0 mb-[2rem] md:mt-0 mt-[-2rem] md:max-w-[40%] max-w-full">
-          <img className="md:w-full w-[80%]" src={assets.heroImageOptimized} alt="Hero Image" />
+          <img
+            className="md:w-full w-[80%]"
+            src={assets.heroImageOptimized}
+            alt="Hero Image"
+          />
         </div>
       </section>
 

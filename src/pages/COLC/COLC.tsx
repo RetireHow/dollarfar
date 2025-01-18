@@ -8,6 +8,7 @@ import CurrencySelect from "../../components/UI/CurrencySelect";
 import CostTable from "./CostTable";
 import { COLBarChart } from "./COLBarchart";
 import { useAppSelector } from "../../redux/hooks";
+import useTitle from "../../hooks/useTitle";
 
 const data = {
   title: "Cost of Living Calculator",
@@ -17,6 +18,7 @@ const data = {
 };
 
 export default function COLC() {
+  useTitle("Dollarfar | COLC");
   const {
     city1SubTotalCost,
     city2SubTotalCost,

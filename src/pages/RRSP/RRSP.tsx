@@ -9,6 +9,7 @@ import { RRSPPdf } from "./RRSPPdf";
 import RRSPAreaChart from "./RRSPAreaChart";
 import { useAppSelector } from "../../redux/hooks";
 import CurrencySelect from "../../components/UI/CurrencySelect";
+import useTitle from "../../hooks/useTitle";
 
 const data = {
   title: "Registered Retirement Savings Plan (RRSP) Calculator",
@@ -18,6 +19,7 @@ const data = {
 };
 
 export default function RRSP() {
+  useTitle("Dollarfar | RRSP Calculator");
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);

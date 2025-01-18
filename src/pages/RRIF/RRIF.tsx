@@ -11,6 +11,7 @@ import DownloadModal from "../../components/DownloadModal";
 import { RRIFPdf } from "./RRIFPdf";
 import { useAppSelector } from "../../redux/hooks";
 import CurrencySelect from "../../components/UI/CurrencySelect";
+import useTitle from "../../hooks/useTitle";
 
 const data = {
   title: "Registered Retirement Income Fund (RRIF) Calculator",
@@ -20,6 +21,7 @@ const data = {
 };
 
 export default function RRIF() {
+  useTitle("Dollarfar | RRIF Calculator");
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);

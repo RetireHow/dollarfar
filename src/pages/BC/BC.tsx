@@ -8,6 +8,7 @@ import BudgetDescription from "./BudgetDescription";
 import BudgetPieChart from "./BudgetPieChart";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import CurrencySelect from "../../components/UI/CurrencySelect";
+import useTitle from "../../hooks/useTitle";
 
 const data = {
   title: "Budget calculator/cash flow calculator",
@@ -17,6 +18,7 @@ const data = {
 };
 
 export default function BC() {
+  useTitle("Dollarfar | BC");
   const {
     income: { subTotal: totalIncome },
     housing: { subTotal: houseExpenses },
