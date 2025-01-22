@@ -103,6 +103,6 @@ body {
 }
 
 
-:where(.css-dev-only-do-not-override-ni1kz0).ant-collapse .ant-collapse-content>.ant-collapse-content-box {
-  background-color: rgb(243, 244, 245);
+.ant-collapse-content>.ant-collapse-content-box {
+  background-color: rgb(243, 244, 245) !important;
 }
