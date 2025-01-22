@@ -53,7 +53,7 @@ export default function COLDescription() {
             A: Mumbai (Example):
           </p>
           <p className="text-[#696969] md:text-[1rem] text-[14px]">
-            Total Monthly Income: {currency}10,000 <br />
+            Total Monthly Income: {currency}100,000 <br />
             Housing Costs: {currency}30,000 <br />
             Transportation Costs: {currency}8,000 <br />
             Food Costs: {currency}12,000 <br />
@@ -72,7 +72,7 @@ export default function COLDescription() {
             B: Bangalore (Example):
           </p>
           <p className="text-[#696969]">
-            Total Monthly Income: {currency}9,000 <br />
+            Total Monthly Income: {currency}90,000 <br />
             Housing Costs: {currency}25,000 <br />
             Transportation Costs: {currency}6,000 <br />
             Food Costs: {currency}10,000 <br />
