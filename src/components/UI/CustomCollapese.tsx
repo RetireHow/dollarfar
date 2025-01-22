@@ -41,7 +41,7 @@ export default function CustomCollapese() {
           </div>
         ),
         children: (
-          <div className="space-y-3 rounded-lg p-2 border-[1px] border-gray-200 shadow-sm bg-gray-100">
+          <div className="space-y-3 rounded-lg p-2 border-[1px] border-gray-200 shadow-sm bg-[#FFF]">
             {items?.map((item, index) => (
               <div
                 key={index}
