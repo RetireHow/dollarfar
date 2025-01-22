@@ -63,7 +63,7 @@ export default function OldAgeSecurity() {
           </div>
           <select
             id="options"
-            className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
+            className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
           >
             <option value={1}>Yes</option>
             <option value={0}>No</option>
@@ -79,7 +79,7 @@ export default function OldAgeSecurity() {
           </div>
           <select
             id="options"
-            className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
+            className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
             value={isFortyYears}
             onChange={(e) => {
               dispatch(
@@ -106,7 +106,7 @@ export default function OldAgeSecurity() {
               </div>
               <select
                 id="options"
-                className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
+                className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
                 value={yearsInCanada}
                 onChange={(e) =>
                   dispatch(
@@ -136,7 +136,7 @@ export default function OldAgeSecurity() {
               </div>
               <select
                 id="options"
-                className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
+                className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
                 value={oasStartYear}
                 onChange={(e) =>
                   dispatch(

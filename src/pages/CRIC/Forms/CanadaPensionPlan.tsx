@@ -35,7 +35,7 @@ export default function CanadaPensionPlanRough() {
       return setShowError(true);
     }
     dispatch(nextStep());
-    navigate("/CRIC/OAS");
+    navigate("/CRIC/employer-pension");
   };
 
    const handleBack = () => {
@@ -65,7 +65,7 @@ export default function CanadaPensionPlanRough() {
           </div>
           <select
             id="options"
-            className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
+            className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
             value={selectedPP}
             onChange={(e) =>
               dispatch(
@@ -99,7 +99,7 @@ export default function CanadaPensionPlanRough() {
               </div>
               <select
                 id="options"
-                className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
+                className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
                 value={ppBenefitAmount}
                 onChange={(e) =>
                   dispatch(
@@ -141,7 +141,7 @@ export default function CanadaPensionPlanRough() {
               </div>
               <select
                 id="options"
-                className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
+                className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
                 value={ppStartYear}
                 onChange={(e) =>
                   dispatch(

@@ -551,7 +551,7 @@ export default function GeneralInformation() {
               </div>
               <select
                 id="options"
-                className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
+                className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
                 value={dobMonth}
                 onChange={(e) =>
                   dispatch(
@@ -575,7 +575,7 @@ export default function GeneralInformation() {
               </div>
               <select
                 id="options"
-                className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
+                className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
                 value={dobYear}
                 onChange={(e) =>
                   dispatch(
@@ -598,12 +598,12 @@ export default function GeneralInformation() {
         </div>
 
         <div>
-          <div className="flex items-center gap-1 font-semibold">
+          <div className="flex items-center gap-1 font-semibold mb-2">
             <p>Gender</p>
           </div>
           <select
             id="options"
-            className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
+            className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
             value={gender}
             onChange={(e) =>
               dispatch(
@@ -627,7 +627,7 @@ export default function GeneralInformation() {
           </div>
           <select
             id="options"
-            className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
+            className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
             value={currentAnnualIncome}
             onChange={(e) =>
               dispatch(
@@ -655,7 +655,7 @@ export default function GeneralInformation() {
           </div>
           <select
             id="options"
-            className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383] bg-white"
+            className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
             value={annualRetirementIncomeGoal}
             onChange={(e) =>
               dispatch(

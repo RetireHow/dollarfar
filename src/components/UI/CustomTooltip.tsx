@@ -13,7 +13,7 @@ export default function CustomTooltip({ title }: { title: string }) {
       }}
     >
       <Icon
-        className="text-[#838383] min-w-[1rem] min-h-[1rem]"
+        className="text-[#838383] min-w-[1.3rem] min-h-[1.3rem] inline"
         icon="material-symbols:info-outline"
       />
     </Tooltip>

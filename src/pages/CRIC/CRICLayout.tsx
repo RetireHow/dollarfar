@@ -12,12 +12,12 @@ export default function CRICLayout() {
 
   useEffect(() => {
     dispatch(resetActiveStep());
-    dispatch(setTotalSteps(4));
+    dispatch(setTotalSteps(7));
   }, [dispatch]);
 
   return (
     <section>
-      <Stepper steps={[1, 2, 3, 4]}/>
+      <Stepper steps={[1, 2, 3, 4, 5, 6, 7]}/>
       <div>
         <Outlet />
       </div>
