@@ -1,21 +1,202 @@
-import { useEffect, useState } from "react";
-import {
-  nextStep,
-  previousStep,
-} from "../../../redux/features/stepperSlice/stepperSclie";
-import { useAppDispatch } from "../../../redux/hooks";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { useNavigate } from "react-router-dom";
-import CRICResultCard from "../CRICResultCard";
-import RedStar from "../../../components/UI/RedStar";
-import CustomTooltip from "../../../components/UI/CustomTooltip";
+import CRICTooltip from "../CRICTooltip";
+import CRICRedStar from "../CRICRedStar";
+import {
+  calculateRetirementSavings,
+  resetNRAWithSelectedNo,
+  resetTFSAWithSelectedNo,
+  updateAgeByAgeField,
+  updateRetirementSavingsField,
+} from "../../../redux/features/CRIC/CRICSlice";
+import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
+
+import { Icon } from "@iconify/react/dist/iconify.js";
+import { Input, Modal, Select } from "antd";
+import { useState } from "react";
+import MandatoryUserHints from "../MandatoryUserHints";
+import Error from "../../../components/UI/Error";
+import { toast } from "react-toastify";
+import {
+  antSelectFrequencyOptions,
+  antYesNoSelectOptions,
+} from "../options/selectOptions";
+import { nextStep, previousStep } from "../../../redux/features/stepperSlice/CRICStepperSlice";
+
+const TFSAorNRASavingsReceivingAgeOptions = [
+  { value: "Select One", label: "Select One" },
+];
+for (let i = 50; i <= 75; i++) {
+  TFSAorNRASavingsReceivingAgeOptions.push({
+    value: i.toString(),
+    label: i.toString(),
+  });
+}
+
+function CRICTooltipWithLink() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  return (
+    <>
+      <Icon
+        className="text-[#838383] hover:text-black hover:font-extrabold min-w-[1.5rem] min-h-[1.5rem] inline-block md:ml-5 ml-4 cursor-pointer"
+        icon="material-symbols:info-outline"
+        onClick={() => showModal()}
+      />
+      <Modal
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}
+        closeIcon={
+          <Icon
+            className="text-red-500 border-[1px] border-red-500 rounded-sm p-[1px]"
+            icon="gridicons:cross"
+            width="24"
+            height="24"
+          />
+        }
+      >
+        <p className="text-[1.4rem] text-gray-500 p-3">
+          <span>
+            {" "}
+            Please use E & Y personal tax calculator to estimate your average
+            tax rate and input that value here. Here is the website link :{" "}
+          </span>
+          <a
+            className="text-green-500"
+            target="_blank"
+            href="https://www.eytaxcalculators.com/en/2024-personal-tax-calculator.html"
+          >
+            https://www.eytaxcalculators.com/en/2024-personal-tax-calculator.html
+          </a>
+        </p>
+      </Modal>
+    </>
+  );
+}
 
 export default function RetirementSavings() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [hasOtherSavings, setHasOtherSavings] = useState("No");
+  const [showError, setShowError] = useState(false);
+
+  const {
+    retirementSavings: {
+      TFSA: {
+        TFSAOngoingContributionAmount,
+        TFSAOngoingContributionFrequency,
+        TFSAcurrentTotal,
+        TFSAreturnRate,
+        hasTFSA,
+      },
+      NRA: {
+        NRAOngoingContributionAmount,
+        NRAOngoingContributionFrequency,
+        NRAcurrentTotal,
+        NRAreturnRate,
+        NRAtaxRate,
+        hasNRA,
+      },
+      TFSAorNRASavingsReceivingAge,
+    },
+  } = useAppSelector((state) => state.CRICalculator);
 
   const handleNext = () => {
+    //Exclude the account when select No
+    if (hasTFSA == "No") {
+      dispatch(resetTFSAWithSelectedNo(undefined));
+    }
+    if (hasNRA == "No") {
+      dispatch(resetNRAWithSelectedNo(undefined));
+    }
+
+    if (hasTFSA == "Yes" && hasNRA == "Yes") {
+      if (
+        !TFSAOngoingContributionAmount ||
+        TFSAOngoingContributionFrequency == "Select One" ||
+        !TFSAcurrentTotal ||
+        !TFSAreturnRate ||
+        TFSAorNRASavingsReceivingAge == "Select One" ||
+        !NRAOngoingContributionAmount ||
+        NRAOngoingContributionFrequency == "Select One" ||
+        !NRAcurrentTotal ||
+        !NRAreturnRate ||
+        !NRAtaxRate ||
+        TFSAorNRASavingsReceivingAge == "Select One"
+      ) {
+        toast.error("Please fill in the required fields.");
+        return setShowError(true);
+      }
+      console.log("Both accounts are selected==============>")
+      dispatch(calculateRetirementSavings(undefined));
+    } else if (hasTFSA == "Yes") {
+      if (
+        !TFSAOngoingContributionAmount ||
+        TFSAOngoingContributionFrequency == "Select One" ||
+        !TFSAcurrentTotal ||
+        !TFSAreturnRate ||
+        TFSAorNRASavingsReceivingAge == "Select One"
+      ) {
+        toast.error("Please fill in the required fields.");
+        return setShowError(true);
+      }
+      dispatch(calculateRetirementSavings(undefined));
+    } else if (hasNRA == "Yes") {
+      if (
+        !NRAOngoingContributionAmount ||
+        NRAOngoingContributionFrequency == "Select One" ||
+        !NRAcurrentTotal ||
+        !NRAreturnRate ||
+        !NRAtaxRate ||
+        TFSAorNRASavingsReceivingAge == "Select One"
+      ) {
+        toast.error("Please fill in the required fields.");
+        return setShowError(true);
+      }
+      dispatch(calculateRetirementSavings(undefined));
+    } else {
+      dispatch(
+        updateAgeByAgeField({
+          mainKey: "retirementSavingsResult",
+          subKey: "retirementSavingsAgeByAge",
+        })
+      );
+      dispatch(resetTFSAWithSelectedNo(undefined));
+      dispatch(resetNRAWithSelectedNo(undefined));
+    }
+
+    if (
+      TFSAOngoingContributionFrequency == "0" &&
+      Number(TFSAOngoingContributionAmount) > 0
+    ) {
+      toast.error("Please select ongoing contribution frequency for TFSA");
+      return setShowError(true);
+    }
+
+    if (
+      NRAOngoingContributionFrequency == "0" &&
+      Number(NRAOngoingContributionAmount) > 0
+    ) {
+      toast.error(
+        "Please select ongoing contribution frequency for non registered account(s)."
+      );
+      return setShowError(true);
+    }
+
     dispatch(nextStep());
     navigate("/CRIC/other-income");
   };
@@ -30,217 +211,498 @@ export default function RetirementSavings() {
   }, []);
 
   return (
-    <main className="grid md:grid-cols-2 grid-cols-1 gap-10 mb-[3rem]">
+    <main>
       <section className="space-y-[2rem] md:text-[1rem] text-[14px]">
         <h3 className="font-extrabold md:text-[2rem] text-[18px]">
-          Retirement Savings
+          Accumulated Savings(TFSA/Non Registered Account(s))
         </h3>
 
+        <MandatoryUserHints />
+
         <div>
-          <div className="flex items-end gap-1 font-semibold mb-2">
+          <div className="font-semibold mb-2">
             <p>
               Do you have any other savings, such as a Tax-Free Savings Account
-              (TFSA), non-registered account that you plan on using for your
-              retirement?
+              (TFSA), that you plan on using for your retirement?
+              <CRICTooltip title="Select 'Yes' if you have additional savings, such as a TFSA or non-registered (taxable) account, that you intend to use for retirement. These accounts can supplement your employer pension or government benefits." />
             </p>
-            <CustomTooltip title="Select 'Yes' if you have additional savings, such as a TFSA or non-registered (taxable) account, that you intend to use for retirement. These accounts can supplement your employer pension or government benefits." />
           </div>
-          <select
-            id="options"
-            className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
-            onChange={(e) => setHasOtherSavings(e.target.value)}
-            defaultValue={hasOtherSavings}
-          >
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
+          <Select
+            size="large"
+            style={{
+              height: 45,
+              width: "100%",
+              border: "1px solid #838383",
+              borderRadius: "8px",
+            }}
+            variant="borderless"
+            options={antYesNoSelectOptions}
+            suffixIcon={
+              <Icon
+                className="text-[1.5rem] text-gray-600"
+                icon="iconamoon:arrow-down-2"
+              />
+            }
+            onChange={(value) => {
+              dispatch(
+                updateRetirementSavingsField({
+                  mainKey: "TFSA",
+                  subKey: "hasTFSA",
+                  value: value,
+                })
+              );
+            }}
+            value={hasTFSA}
+          ></Select>
         </div>
 
-        {hasOtherSavings === "Yes" && (
-          <>
+        {hasTFSA === "Yes" && (
+          <section className="space-y-[2rem] border-[1px] border-gray-300 p-3 rounded-md shadow-sm">
+            <h1 className="font-semibold md:text-[1.5rem] text-[1rem] mb-[-0.5rem]">
+              Your Tax Free Savings Account
+            </h1>
             <div>
-              <div className="font-semibold flex items-end gap-1 mb-2">
+              <div className="font-semibold mb-2">
                 <p>
                   What is the current total value of your TFSA ( Tax Free
                   Savings Account )?
-                  <RedStar />
+                  <CRICRedStar />
+                  <CRICTooltip title="Enter the total amount currently saved in your TFSA. A TFSA allows your investments to grow tax-free, making it an effective tool for retirement savings." />
                 </p>
-                <CustomTooltip title="Enter the total amount currently saved in your TFSA. A TFSA allows your investments to grow tax-free, making it an effective tool for retirement savings." />
               </div>
-              <input
-                className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383]"
+              <Input
+                size="large"
+                style={{
+                  height: 45,
+                  width: "100%",
+                  border: "1px solid #838383",
+                  borderRadius: "8px",
+                }}
+                variant="borderless"
+                placeholder="Enter your estimated income"
                 type="number"
-                placeholder="Enter current total value of your TFSA"
                 onWheel={(e) => e.currentTarget.blur()}
+                onKeyDown={handleKeyDownUtil}
+                onChange={(e) => {
+                  dispatch(
+                    updateRetirementSavingsField({
+                      mainKey: "TFSA",
+                      subKey: "TFSAcurrentTotal",
+                      value: e.target.value,
+                    })
+                  );
+                }}
+                value={TFSAcurrentTotal}
               />
+              {!TFSAcurrentTotal && showError && (
+                <Error message="This field is required" />
+              )}
             </div>
-            <div>
-              <div className="font-semibold flex items-end gap-1 mb-2">
-                <p>
-                  Amount of your ongoing contribution? <RedStar />
-                </p>
 
-                <CustomTooltip title="Specify the amount you regularly contribute to your TFSA. This can include monthly, bi-weekly, or annual contributions that help grow your retirement savings over time." />
+            <div>
+              <div className="font-semibold mb-2">
+                <p>
+                  Frequency of your ongoing contribution for TFSA
+                  <CRICRedStar />
+                  <CRICTooltip title="Select how often you contribute to your savings account. Common options include weekly, bi-weekly, monthly, or annually, depending on your savings schedule." />
+                </p>
               </div>
-              <input
-                className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383]"
+              <Select
+                size="large"
+                style={{
+                  height: 45,
+                  width: "100%",
+                  border: "1px solid #838383",
+                  borderRadius: "8px",
+                }}
+                variant="borderless"
+                options={antSelectFrequencyOptions}
+                suffixIcon={
+                  <Icon
+                    className="text-[1.5rem] text-gray-600"
+                    icon="iconamoon:arrow-down-2"
+                  />
+                }
+                onChange={(value) => {
+                  dispatch(
+                    updateRetirementSavingsField({
+                      mainKey: "TFSA",
+                      subKey: "TFSAOngoingContributionFrequency",
+                      value: value,
+                    })
+                  );
+                }}
+                value={TFSAOngoingContributionFrequency}
+              ></Select>
+              {TFSAOngoingContributionFrequency == "Select One" &&
+                showError && <Error message="This field is required" />}
+              {TFSAOngoingContributionFrequency == "0" &&
+                Number(TFSAOngoingContributionAmount) > 0 &&
+                showError && (
+                  <Error message="Please select frequency other than none (e.g., weekly, monthly, annually)" />
+                )}
+            </div>
+
+            <div>
+              <div className="font-semibold mb-2">
+                <p>
+                  Amount of your ongoing contribution to TFSA (Applicable
+                  Maximum only)? <CRICRedStar />
+                  <CRICTooltip title="Specify the amount you regularly contribute to your TFSA. This can include monthly, bi-weekly, or annual contributions that help grow your retirement savings over time." />
+                </p>
+              </div>
+              <Input
+                size="large"
+                style={{
+                  height: 45,
+                  width: "100%",
+                  border: "1px solid #838383",
+                  borderRadius: "8px",
+                }}
+                variant="borderless"
+                placeholder="Enter your estimated income"
                 type="number"
-                placeholder="Enter ongoing contribution amount"
                 onWheel={(e) => e.currentTarget.blur()}
+                onKeyDown={handleKeyDownUtil}
+                onChange={(e) => {
+                  dispatch(
+                    updateRetirementSavingsField({
+                      mainKey: "TFSA",
+                      subKey: "TFSAOngoingContributionAmount",
+                      value: e.target.value,
+                    })
+                  );
+                }}
+                value={TFSAOngoingContributionAmount}
               />
+              {!TFSAOngoingContributionAmount && showError && (
+                <Error message="This field is required" />
+              )}
             </div>
+
             <div>
-              <div className="flex items-end gap-2 font-semibold mb-2">
-                <p>Frequency of your contribution</p>
-                <CustomTooltip title="Select how often you contribute to your savings account. Common options include weekly, bi-weekly, monthly, or annually, depending on your savings schedule." />
-              </div>
-              <select
-                id="options"
-                className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
-              >
-                <option value="Weekly">Weekly</option>
-                <option value="By-Weekly">By-Weekly</option>
-                <option value="Monthly">Monthly</option>
-                <option value="Quarterly">Quarterly</option>
-                <option value="Annually">Annually</option>
-                <option value="Semi-Annually">Semi-Annually</option>
-              </select>
-            </div>
-            <div>
-              <div className="font-semibold flex items-end gap-1 mb-2">
+              <div className="font-semibold mb-2">
                 <p>
                   What rate of return/interest rate would you like to use for
-                  this account?
-                  <RedStar />
+                  this TFS account?
+                  <CRICRedStar />
+                  <CRICTooltip title="Enter the estimated annual rate of return or interest rate you expect from your TFSA investments. This rate will help calculate how your savings grow over time." />
                 </p>
-                <CustomTooltip title="Enter the estimated annual rate of return or interest rate you expect from your TFSA investments. This rate will help calculate how your savings grow over time." />
               </div>
-              <input
-                className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383]"
+              <Input
+                size="large"
+                style={{
+                  height: 45,
+                  width: "100%",
+                  border: "1px solid #838383",
+                  borderRadius: "8px",
+                }}
+                variant="borderless"
+                placeholder="Enter your estimated income"
                 type="number"
-                placeholder="Enter rate of return"
                 onWheel={(e) => e.currentTarget.blur()}
+                onKeyDown={handleKeyDownUtil}
+                onChange={(e) => {
+                  dispatch(
+                    updateRetirementSavingsField({
+                      mainKey: "TFSA",
+                      subKey: "TFSAreturnRate",
+                      value: e.target.value,
+                    })
+                  );
+                }}
+                value={TFSAreturnRate}
               />
+              {!TFSAreturnRate && showError && (
+                <Error message="This field is required" />
+              )}
             </div>
+          </section>
+        )}
+
+        <div>
+          <div className="font-semibold mb-2">
+            <p>
+              Do you have any other savings, such as a non-registered account,
+              that you plan on using for your retirement?
+              <CRICTooltip title="Select 'Yes' if you have additional savings, such as a TFSA or non-registered (taxable) account, that you intend to use for retirement. These accounts can supplement your employer pension or government benefits." />
+            </p>
+          </div>
+          <Select
+            size="large"
+            style={{
+              height: 45,
+              width: "100%",
+              border: "1px solid #838383",
+              borderRadius: "8px",
+            }}
+            variant="borderless"
+            options={antYesNoSelectOptions}
+            suffixIcon={
+              <Icon
+                className="text-[1.5rem] text-gray-600"
+                icon="iconamoon:arrow-down-2"
+              />
+            }
+            onChange={(value) => {
+              dispatch(
+                updateRetirementSavingsField({
+                  mainKey: "NRA",
+                  subKey: "hasNRA",
+                  value: value,
+                })
+              );
+            }}
+            value={hasNRA}
+          ></Select>
+        </div>
+
+        {hasNRA == "Yes" ? (
+          <section className="space-y-[2rem] border-[1px] border-gray-300 p-3 rounded-md shadow-sm">
+            <h1 className="font-semibold md:text-[1.5rem] mb-[-0.5rem] text-[1rem]">
+              Your Non Registered Account(s)
+            </h1>
             <div>
-              <div className="font-semibold flex items-end gap-1 mb-2">
+              <div className="font-semibold mb-2">
                 <p>
                   What is the current total value of your non-registered
-                  (Taxable) Accounts?
-                  <RedStar />
+                  (Taxable) Account(s)?
+                  <CRICRedStar />
+                  <CRICTooltip title="Enter the total amount currently saved in your non-registered accounts. These accounts are taxable but provide additional flexibility for your retirement savings." />
                 </p>
-                <CustomTooltip title="Enter the total amount currently saved in your non-registered accounts. These accounts are taxable but provide additional flexibility for your retirement savings." />
               </div>
-              <input
-                className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383]"
+              <Input
+                size="large"
+                style={{
+                  height: 45,
+                  width: "100%",
+                  border: "1px solid #838383",
+                  borderRadius: "8px",
+                }}
+                variant="borderless"
+                placeholder="Enter your estimated income"
                 type="number"
-                placeholder="Enter current total value"
                 onWheel={(e) => e.currentTarget.blur()}
+                onKeyDown={handleKeyDownUtil}
+                onChange={(e) => {
+                  dispatch(
+                    updateRetirementSavingsField({
+                      mainKey: "NRA",
+                      subKey: "NRAcurrentTotal",
+                      value: e.target.value,
+                    })
+                  );
+                }}
+                value={NRAcurrentTotal}
               />
+              {!NRAcurrentTotal && showError && (
+                <Error message="This field is required" />
+              )}
             </div>
-            <div>
-              <div className="font-semibold flex items-end gap-1 mb-2">
-                <p>
-                  Amount of your contribution? <RedStar />
-                </p>
 
-                <CustomTooltip title="Specify the amount you contribute regularly to your non-registered accounts. Regular contributions help ensure your savings grow steadily over time." />
+            <div>
+              <div className="font-semibold mb-2">
+                <p>
+                  Frequency of your ongoing contribution for non-registered
+                  account
+                  <CRICRedStar />
+                  <CRICTooltip title="Select how often you contribute to your non-registered account. Choose from options like weekly, bi-weekly, monthly, or annually." />
+                </p>
               </div>
-              <input
-                className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383]"
+              <Select
+                size="large"
+                style={{
+                  height: 45,
+                  width: "100%",
+                  border: "1px solid #838383",
+                  borderRadius: "8px",
+                }}
+                variant="borderless"
+                options={antSelectFrequencyOptions}
+                suffixIcon={
+                  <Icon
+                    className="text-[1.5rem] text-gray-600"
+                    icon="iconamoon:arrow-down-2"
+                  />
+                }
+                onChange={(value) => {
+                  dispatch(
+                    updateRetirementSavingsField({
+                      mainKey: "NRA",
+                      subKey: "NRAOngoingContributionFrequency",
+                      value: value,
+                    })
+                  );
+                }}
+                value={NRAOngoingContributionFrequency}
+              ></Select>
+              {NRAOngoingContributionFrequency == "Select One" && showError && (
+                <Error message="This field is required" />
+              )}
+              {NRAOngoingContributionFrequency == "0" &&
+                Number(NRAOngoingContributionAmount) > 0 &&
+                showError && (
+                  <Error message="Please select frequency other than none (e.g., weekly, monthly, annually)" />
+                )}
+            </div>
+
+            <div>
+              <div className="font-semibold mb-2">
+                <p>
+                  Amount of your ongoing contribution to non-registered account
+                  (Applicable Maximum only)?
+                  <CRICRedStar />
+                  <CRICTooltip title="Specify the amount you contribute regularly to your non-registered accounts. Regular contributions help ensure your savings grow steadily over time." />
+                </p>
+              </div>
+              <Input
+                size="large"
+                style={{
+                  height: 45,
+                  width: "100%",
+                  border: "1px solid #838383",
+                  borderRadius: "8px",
+                }}
+                variant="borderless"
+                placeholder="Enter your estimated income"
                 type="number"
-                placeholder="Enter ongoing contribution amount"
                 onWheel={(e) => e.currentTarget.blur()}
+                onKeyDown={handleKeyDownUtil}
+                onChange={(e) => {
+                  dispatch(
+                    updateRetirementSavingsField({
+                      mainKey: "NRA",
+                      subKey: "NRAOngoingContributionAmount",
+                      value: e.target.value,
+                    })
+                  );
+                }}
+                value={NRAOngoingContributionAmount}
               />
+              {!NRAOngoingContributionAmount && showError && (
+                <Error message="This field is required" />
+              )}
             </div>
+
             <div>
-              <div className="flex items-end gap-2 font-semibold mb-2">
-                <p>Frequency of your contribution</p>
-                <CustomTooltip title="Select how often you contribute to your non-registered account. Choose from options like weekly, bi-weekly, monthly, or annually." />
-              </div>
-              <select
-                id="options"
-                className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
-              >
-                <option value="Weekly">Weekly</option>
-                <option value="By-Weekly">By-Weekly</option>
-                <option value="Monthly">Monthly</option>
-                <option value="Quarterly">Quarterly</option>
-                <option value="Annually">Annually</option>
-                <option value="Semi-Annually">Semi-Annually</option>
-              </select>
-            </div>
-            <div>
-              <div className="font-semibold flex items-end gap-1 mb-2">
+              <div className="font-semibold mb-2">
                 <p>
                   What rate of return/interest rate would you like to use for
-                  this account?
-                  <RedStar />
+                  this non-registered account?
+                  <CRICRedStar />
+                  <CRICTooltip title="Enter the annual rate of return or interest rate you expect from your non-registered account investments. This rate is used to project future growth." />
                 </p>
-                <CustomTooltip title="Enter the annual rate of return or interest rate you expect from your non-registered account investments. This rate is used to project future growth." />
               </div>
-              <input
-                className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383]"
+              <Input
+                size="large"
+                style={{
+                  height: 45,
+                  width: "100%",
+                  border: "1px solid #838383",
+                  borderRadius: "8px",
+                }}
+                variant="borderless"
+                placeholder="Enter your estimated income"
                 type="number"
-                placeholder="Enter rate of return"
                 onWheel={(e) => e.currentTarget.blur()}
+                onKeyDown={handleKeyDownUtil}
+                onChange={(e) => {
+                  dispatch(
+                    updateRetirementSavingsField({
+                      mainKey: "NRA",
+                      subKey: "NRAreturnRate",
+                      value: e.target.value,
+                    })
+                  );
+                }}
+                value={NRAreturnRate}
               />
+              {!NRAreturnRate && showError && (
+                <Error message="This field is required" />
+              )}
             </div>
             <div>
-              <div className="font-semibold flex items-end gap-1 mb-2">
+              <div className="font-semibold mb-2">
                 <p>
-                  What tax rate that you would like to use for this account ?
-                  <RedStar />
+                  What average tax rate that you would like to use for this
+                  non-registered account ?
+                  <CRICRedStar />
+                  <CRICTooltipWithLink />
                 </p>
-                <CustomTooltip title="Enter the tax rate that applies to your non-registered accounts. This rate accounts for taxes on income or gains earned within these accounts." />
               </div>
-              <input
-                className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[5px] border-[#838383]"
+              <Input
+                size="large"
+                style={{
+                  height: 45,
+                  width: "100%",
+                  border: "1px solid #838383",
+                  borderRadius: "8px",
+                }}
+                variant="borderless"
+                placeholder="Enter your estimated income"
                 type="number"
-                placeholder="Enter rate of return"
                 onWheel={(e) => e.currentTarget.blur()}
+                onKeyDown={handleKeyDownUtil}
+                onChange={(e) => {
+                  dispatch(
+                    updateRetirementSavingsField({
+                      mainKey: "NRA",
+                      subKey: "NRAtaxRate",
+                      value: e.target.value,
+                    })
+                  );
+                }}
+                value={NRAtaxRate}
               />
+              {!NRAtaxRate && showError && (
+                <Error message="This field is required" />
+              )}
             </div>
-            <div>
-              <div className="flex items-end gap-2 font-semibold mb-2">
-                <p>At what age do you plan to start receiving your savings?</p>
-                <CustomTooltip title="Select the age at which you plan to start withdrawing from your retirement savings. This impacts the duration over which your savings will need to support your retirement." />
-              </div>
-              <select
-                id="options"
-                className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
-              >
-                <option value="0">Select One</option>
-                <option value="50">50</option>
-                <option value="51">51</option>
-                <option value="52">52</option>
-                <option value="53">53</option>
-                <option value="54">54</option>
-                <option value="55">55</option>
-                <option value="56">56</option>
-                <option value="57">57</option>
-                <option value="58">58</option>
-                <option value="59">59</option>
-                <option value="60">60</option>
-                <option value="61">61</option>
-                <option value="62">62</option>
-                <option value="63">63</option>
-                <option value="64">64</option>
-                <option value="65">65</option>
-                <option value="66">66</option>
-                <option value="67">67</option>
-                <option value="68">68</option>
-                <option value="69">69</option>
-                <option value="70">70</option>
-                <option value="70">71</option>
-                <option value="70">72</option>
-                <option value="73">73</option>
-                <option value="74">74</option>
-                <option value="75">75</option>
-              </select>
-            </div>
-          </>
+          </section>
+        ) : (
+          ""
         )}
+
+        <div>
+          <div className="font-semibold mb-2">
+            <p>
+              At what age do you plan to start receiving your savings from your
+              TFSA or non-registered account?
+              <CRICRedStar />
+              <CRICTooltip title="Select the age at which you plan to start withdrawing from your retirement savings. This impacts the duration over which your savings will need to support your retirement." />
+            </p>
+          </div>
+          <Select
+            size="large"
+            showSearch
+            style={{
+              height: 45,
+              width: "100%",
+              border: "1px solid #838383",
+              borderRadius: "8px",
+            }}
+            variant="borderless"
+            options={TFSAorNRASavingsReceivingAgeOptions}
+            suffixIcon={
+              <Icon
+                className="text-[1.5rem] text-gray-600"
+                icon="iconamoon:arrow-down-2"
+              />
+            }
+            onChange={(value) => {
+              dispatch(
+                updateRetirementSavingsField({
+                  mainKey: "TFSAorNRASavingsReceivingAge",
+                  value: value,
+                })
+              );
+            }}
+            value={TFSAorNRASavingsReceivingAge}
+          ></Select>
+          {TFSAorNRASavingsReceivingAge == "Select One" && showError && (
+            <Error message="This field is required" />
+          )}
+        </div>
 
         <div className="grid grid-cols-2 w-full md:gap-5 gap-3">
           <button
@@ -257,7 +719,6 @@ export default function RetirementSavings() {
           </button>
         </div>
       </section>
-      <CRICResultCard />
     </main>
   );
 }

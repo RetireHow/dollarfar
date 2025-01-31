@@ -7,6 +7,8 @@ import { useAppDispatch } from "../../redux/hooks";
 type TOption = {
   label: string;
   value: string;
+  city: string;
+  country: string;
 };
 
 import {
@@ -35,6 +37,10 @@ export default function COLCForm() {
   // State for the input field and API response
   const [cityName1, setCityName1] = useState("");
   const [cityName2, setCityName2] = useState("");
+
+  const [countryName1, setCountryName1] = useState("");
+  const [countryName2, setCountryName2] = useState("");
+
   const [storedIncome, setStoredIncome] = useState("");
   const [apiDataLoading, setApiDataLoading] = useState(false);
   const [selectOptions, setSelectOptions] = useState<TOption[]>([]);
@@ -71,35 +77,33 @@ export default function COLCForm() {
       toast.error("Income is required.");
       return setShowError(true);
     }
-    if (cityName1 && cityName2 && storedIncome) {
-      const cityAndCountryArr1 = cityName1?.split(", ");
-      const cityAndCountryArr2 = cityName2?.split(", ");
-
-      const selectedCity1 = cityAndCountryArr1
-        ?.slice(0, cityAndCountryArr1.length - 1)
-        ?.join(",")
-        ?.trim();
-      const selectedCity2 = cityAndCountryArr2
-        ?.slice(0, cityAndCountryArr2.length - 1)
-        ?.join(",")
-        ?.trim();
-
-      const selectedCountry1 =
-        cityAndCountryArr1[cityAndCountryArr1?.length - 1]?.trim();
-      const selectedCountry2 =
-        cityAndCountryArr2[cityAndCountryArr2?.length - 1]?.trim();
-
+    if (
+      cityName1 &&
+      cityName2 &&
+      countryName1 &&
+      countryName2 &&
+      storedIncome
+    ) {
       try {
         setApiDataLoading(true);
         const res1 = await fetch(
-          `https://www.numbeo.com/api/city_prices?api_key=qtnt20fj2vhykj&city=${selectedCity1}&country=${selectedCountry1}&currency=CAD`
+          `https://www.numbeo.com/api/city_prices?api_key=qtnt20fj2vhykj&city=${cityName1}&country=${countryName1}&currency=CAD`
         );
         const city1CostData = await res1.json();
 
+        if (city1CostData?.prices?.length == 0) {
+          toast.error(`No information available for ${city1CostData?.name}`);
+          return setApiDataLoading(false);
+        }
+
         const res2 = await fetch(
-          `https://www.numbeo.com/api/city_prices?api_key=qtnt20fj2vhykj&city=${selectedCity2}&country=${selectedCountry2}&currency=CAD`
+          `https://www.numbeo.com/api/city_prices?api_key=qtnt20fj2vhykj&city=${cityName2}&country=${countryName2}&currency=CAD`
         );
         const city2CostData = await res2.json();
+        if (city2CostData?.prices?.length == 0) {
+          toast.error(`No information available for ${city2CostData?.name}`);
+          return setApiDataLoading(false);
+        }
 
         if (city1CostData?.prices?.length && city2CostData?.prices?.length) {
           const modifiedCostData = COLDataModifier(
@@ -119,8 +123,8 @@ export default function COLCForm() {
           const subTotalIndex =
             ((city2SubTotalCost - city1SubTotalCost) / city1SubTotalCost) * 100;
 
-          dispatch(setSelectedCityName1(selectedCity1));
-          dispatch(setSelectedCityName2(selectedCity2));
+          dispatch(setSelectedCityName1(cityName1));
+          dispatch(setSelectedCityName2(cityName2));
           dispatch(setIncome(Number(storedIncome)));
 
           dispatch(setCity1SubTotalCost(Number(city1SubTotalCost?.toFixed(2))));
@@ -131,10 +135,6 @@ export default function COLCForm() {
           // reset input fields
           setStoredIncome("");
           setShowError(false);
-        } else {
-          toast.error(
-            "No information is available for the selected cities. Please try other cities."
-          );
         }
         setApiDataLoading(false);
       } catch (error: any) {
@@ -156,7 +156,9 @@ export default function COLCForm() {
           <CustomTooltip title="Enter your income to see how far your money will go in the new city." />
         </div>
         <input
-          className={`outline-none bg-white px-[12px] py-2 w-full duration-300 rounded-[8px] border-[1px] ${!storedIncome && showError ? 'border-red-600' : 'border-[#838383]'}`}
+          className={`outline-none bg-white px-[12px] py-2 w-full duration-300 rounded-[8px] border-[1px] ${
+            !storedIncome && showError ? "border-red-600" : "border-[#838383]"
+          }`}
           type="number"
           name="income"
           value={storedIncome}
@@ -180,8 +182,11 @@ export default function COLCForm() {
             size="large"
             // style={{ width: 130, height: 45, border: "1px solid gray" }}
             className="w-full h-[50px] border-[1px] !border-[#838383] rounded-[8px]"
-            onChange={(value) => {
-              setCityName1(value);
+            onChange={(_value, option) => {
+              if (!Array.isArray(option)) {
+                setCityName1(option.city);
+                setCountryName1(option.country);
+              }
             }}
             options={selectOptions}
             suffixIcon={
@@ -217,8 +222,11 @@ export default function COLCForm() {
             size="large"
             // style={{ width: 130, height: 45, border: "1px solid gray" }}
             className="w-full h-[50px] border-[1px] !border-[#838383] rounded-[8px]"
-            onChange={(value) => {
-              setCityName2(value);
+            onChange={(_value, option) => {
+              if (!Array.isArray(option)) {
+                setCityName2(option.city);
+                setCountryName2(option.country);
+              }
             }}
             options={selectOptions}
             suffixIcon={
@@ -255,15 +263,15 @@ export default function COLCForm() {
         </div>
       ) : (
         <div className="flex justify-end lg:col-span-3">
-            <button
-              onClick={handleCompare}
-              disabled={cityName1 && cityName2 ? false : true}
-              className={`text-white p-[0.8rem] rounded-[10px] lg:w-[180px] w-full ${
-                cityName1 && cityName2 ? "bg-black" : "bg-gray-300"
-              }`}
-            >
-              Compare
-            </button>
+          <button
+            onClick={handleCompare}
+            disabled={cityName1 && cityName2 ? false : true}
+            className={`text-white p-[0.8rem] rounded-[10px] lg:w-[180px] w-full ${
+              cityName1 && cityName2 ? "bg-black" : "bg-gray-300"
+            }`}
+          >
+            Compare
+          </button>
         </div>
       )}
     </form>

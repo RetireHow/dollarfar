@@ -7,28 +7,51 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  ReferenceLine,
+  // ReferenceLine,
 } from "recharts";
 import { useAppSelector } from "../../redux/hooks";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 
 function CRICBarChart() {
-  const {
-    CRIBreakdownData,
-    oasStartYear,
-    ppStartYear,
-    oas,
-    lifeExpectency,
-    annualRetirementIncomeGoal,
-    selectedPP,
-    ppAnnualAmount,
-  } = useAppSelector((state) => state.CRICalculator);
   const { currency, currencyFullName } = useAppSelector(
     (state) => state.globalCurrency
   );
 
+  const {
+    generalInfo: { lifeExpectency },
+    pensionPlan: { selectedPP, ppStartYear },
+    oldAgeSecurity: { OASPensionReceivingAge },
+    employerPension: { isIndexedToInflation, pensionReceivingAge },
+    otherIncome: { otherIncomeStartReceivingAge, otherIncomeStopReceivingAge },
+    retirementSavings: { TFSAorNRASavingsReceivingAge },
+    calculatedResult: {
+      PPResult: { PPBenefitAmount, PPBenefitsAgeByAge },
+      OASResult: {
+        OASBenefitAmount: { oldAgeSecurityBefore75, oldAgeSecurityAfter75 },
+        OASAmountsAgeByAge,
+      },
+      otherIncomeResult: { otherIncomeAmountAnnually, otherIncomesAgeByAge },
+      retirementSavingsResult: {
+        annualRetirementIncomeFromBothAccount,
+        retirementSavingsAgeByAge,
+      },
+      employerPensionResult: { employerPensionsAgeByAge },
+    },
+    finalResult,
+  } = useAppSelector((state) => state.CRICalculator);
+  console.log({ finalResult });
+
+  // const colors = [
+  //   { title: "Canada Pension Plan/Quebec Pension Plan", color: "#4CAF50" },
+  //   { title: "Retirement Savings", color: "#2196F3" },
+  //   { title: "Employer Pension", color: "#FFC107" },
+  //   { title: "Other Income", color: "#9C27B0" },
+  //   { title: "Old Age Security", color: "#FF5722" },
+  //   { title: "Annual Retirement Income Goal", color: "#F44336" },
+  // ];
+
   return (
-    <div className="mt-[5rem]">
+    <div>
       <div className="flex lg:flex-row flex-col lg:items-center gap-5">
         <div className="overflow-x-auto flex-1">
           <div
@@ -38,21 +61,21 @@ function CRICBarChart() {
           >
             <ResponsiveContainer>
               <BarChart
-                data={CRIBreakdownData}
+                data={finalResult}
                 margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
               >
                 {/* Grid and Axes */}
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="year" name="Age" />
+                <XAxis dataKey="age" name="Age" />
                 <YAxis
-                  label={{
-                    angle: -90,
-                    position: "insideLeft",
-                  }}
-                  // domain={[0, 50000]} // Dynamically scale Y-axis
+                  // label={{
+                  //   angle: -90,
+                  //   position: "insideLeft",
+                  // }}
+
                   tickFormatter={(value) => `${currency}${value}`}
                   fontSize={12}
-                  dataKey="annualRetirementIncomeGoal"
+                  // dataKey="annualRIG"
                 />
                 <Tooltip
                   formatter={(value: number) =>
@@ -62,22 +85,42 @@ function CRICBarChart() {
                 />
 
                 <Bar
-                  dataKey="oasAmount"
-                  name="OAS"
-                  fill="#FF9800"
+                  dataKey="PPBenefitAmount"
+                  name={selectedPP}
+                  fill="#4CAF50"
                   stackId="a"
                   barSize={20}
                 />
-
                 <Bar
-                  dataKey="cppAmount"
-                  name={selectedPP == "Canada Pension Plan" ? "CPP" : selectedPP == "Quebec Pension Plan" ?  "QPP" : ""}
+                  dataKey="retirementSavingsAmount"
+                  name="Retirement Savings"
                   fill="#2196F3"
                   stackId="a"
                   barSize={20}
                 />
+                <Bar
+                  dataKey="employerPensionAmount"
+                  name="Employer Pension"
+                  fill="#FFC107"
+                  stackId="a"
+                  barSize={20}
+                />
+                <Bar
+                  dataKey="otherIncomeAmount"
+                  name="Other Income"
+                  fill="#9C27B0"
+                  stackId="a"
+                  barSize={20}
+                />
+                <Bar
+                  dataKey="OASAmount"
+                  name="Old Age Security"
+                  fill="#FF5722"
+                  stackId="a"
+                  barSize={20}
+                />
 
-                <ReferenceLine
+                {/* <ReferenceLine
                   y={annualRetirementIncomeGoal}
                   stroke="#AA5656"
                   strokeWidth={3}
@@ -87,41 +130,114 @@ function CRICBarChart() {
                     fontSize: 12,
                   }}
                   isFront={true}
-                />
+                /> */}
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         <ul className="md:space-y-[1rem] space-y-[0.5rem] md:mt-0 mt-[-0.5rem] text-[14px] font-semibold lg:max-w-[250px]">
-          <li className="flex items-center gap-[0.5rem]">
+          {/* <li className="flex items-center gap-[0.5rem]">
             <div className="bg-[#AA5656] min-w-[30px] h-[10px] rounded-[10px]"></div>
             <p>
               Annual Retirement Income goal : {currency}
-              {numberWithCommas(annualRetirementIncomeGoal)}
+              {annualRetirementIncomeGoal}
             </p>
-          </li>
-          <li className="flex items-center gap-[0.5rem]">
-            <div className="bg-[#FF9800] min-w-[30px] h-[10px] rounded-[10px]"></div>
-            <p>
-              Old Age Security: {currency}
-              {numberWithCommas(oas.oldAgeSecurityBefore75)} annually (from{" "}
-              <span className="mx-1">age</span>
-              {oasStartYear} to 74); {currency}
-              {numberWithCommas(oas.oldAgeSecurityAfter75)} annually (from age
-              75 to {lifeExpectency})
-            </p>
-          </li>
-          {selectedPP !== "Not Applicable" && (
+          </li> */}
+
+          {PPBenefitsAgeByAge?.length > 0 && (
             <li className="flex items-center gap-[0.5rem]">
-              <div className="bg-[#03A9F4] min-w-[30px] h-[10px] rounded-[10px]"></div>
+              <div className="bg-[#4CAF50] min-w-[30px] h-[10px] rounded-[10px]"></div>
               <p>
                 {selectedPP} : {currency}
-                {numberWithCommas(ppAnnualAmount)} Annually (starting at age{" "}
-                {ppStartYear} - {lifeExpectency})
+                {Number(PPBenefitAmount)
+                  ? numberWithCommas(PPBenefitAmount)
+                  : 0}{" "}
+                Annually (starting at age {ppStartYear} - {lifeExpectency})
               </p>
             </li>
           )}
+
+          {employerPensionsAgeByAge.length > 0 && (
+            <li className="flex items-center gap-[0.5rem]">
+              <div className="bg-[#FFC107] min-w-[30px] h-[10px] rounded-[10px]"></div>
+              {isIndexedToInflation == "Yes" ? (
+                <p>
+                  Employer Pension: {currency}
+                  {Number(employerPensionsAgeByAge[0]?.employerPensionAmount)
+                    ? numberWithCommas(
+                        employerPensionsAgeByAge[0]?.employerPensionAmount
+                      )
+                    : 0}{" "}
+                  annually (starting at age {pensionReceivingAge})
+                </p>
+              ) : (
+                <p>
+                  Employer Pension: Declining from {currency}
+                  {Number(employerPensionsAgeByAge[0]?.employerPensionAmount)
+                    ? numberWithCommas(
+                        employerPensionsAgeByAge[0]?.employerPensionAmount
+                      )
+                    : 0}{" "}
+                  to {currency}
+                  {numberWithCommas(
+                    employerPensionsAgeByAge[
+                      employerPensionsAgeByAge?.length - 1
+                    ]?.employerPensionAmount
+                  )}{" "}
+                  annually between age {pensionReceivingAge} and{" "}
+                  {lifeExpectency}
+                </p>
+              )}
+            </li>
+          )}
+
+          {retirementSavingsAgeByAge.length > 0 && (
+            <li className="flex items-center gap-[0.5rem]">
+              <div className="bg-[#2196F3] min-w-[30px] h-[10px] rounded-[10px]"></div>
+              <p>
+                Accumulated Savings: {currency}
+                {Number(annualRetirementIncomeFromBothAccount)
+                  ? numberWithCommas(annualRetirementIncomeFromBothAccount)
+                  : 0}{" "}
+                Annually (from age {TFSAorNRASavingsReceivingAge} to{" "}
+                {lifeExpectency})
+              </p>
+            </li>
+          )}
+
+          {otherIncomesAgeByAge.length > 0 && (
+            <li className="flex items-center gap-[0.5rem]">
+              <div className="bg-[#9C27B0] min-w-[30px] h-[10px] rounded-[10px]"></div>
+              <p>
+                Other Income: {currency}
+                {Number(otherIncomeAmountAnnually)
+                  ? numberWithCommas(otherIncomeAmountAnnually)
+                  : 0}{" "}
+                annually (from age {otherIncomeStartReceivingAge} to{" "}
+                {otherIncomeStopReceivingAge})
+              </p>
+            </li>
+          )}
+
+          {OASAmountsAgeByAge.length > 0 && (
+            <li className="flex items-center gap-[0.5rem]">
+              <div className="bg-[#FF5722] min-w-[30px] h-[10px] rounded-[10px]"></div>
+              <p>
+                Old Age Security: {currency}
+                {Number(oldAgeSecurityBefore75)
+                  ? numberWithCommas(parseInt(oldAgeSecurityBefore75?.toString()))
+                  : 0}{" "}
+                annually (from <span className="mx-1">age</span>
+                {OASPensionReceivingAge} to 74); {currency}
+                {Number(oldAgeSecurityAfter75)
+                  ? numberWithCommas(parseInt(oldAgeSecurityAfter75?.toString()))
+                  : 0}{" "}
+                annually (from age 75 to {lifeExpectency})
+              </p>
+            </li>
+          )}
+
           <li className="flex items-center gap-[0.5rem]">
             <p className="min-w-[30px]">{currency}</p>
             <p>{currencyFullName}</p>

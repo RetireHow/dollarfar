@@ -1,40 +1,57 @@
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
-  nextStep,
-  previousStep,
-} from "../../../redux/features/stepperSlice/stepperSclie";
-import { updateField } from "../../../redux/features/CRIC/CRICSlice";
+  calculateOASBenefit,
+  updateOldAgeSecurityField,
+} from "../../../redux/features/CRIC/CRICSlice";
 import { useEffect, useState } from "react";
-import RedStar from "../../../components/UI/RedStar";
 import Error from "../../../components/UI/Error";
-import CRICResultCard from "../CRICResultCard";
 import { toast } from "react-toastify";
+import CRICTooltip from "../CRICTooltip";
+import CRICRedStar from "../CRICRedStar";
+import MandatoryUserHints from "../MandatoryUserHints";
+import { Select } from "antd";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import { nextStep, previousStep } from "../../../redux/features/stepperSlice/CRICStepperSlice";
 
-const OASAgeOptions = ["Select One", 65, 66, 67, 68, 69, 70];
-
-const canadaLivingAgeOptions = [
-  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-  22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-];
+const canadaLivingAgeOptions = [{ value: "Select One", label: "Select One" }];
+for (let i = 1; i <= 40; i++) {
+  canadaLivingAgeOptions.push({
+    value: i.toString(),
+    label: i.toString(),
+  });
+}
 
 export default function OldAgeSecurity() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { yearsInCanada, isFortyYears, oasStartYear } = useAppSelector(
-    (state) => state.CRICalculator
-  );
+  const {
+    OASPensionReceivingAge,
+    numberOYearsLivedInCanada,
+    willLiveInCanadaAtleast40Years,
+    willLiveInCanadaUntil65,
+  } = useAppSelector((state) => state.CRICalculator.oldAgeSecurity);
 
   const [showError, setShowError] = useState(false);
 
   const handleNext = () => {
-    if (!oasStartYear) {
-      if(!oasStartYear){
-        toast.error("Receiving OAS pension age is required.")
-      }
+    if (
+      OASPensionReceivingAge == "Select One" ||
+      willLiveInCanadaAtleast40Years == "Select One" ||
+      willLiveInCanadaUntil65 == "Select One"
+    ) {
+      toast.error("Please fill in the required fields.");
       return setShowError(true);
     }
+
+    if (willLiveInCanadaAtleast40Years == "No") {
+      if (numberOYearsLivedInCanada == "Select One") {
+        toast.error("Please fill in the required fields.");
+        return setShowError(true);
+      }
+    }
+    dispatch(calculateOASBenefit(undefined));
     dispatch(nextStep());
     navigate("/CRIC/summary");
   };
@@ -49,25 +66,55 @@ export default function OldAgeSecurity() {
   }, []);
 
   return (
-    <main className="grid md:grid-cols-2 grid-cols-1 gap-10 mb-[3rem]">
+    <main>
       <section className="space-y-[2rem] md:text-[1rem] text-[14px]">
         <h3 className="font-extrabold md:text-[2rem] text-[18px]">
           Old Age Security
         </h3>
 
+        <MandatoryUserHints />
+
         <div>
           <div className="flex items-center gap-2 font-semibold mb-2">
             <div>
               Do you expect to be living in Canada when you reach the age of 65?
+              <CRICRedStar />
+              <CRICTooltip title="Indicate whether you anticipate residing in Canada when you turn 65. This information helps determine your eligibility for the Old Age Security (OAS) pension, as living in Canada at that age can influence your benefits." />
             </div>
           </div>
-          <select
-            id="options"
-            className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
-          >
-            <option value={1}>Yes</option>
-            <option value={0}>No</option>
-          </select>
+          <Select
+            size="large"
+            style={{
+              height: 45,
+              width: "100%",
+              border: "1px solid #838383",
+              borderRadius: "8px",
+            }}
+            variant="borderless"
+            options={[
+              { value: "Select One", label: "Select One" },
+              { value: "Yes", label: "Yes" },
+              { value: "No", label: "No" },
+            ]}
+            suffixIcon={
+              <Icon
+                className="text-[1.5rem] text-gray-600"
+                icon="iconamoon:arrow-down-2"
+              />
+            }
+            onChange={(value) =>
+              dispatch(
+                updateOldAgeSecurityField({
+                  key: "willLiveInCanadaUntil65",
+                  value: value,
+                })
+              )
+            }
+            value={willLiveInCanadaUntil65}
+          ></Select>
+          {showError && willLiveInCanadaUntil65 == "Select One" && (
+            <Error message="This field is required" />
+          )}
         </div>
 
         <div>
@@ -75,88 +122,136 @@ export default function OldAgeSecurity() {
             <p>
               Will you have lived in Canada for at least 40 years between age 18
               and 65?
+              <CRICRedStar />
+              <CRICTooltip title='Select "Yes" or "No" based on whether you will have accumulated at least 40 years of residence in Canada between the ages of 18 and 65. This period of residence is a key factor in determining your eligibility for the full OAS pension.' />
             </p>
           </div>
-          <select
-            id="options"
-            className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
-            value={isFortyYears}
-            onChange={(e) => {
-              dispatch(
-                updateField({
-                  field: "isFortyYears",
-                  value: e.target.value,
-                })
-              );
+          <Select
+            size="large"
+            style={{
+              height: 45,
+              width: "100%",
+              border: "1px solid #838383",
+              borderRadius: "8px",
             }}
-          >
-            <option value={1}>Yes</option>
-            <option value={0}>No</option>
-          </select>
+            variant="borderless"
+            options={[
+              { value: "Select One", label: "Select One" },
+              { value: "Yes", label: "Yes" },
+              { value: "No", label: "No" },
+            ]}
+            suffixIcon={
+              <Icon
+                className="text-[1.5rem] text-gray-600"
+                icon="iconamoon:arrow-down-2"
+              />
+            }
+            onChange={(value) =>
+              dispatch(
+                updateOldAgeSecurityField({
+                  key: "willLiveInCanadaAtleast40Years",
+                  value: value,
+                })
+              )
+            }
+            value={willLiveInCanadaAtleast40Years}
+          ></Select>
+          {showError && willLiveInCanadaAtleast40Years == "Select One" && (
+            <Error message="This field is required" />
+          )}
         </div>
 
-        {!Number(isFortyYears) && (
+        {willLiveInCanadaAtleast40Years == "No" && (
           <>
             <div>
               <div className="flex items-center gap-2 font-semibold mb-2">
                 <p>
                   How many years will you have lived in Canada between age 18
                   and 65?
+                  <CRICRedStar />
+                  <CRICTooltip title="Enter the total number of years you will have lived in Canada during the period from age 18 to 65. This helps determine your eligibility and the amount of OAS pension you may receive. If unsure, estimate based on your history of residence in Canada." />
                 </p>
               </div>
-              <select
-                id="options"
-                className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
-                value={yearsInCanada}
-                onChange={(e) =>
+              <Select
+                size="large"
+                showSearch
+                style={{
+                  height: 45,
+                  width: "100%",
+                  border: "1px solid #838383",
+                  borderRadius: "8px",
+                }}
+                variant="borderless"
+                options={canadaLivingAgeOptions}
+                suffixIcon={
+                  <Icon
+                    className="text-[1.5rem] text-gray-600"
+                    icon="iconamoon:arrow-down-2"
+                  />
+                }
+                onChange={(value) =>
                   dispatch(
-                    updateField({
-                      field: "yearsInCanada",
-                      value: e.target.value,
+                    updateOldAgeSecurityField({
+                      key: "numberOYearsLivedInCanada",
+                      value: value,
                     })
                   )
                 }
-              >
-                {canadaLivingAgeOptions.map((value) => (
-                  <option value={value}>{value}</option>
-                ))}
-              </select>
-            </div>
-          </>
-        )}
-
-        {isFortyYears && (
-          <>
-            <div>
-              <div className="flex items-center gap-2 font-semibold mb-2">
-                <p>
-                  At what age do you plan to receive your OAS pension?
-                  <RedStar />
-                </p>
-              </div>
-              <select
-                id="options"
-                className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
-                value={oasStartYear}
-                onChange={(e) =>
-                  dispatch(
-                    updateField({
-                      field: "oasStartYear",
-                      value: e.target.value,
-                    })
-                  )
-                }
-              >
-                {OASAgeOptions.map((value) => (
-                  <option value={value}>{value}</option>
-                ))}
-              </select>
-              {showError && !oasStartYear && (
-                <Error message="This field is required*" />
+                value={numberOYearsLivedInCanada}
+              ></Select>
+              {showError && numberOYearsLivedInCanada == "Select One" && (
+                <Error message="This field is required" />
               )}
             </div>
           </>
         )}
+
+        <div>
+          <div className="flex items-center gap-2 font-semibold mb-2">
+            <p>
+              At what age do you plan to receive your OAS pension?
+              <CRICRedStar />
+              <CRICTooltip title="Choose the age at which you plan to start receiving your Old Age Security (OAS) pension. While you can begin as early as 65, deferring it beyond 65 can increase your monthly payments. Consider your financial needs and retirement goals when making this choice." />
+            </p>
+          </div>
+          <Select
+            size="large"
+            style={{
+              height: 45,
+              width: "100%",
+              border: "1px solid #838383",
+              borderRadius: "8px",
+            }}
+            variant="borderless"
+            options={[
+              { value: "Select One", label: "Select One" },
+              { value: "65", label: "65" },
+              { value: "66", label: "66" },
+              { value: "67", label: "67" },
+              { value: "68", label: "68" },
+              { value: "69", label: "69" },
+              { value: "70", label: "70" },
+            ]}
+            suffixIcon={
+              <Icon
+                className="text-[1.5rem] text-gray-600"
+                icon="iconamoon:arrow-down-2"
+              />
+            }
+            onChange={(value) =>
+              dispatch(
+                updateOldAgeSecurityField({
+                  key: "OASPensionReceivingAge",
+                  value: value,
+                })
+              )
+            }
+            value={OASPensionReceivingAge}
+          ></Select>
+          {showError && OASPensionReceivingAge == "Select One" && (
+            <Error message="This field is required" />
+          )}
+        </div>
 
         <div className="grid grid-cols-2 md:gap-5 gap-3">
           <button
@@ -173,7 +268,6 @@ export default function OldAgeSecurity() {
           </button>
         </div>
       </section>
-      <CRICResultCard />
     </main>
   );
 }

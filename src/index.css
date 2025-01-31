@@ -104,5 +104,21 @@ body {
 
 
 .ant-collapse-content>.ant-collapse-content-box {
-  background-color: rgb(243, 244, 245) !important;
+  background-color: #F8F8F8 !important;
+}
+
+
+/* Animation for the arrow icon  */
+@keyframes rotateWithPause {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+.rotating-icon {
+  animation: rotateWithPause 2s ease-in-out infinite;
+  animation-delay: 2s; /* No initial delay */
 }

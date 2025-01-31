@@ -3,7 +3,10 @@ import compoundInterestReducer from "./features/compoundInterestSlice/compoundIn
 import researchReducer from "./features/other/researchSlice";
 import NWReducer from "./features/NWSlice/NWSlice";
 import budgetReducer from "./features/BgtSlice/BgtSlice";
+
 import stepperReducer from "./features/stepperSlice/stepperSclie";
+import CRICStepperReducer from "./features/stepperSlice/CRICStepperSlice";
+
 import RRIFReducer from "./features/RRIF/RRIFSlice";
 import RRSPReducer from "./features/RRSP/RRSPSlice";
 import globalCurrencyReducer from "./features/other/globalCurrency";
@@ -11,7 +14,7 @@ import CRICReducer from "./features/CRIC/CRICSlice";
 import COLCReducer from "./features/COLC/COLCSlice";
 
 // Create and configure the store
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     compoundInterest: compoundInterestReducer,
     research: researchReducer,
@@ -19,10 +22,12 @@ const store = configureStore({
     budgetCalculator: budgetReducer,
     RRIF: RRIFReducer,
     rrspCalculator: RRSPReducer,
-    CRICalculator: CRICReducer,
     COLCalculator: COLCReducer,
     globalCurrency: globalCurrencyReducer,
     stepper: stepperReducer,
+
+    CRICalculator: CRICReducer,
+    CRICStepper: CRICStepperReducer,
   },
   devTools: import.meta.env.MODE === "development",
 });
@@ -30,5 +35,3 @@ const store = configureStore({
 // Export the store type
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
-export default store;

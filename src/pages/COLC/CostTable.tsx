@@ -4,8 +4,6 @@ import { isNegative } from "../../utils/isNegative";
 
 export default function CostTable() {
   const {
-    selectedCityName1,
-    selectedCityName2,
     city1SubTotalCost,
     city2SubTotalCost,
     subTotalIndex,
@@ -20,14 +18,7 @@ export default function CostTable() {
       </h3>
 
       <div className="overflow-x-auto">
-        <div className="min-w-[500px]">
-          <div className="grid grid-cols-4 font-bold border-[1px] border-gray-300 px-4 py-3 bg-gray-100 md:text-[18px] text-[16px] rounded-t-lg">
-            <p>Name</p>
-            <p className="ml-[6px]">{selectedCityName1}</p>
-            <p className="ml-[6px]">{selectedCityName2}</p>
-            <p className="ml-3">Change</p>
-          </div>
-
+        <div className="min-w-[600px]">
           <CustomCollapese />
           <div className="grid grid-cols-4 font-bold border-[1px] border-gray-300 px-4 py-3 bg-black md:text-[17px] text-[16px] text-white">
             <p>Total</p>

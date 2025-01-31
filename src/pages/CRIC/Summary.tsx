@@ -1,186 +1,128 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
 import CRICTable from "./CRICTable";
-import CRICResultCard from "./CRICResultCard";
+// import CRICResultCard from "./CRICResultCard";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import CRICBarChart from "./CRICBarChart";
-import { numberWithCommas } from "../../utils/numberWithCommas";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { calculateCRI } from "../../redux/features/CRIC/CRICSlice";
-import { previousStep } from "../../redux/features/stepperSlice/stepperSclie";
+import { useEffect, useState } from "react";
+import { calculateFinalResult } from "../../redux/features/CRIC/CRICSlice";
+import SummaryCollapse from "./SummaryCollapse";
+import { toast } from "react-toastify";
+import CRICPieChart from "./CRICPieChart";
+import { delay } from "../../utils/delay";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import { previousStep } from "../../redux/features/stepperSlice/CRICStepperSlice";
 
 export default function Summary() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isCalculationCompleted, setIsCalculationCompleted] = useState(false);
+  const {
+    generalInfo: {
+      annualRetirementIncomeGoal,
+      currentAnnualIncome,
+      lifeExpectency,
+    },
+  } = useAppSelector((state) => state.CRICalculator);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  const { currency } = useAppSelector(
-    (state) => state.globalCurrency
-  );
-  const {
-    annualRetirementIncomeGoal,
-    currentAnnualIncome,
-    dobMonth,
-    dobYear,
-    gender,
-    lifeExpectency,
-    oas,
-    oasStartYear,
-    ppAnnualAmount,
-    ppStartYear,
-    selectedPP,
-    yearsInCanada,
-    isFortyYears
-  } = useAppSelector((state) => state.CRICalculator);
+  const handleBack = () => {
+    dispatch(previousStep());
+    navigate(-1);
+  };
 
-  useEffect(() => {
-    dispatch(calculateCRI());
-  }, []);
+  const handleCalculate = async () => {
+    // reset the local states
+    setIsLoading(false);
+    setIsCalculationCompleted(false);
 
-    const handleBack = () => {
-      dispatch(previousStep());
-      navigate(-1);
-    };
+    if (
+      annualRetirementIncomeGoal == "Select One" ||
+      currentAnnualIncome == "Select One" ||
+      lifeExpectency == ""
+    ) {
+      return toast.error(
+        "Information is missing to proceed calculation. Please provide all required input to proceed your calculation "
+      );
+    }
+    setIsLoading(true);
+    await delay(1000);
+    setIsLoading(false);
+    setIsCalculationCompleted(true);
+    dispatch(calculateFinalResult(undefined));
+    toast.success("Your retirement plan calculation is complete!");
+  };
 
   return (
     <>
       <main className="border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[5rem]">
-        <section className="grid md:grid-cols-2 grid-cols-1 gap-10">
-          <div className="space-y-[2rem] w-full">
-            <h3 className="font-extrabold md:text-[2rem] text-[18px]">
+        <section>
+          <div>
+            <h3 className="font-extrabold md:text-[2rem] text-[18px] mb-[1.25rem]">
               Summary
             </h3>
-
-            <div>
-              <div className="flex justify-between items-center mb-5">
-                <h3 className="font-semibold md:text-[1.2rem] text-[1rem]">
-                  General information
-                </h3>
-                <Icon
-                  className="text-[2rem] font-bold"
-                  icon="material-symbols:keyboard-arrow-up-rounded"
-                />
-              </div>
-              <ul className="space-y-[1rem] md:text-[1rem] text-[14px]">
-                <li className="flex md:gap-0 gap-5 justify-between items-center">
-                  <p>Date of Birth</p>
-                  <p>
-                    {dobMonth}, {dobYear}
-                  </p>
-                </li>
-                <li className="flex md:gap-0 gap-5 justify-between items-center">
-                  <p>Current Age</p>
-                  <p>{new Date().getFullYear() - dobYear}</p>
-                </li>
-                <li className="flex md:gap-0 gap-5 justify-between items-center">
-                  <p>Life Expectancy</p>
-                  <p>{lifeExpectency}</p>
-                </li>
-                <li className="flex md:gap-0 gap-5 justify-between items-center">
-                  <p>Gender</p>
-                  <p>{gender}</p>
-                </li>
-                <li className="flex md:gap-0 gap-5 justify-between items-center">
-                  <p>Annual Retirement Income Goal</p>
-                  <p>
-                    {currency}
-                    {numberWithCommas(annualRetirementIncomeGoal)}
-                  </p>
-                </li>
-                <li className="flex md:gap-0 gap-5 justify-between items-center">
-                  <p>Current Annual Income</p>
-                  <p>
-                    {currency}
-                    {numberWithCommas(currentAnnualIncome)}
-                  </p>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <div className="flex justify-between items-center mb-5">
-                <h3 className="font-semibold md:text-[1.2rem] text-[1rem]">
-                  {selectedPP}
-                </h3>
-                <Icon
-                  className="text-[2rem] font-bold"
-                  icon="material-symbols:keyboard-arrow-up-rounded"
-                />
-              </div>
-              <ul className="space-y-[1rem] md:text-[1rem] text-[14px]">
-                <li className="flex md:gap-0 gap-5 justify-between items-center">
-                  <p>Receiving at Age</p>
-                  <p>{ppStartYear}</p>
-                </li>
-
-                <li className="flex md:gap-0 gap-5 justify-between items-center">
-                  <p>{selectedPP} Annual</p>
-                  <p>
-                    {currency}
-                    {numberWithCommas(ppAnnualAmount)}
-                  </p>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <div className="flex justify-between items-center mb-5">
-                <h3 className="font-semibold md:text-[1.2rem] text-[1rem]">
-                  Old Age Security (OAS)
-                </h3>
-                <Icon
-                  className="text-[2rem] font-bold"
-                  icon="material-symbols:keyboard-arrow-up-rounded"
-                />
-              </div>
-
-              <ul className="space-y-[1rem] md:text-[1rem] text-[14px]">
-                <li className="flex md:gap-0 gap-5 justify-between items-center">
-                  <p>Receiving at Age</p>
-                  <p>{oasStartYear}</p>
-                </li>
-
-                <li className="flex md:gap-0 gap-5 justify-between items-center">
-                  <p>OAS Pension (Ages 75 and up)</p>
-                  <p>
-                    {currency}
-                    {numberWithCommas(oas?.oldAgeSecurityAfter75)}
-                  </p>
-                </li>
-
-                <li className="flex md:gap-0 gap-5 justify-between items-center">
-                  <p>OAS Pension (Ages from {oasStartYear} to 74)</p>
-                  <p>
-                    {currency}
-                    {numberWithCommas(oas?.oldAgeSecurityBefore75)}
-                  </p>
-                </li>
-
-                <li className="flex md:gap-0 gap-5 justify-between items-center">
-                  <p>Years lived in Canada</p>
-                  <p>{Number(isFortyYears) ? 40 : yearsInCanada}</p>
-                </li>
-              </ul>
-            </div>
+            <SummaryCollapse />
           </div>
-          <CRICResultCard />
+          {/* <CRICResultCard /> */}
         </section>
 
-        <div className="flex justify-center gap-5 mt-[3rem]">
+        <div className="flex md:flex-row flex-col md:gap-5 gap-3 mt-[3rem]">
           <button
             onClick={handleBack}
-            className="border-[1px] md:w-[200px] w-full  md:text-[1.25rem] text-[18px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] py-[10px]"
+            className="border-[1px] w-full  md:text-[1.25rem] text-[18px] border-gray-600 hover:bg-black hover:text-white duration-200 text-black rounded-[10px] px-[1.5rem] h-[55px]"
           >
             Back
           </button>
+          <button
+            onClick={handleCalculate}
+            disabled={isLoading || isCalculationCompleted}
+            className={`border-[1px] w-full  md:text-[1.25rem] text-[18px] duration-200 rounded-[10px] px-[1.5rem] h-[55px] flex items-center justify-center ${
+              isLoading || isCalculationCompleted
+                ? "bg-gray-200 text-white border-gray-200"
+                : "bg-black text-white border-gray-600"
+            }`}
+          >
+            {isLoading ? (
+              <Icon
+                icon="eos-icons:three-dots-loading"
+                width="70"
+                height="70"
+              />
+            ) : (
+              "Calculate"
+            )}
+          </button>
         </div>
 
-        <CRICBarChart />
+        {isLoading && !isCalculationCompleted ? (
+          <div className="flex flex-col justify-center items-center md:text-[1.5rem] text-[1.2rem] font-semibold py-20">
+            <div className="flex flex-col items-center text-green-600">
+              <p className="mb-[-1rem]">Doing Calculations</p>
+              <Icon
+                icon="eos-icons:three-dots-loading"
+                width="80"
+                height="80"
+              />
+            </div>
+          </div>
+        ) : !isLoading && !isCalculationCompleted ? (
+          <p className="text-[1.5rem] text-center py-20 text-gray-500">
+            Please click on the{" "}
+            <span className="font-bold text-black">Calculate</span> button and
+            then your calculated result will be displayed here.{" "}
+          </p>
+        ) : (
+          <section>
+            <CRICPieChart />
 
-        <CRICTable />
+            <CRICBarChart />
+
+            <CRICTable />
+          </section>
+        )}
       </main>
     </>
   );

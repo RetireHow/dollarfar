@@ -1,23 +1,10 @@
 import { Outlet } from "react-router-dom";
-import { useAppDispatch } from "../../redux/hooks";
-import { useEffect } from "react";
-import {
-  resetActiveStep,
-  setTotalSteps,
-} from "../../redux/features/stepperSlice/stepperSclie";
-import Stepper from "../BC/Stepper";
+import CRICStepper from "./CRICStepper";
 
 export default function CRICLayout() {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(resetActiveStep());
-    dispatch(setTotalSteps(7));
-  }, [dispatch]);
-
   return (
     <section>
-      <Stepper steps={[1, 2, 3, 4, 5, 6, 7]}/>
+      <CRICStepper steps={[1, 2, 3, 4, 5, 6, 7]} />
       <div>
         <Outlet />
       </div>

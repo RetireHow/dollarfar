@@ -1,12 +1,29 @@
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { useNavigate } from "react-router-dom";
-import { nextStep, previousStep } from "../../../redux/features/stepperSlice/stepperSclie";
-import { updateField } from "../../../redux/features/CRIC/CRICSlice";
+import {
+  calculatePPBenefit,
+  updateAgeByAgeField,
+  updatePensionPlanField,
+} from "../../../redux/features/CRIC/CRICSlice";
 import { useEffect, useState } from "react";
 import Error from "../../../components/UI/Error";
-import RedStar from "../../../components/UI/RedStar";
-import CRICResultCard from "../CRICResultCard";
 import { toast } from "react-toastify";
+import CRICRedStar from "../CRICRedStar";
+import CRICTooltip from "../CRICTooltip";
+import MandatoryUserHints from "../MandatoryUserHints";
+import { Select } from "antd";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import { nextStep, previousStep } from "../../../redux/features/stepperSlice/CRICStepperSlice";
+
+const monthlyPensionEstimateOptions = [
+  { value: "Select One", label: "Select One" },
+];
+for (let i = 10; i <= 1433; i += 10) {
+  monthlyPensionEstimateOptions.push({
+    value: i.toString(),
+    label: i.toString(),
+  });
+}
 
 export default function CanadaPensionPlanRough() {
   const dispatch = useAppDispatch();
@@ -14,73 +31,90 @@ export default function CanadaPensionPlanRough() {
 
   const [showError, setShowError] = useState(false);
 
-  const { selectedPP, ppStartYear, ppBenefitAmount } = useAppSelector(
-    (state) => state.CRICalculator
-  );
+  const { selectedPP, ppStartYear, monthlyRetirementPensionEstimate } =
+    useAppSelector((state) => state.CRICalculator.pensionPlan);
 
   const handleNext = () => {
-    if (
-      (!selectedPP || !ppStartYear || !ppBenefitAmount) &&
-      selectedPP !== "Not Applicable"
-    ) {
-      if(!selectedPP){
-        toast.error('Pension plan is required.')
+    if (selectedPP !== "Not Applicable") {
+      if (
+        ppStartYear == "Select One" ||
+        monthlyRetirementPensionEstimate == "Select One"
+      ) {
+        toast.error("Please fill in the required fields.");
+        return setShowError(true);
       }
-      if(!ppStartYear){
-        toast.error('Receiving pension plan benefit age is required.')
-      }
-      if(!ppBenefitAmount){
-        toast.error('Monthly retirement pension estimate is required.')
-      }
-      return setShowError(true);
+      dispatch(calculatePPBenefit(undefined));
+    }
+    if (selectedPP == "Not Applicable") {
+      dispatch(
+        updateAgeByAgeField({
+          mainKey: "PPResult",
+          subKey: "PPBenefitsAgeByAge",
+        })
+      );
     }
     dispatch(nextStep());
     navigate("/CRIC/employer-pension");
   };
 
-   const handleBack = () => {
-      dispatch(previousStep());
-      navigate(-1)
-    };
+  const handleBack = () => {
+    dispatch(previousStep());
+    navigate(-1);
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 330, behavior: "smooth" });
   }, []);
 
   return (
-    <main className="grid md:grid-cols-2 grid-cols-1 gap-10 mb-[3rem]">
+    <main>
       <section className="space-y-[2rem] md:text-[1rem] text-[14px]">
         <h3 className="font-extrabold md:text-[2rem] text-[18px]">
           Canada Pension Plan
         </h3>
 
+        <MandatoryUserHints />
+
         <div>
-          <div className="flex items-center gap-2 font-semibold mb-2">
+          <div className="font-semibold mb-2">
             <p>
               Individuals who contribute to the Quebec Pension Plan (QPP) or the
               Canada Pension Plan (CPP) may be eligible to receive pension
               benefits at retirement. Which pension applies to you?
-              <RedStar />
+              <CRICTooltip title="Select the pension plan that applies to you based on your contributions. Individuals who have worked and contributed in Quebec are typically eligible for the Quebec Pension Plan (QPP), while those who have contributed elsewhere in Canada are eligible for the Canada Pension Plan (CPP). If you have contributed to both, choose the plan that primarily applies to your contributions." />
             </p>
           </div>
-          <select
-            id="options"
-            className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
-            value={selectedPP}
-            onChange={(e) =>
+          <Select
+            size="large"
+            showSearch
+            style={{
+              height: 45,
+              width: "100%",
+              border: "1px solid #838383",
+              borderRadius: "8px",
+            }}
+            variant="borderless"
+            options={[
+              { value: "Not Applicable", label: "Not Applicable" },
+              { value: "Canada Pension Plan", label: "Canada Pension Plan" },
+              { value: "Quebec Pension Plan", label: "Quebec Pension Plan" },
+            ]}
+            suffixIcon={
+              <Icon
+                className="text-[1.5rem] text-gray-600"
+                icon="iconamoon:arrow-down-2"
+              />
+            }
+            onChange={(value) =>
               dispatch(
-                updateField({
-                  field: "selectedPP",
-                  value: e.target.value,
+                updatePensionPlanField({
+                  key: "selectedPP",
+                  value: value,
                 })
               )
             }
-          >
-            <option value="Select One">Select One</option>
-            <option value="Not Applicable">Not Applicable</option>
-            <option value="Canada Pension Plan">Canada Pension Plan</option>
-            <option value="Quebec Pension Plan">Quebec Pension Plan</option>
-          </select>
+            value={selectedPP}
+          ></Select>
           {showError && !selectedPP && (
             <Error message="This field is required*." />
           )}
@@ -89,83 +123,98 @@ export default function CanadaPensionPlanRough() {
         {selectedPP !== "Not Applicable" && (
           <>
             <div>
-              <div className="flex items-center gap-2 font-semibold mb-2">
+              <div className="font-semibold mb-2">
                 <p>
                   Enter your monthly retirement pension estimate (at age 65)
                   indicated on your Statement that states your retirement
                   pension estimate based on your past contributions
-                  <RedStar />
+                  <CRICRedStar />
+                  <CRICTooltip title="Enter the estimated amount of your monthly retirement pension at age 65. This information can typically be found on your pension statement, which provides an estimate based on your past contributions to the plan. If you do not have this information, refer to your latest pension statement or contact the relevant pension plan for assistance." />
                 </p>
               </div>
-              <select
-                id="options"
-                className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
-                value={ppBenefitAmount}
-                onChange={(e) =>
+              <Select
+                size="large"
+                showSearch
+                style={{
+                  height: 45,
+                  width: "100%",
+                  border: "1px solid #838383",
+                  borderRadius: "8px",
+                }}
+                variant="borderless"
+                options={monthlyPensionEstimateOptions}
+                suffixIcon={
+                  <Icon
+                    className="text-[1.5rem] text-gray-600"
+                    icon="iconamoon:arrow-down-2"
+                  />
+                }
+                onChange={(value) =>
                   dispatch(
-                    updateField({
-                      field: "ppBenefitAmount",
-                      value: e.target.value,
+                    updatePensionPlanField({
+                      key: "monthlyRetirementPensionEstimate",
+                      value: value,
                     })
                   )
                 }
-              >
-                <option value="Select One">Select One</option>
-                <option value="100">100</option>
-                <option value="200">200</option>
-                <option value="300">300</option>
-                <option value="400">400</option>
-                <option value="500">500</option>
-                <option value="600">600</option>
-                <option value="700">700</option>
-                <option value="800">800</option>
-                <option value="900">900</option>
-                <option value="1000">1000</option>
-                <option value="1100">1100</option>
-                <option value="1200">1200</option>
-                <option value="1300">1300</option>
-                <option value="1364">1364</option>
-              </select>
-              {showError && !ppBenefitAmount && (
-                <Error message="This field is required*" />
-              )}
+                value={monthlyRetirementPensionEstimate}
+              ></Select>
+              {showError &&
+                monthlyRetirementPensionEstimate == "Select One" && (
+                  <Error message="This field is required*" />
+                )}
             </div>
 
             <div>
-              <div className="flex items-center gap-2 font-semibold mb-2">
+              <div className="font-semibold mb-2">
                 <p>
                   At what age do you plan to receive your{" "}
                   {selectedPP == "Canada Pension Plan" ? "CPP" : "QPP"} benefit?
-                  <RedStar />
+                  <CRICRedStar />
+                  <CRICTooltip title="Select the age at which you plan to start receiving your pension benefits. You can typically begin receiving benefits as early as age 60, but the amount may vary depending on whether you choose to start earlier, at 65, or later. Starting earlier usually results in reduced monthly payments, while delaying can increase them. Consider your financial needs and goals when making this decision." />
                 </p>
               </div>
-              <select
-                id="options"
-                className="outline-none border-[1px] px-[9px] py-[9px] w-full duration-300 rounded-[5px] border-[#838383] bg-white"
-                value={ppStartYear}
-                onChange={(e) =>
+              <Select
+                size="large"
+                showSearch
+                style={{
+                  height: 45,
+                  width: "100%",
+                  border: "1px solid #838383",
+                  borderRadius: "8px",
+                }}
+                variant="borderless"
+                options={[
+                  { value: "Select One", label: "Select One" },
+                  { value: "60", label: "60" },
+                  { value: "61", label: "61" },
+                  { value: "62", label: "62" },
+                  { value: "63", label: "63" },
+                  { value: "64", label: "64" },
+                  { value: "65", label: "65" },
+                  { value: "66", label: "66" },
+                  { value: "67", label: "67" },
+                  { value: "68", label: "68" },
+                  { value: "69", label: "69" },
+                  { value: "70", label: "70" },
+                ]}
+                suffixIcon={
+                  <Icon
+                    className="text-[1.5rem] text-gray-600"
+                    icon="iconamoon:arrow-down-2"
+                  />
+                }
+                onChange={(value) =>
                   dispatch(
-                    updateField({
-                      field: "ppStartYear",
-                      value: e.target.value,
+                    updatePensionPlanField({
+                      key: "ppStartYear",
+                      value: value,
                     })
                   )
                 }
-              >
-                <option value="Select One">Select One</option>
-                <option value="60">60</option>
-                <option value="61">61</option>
-                <option value="62">62</option>
-                <option value="63">63</option>
-                <option value="64">64</option>
-                <option value="65">65</option>
-                <option value="66">66</option>
-                <option value="67">67</option>
-                <option value="68">68</option>
-                <option value="69">69</option>
-                <option value="70">70</option>
-              </select>
-              {showError && !ppStartYear && (
+                value={ppStartYear}
+              ></Select>
+              {showError && ppStartYear == "Select One" && (
                 <Error message="This field is required*" />
               )}
             </div>
@@ -187,7 +236,6 @@ export default function CanadaPensionPlanRough() {
           </button>
         </div>
       </section>
-      <CRICResultCard />
     </main>
   );
 }

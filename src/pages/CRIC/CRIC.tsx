@@ -18,59 +18,31 @@ export default function CRIC() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  const {
+    generalInfo,
+    pensionPlan,
+    employerPension,
+    retirementSavings,
+    otherIncome,
+    oldAgeSecurity,
+    calculatedResult,
+    finalResult,
+  } = useAppSelector((state) => state.CRICalculator);
   const { currency, currencyFullName } = useAppSelector(
     (state) => state.globalCurrency
   );
-
-  const {
-    annualRetirementIncomeGoal,
-    currentAnnualIncome,
-    dobMonth,
-    dobYear,
-    gender,
-    isFortyYears,
-    lifeExpectency,
-    oas,
-    oasStartYear,
-    ppAnnualAmount,
-    ppBenefitAmount,
-    ppStartYear,
-    selectedPP,
-    yearsInCanada,
-    CRIBreakdownData,
-  } = useAppSelector((state) => state.CRICalculator);
-
-  const totalAmount = CRIBreakdownData.reduce(
-    (
-      total: number,
-      curr: { year: number; oasAmount: number; cppAmount: number }
-    ) => {
-      return total + (curr.oasAmount + curr.cppAmount);
-    },
-    0
-  );
-  const annualAverageRetirementIncome = Math.round(
-    totalAmount / CRIBreakdownData.length
-  );
-
   const calculatorData = {
-    annualRetirementIncomeGoal,
-    currentAnnualIncome,
-    dobMonth,
-    dobYear,
-    gender,
-    isFortyYears,
-    lifeExpectency,
-    oas,
-    oasStartYear,
-    ppAnnualAmount,
-    ppBenefitAmount,
-    ppStartYear,
-    selectedPP,
-    yearsInCanada,
+    generalInfo,
+    pensionPlan,
+    employerPension,
+    retirementSavings,
+    otherIncome,
+    oldAgeSecurity,
+    calculatedResult,
+    finalResult,
     currency,
     currencyFullName,
-    annualAverageRetirementIncome,
   };
 
   return (
