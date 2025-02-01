@@ -11,174 +11,18 @@ import {
   calculateTFSAorNonRegAccountSavings,
   mergeArraysByAge,
 } from "./CRIC.utils";
-
-type TGeneralInfo = {
-  dobMonth: string;
-  dobYear: string;
-  gender: string;
-  currentAnnualIncome: string;
-  annualRetirementIncomeGoal: string;
-  lifeExpectency: string;
-};
-
-type TPensionPlan = {
-  selectedPP: string;
-  ppStartYear: string;
-  monthlyRetirementPensionEstimate: string;
-};
-
-type TOldAgeSecurity = {
-  willLiveInCanadaUntil65: string;
-  willLiveInCanadaAtleast40Years: string;
-  numberOYearsLivedInCanada: string;
-  OASPensionReceivingAge: string;
-};
-
-type TEmployerPension = {
-  hasEmployerPension: string;
-  pensionPlanType: string;
-  annualPension: string;
-  pensionReceivingAge: string;
-  isIndexedToInflation: string;
-  inflationRate: string;
-};
-
-type TTFSA = {
-  hasTFSA: string;
-  TFSAcurrentTotal: string;
-  TFSAOngoingContributionAmount: string;
-  TFSAOngoingContributionFrequency: string;
-  TFSAreturnRate: string;
-};
-
-type TNRA = {
-  hasNRA: string;
-  NRAcurrentTotal: string;
-  NRAOngoingContributionAmount: string;
-  NRAOngoingContributionFrequency: string;
-  NRAreturnRate: string;
-  NRAtaxRate: string;
-};
-
-type TRetirementSavings = {
-  TFSA: TTFSA;
-  NRA: TNRA;
-  TFSAorNRASavingsReceivingAge: string;
-};
-
-type TOtherIncome = {
-  hasOtherIncome: string;
-  otherIncomeType: string;
-  otherIncomeFrequency: string;
-  otherIncomeAmount: string;
-  otherIncomeStartReceivingAge: string;
-  otherIncomeStopReceivingAge: string;
-};
-
-type TOASAmountAgeByAge = {
-  age: number;
-  OASAmount: number;
-  annualRIG: number;
-};
-
-type TOASResult = {
-  OASBenefitAmount: {
-    oldAgeSecurityBefore75: number;
-    oldAgeSecurityAfter75: number;
-  };
-  OASAmountsAgeByAge: TOASAmountAgeByAge[];
-};
-
-type TPPBenefitAgeByAge = {
-  age: number;
-  PPBenefitAmount: number;
-  annualRIG: number;
-};
-
-type TPPResult = {
-  PPBenefitAmount: number;
-  PPBenefitsAgeByAge: TPPBenefitAgeByAge[];
-};
-
-type TEmployerPensionAgeByAge = {
-  age: number;
-  employerPensionAmount: number;
-  annualRIG: number;
-};
-
-type TEmployerPensionResult = {
-  employerPensionsAgeByAge: TEmployerPensionAgeByAge[];
-};
-
-type TTFSASavingsYearByYear = {
-  age: number;
-  savingsAmount: number;
-};
-
-type TTFSASavings = {
-  annualRetirementIncome: number;
-  savingsYearByYear: TTFSASavingsYearByYear[];
-};
-
-type TNonRegAccountSavingsYearByYear = {
-  age: number;
-  savingsAmount: number;
-};
-
-type TNonRegAccountSavings = {
-  annualRetirementIncome: number;
-  savingsYearByYear: TNonRegAccountSavingsYearByYear[];
-};
-
-type TRetirementSavingsAgeByAge = {
-  age: number;
-  retirementSavingsAmount: number;
-  annualRIG: number;
-};
-
-type TRetirementSavingsResult = {
-  TFSASavings: TTFSASavings;
-  nonRegAccountSavings: TNonRegAccountSavings;
-  annualRetirementIncomeFromBothAccount: number;
-  retirementSavingsAgeByAge: TRetirementSavingsAgeByAge[];
-};
-
-type TOtherIncomeAgeByAge = {
-  age: number;
-  otherIncomeAmount: number;
-  annualRIG: number;
-};
-
-type TOtherIncomeResult = {
-  otherIncomeAmountAnnually: number;
-  otherIncomesAgeByAge: TOtherIncomeAgeByAge[];
-};
-
-type TCalculatedResult = {
-  PPResult: TPPResult;
-  OASResult: TOASResult;
-  employerPensionResult: TEmployerPensionResult;
-  retirementSavingsResult: TRetirementSavingsResult;
-  otherIncomeResult: TOtherIncomeResult;
-};
-
-type TFinalResult = {
-  age: number;
-  [key: string]: number;
-};
-
-type CRICState = {
-  generalInfo: TGeneralInfo;
-  pensionPlan: TPensionPlan;
-  oldAgeSecurity: TOldAgeSecurity;
-
-  employerPension: TEmployerPension;
-  retirementSavings: TRetirementSavings;
-  otherIncome: TOtherIncome;
-
-  calculatedResult: TCalculatedResult;
-  finalResult: TFinalResult[];
-};
+import {
+  CRICState,
+  TCalculatedResult,
+  TEmployerPension,
+  TGeneralInfo,
+  TNRA,
+  TOldAgeSecurity,
+  TOtherIncome,
+  TPensionPlan,
+  TRetirementSavings,
+  TTFSA,
+} from "./CRIC.types";
 
 // Initial state
 const initialState: CRICState = {
@@ -284,19 +128,6 @@ const CRICSlice = createSlice({
   name: "CRICalculator",
   initialState,
   reducers: {
-    calculateCRI: (state) => {
-      // Calculate PP Benefit
-      const { selectedPP, ppStartYear, monthlyRetirementPensionEstimate } =
-        state.pensionPlan;
-      if (selectedPP && ppStartYear && monthlyRetirementPensionEstimate) {
-        const cpp = calculateCPPBenefit(
-          Number(monthlyRetirementPensionEstimate),
-          Number(ppStartYear)
-        );
-        console.log({ cpp });
-      }
-    },
-
     updateGeneralInfoField: (
       state: {
         generalInfo: { [key: string]: string };
@@ -629,7 +460,6 @@ const CRICSlice = createSlice({
 
 // Export actions and reducer
 export const {
-  calculateCRI,
   updateGeneralInfoField,
   updateEmployerPensionField,
   updateRetirementSavingsField,
