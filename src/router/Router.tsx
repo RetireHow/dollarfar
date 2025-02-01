@@ -17,16 +17,16 @@ import ESP from "../pages/ESP/ESP";
 import COLC from "../pages/COLC/COLC";
 import RRSP from "../pages/RRSP/RRSP";
 import RRIF from "../pages/RRIF/RRIF";
-import PendingCRI from "../pages/PendingCRI";
+// import PendingCRI from "../pages/PendingCRI";
 
-// import CRIC from "../pages/CRIC/CRIC";
-// import GeneralInformation from "../pages/CRIC/Forms/GeneralInformation";
-// import CanadaPensionPlan from "../pages/CRIC/Forms/CanadaPensionPlan";
-// import OldAgeSecurity from "../pages/CRIC/Forms/OldAgeSecurity";
-// import Summary from "../pages/CRIC/Summary";
-// import EmployerPension from "../pages/CRIC/Forms/EmployerPension";
-// import RetirementSavings from "../pages/CRIC/Forms/RetirementSavings";
-// import OtherIncome from "../pages/CRIC/Forms/OtherIncome";
+import CRIC from "../pages/CRIC/CRIC";
+import GeneralInformation from "../pages/CRIC/Forms/GeneralInformation";
+import CanadaPensionPlan from "../pages/CRIC/Forms/CanadaPensionPlan";
+import OldAgeSecurity from "../pages/CRIC/Forms/OldAgeSecurity";
+import Summary from "../pages/CRIC/Summary";
+import EmployerPension from "../pages/CRIC/Forms/EmployerPension";
+import RetirementSavings from "../pages/CRIC/Forms/RetirementSavings";
+import OtherIncome from "../pages/CRIC/Forms/OtherIncome";
 
 export const router = createBrowserRouter([
   {
@@ -103,38 +103,38 @@ export const router = createBrowserRouter([
 
       {
         path: "CRIC",
-        // element: <CRIC />,
-        element: <PendingCRI />,
-        // children: [
-        //   {
-        //     index: true,
-        //     element: <GeneralInformation />,
-        //   },
-        //   {
-        //     path: "PP",
-        //     element: <CanadaPensionPlan />,
-        //   },
-        //   {
-        //     path: "employer-pension",
-        //     element: <EmployerPension />,
-        //   },
-        //   {
-        //     path: "retirement-savings",
-        //     element: <RetirementSavings />,
-        //   },
-        //   {
-        //     path: "other-income",
-        //     element: <OtherIncome />,
-        //   },
-        //   {
-        //     path: "OAS",
-        //     element: <OldAgeSecurity />,
-        //   },
-        //   {
-        //     path: "summary",
-        //     element: <Summary />,
-        //   },
-        // ],
+        element: <CRIC />,
+        // element: <PendingCRI />,
+        children: [
+          {
+            index: true,
+            element: <GeneralInformation />,
+          },
+          {
+            path: "PP",
+            element: <CanadaPensionPlan />,
+          },
+          {
+            path: "employer-pension",
+            element: <EmployerPension />,
+          },
+          {
+            path: "retirement-savings",
+            element: <RetirementSavings />,
+          },
+          {
+            path: "other-income",
+            element: <OtherIncome />,
+          },
+          {
+            path: "OAS",
+            element: <OldAgeSecurity />,
+          },
+          {
+            path: "summary",
+            element: <Summary />,
+          },
+        ],
       },
 
       // {

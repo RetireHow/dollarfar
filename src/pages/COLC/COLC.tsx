@@ -71,8 +71,20 @@ export default function COLC() {
         </div>
 
         <COLCForm />
-        <CostTable />
-        <COLBarChart />
+        {COLCModifiedCostData?.length == 0 ? (
+          <div className="flex justify-center">
+            <h3 className="text-[1.3rem] font-medium text-gray-600 text-center max-w-[600px]">
+              Click on the <span className="text-black font-bold">Compare</span>{" "}
+              button and then the cost of living comparision between your two
+              selected cities will be shown here.
+            </h3>
+          </div>
+        ) : (
+          <div>
+            <CostTable />
+            <COLBarChart />
+          </div>
+        )}
       </section>
       <COLDescription />
     </main>

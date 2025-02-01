@@ -40,7 +40,7 @@ export default function CustomCollapese() {
             )}
             <p>{selectedCityName2}</p>
           </div>
-          <p className="ml-8">Change</p>
+          <p className="ml-8">Difference</p>
         </div>
       ),
       children: "",
