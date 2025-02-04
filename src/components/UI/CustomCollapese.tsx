@@ -84,14 +84,23 @@ export default function CustomCollapese() {
               className="grid grid-cols-4 gap-5 md:text-[16px] text-[14px] border-b-[1px] border-gray-300 pb-3 font-medium"
             >
               <p>{item?.itemName}</p>
-              <p>
-                {currency}
-                {item?.city1ItemPrice}
-              </p>
-              <p>
-                {currency}
-                {item?.city2ItemPrice}
-              </p>
+              {Number(item?.city1ItemPrice) ? (
+                <p>
+                  {currency}
+                  {item?.city1ItemPrice}
+                </p>
+              ) : (
+                <p>N/A</p>
+              )}
+
+              {Number(item?.city2ItemPrice) ? (
+                <p>
+                  {currency}
+                  {item?.city2ItemPrice}
+                </p>
+              ) : (
+                <p>N/A</p>
+              )}
               <p className="text-[#4CAF50]">
                 {isNegative(item?.livingIndex)
                   ? `${item?.livingIndex}`

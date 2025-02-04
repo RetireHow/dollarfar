@@ -121,14 +121,18 @@ export function COLDataModifier(city1Data: TCityData, city2Data: TCityData) {
 
         category?.items?.push({
           itemName: cleanedItemName, // Shorten the name
-          city1ItemPrice: Number(city1Price?.toFixed(2)),
-          city2ItemPrice: Number(city2Price?.toFixed(2)),
-          livingIndex: Number(calculateLivingIndex(city1Price, city2Price)),
+          city1ItemPrice: Number(city1Price)
+            ? Number(city1Price?.toFixed(2))
+            : 0,
+          city2ItemPrice: Number(city2Price)
+            ? Number(city2Price?.toFixed(2))
+            : 0,
+          livingIndex: calculateLivingIndex(city1Price, city2Price) ? Number(calculateLivingIndex(city1Price, city2Price)) : 0,
         });
 
         // Update totals
-        category.city1TotalCost += city1Price;
-        category.city2TotalCost += city2Price;
+        category.city1TotalCost += city1Price ? city1Price : 0;
+        category.city2TotalCost += city2Price ? city2Price : 0;
       }
     }
   });

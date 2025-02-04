@@ -20,6 +20,7 @@ import {
   setSelectedCityName2,
   setSubTotalIndex,
 } from "../../redux/features/COLC/COLCSlice";
+
 import { Icon } from "@iconify/react/dist/iconify.js";
 
 // import { city1CostData, city2CostData } from "../../data/db";

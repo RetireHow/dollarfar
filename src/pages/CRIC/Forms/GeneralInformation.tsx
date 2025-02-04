@@ -71,7 +71,8 @@ export default function GeneralInformation() {
       dobYear == "Select One" ||
       annualRetirementIncomeGoal == "Select One" ||
       currentAnnualIncome == "Select One" ||
-      !lifeExpectency
+      !lifeExpectency ||
+      Number(lifeExpectency) < 65
     ) {
       toast.error("Please fill in the required fields.");
       return setShowError(true);
@@ -319,6 +320,9 @@ export default function GeneralInformation() {
           />
           {showError && !lifeExpectency && (
             <Error message="This field is required" />
+          )}
+          {showError && lifeExpectency && Number(lifeExpectency) < 65 && (
+            <Error message="Life expectancy can not be less than 65 years" />
           )}
         </div>
 
