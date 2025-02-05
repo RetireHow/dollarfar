@@ -173,7 +173,7 @@ export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>Contribution Frequency</Text>
-                <Text>{contributionFrequency.value}</Text>
+                <Text>{contributionFrequency}</Text>
               </View>
               <View
                 style={{

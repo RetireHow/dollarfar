@@ -55,14 +55,14 @@ const initialState: CRICState = {
       hasTFSA: "No",
       TFSAcurrentTotal: "",
       TFSAOngoingContributionAmount: "",
-      TFSAOngoingContributionFrequency: "Select One",
+      TFSAOngoingContributionFrequency: "1",
       TFSAreturnRate: "",
     },
     NRA: {
       hasNRA: "No",
       NRAcurrentTotal: "",
       NRAOngoingContributionAmount: "",
-      NRAOngoingContributionFrequency: "Select One",
+      NRAOngoingContributionFrequency: "1",
       NRAreturnRate: "",
       NRAtaxRate: "",
     },
@@ -247,7 +247,7 @@ const CRICSlice = createSlice({
       state.retirementSavings.TFSA.TFSAcurrentTotal = "";
       state.retirementSavings.TFSA.TFSAOngoingContributionAmount = "";
       state.retirementSavings.TFSA.TFSAOngoingContributionFrequency =
-        "Select One";
+        "1";
       state.retirementSavings.TFSA.TFSAreturnRate = "";
     },
 
@@ -259,7 +259,7 @@ const CRICSlice = createSlice({
       state.retirementSavings.NRA.NRAcurrentTotal = "";
       state.retirementSavings.NRA.NRAOngoingContributionAmount = "";
       state.retirementSavings.NRA.NRAOngoingContributionFrequency =
-        "Select One";
+        "1";
       state.retirementSavings.NRA.NRAreturnRate = "";
       state.retirementSavings.NRA.NRAtaxRate = "";
     },

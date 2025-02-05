@@ -17,7 +17,11 @@ export default function RRSPAreaChart() {
   const { currency } = useAppSelector((state) => state.globalCurrency);
 
   const maxSavings = Math.ceil(
-    Math.max(...savingsByAge!.map((entry) => parseFloat(entry.Savings)))
+    Math.max(
+      ...savingsByAge!.map((entry) =>
+        parseFloat(entry.savingsAmount.toString())
+      )
+    )
   );
   return (
     <div
@@ -40,14 +44,19 @@ export default function RRSPAreaChart() {
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="age" />
             <YAxis
-              dataKey="Savings"
+              dataKey="savingsAmount"
               tickFormatter={(value) => `${currency}${value}`}
               domain={[0, maxSavings]}
             />
-            <Tooltip formatter={(value:number)=>`${currency}${numberWithCommas(Math.round(value))}`}/>
+            <Tooltip
+              formatter={(value: number) =>
+                `${currency}${numberWithCommas(Math.round(value))}`
+              }
+            />
             <Area
               type="monotone"
-              dataKey="Savings"
+              dataKey="savingsAmount"
+              name="Savings"
               stroke="#25CD25"
               fill="#25CD2566"
             />

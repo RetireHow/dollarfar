@@ -184,38 +184,91 @@ export function calculateRetirementSavingsAgeByAge(
  * @returns {Array<{ year: number, savingsAmount: number, taxPaid: number }> } - Array of savings year by year.
  */
 
+
+
+// export function calculateTFSAorNonRegAccountSavings(
+//   currentTotal: number,
+//   ongoingContribution: number = 0,
+//   contributionFrequency: number,
+//   rateOfReturn: number = 0,
+//   startAge: number,
+//   endAge: number,
+//   taxRate: number = 0
+// ) {
+//   const retirementYears = endAge - startAge;
+//   const afterTaxReturn = (rateOfReturn / 100) * (1 - taxRate / 100);
+
+//   const savingsYearByYear = [];
+//   let currentSavings = currentTotal;
+
+//   for (let age = 1; age <= retirementYears; age++) {
+//     currentSavings *= 1 + afterTaxReturn;
+//     currentSavings += ongoingContribution * contributionFrequency;
+//     savingsYearByYear.push({
+//       age: startAge + age,
+//       savingsAmount: Number(currentSavings.toFixed(2)),
+//     });
+//   }
+
+//   const annualRetirementIncome = currentSavings / retirementYears;
+
+//   return {
+//     annualRetirementIncome,
+//     savingsYearByYear,
+//   };
+// }
+
+
+
 export function calculateTFSAorNonRegAccountSavings(
-  currentTotal: number,
-  ongoingContribution: number = 0,
-  contributionFrequency: number,
-  rateOfReturn: number = 0,
-  startAge: number,
-  endAge: number,
-  taxRate: number = 0 // Optional tax rate with default value 0
+  currentTotal:number = 0,
+  ongoingContribution:number = 0,
+  contributionFrequency:number,
+  rateOfReturn:number = 0,
+  startAge:number,
+  endAge:number,
+  taxRate:number = 0
 ) {
-  const retirementYears = endAge - startAge;
-  // Calculate after-tax return
-  const afterTaxReturn = (rateOfReturn / 100) * (1 - taxRate / 100);
+   const periodsPerYear = contributionFrequency;
+  const afterTaxReturn = (rateOfReturn / 100) * (1 - taxRate / 100); // Adjusted for after-tax return
+  const ratePerPeriod = afterTaxReturn / periodsPerYear;
+  const savingsByYear = [];
+  let totalSavings = currentTotal;
 
-  const savingsYearByYear = [];
-  let currentSavings = currentTotal;
+  for (let age = startAge; age < endAge; age++) {
+    for (let period = 0; period < periodsPerYear; period++) {
+      const growth = totalSavings * ratePerPeriod;
+      totalSavings += growth + ongoingContribution;
+    }
 
-  for (let age = 1; age <= retirementYears; age++) {
-    currentSavings *= 1 + afterTaxReturn;
-    currentSavings += ongoingContribution * contributionFrequency;
-    savingsYearByYear.push({
-      age: startAge + age,
-      savingsAmount: Number(currentSavings.toFixed(2)),
+    savingsByYear.push({
+      age,
+      savingsAmount: Math.round(totalSavings),
     });
   }
 
-  const annualRetirementIncome = currentSavings / retirementYears;
-
+  const annualRetirementIncome = totalSavings / (endAge-startAge);
   return {
-    annualRetirementIncome,
-    savingsYearByYear
+    savingsYearByYear: savingsByYear,
+    annualRetirementIncome
   };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 type InputItem = { age: number; [key: string]: number }; // Each item must have an "age" field and other numeric fields
 type MergedItem = { age: number; [key: string]: number }; // Final merged items

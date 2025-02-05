@@ -110,6 +110,7 @@ export default function OtherIncome() {
   const [showError, setShowError] = useState(false);
 
   const {
+    
     otherIncome: {
       hasOtherIncome,
       otherIncomeAmount,

@@ -10,7 +10,7 @@ import {
   calculateRRIF,
   updateRRIFState,
 } from "../../redux/features/RRIF/RRIFSlice";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import { handleKeyDown } from "../../utils/handleKeyDown";
 import { isNegative } from "../../utils/isNegative";
@@ -89,15 +89,6 @@ export default function RRIFForm() {
 
   const [minWithdrowalAmount, setMinWithdrawalAbmount] = useState<number>(0);
 
-  useEffect(() => {
-    // if (ageWithdrawalPercentages[withdrawalStartYear]) {
-    //   const result =
-    //     RRIFInitalBalance *
-    //     (ageWithdrawalPercentages[withdrawalStartYear] / 100);
-    //   setMinWithdrawalAbmount(Math.round(result));
-    // }
-  }, [annualWithdrawalAmount, withdrawalStartYear]);
-
   const [showError, setShowError] = useState(false);
 
   const handleCalculate = (e: FormEvent) => {
@@ -113,15 +104,6 @@ export default function RRIFForm() {
       isNegative(rateOfReturn) ||
       isNegative(annualWithdrawalAmount)
     ) {
-      if (!RRIFInitalBalance) {
-        toast.error("Initial RRIF balance is required.");
-      }
-      if (!withdrawalStartYear) {
-        toast.error("Withdrawal start age is required.");
-      }
-      if (!withdrawalEndYear) {
-        toast.error("Withdrawal end age is required.");
-      }
       return setShowError(true);
     }
 

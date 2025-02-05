@@ -1,73 +1,25 @@
 import ReactSlider from "react-slider";
 import CustomTooltip from "../../components/UI/CustomTooltip";
 
-import Select from "react-select";
-import { StylesConfig } from "react-select";
+import { Select } from "antd";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { calculate, setInput } from "../../redux/features/RRSP/RRSPSlice";
 import { useState } from "react";
-import { handleKeyDown } from "../../utils/handleKeyDown";
-import { isNegative } from "../../utils/isNegative";
-import { toast } from "react-toastify";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import { handleKeyDownUtil } from "../../utils/handleKeyDownUtil";
 
-type TOptions = {
-  label: string;
+type TAntSelectOption = {
   value: string;
+  label: string;
 };
 
-const customStyles: StylesConfig<TOptions, boolean> = {
-  container: (provided) => ({
-    ...provided,
-    width: "100%",
-    borderRadius: "5px",
-    padding: "1px",
-  }),
-  control: (provided) => ({
-    ...provided,
-    border: "0px solid #D9D9D9",
-    boxShadow: "none",
-    "&:hover": {
-      border: "0px solid #D9D9D9",
-    },
-    padding: "0px 0",
-    borderRadius: "0",
-    cursor: "pointer",
-  }),
-  menu: (provided) => ({
-    ...provided,
-    width: "100%",
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    backgroundColor: state.isSelected ? "#000" : provided.backgroundColor,
-    color: state.isSelected ? "#fff" : provided.color,
-    "&:hover": {
-      backgroundColor: state.isSelected ? "#000" : provided.backgroundColor,
-    },
-    cursor: "pointer",
-  }),
-  singleValue: (provided) => ({
-    ...provided,
-    color: "#333",
-  }),
-  dropdownIndicator: (provided) => ({
-    ...provided,
-    color: "#000", // Change this to the color you want for the arrow
-    "&:hover": {
-      color: "#000", // Optional: change color on hover if desired
-    },
-  }),
-
-  placeholder: (provided) => ({
-    ...provided,
-    color: "#858585", // Set the placeholder color
-    fontWeight: "normal",
-  }),
-};
-
-const withdrawalFrequencyOptions = [
-  { label: "Monthly", value: "Monthly" },
-  { label: "Annually", value: "Annually" },
+export const antSelectFrequencyOptions: TAntSelectOption[] = [
+  { value: "1", label: "Annually" },
+  { value: "2", label: "Semi-Annually" },
+  { value: "12", label: "Monthly" },
+  { value: "4", label: "Quarterly" },
+  { value: "52", label: "Weekly" },
+  { value: "26", label: "Bi-weekly" },
 ];
 
 export default function RRSPForm() {
@@ -86,34 +38,13 @@ export default function RRSPForm() {
 
   const [showError, setShowError] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    dispatch(setInput({ ...input, [name]: parseFloat(value) }));
-  };
-
   const handleCalculate = () => {
     if (
       !currentAge ||
       !retirementAge ||
-      !contributionFrequency.value ||
-      currentAge >= retirementAge ||
-      isNegative(currentAge) ||
-      isNegative(retirementAge) ||
-      isNegative(rateOfReturn) ||
-      isNegative(contributionAmount) ||
-      isNegative(currentRRSPSavings)
+      (currentAge && currentAge > retirementAge)
     ) {
-      if(!currentAge){
-        toast.error('Current age is required.')
-      }
-      if(!retirementAge){
-        toast.error('Retirement age is required.')
-      }
       return setShowError(true);
-    }
-
-    if (isNaN(currentRRSPSavings)) {
-      dispatch(setInput({ ...input, currentRRSPSavings: 0 }));
     }
     dispatch(calculate());
   };
@@ -132,14 +63,17 @@ export default function RRSPForm() {
             placeholder="Enter current age"
             onWheel={(e) => e.currentTarget.blur()}
             name="currentAge"
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
+            onChange={(e) => {
+              dispatch(
+                setInput({
+                  key: "currentAge",
+                  value: e.target.value,
+                })
+              );
+            }}
+            value={currentAge}
+            onKeyDown={handleKeyDownUtil}
           />
-          {isNegative(currentAge) && showError && (
-            <p className="text-red-500 text-[14px] font-bold">
-              Current age can not be negative
-            </p>
-          )}
           {!currentAge && showError && (
             <p className="text-red-500 text-[14px] font-bold">
               This field is required.
@@ -158,19 +92,24 @@ export default function RRSPForm() {
             placeholder="Enter retirement age"
             onWheel={(e) => e.currentTarget.blur()}
             name="retirementAge"
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
+            onChange={(e) => {
+              dispatch(
+                setInput({
+                  key: "retirementAge",
+                  value: e.target.value,
+                })
+              );
+            }}
+            onKeyDown={handleKeyDownUtil}
+            value={retirementAge}
           />
-          {showError && currentAge > 0 && currentAge >= retirementAge && (
-            <p className="text-[14px] text-red-500 font-bold mt-1">
-              Must be greater than current age.
-            </p>
-          )}
-          {isNegative(retirementAge) && showError && (
-            <p className="text-red-500 text-[14px] font-bold">
-              Retriement age can not be negative
-            </p>
-          )}
+          {showError &&
+            Number(currentAge) > 0 &&
+            Number(currentAge) >= Number(retirementAge) && (
+              <p className="text-[14px] text-red-500 font-bold mt-1">
+                Must be greater than current age.
+              </p>
+            )}
           {!retirementAge && showError && (
             <p className="text-red-500 text-[14px] font-bold">
               This field is required.
@@ -190,14 +129,17 @@ export default function RRSPForm() {
           placeholder={`${currency}0`}
           onWheel={(e) => e.currentTarget.blur()}
           name="currentRRSPSavings"
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
+          onChange={(e) => {
+            dispatch(
+              setInput({
+                key: "currentRRSPSavings",
+                value: e.target.value,
+              })
+            );
+          }}
+          onKeyDown={handleKeyDownUtil}
+          value={currentRRSPSavings}
         />
-        {isNegative(currentRRSPSavings) && showError && (
-          <p className="text-red-500 text-[14px] font-bold">
-            Current RRSP Savings can not be negative
-          </p>
-        )}
       </div>
 
       <div>
@@ -211,14 +153,17 @@ export default function RRSPForm() {
           placeholder={`${currency}0`}
           onWheel={(e) => e.currentTarget.blur()}
           name="contributionAmount"
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
+          onChange={(e) => {
+            dispatch(
+              setInput({
+                key: "contributionAmount",
+                value: e.target.value,
+              })
+            );
+          }}
+          onKeyDown={handleKeyDownUtil}
+          value={contributionAmount}
         />
-        {isNegative(contributionAmount) && showError && (
-          <p className="text-red-500 text-[14px] font-bold">
-            Ongoing Contribution Amount can not be negative
-          </p>
-        )}
       </div>
 
       <div>
@@ -227,17 +172,31 @@ export default function RRSPForm() {
           <CustomTooltip title="Select how often you will contribute to your RRSP (e.g., weekly, bi-weekly, monthly, or annually). This affects the growth of your savings over time." />
         </div>
         <Select
-          name="contributionFrequency"
-          onChange={(value) =>
-            dispatch(setInput({ ...input, contributionFrequency: value }))
+          size="large"
+          style={{
+            height: 40,
+            width: "100%",
+            border: "1px solid #838383",
+            borderRadius: "8px",
+          }}
+          variant="borderless"
+          placeholder="Select ongoing frequency"
+          options={antSelectFrequencyOptions}
+          suffixIcon={
+            <Icon
+              className="text-[1.5rem] text-gray-600"
+              icon="iconamoon:arrow-down-2"
+            />
           }
+          onChange={(value) => {
+            dispatch(
+              setInput({
+                key: "contributionFrequency",
+                value: value,
+              })
+            );
+          }}
           value={contributionFrequency}
-          // defaultValue={{ label: "Annually", value: "Annually" }}
-          options={withdrawalFrequencyOptions}
-          styles={customStyles}
-          isMulti={false}
-          placeholder="Select contribution frequency"
-          className="rounded-md border-[1px] duration-300 border-[#838383] z-[999]"
         ></Select>
       </div>
 
@@ -255,13 +214,20 @@ export default function RRSPForm() {
               placeholder="0"
               name="rateOfReturn"
               value={rateOfReturn}
-              onChange={handleChange}
+              onChange={(e) => {
+                dispatch(
+                  setInput({
+                    key: "rateOfReturn",
+                    value: e.target.value,
+                  })
+                );
+              }}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onKeyDown={handleKeyDown}
+              onKeyDown={handleKeyDownUtil}
             />
-            <p className="absolute right-3 top-[8px] font-semibold md:text-[1.2rem] text-[14px]">
+            <p className="absolute right-2 top-[8px] font-semibold md:text-[1.2rem] text-[14px]">
               %
             </p>
           </div>
@@ -271,23 +237,20 @@ export default function RRSPForm() {
           thumbClassName="example-thumb"
           trackClassName="example-track"
           thumbActiveClassName="active-thumb"
-          min={1}
+          min={0}
           max={15}
           minDistance={10}
-          value={rateOfReturn}
+          value={Number(rateOfReturn)}
           onChange={(newValue) =>
-            dispatch(setInput({ ...input, rateOfReturn: newValue }))
+            dispatch(
+              setInput({ key: "rateOfReturn", value: newValue.toString() })
+            )
           }
         />
         <div className="flex justify-between items-center text-[1rem] font-medium text-[#696969] pt-5">
           <p>1%</p>
           <p>15%</p>
         </div>
-        {isNegative(rateOfReturn) && showError && (
-          <p className="text-red-500 font-bold text-right">
-            Assumed Rate of Return can not be negative
-          </p>
-        )}
       </div>
 
       <div className="flex justify-end">
