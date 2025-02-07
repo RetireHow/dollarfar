@@ -21,9 +21,11 @@ export default function BCTotalDisplay({ data }: { data: TData }) {
     buttonText,
     infoText,
   } = data;
+
   const handleShowInputs = () => {
     setShowSubInputs(!showSubInputs);
   };
+  console.log(fieldTitle)
   const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <div>
@@ -59,17 +61,6 @@ export default function BCTotalDisplay({ data }: { data: TData }) {
         </div>
         <div>
           <AntSelect />
-          {/* <select
-            className="border-[1px] border-gray-400 md:px-[0.8rem] px-[0.3rem] py-[0.8rem] rounded-[8px] md:text-[1rem] text-[14px]"
-            name=""
-            id=""
-          >
-            <option value="Weekly">Weekly</option>
-            <option value="Biweekly">Biweekly</option>
-            <option value="Monthly">Monthly</option>
-            <option value="Annually">Annually</option>
-            <option value="Other">Weekly</option>
-          </select> */}
         </div>
       </div>
     </div>

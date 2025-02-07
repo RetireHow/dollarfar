@@ -29,6 +29,7 @@ export interface OtherIncome {
 
 // Define income type at all
 export interface Income {
+  frequency:string;
   salaryOrWages: SalaryOrWages;
   govtBenefits: GovtBenefits;
   netIncome: NetIncome;

@@ -4,6 +4,7 @@ import { BudgetState, SubCategory, UpdatePayload } from "./BgtTypes";
 
 const initialState: BudgetState = {
   income: {
+    frequency: "12",
     salaryOrWages: { salary1: "", wages: "" },
     govtBenefits: { childTaxBenefit: "" },
     netIncome: { businessProfit: "" },
@@ -194,7 +195,7 @@ const budgetSlice = createSlice({
       if (category && subCategory && value && id) {
         const updateIndex = state[category as keyof BudgetState][
           "dynamicInputs"
-        ][subCategory].findIndex((item:any) => {
+        ][subCategory].findIndex((item: any) => {
           return item.id == id;
         });
         state[category as keyof BudgetState]["dynamicInputs"][subCategory][
@@ -202,11 +203,23 @@ const budgetSlice = createSlice({
         ] = value;
       }
     },
+
+    updateBgtFrequency: (
+      state,
+      action: PayloadAction<{
+        category: keyof BudgetState;
+        key: 'frequency';
+        value: string;
+      }>
+    ) => {
+      const { category, key, value } = action.payload;
+      state[category][key] = value;
+    },
   },
 });
 
 // Export actions and reducer
-export const { updateField, updateDynamicFields, changeDynamicFields } =
+export const { updateField, updateDynamicFields, changeDynamicFields, updateBgtFrequency } =
   budgetSlice.actions;
 
 export default budgetSlice.reducer;

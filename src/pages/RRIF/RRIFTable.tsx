@@ -25,7 +25,8 @@ export default function RRIFTable() {
             <tr className="border-b-[1px] border-b-[#0000001A]">
               <th className="p-3">Age</th>
               <th className="p-3">Balance at Beginning of the Year</th>
-              <th className="p-3">Min Withdrawal Amount</th>
+              <th className="p-3">Min Annual Withdrawal Amount</th>
+              <th className="p-3">Monthly Withdrawal Amount</th>
               <th className="p-3">Min Withdrawal Percentage</th>
               <th className="p-3">Rate of Interest</th>
               <th className="p-3">Balance at End of the Year</th>
@@ -37,6 +38,7 @@ export default function RRIFTable() {
                 <td className="p-3">{item.age}</td>
                 <td className="p-3">{currency}{numberWithCommas(item.balanceAtBeginningOfTheYear)}</td>
                 <td className="p-3">{currency}{numberWithCommas(Number(item.annualWithdrawalAmount))}</td>
+                <td className="p-3">{currency}{(Number(item.annualWithdrawalAmount)/12).toFixed(2)}</td>
                 <td className="p-3">
                   {item.minWithdrawalPercentage ||
                     item.mannualWithdrawalPercentage}

@@ -67,6 +67,7 @@ export const calcBalanceAgeByAge = (
   return ageBreakdownData;
 };
 
+
 export const calculateRemainingRRIFBalanceAtTheEndOfPeriod = (
   annualRateOfReturn: number,
   annualWithdrawal: number,
@@ -104,6 +105,20 @@ export const calculateTotalWithdrawnOverLifeTime = (
     return 0;
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

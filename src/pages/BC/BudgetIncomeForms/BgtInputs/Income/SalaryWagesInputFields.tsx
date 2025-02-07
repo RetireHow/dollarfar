@@ -3,9 +3,13 @@ import { Icon } from "@iconify/react";
 import useBudgetDynamicInput from "../../../../../hooks/useBudgetDynamicInput";
 import CustomTooltip from "../../../../../components/UI/CustomTooltip";
 import { useAppDispatch, useAppSelector } from "../../../../../redux/hooks";
-import { updateField } from "../../../../../redux/features/BgtSlice/BgtSlice";
-import BCTotalDisplay from "../../../../../components/UI/BCTotalDisplay";
+import {
+  updateBgtFrequency,
+  updateField,
+} from "../../../../../redux/features/BgtSlice/BgtSlice";
 import { handleKeyDownUtil } from "../../../../../utils/handleKeyDownUtil";
+import { Select } from "antd";
+import { BCFrequencyOptions } from "../../../BCFrequencyOptions";
 
 const SalaryWagesInputFields = () => {
   const dispatch = useAppDispatch();
@@ -13,7 +17,8 @@ const SalaryWagesInputFields = () => {
   const {
     income: {
       totals: { salaryOrWages },
-      salaryOrWages: { salary1, wages }
+      salaryOrWages: { salary1, wages },
+      frequency,
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
@@ -35,20 +40,74 @@ const SalaryWagesInputFields = () => {
     categoryActive: "SalaryWages",
   });
 
+  const handleShowInputs = () => {
+    setShowSubInputs(!showSubInputs);
+  };
+
   return (
     <div>
       {/* Main Input Field */}
-      <BCTotalDisplay
-        data={{
-          showSubInputs,
-          setShowSubInputs,
-          total: salaryOrWages as number,
-          buttonText: "Add Salary / Wages",
-          fieldTitle: "Salary / Wages",
-          infoText:
-            "Enter the combined monthly income from all employment sources, including regular wages and salaries.",
-        }}
-      />
+      <div>
+        <div className="flex justify-between items-center md:text-[1rem] text-[14px] mb-1 overflow-x-auto">
+          <label
+            className="flex items-center gap-1 font-semibold text-nowrap"
+            htmlFor="property"
+          >
+            <span>Salary / Wages</span>{" "}
+            <CustomTooltip title="Enter the combined monthly income from all employment sources, including regular wages and salaries." />
+          </label>
+          {/* No functionality on "Add Properties" button */}
+          <button
+            onClick={() => setShowSubInputs(!showSubInputs)}
+            className="font-semibold flex items-center gap-1 text-nowrap"
+          >
+            {showSubInputs ? (
+              // <Icon className="text-[1.25rem]" icon="ic:round-minus" />
+              <Icon
+                className="text-[1.5rem]"
+                icon="iconamoon:arrow-up-2-light"
+              />
+            ) : (
+              <Icon className="text-[1.25rem]" icon="ic:round-plus" />
+            )}
+            <span>Add Salary / Wages</span>
+          </button>
+        </div>
+
+        <div className="flex gap-1">
+          <div
+            onClick={handleShowInputs}
+            className="border-[1px] md:text-[1rem] text-[14px] border-[#838383] rounded-[8px] p-[0.6rem] cursor-pointer w-full"
+          >
+            Total: {currency}
+            {salaryOrWages || "0.00"}
+          </div>
+          <div>
+            <Select
+              value={frequency}
+              size="large"
+              style={{ height: 45 }}
+              className="rounded-[9px] md:w-[130px] w-[90px] hover:border-gray-400 border-[1px] border-gray-400 md:text-[1rem] text-[12px]"
+              options={BCFrequencyOptions}
+              suffixIcon={
+                <Icon
+                  className="md:text-[1.5rem] text-[1rem] text-gray-600"
+                  icon="iconamoon:arrow-down-2"
+                />
+              }
+              onChange={(value) =>
+                dispatch(
+                  updateBgtFrequency({
+                    category: "income",
+                    key: "frequency",
+                    value,
+                  })
+                )
+              }
+            ></Select>
+          </div>
+        </div>
+      </div>
 
       {/* Sub Input Fields */}
       {showSubInputs && (

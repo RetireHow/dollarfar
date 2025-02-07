@@ -67,6 +67,8 @@ export function calculateCPPBenefit(fullBenefit: number, startAge: number) {
   return Math.round(adjustedBenefit * 12);
 }
 
+
+
 //========== || Calculate Year by Year result ==========||
 export function calculateEmployerPensionAgeByAge(
   pension: number,

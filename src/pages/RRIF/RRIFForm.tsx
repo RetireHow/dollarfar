@@ -1,8 +1,9 @@
 import ReactSlider from "react-slider";
 import CustomTooltip from "../../components/UI/CustomTooltip";
 
-import Select from "react-select";
-import { StylesConfig } from "react-select";
+// import Select from "react-select";
+// import { StylesConfig } from "react-select";
+
 import { Radio } from "antd";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
@@ -16,64 +17,64 @@ import { handleKeyDown } from "../../utils/handleKeyDown";
 import { isNegative } from "../../utils/isNegative";
 import { toast } from "react-toastify";
 
-type TOptions = {
-  label: string;
-  value: string;
-};
+// type TOptions = {
+//   label: string;
+//   value: string;
+// };
 
-const customStyles: StylesConfig<TOptions, boolean> = {
-  container: (provided) => ({
-    ...provided,
-    width: "100%",
-    borderRadius: "5px",
-    padding: "1px",
-  }),
-  control: (provided) => ({
-    ...provided,
-    border: "0px solid #D9D9D9",
-    boxShadow: "none",
-    "&:hover": {
-      border: "0px solid #D9D9D9",
-    },
-    padding: "0px 0",
-    borderRadius: "0",
-    cursor: "pointer",
-  }),
-  menu: (provided) => ({
-    ...provided,
-    width: "100%",
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    backgroundColor: state.isSelected ? "#000" : provided.backgroundColor,
-    color: state.isSelected ? "#fff" : provided.color,
-    "&:hover": {
-      backgroundColor: state.isSelected ? "#000" : provided.backgroundColor,
-    },
-    cursor: "pointer",
-  }),
-  singleValue: (provided) => ({
-    ...provided,
-    color: "#333",
-  }),
-  dropdownIndicator: (provided) => ({
-    ...provided,
-    color: "#000", // Change this to the color you want for the arrow
-    "&:hover": {
-      color: "#000", // Optional: change color on hover if desired
-    },
-  }),
+// const customStyles: StylesConfig<TOptions, boolean> = {
+//   container: (provided) => ({
+//     ...provided,
+//     width: "100%",
+//     borderRadius: "5px",
+//     padding: "1px",
+//   }),
+//   control: (provided) => ({
+//     ...provided,
+//     border: "0px solid #D9D9D9",
+//     boxShadow: "none",
+//     "&:hover": {
+//       border: "0px solid #D9D9D9",
+//     },
+//     padding: "0px 0",
+//     borderRadius: "0",
+//     cursor: "pointer",
+//   }),
+//   menu: (provided) => ({
+//     ...provided,
+//     width: "100%",
+//   }),
+//   option: (provided, state) => ({
+//     ...provided,
+//     backgroundColor: state.isSelected ? "#000" : provided.backgroundColor,
+//     color: state.isSelected ? "#fff" : provided.color,
+//     "&:hover": {
+//       backgroundColor: state.isSelected ? "#000" : provided.backgroundColor,
+//     },
+//     cursor: "pointer",
+//   }),
+//   singleValue: (provided) => ({
+//     ...provided,
+//     color: "#333",
+//   }),
+//   dropdownIndicator: (provided) => ({
+//     ...provided,
+//     color: "#000", // Change this to the color you want for the arrow
+//     "&:hover": {
+//       color: "#000", // Optional: change color on hover if desired
+//     },
+//   }),
 
-  placeholder: (provided) => ({
-    ...provided,
-    color: "#858585", // Set the placeholder color
-    fontWeight: "normal",
-  }),
-};
+//   placeholder: (provided) => ({
+//     ...provided,
+//     color: "#858585", // Set the placeholder color
+//     fontWeight: "normal",
+//   }),
+// };
 
-const withdrawalFrequencyOptions = [
-  { label: "Annually", value: "Annually" }
-];
+// const withdrawalFrequencyOptions = [
+//   { label: "Annually", value: "Annually" }
+// ];
 
 export default function RRIFForm() {
   const dispatch = useAppDispatch();
@@ -84,7 +85,6 @@ export default function RRIFForm() {
     withdrawalEndYear,
     annualWithdrawalAmount,
     RRIFInitalBalance,
-    withdrawalFrequency,
   } = useAppSelector((state) => state.RRIF);
 
   const [minWithdrowalAmount, setMinWithdrawalAbmount] = useState<number>(0);
@@ -107,8 +107,10 @@ export default function RRIFForm() {
       return setShowError(true);
     }
 
-    if(withdrawalStartYear && withdrawalStartYear < 50){
-      return toast.error("Withdrawal start age must be greater than or equal to 50.")
+    if (withdrawalStartYear && withdrawalStartYear < 50) {
+      return toast.error(
+        "Withdrawal start age must be greater than or equal to 50."
+      );
     }
 
     if (ageWithdrawalPercentages[withdrawalStartYear]) {
@@ -176,7 +178,7 @@ export default function RRIFForm() {
               }
               onKeyDown={handleKeyDown}
             />
-            <p className="absolute right-3 top-[8px] font-semibold md:text-[1.2rem] text-[14px]">
+            <p className="absolute right-2 top-[8px] font-semibold md:text-[1.2rem] text-[14px]">
               %
             </p>
           </div>
@@ -213,14 +215,15 @@ export default function RRIFForm() {
             value={withdrawType}
             optionType="default"
             style={{ fontWeight: "bold" }}
-            onChange={(e) =>
+            onChange={(e) => {
+              console.log(e.target.value)
               dispatch(
                 updateRRIFState({
                   key: "withdrawType",
                   value: e.target.value,
                 })
-              )
-            }
+              );
+            }}
           >
             <Radio className="md:mb-0 mb-3" value="Government">
               Required minimum based on age
@@ -296,7 +299,7 @@ export default function RRIFForm() {
         </div>
       </div>
 
-      <div>
+      {/* <div>
         <div className="flex items-center gap-2 font-semibold mb-2">
           <p>Withdrawal Frequency</p>
           <CustomTooltip title="Choose how often you want to withdraw from your RRIF: Monthly, Yearly, or Weekly." />
@@ -317,53 +320,43 @@ export default function RRIFForm() {
           placeholder="Select withdrawal frequency"
           className="rounded-md border-[1px] duration-300 border-[#838383]"
         ></Select>
-      </div>
+      </div> */}
 
-      <div>
-        <div className="flex items-center gap-2 mb-2">
-          <p
-            className={`font-semibold ${
-              withdrawType === "Government" && "text-gray-300"
-            }`}
-          >
-            Annual Withdrawal Amount
-          </p>
-          {withdrawType === "Mannual" && (
+      {withdrawType == "Mannual" && (
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <p className="font-bold">Annual Withdrawal Amount</p>
             <CustomTooltip title="Specify the amount you'd like to withdraw from your RRIF annually." />
-          )}
-        </div>
-        <input
-          className={`outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383] ${
-            withdrawType === "Government" &&
-            "cursor-not-allowed border-gray-200 text-gray-200"
-          } duration-300`}
-          type="number"
-          placeholder="$0"
-          onWheel={(e) => e.currentTarget.blur()}
-          disabled={withdrawType === "Government" ? true : false}
-          onChange={(e) => {
-            dispatch(
-              updateRRIFState({
-                key: "annualWithdrawalAmount",
-                value: Number(e.target.value),
-              })
-            );
-          }}
-          onKeyDown={handleKeyDown}
-        />
-        {annualWithdrawalAmount > 0 &&
-          annualWithdrawalAmount < minWithdrowalAmount && (
-            <p className="font-semibold text-[14px]  border-[1px] border-gray-500 p-3 rounded-md mt-1">
-              Please select an income stream that is greater than the required
-              minimum {numberWithCommas(minWithdrowalAmount)}
+          </div>
+          <input
+            className={`outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]`}
+            type="number"
+            placeholder="$0"
+            onWheel={(e) => e.currentTarget.blur()}
+            onChange={(e) => {
+              dispatch(
+                updateRRIFState({
+                  key: "annualWithdrawalAmount",
+                  value: Number(e.target.value),
+                })
+              );
+            }}
+            onKeyDown={handleKeyDown}
+          />
+          {annualWithdrawalAmount > 0 &&
+            annualWithdrawalAmount < minWithdrowalAmount && (
+              <p className="font-semibold text-[14px]  border-[1px] border-gray-500 p-3 rounded-md mt-1">
+                Please select an income stream that is greater than the required
+                minimum {numberWithCommas(minWithdrowalAmount)}
+              </p>
+            )}
+          {isNegative(annualWithdrawalAmount) && showError && (
+            <p className="text-red-500 text-[14px] font-bold">
+              Withdrawal Amount can not be negative
             </p>
           )}
-        {isNegative(annualWithdrawalAmount) && showError && (
-          <p className="text-red-500 text-[14px] font-bold">
-            Withdrawal Amount can not be negative
-          </p>
-        )}
-      </div>
+        </div>
+      )}
 
       <div className="md:col-span-2 flex justify-end items-center">
         <button
