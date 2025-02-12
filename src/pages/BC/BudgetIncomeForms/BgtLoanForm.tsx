@@ -1,19 +1,21 @@
 import { useNavigate } from "react-router-dom";
-import PersonalLoanField from "./BgtInputs/Loans/PersonalLoanField";
-import HomeLoanField from "./BgtInputs/Loans/HomeLoanField";
-import StudentLoanField from "./BgtInputs/Loans/StudentLoanField";
-import { AddMoreLoanField } from "./BgtInputs/Loans/AddMoreLoanField";
 import { useEffect } from "react";
-import { useAppDispatch } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
   nextStep,
   previousStep,
 } from "../../../redux/features/stepperSlice/stepperSclie";
+import DFForm from "../../../components/Form/DFForm";
+import DFInputWithWatch from "../../../components/Form/DFInputWithWatch";
+import DFSelectWithWatch from "../../../components/Form/DFSelectWithWatch";
+import BudgetDynamicFieldWithFrequency from "../BudgetDynamicFieldWithFrequency";
+import { calculateTotalLoansExpenses } from "../../../redux/features/BgtSlice/BgtSlice";
 
 export default function BgtLoanForm() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const handleNext = () => {
+    dispatch(calculateTotalLoansExpenses());
     dispatch(nextStep());
     navigate("/budget-calculator/savings");
   };
@@ -24,13 +26,98 @@ export default function BgtLoanForm() {
   useEffect(() => {
     window.scrollTo({ top: 330, behavior: "smooth" });
   }, []);
+
+  const {
+    loans: {
+      homeLoan: { homeLoanAmount, homeLoanFrequency },
+      personalLoan: { personalLoanAmount, personalLoanFrequency },
+      studentLoan: { studentLoanAmount, studentLoanFrequency },
+      dynamicMoreLoansExpenses,
+    },
+  } = useAppSelector((state) => state.budgetCalculator);
+
   return (
     <div className="space-y-[2rem]">
-      <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">Loans</h3>
-      <PersonalLoanField />
-      <HomeLoanField />
-      <StudentLoanField />
-      <AddMoreLoanField />
+      <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">
+        Loans
+      </h3>
+
+      <DFForm
+        defaultValues={{
+          homeLoan: homeLoanAmount,
+          homeLoanFrequency,
+
+          personalLoan: personalLoanAmount,
+          personalLoanFrequency,
+
+          studentLoan: studentLoanAmount,
+          studentLoanFrequency,
+        }}
+      >
+        <section className="space-y-[2rem]">
+          <div className="flex md:flex-row flex-col md:items-center gap-3">
+            <DFInputWithWatch
+              type="number"
+              name="homeLoan"
+              subField="homeLoanAmount"
+              label="Home Loan"
+              stepName="loans"
+              placeholder="$ 0.00"
+              tooltipTitle="Enter your monthly expenses for household items and utilities."
+            />
+            <DFSelectWithWatch
+              name="homeLoanFrequency"
+              field="homeLoan"
+              label="Frequency"
+              stepName="loans"
+            />
+          </div>
+
+          <div className="flex md:flex-row flex-col md:items-center gap-3">
+            <DFInputWithWatch
+              type="number"
+              name="personalLoan"
+              subField="personalLoanAmount"
+              label="Personal Loan"
+              stepName="loans"
+              placeholder="$ 0.00"
+              tooltipTitle="Provide your average monthly spending on clothing and accessories."
+            />
+            <DFSelectWithWatch
+              name="personalLoanFrequency"
+              field="personalLoan"
+              label="Frequency"
+              stepName="loans"
+            />
+          </div>
+
+          <div className="flex md:flex-row flex-col md:items-center gap-3">
+            <DFInputWithWatch
+              type="number"
+              name="studentLoan"
+              subField="studentLoanAmount"
+              label="Student Loan"
+              stepName="loans"
+              placeholder="$ 0.00"
+              tooltipTitle="Enter your monthly expenses for dining at restaurants or ordering food."
+            />
+            <DFSelectWithWatch
+              name="studentLoanFrequency"
+              field="studentLoan"
+              label="Frequency"
+              stepName="loans"
+            />
+          </div>
+
+          <BudgetDynamicFieldWithFrequency
+            stepName="loans"
+            field="dynamicMoreLoansExpenses"
+            addBtnTitle="Add more loans"
+            dynamicFields={dynamicMoreLoansExpenses}
+          />
+        </section>
+      </DFForm>
+
       <div className="grid grid-cols-2 md:gap-10 gap-3">
         <button
           onClick={handleBack}

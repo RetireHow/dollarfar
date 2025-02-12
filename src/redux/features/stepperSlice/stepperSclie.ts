@@ -7,7 +7,7 @@ interface StepperState {
 
 const initialState: StepperState = {
   activeStep: 0,
-  totalSteps: 7, // As we have 7 steps [1, 2, 3, 4, 5, 6, 7]
+  totalSteps: 8, // As we have 7 steps [1, 2, 3, 4, 5, 6, 7, 8]
 };
 
 const stepperSlice = createSlice({
@@ -40,6 +40,11 @@ const stepperSlice = createSlice({
 });
 
 // Export actions and reducer
-export const { nextStep, previousStep, resetActiveStep, goToStep, setTotalSteps } =
-  stepperSlice.actions;
+export const {
+  nextStep,
+  previousStep,
+  resetActiveStep,
+  goToStep,
+  setTotalSteps,
+} = stepperSlice.actions;
 export default stepperSlice.reducer;

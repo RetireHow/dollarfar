@@ -6,27 +6,10 @@ import happyEmosee from "../../assets/happy2.gif"
 import neutralEmosee from "../../assets/neutral.gif"
 
 export default function BudgetCalcCard() {
-  const {
-    income: { subTotal: totalIncome },
-    housing: { subTotal: houseExpenses },
-    transport: { subTotal: transportExpenses },
-    educational: { subTotal: educationalExpenses },
-    other: { subTotal: otherExpenses },
-    loans: { subTotal: totalLoans },
-    savings: { subTotal: totalSavings },
-  } = useAppSelector((state) => state.budgetCalculator);
 
   const { currency } = useAppSelector((state) => state.globalCurrency);
 
   // Calculate cashflow deficit
-  const totalExpenses =
-    houseExpenses +
-    transportExpenses +
-    educationalExpenses +
-    otherExpenses +
-    Number(totalLoans) +
-    totalSavings;
-  const cashflowDeficit = totalIncome - Number(totalExpenses);
 
   return (
     <section>
@@ -38,7 +21,7 @@ export default function BudgetCalcCard() {
           <p className="font-medium">Income</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{numberWithCommas(totalIncome)}</p>
+            <p>{numberWithCommas(0)}</p>
           </div>
         </div>
 
@@ -46,7 +29,7 @@ export default function BudgetCalcCard() {
           <p className="font-medium">House Expenses</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{numberWithCommas(houseExpenses)}</p>
+            <p>{numberWithCommas(0)}</p>
           </div>
         </div>
 
@@ -54,7 +37,7 @@ export default function BudgetCalcCard() {
           <p className="font-medium">Transport Expenses</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{numberWithCommas(transportExpenses)}</p>
+            <p>{numberWithCommas(0)}</p>
           </div>
         </div>
 
@@ -62,7 +45,7 @@ export default function BudgetCalcCard() {
           <p className="font-medium">Educational Expenses</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{numberWithCommas(educationalExpenses)}</p>
+            <p>{numberWithCommas(0)}</p>
           </div>
         </div>
 
@@ -70,7 +53,7 @@ export default function BudgetCalcCard() {
           <p className="font-medium">Other Expenses</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{numberWithCommas(otherExpenses)}</p>
+            <p>{numberWithCommas(0)}</p>
           </div>
         </div>
 
@@ -78,7 +61,7 @@ export default function BudgetCalcCard() {
           <p className="font-medium">Loans</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{numberWithCommas(Number(totalLoans))}</p>
+            <p>{numberWithCommas(Number(0))}</p>
           </div>
         </div>
 
@@ -86,34 +69,34 @@ export default function BudgetCalcCard() {
           <p className="font-medium">Savings</p>
           <div className="flex items-center">
             <p>{currency}</p>
-            <p>{numberWithCommas(totalSavings)}</p>
+            <p>{numberWithCommas(0)}</p>
           </div>
         </div>
 
         <div
           className={`flex flex-wrap items-center gap-3 justify-between text-white px-[1.25rem] md:text-[1.25rem] text-[1rem] rounded-[10px] py-[0.8rem] ${
-            totalIncome < Number(totalExpenses)
+            0 < Number(0)
               ? "bg-red-500"
-              : totalIncome > Number(totalExpenses)
+              : 0 > Number(0)
               ? "bg-green-500"
               : "bg-black"
           }`}
         >
           <p className="md:text-[1.25rem] text-[1rem] font-medium">
             {" "}
-            {totalIncome < Number(totalExpenses)
+            {0 < Number(0)
               ? "Cashflow Deficit"
-              : totalIncome > Number(totalExpenses)
+              : 0 > Number(0)
               ? "Cashflow Surplus"
               : "Cashflow"}
           </p>
           <div className="md:text-[1.25rem] text-[1rem] flex items-center gap-[2px]">
             <p>{currency}</p>
             <div className="flex items-center gap-1">
-              <p>{numberWithCommas(cashflowDeficit)}</p>
-              {totalIncome < Number(totalExpenses) ? (
+              <p>{numberWithCommas(0)}</p>
+              {0 < Number(0) ? (
                 <p> <img src={sadEmosee} className="md:w-8 w-6 md:h-8 h-6" alt="Sad Emosee Icon" /> </p>
-              ) : totalIncome > Number(totalExpenses) ? (
+              ) : 0 > Number(0) ? (
                 <p> <img src={happyEmosee} className="md:w-8 w-6 md:h-8 h-6" alt="Happy Emosee Icon" /> </p>
               ) : (
                 <p> <img src={neutralEmosee} className="md:w-8 w-6 md:h-8 h-6" alt="Neutral Emosee Icon" /> </p>

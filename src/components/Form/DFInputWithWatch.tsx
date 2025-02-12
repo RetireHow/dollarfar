@@ -2,6 +2,13 @@ import { useFormContext, useWatch } from "react-hook-form";
 import Error from "../UI/Error";
 import { useEffect } from "react";
 import { useAppDispatch } from "../../redux/hooks";
+import BCTooltip from "../../pages/BC/BCTooltip";
+import {
+  TBudgetSlice,
+  TStaticPayloadField,
+  updateBgtStaticField,
+} from "../../redux/features/BgtSlice/BgtSlice";
+import { isNegative } from "../../utils/isNegative";
 
 type TInputProps = {
   type: string;
@@ -10,7 +17,9 @@ type TInputProps = {
   placeholder?: string;
   required?: boolean;
   readonly?: boolean;
-  formName?: string;
+  stepName?: string;
+  tooltipTitle: string;
+  subField: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setValue?: any;
 };
@@ -21,11 +30,12 @@ export default function DFInputWithWatch({
   label,
   readonly,
   placeholder,
-  setValue,
+  stepName,
+  tooltipTitle,
+  subField,
 }: TInputProps) {
   const {
     register,
-    formState: { errors },
   } = useFormContext();
 
   const dispatch = useAppDispatch();
@@ -36,20 +46,33 @@ export default function DFInputWithWatch({
     name,
   });
   useEffect(() => {
-    if (setValue) {
-      dispatch(setValue(value));
-    }
-  }, [value, setValue, dispatch]);
+    dispatch(
+      updateBgtStaticField({
+        stepName: stepName as keyof TBudgetSlice,
+        field: name as keyof TStaticPayloadField,
+        subField,
+        value: value,
+      })
+    );
+  }, [value, dispatch, name, stepName, subField]);
 
   return (
-    <div>
-      <label className="block mb-[0.5rem] font-semibold" htmlFor={name}>
-        {label}
-      </label>
+    <div className="flex-1">
+      <div className="flex items-center mb-[0.3rem]">
+        <label
+          className="block font-semibold md:text-[1rem] text-[14px]"
+          htmlFor={name}
+        >
+          {label}
+        </label>
+        <BCTooltip title={tooltipTitle} />
+      </div>
       <input
-        className={`outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] ${
+        className={`outline-none border-[1px] px-[12px] py-[9px] w-full duration-300 rounded-[8px] ${
           readonly && "cursor-not-allowed"
-        } ${errors[name]?.message ? "border-red-500" : "border-[#838383]"}`}
+        } ${
+          isNegative(value) ? "border-red-500 border-[2px]" : "border-[#838383]"
+        }`}
         type={type}
         {...register(name)}
         id={name}
@@ -57,8 +80,8 @@ export default function DFInputWithWatch({
         readOnly={readonly}
         onWheel={(e) => e.currentTarget.blur()}
       />
-      {errors[name]?.message && (
-        <Error message={errors[name].message as string} />
+      {isNegative(value) && (
+        <Error message="Negative value is not allowed." />
       )}
     </div>
   );

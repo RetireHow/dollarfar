@@ -27,6 +27,7 @@ import Summary from "../pages/CRIC/Summary";
 import EmployerPension from "../pages/CRIC/Forms/EmployerPension";
 import RetirementSavings from "../pages/CRIC/Forms/RetirementSavings";
 import OtherIncome from "../pages/CRIC/Forms/OtherIncome";
+import BCSummary from "../pages/BC/BCSummary/BCSummary";
 
 export const router = createBrowserRouter([
   {
@@ -81,6 +82,10 @@ export const router = createBrowserRouter([
           {
             path: "savings",
             element: <BgtSavingsForm />,
+          },
+          {
+            path: "summary",
+            element: <BCSummary />,
           },
         ],
       },

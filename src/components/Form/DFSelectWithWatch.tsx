@@ -1,113 +1,87 @@
-import { Controller, useFormContext } from 'react-hook-form';
-import Error from '../UI/Error';
-import RedStar from '../UI/RedStar';
-import Select from 'react-select';
-import { StylesConfig } from 'react-select';
-
-type TOptions = {
-	label: string;
-	value: string;
-};
+import { Controller, useFormContext, useWatch } from "react-hook-form";
+import RedStar from "../UI/RedStar";
+import { Select } from "antd";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import { BCFrequencyOptions } from "../../pages/BC/BCFrequencyOptions";
+import { useEffect } from "react";
+import { useAppDispatch } from "../../redux/hooks";
+import {
+  TBudgetSlice,
+  TStaticPayloadField,
+  updateBgtStaticField,
+} from "../../redux/features/BgtSlice/BgtSlice";
 
 type TProvestorSelectProps = {
-	name: string;
-	label?: string;
-	options: TOptions[];
-	placeholder?: string;
-	required?: boolean;
-	formName?: string;
-	isMulti?:boolean;
-};
-
-const customStyles: StylesConfig<TOptions, boolean> = {
-	container: provided => ({
-		...provided,
-		width: '100%',
-		borderRadius: "5px",
-		padding: '1px',
-	}),
-	control: provided => ({
-		...provided,
-		border: '0px solid #D9D9D9',
-		boxShadow: 'none',
-		'&:hover': {
-			border: '0px solid #D9D9D9',
-		},
-		padding: '0px 0',
-		borderRadius: '0',
-		cursor: 'pointer',
-	}),
-	menu: provided => ({
-		...provided,
-		width: '100%',
-	}),
-	option: (provided, state) => ({
-		...provided,
-		backgroundColor: state.isSelected ? '#000' : provided.backgroundColor,
-		color: state.isSelected ? '#fff' : provided.color,
-		'&:hover': {
-			backgroundColor: state.isSelected ? '#000' : provided.backgroundColor,
-		},
-		cursor: 'pointer',
-	}),
-	singleValue: provided => ({
-		...provided,
-		color: '#333',
-	}),
-	dropdownIndicator: provided => ({
-		...provided,
-		color: '#000', // Change this to the color you want for the arrow
-		'&:hover': {
-			color: '#000', // Optional: change color on hover if desired
-		},
-	}),
-
-	placeholder: provided => ({
-		...provided,
-		color: '#858585', // Set the placeholder color
-		fontWeight: 'normal',
-	}),
+  name: string;
+  label?: string;
+  placeholder?: string;
+  required?: boolean;
+  stepName: string;
+  field: string;
 };
 
 export default function DFSelectWithWatch({
-	name,
-	label,
-	options,
-	required,
-	placeholder,
-	isMulti=false
+  name,
+  label,
+  required,
+  placeholder,
+  stepName,
+  field,
 }: TProvestorSelectProps) {
-	const {
-		control,
-		formState: { errors },
-	} = useFormContext();
+  const { control } = useFormContext();
 
-	return (
-		<div>
-			<label className="block mb-[0.5rem] font-semibold" htmlFor={name}>
-				{label}
-				{required && <RedStar />}
-			</label>
-			<Controller
-				name={name}
-				control={control}
-				render={({ field }) => (
-					<Select
-						{...field}
-						onChange={field.onChange}
-						options={options}
-						placeholder={placeholder}
-						styles={customStyles}
-						isMulti={isMulti}
-						className={`rounded-md border-[1px] duration-300 ${
-							errors[name]?.message ? 'border-red-500' : 'border-[#838383]'
-						}`}
-					></Select>
-				)}
-			/>
-			{errors[name]?.message && (
-				<Error message={errors[name]?.message as string} />
-			)}
-		</div>
-	);
+  const dispatch = useAppDispatch();
+
+  const method = useFormContext();
+  const value = useWatch({
+    control: method.control,
+    name,
+  });
+  useEffect(() => {
+    dispatch(
+      updateBgtStaticField({
+        stepName: stepName as keyof TBudgetSlice,
+        field: field as keyof TStaticPayloadField,
+        subField: name,
+        value: value,
+      })
+    );
+  }, [dispatch, value, field, name, stepName]);
+
+  return (
+    <div>
+      <label
+        className="block mb-[0.3rem] font-semibold md:text-[1rem] text-[14px]"
+        htmlFor={name}
+      >
+        {label}
+        {required && <RedStar />}
+      </label>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            onChange={field.onChange}
+            placeholder={placeholder}
+            style={{
+              height: 45,
+              border: "1px solid #838383",
+              borderRadius: "8px",
+            }}
+            className="md:w-[300px] w-full"
+            variant="borderless"
+            options={BCFrequencyOptions}
+            suffixIcon={
+              <Icon
+                className="md:text-[1.5rem] text-[1rem] text-gray-600"
+                icon="iconamoon:arrow-down-2"
+              />
+            }
+          ></Select>
+        )}
+      />
+    </div>
+  );
 }

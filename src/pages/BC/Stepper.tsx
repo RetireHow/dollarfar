@@ -1,6 +1,6 @@
-import {useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 
-export default function Stepper({steps}:{steps:number[]}) {
+export default function Stepper({ steps }: { steps: number[] }) {
   const activeStep = useAppSelector((state) => state.stepper.activeStep);
 
   // Calculate width percentage for completed steps

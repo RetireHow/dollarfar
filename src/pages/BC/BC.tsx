@@ -1,12 +1,9 @@
 import { assets } from "../../assets/assets";
 import DownloadModal from "../../components/DownloadModal";
 import PageHero from "../../components/UI/PageHero";
-import {useAppSelector } from "../../redux/hooks";
 import { BCPdf } from "./BCPdf";
 import BudgetCalcLayout from "./BudgetCalcLayout";
 import BudgetDescription from "./BudgetDescription";
-import BudgetPieChart from "./BudgetPieChart";
-import { numberWithCommas } from "../../utils/numberWithCommas";
 import CurrencySelect from "../../components/UI/CurrencySelect";
 import useTitle from "../../hooks/useTitle";
 
@@ -19,43 +16,6 @@ const data = {
 
 export default function BC() {
   useTitle("Dollarfar | BC");
-  const {
-    income: { subTotal: totalIncome },
-    housing: { subTotal: houseExpenses },
-    transport: { subTotal: transportExpenses },
-    educational: { subTotal: educationalExpenses },
-    other: { subTotal: otherExpenses },
-    loans: { subTotal: totalLoans },
-    savings: { subTotal: totalSavings },
-  } = useAppSelector((state) => state.budgetCalculator);
-
-  const { currency, currencyFullName } = useAppSelector(
-    (state) => state.globalCurrency
-  );
-
-  // Calculate cashflow deficit
-  const totalExpenses =
-    houseExpenses +
-    transportExpenses +
-    educationalExpenses +
-    otherExpenses +
-    totalLoans +
-    totalSavings;
-  const cashflowDeficit = totalIncome - Number(totalExpenses);
-
-  const calculatorData = {
-    totalIncome,
-    houseExpenses,
-    transportExpenses,
-    educationalExpenses,
-    otherExpenses,
-    totalLoans,
-    totalSavings,
-    totalExpenses,
-    cashflowDeficit,
-    currency,
-    currencyFullName,
-  };
 
   return (
     <main className="mb-[5rem]">
@@ -72,9 +32,9 @@ export default function BC() {
               Budget Calculator
             </h3>
             <div className="md:flex grid grid-cols-2 items-center flex-wrap md:gap-5 gap-3 md:text-[1rem] text-[14px] md:w-auto w-full">
-              <CurrencySelect/>
+              <CurrencySelect />
               <DownloadModal
-                calculatorData={calculatorData}
+                calculatorData={{}}
                 fileName="Budget Calculator Report"
                 id="BC-Chart"
                 PdfComponent={BCPdf}
@@ -84,15 +44,6 @@ export default function BC() {
         </div>
 
         <BudgetCalcLayout />
-
-        <BudgetPieChart />
-
-        <p className="md:text-[1.25rem] text-[14px] font-semibold text-center mt-5">
-          "Your total annual income is {currency}
-          {numberWithCommas(totalIncome)}, and after your expenses of {currency}
-          {numberWithCommas(Number(totalExpenses))}, you have {currency}
-          {numberWithCommas(cashflowDeficit)} left for savings or investments."
-        </p>
       </section>
 
       <BudgetDescription />
