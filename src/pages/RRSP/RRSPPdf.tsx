@@ -9,6 +9,7 @@ import {
 } from "@react-pdf/renderer";
 import { assets } from "../../assets/assets";
 import { RRSPInput, RRSPResult } from "../../redux/features/RRSP/RRSP.types";
+import { getFrequencyTitle } from "../../utils/getFrequencyTitle";
 
 // Define styles for the PDF
 const styles = StyleSheet.create({
@@ -108,7 +109,9 @@ export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
           {/* Title  */}
           <View style={styles.section}>
             <Text>Registered Retirement Savings Plan (RRSP) Calculator</Text>
-            <Text style={styles.title}>{currency} - {currencyFullName}</Text>
+            <Text style={styles.title}>
+              {currency} - {currencyFullName}
+            </Text>
           </View>
 
           {/* Card Container  */}
@@ -155,7 +158,10 @@ export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
                 <Text style={{ color: "#696969" }}>
                   Ongoing Contribution Amount
                 </Text>
-                <Text>{currency}{contributionAmount}</Text>
+                <Text>
+                  {currency}
+                  {contributionAmount}
+                </Text>
               </View>
               <View
                 style={{
@@ -164,7 +170,10 @@ export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>Current RRSP Savings</Text>
-                <Text>{currency}{currentRRSPSavings}</Text>
+                <Text>
+                  {currency}
+                  {currentRRSPSavings}
+                </Text>
               </View>
               <View
                 style={{
@@ -173,7 +182,7 @@ export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>Contribution Frequency</Text>
-                <Text>{contributionFrequency}</Text>
+                <Text>{getFrequencyTitle(contributionFrequency)}</Text>
               </View>
               <View
                 style={{
@@ -208,10 +217,13 @@ export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
                   justifyContent: "space-between",
                 }}
               >
-                <Text style={{ color: "#696969" }}>
+                <Text style={{ color: "#696969", marginRight: 3 }}>
                   RRSP Balance at Retirement
                 </Text>
-                <Text>{currency}{totalSavings}</Text>
+                <Text>
+                  {currency}
+                  {totalSavings}
+                </Text>
               </View>
               <View
                 style={{
@@ -220,7 +232,10 @@ export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>Investment Earnings</Text>
-                <Text>{currency}{investmentEarnings}</Text>
+                <Text>
+                  {currency}
+                  {investmentEarnings}
+                </Text>
               </View>
               <View
                 style={{
@@ -229,7 +244,10 @@ export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>Total Contributions</Text>
-                <Text>{currency}{totalContributions}</Text>
+                <Text>
+                  {currency}
+                  {totalContributions}
+                </Text>
               </View>
             </View>
           </View>

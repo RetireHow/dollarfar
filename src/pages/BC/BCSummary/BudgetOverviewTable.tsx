@@ -16,7 +16,7 @@ export default function BudgetOverviewTable() {
   const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <section>
-      <div className="overflow-x-auto text-center bg-[#F8F8F8]">
+      <div className="overflow-x-auto text-center bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md">
         <table className="md:w-full min-w-[500px]">
           <thead className="text-[1.1rem] font-extrabold bg-gray-800 text-white">
             <tr>

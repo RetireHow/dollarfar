@@ -11,23 +11,21 @@ export default function SectionHeader({
 }: {
   title: string;
   id: string;
-  PdfComponent:React.FC<any>
+  PdfComponent: React.FC<any>;
 }) {
   const {
-    rate,
-    time,
-    principal,
-    frequencyName,
-    compoundInterest,
-    interestBreakdown,
+    annualInterestRate,
+    years,
+    initialInvestment,
+    compoundingFrequency,
+    yearByYearBreakdown,
   } = useAppSelector((state) => state.compoundInterest);
   const calculatorData = {
-    rate,
-    time,
-    principal,
-    frequencyName,
-    compoundInterest,
-    interestBreakdown,
+    annualInterestRate,
+    years,
+    initialInvestment,
+    compoundingFrequency,
+    yearByYearBreakdown,
   };
   return (
     <div className="border-b-[1px] border-[#0000001A] pb-5 mb-[3rem]">

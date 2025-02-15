@@ -6,6 +6,7 @@ import BudgetCalcLayout from "./BudgetCalcLayout";
 import BudgetDescription from "./BudgetDescription";
 import CurrencySelect from "../../components/UI/CurrencySelect";
 import useTitle from "../../hooks/useTitle";
+import { useAppSelector } from "../../redux/hooks";
 
 const data = {
   title: "Budget calculator/cash flow calculator",
@@ -16,6 +17,61 @@ const data = {
 
 export default function BC() {
   useTitle("Dollarfar | BC");
+
+  const {
+    income: {
+      totalAnnualIncome,
+      totalMonthlyIncome,
+      totalAnnualIncomeAfterTax,
+      totalMonthlyIncomeAfterTax,
+      incomeTaxRate,
+    },
+    housing: { totalAnnualHousingExpenses, totalMonthlyHousingExpenses },
+    transport: { totalAnnualTransportExpenses, totalMonthlyTransportExpenses },
+    education: {
+      totalAnnualEducationalExpenses,
+      totalMonthlyEducationalExpenses,
+    },
+    other: { totalAnnualOtherExpenses, totalMonthlyOtherExpenses },
+    loans: { totalAnnualLoansExpenses, totalMonthlyLoansExpenses },
+    savings: { totalAnnualSavingsExpenses, totalMonthlySavingsExpenses },
+    totalAnnualExpenses,
+    totalMonthlyExpenses,
+    totalAnnualCashFlow,
+    totalMonthlyCashFlow,
+    totalAnnualCashFlowAfterTax,
+    totalMonthlyCashFlowAfterTax,
+  } = useAppSelector((state) => state.budgetCalculator);
+  const { currency, currencyFullName } = useAppSelector(
+    (state) => state.globalCurrency
+  );
+  const calculatorData = {
+    currency,
+    currencyFullName,
+    totalAnnualIncome,
+    totalMonthlyIncome,
+    totalAnnualIncomeAfterTax,
+    totalMonthlyIncomeAfterTax,
+    incomeTaxRate,
+    totalAnnualExpenses,
+    totalMonthlyExpenses,
+    totalAnnualCashFlow,
+    totalMonthlyCashFlow,
+    totalAnnualCashFlowAfterTax,
+    totalMonthlyCashFlowAfterTax,
+    totalAnnualHousingExpenses,
+    totalMonthlyHousingExpenses,
+    totalAnnualTransportExpenses,
+    totalMonthlyTransportExpenses,
+    totalAnnualEducationalExpenses,
+    totalMonthlyEducationalExpenses,
+    totalAnnualOtherExpenses,
+    totalMonthlyOtherExpenses,
+    totalAnnualLoansExpenses,
+    totalMonthlyLoansExpenses,
+    totalAnnualSavingsExpenses,
+    totalMonthlySavingsExpenses,
+  };
 
   return (
     <main className="mb-[5rem]">
@@ -34,7 +90,7 @@ export default function BC() {
             <div className="md:flex grid grid-cols-2 items-center flex-wrap md:gap-5 gap-3 md:text-[1rem] text-[14px] md:w-auto w-full">
               <CurrencySelect />
               <DownloadModal
-                calculatorData={{}}
+                calculatorData={calculatorData}
                 fileName="Budget Calculator Report"
                 id="BC-Chart"
                 PdfComponent={BCPdf}

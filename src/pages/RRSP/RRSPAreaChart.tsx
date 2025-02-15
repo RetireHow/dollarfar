@@ -25,10 +25,10 @@ export default function RRSPAreaChart() {
   );
   return (
     <div
-      className="md:w-[90%] lg:min-h-[400px] overflow-x-auto mx-auto border-[1px] border-gray-300 p-5 rounded-md"
+      className="bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md p-5"
       id="RRSP-Chart"
     >
-      <div className="min-w-[800px] h-[400px]">
+      <div className="w-[100%] h-[350px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             width={300}
@@ -63,7 +63,7 @@ export default function RRSPAreaChart() {
           </AreaChart>
         </ResponsiveContainer>
       </div>
-      <h3 className="text-center text-gray-500 py-2">Years to Retirement</h3>
+      <h3 className="text-center text-gray-500">Years to Retirement</h3>
     </div>
   );
 }

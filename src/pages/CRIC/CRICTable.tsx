@@ -56,7 +56,7 @@ function CRICTooltipWithTwoAccount({
   return (
     <>
       <Icon
-        className="text-[#838383] hover:text-black hover:font-extrabold md:min-w-[1.5rem] min-w-[1.2rem] md:min-h-[1.5rem] min-h-[1.2rem] inline-block ml-1 cursor-pointer"
+        className="text-gray-400 hover:text-white hover:font-extrabold md:min-w-[1.5rem] min-w-[1.2rem] md:min-h-[1.5rem] min-h-[1.2rem] inline-block ml-1 cursor-pointer"
         icon="material-symbols:info-outline"
         onClick={() => showModal()}
       />
@@ -225,15 +225,15 @@ export default function CRICTable() {
 
   return (
     <section className="mt-[5rem]">
-      <div className="overflow-x-auto">
-        <table className="mb-[1.5rem] bg-[#F8F8F8] w-full rounded-[8px] text-center min-w-[600px] text-[14px]">
-          <thead>
+      <div className="overflow-x-auto rounded-[10px]">
+        <table className="mb-[1.5rem] bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md w-full text-center min-w-[600px] text-[14px]">
+          <thead className="text-[1rem] font-extrabold bg-gray-800 text-white">
             <tr className="border-b-[1px] border-b-[#0000001A]">
-              <th className="p-3">Age</th>
-              <th className="p-3">Canada Pension Plan</th>
-              <th className="p-3">Old Age Security</th>
-              <th className="p-3">Employer Pension/{pensionPlanType}</th>
-              <th className="p-3">
+              <th className="border-b-[1px] border-gray-200 p-4">Age</th>
+              <th className="border-b-[1px] border-gray-200 p-4">Canada Pension Plan</th>
+              <th className="border-b-[1px] border-gray-200 p-4">Old Age Security</th>
+              <th className="border-b-[1px] border-gray-200 p-4">Employer Pension/{pensionPlanType}</th>
+              <th className="border-b-[1px] border-gray-200 p-4">
                 Accumulated Savings (
                 {TFSA.hasTFSA == "Yes" && NRA.hasNRA == "Yes"
                   ? "TFSA + Non Reg. Account(s)"
@@ -254,9 +254,9 @@ export default function CRICTable() {
                   />
                 )}
               </th>
-              <th className="p-3">Other Income/{otherIncomeType}</th>
+              <th className="border-b-[1px] border-gray-200 p-4">Other Income/{otherIncomeType}</th>
 
-              <th className="p-3 min-w-[170px]">
+              <th className="border-b-[1px] border-gray-200 p-4 min-w-[170px]">
                 Total Estimated Retirement Income
               </th>
             </tr>
@@ -276,32 +276,32 @@ export default function CRICTable() {
               return (
                 <tr
                   key={index}
-                  className="border-b-[1px] border-b-[#0000001A] hover:bg-gray-100"
+                  className="border-b-[1px] border-b-[#0000001A] hover:bg-gray-200"
                 >
-                  <td className="p-3">{age}</td>
-                  <td className="p-3">
+                  <td className="border-b-[1px] border-gray-200 p-4">{age}</td>
+                  <td className="border-b-[1px] border-gray-200 p-4">
                     {currency}
                     {PPBenefitAmount ? numberWithCommas(PPBenefitAmount) : 0}
                   </td>
-                  <td className="p-3">
+                  <td className="border-b-[1px] border-gray-200 p-4">
                     {currency}
                     {OASAmount
                       ? numberWithCommas(parseInt(OASAmount?.toString()))
                       : 0}
                   </td>
-                  <td className="p-3">
+                  <td className="border-b-[1px] border-gray-200 p-4">
                     {currency}
                     {employerPensionAmount
                       ? numberWithCommas(employerPensionAmount)
                       : 0}
                   </td>
-                  <td className="p-3">
+                  <td className="border-b-[1px] border-gray-200 p-4">
                     {currency}
                     {retirementSavingsAmount
                       ? numberWithCommas(retirementSavingsAmount)
                       : 0}
                   </td>
-                  <td className="p-3">
+                  <td className="border-b-[1px] border-gray-200 p-4">
                     {currency}
                     {otherIncomeAmount
                       ? numberWithCommas(otherIncomeAmount)
@@ -309,7 +309,7 @@ export default function CRICTable() {
                   </td>
 
                   <td
-                    className={`p-3 flex items-center justify-center ${
+                    className={`border-b-[1px] border-gray-200 p-4 flex items-center justify-center ${
                       isNegative(difference)
                         ? "text-red-500 font-medium"
                         : "text-green-500"

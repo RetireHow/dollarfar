@@ -47,7 +47,7 @@ export default function RRIFCard() {
           <p>{rateOfReturn}%</p>
         </div>
 
-        {withdrawType === "Mannual" && (
+        {/* {withdrawType === "Mannual" && (
           <div className="flex md:gap-0 gap-8 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4 font-medium">
             <p>Monthly Withdrawal Amount</p>
             <p>
@@ -55,7 +55,7 @@ export default function RRIFCard() {
               {numberWithCommas(Math.round(annualWithdrawalAmount / 12))}
             </p>
           </div>
-        )}
+        )} */}
 
         {withdrawType === "Mannual" && (
           <div className="flex md:gap-0 gap-8 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4 font-medium">

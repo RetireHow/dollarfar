@@ -1,97 +1,95 @@
-import { Select } from "antd";
-import {
-  calculateCompoundInterest,
-  calculateInterestBreakdown,
-  setFrequency,
-} from "../../redux/features/compoundInterestSlice/compoundInterestSlice";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
+import { getFrequencyTitle } from "../../utils/getFrequencyTitle";
 import { numberWithCommas } from "../../utils/numberWithCommas";
-import { Icon } from "@iconify/react/dist/iconify.js";
-import { useEffect } from "react";
-
-type TOption = {
-  label: string;
-  value: number;
-};
-
-const frequencyOptions: TOption[] = [
-  { value: 1, label: "Annually" },
-  { value: 4, label: "Quarterly" },
-  { value: 12, label: "Monthly" },
-  { value: 52, label: "Weekly" },
-  { value: 26, label: "Bi-Weekly" },
-  { value: 365, label: "Daily" },
-];
 
 export default function CalculationCard() {
-  const dispatch = useAppDispatch();
-  const { frequency, compoundInterest, totalAmount, principal } =
-    useAppSelector((state) => state.compoundInterest);
+  const {
+    totalFutureValue,
+    totalContribution,
+    totalInterestEarned,
+    initialInvestment,
+    contribution,
+    annualInterestRate,
+    compoundingFrequency,
+    contributionFrequency,
+    years,
+  } = useAppSelector((state) => state.compoundInterest);
   const { currency } = useAppSelector((state) => state.globalCurrency);
-
-  useEffect(() => {
-    if (totalAmount) {
-      dispatch(calculateCompoundInterest());
-      dispatch(calculateInterestBreakdown());
-    }
-  }, [frequency]);
-
   return (
-    <div className="space-y-[2rem] bg-[#F8F8F8] md:p-[1.5rem] p-[0.8rem] rounded-[10px] lg:w-[50%] w-full">
-      <div className="flex justify-between items-center flex-wrap gap-1">
-        <p className="md:text-[1.25rem] text-[18px] font-bold md:mb-0 mb-1">
-          Compounding Frequency
-        </p>
-        <div className="lg:w-auto w-full">
+    <section className="w-full">
+      <h1 className="md:text-[2rem] text-[1.5rem] font-bold mb-3">Result</h1>
+      <div className="border-[1px] border-gray-300 p-5 rounded-lg flex md:flex-row flex-col md:items-center md:justify-between bg-[#F8F8F8] shadow-md">
+        <div className="md:space-y-[1.5rem] space-y-[1rem]">
           <div>
-            <Select
-              defaultValue={frequency}
-              size="large"
-              // style={{ width: 130, height: 45, border: "1px solid gray" }}
-              className="!border-none md:w-[130px] w-full h-[45px] border-[1px] border-gray-300"
-              onChange={(value) => {
-                dispatch(setFrequency(value))
-              }}
-              options={frequencyOptions}
-              suffixIcon={
-                <Icon
-                  className="text-[1.5rem] text-gray-600"
-                  icon="iconamoon:arrow-down-2"
-                />
-              }
-            ></Select>
+            <h3 className="font-medium md:text-[1.2rem]">
+              Total interest earned:
+            </h3>
+            <h1 className="md:text-[1.5rem] text-[1.2rem] font-bold">
+              {currency}
+              {numberWithCommas(Number(totalInterestEarned))}
+            </h1>
+          </div>
+          <div>
+            <h3 className="font-medium md:text-[1.2rem]">
+              Total Contribution:
+            </h3>
+            <h1 className="md:text-[1.5rem] text-[1.2rem] font-bold">
+              {currency}
+              {numberWithCommas(Number(totalContribution))}
+            </h1>
+          </div>
+        </div>
+        <div className="md:h-[200px] md:w-[2px] h-[2px] w-full bg-gray-300 md:my-0 my-[1.5rem]"></div>
+        <div className="md:space-y-[1.5rem] space-y-[1rem]">
+          <div>
+            <h3 className="font-medium md:text-[1.2rem]">
+              Initial principal amount:
+            </h3>
+            <h1 className="md:text-[1.5rem] text-[1.2rem] font-bold">
+              {currency}
+              {numberWithCommas(Number(initialInvestment))}
+            </h1>
+          </div>
+          <div>
+            <h3 className="font-medium md:text-[1.2rem]">
+              Current total principal amount:
+            </h3>
+            <h1 className="md:text-[1.5rem] text-[1.2rem] font-bold">
+              {currency}
+              {numberWithCommas(Number(totalFutureValue))}
+            </h1>
           </div>
         </div>
       </div>
-
-      <div className="flex flex-wrap gap-1 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-8">
-        <p className="font-medium">Principle Amount</p>
-        <div className="flex items-center">
-          {/* <Icon className="text-[1.2rem]" icon="mdi:dollar" /> */}
-          <p>{currency}</p>
-          <p>{numberWithCommas(principal)}</p>
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-8">
-        <p className="md:text-[1.25rem] text-[1rem] font-medium">
-          Total Interest
-        </p>
-        <div className="flex items-center">
-          <p>{currency}</p>
-          <p>{numberWithCommas(compoundInterest)}</p>
-        </div>
-      </div>
-
-      <div className="flex gap-2 items-center justify-between bg-black text-white md:px-[1.25rem] px-[0.5rem] md:text-[1.25rem] text-[1rem] rounded-[10px] h-[50px]">
-        <p className="md:text-[1.25rem] text-[1rem] font-medium">
-          Total Amount
-        </p>
-        <div className="flex items-center gap-[2px] md:text-[1.25rem] text-[1rem]">
-          <p>{currency}</p>
-          <p>{numberWithCommas(totalAmount)}</p>
-        </div>
-      </div>
-    </div>
+      <p className="mt-5 md:text-[1.2rem]">
+        Your initial principal amount of{" "}
+        <span className="font-semibold">
+          {currency}
+          {numberWithCommas(Number(initialInvestment))}
+        </span>{" "}
+        plus your{" "}
+        <span className="font-semibold lowercase">
+          {getFrequencyTitle(contributionFrequency)}{" "}
+        </span>
+        contribution of{" "}
+        <span className="font-semibold">
+          {currency}
+          {numberWithCommas(Number(contribution))}
+        </span>{" "}
+        at an annualized interest rate of{" "}
+        <span className="font-semibold">{annualInterestRate}%</span> will be
+        worth{" "}
+        <span className="font-semibold">
+          {currency}
+          {numberWithCommas(Number(totalFutureValue))}
+        </span>{" "}
+        after <span className="font-semibold">{years}</span> years when
+        compounded{" "}
+        <span className="font-semibold lowercase">
+          {getFrequencyTitle(compoundingFrequency)}
+        </span>
+        .
+      </p>
+    </section>
   );
 }

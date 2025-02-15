@@ -420,7 +420,7 @@ export default function SummaryCollapse() {
   });
   return (
     <Collapse
-      rootClassName="bg-[#F8F8F8]"
+      rootClassName="bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md"
       expandIconPosition="end"
       expandIcon={(panelProps) => {
         const { isActive } = panelProps;

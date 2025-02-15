@@ -56,7 +56,7 @@ function CRICBarChart() {
         <div className="overflow-x-auto flex-1">
           <div
             id="CRIC-Chart"
-            className="border-[1px] border-gray-200 min-w-[800px] shadow-sm rounded-lg p-2"
+            className="bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md min-w-[800px] p-2"
             style={{ width: "100%", height: 500 }}
           >
             <ResponsiveContainer>

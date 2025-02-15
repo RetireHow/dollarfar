@@ -4,9 +4,10 @@ import {
   View,
   Document,
   StyleSheet,
-  Image
+  Image,
 } from "@react-pdf/renderer";
 import { assets } from "../../assets/assets";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 // Define styles for the PDF
 const styles = StyleSheet.create({
@@ -39,25 +40,39 @@ const styles = StyleSheet.create({
     fontSize: 50,
     color: "rgba(220, 220, 220, 0.2)",
     fontWeight: "bold",
-    opacity: 0.5,
+    opacity: 0.3,
   },
 });
 
 type TCalculatorData = {
-  totalIncome: number;
-  houseExpenses: number;
-  transportExpenses: number;
-  educationalExpenses: number;
-  otherExpenses: number;
-  totalLoans: number;
-  totalSavings: number;
-  totalExpenses: number;
-  cashflowDeficit: number;
-  base64: string;
+  totalAnnualIncome: number;
+  totalMonthlyIncome: number;
+  totalAnnualIncomeAfterTax: number;
+  totalMonthlyIncomeAfterTax: number;
+  incomeTaxRate: string;
+  totalAnnualExpenses: number;
+  totalMonthlyExpenses: number;
+  totalAnnualCashFlow: number;
+  totalMonthlyCashFlow: number;
+  totalAnnualCashFlowAfterTax: number;
+  totalMonthlyCashFlowAfterTax: number;
+  totalAnnualHousingExpenses: number;
+  totalMonthlyHousingExpenses: number;
+  totalAnnualTransportExpenses: number;
+  totalMonthlyTransportExpenses: number;
+  totalAnnualEducationalExpenses: number;
+  totalMonthlyEducationalExpenses: number;
+  totalAnnualOtherExpenses: number;
+  totalMonthlyOtherExpenses: number;
+  totalAnnualLoansExpenses: number;
+  totalMonthlyLoansExpenses: number;
+  totalAnnualSavingsExpenses: number;
+  totalMonthlySavingsExpenses: number;
   name?: string;
   email?: string;
   currency: string;
   currencyFullName: string;
+  base64: string;
 };
 
 // Define a new PDF document component
@@ -65,18 +80,31 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
   const {
     name,
     email,
-    totalIncome,
-    totalSavings,
-    totalLoans,
-    educationalExpenses,
-    houseExpenses,
-    otherExpenses,
-    transportExpenses,
-    totalExpenses,
-    cashflowDeficit,
-    base64,
     currency,
     currencyFullName,
+    totalAnnualIncome,
+    totalMonthlyIncome,
+    totalAnnualIncomeAfterTax,
+    totalMonthlyIncomeAfterTax,
+    incomeTaxRate,
+    totalAnnualExpenses,
+    totalMonthlyExpenses,
+    totalAnnualCashFlow,
+    totalMonthlyCashFlow,
+    totalAnnualCashFlowAfterTax,
+    totalMonthlyCashFlowAfterTax,
+    totalAnnualHousingExpenses,
+    totalMonthlyHousingExpenses,
+    totalAnnualTransportExpenses,
+    totalMonthlyTransportExpenses,
+    totalAnnualEducationalExpenses,
+    totalMonthlyEducationalExpenses,
+    totalAnnualOtherExpenses,
+    totalMonthlyOtherExpenses,
+    totalAnnualLoansExpenses,
+    totalMonthlyLoansExpenses,
+    totalAnnualSavingsExpenses,
+    totalMonthlySavingsExpenses,
   } = data || {};
 
   return (
@@ -115,337 +143,615 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
           </View>
 
           {/* Title  */}
-          <View style={styles.section}>
+          <View
+            style={{
+              fontSize: 16,
+              fontWeight: "extrabold",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 20,
+            }}
+          >
             <Text>Budget Calculator</Text>
             <Text style={styles.title}>
               {currency} - {currencyFullName}
             </Text>
           </View>
 
-          {/* Totals Card  */}
-          <View
-            style={{
-              border: "1px solid #EAECF0",
-              padding: 16,
-              borderRadius: 5,
-              backgroundColor: "#F8F8F8",
-              flexDirection: "column",
-              gap: 16,
-              fontSize: 12,
-              width: "100%",
-              marginBottom: 5,
-            }}
-          >
-            <Text style={{ fontWeight: "extrabold", fontSize: 14 }}>
-              Totals
-            </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={{ color: "#696969" }}>Income</Text>
-              <Text>
-                {currency}
-                {totalIncome}
+          {/* ======================|| Budget Overview Table ||=================================================   */}
+          {!Number(incomeTaxRate) && (
+            <View style={{ marginBottom: 40 }}>
+              <Text style={{ fontSize: "14px", marginBottom: 10 }}>
+                Budget at a Glance
               </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={{ color: "#696969" }}>Housing Expenses</Text>
-              <Text>
-                {currency}
-                {houseExpenses}
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={{ color: "#696969" }}>Transport Expenses</Text>
-              <Text>
-                {currency}
-                {transportExpenses}
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={{ color: "#696969" }}>Educational Expenses</Text>
-              <Text>
-                {currency}
-                {educationalExpenses}
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={{ color: "#696969" }}>Other Expenses</Text>
-              <Text>
-                {currency}
-                {otherExpenses}
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={{ color: "#696969" }}>Loans</Text>
-              <Text>
-                {currency}
-                {totalLoans}
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={{ color: "#696969" }}>Savings</Text>
-              <Text>
-                {currency}
-                {totalSavings}
-              </Text>
-            </View>
-
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                backgroundColor: `${
-                  totalIncome < totalExpenses
-                    ? "red"
-                    : totalIncome > totalExpenses
-                    ? "green"
-                    : "black"
-                }`,
-                color: "#fff",
-                padding: "8px",
-                borderRadius: "5px",
-              }}
-            >
-              <Text>
-                {totalIncome < totalExpenses
-                  ? "Cashflow Deficit"
-                  : totalIncome > totalExpenses
-                  ? "Cashflow Surplus"
-                  : "Cashflow"}
-              </Text>
-              <Text>
-                {currency}
-                {cashflowDeficit}
-              </Text>
-            </View>
-          </View>
-
-          {/* Chart Container  */}
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "400px",
-              margin: "auto",
-            }}
-          >
-            <View
-              style={{
-                flex: 1,
-              }}
-            >
-              <Image style={{ width: "90%", height: 250 }} src={base64} />
-            </View>
-
-            {/* Legends Container  */}
-            <View
-              style={{
-                fontSize: 12,
-                flexDirection: "column",
-                gap: 10,
-                fontWeight: "extrabold",
-                color: "#475569",
-              }}
-            >
+              {/* Table Heading  */}
               <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "12px",
+                  backgroundColor: "black",
+                  color: "#fff",
+                  padding: 10,
+                }}
               >
-                <Text
-                  style={{
-                    width: "20px",
-                    backgroundColor: "#2196F3",
-                    borderRadius: "30px",
-                    height: "6px",
-                  }}
-                ></Text>
-                <Text>
-                  Housing Expenses ({currency}
-                  {houseExpenses})
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  Total
+                </Text>
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  Annual
+                </Text>
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  Monthly
                 </Text>
               </View>
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
-              >
-                <Text
+              {/* Table Body  */}
+              <View style={{ backgroundColor: "#F8F8F8" }}>
+                {/* row 1 */}
+                <View
                   style={{
-                    width: "20px",
-                    backgroundColor: "#FF9800",
-                    borderRadius: "30px",
-                    height: "6px",
-                  }}
-                ></Text>
-                <Text>
-                  Transport Expenses ({currency}
-                  {transportExpenses})
-                </Text>
-              </View>
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
-              >
-                <Text
-                  style={{
-                    width: "20px",
-                    backgroundColor: "#03A9F4",
-                    borderRadius: "30px",
-                    height: "6px",
-                  }}
-                ></Text>
-                <Text>
-                  Educational Expenses ({currency}
-                  {educationalExpenses})
-                </Text>
-              </View>
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
-              >
-                <Text
-                  style={{
-                    width: "20px",
-                    backgroundColor: "#FF5722",
-                    borderRadius: "30px",
-                    height: "6px",
-                  }}
-                ></Text>
-                <Text>
-                  Other Expenses ({currency}
-                  {otherExpenses})
-                </Text>
-              </View>
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
-              >
-                <Text
-                  style={{
-                    width: "20px",
-                    backgroundColor: "#F44336",
-                    borderRadius: "30px",
-                    height: "6px",
-                  }}
-                ></Text>
-                <Text>
-                  Loans ({currency}
-                  {totalLoans})
-                </Text>
-              </View>
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
-              >
-                <Text
-                  style={{
-                    width: "20px",
-                    backgroundColor: "#9C27B0",
-                    borderRadius: "30px",
-                    height: "6px",
-                  }}
-                ></Text>
-                <Text>
-                  Savings ({currency}
-                  {totalSavings})
-                </Text>
-              </View>
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
-              >
-                <Text
-                  style={{
-                    width: "20px",
-                    backgroundColor: "#009688",
-                    borderRadius: "30px",
-                    height: "6px",
-                  }}
-                ></Text>
-                <Text>
-                  Cashflow Deficit ({currency}
-                  {cashflowDeficit})
-                </Text>
-              </View>
-
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
-              >
-                <Text
-                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "12px",
                     color: "#000",
-                    width: 20,
+                    padding: 10,
+                    borderBottomColor: "#e5e7eb",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
                   }}
                 >
-                  {currency}
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    Total Income
+                  </Text>
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    {currency}
+                    {totalAnnualIncome}
+                  </Text>
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    {currency}
+                    {totalMonthlyIncome.toFixed(2)}
+                  </Text>
+                </View>
+                {/* row 2 */}
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "12px",
+                    color: "#000",
+                    padding: 10,
+                    borderBottomColor: "#e5e7eb",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                  }}
+                >
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    Total Expenses
+                  </Text>
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    {currency}
+                    {totalAnnualExpenses}
+                  </Text>
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    {currency}
+                    {totalMonthlyExpenses.toFixed(2)}
+                  </Text>
+                </View>
+                {/* row 3 */}
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "12px",
+                    color:
+                      totalAnnualIncome < totalAnnualExpenses
+                        ? "red"
+                        : totalAnnualIncome > totalAnnualExpenses
+                        ? "#06D206"
+                        : "black",
+                    padding: 10,
+                  }}
+                >
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    {totalAnnualIncome > totalAnnualExpenses
+                      ? "Cashflow Surplus"
+                      : totalAnnualIncome < totalAnnualExpenses
+                      ? "Cashflow Deficit"
+                      : "Cashflow"}
+                  </Text>
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    {currency}
+                    {totalAnnualCashFlow}
+                  </Text>
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    {currency}
+                    {totalMonthlyCashFlow.toFixed(2)}
+                  </Text>
+                </View>
+              </View>
+
+              {totalAnnualIncome > totalAnnualExpenses ? (
+                <View
+                  style={{
+                    fontWeight: "medium",
+                    marginTop: "10px",
+                    fontSize: "12px",
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  <Text>Great job! You have </Text>{" "}
+                  <Text style={{ color: "#06D206" }}>
+                    {currency}
+                    {numberWithCommas(
+                      Number(totalAnnualCashFlow.toFixed(2))
+                    )}{" "}
+                    annually
+                  </Text>{" "}
+                  <Text> or </Text>{" "}
+                  <Text style={{ color: "#06D206" }}>
+                    {currency}
+                    {numberWithCommas(
+                      Number(totalMonthlyCashFlow.toFixed(2))
+                    )}{" "}
+                    monthly
+                  </Text>{" "}
+                  <Text> left to save or invest.</Text>
+                </View>
+              ) : totalAnnualIncome < totalAnnualExpenses ? (
+                <View
+                  style={{
+                    fontWeight: "medium",
+                    marginTop: "10px",
+                    fontSize: "12px",
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  <Text>Heads up! Your expenses exceed your income by </Text>{" "}
+                  <Text style={{ color: "red" }}>
+                    {currency}
+                    {numberWithCommas(
+                      Number(Math.abs(totalAnnualCashFlow).toFixed(2))
+                    )}{" "}
+                    annually{" "}
+                  </Text>
+                  <Text>or </Text>{" "}
+                  <Text style={{ color: "red" }}>
+                    {currency}
+                    {numberWithCommas(
+                      Math.abs(Number(totalMonthlyCashFlow.toFixed(2)))
+                    )}{" "}
+                    monthly.
+                  </Text>
+                </View>
+              ) : (
+                <Text
+                  style={{
+                    fontWeight: "medium",
+                    marginTop: "10px",
+                    fontSize: "12px",
+                  }}
+                >
+                  Your income matches your expenses. Consider saving for
+                  unexpected costs or future goals.
                 </Text>
-                <Text>{currencyFullName}</Text>
+              )}
+            </View>
+          )}
+
+          {/* ======================|| Budget Overview Table : After Tax ||==================================   */}
+          {Number(incomeTaxRate) &&
+            totalAnnualIncomeAfterTax &&
+            totalMonthlyIncomeAfterTax && (
+              <View style={{ marginBottom: 40 }}>
+                <Text style={{ fontSize: "14px", marginBottom: 10 }}>
+                  Budget at a Glance
+                </Text>
+                {/* Table Heading  */}
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "12px",
+                    backgroundColor: "black",
+                    color: "#fff",
+                    padding: 10,
+                  }}
+                >
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    Total
+                  </Text>
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    Annual
+                  </Text>
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    Monthly
+                  </Text>
+                </View>
+                {/* Table Body  */}
+                <View style={{ backgroundColor: "#F8F8F8" }}>
+                  {/* row 1 */}
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      fontSize: "12px",
+                      color: "#000",
+                      padding: 10,
+                      borderBottomColor: "#e5e7eb",
+                      borderBottomWidth: "1px",
+                      borderBottomStyle: "solid",
+                    }}
+                  >
+                    <Text style={{ width: "170px", textAlign: "center" }}>
+                      Total Income Before Tax
+                    </Text>
+                    <Text style={{ width: "170px", textAlign: "center" }}>
+                      {currency}
+                      {totalAnnualIncome}
+                    </Text>
+                    <Text style={{ width: "170px", textAlign: "center" }}>
+                      {currency}
+                      {totalMonthlyIncome.toFixed(2)}
+                    </Text>
+                  </View>
+                  {/* row 2 */}
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      fontSize: "12px",
+                      color: "#000",
+                      padding: 10,
+                      borderBottomColor: "#e5e7eb",
+                      borderBottomWidth: "1px",
+                      borderBottomStyle: "solid",
+                    }}
+                  >
+                    <Text style={{ width: "170px", textAlign: "center" }}>
+                      Total Income After Tax
+                    </Text>
+                    <Text style={{ width: "170px", textAlign: "center" }}>
+                      {currency}
+                      {totalAnnualIncomeAfterTax.toFixed(2)}
+                    </Text>
+                    <Text style={{ width: "170px", textAlign: "center" }}>
+                      {currency}
+                      {totalMonthlyIncomeAfterTax.toFixed(2)}
+                    </Text>
+                  </View>
+                  {/* row 3 */}
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      fontSize: "12px",
+                      color: "#000",
+                      padding: 10,
+                      borderBottomColor: "#e5e7eb",
+                      borderBottomWidth: "1px",
+                      borderBottomStyle: "solid",
+                    }}
+                  >
+                    <Text style={{ width: "170px", textAlign: "center" }}>
+                      Total Expenses
+                    </Text>
+                    <Text style={{ width: "170px", textAlign: "center" }}>
+                      {currency}
+                      {totalAnnualExpenses}
+                    </Text>
+                    <Text style={{ width: "170px", textAlign: "center" }}>
+                      {currency}
+                      {totalMonthlyExpenses.toFixed(2)}
+                    </Text>
+                  </View>
+                  {/* row 4 */}
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      fontSize: "12px",
+                      color:
+                        totalAnnualIncomeAfterTax < totalAnnualExpenses
+                          ? "red"
+                          : totalAnnualIncomeAfterTax > totalAnnualExpenses
+                          ? "#06D206"
+                          : "black",
+                      padding: 10,
+                    }}
+                  >
+                    <Text style={{ width: "170px", textAlign: "center" }}>
+                      {totalAnnualIncomeAfterTax > totalAnnualExpenses
+                        ? "Cashflow Surplus"
+                        : totalAnnualIncomeAfterTax < totalAnnualExpenses
+                        ? "Cashflow Deficit"
+                        : "Cashflow"}
+                    </Text>
+                    <Text style={{ width: "170px", textAlign: "center" }}>
+                      {currency}
+                      {totalAnnualCashFlowAfterTax.toFixed(2)}
+                    </Text>
+                    <Text style={{ width: "170px", textAlign: "center" }}>
+                      {currency}
+                      {totalMonthlyCashFlowAfterTax.toFixed(2)}
+                    </Text>
+                  </View>
+                </View>
+
+                {totalAnnualIncomeAfterTax > totalAnnualExpenses ? (
+                  <View
+                    style={{
+                      fontWeight: "medium",
+                      marginTop: "10px",
+                      fontSize: "12px",
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <Text>Great job! You have </Text>{" "}
+                    <Text style={{ color: "#06D206" }}>
+                      {currency}
+                      {numberWithCommas(
+                        Number(totalAnnualCashFlowAfterTax.toFixed(2))
+                      )}{" "}
+                      annually
+                    </Text>{" "}
+                    <Text> or </Text>{" "}
+                    <Text style={{ color: "#06D206" }}>
+                      {currency}
+                      {numberWithCommas(
+                        Number(totalMonthlyCashFlowAfterTax.toFixed(2))
+                      )}{" "}
+                      monthly
+                    </Text>{" "}
+                    <Text> left to save or invest.</Text>
+                  </View>
+                ) : totalAnnualIncomeAfterTax < totalAnnualExpenses ? (
+                  <View
+                    style={{
+                      fontWeight: "medium",
+                      marginTop: "10px",
+                      fontSize: "12px",
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <Text>Heads up! Your expenses exceed your income by </Text>{" "}
+                    <Text style={{ color: "red" }}>
+                      {currency}
+                      {numberWithCommas(
+                        Number(Math.abs(totalAnnualCashFlowAfterTax).toFixed(2))
+                      )}{" "}
+                      annually{" "}
+                    </Text>
+                    <Text>or </Text>{" "}
+                    <Text style={{ color: "red" }}>
+                      {currency}
+                      {numberWithCommas(
+                        Math.abs(
+                          Number(totalMonthlyCashFlowAfterTax.toFixed(2))
+                        )
+                      )}{" "}
+                      monthly.
+                    </Text>
+                  </View>
+                ) : (
+                  <Text
+                    style={{
+                      fontWeight: "medium",
+                      marginTop: "10px",
+                      fontSize: "12px",
+                    }}
+                  >
+                    Your income matches your expenses. Consider saving for
+                    unexpected costs or future goals.
+                  </Text>
+                )}
+              </View>
+            )}
+
+          {/* ======================|| Category-Wise Expenses ||================================== */}
+          <View>
+            <Text style={{ fontSize: "14px", marginBottom: 10 }}>
+              Category-Wise Expenses
+            </Text>
+            {/* Table Heading  */}
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                fontSize: "12px",
+                backgroundColor: "black",
+                color: "#fff",
+                padding: 10,
+              }}
+            >
+              <Text style={{ width: "170px", textAlign: "center" }}>
+                Categories
+              </Text>
+              <Text style={{ width: "170px", textAlign: "center" }}>
+                Annual
+              </Text>
+              <Text style={{ width: "170px", textAlign: "center" }}>
+                Monthly
+              </Text>
+            </View>
+            {/* Table Body  */}
+            <View style={{ backgroundColor: "#F8F8F8" }}>
+              {/* row 1 */}
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "12px",
+                  color: "#000",
+                  padding: 10,
+                  borderBottomColor: "#e5e7eb",
+                  borderBottomWidth: "1px",
+                  borderBottomStyle: "solid",
+                }}
+              >
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  Housing
+                </Text>
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  {currency}
+                  {totalAnnualHousingExpenses}
+                </Text>
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  {currency}
+                  {totalMonthlyHousingExpenses}
+                </Text>
+              </View>
+              {/* row 2 */}
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "12px",
+                  color: "#000",
+                  padding: 10,
+                  borderBottomColor: "#e5e7eb",
+                  borderBottomWidth: "1px",
+                  borderBottomStyle: "solid",
+                }}
+              >
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  Transport
+                </Text>
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  {currency}
+                  {totalAnnualTransportExpenses}
+                </Text>
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  {currency}
+                  {totalMonthlyTransportExpenses}
+                </Text>
+              </View>
+              {/* row 3 */}
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "12px",
+                  color: "#000",
+                  padding: 10,
+                  borderBottomColor: "#e5e7eb",
+                  borderBottomWidth: "1px",
+                  borderBottomStyle: "solid",
+                }}
+              >
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  Education
+                </Text>
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  {currency}
+                  {totalAnnualEducationalExpenses}
+                </Text>
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  {currency}
+                  {totalMonthlyEducationalExpenses}
+                </Text>
+              </View>
+              {/* row 4 */}
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "12px",
+                  color: "#000",
+                  padding: 10,
+                  borderBottomColor: "#e5e7eb",
+                  borderBottomWidth: "1px",
+                  borderBottomStyle: "solid",
+                }}
+              >
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  Other
+                </Text>
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  {currency}
+                  {totalAnnualOtherExpenses}
+                </Text>
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  {currency}
+                  {totalMonthlyOtherExpenses}
+                </Text>
+              </View>
+              {/* row 5 */}
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "12px",
+                  color: "#000",
+                  padding: 10,
+                  borderBottomColor: "#e5e7eb",
+                  borderBottomWidth: "1px",
+                  borderBottomStyle: "solid",
+                }}
+              >
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  Loans
+                </Text>
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  {currency}
+                  {totalAnnualLoansExpenses}
+                </Text>
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  {currency}
+                  {totalMonthlyLoansExpenses}
+                </Text>
+              </View>
+              {/* row 6 */}
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "12px",
+                  color: "#000",
+                  padding: 10,
+                  borderBottomColor: "#e5e7eb",
+                  borderBottomWidth: "1px",
+                  borderBottomStyle: "solid",
+                }}
+              >
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  Savings
+                </Text>
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  {currency}
+                  {totalAnnualSavingsExpenses}
+                </Text>
+                <Text style={{ width: "170px", textAlign: "center" }}>
+                  {currency}
+                  {totalMonthlySavingsExpenses}
+                </Text>
               </View>
             </View>
           </View>
-          <Text
-            style={{
-              fontSize: 12,
-              textAlign: "left",
-              lineHeight: "20px",
-            }}
-          >
-            "Your total annual income is {currency}
-            {totalIncome}, and after your expenses of {currency}
-            {totalExpenses}, you have {currency}
-            {cashflowDeficit} left for savings or investments."
-          </Text>
         </View>
 
         {/* Watermark */}
         <Text style={styles.watermark}>Dollarfar.com</Text>
-
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            color: "#4D4D4D",
-            fontSize: 12,
-            paddingLeft: 24,
-            paddingRight: 24,
-            paddingTop: 16,
-            paddingBottom: 16,
-            backgroundColor: "#F6F8FC",
-            position: "absolute",
-            width: "100%",
-            bottom: 0,
-          }}
-        >
-          <Text>dollarfar.com</Text>
-          <Text>Copyright © {new Date().getFullYear()} - Dollarfar</Text>
-        </View>
       </Page>
     </Document>
   );

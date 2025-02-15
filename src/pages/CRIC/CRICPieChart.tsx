@@ -43,7 +43,7 @@ const CRICPieChart = () => {
     <div className="flex md:flex-row flex-col justify-center md:items-center md:gap-[2rem] gap-[1rem] my-[5rem]">
       <div
         id="BC-Chart"
-        className="md:flex-1 overflow-x-auto border-[1px] border-gray-200 rounded-lg"
+        className="md:flex-1 overflow-x-auto bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md"
       >
         <div className="md:h-auto h-[300px] min-w-[250px]">
           <ResponsiveContainer width="100%" height={300}>

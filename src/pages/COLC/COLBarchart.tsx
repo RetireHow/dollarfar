@@ -99,7 +99,7 @@ export const COLBarChart = () => {
         <div
           id="COLC-Chart"
           style={{ boxShadow: "0px 0px 5px 1px rgba(0, 0, 0, 0.05)" }}
-          className="md:max-h-[300px] bg-white shadow-md rounded-lg border-[1px] border-gray-200 p-[1rem]"
+          className="md:max-h-[300px] bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-lg p-[1rem]"
         >
           <div className="overflow-x-auto">
             <div className="lg:min-w-[600px] md:min-w-[500px] min-w-[400px]">

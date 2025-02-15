@@ -57,7 +57,7 @@ type TData = {
   remainingRRRIFBalanceEndOfPeriod: number;
   withdrawType: string;
   currency: string;
-  currencyFullName:string;
+  currencyFullName: string;
   name: string;
   email: string;
   base64: string;
@@ -78,7 +78,6 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
     remainingRRRIFBalanceEndOfPeriod,
     totalWithdrawnOverLifeTime,
     currency,
-    currencyFullName,
     withdrawType,
   } = data || {};
 
@@ -249,7 +248,8 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>
-                  Total Withdrawn Over Lifetime (Age 70 to 80)
+                  Total Withdrawn Over Lifetime (Age {withdrawalStartYear} to{" "}
+                  {withdrawalEndYear})
                 </Text>
                 <Text>
                   {currency}
@@ -277,65 +277,10 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
             </View>
           </View>
 
-           {/* Chart Container  */}
-           <View style={{ flexDirection: "row", gap:"10px" }}>
-              <View style={{ flex: 1 }}>
-                <Image style={{ width: "100%", height: 300 }} src={base64} />
-              </View>
-
-              {/* Legends Container  */}
-              <View
-                style={{
-                  fontSize: 10,
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  gap: 20,
-                  fontWeight: "extrabold",
-                }}
-              >
-                <View
-                  style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
-                >
-                  <Text
-                    style={{
-                      width: "20px",
-                      backgroundColor: "#2196F3",
-                      borderRadius: "30px",
-                      height: "6px",
-                    }}
-                  ></Text>
-                  <Text>Balance at the End of the Year</Text>
-                </View>
-
-                <View
-                  style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
-                >
-                  <Text
-                    style={{
-                      width: "20px",
-                      backgroundColor: "#FF9800",
-                      borderRadius: "30px",
-                      height: "6px",
-                    }}
-                  ></Text>
-                  <Text>Minimum Withdrawal Amount</Text>
-                </View>
-
-                <View
-                  style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
-                >
-                  <Text
-                    style={{
-                      color: "#000",
-                      width: 20,
-                    }}
-                  >
-                    {currency}
-                  </Text>
-                  <Text>{currencyFullName}</Text>
-                </View>
-              </View>
-            </View>
+          {/* Chart Container  */}
+          <View>
+            <Image style={{ width: "100%", height: 300 }} src={base64} />
+          </View>
         </View>
 
         {/* Watermark */}

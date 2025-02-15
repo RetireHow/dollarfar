@@ -19,33 +19,33 @@ export default function RRIFTable() {
   const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <section>
-      <div className="overflow-x-auto">
+      <div  className="overflow-x-auto text-center bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md">
         <table className="mb-[1.5rem] bg-[#F8F8F8] w-full rounded-[8px] text-center min-w-[600px] text-[14px]">
-          <thead>
+          <thead className="text-[1rem] font-extrabold bg-gray-800 text-white">
             <tr className="border-b-[1px] border-b-[#0000001A]">
-              <th className="p-3">Age</th>
-              <th className="p-3">Balance at Beginning of the Year</th>
-              <th className="p-3">Min Annual Withdrawal Amount</th>
-              <th className="p-3">Monthly Withdrawal Amount</th>
-              <th className="p-3">Min Withdrawal Percentage</th>
-              <th className="p-3">Rate of Interest</th>
-              <th className="p-3">Balance at End of the Year</th>
+              <th className="border-b-[1px] border-gray-200 p-4">Age</th>
+              <th className="border-b-[1px] border-gray-200 p-4">Balance at Beginning of the Year</th>
+              <th className="border-b-[1px] border-gray-200 p-4">Min Annual Withdrawal Amount</th>
+              <th className="border-b-[1px] border-gray-200 p-4">Monthly Withdrawal Amount</th>
+              <th className="border-b-[1px] border-gray-200 p-4">Min Withdrawal Percentage</th>
+              <th className="border-b-[1px] border-gray-200 p-4">Rate of Interest</th>
+              <th className="border-b-[1px] border-gray-200 p-4">Balance at End of the Year</th>
             </tr>
           </thead>
           <tbody>
             {data?.map((item: TAgePeriod, index) => (
-              <tr key={index} className="border-b-[1px] border-b-[#0000001A]">
-                <td className="p-3">{item.age}</td>
-                <td className="p-3">{currency}{numberWithCommas(item.balanceAtBeginningOfTheYear)}</td>
-                <td className="p-3">{currency}{numberWithCommas(Number(item.annualWithdrawalAmount))}</td>
-                <td className="p-3">{currency}{(Number(item.annualWithdrawalAmount)/12).toFixed(2)}</td>
-                <td className="p-3">
+              <tr key={index} className="hover:bg-gray-200">
+                <td className="border-b-[1px] border-gray-200 p-4">{item.age}</td>
+                <td className="border-b-[1px] border-gray-200 p-4">{currency}{numberWithCommas(item.balanceAtBeginningOfTheYear)}</td>
+                <td className="border-b-[1px] border-gray-200 p-4">{currency}{numberWithCommas(Number(item.annualWithdrawalAmount))}</td>
+                <td className="border-b-[1px] border-gray-200 p-4">{currency}{(Number(item.annualWithdrawalAmount)/12).toFixed(2)}</td>
+                <td className="border-b-[1px] border-gray-200 p-4">
                   {item.minWithdrawalPercentage ||
                     item.mannualWithdrawalPercentage}
                   %
                 </td>
-                <td className="p-3">{rateOfReturn}%</td>
-                <td className="p-3">{currency}{numberWithCommas(item.balanceAtEndOfTheYear)}</td>
+                <td className="border-b-[1px] border-gray-200 p-4">{rateOfReturn}%</td>
+                <td className="border-b-[1px] border-gray-200 p-4">{currency}{numberWithCommas(item.balanceAtEndOfTheYear)}</td>
               </tr>
             ))}
           </tbody>

@@ -129,7 +129,7 @@ export default function CustomCollapese() {
         <span>see details.</span>
       </p>
       <Collapse
-        rootClassName="bg-gray-100"
+        rootClassName="bg-[#F8F8F8]"
         expandIconPosition="end"
         expandIcon={(panelProps) => {
           const { isActive, panelKey } = panelProps as {
