@@ -257,7 +257,7 @@ export default function COLCForm() {
         <div className="flex justify-end lg:col-span-3">
           <button
             disabled
-            className="text-white cursor-not-allowed px-[0.8rem] h-[50px] rounded-[10px] lg:w-[180px] w-full bg-black flex justify-center items-center"
+            className="text-white cursor-not-allowed px-[0.8rem] h-[50px] rounded-[10px] w-full bg-black flex justify-center items-center"
           >
             <Icon icon="eos-icons:three-dots-loading" width="70" height="70" />
           </button>
@@ -267,7 +267,7 @@ export default function COLCForm() {
           <button
             onClick={handleCompare}
             disabled={cityName1 && cityName2 ? false : true}
-            className={`text-white p-[0.8rem] rounded-[10px] lg:w-[180px] w-full ${
+            className={`text-white p-[0.8rem] rounded-[10px] w-full ${
               cityName1 && cityName2 ? "bg-black" : "bg-gray-300"
             }`}
           >

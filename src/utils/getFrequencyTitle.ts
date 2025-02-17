@@ -1,5 +1,7 @@
 export const getFrequencyTitle = (value: string) => {
   switch (value) {
+    case "365":
+      return "Daily";
     case "52":
       return "Weekly";
     case "26":

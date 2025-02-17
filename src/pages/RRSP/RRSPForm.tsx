@@ -253,10 +253,10 @@ export default function RRSPForm() {
         </div>
       </div>
 
-      <div className="flex justify-end">
+      <div>
         <button
           onClick={handleCalculate}
-          className={`text-white p-[0.8rem] rounded-[10px] text-[18px] w-[200px] bg-black`}
+          className={`text-white p-[0.8rem] rounded-[10px] text-[18px] w-full bg-black`}
         >
           Calculate
         </button>
