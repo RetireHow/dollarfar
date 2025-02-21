@@ -1,17 +1,69 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Collapse } from "antd";
 import type { CollapseProps } from "antd";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { isNegative } from "../../utils/isNegative";
+import { useEffect } from "react";
+import {
+  setCity1SubTotalCost,
+  setCity2SubTotalCost,
+  setFromCityCurrencySymbol,
+  setSubTotalIndex,
+  setToCityCurrencySymbol,
+} from "../../redux/features/COLC/COLCSlice";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function CustomCollapese() {
   const { COLCModifiedCostData } = useAppSelector(
     (state) => state.COLCalculator
   );
-  const { currency } = useAppSelector((state) => state.globalCurrency);
+  const dispatch = useAppDispatch();
   const { selectedCityName1, selectedCityName2 } = useAppSelector(
     (state) => state.COLCalculator
   );
+
+  //Calculate subtotal
+  const city1SubTotalCost = COLCModifiedCostData?.reduce((prev, curr) => {
+    return curr.city1TotalCost + prev;
+  }, 0);
+  const city1OtherCurrencySubTotalCost = COLCModifiedCostData?.reduce(
+    (prev, curr) => {
+      return curr.city1TotalCostOtherCurrencyPrice + prev;
+    },
+    0
+  );
+
+  const city2SubTotalCost = COLCModifiedCostData?.reduce((prev, curr) => {
+    return curr.city2TotalCost + prev;
+  }, 0);
+  const city2OtherCurrencySubTotalCost = COLCModifiedCostData?.reduce(
+    (prev, curr) => {
+      return curr.city2TotalCostOtherCurrencyPrice + prev;
+    },
+    0
+  );
+  const subTotalIndex =
+    ((city2OtherCurrencySubTotalCost - city1SubTotalCost) / city1SubTotalCost) *
+    100;
+
+  const { city1TotalCostCurrencySymbol, city2TotalCostCurrencySymbol } =
+    COLCModifiedCostData[0] || {};
+
+  useEffect(() => {
+    dispatch(setCity1SubTotalCost(city1SubTotalCost));
+    dispatch(setCity2SubTotalCost(city2OtherCurrencySubTotalCost));
+    dispatch(setSubTotalIndex(subTotalIndex));
+    dispatch(setFromCityCurrencySymbol(city1TotalCostCurrencySymbol));
+    dispatch(setToCityCurrencySymbol(city2TotalCostCurrencySymbol));
+  }, [
+    COLCModifiedCostData,
+    dispatch,
+    city1SubTotalCost,
+    city2OtherCurrencySubTotalCost,
+    subTotalIndex,
+    city2TotalCostCurrencySymbol,
+    city1TotalCostCurrencySymbol,
+  ]);
 
   const headerItems: CollapseProps["items"] = [
     {
@@ -23,7 +75,7 @@ export default function CustomCollapese() {
           }}
           className="grid grid-cols-4 gap-5 font-medium text-[20px]"
         >
-          <p>Name</p>
+          <p>Category</p>
           <div className="ml-3 relative" title="City you are moving from">
             {selectedCityName1 && (
               <p className="text-[14px] text-green-500 absolute top-[-0.9rem]">
@@ -38,7 +90,7 @@ export default function CustomCollapese() {
                 City To
               </p>
             )}
-            <p>{selectedCityName2}</p>
+            <p className="text-orange-700">{selectedCityName2}</p>
           </div>
           <p className="ml-8">Difference</p>
         </div>
@@ -54,61 +106,125 @@ export default function CustomCollapese() {
       city2TotalCost,
       totalLivingIndex,
       items,
+      city1TotalCostCurrencySymbol,
+      city2TotalCostCurrencySymbol,
+
+      city1TotalCostOtherCurrencyPrice,
+      city2TotalCostOtherCurrencyPrice,
     } = item || {};
     headerItems.push({
       key: category,
       label: (
         <div className="grid grid-cols-4 gap-5 font-medium md:text-[18px] text-[16px]">
-          <p>{category}</p>
-          <p className="ml-3">
-            {currency}
-            {city1TotalCost}
+          <p className="flex items-center gap-1">
+            {category == "Restaurants" ? (
+              <Icon icon="ri:restaurant-2-fill" width="24" height="24" />
+            ) : category == "Markets" ? (
+              <Icon icon="mdi:cart" width="24" height="24" />
+            ) : category == "Transportation" ? (
+              <Icon icon="tabler:car-filled" width="24" height="24" />
+            ) : category == "Rent Per Month" ? (
+              <Icon icon="fa6-solid:bed" width="24" height="24" />
+            ) : category == "Utilities (Monthly)" ? (
+              <Icon icon="healthicons:electricity" width="24" height="24" />
+            ) : category == "Buy Apartment Price" ? (
+              <Icon icon="material-symbols:apartment" width="24" height="24" />
+            ) : category == "Salaries And Financing" ? (
+              <Icon icon="mingcute:wallet-fill" width="24" height="24" />
+            ) : category == "Sports And Leisure" ? (
+              <Icon icon="maki:bicycle-share" width="24" height="24" />
+            ) : category == "Clothing And Shoes" ? (
+              <Icon icon="map:clothing-store" width="24" height="24" />
+            ) : category == "Childcare" ? (
+              <Icon icon="healthicons:child-care" width="24" height="24" />
+            ) : (
+              ""
+            )}
+            <span>{category}</span>
           </p>
-          <p className="ml-5">
-            {currency}
-            {city2TotalCost}
-          </p>
-          <p className="ml-8 text-[#4CAF50]">
+          <div>
+            <p className="ml-3">
+              {city1TotalCostCurrencySymbol} {city1TotalCost.toFixed(2)}
+            </p>
+            <p className="ml-3 text-orange-700">
+              {city2TotalCostCurrencySymbol}{" "}
+              {city1TotalCostOtherCurrencyPrice.toFixed(2)}
+            </p>
+          </div>
+
+          <div>
+            <p className="ml-5">
+              {city1TotalCostCurrencySymbol}{" "}
+              {city2TotalCostOtherCurrencyPrice.toFixed(2)}
+            </p>
+            <p className="ml-5 text-orange-700">
+              {city2TotalCostCurrencySymbol} {city2TotalCost.toFixed(2)}
+            </p>
+          </div>
+
+          <p className="ml-8 text-[#4CAF50] flex items-center">
             {isNegative(totalLivingIndex)
-              ? `${totalLivingIndex}`
-              : `+${totalLivingIndex}`}
+              ? `${totalLivingIndex.toFixed(2)}`
+              : `+${totalLivingIndex.toFixed(2)}`}
             <span className="ml-1">%</span>
           </p>
         </div>
       ),
       children: (
-        <div className="space-y-3 rounded-lg p-2 border-[1px] border-gray-200 shadow-sm bg-[#FFF]">
-          {items?.map((item, index) => (
-            <div
-              key={index}
-              className="grid grid-cols-4 gap-5 md:text-[16px] text-[14px] border-b-[1px] border-gray-300 pb-3 font-medium"
-            >
-              <p>{item?.itemName}</p>
-              {Number(item?.city1ItemPrice) ? (
-                <p>
-                  {currency}
-                  {item?.city1ItemPrice}
-                </p>
-              ) : (
-                <p>N/A</p>
-              )}
+        <div className="space-y-3 rounded-lg p-2 border-[1px] border-gray-200 bg-[#FFF] shadow-lg">
+          {items?.map((item, index) => {
+            const {
+              itemName,
+              city1ItemPrice,
+              city2ItemPrice,
+              city1CurrencySymbol,
+              city2CurrencySymbol,
+              livingIndex,
+              city1OtherCurrencyItemPrice,
+              city2OtherCurrencyItemPrice,
+            } = item || {};
+            return (
+              <div
+                key={index}
+                className="grid grid-cols-4 gap-5 md:text-[16px] text-[14px] border-b-[1px] border-gray-300 pb-3"
+              >
+                <p className="flex items-center">{itemName}</p>
+                {Number(city1ItemPrice) ? (
+                  <div>
+                    <p>
+                      {city1CurrencySymbol} {city1ItemPrice.toFixed(2)}
+                    </p>
+                    <p className="text-orange-700">
+                      {city2CurrencySymbol}{" "}
+                      {city1OtherCurrencyItemPrice.toFixed(2)}
+                    </p>
+                  </div>
+                ) : (
+                  <p>N/A</p>
+                )}
 
-              {Number(item?.city2ItemPrice) ? (
-                <p>
-                  {currency}
-                  {item?.city2ItemPrice}
+                {Number(city2ItemPrice) ? (
+                  <div>
+                    <p>
+                      {city1CurrencySymbol}{" "}
+                      {city2OtherCurrencyItemPrice.toFixed(2)}
+                    </p>
+                    <p className="text-orange-700">
+                      {city2CurrencySymbol} {city2ItemPrice.toFixed(2)}
+                    </p>
+                  </div>
+                ) : (
+                  <p>N/A</p>
+                )}
+                <p className="text-[#4CAF50] flex items-center">
+                  {isNegative(item?.livingIndex)
+                    ? `${livingIndex.toFixed(2)}`
+                    : `+${livingIndex.toFixed(2)}`}
+                  <span className="ml-1">%</span>
                 </p>
-              ) : (
-                <p>N/A</p>
-              )}
-              <p className="text-[#4CAF50]">
-                {isNegative(item?.livingIndex)
-                  ? `${item?.livingIndex}`
-                  : `+${item?.livingIndex}`}
-                <span className="ml-1">%</span>
-              </p>
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </div>
       ),
     });
@@ -140,29 +256,22 @@ export default function CustomCollapese() {
           return (
             <>
               {panelKey == 5635645 ? (
-                <div className="font-bold relative w-[40px] h-[40px]">
-                  {/* <img
-                    className="w-[35px] rotate-180 absolute top-0 left-0"
-                    src={clickAnimation}
-                    alt="Click Animation"
-                  />
-                  <Icon
-                    className="absolute top-5 left-1 rotating-icon"
-                    icon="iconamoon:arrow-down-2-light"
-                    width="35"
-                    height="35"
-                  /> */}
-                </div>
+                <div className="font-bold relative w-[40px] h-[40px]"></div>
               ) : (
                 <div>
                   {isActive ? (
-                    <Icon
-                      icon="iconamoon:arrow-up-2-light"
-                      width="35"
-                      height="35"
-                    />
+                    <div className="mt-9">
+                      <Icon
+                        icon="iconamoon:arrow-up-2-light"
+                        width="35"
+                        height="35"
+                      />
+                    </div>
                   ) : (
-                    <div title="Click here to expand and see details">
+                    <div
+                      title="Click here to expand and see details"
+                      className="mt-9"
+                    >
                       <Icon
                         icon="iconamoon:arrow-down-2-light"
                         width="35"
@@ -178,6 +287,48 @@ export default function CustomCollapese() {
         items={headerItems}
         className="rounded-none"
       />
+      {/* Footer  */}
+      <div className="grid grid-cols-4 font-semibold border-[1px] border-gray-300 px-4 py-3  text-[16px] bg-[#F8F8F8]">
+        <p className="flex items-center">
+          <Icon
+            className="mr-1"
+            icon="fluent-mdl2:total"
+            width="20"
+            height="20"
+          />
+          <span>Total Living Cost</span>
+        </p>
+        <div>
+          <p className="ml-[6px]">
+            {city1TotalCostCurrencySymbol}{" "}
+            {numberWithCommas(Number(city1SubTotalCost?.toFixed(2)))}
+          </p>
+          <p className="ml-[6px] text-orange-700">
+            {city2TotalCostCurrencySymbol}{" "}
+            {numberWithCommas(
+              Number(city1OtherCurrencySubTotalCost?.toFixed(2))
+            )}
+          </p>
+        </div>
+        <div>
+          <p className="ml-[6px]">
+            {city1TotalCostCurrencySymbol}{" "}
+            {numberWithCommas(
+              Number(city2OtherCurrencySubTotalCost?.toFixed(2))
+            )}
+          </p>
+          <p className="ml-[6px] text-orange-700">
+            {city2TotalCostCurrencySymbol}{" "}
+            {numberWithCommas(Number(city2SubTotalCost?.toFixed(2)))}
+          </p>
+        </div>
+        <p className="text-[#4CAF50] ml-3 flex items-center">
+          {isNegative(subTotalIndex)
+            ? `${subTotalIndex.toFixed()}`
+            : `+${subTotalIndex.toFixed()}`}
+          <span className="ml-1">%</span>
+        </p>
+      </div>
     </div>
   );
 }

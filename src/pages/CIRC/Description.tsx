@@ -25,7 +25,7 @@ export default function Description() {
             investment will be reinvested to earn interest ({currency}100,000 + 3000),
             and you will start receiving 1% monthly interest on {currency}103000.
             After two quarters, interest will occur on {currency}106003, and it will
-            go on until maturity
+            go on until maturity.
           </p>
         </div>
       </section>

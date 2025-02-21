@@ -27,11 +27,8 @@ export default function COLC() {
     COLCModifiedCostData,
     income,
     subTotalIndex,
+    fromCityCurrencySymbol
   } = useAppSelector((state) => state.COLCalculator);
-
-  const { currency, currencyFullName } = useAppSelector(
-    (state) => state.globalCurrency
-  );
 
   const calculatorData = {
     city1SubTotalCost,
@@ -41,8 +38,7 @@ export default function COLC() {
     COLCModifiedCostData,
     income,
     subTotalIndex,
-    currency,
-    currencyFullName,
+    fromCityCurrencySymbol
   };
 
   return (

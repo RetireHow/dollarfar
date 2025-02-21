@@ -63,7 +63,7 @@ export default function BgtLoanForm() {
               label="Home Loan"
               stepName="loans"
               placeholder="$ 0.00"
-              tooltipTitle="Enter your monthly expenses for household items and utilities."
+              tooltipTitle="Enter your home loan repayment amount. Select the frequency that matches how often you make payments (e.g., monthly, annually, or bi-weekly)."
             />
             <DFSelectWithWatch
               name="homeLoanFrequency"
@@ -81,7 +81,7 @@ export default function BgtLoanForm() {
               label="Personal Loan"
               stepName="loans"
               placeholder="$ 0.00"
-              tooltipTitle="Provide your average monthly spending on clothing and accessories."
+              tooltipTitle="Enter the amount you repay for your personal loan. Choose the correct frequency to ensure accurate budgeting."
             />
             <DFSelectWithWatch
               name="personalLoanFrequency"
@@ -99,7 +99,7 @@ export default function BgtLoanForm() {
               label="Student Loan"
               stepName="loans"
               placeholder="$ 0.00"
-              tooltipTitle="Enter your monthly expenses for dining at restaurants or ordering food."
+              tooltipTitle="Enter your student loan repayment amount. Select how often you make payments (e.g., monthly, quarterly, or annually) for proper calculations."
             />
             <DFSelectWithWatch
               name="studentLoanFrequency"

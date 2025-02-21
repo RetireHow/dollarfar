@@ -1,4 +1,4 @@
-export const calcLivingIndex = (
+export const getLivingIndex = (
   locationATotalPrice: number,
   locationBTotalPrice: number
 ) => {
@@ -7,5 +7,5 @@ export const calcLivingIndex = (
   }
   const totalLivingIndex =
     ((locationBTotalPrice - locationATotalPrice) / locationATotalPrice) * 100;
-  return totalLivingIndex?.toFixed(2);
+  return Number(totalLivingIndex?.toFixed(2));
 };

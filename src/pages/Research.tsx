@@ -1,4 +1,4 @@
-import { PDFViewer } from "@react-pdf/renderer";
+// import { PDFViewer } from "@react-pdf/renderer";
 // import { useAppSelector } from "../redux/hooks";
 // import { CIRCPdf } from "./CIRC/CIRCPdf";
 export default function Research() {
@@ -33,7 +33,7 @@ export default function Research() {
   // };
   return (
     <main className="flex justify-center items-center m-10">
-      <PDFViewer width="100%" height="1200px">
+      {/* <PDFViewer width="100%" height="1200px"> */}
         {/* <CIRCPdf
           data={{
             name: "Siam Ahmed",
@@ -42,7 +42,7 @@ export default function Research() {
             ...calculatorData,
           }}
         /> */}
-      </PDFViewer>
+      {/* </PDFViewer> */}
     </main>
   );
 }

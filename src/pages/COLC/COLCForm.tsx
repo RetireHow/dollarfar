@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { COLDataModifier, TCityData } from "../../utils/COLDataModifier";
+import { TCityData } from "../../utils/COLDataModifier";
 import { useAppDispatch } from "../../redux/hooks";
+
+import data from "../../data/apiCities.json";
 
 type TOption = {
   label: string;
@@ -12,13 +14,10 @@ type TOption = {
 };
 
 import {
-  setCity1SubTotalCost,
-  setCity2SubTotalCost,
   setCOLCModifiedCostData,
   setIncome,
   setSelectedCityName1,
-  setSelectedCityName2,
-  setSubTotalIndex,
+  setSelectedCityName2
 } from "../../redux/features/COLC/COLCSlice";
 
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -27,6 +26,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { Select } from "antd";
 import CustomTooltip from "../../components/UI/CustomTooltip";
 import RedStar from "../../components/UI/RedStar";
+import { calculateLivingCosts } from "../../utils/calculateLivingCost";
 
 export default function COLCForm() {
   useEffect(() => {
@@ -50,27 +50,20 @@ export default function COLCForm() {
 
   useEffect(() => {
     setIsCitiesLoading(true);
-    fetch("https://www.numbeo.com/api/cities?api_key=qtnt20fj2vhykj")
-      .then((res) => res.json())
-      .then((data) => {
-        const options = data?.cities?.map(
-          (item: { city: string; country: string }) => {
-            return {
-              label: `${item?.city}, ${item?.country}`,
-              value: `${item?.city}, ${item?.country}`,
-              city: item?.city,
-              country: item?.country,
-            };
-          }
-        );
-        setSelectOptions(options);
-        setIsCitiesLoading(false);
-      })
-      .catch((err) => {
-        toast.error(err.message);
-        setIsCitiesLoading(false);
-      });
+    const options = data?.cities?.map(
+      (item: { city: string; country: string }) => {
+        return {
+          label: `${item?.city}, ${item?.country}`,
+          value: `${item?.city}, ${item?.country}`,
+          city: item?.city,
+          country: item?.country,
+        };
+      }
+    );
+    setSelectOptions(options);
+    setIsCitiesLoading(false);
   }, []);
+
 
   const handleCompare = async (e: FormEvent) => {
     e.preventDefault();
@@ -88,9 +81,10 @@ export default function COLCForm() {
       try {
         setApiDataLoading(true);
         const res1 = await fetch(
-          `https://www.numbeo.com/api/city_prices?api_key=qtnt20fj2vhykj&city=${cityName1}&country=${countryName1}&currency=CAD`
+          `https://www.numbeo.com/api/city_prices?api_key=qtnt20fj2vhykj&city=${cityName1}&country=${countryName1}`
         );
         const city1CostData = await res1.json();
+        console.log({city1CostData})
 
         if (city1CostData?.prices?.length == 0) {
           toast.error(`No information available for ${city1CostData?.name}`);
@@ -98,39 +92,38 @@ export default function COLCForm() {
         }
 
         const res2 = await fetch(
-          `https://www.numbeo.com/api/city_prices?api_key=qtnt20fj2vhykj&city=${cityName2}&country=${countryName2}&currency=CAD`
+          `https://www.numbeo.com/api/city_prices?api_key=qtnt20fj2vhykj&city=${cityName2}&country=${countryName2}`
         );
         const city2CostData = await res2.json();
+
         if (city2CostData?.prices?.length == 0) {
           toast.error(`No information available for ${city2CostData?.name}`);
           return setApiDataLoading(false);
         }
 
+        const exchangeRatesResponse = await fetch(
+          "https://www.numbeo.com/api/currency_exchange_rates?api_key=qtnt20fj2vhykj"
+        );
+        const exchangeRatesData = await exchangeRatesResponse.json();
+
+        const priceItemsResponse = await fetch(
+          "https://www.numbeo.com/api/price_items?api_key=qtnt20fj2vhykj"
+        );
+        const priceItemsData = await priceItemsResponse.json();
+
         if (city1CostData?.prices?.length && city2CostData?.prices?.length) {
-          const modifiedCostData = COLDataModifier(
+          const modifiedCostData = calculateLivingCosts(
             city1CostData as TCityData,
-            city2CostData as TCityData
+            city2CostData as TCityData,
+            priceItemsData,
+            exchangeRatesData?.exchange_rates
           );
 
-          //Calculate subtotal
-          const city1SubTotalCost = modifiedCostData?.reduce((prev, curr) => {
-            return curr.city1TotalCost + prev;
-          }, 0);
-
-          const city2SubTotalCost = modifiedCostData?.reduce((prev, curr) => {
-            return curr.city2TotalCost + prev;
-          }, 0);
-
-          const subTotalIndex =
-            ((city2SubTotalCost - city1SubTotalCost) / city1SubTotalCost) * 100;
+          console.log({ modifiedCostData });
 
           dispatch(setSelectedCityName1(cityName1));
           dispatch(setSelectedCityName2(cityName2));
           dispatch(setIncome(Number(storedIncome)));
-
-          dispatch(setCity1SubTotalCost(Number(city1SubTotalCost?.toFixed(2))));
-          dispatch(setCity2SubTotalCost(Number(city2SubTotalCost?.toFixed(2))));
-          dispatch(setSubTotalIndex(Number(subTotalIndex?.toFixed(2))));
 
           dispatch(setCOLCModifiedCostData(modifiedCostData));
           // reset input fields
@@ -141,6 +134,7 @@ export default function COLCForm() {
       } catch (error: any) {
         setApiDataLoading(false);
         toast.error("There was an error occured.", error?.message);
+        console.log("Error Occured=========> ", { error });
       }
     } else {
       toast.error("Please fill in all the fields.");
@@ -257,7 +251,7 @@ export default function COLCForm() {
         <div className="flex justify-end lg:col-span-3">
           <button
             disabled
-            className="text-white cursor-not-allowed px-[0.8rem] h-[50px] rounded-[10px] w-full bg-black flex justify-center items-center"
+            className="text-white cursor-not-allowed px-[0.8rem] h-[50px] rounded-[10px] w-full bg-gray-300 flex justify-center items-center"
           >
             <Icon icon="eos-icons:three-dots-loading" width="70" height="70" />
           </button>

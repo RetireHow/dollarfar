@@ -57,7 +57,7 @@ export default function BgtEduForm() {
                 label="Education Fees ( e.g., Scheel Fee )"
                 stepName="education"
                 placeholder="$ 0.00"
-                tooltipTitle="Combined cost of water, gas, and electricity bills."
+                tooltipTitle="Enter education cost like school fee, college fee etc."
               />
               <DFSelectWithWatch
                 name="schoolCollegeFeeFrequency"

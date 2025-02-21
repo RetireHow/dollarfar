@@ -20,6 +20,7 @@ export function calculateCRIInvestment(
     contribution * (contributionFrequency / compoundingFrequency);
 
   // Initialize tracking variables
+  // let totalContribution = 0;
   let totalContribution = initialInvestment;
   let totalFutureValue = initialInvestment;
   const yearByYearBreakdown = [];

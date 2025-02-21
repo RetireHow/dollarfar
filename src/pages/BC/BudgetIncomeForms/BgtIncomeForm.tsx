@@ -181,7 +181,7 @@ export default function BgtIncomeForm() {
               >
                 Income Tax Rate
               </label>
-              <BCTooltip title="Income Tax" />
+              <BCTooltip title="Enter the percentage of your income that is deducted as tax. This varies based on your country and income level. Example: If your tax rate is 20%, enter '20'." />
             </div>
             <input
               className={`outline-none border-[1px] px-[12px] py-[9px] w-full duration-300 rounded-[8px] ${

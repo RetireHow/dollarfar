@@ -1,21 +1,39 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type TModifiedItem = {
+  city1CurrencyCode: string;
+  city2CurrencyCode: string;
+  city1CurrencySymbol: string;
+  city2CurrencySymbol: string;
   itemName: string;
   city1ItemPrice: number;
   city2ItemPrice: number;
+  city1OtherCurrencyItemPrice: number;
+  city2OtherCurrencyItemPrice: number;
   livingIndex: number;
 };
 
 type TModifiedCostData = {
   category: string;
+  city1TotalCostCurrencyCode: string;
+  city2TotalCostCurrencyCode: string;
+  city1TotalCostCurrencySymbol: string;
+  city2TotalCostCurrencySymbol: string;
+  city1TotalCostOtherCurrencyPrice: number;
+  city2TotalCostOtherCurrencyPrice: number;
   city1TotalCost: number;
   city2TotalCost: number;
   totalLivingIndex: number;
-  city1Currency: string;
-  city2Currency: string;
   items: TModifiedItem[];
 };
+
+type TExchangeRates = TExchangeItem[];
+
+interface TExchangeItem {
+  one_usd_to_currency: number;
+  currency: string;
+  one_eur_to_currency: number;
+}
 
 // Define the state type
 interface COLCState {
@@ -26,17 +44,24 @@ interface COLCState {
   city2SubTotalCost: number;
   subTotalIndex: number;
   COLCModifiedCostData: TModifiedCostData[];
+  exchangeRatesData: TExchangeRates;
+
+  fromCityCurrencySymbol: string;
+  toCityCurrencySymbol: string;
 }
 
 // Initial state
 const initialState: COLCState = {
+  income: 0,
   selectedCityName1: "",
   selectedCityName2: "",
-  income: 0,
   city1SubTotalCost: 0,
   city2SubTotalCost: 0,
   subTotalIndex: 0,
   COLCModifiedCostData: [],
+  exchangeRatesData: [],
+  fromCityCurrencySymbol: "",
+  toCityCurrencySymbol: "",
 };
 
 // Create the slice
@@ -69,6 +94,17 @@ const COLCSlice = createSlice({
     setCOLCModifiedCostData(state, action: PayloadAction<TModifiedCostData[]>) {
       state.COLCModifiedCostData = action.payload;
     },
+
+    setCurrencyRatesData(state, action: PayloadAction<TExchangeRates>) {
+      state.exchangeRatesData = action.payload;
+    },
+
+    setFromCityCurrencySymbol(state, action: PayloadAction<string>) {
+      state.fromCityCurrencySymbol = action.payload;
+    },
+    setToCityCurrencySymbol(state, action: PayloadAction<string>) {
+      state.toCityCurrencySymbol = action.payload;
+    },
   },
 });
 
@@ -81,6 +117,9 @@ export const {
   setCity2SubTotalCost,
   setSubTotalIndex,
   setCOLCModifiedCostData,
+  setCurrencyRatesData,
+  setFromCityCurrencySymbol,
+  setToCityCurrencySymbol,
 } = COLCSlice.actions;
 
 export default COLCSlice.reducer;

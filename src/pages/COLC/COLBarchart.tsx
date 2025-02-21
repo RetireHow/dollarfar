@@ -32,10 +32,8 @@ export const COLBarChart = () => {
     city1SubTotalCost,
     city2SubTotalCost,
     subTotalIndex,
+    fromCityCurrencySymbol,
   } = useAppSelector((state) => state.COLCalculator);
-  const { currency, currencyFullName } = useAppSelector(
-    (state) => state.globalCurrency
-  );
   // Data for the chart
   const data: ChartData<"bar", number[], string> = {
     labels: ["Income", selectedCityName1, selectedCityName2],
@@ -52,7 +50,6 @@ export const COLBarChart = () => {
     ],
   };
 
-  // Options to make the bar chart horizontal and position legend
   // Define the options type
   const options: ChartOptions<"bar"> = {
     indexAxis: "y", // This makes the chart horizontal
@@ -67,7 +64,9 @@ export const COLBarChart = () => {
       x: {
         ticks: {
           callback: function (value: number | string) {
-            return `${currency}${numberWithCommas(value as number)}`; // Format the ticks with a dollar sign
+            return `${fromCityCurrencySymbol}${numberWithCommas(
+              value as number
+            )}`; // Format the ticks with a dollar sign
           },
         },
         grid: {
@@ -98,8 +97,7 @@ export const COLBarChart = () => {
       <div className="col-span-2 flex md:flex-row flex-col justify-center md:items-center gap-5 mt-[3.5rem]">
         <div
           id="COLC-Chart"
-          style={{ boxShadow: "0px 0px 5px 1px rgba(0, 0, 0, 0.05)" }}
-          className="md:max-h-[300px] bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-lg p-[1rem]"
+          className="md:max-h-[300px] bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 p-[1rem] shadow-lg"
         >
           <div className="overflow-x-auto">
             <div className="lg:min-w-[600px] md:min-w-[500px] min-w-[400px]">
@@ -115,26 +113,33 @@ export const COLBarChart = () => {
         <div className="md:text-[1rem] text-[14px] md:mt-3 mt-0 font-semibold space-y-[1rem]">
           <div className="flex items-center md:gap-3 gap-1">
             <p className="bg-[#4CAF50] w-[30px] h-[10px] rounded-[10px]"></p>
-            <p>Income(${income})</p>
+            <p>
+              <span className="mr-2">Income</span>({fromCityCurrencySymbol}
+              {numberWithCommas(income)})
+            </p>
           </div>
           <div className="flex items-center md:gap-3 gap-1">
             <p className="bg-[#F44336] w-[30px] h-[10px] rounded-[10px]"></p>
-            <p>{selectedCityName1}(${city1SubTotalCost})</p>
+            <p>
+              <span className="mr-2">{selectedCityName1}</span>({fromCityCurrencySymbol}
+              {numberWithCommas(Number(city1SubTotalCost?.toFixed(2)))})
+            </p>
           </div>
           <div className="flex items-center md:gap-3 gap-1">
             <p className="bg-[#1E88E5] w-[30px] h-[10px] rounded-[10px]"></p>
-            <p>{selectedCityName2}(${city2SubTotalCost})</p>
-          </div>
-          <div className="flex items-center md:gap-3 gap-1">
-            <p className="">{currency}</p>
-            <p>{currencyFullName}</p>
+            <p>
+              <span className="mr-2">{selectedCityName2}</span>({fromCityCurrencySymbol}
+              {numberWithCommas(Number(city2SubTotalCost?.toFixed(2)))})
+            </p>
           </div>
         </div>
       </div>
       <p className="text-center mt-5 md:text-[18px] text-[16px] font-semibold">
         Living in {selectedCityName2} is approximately{" "}
         <span className="text-[#4CAF50] font-bold">
-          {isNegative(subTotalIndex) ? `${subTotalIndex}` : `+${subTotalIndex}`}
+          {isNegative(subTotalIndex)
+            ? `${subTotalIndex?.toFixed(2)}`
+            : `+${subTotalIndex?.toFixed(2)}`}
           %
         </span>{" "}
         {isNegative(subTotalIndex) ? "cheaper" : "more expensive"} than living
