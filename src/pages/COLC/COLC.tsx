@@ -56,12 +56,12 @@ export default function COLC() {
             </h3>
             <div className="md:flex grid grid-cols-2 items-center flex-wrap md:gap-5 gap-3 md:text-[1rem] text-[14px] md:w-auto w-full">
               <CurrencySelect />
-              <DownloadModal
+              {/* <DownloadModal
                 calculatorData={calculatorData}
                 fileName="COLC Report"
                 id="COLC-Chart"
                 PdfComponent={COLCPdf}
-              />
+              /> */}
             </div>
           </div>
         </div>
