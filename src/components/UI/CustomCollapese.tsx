@@ -84,8 +84,7 @@ export default function CustomCollapese() {
             )}
             <p>{selectedCityName1}</p>
           </div>
-         
-          
+
           <div className="ml-5 relative" title="City you are moving to">
             {selectedCityName2 && (
               <p className="text-[14px] text-green-500 absolute top-[-0.9rem]">
@@ -164,7 +163,11 @@ export default function CustomCollapese() {
             </p>
           </div>
 
-          <p className="ml-8 text-[#4CAF50] flex items-center">
+          <p
+            className={`ml-8 flex items-center ${
+              isNegative(totalLivingIndex) ? "text-[#4CAF50]" : "text-red-500"
+            }`}
+          >
             {isNegative(totalLivingIndex)
               ? `${totalLivingIndex.toFixed(2)}`
               : `+${totalLivingIndex.toFixed(2)}`}
@@ -218,7 +221,13 @@ export default function CustomCollapese() {
                 ) : (
                   <p>N/A</p>
                 )}
-                <p className="text-[#4CAF50] flex items-center">
+                <p
+                  className={`flex items-center ${
+                    isNegative(livingIndex)
+                      ? "text-[#4CAF50]"
+                      : "text-red-500"
+                  }`}
+                >
                   {isNegative(item?.livingIndex)
                     ? `${livingIndex.toFixed(2)}`
                     : `+${livingIndex.toFixed(2)}`}
@@ -309,7 +318,8 @@ export default function CustomCollapese() {
             ({city2TotalCostCurrencySymbol}{" "}
             {numberWithCommas(
               Number(city1OtherCurrencySubTotalCost?.toFixed(2))
-            )})
+            )}
+            )
           </p>
         </div>
         <div>
