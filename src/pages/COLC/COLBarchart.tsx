@@ -36,11 +36,15 @@ export const COLBarChart = () => {
   } = useAppSelector((state) => state.COLCalculator);
   // Data for the chart
   const data: ChartData<"bar", number[], string> = {
-    labels: ["Income", selectedCityName1, selectedCityName2],
+    labels: income
+      ? ["Income", selectedCityName1, selectedCityName2]
+      : [selectedCityName1, selectedCityName2],
     datasets: [
       {
         // label: 'Financial Overview',
-        data: [income, city1SubTotalCost, city2SubTotalCost], // Values for Assets, Liabilities, Net Worth
+        data: income
+          ? [income, city1SubTotalCost, city2SubTotalCost]
+          : [city1SubTotalCost, city2SubTotalCost], // Values for Assets, Liabilities, Net Worth
         backgroundColor: [
           "#4CAF50", // Green for Assets
           "#F44336", // Red for Liabilities
@@ -111,24 +115,30 @@ export const COLBarChart = () => {
         </div>
 
         <div className="md:text-[1rem] text-[14px] md:mt-3 mt-0 font-semibold space-y-[1rem]">
-          <div className="flex items-center md:gap-3 gap-1">
-            <p className="bg-[#4CAF50] w-[30px] h-[10px] rounded-[10px]"></p>
-            <p>
-              <span className="mr-2">Income</span>({fromCityCurrencySymbol}
-              {numberWithCommas(income)})
-            </p>
-          </div>
+          {income ? (
+            <div className="flex items-center md:gap-3 gap-1">
+              <p className="bg-[#4CAF50] w-[30px] h-[10px] rounded-[10px]"></p>
+              <p>
+                <span className="mr-2">Income</span>({fromCityCurrencySymbol}
+                {numberWithCommas(income)})
+              </p>
+            </div>
+          ) : (
+            ""
+          )}
           <div className="flex items-center md:gap-3 gap-1">
             <p className="bg-[#F44336] w-[30px] h-[10px] rounded-[10px]"></p>
             <p>
-              <span className="mr-2">{selectedCityName1}</span>({fromCityCurrencySymbol}
+              <span className="mr-2">{selectedCityName1}</span>(
+              {fromCityCurrencySymbol}
               {numberWithCommas(Number(city1SubTotalCost?.toFixed(2)))})
             </p>
           </div>
           <div className="flex items-center md:gap-3 gap-1">
             <p className="bg-[#1E88E5] w-[30px] h-[10px] rounded-[10px]"></p>
             <p>
-              <span className="mr-2">{selectedCityName2}</span>({fromCityCurrencySymbol}
+              <span className="mr-2">{selectedCityName2}</span>(
+              {fromCityCurrencySymbol}
               {numberWithCommas(Number(city2SubTotalCost?.toFixed(2)))})
             </p>
           </div>

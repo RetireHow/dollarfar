@@ -14,12 +14,12 @@ import { numberWithCommas } from "../../utils/numberWithCommas";
 // Define styles for the PDF
 const styles = StyleSheet.create({
   section: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: "extrabold",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 10,
   },
   title: {
     border: "1px solid #EAECF0",
@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   section2: {
-    fontSize: 14,
-    marginBottom: 20,
+    fontSize: 12,
+    marginBottom: 10,
   },
   watermark: {
     position: "absolute",
@@ -95,23 +95,51 @@ export const COLCPdf = ({ data }: { data: TData }) => {
     COLCModifiedCostData,
     city1SubTotalCost,
     city2SubTotalCost,
-    subTotalIndex,
     base64,
     fromCityCurrencySymbol,
   } = data || {};
 
+  //Calculate subtotal
+  const city1OtherCurrencySubTotalCost = COLCModifiedCostData?.reduce(
+    (prev, curr) => {
+      return curr.city1TotalCostOtherCurrencyPrice + prev;
+    },
+    0
+  );
+
+  const city2OtherCurrencySubTotalCost = COLCModifiedCostData?.reduce(
+    (prev, curr) => {
+      return curr.city2TotalCostOtherCurrencyPrice + prev;
+    },
+    0
+  );
+
+  const city2SubTotalCostCalculated = COLCModifiedCostData?.reduce(
+    (prev, curr) => {
+      return curr.city2TotalCost + prev;
+    },
+    0
+  );
+
+  const subTotalIndexCalculated =
+    ((city2OtherCurrencySubTotalCost - city1SubTotalCost) / city1SubTotalCost) *
+    100;
+
+  const { city1TotalCostCurrencySymbol, city2TotalCostCurrencySymbol } =
+    COLCModifiedCostData[0] || {};
+
   return (
     <Document>
       <Page style={{ position: "relative" }}>
-        <View style={{ padding: 30 }}>
+        <View style={{ paddingLeft: 10, paddingRight: 10 }}>
           {/* Header  */}
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
-              fontSize: 12,
-              marginBottom: 20,
+              fontSize: 10,
+              marginBottom: 5,
             }}
           >
             <Image
@@ -122,13 +150,13 @@ export const COLCPdf = ({ data }: { data: TData }) => {
               <View>
                 <Text style={{ fontWeight: "bold" }}>Created By:</Text>
                 <View
-                  style={{ flexDirection: "row", gap: 40, margin: "10px 0" }}
+                  style={{ flexDirection: "row", gap: 10, margin: "5px 0" }}
                 >
-                  <Text style={{ color: "#696969" }}>Name</Text>
+                  <Text style={{ color: "#696969" }}>Name:</Text>
                   <Text>{name || "NA"}</Text>
                 </View>
-                <View style={{ flexDirection: "row", gap: 40 }}>
-                  <Text style={{ color: "#696969" }}>Email</Text>
+                <View style={{ flexDirection: "row", gap: 10 }}>
+                  <Text style={{ color: "#696969" }}>Email:</Text>
                   <Text>{email || "NA"}</Text>
                 </View>
               </View>
@@ -147,47 +175,57 @@ export const COLCPdf = ({ data }: { data: TData }) => {
               style={{
                 border: "1px solid #EAECF0",
                 width: "100%",
-                padding: 16,
+                padding: 10,
                 borderRadius: 5,
                 backgroundColor: "#F8F8F8",
-                flexDirection: "column",
-                gap: 16,
-                fontSize: 12,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                gap: 10,
+                fontSize: 10,
               }}
             >
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
+                  flexDirection: "column",
+                  gap: 5,
                 }}
               >
                 <Text style={{ color: "#696969" }}>
                   City your are moving from
                 </Text>
-                <Text>{selectedCityName1}</Text>
+                <Text style={{ fontSize: "12px" }}>{selectedCityName1}</Text>
               </View>
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
+                  flexDirection: "column",
+                  gap: 5,
                 }}
               >
                 <Text style={{ color: "#696969" }}>City you are moving to</Text>
-                <Text>{selectedCityName2}</Text>
+                <Text style={{ fontSize: "12px" }}>{selectedCityName2}</Text>
               </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={{ color: "#696969" }}>Your Income</Text>
-                <Text>{fromCityCurrencySymbol}{numberWithCommas(income)}</Text>
-              </View>
+              {income ? (
+                <View
+                  style={{
+                    flexDirection: "column",
+                    gap: 5,
+                  }}
+                >
+                  <Text style={{ color: "#696969", fontSize: "12px" }}>
+                    Your Income
+                  </Text>
+                  <Text>
+                    {fromCityCurrencySymbol}
+                    {numberWithCommas(income)}
+                  </Text>
+                </View>
+              ) : (
+                ""
+              )}
             </View>
 
-            <View style={{ marginTop: "25px", marginBottom: "8px" }}>
-              <Text style={{ fontWeight: "bold", fontSize: "14px" }}>
+            <View style={{ marginTop: "25px", marginBottom: "5px" }}>
+              <Text style={{ fontWeight: "bold", fontSize: "12px" }}>
                 Cost Difference
               </Text>
             </View>
@@ -195,11 +233,10 @@ export const COLCPdf = ({ data }: { data: TData }) => {
               style={{
                 border: "1px solid #EAECF0",
                 width: "100%",
-                paddingTop: 16,
                 borderRadius: 5,
                 backgroundColor: "#F8F8F8",
                 flexDirection: "column",
-                fontSize: 12,
+                fontSize: 10,
               }}
             >
               {/* Table Header  */}
@@ -207,16 +244,17 @@ export const COLCPdf = ({ data }: { data: TData }) => {
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
+                  alignContent: "center",
                   borderBottom: "1px solid #EAECF0",
-                  paddingBottom: "8px",
-                  fontSize: "14px",
-                  paddingLeft: 16,
-                  paddingRight: 16,
+                  fontSize: "12px",
+                  padding: "10px 16px",
                 }}
               >
                 <Text style={{ width: "170px" }}>Category</Text>
                 <Text style={{ width: "120px" }}>{selectedCityName1}</Text>
-                <Text style={{ width: "120px" }}>{selectedCityName2}</Text>
+                <Text style={{ width: "120px", color: "#c2410c" }}>
+                  {selectedCityName2}
+                </Text>
                 <Text style={{ width: "80px" }}>Difference</Text>
               </View>
 
@@ -226,7 +264,9 @@ export const COLCPdf = ({ data }: { data: TData }) => {
                 const {
                   category,
                   city1TotalCost,
-                  city2TotalCostOtherCurrencyPrice,
+                  city1TotalCostOtherCurrencyPrice,
+                  city1TotalCostCurrencySymbol,
+                  city2TotalCostCurrencySymbol,
                   totalLivingIndex,
                 } = item || {};
                 return (
@@ -235,25 +275,49 @@ export const COLCPdf = ({ data }: { data: TData }) => {
                       flexDirection: "row",
                       justifyContent: "space-between",
                       borderBottom: "1px solid #EAECF0",
-                      paddingBottom: "8px",
-                      paddingTop: "8px",
-                      paddingLeft: 16,
-                      paddingRight: 16,
+                      padding: "8px 16",
                     }}
                   >
-                    <Text style={{ width: "170px" }}>{category}</Text>
-                    <Text style={{ width: "120px" }}>
-                      {fromCityCurrencySymbol}{city1TotalCost?.toFixed(2)}
-                    </Text>
-                    <Text style={{ width: "120px" }}>
-                      {fromCityCurrencySymbol}{city2TotalCostOtherCurrencyPrice?.toFixed(2)}
-                    </Text>
-                    <Text style={{ width: "80px", color: "#4CAF50" }}>
-                      {isNegative(totalLivingIndex)
-                        ? `${totalLivingIndex?.toFixed(2)}`
-                        : `+${totalLivingIndex?.toFixed(2)}`}{" "}
-                      %
-                    </Text>
+                    <View style={{ display: "flex", justifyContent: "center" }}>
+                      <Text style={{ width: "170px" }}>{category}</Text>
+                    </View>
+
+                    <View>
+                      <Text style={{ width: "120px", marginBottom: 8 }}>
+                        {city1TotalCostCurrencySymbol}{" "}
+                        {city1TotalCost?.toFixed(2)}
+                      </Text>
+                      <Text style={{ width: "120px", color: "#c2410c" }}>
+                        ({city2TotalCostCurrencySymbol}{" "}
+                        {city1TotalCostOtherCurrencyPrice?.toFixed(2)})
+                      </Text>
+                    </View>
+
+                    <View>
+                      <Text style={{ width: "120px", marginBottom: 8 }}>
+                        {city1TotalCostCurrencySymbol}{" "}
+                        {city2OtherCurrencySubTotalCost?.toFixed(2)}
+                      </Text>
+                      <Text style={{ width: "120px", color: "#c2410c" }}>
+                        ({city2TotalCostCurrencySymbol}{" "}
+                        {city2SubTotalCost?.toFixed(2)})
+                      </Text>
+                    </View>
+
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text style={{ width: "80px", color: "#4CAF50" }}>
+                        {isNegative(totalLivingIndex)
+                          ? `${totalLivingIndex?.toFixed(2)}`
+                          : `+${totalLivingIndex?.toFixed(2)}`}{" "}
+                        %
+                      </Text>
+                    </View>
                   </View>
                 );
               })}
@@ -272,19 +336,56 @@ export const COLCPdf = ({ data }: { data: TData }) => {
                   borderRight: "1px solid #EAECF0",
                 }}
               >
-                <Text style={{ width: "170px" }}>Total</Text>
-                <Text style={{ width: "120px" }}>
-                  {fromCityCurrencySymbol}{city1SubTotalCost?.toFixed(2)}
-                </Text>
-                <Text style={{ width: "120px" }}>
-                  {fromCityCurrencySymbol}{city2SubTotalCost?.toFixed(2)}
-                </Text>
-                <Text style={{ width: "80px", color: "#4CAF50" }}>
-                  {isNegative(subTotalIndex)
-                    ? `${subTotalIndex?.toFixed(2)}`
-                    : `+${subTotalIndex?.toFixed(2)}`}{" "}
-                  %
-                </Text>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text style={{ width: "170px" }}>Total Living Cost</Text>
+                </View>
+                <View>
+                  <Text style={{ width: "120px", marginBottom: 8 }}>
+                    {city1TotalCostCurrencySymbol}{" "}
+                    {numberWithCommas(Number(city1SubTotalCost?.toFixed(2)))}
+                  </Text>
+                  <Text style={{ width: "120px" }}>
+                    {city2TotalCostCurrencySymbol}{" "}
+                    {numberWithCommas(
+                      Number(city1OtherCurrencySubTotalCost?.toFixed(2))
+                    )}
+                  </Text>
+                </View>
+
+                <View>
+                  <Text style={{ width: "120px", marginBottom: 8 }}>
+                    {city1TotalCostCurrencySymbol}{" "}
+                    {numberWithCommas(
+                      Number(city2OtherCurrencySubTotalCost?.toFixed(2))
+                    )}
+                  </Text>
+                  <Text style={{ width: "120px" }}>
+                    {city2TotalCostCurrencySymbol}{" "}
+                    {numberWithCommas(
+                      Number(city2SubTotalCostCalculated?.toFixed(2))
+                    )}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text style={{ width: "80px", color: "#4CAF50" }}>
+                    {isNegative(subTotalIndexCalculated)
+                      ? `${subTotalIndexCalculated?.toFixed(2)}`
+                      : `+${subTotalIndexCalculated?.toFixed(2)}`}{" "}
+                    %
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -300,9 +401,9 @@ export const COLCPdf = ({ data }: { data: TData }) => {
         <View
           style={{
             padding: 15,
-            marginTop: 30,
-            marginLeft: 30,
-            marginRight: 30,
+            marginTop: 15,
+            marginLeft: 15,
+            marginRight: 15,
           }}
         >
           <Image style={{ width: "100%", height: 250 }} src={base64} />
@@ -319,22 +420,25 @@ export const COLCPdf = ({ data }: { data: TData }) => {
               marginTop: "8px",
             }}
           >
-            <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
-            >
-              <Text
-                style={{
-                  width: "20px",
-                  backgroundColor: "#1E88E5",
-                  borderRadius: "30px",
-                  height: "6px",
-                }}
-              ></Text>
-              <Text>
-                Income : {fromCityCurrencySymbol}
-                {income}
-              </Text>
-            </View>
+            {income ? (
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
+              >
+                <Text
+                  style={{
+                    width: "20px",
+                    backgroundColor: "#1E88E5",
+                    borderRadius: "30px",
+                    height: "6px",
+                  }}
+                ></Text>
+                <Text>
+                  Income : {fromCityCurrencySymbol} {income}
+                </Text>
+              </View>
+            ) : (
+              ""
+            )}
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
             >
@@ -347,7 +451,8 @@ export const COLCPdf = ({ data }: { data: TData }) => {
                 }}
               ></Text>
               <Text>
-                {selectedCityName1}({fromCityCurrencySymbol}{city1SubTotalCost?.toFixed()})
+                {selectedCityName1}({fromCityCurrencySymbol}{" "}
+                {city1SubTotalCost?.toFixed(2)})
               </Text>
             </View>
 
@@ -363,21 +468,28 @@ export const COLCPdf = ({ data }: { data: TData }) => {
                 }}
               ></Text>
               <Text>
-                {selectedCityName2}({fromCityCurrencySymbol}{city2SubTotalCost?.toFixed()})
+                {selectedCityName2}({fromCityCurrencySymbol}{" "}
+                {city2SubTotalCost?.toFixed(2)})
               </Text>
             </View>
           </View>
         </View>
         <View
-          style={{ fontSize: "14px", textAlign: "center", marginTop: "10px", padding:"0 10px" }}
+          style={{
+            fontSize: "14px",
+            textAlign: "center",
+            marginTop: "10px",
+            padding: "0 10px",
+          }}
         >
           <Text>
             Living in {selectedCityName2} is approximately{" "}
-            {isNegative(subTotalIndex)
-              ? `${subTotalIndex?.toFixed(2)}`
-              : `+${subTotalIndex?.toFixed(2)}`}
-            % {isNegative(subTotalIndex) ? "cheaper" : "more expensive"} than
-            living in {selectedCityName1}.
+            {isNegative(subTotalIndexCalculated)
+              ? `${subTotalIndexCalculated?.toFixed(2)}`
+              : `+${subTotalIndexCalculated?.toFixed(2)}`}
+            %{" "}
+            {isNegative(subTotalIndexCalculated) ? "cheaper" : "more expensive"}{" "}
+            than living in {selectedCityName1}.
           </Text>
         </View>
 

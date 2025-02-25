@@ -93,6 +93,7 @@ const COLCSlice = createSlice({
 
     setCOLCModifiedCostData(state, action: PayloadAction<TModifiedCostData[]>) {
       state.COLCModifiedCostData = action.payload;
+      console.log(state.COLCModifiedCostData)
     },
 
     setCurrencyRatesData(state, action: PayloadAction<TExchangeRates>) {

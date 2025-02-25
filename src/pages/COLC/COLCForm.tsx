@@ -17,7 +17,7 @@ import {
   setCOLCModifiedCostData,
   setIncome,
   setSelectedCityName1,
-  setSelectedCityName2
+  setSelectedCityName2,
 } from "../../redux/features/COLC/COLCSlice";
 
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -25,7 +25,6 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 // import { city1CostData, city2CostData } from "../../data/db";
 import { Select } from "antd";
 import CustomTooltip from "../../components/UI/CustomTooltip";
-import RedStar from "../../components/UI/RedStar";
 import { calculateLivingCosts } from "../../utils/calculateLivingCost";
 
 export default function COLCForm() {
@@ -64,27 +63,16 @@ export default function COLCForm() {
     setIsCitiesLoading(false);
   }, []);
 
-
   const handleCompare = async (e: FormEvent) => {
     e.preventDefault();
-    if (!storedIncome) {
-      toast.error("Income is required.");
-      return setShowError(true);
-    }
-    if (
-      cityName1 &&
-      cityName2 &&
-      countryName1 &&
-      countryName2 &&
-      storedIncome
-    ) {
+    if (cityName1 && cityName2 && countryName1 && countryName2) {
       try {
         setApiDataLoading(true);
         const res1 = await fetch(
           `https://www.numbeo.com/api/city_prices?api_key=qtnt20fj2vhykj&city=${cityName1}&country=${countryName1}`
         );
         const city1CostData = await res1.json();
-        console.log({city1CostData})
+        console.log({ city1CostData });
 
         if (city1CostData?.prices?.length == 0) {
           toast.error(`No information available for ${city1CostData?.name}`);
@@ -126,15 +114,12 @@ export default function COLCForm() {
           dispatch(setIncome(Number(storedIncome)));
 
           dispatch(setCOLCModifiedCostData(modifiedCostData));
-          // reset input fields
-          setStoredIncome("");
           setShowError(false);
         }
         setApiDataLoading(false);
       } catch (error: any) {
         setApiDataLoading(false);
         toast.error("There was an error occured.", error?.message);
-        console.log("Error Occured=========> ", { error });
       }
     } else {
       toast.error("Please fill in all the fields.");
@@ -145,9 +130,7 @@ export default function COLCForm() {
     <form className="grid lg:grid-cols-3 grid-cols-1 gap-6 mb-[3rem]">
       <div className="md:text-[1rem] text-[14px]">
         <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
-          <p>
-            Your Income <RedStar />
-          </p>
+          <p>Your Income</p>
           <CustomTooltip title="Enter your income to see how far your money will go in the new city." />
         </div>
         <input
@@ -160,11 +143,6 @@ export default function COLCForm() {
           onChange={(e) => setStoredIncome(e.target.value)}
           placeholder="Enter income"
         />
-        {showError && !storedIncome && (
-          <p className="text-red-600 font-bold text-[14px] mt-[2px]">
-            Income is required*
-          </p>
-        )}
       </div>
 
       <div className="md:text-[1rem] text-[14px]">

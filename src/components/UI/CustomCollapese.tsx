@@ -84,6 +84,8 @@ export default function CustomCollapese() {
             )}
             <p>{selectedCityName1}</p>
           </div>
+         
+          
           <div className="ml-5 relative" title="City you are moving to">
             {selectedCityName2 && (
               <p className="text-[14px] text-green-500 absolute top-[-0.9rem]">
@@ -147,8 +149,8 @@ export default function CustomCollapese() {
               {city1TotalCostCurrencySymbol} {city1TotalCost.toFixed(2)}
             </p>
             <p className="ml-3 text-orange-700">
-              {city2TotalCostCurrencySymbol}{" "}
-              {city1TotalCostOtherCurrencyPrice.toFixed(2)}
+              ({city2TotalCostCurrencySymbol}{" "}
+              {city1TotalCostOtherCurrencyPrice.toFixed(2)})
             </p>
           </div>
 
@@ -158,7 +160,7 @@ export default function CustomCollapese() {
               {city2TotalCostOtherCurrencyPrice.toFixed(2)}
             </p>
             <p className="ml-5 text-orange-700">
-              {city2TotalCostCurrencySymbol} {city2TotalCost.toFixed(2)}
+              ({city2TotalCostCurrencySymbol} {city2TotalCost.toFixed(2)})
             </p>
           </div>
 
@@ -195,8 +197,8 @@ export default function CustomCollapese() {
                       {city1CurrencySymbol} {city1ItemPrice.toFixed(2)}
                     </p>
                     <p className="text-orange-700">
-                      {city2CurrencySymbol}{" "}
-                      {city1OtherCurrencyItemPrice.toFixed(2)}
+                      ({city2CurrencySymbol}{" "}
+                      {city1OtherCurrencyItemPrice.toFixed(2)})
                     </p>
                   </div>
                 ) : (
@@ -210,7 +212,7 @@ export default function CustomCollapese() {
                       {city2OtherCurrencyItemPrice.toFixed(2)}
                     </p>
                     <p className="text-orange-700">
-                      {city2CurrencySymbol} {city2ItemPrice.toFixed(2)}
+                      ({city2CurrencySymbol} {city2ItemPrice.toFixed(2)})
                     </p>
                   </div>
                 ) : (
@@ -304,10 +306,10 @@ export default function CustomCollapese() {
             {numberWithCommas(Number(city1SubTotalCost?.toFixed(2)))}
           </p>
           <p className="ml-[6px] text-orange-700">
-            {city2TotalCostCurrencySymbol}{" "}
+            ({city2TotalCostCurrencySymbol}{" "}
             {numberWithCommas(
               Number(city1OtherCurrencySubTotalCost?.toFixed(2))
-            )}
+            )})
           </p>
         </div>
         <div>
@@ -318,14 +320,14 @@ export default function CustomCollapese() {
             )}
           </p>
           <p className="ml-[6px] text-orange-700">
-            {city2TotalCostCurrencySymbol}{" "}
-            {numberWithCommas(Number(city2SubTotalCost?.toFixed(2)))}
+            ({city2TotalCostCurrencySymbol}{" "}
+            {numberWithCommas(Number(city2SubTotalCost?.toFixed(2)))})
           </p>
         </div>
         <p className="text-[#4CAF50] ml-3 flex items-center">
           {isNegative(subTotalIndex)
-            ? `${subTotalIndex.toFixed()}`
-            : `+${subTotalIndex.toFixed()}`}
+            ? `${subTotalIndex.toFixed(2)}`
+            : `+${subTotalIndex.toFixed(2)}`}
           <span className="ml-1">%</span>
         </p>
       </div>
