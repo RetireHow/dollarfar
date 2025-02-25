@@ -146,7 +146,11 @@ export const COLBarChart = () => {
       </div>
       <p className="text-center mt-5 md:text-[18px] text-[16px] font-semibold">
         Living in {selectedCityName2} is approximately{" "}
-        <span className="text-[#4CAF50] font-bold">
+        <span
+          className={`font-bold ${
+            isNegative(subTotalIndex) ? "text-[#4CAF50]" : "text-red-500"
+          }`}
+        >
           {isNegative(subTotalIndex)
             ? `${subTotalIndex?.toFixed(2)}`
             : `+${subTotalIndex?.toFixed(2)}`}

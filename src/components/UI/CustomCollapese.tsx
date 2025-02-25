@@ -223,9 +223,7 @@ export default function CustomCollapese() {
                 )}
                 <p
                   className={`flex items-center ${
-                    isNegative(livingIndex)
-                      ? "text-[#4CAF50]"
-                      : "text-red-500"
+                    isNegative(livingIndex) ? "text-[#4CAF50]" : "text-red-500"
                   }`}
                 >
                   {isNegative(item?.livingIndex)
@@ -334,7 +332,11 @@ export default function CustomCollapese() {
             {numberWithCommas(Number(city2SubTotalCost?.toFixed(2)))})
           </p>
         </div>
-        <p className="text-[#4CAF50] ml-3 flex items-center">
+        <p
+          className={`ml-3 flex items-center ${
+            isNegative(subTotalIndex) ? "text-[#4CAF50]" : "text-red-500"
+          }`}
+        >
           {isNegative(subTotalIndex)
             ? `${subTotalIndex.toFixed(2)}`
             : `+${subTotalIndex.toFixed(2)}`}

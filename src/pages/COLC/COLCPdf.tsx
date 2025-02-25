@@ -311,7 +311,14 @@ export const COLCPdf = ({ data }: { data: TData }) => {
                         justifyContent: "center",
                       }}
                     >
-                      <Text style={{ width: "80px", color: "#4CAF50" }}>
+                      <Text
+                        style={{
+                          width: "80px",
+                          color: isNegative(totalLivingIndex)
+                            ? "#4CAF50"
+                            : "red",
+                        }}
+                      >
                         {isNegative(totalLivingIndex)
                           ? `${totalLivingIndex?.toFixed(2)}`
                           : `+${totalLivingIndex?.toFixed(2)}`}{" "}
@@ -328,8 +335,6 @@ export const COLCPdf = ({ data }: { data: TData }) => {
                   justifyContent: "space-between",
                   paddingBottom: "8px",
                   paddingTop: "8px",
-                  backgroundColor: "black",
-                  color: "#fff",
                   paddingLeft: 16,
                   paddingRight: 16,
                   borderLeft: "1px solid #EAECF0",
@@ -350,7 +355,7 @@ export const COLCPdf = ({ data }: { data: TData }) => {
                     {city1TotalCostCurrencySymbol}{" "}
                     {numberWithCommas(Number(city1SubTotalCost?.toFixed(2)))}
                   </Text>
-                  <Text style={{ width: "120px" }}>
+                  <Text style={{ width: "120px", color: "#c2410c" }}>
                     {city2TotalCostCurrencySymbol}{" "}
                     {numberWithCommas(
                       Number(city1OtherCurrencySubTotalCost?.toFixed(2))
@@ -365,7 +370,7 @@ export const COLCPdf = ({ data }: { data: TData }) => {
                       Number(city2OtherCurrencySubTotalCost?.toFixed(2))
                     )}
                   </Text>
-                  <Text style={{ width: "120px" }}>
+                  <Text style={{ width: "120px", color: "#c2410c" }}>
                     {city2TotalCostCurrencySymbol}{" "}
                     {numberWithCommas(
                       Number(city2SubTotalCostCalculated?.toFixed(2))
@@ -379,7 +384,14 @@ export const COLCPdf = ({ data }: { data: TData }) => {
                     justifyContent: "center",
                   }}
                 >
-                  <Text style={{ width: "80px", color: "#4CAF50" }}>
+                  <Text
+                    style={{
+                      width: "80px",
+                      color: isNegative(subTotalIndexCalculated)
+                        ? "#4CAF50"
+                        : "red",
+                    }}
+                  >
                     {isNegative(subTotalIndexCalculated)
                       ? `${subTotalIndexCalculated?.toFixed(2)}`
                       : `+${subTotalIndexCalculated?.toFixed(2)}`}{" "}
@@ -484,10 +496,16 @@ export const COLCPdf = ({ data }: { data: TData }) => {
         >
           <Text>
             Living in {selectedCityName2} is approximately{" "}
-            {isNegative(subTotalIndexCalculated)
-              ? `${subTotalIndexCalculated?.toFixed(2)}`
-              : `+${subTotalIndexCalculated?.toFixed(2)}`}
-            %{" "}
+            <Text
+              style={{
+                color: isNegative(subTotalIndexCalculated) ? "#4CAF50" : "red",
+              }}
+            >
+              {isNegative(subTotalIndexCalculated)
+                ? `${subTotalIndexCalculated?.toFixed(2)}`
+                : `+${subTotalIndexCalculated?.toFixed(2)}`}
+              %{" "}
+            </Text>
             {isNegative(subTotalIndexCalculated) ? "cheaper" : "more expensive"}{" "}
             than living in {selectedCityName1}.
           </Text>
