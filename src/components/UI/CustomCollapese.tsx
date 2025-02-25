@@ -145,21 +145,28 @@ export default function CustomCollapese() {
           </p>
           <div>
             <p className="ml-3">
-              {city1TotalCostCurrencySymbol} {city1TotalCost.toFixed(2)}
+              {city1TotalCostCurrencySymbol}{" "}
+              {numberWithCommas(Number(city1TotalCost.toFixed(2)))}
             </p>
             <p className="ml-3 text-orange-700">
               ({city2TotalCostCurrencySymbol}{" "}
-              {city1TotalCostOtherCurrencyPrice.toFixed(2)})
+              {numberWithCommas(
+                Number(city1TotalCostOtherCurrencyPrice.toFixed(2))
+              )}
+              )
             </p>
           </div>
 
           <div>
             <p className="ml-5">
               {city1TotalCostCurrencySymbol}{" "}
-              {city2TotalCostOtherCurrencyPrice.toFixed(2)}
+              {numberWithCommas(
+                Number(city2TotalCostOtherCurrencyPrice.toFixed(2))
+              )}
             </p>
             <p className="ml-5 text-orange-700">
-              ({city2TotalCostCurrencySymbol} {city2TotalCost.toFixed(2)})
+              ({city2TotalCostCurrencySymbol}{" "}
+              {numberWithCommas(Number(city2TotalCost.toFixed(2)))})
             </p>
           </div>
 
@@ -197,11 +204,15 @@ export default function CustomCollapese() {
                 {Number(city1ItemPrice) ? (
                   <div>
                     <p>
-                      {city1CurrencySymbol} {city1ItemPrice.toFixed(2)}
+                      {city1CurrencySymbol}{" "}
+                      {numberWithCommas(Number(city1ItemPrice.toFixed(2)))}
                     </p>
                     <p className="text-orange-700">
                       ({city2CurrencySymbol}{" "}
-                      {city1OtherCurrencyItemPrice.toFixed(2)})
+                      {numberWithCommas(
+                        Number(city1OtherCurrencyItemPrice.toFixed(2))
+                      )}
+                      )
                     </p>
                   </div>
                 ) : (
@@ -212,10 +223,13 @@ export default function CustomCollapese() {
                   <div>
                     <p>
                       {city1CurrencySymbol}{" "}
-                      {city2OtherCurrencyItemPrice.toFixed(2)}
+                      {numberWithCommas(
+                        Number(city2OtherCurrencyItemPrice.toFixed(2))
+                      )}
                     </p>
                     <p className="text-orange-700">
-                      ({city2CurrencySymbol} {city2ItemPrice.toFixed(2)})
+                      ({city2CurrencySymbol}{" "}
+                      {numberWithCommas(Number(city2ItemPrice.toFixed(2)))})
                     </p>
                   </div>
                 ) : (

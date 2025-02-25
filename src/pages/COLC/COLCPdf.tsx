@@ -285,22 +285,30 @@ export const COLCPdf = ({ data }: { data: TData }) => {
                     <View>
                       <Text style={{ width: "120px", marginBottom: 8 }}>
                         {city1TotalCostCurrencySymbol}{" "}
-                        {city1TotalCost?.toFixed(2)}
+                        {numberWithCommas(Number(city1TotalCost?.toFixed(2)))}
                       </Text>
                       <Text style={{ width: "120px", color: "#c2410c" }}>
                         ({city2TotalCostCurrencySymbol}{" "}
-                        {city1TotalCostOtherCurrencyPrice?.toFixed(2)})
+                        {numberWithCommas(
+                          Number(city1TotalCostOtherCurrencyPrice?.toFixed(2))
+                        )}
+                        )
                       </Text>
                     </View>
 
                     <View>
                       <Text style={{ width: "120px", marginBottom: 8 }}>
                         {city1TotalCostCurrencySymbol}{" "}
-                        {city2OtherCurrencySubTotalCost?.toFixed(2)}
+                        {numberWithCommas(
+                          Number(city2OtherCurrencySubTotalCost?.toFixed(2))
+                        )}
                       </Text>
                       <Text style={{ width: "120px", color: "#c2410c" }}>
                         ({city2TotalCostCurrencySymbol}{" "}
-                        {city2SubTotalCost?.toFixed(2)})
+                        {numberWithCommas(
+                          Number(city2SubTotalCost?.toFixed(2))
+                        )}
+                        )
                       </Text>
                     </View>
 
@@ -445,7 +453,7 @@ export const COLCPdf = ({ data }: { data: TData }) => {
                   }}
                 ></Text>
                 <Text>
-                  Income : {fromCityCurrencySymbol} {income}
+                  Income : {fromCityCurrencySymbol} {numberWithCommas(income)}
                 </Text>
               </View>
             ) : (
@@ -464,7 +472,7 @@ export const COLCPdf = ({ data }: { data: TData }) => {
               ></Text>
               <Text>
                 {selectedCityName1}({fromCityCurrencySymbol}{" "}
-                {city1SubTotalCost?.toFixed(2)})
+                {numberWithCommas(Number(city1SubTotalCost?.toFixed(2)))})
               </Text>
             </View>
 
@@ -481,7 +489,7 @@ export const COLCPdf = ({ data }: { data: TData }) => {
               ></Text>
               <Text>
                 {selectedCityName2}({fromCityCurrencySymbol}{" "}
-                {city2SubTotalCost?.toFixed(2)})
+                {numberWithCommas(Number(city2SubTotalCost?.toFixed(2)))})
               </Text>
             </View>
           </View>
