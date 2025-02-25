@@ -141,7 +141,6 @@ export default function RetirementSavings() {
         toast.error("Please fill in the required fields.");
         return setShowError(true);
       }
-      console.log("Both accounts are selected==============>")
       dispatch(calculateRetirementSavings(undefined));
     } else if (hasTFSA == "Yes") {
       if (

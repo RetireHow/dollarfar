@@ -25,7 +25,6 @@ export default function BCTotalDisplay({ data }: { data: TData }) {
   const handleShowInputs = () => {
     setShowSubInputs(!showSubInputs);
   };
-  console.log(fieldTitle)
   const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <div>

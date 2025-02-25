@@ -216,7 +216,6 @@ export default function RRIFForm() {
             optionType="default"
             style={{ fontWeight: "bold" }}
             onChange={(e) => {
-              console.log(e.target.value)
               dispatch(
                 updateRRIFState({
                   key: "withdrawType",

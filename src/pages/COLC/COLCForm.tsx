@@ -72,7 +72,6 @@ export default function COLCForm() {
           `https://www.numbeo.com/api/city_prices?api_key=qtnt20fj2vhykj&city=${cityName1}&country=${countryName1}`
         );
         const city1CostData = await res1.json();
-        console.log({ city1CostData });
 
         if (city1CostData?.prices?.length == 0) {
           toast.error(`No information available for ${city1CostData?.name}`);
@@ -106,8 +105,6 @@ export default function COLCForm() {
             priceItemsData,
             exchangeRatesData?.exchange_rates
           );
-
-          console.log({ modifiedCostData });
 
           dispatch(setSelectedCityName1(cityName1));
           dispatch(setSelectedCityName2(cityName2));

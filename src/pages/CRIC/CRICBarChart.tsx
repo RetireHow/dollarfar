@@ -39,16 +39,6 @@ function CRICBarChart() {
     },
     finalResult,
   } = useAppSelector((state) => state.CRICalculator);
-  console.log({ finalResult });
-
-  // const colors = [
-  //   { title: "Canada Pension Plan/Quebec Pension Plan", color: "#4CAF50" },
-  //   { title: "Retirement Savings", color: "#2196F3" },
-  //   { title: "Employer Pension", color: "#FFC107" },
-  //   { title: "Other Income", color: "#9C27B0" },
-  //   { title: "Old Age Security", color: "#FF5722" },
-  //   { title: "Annual Retirement Income Goal", color: "#F44336" },
-  // ];
 
   return (
     <div>

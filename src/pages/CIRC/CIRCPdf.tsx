@@ -90,7 +90,6 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
     initialInvestment,
     years,
   } = data || {};
-  console.log({ base64 });
   return (
     <Document>
       <Page style={{ position: "relative" }}>
