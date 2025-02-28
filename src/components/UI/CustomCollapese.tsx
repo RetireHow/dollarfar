@@ -28,6 +28,9 @@ export default function CustomCollapese() {
   }, 0);
   const city1OtherCurrencySubTotalCost = COLCModifiedCostData?.reduce(
     (prev, curr) => {
+      // if (curr.category == "Salaries And Financing") {
+      //   return 0 + prev;
+      // }
       return curr.city1TotalCostOtherCurrencyPrice + prev;
     },
     0

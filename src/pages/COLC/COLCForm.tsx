@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { TCityData } from "../../utils/COLDataModifier";
 import { useAppDispatch } from "../../redux/hooks";
 
 import data from "../../data/apiCities.json";
@@ -25,7 +24,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 // import { city1CostData, city2CostData } from "../../data/db";
 import { Select } from "antd";
 import CustomTooltip from "../../components/UI/CustomTooltip";
-import { calculateLivingCosts } from "../../utils/calculateLivingCost";
+import { baseUrl } from "../../api/apiConstant";
 
 export default function COLCForm() {
   useEffect(() => {
@@ -68,51 +67,22 @@ export default function COLCForm() {
     if (cityName1 && cityName2 && countryName1 && countryName2) {
       try {
         setApiDataLoading(true);
-        const res1 = await fetch(
-          `https://www.numbeo.com/api/city_prices?api_key=qtnt20fj2vhykj&city=${cityName1}&country=${countryName1}`
+        const response = await fetch(
+          `${baseUrl}/api/city-prices?city1=${cityName1}&country1=${countryName1}&city2=${cityName2}&country2=${countryName2}`
         );
-        const city1CostData = await res1.json();
+        const data = await response.json();
 
-        if (city1CostData?.prices?.length == 0) {
-          toast.error(`No information available for ${city1CostData?.name}`);
-          return setApiDataLoading(false);
-        }
-
-        const res2 = await fetch(
-          `https://www.numbeo.com/api/city_prices?api_key=qtnt20fj2vhykj&city=${cityName2}&country=${countryName2}`
-        );
-        const city2CostData = await res2.json();
-
-        if (city2CostData?.prices?.length == 0) {
-          toast.error(`No information available for ${city2CostData?.name}`);
-          return setApiDataLoading(false);
-        }
-
-        const exchangeRatesResponse = await fetch(
-          "https://www.numbeo.com/api/currency_exchange_rates?api_key=qtnt20fj2vhykj"
-        );
-        const exchangeRatesData = await exchangeRatesResponse.json();
-
-        const priceItemsResponse = await fetch(
-          "https://www.numbeo.com/api/price_items?api_key=qtnt20fj2vhykj"
-        );
-        const priceItemsData = await priceItemsResponse.json();
-
-        if (city1CostData?.prices?.length && city2CostData?.prices?.length) {
-          const modifiedCostData = calculateLivingCosts(
-            city1CostData as TCityData,
-            city2CostData as TCityData,
-            priceItemsData,
-            exchangeRatesData?.exchange_rates
-          );
-
-          dispatch(setSelectedCityName1(cityName1));
-          dispatch(setSelectedCityName2(cityName2));
-          dispatch(setIncome(Number(storedIncome)));
-
-          dispatch(setCOLCModifiedCostData(modifiedCostData));
+        if (!data.success && data.statusCode == 400) {
           setShowError(false);
+          setApiDataLoading(false);
+          return toast.error(data.message);
         }
+
+        dispatch(setSelectedCityName1(cityName1));
+        dispatch(setSelectedCityName2(cityName2));
+        dispatch(setIncome(Number(storedIncome)));
+        dispatch(setCOLCModifiedCostData(data?.data));
+        setShowError(false);
         setApiDataLoading(false);
       } catch (error: any) {
         setApiDataLoading(false);
@@ -124,126 +94,132 @@ export default function COLCForm() {
   };
 
   return (
-    <form className="grid lg:grid-cols-3 grid-cols-1 gap-6 mb-[3rem]">
-      <div className="md:text-[1rem] text-[14px]">
-        <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
-          <p>Your Income</p>
-          <CustomTooltip title="Enter your income to see how far your money will go in the new city." />
-        </div>
-        <input
-          className={`outline-none bg-white px-[12px] py-2 w-full duration-300 rounded-[8px] border-[1px] ${
-            !storedIncome && showError ? "border-red-600" : "border-[#838383]"
-          }`}
-          type="number"
-          name="income"
-          value={storedIncome}
-          onChange={(e) => setStoredIncome(e.target.value)}
-          placeholder="Enter income"
-        />
-      </div>
-
-      <div className="md:text-[1rem] text-[14px]">
-        <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
-          <p>City your are moving from</p>
-          <CustomTooltip title="Select the city you’re currently living in to start the comparison." />
-        </div>
-        <div className="relative">
-          <Select
-            size="large"
-            // style={{ width: 130, height: 45, border: "1px solid gray" }}
-            className="w-full h-[50px] border-[1px] !border-[#838383] rounded-[8px]"
-            onChange={(_value, option) => {
-              if (!Array.isArray(option)) {
-                setCityName1(option.city);
-                setCountryName1(option.country);
-              }
-            }}
-            options={selectOptions}
-            suffixIcon={
-              <Icon
-                className="text-[1.5rem] text-gray-600"
-                icon="iconamoon:arrow-down-2"
-              />
-            }
-            placeholder="Type and Pick City"
-            showSearch={true}
-            allowClear
-            loading={isCitiesLoading}
-            disabled={isCitiesLoading}
-          ></Select>
-          {isCitiesLoading && (
-            <Icon
-              className="absolute left-3 top-2"
-              icon="line-md:loading-loop"
-              width="24"
-              height="24"
-            />
-          )}
-        </div>
-      </div>
-
-      <div className="md:text-[1rem] text-[14px]">
-        <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
-          <p>City your are moving to</p>
-          <CustomTooltip title="Select the city you’re moving to for a detailed cost of living comparison." />
-        </div>
-        <div className="relative">
-          <Select
-            size="large"
-            // style={{ width: 130, height: 45, border: "1px solid gray" }}
-            className="w-full h-[50px] border-[1px] !border-[#838383] rounded-[8px]"
-            onChange={(_value, option) => {
-              if (!Array.isArray(option)) {
-                setCityName2(option.city);
-                setCountryName2(option.country);
-              }
-            }}
-            options={selectOptions}
-            suffixIcon={
-              <Icon
-                className="text-[1.5rem] text-gray-600"
-                icon="iconamoon:arrow-down-2"
-              />
-            }
-            placeholder="Type and Pick City"
-            showSearch={true}
-            allowClear
-            loading={isCitiesLoading}
-            disabled={isCitiesLoading}
-          ></Select>
-          {isCitiesLoading && (
-            <Icon
-              className="absolute left-3 top-2"
-              icon="line-md:loading-loop"
-              width="24"
-              height="24"
-            />
-          )}
-        </div>
-      </div>
-
-      {apiDataLoading ? (
-        <div className="flex justify-end lg:col-span-3">
-          <button
-            disabled
-            className="text-white cursor-not-allowed px-[0.8rem] h-[50px] rounded-[10px] w-full bg-gray-300 flex justify-center items-center"
-          >
-            <Icon icon="eos-icons:three-dots-loading" width="70" height="70" />
-          </button>
-        </div>
-      ) : (
-        <div className="flex justify-end lg:col-span-3">
-          <button
-            onClick={handleCompare}
-            disabled={cityName1 && cityName2 ? false : true}
-            className={`text-white p-[0.8rem] rounded-[10px] w-full ${
-              cityName1 && cityName2 ? "bg-black" : "bg-gray-300"
+    <>
+      <form className="grid lg:grid-cols-3 grid-cols-1 gap-6 mb-[3rem]">
+        <div className="md:text-[1rem] text-[14px]">
+          <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
+            <p>Your Income</p>
+            <CustomTooltip title="Enter your income to see how far your money will go in the new city." />
+          </div>
+          <input
+            className={`outline-none bg-white px-[12px] py-2 w-full duration-300 rounded-[8px] border-[1px] ${
+              !storedIncome && showError ? "border-red-600" : "border-[#838383]"
             }`}
-          >
-            Compare
-          </button>
+            type="number"
+            name="income"
+            value={storedIncome}
+            onChange={(e) => setStoredIncome(e.target.value)}
+            placeholder="Enter income"
+          />
         </div>
-      )}
-    </form>
+
+        <div className="md:text-[1rem] text-[14px]">
+          <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
+            <p>City your are moving from</p>
+            <CustomTooltip title="Select the city you’re currently living in to start the comparison." />
+          </div>
+          <div className="relative">
+            <Select
+              size="large"
+              // style={{ width: 130, height: 45, border: "1px solid gray" }}
+              className="w-full h-[50px] border-[1px] !border-[#838383] rounded-[8px]"
+              onChange={(_value, option) => {
+                if (!Array.isArray(option)) {
+                  setCityName1(option.city);
+                  setCountryName1(option.country);
+                }
+              }}
+              options={selectOptions}
+              suffixIcon={
+                <Icon
+                  className="text-[1.5rem] text-gray-600"
+                  icon="iconamoon:arrow-down-2"
+                />
+              }
+              placeholder="Type and Pick City"
+              showSearch={true}
+              allowClear
+              loading={isCitiesLoading}
+              disabled={isCitiesLoading}
+            ></Select>
+            {isCitiesLoading && (
+              <Icon
+                className="absolute left-3 top-2"
+                icon="line-md:loading-loop"
+                width="24"
+                height="24"
+              />
+            )}
+          </div>
+        </div>
+
+        <div className="md:text-[1rem] text-[14px]">
+          <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
+            <p>City your are moving to</p>
+            <CustomTooltip title="Select the city you’re moving to for a detailed cost of living comparison." />
+          </div>
+          <div className="relative">
+            <Select
+              size="large"
+              // style={{ width: 130, height: 45, border: "1px solid gray" }}
+              className="w-full h-[50px] border-[1px] !border-[#838383] rounded-[8px]"
+              onChange={(_value, option) => {
+                if (!Array.isArray(option)) {
+                  setCityName2(option.city);
+                  setCountryName2(option.country);
+                }
+              }}
+              options={selectOptions}
+              suffixIcon={
+                <Icon
+                  className="text-[1.5rem] text-gray-600"
+                  icon="iconamoon:arrow-down-2"
+                />
+              }
+              placeholder="Type and Pick City"
+              showSearch={true}
+              allowClear
+              loading={isCitiesLoading}
+              disabled={isCitiesLoading}
+            ></Select>
+            {isCitiesLoading && (
+              <Icon
+                className="absolute left-3 top-2"
+                icon="line-md:loading-loop"
+                width="24"
+                height="24"
+              />
+            )}
+          </div>
+        </div>
+
+        {apiDataLoading ? (
+          <div className="flex justify-end lg:col-span-3">
+            <button
+              disabled
+              className="text-white cursor-not-allowed px-[0.8rem] h-[50px] rounded-[10px] w-full bg-gray-300 flex justify-center items-center"
+            >
+              <Icon
+                icon="eos-icons:three-dots-loading"
+                width="70"
+                height="70"
+              />
+            </button>
+          </div>
+        ) : (
+          <div className="flex justify-end lg:col-span-3">
+            <button
+              onClick={handleCompare}
+              disabled={cityName1 && cityName2 ? false : true}
+              className={`text-white p-[0.8rem] rounded-[10px] w-full ${
+                cityName1 && cityName2 ? "bg-black" : "bg-gray-300"
+              }`}
+            >
+              Compare
+            </button>
+          </div>
+        )}
+      </form>
+    </>
   );
 }
