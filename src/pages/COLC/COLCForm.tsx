@@ -21,7 +21,6 @@ import {
 
 import { Icon } from "@iconify/react/dist/iconify.js";
 
-// import { city1CostData, city2CostData } from "../../data/db";
 import { Select } from "antd";
 import CustomTooltip from "../../components/UI/CustomTooltip";
 import { baseUrl } from "../../api/apiConstant";
