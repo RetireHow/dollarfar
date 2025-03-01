@@ -94,7 +94,7 @@ export default function COLDescription() {
             Cost of Living Index: <br />
             {`{(${currency}56,500-${currency}69,000)/69000}`}×100=18.12% <br />
             Living in Bangalore is approximately 18.12% cheaper than living in
-            Mumbai.
+            <span className="text-green-500 ml-1">Mumbai.</span>
           </p>
         </div>
       </section>
