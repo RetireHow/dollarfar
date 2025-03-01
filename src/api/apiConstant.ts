@@ -1,8 +1,11 @@
-export let baseUrl =
-  "https://wordpressprojects-dollarfar-backend.qklxx5.easypanel.host";
+export let baseUrl = "https://dollarfar-backend-rust.vercel.app";
 
 if (import.meta.env.MODE === "development") {
   baseUrl = "http://localhost:5000";
+  // baseUrl = "https://dollarfar-backend-rust.vercel.app";
+  // baseUrl = "https://api.dollarfar.com";
 } else {
-  baseUrl = "https://wordpressprojects-dollarfar-backend.qklxx5.easypanel.host";
+  baseUrl = "https://dollarfar-backend-rust.vercel.app";
+  // baseUrl = "https://dollarfar-backend-rust.vercel.app";
+  // baseUrl = "https://api.dollarfar.com";
 }
