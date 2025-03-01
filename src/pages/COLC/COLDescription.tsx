@@ -2,11 +2,13 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { useAppSelector } from "../../redux/hooks";
 
 export default function COLDescription() {
-  const {currency} = useAppSelector(state => state.globalCurrency)
+  const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <article className="md:mx-[5rem] mx-[1rem]">
       <section>
-        <h1 className="font-semibold md:text-[1.5rem] text-[18px]">What is Cost of Living?</h1>
+        <h1 className="font-semibold md:text-[1.5rem] text-[18px]">
+          What is Cost of Living?
+        </h1>
         <p className="text-[#696969] mt-[0.5rem] md:text-[1rem] text-[14px]">
           A cost of living calculator is a tool that helps individuals or
           families assess the financial implications of living in different
@@ -94,7 +96,7 @@ export default function COLDescription() {
             Cost of Living Index: <br />
             {`{(${currency}56,500-${currency}69,000)/69000}`}×100=18.12% <br />
             Living in Bangalore is approximately 18.12% cheaper than living in
-            <span className="text-green-500 ml-1">Mumbai.</span>
+            Mumbai.
           </p>
         </div>
       </section>
