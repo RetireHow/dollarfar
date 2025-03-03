@@ -6,6 +6,7 @@ import useDynamicInput from "../../../hooks/useDynamicInput";
 import { useRef } from "react";
 import DisplayTotal from "../../../components/UI/DisplayTotal";
 import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
+import { isNegative } from "../../../utils/isNegative";
 
 const PropertyInputFields = () => {
   const dispatch = useAppDispatch();
@@ -17,6 +18,11 @@ const PropertyInputFields = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
 
   const { currency } = useAppSelector((state) => state.globalCurrency);
+  const {
+    assets: {
+      property: { principalResidence, cottage, realEstateAssets },
+    },
+  } = useAppSelector((state) => state.NWCalculator);
 
   const {
     newInput,
@@ -57,7 +63,9 @@ const PropertyInputFields = () => {
               <CustomTooltip title="The current market value of your primary home or residence." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] w-full"
+              className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+                isNegative(principalResidence) ? "border-red-500 border-[2px]" : "border-[#838383] border-[1px]"
+              }`}
               type="number"
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -72,7 +80,6 @@ const PropertyInputFields = () => {
                   })
                 )
               }
-              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -84,7 +91,9 @@ const PropertyInputFields = () => {
               <CustomTooltip title="The estimated market value of your secondary residence or vacation property." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] w-full"
+              className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+                isNegative(cottage) ? "border-red-500 border-[2px]" : "border-[#838383] border-[1px]"
+              }`}
               type="number"
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -99,7 +108,6 @@ const PropertyInputFields = () => {
                   })
                 )
               }
-              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -111,7 +119,9 @@ const PropertyInputFields = () => {
               <CustomTooltip title="Any additional real estate holdings or properties you own, excluding your primary residence and cottage." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] w-full"
+              className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+                isNegative(realEstateAssets) ? "border-red-500 border-[2px]" : "border-[#838383] border-[1px]"
+              }`}
               type="number"
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -126,7 +136,6 @@ const PropertyInputFields = () => {
                   })
                 )
               }
-              onKeyDown={handleKeyDownUtil}
             />
           </div>
 

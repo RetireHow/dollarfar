@@ -5,12 +5,19 @@ import useDynamicInput from "../../../hooks/useDynamicInput";
 import { useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
+import { isNegative } from "../../../utils/isNegative";
 
 const OtherAssetsFields = () => {
   const dispatch = useAppDispatch();
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
 
   const { currency } = useAppSelector((state) => state.globalCurrency);
+
+  const {
+    assets: {
+      otherAssets: { otherAsset },
+    },
+  } = useAppSelector((state) => state.NWCalculator);
 
   const {
     newInput,
@@ -36,7 +43,9 @@ const OtherAssetsFields = () => {
         </label>
       </div>
       <input
-        className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
+        className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+          isNegative(otherAsset) ? "border-red-500 border-[2px]" : "border-[#838383] border-[1px]"
+        }`}
         type="number"
         placeholder={`${currency}0`}
         onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -51,7 +60,6 @@ const OtherAssetsFields = () => {
             })
           )
         }
-        onKeyDown={handleKeyDownUtil}
       />
 
       {/* Sub Input Fields */}

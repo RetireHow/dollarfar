@@ -56,6 +56,8 @@ export default function NWC() {
           </div>
         </div>
 
+        <p className="py-2 text-gray-500"><span className="font-bold text-black">Note:</span> Negative value is not allowed for any input field.</p>
+
         <NWForm />
         <div
           id="NWReport"

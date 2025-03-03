@@ -6,6 +6,7 @@ import { useRef } from "react";
 import useDynamicInput from "../../../hooks/useDynamicInput";
 import DisplayTotal from "../../../components/UI/DisplayTotal";
 import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
+import { isNegative } from "../../../utils/isNegative";
 
 const PersonalItemsInputFields = () => {
   const dispatch = useAppDispatch();
@@ -17,6 +18,12 @@ const PersonalItemsInputFields = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
 
   const { currency } = useAppSelector((state) => state.globalCurrency);
+
+  const {
+    assets: {
+      personalItems: {artWork, collectibles, jewelry},
+    },
+  } = useAppSelector((state) => state.NWCalculator);
 
   const {
     newInput,
@@ -57,7 +64,9 @@ const PersonalItemsInputFields = () => {
               <CustomTooltip title="Estimated value of valuable jewelry, including items like watches, rings, or necklaces." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
+              className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+                isNegative(jewelry) ? "border-red-500 border-[2px]" : "border-[#838383] border-[1px]"
+              }`}
               type="number"
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -72,7 +81,6 @@ const PersonalItemsInputFields = () => {
                   })
                 )
               }
-              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -84,7 +92,9 @@ const PersonalItemsInputFields = () => {
               <CustomTooltip title="Total appraised value of art pieces you own, such as paintings or sculptures." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
+              className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+                isNegative(artWork) ? "border-red-500 border-[2px]" : "border-[#838383] border-[1px]"
+              }`}
               type="number"
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -99,7 +109,6 @@ const PersonalItemsInputFields = () => {
                   })
                 )
               }
-              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -111,7 +120,9 @@ const PersonalItemsInputFields = () => {
               <CustomTooltip title="The market value of collectible items, like coins, stamps, or memorabilia." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
+             className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+              isNegative(collectibles) ? "border-red-500 border-[2px]" : "border-[#838383] border-[1px]"
+            }`}
               type="number"
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -126,7 +137,6 @@ const PersonalItemsInputFields = () => {
                   })
                 )
               }
-              onKeyDown={handleKeyDownUtil}
             />
           </div>
 
