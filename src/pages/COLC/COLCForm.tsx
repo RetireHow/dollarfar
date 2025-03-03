@@ -24,6 +24,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { Select } from "antd";
 import CustomTooltip from "../../components/UI/CustomTooltip";
 import { baseUrl } from "../../api/apiConstant";
+import ShowNegativeMessage from "../../components/UI/ShowNegativeMessage";
 
 export default function COLCForm() {
   useEffect(() => {
@@ -110,6 +111,7 @@ export default function COLCForm() {
             onChange={(e) => setStoredIncome(e.target.value)}
             placeholder="Enter income"
           />
+          <ShowNegativeMessage input={storedIncome}/>
         </div>
 
         <div className="md:text-[1rem] text-[14px]">

@@ -6,7 +6,8 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { calculate, setInput } from "../../redux/features/RRSP/RRSPSlice";
 import { useState } from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { handleKeyDownUtil } from "../../utils/handleKeyDownUtil";
+import ShowNegativeMessage from "../../components/UI/ShowNegativeMessage";
+import { isNegative } from "../../utils/isNegative";
 
 type TAntSelectOption = {
   value: string;
@@ -72,13 +73,13 @@ export default function RRSPForm() {
               );
             }}
             value={currentAge}
-            onKeyDown={handleKeyDownUtil}
           />
           {!currentAge && showError && (
             <p className="text-red-500 text-[14px] font-bold">
               This field is required.
             </p>
           )}
+          <ShowNegativeMessage input={currentAge} />
         </div>
 
         <div>
@@ -100,7 +101,6 @@ export default function RRSPForm() {
                 })
               );
             }}
-            onKeyDown={handleKeyDownUtil}
             value={retirementAge}
           />
           {showError &&
@@ -115,6 +115,7 @@ export default function RRSPForm() {
               This field is required.
             </p>
           )}
+          <ShowNegativeMessage input={retirementAge} />
         </div>
       </div>
 
@@ -137,9 +138,9 @@ export default function RRSPForm() {
               })
             );
           }}
-          onKeyDown={handleKeyDownUtil}
           value={currentRRSPSavings}
         />
+        <ShowNegativeMessage input={currentRRSPSavings} />
       </div>
 
       <div>
@@ -161,9 +162,9 @@ export default function RRSPForm() {
               })
             );
           }}
-          onKeyDown={handleKeyDownUtil}
           value={contributionAmount}
         />
+        <ShowNegativeMessage input={contributionAmount} />
       </div>
 
       <div>
@@ -207,7 +208,13 @@ export default function RRSPForm() {
             <p>Assumed Rate of Return</p>
             <CustomTooltip title="Estimate the annual rate of return you expect on your RRSP investments (e.g., 5%, 7%). Consider a realistic rate based on your investment strategy and risk tolerance." />
           </div>
-          <div className="relative">
+          <div
+            className={`relative ${
+              isNegative(Number(rateOfReturn))
+                ? "border-[2px] border-red-500 rounded-[10px]"
+                : ""
+            }`}
+          >
             <input
               className="font-bold md:text-[1.2rem] no-spinner text-right text-[14px] bg-[#F8F8F8] rounded-[10px] pr-[1.8rem] py-[0.5rem] max-w-[80px] outline-none"
               type="number"
@@ -225,7 +232,6 @@ export default function RRSPForm() {
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
-              onKeyDown={handleKeyDownUtil}
             />
             <p className="absolute right-2 top-[8px] font-semibold md:text-[1.2rem] text-[14px]">
               %

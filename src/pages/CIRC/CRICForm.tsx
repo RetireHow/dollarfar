@@ -11,9 +11,9 @@ import {
   updateCRICField,
 } from "../../redux/features/compoundInterestSlice/compoundInterestSlice";
 import Error from "../../components/UI/Error";
-import { handleKeyDownUtil } from "../../utils/handleKeyDownUtil";
 import { delay } from "../../utils/delay";
 import { toast } from "react-toastify";
+import ShowNegativeMessage from "../../components/UI/ShowNegativeMessage";
 
 type TOption = {
   label: string;
@@ -124,7 +124,6 @@ export default function CRICForm({
           placeholder="$0.00"
           value={initialInvestment}
           onWheel={(e) => e.currentTarget.blur()}
-          onKeyDown={handleKeyDownUtil}
           onChange={(e) => {
             dispatch(
               updateCRICField({
@@ -137,6 +136,7 @@ export default function CRICForm({
         {showError && !Number(initialInvestment) && (
           <Error message="This field is required" />
         )}
+        <ShowNegativeMessage input={initialInvestment} />
       </div>
 
       <div>
@@ -156,7 +156,6 @@ export default function CRICForm({
           placeholder="$0.00"
           value={contribution}
           onWheel={(e) => e.currentTarget.blur()}
-          onKeyDown={handleKeyDownUtil}
           onChange={(e) => {
             dispatch(
               updateCRICField({
@@ -166,6 +165,7 @@ export default function CRICForm({
             );
           }}
         />
+        <ShowNegativeMessage input={contribution} />
       </div>
 
       <div>
@@ -214,14 +214,14 @@ export default function CRICForm({
           <CIRCTooltip title="The percentage at which your investment grows annually. This is the return provided by your investment or savings account." />
         </div>
         <div className="flex md:flex-row flex-col gap-3 items-center">
-          <input
+         <div className="w-full">
+         <input
             className={`outline-none border-[1px] border-[#d1d5db] px-[12px] py-[9px] w-full duration-300 rounded-[8px] `}
             type="number"
             id="interest-rate"
             placeholder="0%"
             value={annualInterestRate}
             onWheel={(e) => e.currentTarget.blur()}
-            onKeyDown={handleKeyDownUtil}
             onChange={(e) => {
               dispatch(
                 updateCRICField({
@@ -231,6 +231,8 @@ export default function CRICForm({
               );
             }}
           />
+          <ShowNegativeMessage input={annualInterestRate} />
+         </div>
           <div className="border-[1px] border-[#d1d5db] px-[12px] pt-[20px] pb-[24px] w-full duration-300 rounded-[8px]">
             <ReactSlider
               className="horizontal-slider"
@@ -302,7 +304,7 @@ export default function CRICForm({
           <CIRCTooltip title="The number of years you plan to keep the investment growing before withdrawing funds. Longer durations allow more time for compounding to maximize returns." />
         </div>
         <div className="flex md:flex-row flex-col items-center gap-3">
-          <div>
+          <div className="w-full">
             <input
               className={`outline-none border-[1px] border-[#d1d5db] px-[12px] py-[9px] w-full duration-300 rounded-[8px] `}
               type="number"
@@ -310,7 +312,6 @@ export default function CRICForm({
               placeholder="$0.00"
               value={years}
               onWheel={(e) => e.currentTarget.blur()}
-              onKeyDown={handleKeyDownUtil}
               onChange={(e) => {
                 dispatch(
                   updateCRICField({
@@ -323,6 +324,7 @@ export default function CRICForm({
             {showError && !Number(years) && (
               <Error message="This field is required" />
             )}
+            <ShowNegativeMessage input={years} />
           </div>
           <div className="border-[1px] border-[#d1d5db] px-[12px] pt-[20px] pb-[24px] w-full duration-300 rounded-[8px]">
             <ReactSlider
