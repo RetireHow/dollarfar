@@ -356,7 +356,7 @@ export const COLCPdf = ({ data }: { data: TData }) => {
                     justifyContent: "center",
                   }}
                 >
-                  <Text style={{ width: "170px" }}>Total Living Cost</Text>
+                  <Text style={{ width: "170px" }}>Total</Text>
                 </View>
                 <View>
                   <Text style={{ width: "120px", marginBottom: 8 }}>

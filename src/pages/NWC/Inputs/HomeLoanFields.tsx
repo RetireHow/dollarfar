@@ -6,6 +6,7 @@ import { updateLiabilities } from "../../../redux/features/NWSlice/NWSlice";
 import useDynamicInput from "../../../hooks/useDynamicInput";
 import DisplayTotal from "../../../components/UI/DisplayTotal";
 import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
+import { isNegative } from "../../../utils/isNegative";
 
 const HomeLoanFields = () => {
   const dispatch = useAppDispatch();
@@ -17,6 +18,12 @@ const HomeLoanFields = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
 
   const { currency } = useAppSelector((state) => state.globalCurrency);
+
+  const {
+    liabilities: {
+      homeLoan: { cottageLoan, loan1, mortgageLoan },
+    },
+  } = useAppSelector((state) => state.NWCalculator);
 
   const {
     newInput,
@@ -62,7 +69,11 @@ const HomeLoanFields = () => {
               <CustomTooltip title="Outstanding balance on loans taken out specifically for the cottage or vacation property." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
+              className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+                isNegative(cottageLoan)
+                  ? "border-red-500 border-[2px]"
+                  : "border-[#838383] border-[1px]"
+              }`}
               type="number"
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -77,7 +88,6 @@ const HomeLoanFields = () => {
                   })
                 )
               }
-              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -89,7 +99,11 @@ const HomeLoanFields = () => {
               <CustomTooltip title="Remaining balance on the mortgage of your primary residence." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
+              className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+                isNegative(mortgageLoan)
+                  ? "border-red-500 border-[2px]"
+                  : "border-[#838383] border-[1px]"
+              }`}
               type="number"
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -104,7 +118,6 @@ const HomeLoanFields = () => {
                   })
                 )
               }
-              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -116,7 +129,11 @@ const HomeLoanFields = () => {
               <CustomTooltip title="Additional loan balance, specify type if applicable (e.g., business, personal)." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
+              className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+                isNegative(loan1)
+                  ? "border-red-500 border-[2px]"
+                  : "border-[#838383] border-[1px]"
+              }`}
               type="number"
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -131,7 +148,6 @@ const HomeLoanFields = () => {
                   })
                 )
               }
-              onKeyDown={handleKeyDownUtil}
             />
           </div>
 

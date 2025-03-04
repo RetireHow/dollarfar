@@ -6,6 +6,7 @@ import { updateLiabilities } from "../../../redux/features/NWSlice/NWSlice";
 import useDynamicInput from "../../../hooks/useDynamicInput";
 import DisplayTotal from "../../../components/UI/DisplayTotal";
 import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
+import { isNegative } from "../../../utils/isNegative";
 
 const CreditCardDueFields = () => {
   const dispatch = useAppDispatch();
@@ -17,6 +18,12 @@ const CreditCardDueFields = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
 
   const { currency } = useAppSelector((state) => state.globalCurrency);
+
+  const {
+    liabilities: {
+      creditCardDues: { creditCard1, creditCard2, creditCard3 },
+    },
+  } = useAppSelector((state) => state.NWCalculator);
 
   const {
     newInput,
@@ -61,7 +68,11 @@ const CreditCardDueFields = () => {
               <CustomTooltip title="Outstanding balance on your first credit card." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
+              className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+                isNegative(creditCard1)
+                  ? "border-red-500 border-[2px]"
+                  : "border-[#838383] border-[1px]"
+              }`}
               type="number"
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -76,7 +87,6 @@ const CreditCardDueFields = () => {
                   })
                 )
               }
-              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -88,7 +98,11 @@ const CreditCardDueFields = () => {
               <CustomTooltip title="Outstanding balance on your second credit card." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
+              className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+                isNegative(creditCard2)
+                  ? "border-red-500 border-[2px]"
+                  : "border-[#838383] border-[1px]"
+              }`}
               type="number"
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -103,7 +117,6 @@ const CreditCardDueFields = () => {
                   })
                 )
               }
-              onKeyDown={handleKeyDownUtil}
             />
           </div>
 
@@ -116,7 +129,11 @@ const CreditCardDueFields = () => {
               <CustomTooltip title="Outstanding balance on your third credit card, if applicable." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
+              className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+                isNegative(creditCard3)
+                  ? "border-red-500 border-[2px]"
+                  : "border-[#838383] border-[1px]"
+              }`}
               type="number"
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -131,7 +148,6 @@ const CreditCardDueFields = () => {
                   })
                 )
               }
-              onKeyDown={handleKeyDownUtil}
             />
           </div>
 

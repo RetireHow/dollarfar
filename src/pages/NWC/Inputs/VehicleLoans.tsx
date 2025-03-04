@@ -6,6 +6,7 @@ import { updateLiabilities } from "../../../redux/features/NWSlice/NWSlice";
 import useDynamicInput from "../../../hooks/useDynamicInput";
 import DisplayTotal from "../../../components/UI/DisplayTotal";
 import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
+import { isNegative } from "../../../utils/isNegative";
 
 const VehicleLoans = () => {
   const dispatch = useAppDispatch();
@@ -17,6 +18,12 @@ const VehicleLoans = () => {
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
 
   const { currency } = useAppSelector((state) => state.globalCurrency);
+
+  const {
+    liabilities: {
+      vehicleLoans: { carLoan, motorcycleLoan },
+    },
+  } = useAppSelector((state) => state.NWCalculator);
 
   const {
     newInput,
@@ -62,7 +69,9 @@ const VehicleLoans = () => {
               <CustomTooltip title="Remaining balance on any car loan taken for your primary vehicle." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
+               className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+                isNegative(carLoan) ? "border-red-500 border-[2px]" : "border-[#838383] border-[1px]"
+              }`}
               type="number"
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -77,7 +86,6 @@ const VehicleLoans = () => {
                   })
                 )
               }
-              onKeyDown={handleKeyDownUtil}
             />
           </div>
           <div>
@@ -89,7 +97,9 @@ const VehicleLoans = () => {
               <CustomTooltip title="Outstanding balance on a motorcycle loan, if applicable." />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
+              className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+                isNegative(motorcycleLoan) ? "border-red-500 border-[2px]" : "border-[#838383] border-[1px]"
+              }`}
               type="number"
               placeholder={`${currency}0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -104,7 +114,6 @@ const VehicleLoans = () => {
                   })
                 )
               }
-              onKeyDown={handleKeyDownUtil}
             />
           </div>
 

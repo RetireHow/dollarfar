@@ -5,12 +5,19 @@ import { updateLiabilities } from "../../../redux/features/NWSlice/NWSlice";
 import { useRef } from "react";
 import useDynamicInput from "../../../hooks/useDynamicInput";
 import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
+import { isNegative } from "../../../utils/isNegative";
 
 const OtherDebtsFields = () => {
   const dispatch = useAppDispatch();
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
 
   const { currency } = useAppSelector((state) => state.globalCurrency);
+
+  const {
+    liabilities: {
+      otherDebts: { otherDebt },
+    },
+  } = useAppSelector((state) => state.NWCalculator);
 
   const {
     newInput,
@@ -40,7 +47,11 @@ const OtherDebtsFields = () => {
         </label>
       </div>
       <input
-        className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
+        className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+          isNegative(otherDebt)
+            ? "border-red-500 border-[2px]"
+            : "border-[#838383] border-[1px]"
+        }`}
         type="number"
         placeholder={`${currency}0`}
         onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
@@ -55,7 +66,6 @@ const OtherDebtsFields = () => {
             })
           )
         }
-        onKeyDown={handleKeyDownUtil}
       />
 
       {/* Sub Input Fields */}
@@ -74,7 +84,7 @@ const OtherDebtsFields = () => {
               />
             </label>
             <input
-              className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
+              className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem]  w-full"
               type="number"
               name={input.label.trim().split(" ").join("")}
               value={input.value}

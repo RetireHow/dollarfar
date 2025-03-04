@@ -46,7 +46,9 @@ export default function CustomCollapese() {
     0
   );
   const subTotalIndex =
-    ((city2OtherCurrencySubTotalCost - city1SubTotalCost) / city1SubTotalCost) *
+    ((Number(city2OtherCurrencySubTotalCost?.toFixed(2)) -
+      Number(city1SubTotalCost?.toFixed(2))) /
+      Number(city1SubTotalCost?.toFixed(2))) *
     100;
 
   const { city1TotalCostCurrencySymbol, city2TotalCostCurrencySymbol } =
@@ -322,7 +324,7 @@ export default function CustomCollapese() {
             width="20"
             height="20"
           />
-          <span>Total Living Cost</span>
+          <span>Total</span>
         </p>
         <div>
           <p className="ml-[6px]">
