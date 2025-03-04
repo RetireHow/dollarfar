@@ -102,6 +102,9 @@ export const COLCPdf = ({ data }: { data: TData }) => {
   //Calculate subtotal
   const city1OtherCurrencySubTotalCost = COLCModifiedCostData?.reduce(
     (prev, curr) => {
+      if (curr.category == "Salaries And Financing") {
+        return 0 + prev;
+      }
       return curr.city1TotalCostOtherCurrencyPrice + prev;
     },
     0
@@ -109,6 +112,9 @@ export const COLCPdf = ({ data }: { data: TData }) => {
 
   const city2OtherCurrencySubTotalCost = COLCModifiedCostData?.reduce(
     (prev, curr) => {
+      if (curr.category == "Salaries And Financing") {
+        return 0 + prev;
+      }
       return curr.city2TotalCostOtherCurrencyPrice + prev;
     },
     0
@@ -116,13 +122,18 @@ export const COLCPdf = ({ data }: { data: TData }) => {
 
   const city2SubTotalCostCalculated = COLCModifiedCostData?.reduce(
     (prev, curr) => {
+      if (curr.category == "Salaries And Financing") {
+        return 0 + prev;
+      }
       return curr.city2TotalCost + prev;
     },
     0
   );
 
   const subTotalIndexCalculated =
-    ((city2OtherCurrencySubTotalCost - city1SubTotalCost) / city1SubTotalCost) *
+    ((Number(city2OtherCurrencySubTotalCost?.toFixed(2)) -
+      Number(city1SubTotalCost?.toFixed(2))) /
+      Number(city1SubTotalCost?.toFixed(2))) *
     100;
 
   const { city1TotalCostCurrencySymbol, city2TotalCostCurrencySymbol } =
@@ -356,7 +367,7 @@ export const COLCPdf = ({ data }: { data: TData }) => {
                     justifyContent: "center",
                   }}
                 >
-                  <Text style={{ width: "170px" }}>Total</Text>
+                  <Text style={{ width: "170px" }}>Total Living Cost</Text>
                 </View>
                 <View>
                   <Text style={{ width: "120px", marginBottom: 8 }}>

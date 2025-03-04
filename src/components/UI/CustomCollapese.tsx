@@ -24,23 +24,32 @@ export default function CustomCollapese() {
 
   //Calculate subtotal
   const city1SubTotalCost = COLCModifiedCostData?.reduce((prev, curr) => {
+    if (curr.category == "Salaries And Financing") {
+      return 0 + prev;
+    }
     return curr.city1TotalCost + prev;
   }, 0);
   const city1OtherCurrencySubTotalCost = COLCModifiedCostData?.reduce(
     (prev, curr) => {
-      // if (curr.category == "Salaries And Financing") {
-      //   return 0 + prev;
-      // }
+      if (curr.category == "Salaries And Financing") {
+        return 0 + prev;
+      }
       return curr.city1TotalCostOtherCurrencyPrice + prev;
     },
     0
   );
 
   const city2SubTotalCost = COLCModifiedCostData?.reduce((prev, curr) => {
+    if (curr.category == "Salaries And Financing") {
+      return 0 + prev;
+    }
     return curr.city2TotalCost + prev;
   }, 0);
   const city2OtherCurrencySubTotalCost = COLCModifiedCostData?.reduce(
     (prev, curr) => {
+      if (curr.category == "Salaries And Financing") {
+        return 0 + prev;
+      }
       return curr.city2TotalCostOtherCurrencyPrice + prev;
     },
     0
@@ -324,7 +333,7 @@ export default function CustomCollapese() {
             width="20"
             height="20"
           />
-          <span>Total</span>
+          <span>Total Living Cost</span>
         </p>
         <div>
           <p className="ml-[6px]">
