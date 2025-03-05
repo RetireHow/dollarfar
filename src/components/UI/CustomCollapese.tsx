@@ -212,7 +212,7 @@ export default function CustomCollapese() {
             return (
               <div
                 key={index}
-                className="grid grid-cols-4 gap-5 md:text-[16px] text-[14px] border-b-[1px] border-gray-300 pb-3"
+                className="grid grid-cols-4 gap-5 md:text-[16px] text-[14px] border-b-[1px] border-gray-300 p-3 rounded-lg hover:bg-[#42c6c623] hover:font-medium"
               >
                 <p className="flex items-center">{itemName}</p>
                 {Number(city1ItemPrice) ? (
