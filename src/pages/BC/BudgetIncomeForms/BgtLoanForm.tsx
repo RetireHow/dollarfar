@@ -36,6 +36,8 @@ export default function BgtLoanForm() {
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
+  const { currency } = useAppSelector((state) => state.globalCurrency);
+
   return (
     <div className="space-y-[2rem]">
       <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">
@@ -62,7 +64,7 @@ export default function BgtLoanForm() {
               subField="homeLoanAmount"
               label="Home Loan"
               stepName="loans"
-              placeholder="$ 0.00"
+              placeholder={`${currency} 0.00`}
               tooltipTitle="Enter your home loan repayment amount. Select the frequency that matches how often you make payments (e.g., monthly, annually, or bi-weekly)."
             />
             <DFSelectWithWatch
@@ -80,7 +82,7 @@ export default function BgtLoanForm() {
               subField="personalLoanAmount"
               label="Personal Loan"
               stepName="loans"
-              placeholder="$ 0.00"
+              placeholder={`${currency} 0.00`}
               tooltipTitle="Enter the amount you repay for your personal loan. Choose the correct frequency to ensure accurate budgeting."
             />
             <DFSelectWithWatch
@@ -98,7 +100,7 @@ export default function BgtLoanForm() {
               subField="studentLoanAmount"
               label="Student Loan"
               stepName="loans"
-              placeholder="$ 0.00"
+              placeholder={`${currency} 0.00`}
               tooltipTitle="Enter your student loan repayment amount. Select how often you make payments (e.g., monthly, quarterly, or annually) for proper calculations."
             />
             <DFSelectWithWatch

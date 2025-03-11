@@ -35,6 +35,8 @@ export default function BgtEduForm() {
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
+  const { currency } = useAppSelector((state) => state.globalCurrency);
+
   return (
     <div className="space-y-[2rem]">
       <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">
@@ -56,7 +58,7 @@ export default function BgtEduForm() {
                 subField="schoolCollegeFeeAmount"
                 label="Education Fees ( e.g., Scheel Fee )"
                 stepName="education"
-                placeholder="$ 0.00"
+                placeholder={`${currency} 0.00`}
                 tooltipTitle="Enter education cost like school fee, college fee etc."
               />
               <DFSelectWithWatch

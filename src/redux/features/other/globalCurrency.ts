@@ -14,8 +14,8 @@ const initialState: CurrencyState = {
 
 // Map of G7 currency symbols to full names
 const G7CurrencyMap: Record<string, string> = {
-  $: "Canadian Dollar",
-  // $: "United States Dollar",
+  "C$": "Canadian Dollar",
+  "$": "United States Dollar",
   "€": "Euro",
   "£": "British Pound Sterling",
   "¥": "Japanese Yen",

@@ -4,9 +4,11 @@ export type TOption = {
 };
 
 export const currencyOptions: TOption[] = [
-  { value: "¥", label: "¥ JPY" },
-  { value: "£", label: "£ GBP" },
-  { value: "$", label: "$ CAD/USD" },
-  // { value: "$", label: "$ USD" },
+  { value: "A$", label: "A$ AUD" },
+  { value: "C$", label: "C$ CAD" },
   { value: "€", label: "€ EUR" },
+  { value: "£", label: "£ GBP" },
+  { value: "₹", label: "₹ INR" },
+  { value: "¥", label: "¥ JPY" },
+  { value: "$", label: "$ USD" },
 ];

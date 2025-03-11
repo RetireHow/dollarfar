@@ -42,6 +42,8 @@ export default function BgtOtherForm() {
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
+  const { currency } = useAppSelector((state) => state.globalCurrency);
+
   return (
     <div className="space-y-[2rem]">
       <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">
@@ -74,7 +76,7 @@ export default function BgtOtherForm() {
               subField="householeAmount"
               label="Household"
               stepName="other"
-              placeholder="$ 0.00"
+              placeholder={`${currency} 0.00`}
               tooltipTitle="Enter your monthly expenses for household items and utilities."
             />
             <DFSelectWithWatch
@@ -92,7 +94,7 @@ export default function BgtOtherForm() {
               subField="clothingAmount"
               label="Clothing"
               stepName="other"
-              placeholder="$ 0.00"
+              placeholder={`${currency} 0.00`}
               tooltipTitle="Provide your average monthly spending on clothing and accessories."
             />
             <DFSelectWithWatch
@@ -110,7 +112,7 @@ export default function BgtOtherForm() {
               subField="eatingOutAmount"
               label="Eating Out"
               stepName="other"
-              placeholder="$ 0.00"
+              placeholder={`${currency} 0.00`}
               tooltipTitle="Enter your monthly expenses for dining at restaurants or ordering food."
             />
             <DFSelectWithWatch
@@ -128,7 +130,7 @@ export default function BgtOtherForm() {
               subField="medicalAmount"
               label="Medical"
               stepName="other"
-              placeholder="$ 0.00"
+              placeholder={`${currency} 0.00`}
               tooltipTitle="Provide your average monthly medical expenses, including prescriptions and check-ups."
             />
             <DFSelectWithWatch
@@ -147,7 +149,7 @@ export default function BgtOtherForm() {
                 subField="entertainmentEventsAmount"
                 label="Entertainment/Events ( e.g., Sports )"
                 stepName="other"
-                placeholder="$ 0.00"
+                placeholder={`${currency} 0.00`}
                 tooltipTitle="Enter any government assistance received, such as child benefits, unemployment insurance, or other aid."
               />
               <DFSelectWithWatch
