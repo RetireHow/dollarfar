@@ -24,6 +24,14 @@ ChartJS.register(
   Legend
 );
 
+const getIndexDiff = (city1Index: number, city2Index: number) => {
+  if (!city1Index || !city2Index) {
+    return 0;
+  }
+  const indexDifference = ((city2Index - city1Index) / city1Index) * 100;
+  return Number(indexDifference?.toFixed(1));
+};
+
 export const COLBarChart = () => {
   const {
     income,
@@ -32,7 +40,8 @@ export const COLBarChart = () => {
     city1SubTotalCost,
     city2SubTotalCost,
     fromCityCurrencySymbol,
-    subTotalIndex,
+    city1Indices,
+    city2Indices,
   } = useAppSelector((state) => state.COLCalculator);
   // Data for the chart
   const data: ChartData<"bar", number[], string> = {
@@ -45,14 +54,16 @@ export const COLBarChart = () => {
         data: income
           ? [income, city1SubTotalCost, city2SubTotalCost]
           : [city1SubTotalCost, city2SubTotalCost], // Values for Income, City1, City2
-        backgroundColor: income ? [
-          "#4CAF50", // Green for Income
-          "#F44336", // Red for City1
-          "#1E88E5", // Blue for City2
-        ] : [
-          "#F44336", // Red for City1
-          "#1E88E5", // Blue for City2
-        ],
+        backgroundColor: income
+          ? [
+              "#4CAF50", // Green for Income
+              "#F44336", // Red for City1
+              "#1E88E5", // Blue for City2
+            ]
+          : [
+              "#F44336", // Red for City1
+              "#1E88E5", // Blue for City2
+            ],
       },
     ],
   };
@@ -147,21 +158,92 @@ export const COLBarChart = () => {
           </div>
         </div>
       </div>
-      <p className="text-center mt-5 md:text-[18px] text-[16px] font-semibold">
-        Living in {selectedCityName2} is approximately{" "}
-        <span
-          className={`font-bold ${
-            isNegative(subTotalIndex) ? "text-[#4CAF50]" : "text-red-500"
-          }`}
-        >
-          {isNegative(subTotalIndex)
-            ? `${subTotalIndex?.toFixed(2)}`
-            : `+${subTotalIndex?.toFixed(2)}`}
-          %
-        </span>{" "}
-        {isNegative(subTotalIndex) ? "cheaper" : "more expensive"} than living
-        in {selectedCityName1}.
-      </p>
+      <div className="border-[1px] border-gray-200 rounded-lg p-3 shadow-lg mt-5 text-center bg-[#F8F8F8] space-y-2">
+        <p>
+          Cost of living in {selectedCityName2} is{" "}
+          <span
+            className={`font-bold ${
+              isNegative(
+                getIndexDiff(
+                  city1Indices?.cost_of_living_index,
+                  city2Indices?.cost_of_living_index
+                )
+              )
+                ? "text-[#4CAF50]"
+                : "text-red-600"
+            }`}
+          >
+            {" "}
+            {isNegative(
+              getIndexDiff(
+                city1Indices?.cost_of_living_index,
+                city2Indices?.cost_of_living_index
+              )
+            )
+              ? `${getIndexDiff(
+                  city1Indices?.cost_of_living_index,
+                  city2Indices?.cost_of_living_index
+                )?.toFixed(1)}`
+              : `${getIndexDiff(
+                  city1Indices?.cost_of_living_index,
+                  city2Indices?.cost_of_living_index
+                )?.toFixed(1)}`}{" "}
+            %{" "}
+            {isNegative(
+              getIndexDiff(
+                city1Indices?.cost_of_living_index,
+                city2Indices?.cost_of_living_index
+              )
+            )
+              ? "lower"
+              : "higher"}{" "}
+          </span>{" "}
+          than in {selectedCityName1}{" "}
+          <span className="font-semibold">( Without rent )</span>.
+        </p>
+
+        <p>
+          Cost of Living <span className="font-semibold">Including Rent</span>{" "}
+          in {selectedCityName2} is{" "}
+          <span
+            className={`font-bold ${
+              isNegative(
+                getIndexDiff(
+                  city1Indices?.cost_of_living_plus_rent_index,
+                  city2Indices?.cost_of_living_plus_rent_index
+                )
+              )
+                ? "text-[#4CAF50]"
+                : "text-red-600"
+            }`}
+          >
+            {isNegative(
+              getIndexDiff(
+                city1Indices?.cost_of_living_plus_rent_index,
+                city2Indices?.cost_of_living_plus_rent_index
+              )
+            )
+              ? `${getIndexDiff(
+                  city1Indices?.cost_of_living_plus_rent_index,
+                  city2Indices?.cost_of_living_plus_rent_index
+                )?.toFixed(1)}`
+              : `${getIndexDiff(
+                  city1Indices?.cost_of_living_plus_rent_index,
+                  city2Indices?.cost_of_living_plus_rent_index
+                )?.toFixed(1)}`}{" "}
+            %{" "}
+            {isNegative(
+              getIndexDiff(
+                city1Indices?.cost_of_living_plus_rent_index,
+                city2Indices?.cost_of_living_plus_rent_index
+              )
+            )
+              ? "lower"
+              : "higher"}{" "}
+          </span>{" "}
+          than in {selectedCityName1}.
+        </p>
+      </div>
     </section>
   );
 };

@@ -197,7 +197,7 @@ export default function CustomCollapese() {
         </div>
       ),
       children: (
-        <div className="space-y-3 rounded-lg p-2 border-[1px] border-gray-200 bg-[#FFF] shadow-lg">
+        <div className="rounded-lg p-2 border-[1px] border-gray-200 bg-[#FFF] shadow-lg">
           {items?.map((item, index) => {
             const {
               itemName,
