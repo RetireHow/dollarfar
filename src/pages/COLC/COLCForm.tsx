@@ -164,7 +164,7 @@ export default function COLCForm() {
         <div className="md:text-[1rem] text-[14px]">
           <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
             <p>Your Income</p>
-            <CustomTooltip title="Enter your income to see how far your money will go in the new city." />
+            <CustomTooltip title="Enter your income (in numbers only without commas) to see how far your money will go in the new city." />
           </div>
           <input
             className={`outline-none bg-white px-[12px] py-2 w-full duration-300 rounded-[8px] border-[1px] ${

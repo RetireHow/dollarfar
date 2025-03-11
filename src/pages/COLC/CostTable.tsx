@@ -8,7 +8,7 @@ export default function CostTable() {
       </h3>
 
       <div className="overflow-x-auto shadow-lg">
-        <div className="min-w-[800px]">
+        <div className="min-w-[600px]">
           <CustomCollapese />
         </div>
       </div>

@@ -29,22 +29,25 @@ export default function CustomCollapese() {
     }
     return curr.city1TotalCost + prev;
   }, 0);
-  const city1OtherCurrencySubTotalCost = COLCModifiedCostData?.reduce(
-    (prev, curr) => {
-      if (curr.category == "Salaries And Financing") {
-        return 0 + prev;
-      }
-      return curr.city1TotalCostOtherCurrencyPrice + prev;
-    },
-    0
-  );
+  
+  // const city1OtherCurrencySubTotalCost = COLCModifiedCostData?.reduce(
+  //   (prev, curr) => {
+  //     if (curr.category == "Salaries And Financing") {
+  //       return 0 + prev;
+  //     }
+  //     return curr.city1TotalCostOtherCurrencyPrice + prev;
+  //   },
+  //   0
+  // );
 
-  const city2SubTotalCost = COLCModifiedCostData?.reduce((prev, curr) => {
-    if (curr.category == "Salaries And Financing") {
-      return 0 + prev;
-    }
-    return curr.city2TotalCost + prev;
-  }, 0);
+  // const city2SubTotalCost = COLCModifiedCostData?.reduce((prev, curr) => {
+  //   if (curr.category == "Salaries And Financing") {
+  //     return 0 + prev;
+  //   }
+  //   return curr.city2TotalCost + prev;
+  // }, 0);
+
+
   const city2OtherCurrencySubTotalCost = COLCModifiedCostData?.reduce(
     (prev, curr) => {
       if (curr.category == "Salaries And Financing") {
@@ -87,10 +90,10 @@ export default function CustomCollapese() {
           onClick={(d) => {
             d.preventDefault();
           }}
-          className="grid grid-cols-4 gap-5 font-medium text-[20px]"
+          className="grid grid-cols-4 md:gap-5 gap-2 font-medium text-[20px]"
         >
           <p>Category</p>
-          <div className="ml-3 relative" title="City you are moving from">
+          <div className="md:ml-3 relative" title="City you are moving from">
             {selectedCityName1 && (
               <p className="text-[14px] text-green-500 absolute top-[-0.9rem]">
                 City From
@@ -99,7 +102,7 @@ export default function CustomCollapese() {
             <p>{selectedCityName1}</p>
           </div>
 
-          <div className="ml-5 relative" title="City you are moving to">
+          <div className="md:ml-5 relative" title="City you are moving to">
             {selectedCityName2 && (
               <p className="text-[14px] text-green-500 absolute top-[-0.9rem]">
                 City To
@@ -107,7 +110,7 @@ export default function CustomCollapese() {
             )}
             <p className="text-orange-700">{selectedCityName2}</p>
           </div>
-          <p className="ml-8">Difference</p>
+          <p className="md:ml-8">Difference</p>
         </div>
       ),
       children: "",
@@ -130,8 +133,8 @@ export default function CustomCollapese() {
     headerItems.push({
       key: category,
       label: (
-        <div className="grid grid-cols-4 gap-5 font-medium md:text-[18px] text-[16px]">
-          <p className="flex items-center gap-1">
+        <div className="grid grid-cols-4 md:gap-5 gap-2 font-medium md:text-[18px] text-[16px]">
+          <p className="flex md:flex-row flex-col md:items-center gap-1">
             {category == "Restaurants" ? (
               <Icon icon="ri:restaurant-2-fill" width="24" height="24" />
             ) : category == "Markets" ? (
@@ -157,12 +160,12 @@ export default function CustomCollapese() {
             )}
             <span>{category}</span>
           </p>
-          <div>
-            <p className="ml-3">
+          <div className="md:ml-3">
+            <p>
               {city1TotalCostCurrencySymbol}{" "}
               {numberWithCommas(Number(city1TotalCost.toFixed(2)))}
             </p>
-            <p className="ml-3 text-orange-700">
+            <p className="text-orange-700">
               ({city2TotalCostCurrencySymbol}{" "}
               {numberWithCommas(
                 Number(city1TotalCostOtherCurrencyPrice.toFixed(2))
@@ -171,21 +174,21 @@ export default function CustomCollapese() {
             </p>
           </div>
 
-          <div>
-            <p className="ml-5">
+          <div className="md:ml-5">
+            <p>
               {city1TotalCostCurrencySymbol}{" "}
               {numberWithCommas(
                 Number(city2TotalCostOtherCurrencyPrice.toFixed(2))
               )}
             </p>
-            <p className="ml-5 text-orange-700">
+            <p className=" text-orange-700">
               ({city2TotalCostCurrencySymbol}{" "}
               {numberWithCommas(Number(city2TotalCost.toFixed(2)))})
             </p>
           </div>
 
           <p
-            className={`ml-8 flex items-center ${
+            className={`md:ml-8 ml-5 flex items-center ${
               isNegative(totalLivingIndex) ? "text-[#4CAF50]" : "text-red-500"
             }`}
           >
@@ -212,7 +215,7 @@ export default function CustomCollapese() {
             return (
               <div
                 key={index}
-                className="grid grid-cols-4 gap-5 md:text-[16px] text-[14px] border-b-[1px] border-gray-300 p-3 rounded-lg hover:bg-[#42c6c623]"
+                className="grid grid-cols-4 md:gap-5 gap-3 md:text-[16px] text-[14px] border-b-[1px] border-gray-300 p-3 rounded-lg hover:bg-[#42c6c623]"
               >
                 <p className="flex items-center">{itemName}</p>
                 {Number(city1ItemPrice) ? (
@@ -269,7 +272,7 @@ export default function CustomCollapese() {
 
   return (
     <div>
-      <p className="text-right flex items-center justify-end gap-1 md:text-[1.2rem] text-[1rem] font-medium text-gray-600">
+      <p className="text-right flex items-center md:justify-end gap-1 md:text-[1.2rem] text-[1rem] font-medium text-gray-600">
         <span>Click on row or down arrow</span>
         (
         <Icon
@@ -325,7 +328,7 @@ export default function CustomCollapese() {
         className="rounded-none"
       />
       {/* Footer  */}
-      <div className="grid grid-cols-4 font-semibold border-[1px] border-gray-300 px-4 py-3  text-[16px] bg-[#F8F8F8]">
+      {/* <div className="grid grid-cols-4 font-semibold border-[1px] border-gray-300 px-4 py-3  text-[16px] bg-[#F8F8F8]">
         <p className="flex items-center">
           <Icon
             className="mr-1"
@@ -370,7 +373,7 @@ export default function CustomCollapese() {
             : `+${subTotalIndex.toFixed(2)}`}
           <span className="ml-1">%</span>
         </p>
-      </div>
+      </div> */}
     </div>
   );
 }
