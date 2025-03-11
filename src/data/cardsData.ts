@@ -2,6 +2,16 @@ import { assets } from "../assets/assets";
 
 export const cardsData = [
   {
+    id: 6,
+    title: "Cost of Living Calculator",
+    description:
+      "This calculator is used to compare the expenses required to maintain a certain standard of living in different locations or cities. It calculates the necessary income to sustain your lifestyle.....",
+    arrowIcon: assets.arrowUpIcon,
+    calcIcon: assets.costOfLivingCalcIcon,
+    btnText: "Calculate",
+    navLink: "cost-of-living-calculator",
+  },
+  {
     id: 1,
     title: "Compound Interest Rate Calculator",
     description:
@@ -35,16 +45,6 @@ export const cardsData = [
   },
 
   {
-    id: 7,
-    title: "Comprehensive Retirement Income Calculator",
-    description:
-      "This calculator estimates helps users estimate how much money they need to save to comfortably retire based on their current financial situation, income, savings, lifestyle, and future expenses.....",
-    arrowIcon: assets.arrowUpIcon,
-    calcIcon: assets.comprehensiveRetirement,
-    btnText: "Calculate",
-    navLink: "CRIC",
-  },
-  {
     id: 8,
     title: "Registered Retirement Savings Plan (RRSP) Calculator",
     description:
@@ -64,15 +64,14 @@ export const cardsData = [
     btnText: "Calculate",
     navLink: "registered-retirement-income-fund-calculator",
   },
-
   {
-    id: 6,
-    title: "Cost of Living Calculator",
+    id: 7,
+    title: "Comprehensive Retirement Income Calculator",
     description:
-      "This calculator is used to compare the expenses required to maintain a certain standard of living in different locations or cities. It calculates the necessary income to sustain your lifestyle.....",
+      "This calculator estimates helps users estimate how much money they need to save to comfortably retire based on their current financial situation, income, savings, lifestyle, and future expenses.....",
     arrowIcon: assets.arrowUpIcon,
-    calcIcon: assets.costOfLivingCalcIcon,
+    calcIcon: assets.comprehensiveRetirement,
     btnText: "Calculate",
-    navLink: "cost-of-living-calculator",
+    navLink: "CRIC",
   },
 ];

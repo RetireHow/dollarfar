@@ -35,6 +35,36 @@ interface TExchangeItem {
   one_eur_to_currency: number;
 }
 
+type TIndices = {
+  crime_index: number;
+  cpi_and_rent_index: number;
+  cost_of_living_plus_rent_index: number;
+  purchasing_power_incl_rent_index: number;
+  property_price_to_income_ratio: number;
+  contributors_healthcare: number;
+  safety_index: number;
+  traffic_co2_index: number;
+  traffic_inefficiency_index: number;
+  contributors_traffic: number;
+  rent_index: number;
+  health_care_index: number;
+  groceries_index: number;
+  contributors_property: number;
+  pollution_index: number;
+  traffic_time_index: number;
+  restaurant_price_index: number;
+  contributors_cost_of_living: number;
+  climate_index: number;
+  cost_of_living_index: number;
+  cpi_index: number;
+  quality_of_life_index: number;
+  contributors_pollution: number;
+  contributors_crime: number;
+  traffic_index: number;
+  name: string;
+  city_id: number;
+};
+
 // Define the state type
 interface COLCState {
   selectedCityName1: string;
@@ -48,6 +78,9 @@ interface COLCState {
 
   fromCityCurrencySymbol: string;
   toCityCurrencySymbol: string;
+
+  city1Indices: TIndices;
+  city2Indices: TIndices;
 }
 
 // Initial state
@@ -62,6 +95,9 @@ const initialState: COLCState = {
   exchangeRatesData: [],
   fromCityCurrencySymbol: "",
   toCityCurrencySymbol: "",
+
+  city1Indices: {} as TIndices,
+  city2Indices: {} as TIndices,
 };
 
 // Create the slice
@@ -105,6 +141,12 @@ const COLCSlice = createSlice({
     setToCityCurrencySymbol(state, action: PayloadAction<string>) {
       state.toCityCurrencySymbol = action.payload;
     },
+    setCity1Indices(state, action) {
+      state.city1Indices = action.payload;
+    },
+    setCity2Indices(state, action) {
+      state.city2Indices = action.payload;
+    },
   },
 });
 
@@ -120,6 +162,8 @@ export const {
   setCurrencyRatesData,
   setFromCityCurrencySymbol,
   setToCityCurrencySymbol,
+  setCity1Indices,
+  setCity2Indices,
 } = COLCSlice.actions;
 
 export default COLCSlice.reducer;

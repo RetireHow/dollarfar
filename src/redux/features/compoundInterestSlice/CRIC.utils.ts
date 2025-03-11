@@ -1,10 +1,3 @@
-// Number(initialInvestment),
-// Number(contribution),
-// Number(contributionFrequency),
-// Number(annualInterestRate),
-// Number(compoundingFrequency),
-// Number(years)
-
 export function calculateCRIInvestment(
   initialInvestment: number,
   contribution: number,

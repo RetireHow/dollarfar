@@ -1,4 +1,5 @@
 import { useAppSelector } from "../../redux/hooks";
+import { isNegative } from "../../utils/isNegative";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function NWTotal() {
@@ -25,7 +26,7 @@ export default function NWTotal() {
             {numberWithCommas(totalLiabilities)}
           </p>
         </div>
-        <div className="bg-black text-white md:text-[1.25rem] text-[1rem] flex items-center justify-between px-[1rem] py-[0.6rem] rounded-[10px]">
+        <div className={`text-white md:text-[1.25rem] text-[1rem] flex items-center justify-between px-[1rem] py-[0.6rem] rounded-[10px] ${isNegative(netWorth) ? 'bg-red-500' : 'bg-black'}`}>
           <p>Net Worth</p>
           <p>
             {currency}

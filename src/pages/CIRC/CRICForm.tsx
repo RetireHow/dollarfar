@@ -93,7 +93,11 @@ export default function CRICForm({
     setIsLoading(false);
     setIsCalculationCompleted(false);
 
-    if (!Number(initialInvestment) || !Number(years)) {
+    if (
+      !Number(initialInvestment) ||
+      !Number(years) ||
+      !Number(annualInterestRate)
+    ) {
       return setShowError(true);
     }
 
@@ -210,29 +214,33 @@ export default function CRICForm({
             htmlFor="interest-rate"
           >
             Rate of interest
+            <CIRCRedStar />
           </label>
           <CIRCTooltip title="The percentage at which your investment grows annually. This is the return provided by your investment or savings account." />
         </div>
         <div className="flex md:flex-row flex-col gap-3 items-center">
-         <div className="w-full">
-         <input
-            className={`outline-none border-[1px] border-[#d1d5db] px-[12px] py-[9px] w-full duration-300 rounded-[8px] `}
-            type="number"
-            id="interest-rate"
-            placeholder="0%"
-            value={annualInterestRate}
-            onWheel={(e) => e.currentTarget.blur()}
-            onChange={(e) => {
-              dispatch(
-                updateCRICField({
-                  key: "annualInterestRate",
-                  value: e.target.value,
-                })
-              );
-            }}
-          />
-          <ShowNegativeMessage input={annualInterestRate} />
-         </div>
+          <div className="w-full">
+            <input
+              className={`outline-none border-[1px] border-[#d1d5db] px-[12px] py-[9px] w-full duration-300 rounded-[8px] `}
+              type="number"
+              id="interest-rate"
+              placeholder="0%"
+              value={annualInterestRate}
+              onWheel={(e) => e.currentTarget.blur()}
+              onChange={(e) => {
+                dispatch(
+                  updateCRICField({
+                    key: "annualInterestRate",
+                    value: e.target.value,
+                  })
+                );
+              }}
+            />
+            {showError && !Number(annualInterestRate) && (
+              <Error message="This field is required" />
+            )}
+            <ShowNegativeMessage input={annualInterestRate} />
+          </div>
           <div className="border-[1px] border-[#d1d5db] px-[12px] pt-[20px] pb-[24px] w-full duration-300 rounded-[8px]">
             <ReactSlider
               className="horizontal-slider"

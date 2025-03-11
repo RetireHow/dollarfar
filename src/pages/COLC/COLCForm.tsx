@@ -5,6 +5,43 @@ import { useAppDispatch } from "../../redux/hooks";
 
 import data from "../../data/apiCities.json";
 
+// type TCityIndicesResponse = {
+//   message: string;
+//   success: boolean;
+//   statusCode: number;
+//   data: TCityIndicesData;
+// };
+
+// type TCityIndicesData = {
+//   crime_index: number;
+//   cpi_and_rent_index: number;
+//   cost_of_living_plus_rent_index: number;
+//   purchasing_power_incl_rent_index: number;
+//   property_price_to_income_ratio: number;
+//   contributors_healthcare: number;
+//   safety_index: number;
+//   traffic_co2_index: number;
+//   traffic_inefficiency_index: number;
+//   contributors_traffic: number;
+//   rent_index: number;
+//   health_care_index: number;
+//   groceries_index: number;
+//   contributors_property: number;
+//   pollution_index: number;
+//   traffic_time_index: number;
+//   restaurant_price_index: number;
+//   contributors_cost_of_living: number;
+//   climate_index: number;
+//   cost_of_living_index: number;
+//   cpi_index: number;
+//   quality_of_life_index: number;
+//   contributors_pollution: number;
+//   contributors_crime: number;
+//   traffic_index: number;
+//   name: string;
+//   city_id: number;
+// };
+
 type TOption = {
   label: string;
   value: string;
@@ -78,6 +115,32 @@ export default function COLCForm() {
           return toast.error(data.message);
         }
 
+        // City Indices API
+        // const cityIndicesRes1 = await fetch(
+        //   `${baseUrl}/api/city-indices?city=${cityName1}&country=${countryName1}`
+        // );
+        // const cityIndicesData1: TCityIndicesResponse =
+        //   await cityIndicesRes1.json();
+
+        // const cityIndicesRes2 = await fetch(
+        //   `${baseUrl}/api/city-indices?city=${cityName2}&country=${countryName2}`
+        // );
+        // const cityIndicesData2: TCityIndicesResponse =
+        //   await cityIndicesRes2.json();
+
+        // if (cityIndicesData1?.success && cityIndicesData1?.statusCode == 200) {
+        //   dispatch(setCity1Indices(cityIndicesData1.data));
+        // }
+        // if (cityIndicesData2?.success && cityIndicesData2?.statusCode == 200) {
+        //   dispatch(setCity2Indices(cityIndicesData2.data));
+        // }
+        // if (!cityIndicesData1?.success && cityIndicesData1?.statusCode == 400) {
+        //   return toast.error(cityIndicesData1?.message);
+        // }
+        // if (!cityIndicesData2?.success && cityIndicesData2?.statusCode == 400) {
+        //   return toast.error(cityIndicesData1?.message);
+        // }
+
         dispatch(setSelectedCityName1(cityName1));
         dispatch(setSelectedCityName2(cityName2));
         dispatch(setIncome(Number(storedIncome)));
@@ -111,7 +174,7 @@ export default function COLCForm() {
             onChange={(e) => setStoredIncome(e.target.value)}
             placeholder="Enter income"
           />
-          <ShowNegativeMessage input={storedIncome}/>
+          <ShowNegativeMessage input={storedIncome} />
         </div>
 
         <div className="md:text-[1rem] text-[14px]">

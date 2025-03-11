@@ -31,8 +31,8 @@ export const COLBarChart = () => {
     selectedCityName2,
     city1SubTotalCost,
     city2SubTotalCost,
-    subTotalIndex,
     fromCityCurrencySymbol,
+    subTotalIndex,
   } = useAppSelector((state) => state.COLCalculator);
   // Data for the chart
   const data: ChartData<"bar", number[], string> = {
@@ -44,11 +44,14 @@ export const COLBarChart = () => {
         // label: 'Financial Overview',
         data: income
           ? [income, city1SubTotalCost, city2SubTotalCost]
-          : [city1SubTotalCost, city2SubTotalCost], // Values for Assets, Liabilities, Net Worth
-        backgroundColor: [
-          "#4CAF50", // Green for Assets
-          "#F44336", // Red for Liabilities
-          "#1E88E5", // Blue for Net Worth
+          : [city1SubTotalCost, city2SubTotalCost], // Values for Income, City1, City2
+        backgroundColor: income ? [
+          "#4CAF50", // Green for Income
+          "#F44336", // Red for City1
+          "#1E88E5", // Blue for City2
+        ] : [
+          "#F44336", // Red for City1
+          "#1E88E5", // Blue for City2
         ],
       },
     ],

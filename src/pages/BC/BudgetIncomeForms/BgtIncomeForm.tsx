@@ -8,11 +8,7 @@ import DFSelectWithWatch from "../../../components/Form/DFSelectWithWatch";
 import BudgetDynamicFieldWithFrequency from "../BudgetDynamicFieldWithFrequency";
 import {
   calculateTotalIncome,
-  updateIncomeTaxField,
 } from "../../../redux/features/BgtSlice/BgtSlice";
-import BCTooltip from "../BCTooltip";
-import { isNegative } from "../../../utils/isNegative";
-import Error from "../../../components/UI/Error";
 
 export default function BgtIncomeForm() {
   const navigate = useNavigate();
@@ -37,7 +33,6 @@ export default function BgtIncomeForm() {
       dynamicNetIncomes,
       dynamicOtherIncomes,
       dynamicMoreIncomes,
-      incomeTaxRate,
     },
   } = useAppSelector((state) => state.budgetCalculator);
   return (
@@ -135,7 +130,7 @@ export default function BgtIncomeForm() {
               stepName="income"
               field="dynamicNetIncomes"
               addBtnTitle="Add more net income"
-              buttonInfoText="e.g., Self-Employment, Retirement Income etc."
+              buttonInfoText="e.g., Self-Employment etc."
               dynamicFields={dynamicNetIncomes}
             />
           </div>
@@ -173,7 +168,7 @@ export default function BgtIncomeForm() {
             addBtnTitle="Add more income"
             dynamicFields={dynamicMoreIncomes}
           />
-          <div className="flex-1">
+          {/* <div className="flex-1">
             <div className="flex items-center mb-[0.3rem]">
               <label
                 className="block font-semibold md:text-[1rem] text-[14px]"
@@ -199,7 +194,7 @@ export default function BgtIncomeForm() {
             {isNegative(Number(incomeTaxRate)) && (
               <Error message="Negative value is not allowed." />
             )}
-          </div>
+          </div> */}
         </section>
       </DFForm>
 

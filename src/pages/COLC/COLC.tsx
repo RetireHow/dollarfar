@@ -65,7 +65,6 @@ export default function COLC() {
             </div>
           </div>
         </div>
-
         <COLCForm />
         {COLCModifiedCostData?.length == 0 ? (
           <div className="flex justify-center">
