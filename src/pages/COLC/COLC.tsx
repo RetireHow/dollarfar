@@ -6,9 +6,9 @@ import COLDescription from "./COLDescription";
 import COLCForm from "./COLCForm";
 import CurrencySelect from "../../components/UI/CurrencySelect";
 import CostTable from "./CostTable";
-import { COLBarChart } from "./COLBarchart";
 import { useAppSelector } from "../../redux/hooks";
 import useTitle from "../../hooks/useTitle";
+import CityMovingCard from "./CityMovingCard";
 
 const data = {
   title: "Cost of Living Calculator",
@@ -20,25 +20,19 @@ const data = {
 export default function COLC() {
   useTitle("Dollarfar | COLC");
   const {
-    city1SubTotalCost,
-    city2SubTotalCost,
     selectedCityName1,
     selectedCityName2,
+    selectedCountryName1,
+    selectedCountryName2,
     COLCModifiedCostData,
     income,
-    subTotalIndex,
-    fromCityCurrencySymbol
   } = useAppSelector((state) => state.COLCalculator);
 
   const calculatorData = {
-    city1SubTotalCost,
-    city2SubTotalCost,
     selectedCityName1,
     selectedCityName2,
     COLCModifiedCostData,
     income,
-    subTotalIndex,
-    fromCityCurrencySymbol
   };
 
   return (
@@ -66,7 +60,7 @@ export default function COLC() {
           </div>
         </div>
         <COLCForm />
-        {COLCModifiedCostData?.length == 0 ? (
+        {!COLCModifiedCostData?.output ? (
           <div className="flex justify-center">
             <h3 className="text-[1.3rem] font-medium text-gray-600 text-center max-w-[600px]">
               Click on the <span className="text-black font-bold">Compare</span>{" "}
@@ -77,7 +71,16 @@ export default function COLC() {
         ) : (
           <div>
             <CostTable />
-            <COLBarChart />
+            <section className="flex md:flex-row flex-col md:items-center gap-5 mt-10">
+              <CityMovingCard
+                selectedCity={selectedCityName1}
+                selectedCountry={selectedCountryName1}
+              />
+              <CityMovingCard
+                selectedCity={selectedCityName2}
+                selectedCountry={selectedCountryName2}
+              />
+            </section>
           </div>
         )}
       </section>

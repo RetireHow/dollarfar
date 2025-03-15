@@ -28,6 +28,13 @@ import EmployerPension from "../pages/CRIC/Forms/EmployerPension";
 import RetirementSavings from "../pages/CRIC/Forms/RetirementSavings";
 import OtherIncome from "../pages/CRIC/Forms/OtherIncome";
 import BCSummary from "../pages/BC/BCSummary/BCSummary";
+import IndexExplanation from "../pages/COLC/IndexExplanation";
+import QualityLife from "../pages/COLC/COLCPages/QualityLife";
+import Crime from "../pages/COLC/COLCPages/Crime";
+import HealthCare from "../pages/COLC/COLCPages/HealthCare";
+import Pollution from "../pages/COLC/COLCPages/Pollution";
+import PropertyPrice from "../pages/COLC/COLCPages/PropertyPrice";
+import Traffic from "../pages/COLC/COLCPages/Traffic";
 
 export const router = createBrowserRouter([
   {
@@ -96,6 +103,37 @@ export const router = createBrowserRouter([
       {
         path: "cost-of-living-calculator",
         element: <COLC />,
+      },
+
+      {
+        path: "cost-of-living-calculator/quality-life/:countryCity",
+        element: <QualityLife />,
+      },
+
+      {
+        path: "cost-of-living-calculator/crime/:countryCity",
+        element: <Crime />,
+      },
+      {
+        path: "cost-of-living-calculator/health-care/:countryCity",
+        element: <HealthCare />,
+      },
+      {
+        path: "cost-of-living-calculator/pollution/:countryCity",
+        element: <Pollution />,
+      },
+      {
+        path: "cost-of-living-calculator/property-prices/:countryCity",
+        element: <PropertyPrice />,
+      },
+      {
+        path: "cost-of-living-calculator/traffic/:countryCity",
+        element: <Traffic />,
+      },
+
+      {
+        path: "cost-of-living-calculator/indices-explanation",
+        element: <IndexExplanation />,
       },
       {
         path: "registered-retirement-savings-plan-calculator",

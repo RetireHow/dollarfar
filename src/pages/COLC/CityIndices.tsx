@@ -1,5 +1,7 @@
+import { Icon } from "@iconify/react/dist/iconify.js";
 import { useAppSelector } from "../../redux/hooks";
 import { isNegative } from "../../utils/isNegative";
+import { Link } from "react-router-dom";
 
 const getIndexDiff = (city1Index: number, city2Index: number) => {
   if (!city1Index || !city2Index) {
@@ -14,12 +16,22 @@ export default function CityIndices() {
     useAppSelector((state) => state.COLCalculator);
 
   return (
-    <section className="border-[1px] bg-[#F8F8F8] border-gray-300 shadow-lg md:p-8 p-3 mb-[2rem] mt-[5rem] rounded-lg text-center">
-      <h3 className="font-bold mb-5 text-[1.2rem]">
-        Indices Difference
-      </h3>
-      <div>
-        <div className="border-b-[1px] border-b-gray-300 py-[1.3rem] border-t-[1px] border-t-gray-300 hover:bg-[#42c6c623] cursor-default px-2">
+    <section className="border-[1px] bg-[#F8F8F8] border-gray-300 shadow-lg p-3 mb-[1rem] mt-[1rem] rounded-lg inline-block">
+      <div className="font-bold mb-2 text-[1.2rem] flex justify-between items-center">
+        <p>Indices Difference</p>
+        <Link to="/cost-of-living-calculator/indices-explanation">
+          <p title="About these indices">
+            <Icon
+              className="text-green-500 cursor-pointer"
+              icon="rivet-icons:exclamation-mark-circle-solid"
+              width="23"
+              height="23"
+            />
+          </p>
+        </Link>
+      </div>
+      <div className="space-y-[0.5rem]">
+        <div>
           Cost of Living in {selectedCityName2} is{" "}
           {Math.abs(
             getIndexDiff(
@@ -36,8 +48,8 @@ export default function CityIndices() {
                   city2Indices?.cost_of_living_index
                 )
               )
-                ? "text-green-500"
-                : "text-red-500"
+                ? "text-green-600"
+                : "text-red-600"
             }`}
           >
             {isNegative(
@@ -49,11 +61,11 @@ export default function CityIndices() {
               ? "lower"
               : "higher"}{" "}
           </span>
-          than in {selectedCityName1} (without rent)
+          than in {selectedCityName1} <span className="font-semibold">(without rent)</span>
         </div>
 
-        <div className="border-b-[1px] border-b-gray-300 py-[1.3rem] hover:bg-[#42c6c623] cursor-default px-2">
-          Cost of Living Including Rent in {selectedCityName2} is{" "}
+        <div>
+          Cost of Living <span className="font-semibold">Including Rent</span> in {selectedCityName2} is{" "}
           {Math.abs(
             getIndexDiff(
               city1Indices?.cost_of_living_plus_rent_index,
@@ -69,8 +81,8 @@ export default function CityIndices() {
                   city2Indices?.cost_of_living_plus_rent_index
                 )
               )
-                ? "text-green-500"
-                : "text-red-500"
+                ? "text-green-600"
+                : "text-red-600"
             }`}
           >
             {isNegative(
@@ -85,7 +97,7 @@ export default function CityIndices() {
           than in {selectedCityName1}
         </div>
 
-        <div className="border-b-[1px] border-b-gray-300 py-[1.3rem] hover:bg-[#42c6c623] cursor-default px-2">
+        <div>
           Rent Prices in {selectedCityName2} is{" "}
           {Math.abs(
             getIndexDiff(city1Indices?.rent_index, city2Indices?.rent_index)
@@ -96,8 +108,8 @@ export default function CityIndices() {
               isNegative(
                 getIndexDiff(city1Indices?.rent_index, city2Indices?.rent_index)
               )
-                ? "text-green-500"
-                : "text-red-500"
+                ? "text-green-600"
+                : "text-red-600"
             }`}
           >
             {isNegative(
@@ -109,7 +121,7 @@ export default function CityIndices() {
           than in {selectedCityName1}
         </div>
 
-        <div className="border-b-[1px] border-b-gray-300 py-[1.3rem] hover:bg-[#42c6c623] cursor-default px-2">
+        <div>
           Restaurant Prices in {selectedCityName2} is{" "}
           {Math.abs(
             getIndexDiff(
@@ -126,8 +138,8 @@ export default function CityIndices() {
                   city2Indices?.restaurant_price_index
                 )
               )
-                ? "text-green-500"
-                : "text-red-500"
+                ? "text-green-600"
+                : "text-red-600"
             }`}
           >
             {isNegative(
@@ -142,7 +154,7 @@ export default function CityIndices() {
           than in {selectedCityName1}
         </div>
 
-        <div className="border-b-[1px] border-b-gray-300 py-[1.3rem] hover:bg-[#42c6c623] cursor-default px-2">
+        <div>
           Groceries Prices in {selectedCityName2} is{" "}
           {Math.abs(
             getIndexDiff(
@@ -159,8 +171,8 @@ export default function CityIndices() {
                   city2Indices?.groceries_index
                 )
               )
-                ? "text-green-500"
-                : "text-red-500"
+                ? "text-green-600"
+                : "text-red-600"
             }`}
           >
             {isNegative(
@@ -175,7 +187,7 @@ export default function CityIndices() {
           than in {selectedCityName1}
         </div>
 
-        <div className="border-b-[1px] border-b-gray-300 py-[1.3rem] hover:bg-[#42c6c623] cursor-default px-2">
+        <div>
           Local Purchasing Power in {selectedCityName2} is{" "}
           {Math.abs(
             getIndexDiff(
@@ -192,8 +204,8 @@ export default function CityIndices() {
                   city2Indices?.purchasing_power_incl_rent_index
                 )
               )
-                ? "text-green-500"
-                : "text-red-500"
+                ? "text-green-600"
+                : "text-red-600"
             }`}
           >
             {isNegative(

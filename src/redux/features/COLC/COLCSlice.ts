@@ -1,38 +1,44 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type TModifiedItem = {
-  city1CurrencyCode: string;
-  city2CurrencyCode: string;
-  city1CurrencySymbol: string;
-  city2CurrencySymbol: string;
+export interface TCostOfLivingData {
+  output: Output[];
+  metaData: MetaData;
+}
+
+export interface Output {
+  category: string;
+  items: Item[];
+}
+
+export interface Item {
   itemName: string;
   city1ItemPrice: number;
   city2ItemPrice: number;
   city1OtherCurrencyItemPrice: number;
   city2OtherCurrencyItemPrice: number;
-  livingIndex: number;
-};
+}
 
-type TModifiedCostData = {
-  category: string;
-  city1TotalCostCurrencyCode: string;
-  city2TotalCostCurrencyCode: string;
-  city1TotalCostCurrencySymbol: string;
-  city2TotalCostCurrencySymbol: string;
-  city1TotalCostOtherCurrencyPrice: number;
-  city2TotalCostOtherCurrencyPrice: number;
-  city1TotalCost: number;
-  city2TotalCost: number;
-  totalLivingIndex: number;
-  items: TModifiedItem[];
-};
+export interface MetaData {
+  city1: City1;
+  city2: City2;
+}
 
-type TExchangeRates = TExchangeItem[];
-
-interface TExchangeItem {
-  one_usd_to_currency: number;
+export interface City1 {
+  name: string;
   currency: string;
-  one_eur_to_currency: number;
+  contributors12months: number;
+  monthLastUpdate: number;
+  contributors: number;
+  yearLastUpdate: number;
+}
+
+export interface City2 {
+  name: string;
+  currency: string;
+  contributors12months: number;
+  monthLastUpdate: number;
+  contributors: number;
+  yearLastUpdate: number;
 }
 
 type TIndices = {
@@ -69,15 +75,13 @@ type TIndices = {
 interface COLCState {
   selectedCityName1: string;
   selectedCityName2: string;
-  income: number;
-  city1SubTotalCost: number;
-  city2SubTotalCost: number;
-  subTotalIndex: number;
-  COLCModifiedCostData: TModifiedCostData[];
-  exchangeRatesData: TExchangeRates;
 
-  fromCityCurrencySymbol: string;
-  toCityCurrencySymbol: string;
+  selectedCountryName1: string;
+  selectedCountryName2: string;
+
+  income: number;
+
+  COLCModifiedCostData: TCostOfLivingData;
 
   city1Indices: TIndices;
   city2Indices: TIndices;
@@ -88,13 +92,10 @@ const initialState: COLCState = {
   income: 0,
   selectedCityName1: "",
   selectedCityName2: "",
-  city1SubTotalCost: 0,
-  city2SubTotalCost: 0,
-  subTotalIndex: 0,
-  COLCModifiedCostData: [],
-  exchangeRatesData: [],
-  fromCityCurrencySymbol: "",
-  toCityCurrencySymbol: "",
+  selectedCountryName1: "",
+  selectedCountryName2: "",
+
+  COLCModifiedCostData: {} as TCostOfLivingData,
 
   city1Indices: {} as TIndices,
   city2Indices: {} as TIndices,
@@ -113,33 +114,18 @@ const COLCSlice = createSlice({
       state.selectedCityName2 = action.payload;
     },
 
+    setSelectedCountryName1(state, action: PayloadAction<string>) {
+      state.selectedCountryName1 = action.payload;
+    },
+    setSelectedCountryName2(state, action: PayloadAction<string>) {
+      state.selectedCountryName2 = action.payload;
+    },
+
     setIncome(state, action: PayloadAction<number>) {
       state.income = action.payload;
     },
-
-    setCity1SubTotalCost(state, action: PayloadAction<number>) {
-      state.city1SubTotalCost = action.payload;
-    },
-    setCity2SubTotalCost(state, action: PayloadAction<number>) {
-      state.city2SubTotalCost = action.payload;
-    },
-    setSubTotalIndex(state, action: PayloadAction<number>) {
-      state.subTotalIndex = action.payload;
-    },
-
-    setCOLCModifiedCostData(state, action: PayloadAction<TModifiedCostData[]>) {
+    setCOLCModifiedCostData(state, action: PayloadAction<TCostOfLivingData>) {
       state.COLCModifiedCostData = action.payload;
-    },
-
-    setCurrencyRatesData(state, action: PayloadAction<TExchangeRates>) {
-      state.exchangeRatesData = action.payload;
-    },
-
-    setFromCityCurrencySymbol(state, action: PayloadAction<string>) {
-      state.fromCityCurrencySymbol = action.payload;
-    },
-    setToCityCurrencySymbol(state, action: PayloadAction<string>) {
-      state.toCityCurrencySymbol = action.payload;
     },
     setCity1Indices(state, action) {
       state.city1Indices = action.payload;
@@ -154,14 +140,10 @@ const COLCSlice = createSlice({
 export const {
   setSelectedCityName1,
   setSelectedCityName2,
+  setSelectedCountryName1,
+  setSelectedCountryName2,
   setIncome,
-  setCity1SubTotalCost,
-  setCity2SubTotalCost,
-  setSubTotalIndex,
   setCOLCModifiedCostData,
-  setCurrencyRatesData,
-  setFromCityCurrencySymbol,
-  setToCityCurrencySymbol,
   setCity1Indices,
   setCity2Indices,
 } = COLCSlice.actions;

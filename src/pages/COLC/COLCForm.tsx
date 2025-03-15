@@ -56,6 +56,9 @@ import {
   setIncome,
   setSelectedCityName1,
   setSelectedCityName2,
+  setSelectedCountryName1,
+  setSelectedCountryName2,
+  TCostOfLivingData,
 } from "../../redux/features/COLC/COLCSlice";
 
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -64,6 +67,7 @@ import { Select } from "antd";
 import CustomTooltip from "../../components/UI/CustomTooltip";
 import { baseUrl } from "../../api/apiConstant";
 import ShowNegativeMessage from "../../components/UI/ShowNegativeMessage";
+import { transformCityPriceData } from "../../utils/transformCityPricesData";
 
 export default function COLCForm() {
   useEffect(() => {
@@ -106,6 +110,111 @@ export default function COLCForm() {
     if (cityName1 && cityName2 && countryName1 && countryName2) {
       try {
         setApiDataLoading(true);
+        // Transform API response
+        const res1 = await fetch(
+          `${baseUrl}/api/single-city-prices?country=${countryName1}&city=${cityName1}&currency=null`
+        );
+        const city1DefaultCurrencyData = await res1.json();
+        if (
+          !city1DefaultCurrencyData.success &&
+          city1DefaultCurrencyData.statusCode == 400
+        ) {
+          setShowError(false);
+          setApiDataLoading(false);
+          return toast.error(city1DefaultCurrencyData.message);
+        }
+
+        if (
+          city1DefaultCurrencyData?.success &&
+          city1DefaultCurrencyData?.data?.prices?.length == 0
+        ) {
+          setShowError(false);
+          setApiDataLoading(false);
+          return toast.error(
+            `No information available for ${city1DefaultCurrencyData?.data?.name}`
+          );
+        }
+
+        const res2 = await fetch(
+          `${baseUrl}/api/single-city-prices?country=${countryName2}&city=${cityName2}&currency=null`
+        );
+        const city2DefaultCurrencyData = await res2.json();
+        if (
+          !city2DefaultCurrencyData.success &&
+          city2DefaultCurrencyData.statusCode == 400
+        ) {
+          setShowError(false);
+          setApiDataLoading(false);
+          return toast.error(city2DefaultCurrencyData.message);
+        }
+
+        if (
+          city2DefaultCurrencyData?.success &&
+          city2DefaultCurrencyData?.data?.prices?.length == 0
+        ) {
+          setShowError(false);
+          setApiDataLoading(false);
+          return toast.error(
+            `No information available for ${city2DefaultCurrencyData?.data?.name}`
+          );
+        }
+
+        //Other Currency Data
+        const res3 = await fetch(
+          `${baseUrl}/api/single-city-prices?country=${countryName1}&city=${cityName1}&currency=${city2DefaultCurrencyData?.data?.currency}`
+        );
+        const city1OtherCurrencyData = await res3.json();
+        if (
+          !city1OtherCurrencyData.success &&
+          city1OtherCurrencyData.statusCode == 400
+        ) {
+          setShowError(false);
+          setApiDataLoading(false);
+          return toast.error(city1OtherCurrencyData.message);
+        }
+
+        if (
+          city1OtherCurrencyData?.success &&
+          city1OtherCurrencyData?.data?.prices?.length == 0
+        ) {
+          setShowError(false);
+          setApiDataLoading(false);
+          return toast.error(
+            `No information available for ${city1OtherCurrencyData?.data?.name}`
+          );
+        }
+
+        const res4 = await fetch(
+          `${baseUrl}/api/single-city-prices?country=${countryName2}&city=${cityName2}&currency=${city1DefaultCurrencyData?.data?.currency}`
+        );
+        const city2OtherCurrencyData = await res4.json();
+        if (
+          !city2OtherCurrencyData.success &&
+          city2OtherCurrencyData.statusCode == 400
+        ) {
+          setShowError(false);
+          setApiDataLoading(false);
+          return toast.error(city2OtherCurrencyData.message);
+        }
+
+        if (
+          city2OtherCurrencyData?.success &&
+          city2OtherCurrencyData?.data?.prices?.length == 0
+        ) {
+          setShowError(false);
+          setApiDataLoading(false);
+          return toast.error(
+            `No information available for ${city2OtherCurrencyData?.data?.name}`
+          );
+        }
+
+        const costOfLivingData = transformCityPriceData(
+          city1DefaultCurrencyData,
+          city1OtherCurrencyData,
+          city2DefaultCurrencyData,
+          city2OtherCurrencyData
+        );
+
         const response = await fetch(
           `${baseUrl}/api/city-prices?city1=${cityName1}&country1=${countryName1}&city2=${cityName2}&country2=${countryName2}`
         );
@@ -145,8 +254,13 @@ export default function COLCForm() {
 
         dispatch(setSelectedCityName1(cityName1));
         dispatch(setSelectedCityName2(cityName2));
+        dispatch(setSelectedCountryName1(countryName1));
+        dispatch(setSelectedCountryName2(countryName2));
+        
         dispatch(setIncome(Number(storedIncome)));
-        dispatch(setCOLCModifiedCostData(data?.data));
+        dispatch(
+          setCOLCModifiedCostData(costOfLivingData as TCostOfLivingData)
+        );
         setShowError(false);
         setApiDataLoading(false);
       } catch (error: any) {

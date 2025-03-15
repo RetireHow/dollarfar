@@ -1,14 +1,12 @@
 import CustomCollapese from "../../components/UI/CustomCollapese";
+import CityIndices from "./CityIndices";
 
 export default function CostTable() {
   return (
     <section className="mt-5">
-      <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-2 mb-3">
-        Cost Difference
-      </h3>
-
-      <div className="overflow-x-auto shadow-lg">
-        <div className="min-w-[600px]">
+      <CityIndices/>
+      <div className="overflow-x-auto">
+        <div className="min-w-[550px]">
           <CustomCollapese />
         </div>
       </div>
