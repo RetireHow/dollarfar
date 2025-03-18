@@ -35,6 +35,10 @@ import HealthCare from "../pages/COLC/COLCPages/HealthCare";
 import Pollution from "../pages/COLC/COLCPages/Pollution";
 import PropertyPrice from "../pages/COLC/COLCPages/PropertyPrice";
 import Traffic from "../pages/COLC/COLCPages/Traffic";
+import TrafficIndexExplanation from "../pages/COLC/COLCPages/TrafficIndexExplanation";
+import QualityLifeIndexExplanation from "../pages/COLC/COLCPages/QualityLifeIndexExplanation";
+import PollutionIndicesExplanation from "../pages/COLC/COLCPages/PollutionIndicesExplanation";
+import StickyCurrencyPage from "../pages/COLC/COLCPages/StickyCurrencyPage";
 
 export const router = createBrowserRouter([
   {
@@ -109,6 +113,10 @@ export const router = createBrowserRouter([
         path: "cost-of-living-calculator/quality-life/:countryCity",
         element: <QualityLife />,
       },
+      {
+        path: "cost-of-living-calculator/quality-life/quality-life-indices-explanation",
+        element: <QualityLifeIndexExplanation />,
+      },
 
       {
         path: "cost-of-living-calculator/crime/:countryCity",
@@ -123,6 +131,10 @@ export const router = createBrowserRouter([
         element: <Pollution />,
       },
       {
+        path: "cost-of-living-calculator/pollution/pollution-indices-explanation",
+        element: <PollutionIndicesExplanation />,
+      },
+      {
         path: "cost-of-living-calculator/property-prices/:countryCity",
         element: <PropertyPrice />,
       },
@@ -130,11 +142,21 @@ export const router = createBrowserRouter([
         path: "cost-of-living-calculator/traffic/:countryCity",
         element: <Traffic />,
       },
+      {
+        path: "cost-of-living-calculator/traffic/traffic-index-explanation",
+        element: <TrafficIndexExplanation />,
+      },
 
       {
         path: "cost-of-living-calculator/indices-explanation",
         element: <IndexExplanation />,
       },
+
+      {
+        path: "cost-of-living-calculator/property-prices/sticky-currency",
+        element: <StickyCurrencyPage />,
+      },
+
       {
         path: "registered-retirement-savings-plan-calculator",
         element: <RRSP />,

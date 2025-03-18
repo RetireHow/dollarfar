@@ -41,7 +41,7 @@ export default function HealthCare() {
   const { countryCity } = useParams();
   const country = countryCity?.split("-")[0];
   const city = countryCity?.split("-")[1];
-  console.log({ country, city });
+
   const [healthCareData, setHealthCareData] = useState<THealthCareDataResponse>(
     {} as THealthCareDataResponse
   );
