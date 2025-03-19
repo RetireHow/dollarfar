@@ -35,8 +35,8 @@ export default function CustomCollapese() {
       {COLCModifiedCostData?.output?.map((item) => {
         const { category, items } = item || {};
         return (
-          <section className="mb-10">
-            <div className="grid gap-2 grid-cols-6 font-medium md:text-[1.3rem] text-[1rem] mb-1 p-1">
+          <section>
+            <div className="grid gap-2 grid-cols-6 font-semibold text-[1rem] p-1">
               <p className="flex md:items-center gap-1 col-span-3">
                 {category == "Restaurants" ? (
                   <Icon icon="ri:restaurant-2-fill" width="24" height="24" />
@@ -74,7 +74,7 @@ export default function CustomCollapese() {
             </div>
 
             {/* Children  */}
-            <div className="rounded-lg p-2 border-[1px] border-gray-200 bg-[#FFF] shadow-md md:text-[1rem] text-[0.8rem]">
+            <div className="rounded-lg p-2 border-[1px] border-gray-200 bg-[#FBFBF8] md:text-[14px] text-[0.8rem]">
               {items?.map((item, index) => {
                 const {
                   itemName,

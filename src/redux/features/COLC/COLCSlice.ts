@@ -78,6 +78,7 @@ interface COLCState {
 
   selectedCountryName1: string;
   selectedCountryName2: string;
+  homeCurrencyCode: string;
 
   income: number;
 
@@ -94,6 +95,7 @@ const initialState: COLCState = {
   selectedCityName2: "",
   selectedCountryName1: "",
   selectedCountryName2: "",
+  homeCurrencyCode: "",
 
   COLCModifiedCostData: {} as TCostOfLivingData,
 
@@ -120,7 +122,9 @@ const COLCSlice = createSlice({
     setSelectedCountryName2(state, action: PayloadAction<string>) {
       state.selectedCountryName2 = action.payload;
     },
-
+    setHomeCurrencyCode(state, action: PayloadAction<string>) {
+      state.homeCurrencyCode = action.payload;
+    },
     setIncome(state, action: PayloadAction<number>) {
       state.income = action.payload;
     },
@@ -146,6 +150,7 @@ export const {
   setCOLCModifiedCostData,
   setCity1Indices,
   setCity2Indices,
+  setHomeCurrencyCode
 } = COLCSlice.actions;
 
 export default COLCSlice.reducer;

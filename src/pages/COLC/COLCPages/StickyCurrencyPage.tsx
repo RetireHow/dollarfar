@@ -34,8 +34,6 @@ export default function StickyCurrencyPage() {
   const [sortOrder, setSortOrder] = useState<string>("");
   const [sortField, setSortField] = useState<string>("");
 
-  console.log({ sortField, sortOrder });
-
   const loadCurrencyData = async () => {
     try {
       const res = await fetch(

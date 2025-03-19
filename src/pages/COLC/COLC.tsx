@@ -9,6 +9,7 @@ import CostTable from "./CostTable";
 import { useAppSelector } from "../../redux/hooks";
 import useTitle from "../../hooks/useTitle";
 import CityMovingCard from "./CityMovingCard";
+import CloseCityList from "./CloseCityList";
 
 const data = {
   title: "Cost of Living Calculator",
@@ -71,12 +72,22 @@ export default function COLC() {
         ) : (
           <div>
             <CostTable />
-            <section className="flex md:flex-row flex-col md:items-center gap-5 mt-10">
+            <section className="flex md:flex-row flex-col md:items-center gap-5 mt-5">
               <CityMovingCard
                 selectedCity={selectedCityName1}
                 selectedCountry={selectedCountryName1}
               />
               <CityMovingCard
+                selectedCity={selectedCityName2}
+                selectedCountry={selectedCountryName2}
+              />
+            </section>
+            <section className="flex md:flex-row flex-col gap-5 mt-5">
+              <CloseCityList
+                selectedCity={selectedCityName1}
+                selectedCountry={selectedCountryName1}
+              />
+              <CloseCityList
                 selectedCity={selectedCityName2}
                 selectedCountry={selectedCountryName2}
               />

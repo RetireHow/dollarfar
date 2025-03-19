@@ -9,7 +9,7 @@ export default function CityMovingCard({
   selectedCountry: string;
 }) {
   return (
-    <div className="border-[1px] border-gray-300 rounded-md p-3 flex-1 shadow-md">
+    <div className="border-[1px] bg-[#FBFBF8] border-gray-300 rounded-md p-3 flex-1 shadow-md">
       <div className="flex gap-1 font-semibold">
         <Icon
           className="text-gray-600"

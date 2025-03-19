@@ -53,6 +53,7 @@ import {
   setCity1Indices,
   setCity2Indices,
   setCOLCModifiedCostData,
+  setHomeCurrencyCode,
   setIncome,
   setSelectedCityName1,
   setSelectedCityName2,
@@ -256,11 +257,12 @@ export default function COLCForm() {
         dispatch(setSelectedCityName2(cityName2));
         dispatch(setSelectedCountryName1(countryName1));
         dispatch(setSelectedCountryName2(countryName2));
-        
+
         dispatch(setIncome(Number(storedIncome)));
         dispatch(
           setCOLCModifiedCostData(costOfLivingData as TCostOfLivingData)
         );
+        dispatch(setHomeCurrencyCode(city1DefaultCurrencyData?.data?.currency));
         setShowError(false);
         setApiDataLoading(false);
       } catch (error: any) {
