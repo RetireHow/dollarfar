@@ -101,7 +101,7 @@ export default function StickyCurrencyPage() {
 
         <p>Current conversion rates are as follows :</p>
       </div>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto bg-[#FBFBF8]">
         <table className="w-full text-left">
           <thead>
             <tr>

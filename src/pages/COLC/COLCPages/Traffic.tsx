@@ -1,9 +1,10 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Progress } from "antd";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import TrafficPieChart from "./TrafficPieChart";
+import COLCProgressBar from "../COLCProgressBar";
 
 export interface TTrafficDataResponse {
   message: string;
@@ -170,7 +171,6 @@ const TrafficTable = ({
     time_train,
     time_motorbike,
     time_walking,
-    count,
     time_bus,
   } = data || {};
   const test = [
@@ -193,18 +193,12 @@ const TrafficTable = ({
         <section className="space-y-[1rem] mt-[3rem]">
           <h3 className="md:text-[1.3rem] font-semibold">{title}</h3>
           <div className="overflow-x-auto">
-            <table className="table-auto md:max-w-[50%] w-full border-collapse">
+            <table className="table-auto md:max-w-[50%] bg-[#FBFBF8] w-full border-collapse">
               <tbody>
                 <tr>
                   <td className="border p-2">Distance</td>
                   <td className="border p-2 min-w-[50px]">
-                    <Progress
-                      percent={Number(distance?.toFixed(2))}
-                      showInfo={false}
-                      strokeColor="#4682b4"
-                      strokeLinecap="butt"
-                      size={{ height: 20 }}
-                    />
+                    <COLCProgressBar value={distance} />
                   </td>
                   <td className="border p-2">
                     {distance?.toFixed(2)}
@@ -216,13 +210,7 @@ const TrafficTable = ({
                   <tr>
                     <td className="border p-2">Walking</td>
                     <td className="border p-2">
-                      <Progress
-                        percent={Number(time_walking?.toFixed(2))}
-                        showInfo={false}
-                        size={{ height: 20 }}
-                        strokeLinecap="butt"
-                        strokeColor="#4682b4"
-                      />
+                      <COLCProgressBar value={time_walking} />
                     </td>
                     <td className="border p-2">
                       {time_walking?.toFixed(2)}
@@ -237,13 +225,7 @@ const TrafficTable = ({
                   <tr>
                     <td className="border p-2">Waiting</td>
                     <td className="border p-2">
-                      <Progress
-                        percent={Number(time_waiting?.toFixed(2))}
-                        showInfo={false}
-                        size={{ height: 20 }}
-                        strokeLinecap="butt"
-                        strokeColor="#4682b4"
-                      />
+                      <COLCProgressBar value={time_waiting} />
                     </td>
                     <td className="border p-2">
                       {time_waiting?.toFixed(2)}
@@ -258,13 +240,7 @@ const TrafficTable = ({
                   <tr>
                     <td className="border p-2">Driving Car</td>
                     <td className="border p-2">
-                      <Progress
-                        percent={Number(time_driving?.toFixed(2))}
-                        showInfo={false}
-                        size={{ height: 20 }}
-                        strokeLinecap="butt"
-                        strokeColor="#4682b4"
-                      />
+                      <COLCProgressBar value={time_driving} />
                     </td>
                     <td className="border p-2">
                       {time_driving?.toFixed(2)}
@@ -279,13 +255,7 @@ const TrafficTable = ({
                   <tr>
                     <td className="border p-2">Bicycle</td>
                     <td className="border p-2">
-                      <Progress
-                        percent={Number(time_bike?.toFixed(2))}
-                        showInfo={false}
-                        size={{ height: 20 }}
-                        strokeLinecap="butt"
-                        strokeColor="#4682b4"
-                      />
+                      <COLCProgressBar value={time_bike} />
                     </td>
                     <td className="border p-2">
                       {time_bike?.toFixed(2)}
@@ -300,13 +270,7 @@ const TrafficTable = ({
                   <tr>
                     <td className="border p-2">Motorcycle</td>
                     <td className="border p-2">
-                      <Progress
-                        percent={Number(time_motorbike?.toFixed(2))}
-                        showInfo={false}
-                        size={{ height: 20 }}
-                        strokeLinecap="butt"
-                        strokeColor="#4682b4"
-                      />
+                      <COLCProgressBar value={time_motorbike} />
                     </td>
                     <td className="border p-2">
                       {time_motorbike?.toFixed(2)}
@@ -321,13 +285,7 @@ const TrafficTable = ({
                   <tr>
                     <td className="border p-2">Tram</td>
                     <td className="border p-2">
-                      <Progress
-                        percent={Number(time_tram?.toFixed(2))}
-                        showInfo={false}
-                        size={{ height: 20 }}
-                        strokeLinecap="butt"
-                        strokeColor="#4682b4"
-                      />
+                      <COLCProgressBar value={time_tram} />
                     </td>
                     <td className="border p-2">
                       {time_tram?.toFixed(2)}
@@ -342,13 +300,7 @@ const TrafficTable = ({
                   <tr>
                     <td className="border p-2">Bus/Trolleybus Ride</td>
                     <td className="border p-2">
-                      <Progress
-                        percent={Number(time_bus?.toFixed(2))}
-                        showInfo={false}
-                        size={{ height: 20 }}
-                        strokeLinecap="butt"
-                        strokeColor="#4682b4"
-                      />
+                      <COLCProgressBar value={time_bus} />
                     </td>
                     <td className="border p-2">
                       {time_bus?.toFixed(2)}
@@ -363,13 +315,7 @@ const TrafficTable = ({
                   <tr>
                     <td className="border p-2">Train/Metro Ride</td>
                     <td className="border p-2">
-                      <Progress
-                        percent={Number(time_train?.toFixed(2))}
-                        showInfo={false}
-                        size={{ height: 20 }}
-                        strokeLinecap="butt"
-                        strokeColor="#4682b4"
-                      />
+                      <COLCProgressBar value={time_train} />
                     </td>
                     <td className="border p-2">
                       {time_train?.toFixed(2)}
@@ -384,13 +330,7 @@ const TrafficTable = ({
                   <tr>
                     <td className="border p-2">Other</td>
                     <td className="border p-2">
-                      <Progress
-                        percent={Number(time_other?.toFixed(2))}
-                        showInfo={false}
-                        size={{ height: 20 }}
-                        strokeLinecap="butt"
-                        strokeColor="#4682b4"
-                      />
+                      <COLCProgressBar value={time_other} />
                     </td>
                     <td className="border p-2">
                       {time_other?.toFixed(2)}
@@ -404,12 +344,18 @@ const TrafficTable = ({
                 <tr>
                   <td className="border p-2 font-semibold">Overall</td>
                   <td className="border p-2">
-                    <Progress
-                      percent={Number(count?.toFixed(2))}
-                      showInfo={false}
-                      size={{ height: 20 }}
-                      strokeLinecap="butt"
-                      strokeColor="#4682b4"
+                    <COLCProgressBar
+                      value={
+                        time_walking +
+                        time_waiting +
+                        time_driving +
+                        time_bike +
+                        time_motorbike +
+                        time_tram +
+                        time_bus +
+                        time_train +
+                        time_other
+                      }
                     />
                   </td>
                   <td className="border p-2">
@@ -484,20 +430,26 @@ export default function Traffic() {
     contributors,
   } = trafficData.data || {};
 
+  const navigate = useNavigate();
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   return (
     <main className="md:m-10 m-3">
       <h3 className="md:text-[1.5rem] font-semibold mb-[2rem]">
         Traffic in {name}
       </h3>
       <div className="mb-[1rem]">
-        <Link to="/cost-of-living-calculator">
-          <button className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md">
-            Go Back
-          </button>
-        </Link>
+        <button
+          onClick={handleBack}
+          className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
+        >
+          Go Back
+        </button>
       </div>
 
-      <div className="border-[1px] border-gray-300 rounded-lg p-3">
+      <div className="border-[1px] border-gray-300 rounded-lg p-3 bg-[#FBFBF8]">
         In this city, we estimate that each passenger produces approximately{" "}
         <span className="font-semibold">
           {((240 * index_co2_emission) / 1000)?.toFixed(2)}kg
@@ -518,7 +470,7 @@ export default function Traffic() {
 
       <TrafficPieChart transportation={primary_means_percentage_map} />
 
-      <section className="border-[1px] border-gray-300 p-3 mb-[3rem] mt-[1rem] rounded-lg inline-block md:w-[400px] w-full">
+      <section className="border-[1px] bg-[#FBFBF8] border-gray-300 p-3 mb-[3rem] mt-[1rem] rounded-lg inline-block md:w-[400px] w-full">
         <div className="font-bold mb-2 text-[1.3rem] flex justify-between items-center">
           <p>Index</p>
           <Link to="/cost-of-living-calculator/traffic/traffic-index-explanation">
@@ -563,7 +515,7 @@ export default function Traffic() {
         </h3>
 
         <div className="overflow-x-auto">
-          <table className="table-auto md:max-w-[50%] w-full border-collapse">
+          <table className="table-auto md:max-w-[50%] bg-[#FBFBF8] w-full border-collapse">
             <tbody>
               {primary_means_percentage_map?.["Working from Home"] ? (
                 <tr>

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // Helper function to calculate indices
 function calculateIndex(surveyValue: number, isInverted: boolean = true) {
@@ -27,7 +27,7 @@ export interface Data {
   green_and_parks_quality: number;
   comfortable_to_spend_time: number;
   pm10: number;
- "pm2.5":number;
+  "pm2.5": number;
   air_quality: number;
   garbage_disposal_satisfaction: number;
   index_pollution: number;
@@ -87,39 +87,45 @@ export default function Pollution() {
     water_pollution,
   } = pollutionData.data || {};
 
+  const navigate = useNavigate();
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   return (
     <main className="md:m-10 m-3">
       <h3 className="md:text-[1.5rem] font-semibold mb-[2rem]">
         Pollution in {name}
       </h3>
       <div className="mb-[1rem]">
-        <Link to="/cost-of-living-calculator">
-          <button className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md">
-            Go Back
-          </button>
-        </Link>
+        <button
+          onClick={handleBack}
+          className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
+        >
+          Go Back
+        </button>
       </div>
 
       <section>
-      <section className="border-[1px] border-gray-300 p-3 mb-[1rem] mt-[1rem] rounded-lg inline-block md:w-[500px] w-full">
-        <div className="font-bold mb-2 text-[1rem]">
-          <p>Air pollution data from World Health Organization</p>
-        </div>
-
-        <div className="space-y-[0.5rem]">
-          <div className="flex items-center">
-            <span className="flex-1">PM10:</span>{" "}
-            <span>{pm10?.toFixed(2)}</span>
+        <section className="border-[1px] bg-[#FBFBF8] border-gray-300 p-3 mb-[1rem] mt-[1rem] rounded-lg inline-block md:w-[500px] w-full">
+          <div className="font-bold mb-2 text-[1rem]">
+            <p>Air pollution data from World Health Organization</p>
           </div>
-          <div className="flex items-center">
-            <span className="flex-1">PM2.5:</span>{" "}
-            <span>{(pollutionData?.data?.["pm2.5"])?.toFixed(2)}</span>
+
+          <div className="space-y-[0.5rem]">
+            <div className="flex items-center">
+              <span className="flex-1">PM10:</span>{" "}
+              <span>{pm10?.toFixed(2)}</span>
+            </div>
+            <div className="flex items-center">
+              <span className="flex-1">PM2.5:</span>{" "}
+              <span>{pollutionData?.data?.["pm2.5"]?.toFixed(2)}</span>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
       </section>
 
-      <section className="border-[1px] border-gray-300 p-3 mb-[1rem] mt-[1rem] rounded-lg inline-block md:w-[400px] w-full">
+      <section className="border-[1px] bg-[#FBFBF8] border-gray-300 p-3 mb-[1rem] mt-[1rem] rounded-lg inline-block md:w-[400px] w-full">
         <div className="font-bold mb-2 text-[1rem] flex justify-between items-center">
           <p>Index</p>
           <Link to="/cost-of-living-calculator/pollution/pollution-indices-explanation">
@@ -145,7 +151,7 @@ export default function Pollution() {
       <section className="space-y-[1rem] mt-[3rem]">
         <h3 className="md:text-[1.3rem] font-semibold">Pollution in {name}</h3>
         <div className="overflow-x-auto">
-          <table className="table-auto md:max-w-[50%] w-full border-collapse">
+          <table className="table-auto md:max-w-[50%] w-full border-collapse bg-[#FBFBF8]">
             <tbody>
               {air_quality ? (
                 <tr>
@@ -427,7 +433,7 @@ export default function Pollution() {
           Purity and Cleanliness in {name}
         </h3>
         <div className="overflow-x-auto">
-          <table className="table-auto md:max-w-[50%] w-full border-collapse">
+          <table className="table-auto md:max-w-[50%] w-full border-collapse bg-[#FBFBF8]">
             <tbody>
               {air_quality ? (
                 <tr>

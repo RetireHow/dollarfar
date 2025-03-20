@@ -168,7 +168,7 @@ export default function CloseCityList({
   }, []);
 
   return (
-    <div className="border-[1px] bg-[#FBFBF8] border-gray-300 rounded-md p-3 flex-1 shadow-md">
+    <div className="border-[1px] bg-[#FBFBF8] border-gray-300 rounded-md p-3 flex-1">
       <div className="flex gap-1 font-semibold">
         <Icon
           className="text-gray-600"
@@ -178,7 +178,7 @@ export default function CloseCityList({
         />
         <h3>Cities near {selectedCity}:</h3>
       </div>
-      <table className="ml-7 space-y-[0.3rem] mt-3">
+      <table className="ml-7 space-y-[0.3rem] mt-2 text-[14px]">
         {closeCities?.data?.cities?.slice(1).map((item) => {
           const { city_id, country, short_name, latitude, longitude } =
             item || {};

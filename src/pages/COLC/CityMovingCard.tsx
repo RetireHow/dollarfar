@@ -9,7 +9,7 @@ export default function CityMovingCard({
   selectedCountry: string;
 }) {
   return (
-    <div className="border-[1px] bg-[#FBFBF8] border-gray-300 rounded-md p-3 flex-1 shadow-md">
+    <div className="border-[1px] bg-[#FBFBF8] border-gray-300 rounded-md p-3 flex-1">
       <div className="flex gap-1 font-semibold">
         <Icon
           className="text-gray-600"
@@ -19,26 +19,60 @@ export default function CityMovingCard({
         />
         <h3>Moving to {selectedCity}? Explore:</h3>
       </div>
-      <ul className="list-disc ml-12 space-y-[0.3rem] mt-3 text-blue-800">
-        <Link to={`/cost-of-living-calculator/quality-life/${selectedCountry}-${selectedCity}`}>
-          <li className="hover:underline">Quality of Life in {selectedCity}</li>
-        </Link>
+      <ul className="list-disc ml-12 space-y-[0.3rem] mt-2 text-blue-800 text-[14px]">
+        <li>
+          <Link
+            className="hover:underline"
+            to={`/cost-of-living-calculator/quality-life/${selectedCountry}-${selectedCity}`}
+          >
+            Quality of Life in {selectedCity}
+          </Link>
+        </li>
 
-        <Link to={`/cost-of-living-calculator/crime/${selectedCountry}-${selectedCity}`}>
-          <li className="hover:underline">Crime in {selectedCity}</li>
-        </Link>
-        <Link to={`/cost-of-living-calculator/health-care/${selectedCountry}-${selectedCity}`}>
-          <li className="hover:underline">Health Care in {selectedCity}</li>
-        </Link>
-        <Link to={`/cost-of-living-calculator/pollution/${selectedCountry}-${selectedCity}`}>
-          <li className="hover:underline">Pollution in {selectedCity}</li>
-        </Link>
-        <Link to={`/cost-of-living-calculator/property-prices/${selectedCountry}-${selectedCity}`}>
-          <li className="hover:underline">Property Prices in {selectedCity}</li>
-        </Link>
-        <Link to={`/cost-of-living-calculator/traffic/${selectedCountry}-${selectedCity}`}>
-          <li className="hover:underline">Traffic in {selectedCity}</li>
-        </Link>
+        <li>
+          <Link
+            className="hover:underline"
+            to={`/cost-of-living-calculator/crime/${selectedCountry}-${selectedCity}`}
+          >
+            Crime in {selectedCity}
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            className="hover:underline"
+            to={`/cost-of-living-calculator/health-care/${selectedCountry}-${selectedCity}`}
+          >
+            Health Care in {selectedCity}
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            className="hover:underline"
+            to={`/cost-of-living-calculator/pollution/${selectedCountry}-${selectedCity}`}
+          >
+            Pollution in {selectedCity}
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            className="hover:underline"
+            to={`/cost-of-living-calculator/property-prices/${selectedCountry}-${selectedCity}`}
+          >
+            Property Prices in {selectedCity}
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            className="hover:underline"
+            to={`/cost-of-living-calculator/traffic/${selectedCountry}-${selectedCity}`}
+          >
+            Traffic in {selectedCity}
+          </Link>
+        </li>
       </ul>
     </div>
   );

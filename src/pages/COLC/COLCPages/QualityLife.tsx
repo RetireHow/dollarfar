@@ -1,7 +1,8 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { getColorForIndex, getRating } from "../colc.utils";
 
 export interface TCityIndecesResponse {
   message: string;
@@ -89,8 +90,12 @@ export default function QualityLife() {
     name,
     contributors_traffic,
     contributors_crime,
-    
   } = cityIndicesData?.data || {};
+
+  const navigate = useNavigate();
+  const handleBack = () => {
+    navigate(-1);
+  };
 
   return (
     <main className="md:m-10 m-3">
@@ -99,15 +104,16 @@ export default function QualityLife() {
       </h3>
 
       <div className="mb-[1rem]">
-        <Link to="/cost-of-living-calculator">
-          <button className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md">
-            Go Back
-          </button>
-        </Link>
+        <button
+          onClick={handleBack}
+          className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
+        >
+          Go Back
+        </button>
       </div>
 
-      <section className="border-[1px] border-gray-300 p-3 mt-[1rem] rounded-lg inline-block md:w-[400px] w-full">
-        <div className="font-bold mb-2 text-[1.3rem] flex justify-between items-center">
+      <section className="border-[1px] border-gray-300 p-3 mt-[1rem] rounded-lg inline-block md:w-[400px] w-full bg-[#FBFBF8]">
+        <div className="font-bold mb-5 text-[1.3rem] flex justify-between items-center">
           <p>Index</p>
           <Link to="/cost-of-living-calculator/quality-life/quality-life-indices-explanation">
             <p title="About these indices">
@@ -121,43 +127,143 @@ export default function QualityLife() {
           </Link>
         </div>
 
-        <div className="md:space-y-[0.8rem] space-y-[1rem]">
-          <div className="flex items-center">
-            <span className="flex-1">Purchasing Power Index:</span>{" "}
+        <div className="space-y-[1rem]">
+          <div className="flex items-center gap-3">
+            <Link
+              to={`/cost-of-living-calculator/close-city-living-cost/${country}-${city}`}
+              className="text-blue-600 hover:underline flex-1"
+            >
+              Purchasing Power Index:
+            </Link>
             <span>{purchasing_power_incl_rent_index?.toFixed(2)}</span>
+            <span
+              style={{
+                color: getColorForIndex(purchasing_power_incl_rent_index),
+              }}
+            >
+              {getRating(purchasing_power_incl_rent_index)}
+            </span>
           </div>
-          <div className="flex items-center">
-            <span className="flex-1">Safety Index:</span>{" "}
+          <div className="flex items-center gap-3">
+            <Link
+              to={`/cost-of-living-calculator/crime/${country}-${city}`}
+              className="text-blue-600 hover:underline flex-1"
+            >
+              Safety Index:
+            </Link>
             <span>{safety_index?.toFixed(2)}</span>
+            <span
+              style={{
+                color: getColorForIndex(safety_index),
+              }}
+            >
+              {getRating(safety_index)}
+            </span>
           </div>
-          <div className="flex items-center">
-            <span className="flex-1">Health Care Index:</span>{" "}
+          <div className="flex items-center gap-3">
+            <Link
+              to={`/cost-of-living-calculator/health-care/${country}-${city}`}
+              className="text-blue-600 hover:underline flex-1"
+            >
+              Health Care Index:
+            </Link>
             <span>{health_care_index?.toFixed(2)}</span>
+            <span
+              style={{
+                color: getColorForIndex(health_care_index),
+              }}
+            >
+              {getRating(health_care_index)}
+            </span>
           </div>
-          <div className="flex items-center">
-            <span className="flex-1">Climate Index:</span>{" "}
+          <div className="flex items-center gap-3">
+            <Link to="" className="text-blue-600 hover:underline flex-1">
+              Climate Index:
+            </Link>
             <span>{climate_index?.toFixed(2)}</span>
+            <span
+              style={{
+                color: getColorForIndex(climate_index),
+              }}
+            >
+              {getRating(climate_index)}
+            </span>
           </div>
-          <div className="flex items-center">
-            <span className="flex-1">Cost of Living Index:</span>{" "}
+          <div className="flex items-center gap-3">
+            <Link
+              to={`/cost-of-living-calculator/close-city-living-cost/${country}-${city}`}
+              className="text-blue-600 hover:underline flex-1"
+            >
+              Cost of Living Index:
+            </Link>
             <span>{cost_of_living_index?.toFixed(2)}</span>
+            <span
+              style={{
+                color: getColorForIndex(cost_of_living_index),
+              }}
+            >
+              {getRating(cost_of_living_index)}
+            </span>
           </div>
-          <div className="flex items-center">
-            <span className="flex-1">Property Price to Income Ratio :</span>{" "}
+          <div className="flex items-center gap-3">
+            <Link
+              to={`/cost-of-living-calculator/property-prices/${country}-${city}`}
+              className="text-blue-600 hover:underline flex-1"
+            >
+              Property Price to Income Ratio:
+            </Link>
             <span>{property_price_to_income_ratio?.toFixed(2)}</span>
+            <span
+              style={{
+                color: getColorForIndex(property_price_to_income_ratio),
+              }}
+            >
+              {getRating(property_price_to_income_ratio)}
+            </span>
           </div>
-          <div className="flex items-center">
-            <span className="flex-1">Traffic Commute Time Index :</span>{" "}
+          <div className="flex items-center gap-3">
+            <Link
+              to={`/cost-of-living-calculator/traffic/${country}-${city}`}
+              className="text-blue-600 hover:underline flex-1"
+            >
+              Traffic Commute Time Index:
+            </Link>
             <span>{traffic_time_index?.toFixed(2)}</span>
+            <span
+              style={{
+                color: getColorForIndex(traffic_time_index),
+              }}
+            >
+              {getRating(traffic_time_index)}
+            </span>
           </div>
-          <div className="flex items-center">
-            <span className="flex-1">Pollution Index :</span>{" "}
+          <div className="flex items-center gap-3">
+            <Link
+              to={`/cost-of-living-calculator/pollution/${country}-${city}`}
+              className="text-blue-600 hover:underline flex-1"
+            >
+              Pollution Index:
+            </Link>
             <span>{pollution_index?.toFixed(2)}</span>
+            <span
+              style={{
+                color: getColorForIndex(pollution_index),
+              }}
+            >
+              {getRating(pollution_index)}
+            </span>
           </div>
           <div className="w-full h-[1px] bg-gray-300"></div>
-          <div className="flex items-center">
-            <span className="flex-1">Quality of Life Index :</span>{" "}
+          <div className="flex items-center gap-3 font-semibold">
+            <span className="flex-1">Quality of Life Index :</span>
             <span>{quality_of_life_index?.toFixed(2)}</span>
+            <span
+              style={{
+                color: getColorForIndex(quality_of_life_index),
+              }}
+            >
+              {getRating(quality_of_life_index)}
+            </span>
           </div>
         </div>
       </section>

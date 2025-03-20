@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { months } from "../colc.utils";
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -325,7 +325,12 @@ export default function CloseCityLivingCost() {
   useEffect(() => {
     loadEstimatedCostData();
     loadEstimatedCostSinglePersonData();
-  }, []);
+  }, [selectedCurrency]);
+
+  const navigate = useNavigate();
+  const handleBack = () => {
+    navigate(-1);
+  };
 
   return (
     <main className="md:m-10 m-3">
@@ -334,11 +339,12 @@ export default function CloseCityLivingCost() {
       </h3>
 
       <div className="mb-[1rem]">
-        <Link to="/cost-of-living-calculator">
-          <button className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md">
-            Go Back
-          </button>
-        </Link>
+        <button
+          onClick={handleBack}
+          className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
+        >
+          Go Back
+        </button>
       </div>
 
       {estimatedCostData?.data?.error ? (
@@ -346,10 +352,10 @@ export default function CloseCityLivingCost() {
           {estimatedCostData?.data?.error}
         </p>
       ) : (
-        <section className="border-[1px] border-gray-300 rounded-lg p-5 mb-5">
+        <section className="border-[1px] border-gray-300 rounded-lg p-5 mb-5 bg-[#FBFBF8]">
           <p>
             <span className="font-semibold">Summary</span> of cost of living in
-            Kingston, Canada:
+            {city}, {country}:
           </p>
 
           <ul className="list-disc ml-8">
@@ -364,7 +370,12 @@ export default function CloseCityLivingCost() {
             </li>
             <li>
               A single person estimated monthly costs are{" "}
-              <span className="mr-1 font-semibold">{selectedCurrency && getCurrencySymbol(selectedCurrency)}{estimatedCostDataSinglePerson?.data?.overall_estimate?.toFixed(2)}</span>
+              <span className="mr-1 font-semibold">
+                {selectedCurrency && getCurrencySymbol(selectedCurrency)}
+                {estimatedCostDataSinglePerson?.data?.overall_estimate?.toFixed(
+                  2
+                )}
+              </span>
               without rent.
             </li>
           </ul>
@@ -402,7 +413,7 @@ export default function CloseCityLivingCost() {
           const { name: category, items } = item;
           return (
             <section className="mb-3 min-w-[500px]">
-              <div className="grid gap-2 grid-cols-5 font-semibold md:text-[1.1rem] text-[1rem] p-1">
+              <div className="grid gap-2 grid-cols-5 font-semibold text-[1rem] p-1">
                 <p className="flex md:items-center gap-1 col-span-3">
                   {category == "Restaurants" ? (
                     <Icon icon="ri:restaurant-2-fill" width="24" height="24" />
@@ -447,7 +458,7 @@ export default function CloseCityLivingCost() {
               </div>
 
               {/* Children  */}
-              <div className="rounded-lg p-2 border-[1px] border-gray-200 bg-[#FFF] md:text-[1rem] text-[0.8rem]">
+              <div className="rounded-lg p-2 border-[1px] border-gray-200 bg-[#FBFBF8] text-[14px]">
                 {items?.map((item, index) => {
                   const {
                     item_name,

@@ -40,6 +40,7 @@ import QualityLifeIndexExplanation from "../pages/COLC/COLCPages/QualityLifeInde
 import PollutionIndicesExplanation from "../pages/COLC/COLCPages/PollutionIndicesExplanation";
 import StickyCurrencyPage from "../pages/COLC/COLCPages/StickyCurrencyPage";
 import CloseCityLivingCost from "../pages/COLC/COLCPages/CloseCityLivingCost";
+import PropertyPriceExplanationPage from "../pages/COLC/COLCPages/PropertyPriceExplanationPage";
 
 export const router = createBrowserRouter([
   {
@@ -138,6 +139,10 @@ export const router = createBrowserRouter([
       {
         path: "cost-of-living-calculator/property-prices/:countryCity",
         element: <PropertyPrice />,
+      },
+      {
+        path: "cost-of-living-calculator/property-prices/property-price-index-explanation",
+        element: <PropertyPriceExplanationPage />,
       },
       {
         path: "cost-of-living-calculator/traffic/:countryCity",

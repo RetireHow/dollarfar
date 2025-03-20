@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { months } from "../colc.utils";
+import { calculatePropertyPrice, months } from "../colc.utils";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { getCurrencySymbol } from "../../../utils/getCurrencySymbol";
 import { numberWithCommas } from "../../../utils/numberWithCommas";
@@ -146,6 +146,16 @@ export interface ExchangeRate {
   one_eur_to_currency: number;
 }
 
+type PropertyPriceOutput = {
+  priceToIncomeRatio: string;
+  mortgageAsPercentageOfIncome: string;
+  loanAffordabilityIndex: string;
+  priceToRentRatioCityCentre: string;
+  priceToRentRatioOutsideCentre: string;
+  grossRentalYieldCityCentre: string;
+  grossRentalYieldOutsideCentre: string;
+};
+
 export default function PropertyPrice() {
   const { countryCity } = useParams();
   const country = countryCity?.split("-")[0];
@@ -154,9 +164,22 @@ export default function PropertyPrice() {
   const [cityPriceData, setCityPriceData] = useState<TransformedData>(
     {} as TransformedData
   );
+  console.log("Property Prices ========> ", cityPriceData?.category);
   const [exchangeRatesData, setExchangeRatesData] = useState<string[]>([]);
 
   const [selectedCurrency, setSelectedCurrency] = useState<string>("");
+  const [propertyPriceCalculatedData, setPropertyPriceCalculatedData] =
+    useState<PropertyPriceOutput>({} as PropertyPriceOutput);
+  console.log({ propertyPriceCalculatedData });
+  const {
+    priceToIncomeRatio,
+    grossRentalYieldCityCentre,
+    grossRentalYieldOutsideCentre,
+    loanAffordabilityIndex,
+    mortgageAsPercentageOfIncome,
+    priceToRentRatioCityCentre,
+    priceToRentRatioOutsideCentre,
+  } = propertyPriceCalculatedData || {};
 
   const loadCityPriceData = async () => {
     try {
@@ -168,6 +191,9 @@ export default function PropertyPrice() {
         return toast.error("There is internal server error.");
       }
       setCityPriceData(transformData(data?.data));
+      setPropertyPriceCalculatedData(
+        calculatePropertyPrice(transformData(data?.data)?.category)
+      );
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("There is something wrong!");
@@ -200,6 +226,11 @@ export default function PropertyPrice() {
     loadCurrencyData();
   }, []);
 
+  const navigate = useNavigate();
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   return (
     <main className="md:m-10 m-3">
       <h3 className="md:text-[1.5rem] font-semibold mb-[2rem]">
@@ -207,17 +238,18 @@ export default function PropertyPrice() {
       </h3>
 
       <div className="mb-[1rem]">
-        <Link to="/cost-of-living-calculator">
-          <button className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md">
-            Go Back
-          </button>
-        </Link>
+        <button
+          onClick={handleBack}
+          className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
+        >
+          Go Back
+        </button>
       </div>
 
-      <section className="border-[1px] border-gray-300 p-3 mb-[1.8rem] mt-[1rem] rounded-lg inline-block md:w-[400px] w-full">
+      <section className="border-[1px] bg-[#FBFBF8] border-gray-300 p-3 mb-[1.8rem] mt-[1rem] rounded-lg inline-block md:w-[400px] w-full">
         <div className="font-bold mb-2 text-[1.3rem] flex justify-between items-center">
           <p>Index</p>
-          <Link to="/cost-of-living-calculator/quality-life/quality-life-indices-explanation">
+          <Link to="/cost-of-living-calculator/property-prices/property-price-index-explanation">
             <p title="About these indices">
               <Icon
                 className="text-green-500 cursor-pointer"
@@ -232,7 +264,35 @@ export default function PropertyPrice() {
         <div className="md:space-y-[0.8rem] space-y-[1rem]">
           <div className="flex items-center">
             <span className="flex-1">Price to Income Ratio:</span>{" "}
-            <span>0</span>
+            <span>{priceToIncomeRatio}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="flex-1">Mortgage as Percentage of Income:</span>{" "}
+            <span>{mortgageAsPercentageOfIncome}%</span>
+          </div>
+          <div className="flex items-center">
+            <span className="flex-1">Loan Affordability Index:</span>{" "}
+            <span>{loanAffordabilityIndex}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="flex-1">Price to Rent Ratio - City Centre:</span>{" "}
+            <span>{priceToRentRatioCityCentre}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="flex-1">
+              Price to Rent Ratio - Outside of Centre:
+            </span>{" "}
+            <span>{priceToRentRatioOutsideCentre}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="flex-1">Gross Rental Yield (City Centre):</span>{" "}
+            <span>{grossRentalYieldCityCentre}%</span>
+          </div>
+          <div className="flex items-center">
+            <span className="flex-1">
+              Gross Rental Yield (Outside of Centre):
+            </span>{" "}
+            <span>{grossRentalYieldOutsideCentre}%</span>
           </div>
         </div>
       </section>
@@ -255,9 +315,11 @@ export default function PropertyPrice() {
           </select>
         </div>
         <div>
-        <Link to="/cost-of-living-calculator/property-prices/sticky-currency">
-          <p className="text-blue-700 hover:text-blue-800 hover:underline">Sticky Currency</p>
-        </Link>
+          <Link to="/cost-of-living-calculator/property-prices/sticky-currency">
+            <p className="text-blue-700 hover:text-blue-800 hover:underline">
+              Sticky Currency
+            </p>
+          </Link>
         </div>
       </section>
 
@@ -266,7 +328,7 @@ export default function PropertyPrice() {
           const { name: category, items } = item;
           return (
             <section className="mb-3 min-w-[500px]">
-              <div className="grid gap-2 grid-cols-5 font-medium md:text-[1.3rem] text-[1rem] mb-1 p-1">
+              <div className="grid gap-2 grid-cols-5 font-semibold text-[1rem] p-1">
                 <p className="flex md:items-center gap-1 col-span-3">
                   {category == "Rent Per Month" ? (
                     <Icon icon="fa6-solid:bed" width="24" height="24" />
@@ -289,7 +351,7 @@ export default function PropertyPrice() {
               </div>
 
               {/* Children  */}
-              <div className="rounded-lg p-2 border-[1px] border-gray-200 bg-[#FFF] md:text-[1rem] text-[0.8rem]">
+              <div className="rounded-lg p-2 border-[1px] border-gray-200 bg-[#FBFBF8] text-[14px]">
                 {items?.map((item, index) => {
                   const {
                     item_name,

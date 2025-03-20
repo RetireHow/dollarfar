@@ -1,9 +1,9 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { Progress } from "antd";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getColorForIndex, getIndex, getRating, months } from "../colc.utils";
 import { toast } from "react-toastify";
+import COLCProgressBar from "../COLCProgressBar";
 
 export interface THealthCareDataResponse {
   message: string;
@@ -82,6 +82,11 @@ export default function HealthCare() {
     yearLastUpdate,
   } = healthCareData?.data || {};
 
+  const navigate = useNavigate();
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   return (
     <main className="md:m-10 m-3">
       <h3 className="md:text-[1.5rem] font-semibold mb-[2rem]">
@@ -89,14 +94,15 @@ export default function HealthCare() {
       </h3>
 
       <div className="mb-[1rem]">
-        <Link to="/cost-of-living-calculator">
-          <button className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md">
-            Go Back
-          </button>
-        </Link>
+        <button
+          onClick={handleBack}
+          className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
+        >
+          Go Back
+        </button>
       </div>
 
-      <section className="border-[1px] border-gray-300 p-3 mb-[3rem] mt-[1rem] rounded-lg inline-block md:w-[300px]">
+      <section className="border-[1px] border-gray-300 p-3 mb-[3rem] mt-[1rem] rounded-lg inline-block md:w-[300px] bg-[#FBFBF8]">
         <div className="font-bold mb-2 text-[1.3rem] flex justify-between items-center">
           <p>Index</p>
           <Link to="/cost-of-living-calculator/health-care">
@@ -124,7 +130,7 @@ export default function HealthCare() {
           Healthcare Overview
         </h3>
         <div className="overflow-x-auto">
-          <table className="table-auto md:max-w-[70%] w-full border-collapse">
+          <table className="table-auto bg-[#FBFBF8] md:max-w-[70%] w-full border-collapse">
             <thead>
               <tr>
                 <th className="border p-2">
@@ -141,12 +147,7 @@ export default function HealthCare() {
                   Skill and competency of medical staff
                 </td>
                 <td className="border p-2">
-                  <Progress
-                    percent={getIndex(skill_and_competency)}
-                    showInfo={false}
-                    size={[150, 20]}
-                    strokeColor="#4682b4"
-                  />
+                  <COLCProgressBar value={getIndex(skill_and_competency)} />
                 </td>
                 <td className="border p-2">{getIndex(skill_and_competency)}</td>
                 <td
@@ -164,12 +165,7 @@ export default function HealthCare() {
                   Speed in completing examinations and reports
                 </td>
                 <td className="border p-2">
-                  <Progress
-                    percent={getIndex(speed)}
-                    showInfo={false}
-                    size={[150, 20]}
-                    strokeColor="#4682b4"
-                  />
+                  <COLCProgressBar value={getIndex(speed)} />
                 </td>
                 <td className="border p-2">{getIndex(speed)}</td>
                 <td
@@ -187,12 +183,7 @@ export default function HealthCare() {
                   Equipment for modern diagnosis and treatment
                 </td>
                 <td className={`border p-2`}>
-                  <Progress
-                    percent={getIndex(modern_equipment)}
-                    showInfo={false}
-                    size={[150, 20]}
-                    strokeColor="#4682b4"
-                  />
+                  <COLCProgressBar value={getIndex(modern_equipment)} />
                 </td>
                 <td className="border p-2">{getIndex(modern_equipment)}</td>
                 <td
@@ -210,11 +201,8 @@ export default function HealthCare() {
                   Accuracy and completeness in filling out reports
                 </td>
                 <td className="border p-2">
-                  <Progress
-                    percent={getIndex(accuracy_and_completeness)}
-                    showInfo={false}
-                    size={[150, 20]}
-                    strokeColor="#4682b4"
+                  <COLCProgressBar
+                    value={getIndex(accuracy_and_completeness)}
                   />
                 </td>
                 <td className="border p-2">
@@ -237,11 +225,8 @@ export default function HealthCare() {
                   Friendliness and courtesy of the staff
                 </td>
                 <td className="border p-2">
-                  <Progress
-                    percent={getIndex(friendliness_and_courtesy)}
-                    showInfo={false}
-                    size={[150, 20]}
-                    strokeColor="#4682b4"
+                  <COLCProgressBar
+                    value={getIndex(friendliness_and_courtesy)}
                   />
                 </td>
                 <td className="border p-2">
@@ -265,12 +250,7 @@ export default function HealthCare() {
                   institutions
                 </td>
                 <td className="border p-2">
-                  <Progress
-                    percent={getIndex(responsiveness_waitings)}
-                    showInfo={false}
-                    size={[150, 20]}
-                    strokeColor="#4682b4"
-                  />
+                  <COLCProgressBar value={getIndex(responsiveness_waitings)} />
                 </td>
                 <td className="border p-2">
                   {getIndex(responsiveness_waitings)}
@@ -288,12 +268,7 @@ export default function HealthCare() {
               <tr>
                 <td className="border p-2">Satisfaction with cost to you</td>
                 <td className="border p-2">
-                  <Progress
-                    percent={getIndex(cost)}
-                    showInfo={false}
-                    size={[150, 20]}
-                    strokeColor="#4682b4"
-                  />
+                  <COLCProgressBar value={getIndex(cost)} />
                 </td>
                 <td className="border p-2">{getIndex(cost)}</td>
                 <td
@@ -309,12 +284,7 @@ export default function HealthCare() {
               <tr>
                 <td className="border p-2">Convenience of location for you</td>
                 <td className="border p-2">
-                  <Progress
-                    percent={getIndex(location)}
-                    showInfo={false}
-                    size={[150, 20]}
-                    strokeColor="#4682b4"
-                  />
+                  <COLCProgressBar value={getIndex(location)} />
                 </td>
                 <td className="border p-2">{getIndex(location)}</td>
                 <td

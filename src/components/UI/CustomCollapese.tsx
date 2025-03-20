@@ -3,6 +3,7 @@ import { useAppSelector } from "../../redux/hooks";
 import { isNegative } from "../../utils/isNegative";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import { getCurrencySymbol } from "../../utils/getCurrencySymbol";
+import { months } from "../../pages/COLC/colc.utils";
 
 const getLivingIndex = (
   locationATotalPrice: number,
@@ -22,9 +23,20 @@ export default function CustomCollapese() {
   );
 
   const {
-    city1: { currency: city1CurrencyCode } = {},
-    city2: { currency: city2CurrencyCode } = {},
+    city1: {
+      currency: city1CurrencyCode,
+      contributors12months: city1Contributors12months,
+      monthLastUpdate: city1MonthLastUpdate,
+      yearLastUpdate: city1YearLastUpdate,
+    } = {},
+    city2: {
+      currency: city2CurrencyCode,
+      contributors12months: city2Contributors12months,
+      monthLastUpdate: city2MonthLastUpdate,
+      yearLastUpdate: city2YearLastUpdate,
+    } = {},
   } = COLCModifiedCostData.metaData || {};
+  console.log(COLCModifiedCostData.metaData);
 
   const { selectedCityName1, selectedCityName2 } = useAppSelector(
     (state) => state.COLCalculator
@@ -36,7 +48,7 @@ export default function CustomCollapese() {
         const { category, items } = item || {};
         return (
           <section>
-            <div className="grid gap-2 grid-cols-6 font-semibold text-[1rem] p-1">
+            <div className="grid gap-2 grid-cols-6 font-semibold text-[1rem] p-1 mt-5">
               <p className="flex md:items-center gap-1 col-span-3">
                 {category == "Restaurants" ? (
                   <Icon icon="ri:restaurant-2-fill" width="24" height="24" />
@@ -221,6 +233,24 @@ export default function CustomCollapese() {
           </section>
         );
       })}
+      <div className="rounded-lg bg-[#FBFBF8] border-[1px] border-gray-200 mt-2 p-2 text-[14px]">
+        <div className="grid gap-2 grid-cols-6 border-b-[1px] border-gray-300 hover:bg-[#42c6c623] p-1">
+          <p className="flex items-center col-span-3">Last update:</p>
+          <p>
+            {months[(city1MonthLastUpdate as number) - 1]} {city1YearLastUpdate}
+          </p>
+          <p>
+            {months[(city2MonthLastUpdate as number) - 1]} {city2YearLastUpdate}
+          </p>
+        </div>
+        <div className="grid gap-2 grid-cols-6 border-b-[1px] border-gray-300 hover:bg-[#42c6c623] p-1">
+          <p className="flex items-center col-span-3">
+            Contributors in the past 12 months:
+          </p>
+          <p>{city1Contributors12months}</p>
+          <p>{city2Contributors12months}</p>
+        </div>
+      </div>
     </>
   );
 }

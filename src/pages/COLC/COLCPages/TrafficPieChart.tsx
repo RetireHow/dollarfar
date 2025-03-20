@@ -96,7 +96,7 @@ const TrafficPieChart = ({
 
   return (
     <section className="overflow-x-auto">
-      <div className="border-[1px] border-gray-300 inline-block p-3 rounded-md mt-[3rem] mb-[2rem]">
+      <div className="border-[1px] border-gray-300 bg-[#FBFBF8] inline-block p-3 rounded-md mt-[3rem] mb-[2rem]">
     <h3 className="font-semibold">Main Means of Transportation to Work or School</h3>
     <div id="BC-Chart" className="flex md:flex-row flex-col gap-10 items-center md:mb-0 mb-[2rem]">
       <div className="min-w-[350px]">

@@ -16,21 +16,21 @@ export default function CityIndices() {
     useAppSelector((state) => state.COLCalculator);
 
   return (
-    <section className="border-[1px] bg-[#FBFBF8] border-gray-300 p-3 mb-[3rem] mt-[1rem] rounded-lg inline-block">
-      <div className="font-bold mb-2 text-[1.2rem] flex justify-between items-center">
+    <section className="border-[1px] bg-[#FBFBF8] border-gray-300 p-3 mb-[1.5rem] mt-[1rem] rounded-lg inline-block">
+      <div className="font-bold mb-2 text-[1rem] flex justify-between items-center">
         <p>Indices Difference</p>
         <Link to="/cost-of-living-calculator/indices-explanation">
           <p title="About these indices">
             <Icon
               className="text-green-500 cursor-pointer"
               icon="rivet-icons:exclamation-mark-circle-solid"
-              width="23"
-              height="23"
+              width="20"
+              height="20"
             />
           </p>
         </Link>
       </div>
-      <div className="space-y-[0.5rem]">
+      <div className="space-y-[0.5rem] text-[14px]">
         <div>
           Cost of Living in {selectedCityName2} is{" "}
           {Math.abs(
