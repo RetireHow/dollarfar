@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import moment from "moment"
+import moment from "moment";
 import { useNavigate } from "react-router-dom";
 export interface ExchangeRateDataResponse {
   message: string;
@@ -27,9 +27,12 @@ type ExchangeRateItem = {
 }[];
 
 export default function StickyCurrencyPage() {
-  const [exchangeRatesData, setExchangeRatesData] = useState<ExchangeRateDataResponse>(
-    {} as ExchangeRateDataResponse
-  );
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+  
+  const [exchangeRatesData, setExchangeRatesData] =
+    useState<ExchangeRateDataResponse>({} as ExchangeRateDataResponse);
   const [searchText, setSearchText] = useState<string | number>("");
   const [sortOrder, setSortOrder] = useState<string>("");
   const [sortField, setSortField] = useState<string>("");
@@ -83,7 +86,7 @@ export default function StickyCurrencyPage() {
 
   return (
     <main className="m-5 min-h-screen">
-       <div className="mb-[1rem]">
+      <div className="mb-[1rem]">
         <button
           onClick={handleBack}
           className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
@@ -96,7 +99,8 @@ export default function StickyCurrencyPage() {
         <p>
           This tool uses various feeds, including European Central Bank (ECB) to
           periodically update conversion rates. The conversion rates were last
-          updated on {moment(exchangeRatesData?.data?.last_update).format('LL')}.
+          updated on {moment(exchangeRatesData?.data?.last_update).format("LL")}
+          .
         </p>
 
         <p>Current conversion rates are as follows :</p>

@@ -38,6 +38,10 @@ export interface TInsuranceType {
 }
 
 export default function HealthCare() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   const { countryCity } = useParams();
   const country = countryCity?.split("-")[0];
   const city = countryCity?.split("-")[1];
@@ -105,7 +109,7 @@ export default function HealthCare() {
       <section className="border-[1px] border-gray-300 p-3 mb-[3rem] mt-[1rem] rounded-lg inline-block md:w-[300px] bg-[#FBFBF8]">
         <div className="font-bold mb-2 text-[1.3rem] flex justify-between items-center">
           <p>Index</p>
-          <Link to="/cost-of-living-calculator/health-care">
+          <Link to="/cost-of-living-calculator/health-care/healthcare-explanation">
             <p title="About these indices">
               <Icon
                 className="text-green-500 cursor-pointer"
@@ -310,7 +314,7 @@ export default function HealthCare() {
 
         <p>
           These data are based on perceptions of visitors of this website in the
-          past 0 years.
+          past 5 years.
         </p>
 
         <p>

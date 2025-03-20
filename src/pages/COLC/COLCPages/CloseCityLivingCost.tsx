@@ -233,6 +233,10 @@ export interface EstimatedCostItem {
 }
 
 export default function CloseCityLivingCost() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+  
   const { countryCity } = useParams();
   const country = countryCity?.split("-")[0];
   const city = countryCity?.split("-")[1];
@@ -295,6 +299,10 @@ export default function CloseCityLivingCost() {
       toast.error("There is something wrong!");
     }
   };
+  useEffect(() => {
+    loadEstimatedCostData();
+    loadEstimatedCostSinglePersonData();
+  }, [selectedCurrency]);
 
   const loadCurrencyData = async () => {
     try {
@@ -321,11 +329,6 @@ export default function CloseCityLivingCost() {
   useEffect(() => {
     loadCurrencyData();
   }, []);
-
-  useEffect(() => {
-    loadEstimatedCostData();
-    loadEstimatedCostSinglePersonData();
-  }, [selectedCurrency]);
 
   const navigate = useNavigate();
   const handleBack = () => {

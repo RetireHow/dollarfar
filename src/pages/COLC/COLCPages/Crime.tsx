@@ -38,6 +38,10 @@ export interface TCrimeData {
 }
 
 export default function Crime() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+  
   const { countryCity } = useParams();
   const country = countryCity?.split("-")[0];
   const city = countryCity?.split("-")[1];

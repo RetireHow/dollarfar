@@ -41,6 +41,7 @@ import PollutionIndicesExplanation from "../pages/COLC/COLCPages/PollutionIndice
 import StickyCurrencyPage from "../pages/COLC/COLCPages/StickyCurrencyPage";
 import CloseCityLivingCost from "../pages/COLC/COLCPages/CloseCityLivingCost";
 import PropertyPriceExplanationPage from "../pages/COLC/COLCPages/PropertyPriceExplanationPage";
+import HealthCareExplanationPage from "../pages/COLC/COLCPages/HealthCareExplanationPage";
 
 export const router = createBrowserRouter([
   {
@@ -127,6 +128,10 @@ export const router = createBrowserRouter([
       {
         path: "cost-of-living-calculator/health-care/:countryCity",
         element: <HealthCare />,
+      },
+      {
+        path: "cost-of-living-calculator/health-care/healthcare-explanation",
+        element: <HealthCareExplanationPage />,
       },
       {
         path: "cost-of-living-calculator/pollution/:countryCity",

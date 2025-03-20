@@ -157,6 +157,10 @@ type PropertyPriceOutput = {
 };
 
 export default function PropertyPrice() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+  
   const { countryCity } = useParams();
   const country = countryCity?.split("-")[0];
   const city = countryCity?.split("-")[1];
