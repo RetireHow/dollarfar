@@ -86,6 +86,10 @@ interface COLCState {
 
   city1Indices: TIndices;
   city2Indices: TIndices;
+
+  members: string;
+  children: string;
+  isRent: string;
 }
 
 // Initial state
@@ -101,6 +105,10 @@ const initialState: COLCState = {
 
   city1Indices: {} as TIndices,
   city2Indices: {} as TIndices,
+
+  members: "4",
+  children: "0",
+  isRent: "false",
 };
 
 // Create the slice
@@ -137,6 +145,15 @@ const COLCSlice = createSlice({
     setCity2Indices(state, action) {
       state.city2Indices = action.payload;
     },
+    setMembers(state, action: PayloadAction<string>) {
+      state.members = action.payload;
+    },
+    setChildren(state, action: PayloadAction<string>) {
+      state.children = action.payload;
+    },
+    setIsRent(state, action: PayloadAction<string>) {
+      state.isRent = action.payload;
+    },
   },
 });
 
@@ -150,7 +167,10 @@ export const {
   setCOLCModifiedCostData,
   setCity1Indices,
   setCity2Indices,
-  setHomeCurrencyCode
+  setHomeCurrencyCode,
+  setMembers,
+  setChildren,
+  setIsRent
 } = COLCSlice.actions;
 
 export default COLCSlice.reducer;

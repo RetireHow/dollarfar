@@ -42,6 +42,7 @@ import StickyCurrencyPage from "../pages/COLC/COLCPages/StickyCurrencyPage";
 import CloseCityLivingCost from "../pages/COLC/COLCPages/CloseCityLivingCost";
 import PropertyPriceExplanationPage from "../pages/COLC/COLCPages/PropertyPriceExplanationPage";
 import HealthCareExplanationPage from "../pages/COLC/COLCPages/HealthCareExplanationPage";
+import EstimatedCostCalculatorPage from "../pages/COLC/COLCPages/EstimatedCostCalculatorPage";
 
 export const router = createBrowserRouter([
   {
@@ -110,6 +111,10 @@ export const router = createBrowserRouter([
       {
         path: "cost-of-living-calculator",
         element: <COLC />,
+      },
+      {
+        path: "cost-of-living-calculator/estimated-cost-calculator",
+        element: <EstimatedCostCalculatorPage />,
       },
 
       {

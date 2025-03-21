@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { useAppSelector } from "../../redux/hooks";
 import { getCurrencySymbol } from "../../utils/getCurrencySymbol";
 import { numberWithCommas } from "../../utils/numberWithCommas";
+import { Link } from "react-router-dom";
 
 export interface EstimatedCostDataResponse {
   message: string;
@@ -28,16 +29,23 @@ export interface EstimatedCostItem {
 }
 
 export default function EstimatedCost() {
-  const { selectedCityName2, selectedCountryName2, homeCurrencyCode } =
-    useAppSelector((state) => state.COLCalculator);
+  const {
+    selectedCityName2,
+    selectedCountryName2,
+    homeCurrencyCode,
+    members,
+    children,
+    isRent,
+  } = useAppSelector((state) => state.COLCalculator);
   const [estimatedCostData, setEstimatedCostData] =
     useState<EstimatedCostDataResponse>({} as EstimatedCostDataResponse);
   const [estimatedCostDataSinglePerson, setEstimatedCostDataSinglePerson] =
     useState<EstimatedCostDataResponse>({} as EstimatedCostDataResponse);
+
   const loadEstimatedCostData = async () => {
     try {
       const res = await fetch(
-        `https://dollarfar-backend-rust.vercel.app/api/city-cost-estimator?country=${selectedCountryName2}&city=${selectedCityName2}&members=4&children=0&isRent=false&currency=${homeCurrencyCode}`
+        `https://dollarfar-backend-rust.vercel.app/api/city-cost-estimator?country=${selectedCountryName2}&city=${selectedCityName2}&members=${members}&children=${children}&isRent=${isRent}&currency=${homeCurrencyCode}`
       );
       const data: EstimatedCostDataResponse = await res.json();
       if (!data?.success) {
@@ -49,6 +57,7 @@ export default function EstimatedCost() {
       toast.error("There is something wrong!");
     }
   };
+
   const loadEstimatedCostSinglePersonData = async () => {
     try {
       const res = await fetch(
@@ -64,8 +73,12 @@ export default function EstimatedCost() {
       toast.error("There is something wrong!");
     }
   };
+
   useEffect(() => {
     loadEstimatedCostData();
+  }, [homeCurrencyCode, members, children, isRent]);
+
+  useEffect(() => {
     loadEstimatedCostSinglePersonData();
   }, [homeCurrencyCode]);
 
@@ -84,15 +97,30 @@ export default function EstimatedCost() {
 
           <ul className="list-disc ml-8 text-[14px] space-y-[0.5rem] mt-3">
             <li>
-              A family of four estimated monthly costs are
+              A family of{" "}
+              {members == "5"
+                ? "five"
+                : members == "4"
+                ? "four"
+                : members == "3"
+                ? "three"
+                : members == "2"
+                ? "two"
+                : "single person"}{" "}
+              estimated monthly costs are
               <span className="ml-1 font-semibold">
                 {homeCurrencyCode && getCurrencySymbol(homeCurrencyCode)}{" "}
                 {numberWithCommas(
                   Number(estimatedCostData?.data?.overall_estimate?.toFixed(2))
                 )}
               </span>{" "}
-              without rent
-              <span className="ml-1">(using our estimator)</span>.
+              {isRent == "true" ? "with" : "without"} rent
+              <Link
+                to="/cost-of-living-calculator/estimated-cost-calculator"
+                className="ml-1 text-blue-600 hover:underline"
+              >
+                (using our estimator).
+              </Link>
             </li>
             <li>
               A single person estimated monthly costs are{" "}
