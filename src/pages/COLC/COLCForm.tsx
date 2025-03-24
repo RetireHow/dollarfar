@@ -54,7 +54,6 @@ import {
   setCity2Indices,
   setCOLCModifiedCostData,
   setHomeCurrencyCode,
-  setIncome,
   setSelectedCityName1,
   setSelectedCityName2,
   setSelectedCountryName1,
@@ -67,7 +66,6 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { Select } from "antd";
 import CustomTooltip from "../../components/UI/CustomTooltip";
 import { baseUrl } from "../../api/apiConstant";
-import ShowNegativeMessage from "../../components/UI/ShowNegativeMessage";
 import { transformCityPriceData } from "../../utils/transformCityPricesData";
 
 export default function COLCForm() {
@@ -84,10 +82,10 @@ export default function COLCForm() {
   const [countryName1, setCountryName1] = useState("");
   const [countryName2, setCountryName2] = useState("");
 
-  const [storedIncome, setStoredIncome] = useState("");
+  // const [storedIncome, setStoredIncome] = useState("");
   const [apiDataLoading, setApiDataLoading] = useState(false);
   const [selectOptions, setSelectOptions] = useState<TOption[]>([]);
-  const [showError, setShowError] = useState(false);
+  // const [showError, setShowError] = useState(false);
   const [isCitiesLoading, setIsCitiesLoading] = useState(false);
 
   useEffect(() => {
@@ -120,7 +118,6 @@ export default function COLCForm() {
           !city1DefaultCurrencyData.success &&
           city1DefaultCurrencyData.statusCode == 400
         ) {
-          setShowError(false);
           setApiDataLoading(false);
           return toast.error(city1DefaultCurrencyData.message);
         }
@@ -129,7 +126,6 @@ export default function COLCForm() {
           city1DefaultCurrencyData?.success &&
           city1DefaultCurrencyData?.data?.prices?.length == 0
         ) {
-          setShowError(false);
           setApiDataLoading(false);
           return toast.error(
             `No information available for ${city1DefaultCurrencyData?.data?.name}`
@@ -144,7 +140,6 @@ export default function COLCForm() {
           !city2DefaultCurrencyData.success &&
           city2DefaultCurrencyData.statusCode == 400
         ) {
-          setShowError(false);
           setApiDataLoading(false);
           return toast.error(city2DefaultCurrencyData.message);
         }
@@ -153,7 +148,6 @@ export default function COLCForm() {
           city2DefaultCurrencyData?.success &&
           city2DefaultCurrencyData?.data?.prices?.length == 0
         ) {
-          setShowError(false);
           setApiDataLoading(false);
           return toast.error(
             `No information available for ${city2DefaultCurrencyData?.data?.name}`
@@ -169,7 +163,6 @@ export default function COLCForm() {
           !city1OtherCurrencyData.success &&
           city1OtherCurrencyData.statusCode == 400
         ) {
-          setShowError(false);
           setApiDataLoading(false);
           return toast.error(city1OtherCurrencyData.message);
         }
@@ -178,7 +171,6 @@ export default function COLCForm() {
           city1OtherCurrencyData?.success &&
           city1OtherCurrencyData?.data?.prices?.length == 0
         ) {
-          setShowError(false);
           setApiDataLoading(false);
           return toast.error(
             `No information available for ${city1OtherCurrencyData?.data?.name}`
@@ -193,7 +185,6 @@ export default function COLCForm() {
           !city2OtherCurrencyData.success &&
           city2OtherCurrencyData.statusCode == 400
         ) {
-          setShowError(false);
           setApiDataLoading(false);
           return toast.error(city2OtherCurrencyData.message);
         }
@@ -202,7 +193,6 @@ export default function COLCForm() {
           city2OtherCurrencyData?.success &&
           city2OtherCurrencyData?.data?.prices?.length == 0
         ) {
-          setShowError(false);
           setApiDataLoading(false);
           return toast.error(
             `No information available for ${city2OtherCurrencyData?.data?.name}`
@@ -222,7 +212,6 @@ export default function COLCForm() {
         const data = await response.json();
 
         if (!data.success && data.statusCode == 400) {
-          setShowError(false);
           setApiDataLoading(false);
           return toast.error(data.message);
         }
@@ -257,13 +246,10 @@ export default function COLCForm() {
         dispatch(setSelectedCityName2(cityName2));
         dispatch(setSelectedCountryName1(countryName1));
         dispatch(setSelectedCountryName2(countryName2));
-
-        dispatch(setIncome(Number(storedIncome)));
         dispatch(
           setCOLCModifiedCostData(costOfLivingData as TCostOfLivingData)
         );
         dispatch(setHomeCurrencyCode(city1DefaultCurrencyData?.data?.currency));
-        setShowError(false);
         setApiDataLoading(false);
       } catch (error: any) {
         setApiDataLoading(false);
@@ -276,25 +262,7 @@ export default function COLCForm() {
 
   return (
     <>
-      <form className="grid lg:grid-cols-3 grid-cols-1 gap-6 mb-[3rem]">
-        <div className="md:text-[1rem] text-[14px]">
-          <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
-            <p>Your Income</p>
-            <CustomTooltip title="Enter your income (in numbers only without commas) to see how far your money will go in the new city." />
-          </div>
-          <input
-            className={`outline-none bg-white px-[12px] py-2 w-full duration-300 rounded-[8px] border-[1px] ${
-              !storedIncome && showError ? "border-red-600" : "border-[#838383]"
-            }`}
-            type="number"
-            name="income"
-            value={storedIncome}
-            onChange={(e) => setStoredIncome(e.target.value)}
-            placeholder="Enter income"
-          />
-          <ShowNegativeMessage input={storedIncome} />
-        </div>
-
+      <form className="grid lg:grid-cols-2 grid-cols-1 gap-6 mb-[3rem]">
         <div className="md:text-[1rem] text-[14px]">
           <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
             <p>City your are moving from</p>
@@ -343,7 +311,6 @@ export default function COLCForm() {
           <div className="relative">
             <Select
               size="large"
-              // style={{ width: 130, height: 45, border: "1px solid gray" }}
               className="w-full h-[50px] border-[1px] !border-[#838383] rounded-[8px]"
               onChange={(_value, option) => {
                 if (!Array.isArray(option)) {

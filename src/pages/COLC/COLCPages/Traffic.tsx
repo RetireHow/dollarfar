@@ -756,12 +756,7 @@ export default function Traffic() {
 
         <p>
           These data are based on perceptions of visitors of this website in the
-          past 0 years.
-        </p>
-
-        <p>
-          If the value is 0, it means it is perceived as very low, and if the
-          value is 100, it means it is perceived as very high.
+          past 5 years.
         </p>
       </div>
     </main>

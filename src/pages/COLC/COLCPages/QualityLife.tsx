@@ -4,6 +4,38 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getColorForIndex, getRating } from "../colc.utils";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getMaxMinContributors(data:any) {
+  // Initialize variables to store max and min contributors
+  let maxContributorKey = "";
+  let maxContributorValue = -Infinity;
+  let minContributorKey = "";
+  let minContributorValue = Infinity;
+
+  // Iterate through the object keys
+  for (const key in data) {
+    // Check if the key starts with "contributors_" and is not "contributors_property"
+    if (key.startsWith("contributors_") && key !== "contributors_property") {
+      // Update max contributor
+      if (data[key] > maxContributorValue) {
+        maxContributorValue = data[key];
+        maxContributorKey = key;
+      }
+      // Update min contributor
+      if (data[key] < minContributorValue) {
+        minContributorValue = data[key];
+        minContributorKey = key;
+      }
+    }
+  }
+
+  // Return the results
+  return {
+    maxContributor: { key: maxContributorKey, value: maxContributorValue },
+    minContributor: { key: minContributorKey, value: minContributorValue },
+  };
+}
+
 export interface TCityIndecesResponse {
   message: string;
   success: boolean;
@@ -52,7 +84,7 @@ export default function QualityLife() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-  
+
   const { countryCity } = useParams();
   const country = countryCity?.split("-")[0];
   const city = countryCity?.split("-")[1];
@@ -92,8 +124,6 @@ export default function QualityLife() {
     cost_of_living_index,
     quality_of_life_index,
     name,
-    contributors_traffic,
-    contributors_crime,
   } = cityIndicesData?.data || {};
 
   const navigate = useNavigate();
@@ -274,10 +304,12 @@ export default function QualityLife() {
 
       <div className="space-y-[0.3rem] mt-[0.5rem]">
         <p>
-          Maximum contributors for an underlying section:{contributors_traffic}
+          Minimum contributors for an underlying section:{" "}
+          {getMaxMinContributors(cityIndicesData?.data)?.minContributor?.value}
         </p>
         <p>
-          Minimum contributors for an underlying section: {contributors_crime}
+          Maximum contributors for an underlying section:{" "}
+          {getMaxMinContributors(cityIndicesData?.data)?.maxContributor?.value}
         </p>
       </div>
     </main>

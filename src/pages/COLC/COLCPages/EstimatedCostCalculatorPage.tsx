@@ -177,7 +177,17 @@ export default function EstimatedCostCalculatorPage() {
 
             <ul className="list-disc ml-8 text-[14px] space-y-[0.5rem] mt-3">
               <li>
-                A family of four estimated monthly costs are
+                A family of{" "}
+                {members == "5"
+                  ? "five"
+                  : members == "4"
+                  ? "four"
+                  : members == "3"
+                  ? "three"
+                  : members == "2"
+                  ? "two"
+                  : "single person"}{" "}
+                estimated monthly costs are
                 <span className="ml-1 font-semibold">
                   {homeCurrencyCode && getCurrencySymbol(homeCurrencyCode)}{" "}
                   {numberWithCommas(
@@ -186,7 +196,7 @@ export default function EstimatedCostCalculatorPage() {
                     )
                   )}
                 </span>{" "}
-                without rent
+                {isRent == "true" ? "with" : "without"} rent
               </li>
             </ul>
           </div>

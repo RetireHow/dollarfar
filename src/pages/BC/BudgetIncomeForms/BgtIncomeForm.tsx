@@ -116,7 +116,7 @@ export default function BgtIncomeForm() {
                 label="Net Income"
                 stepName="income"
                 placeholder={`${currency} 0.00`}
-                tooltipTitle="Specify your take-home pay after taxes, deductions, and other adjustments."
+                tooltipTitle="Specify your take-home pay after taxes, deductions, and other adjustments in self employment or rental income situation only."
               />
               <DFSelectWithWatch
                 name="netIncomeFrequency"

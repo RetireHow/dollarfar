@@ -62,10 +62,10 @@ export default function BgtLoanForm() {
               type="number"
               name="homeLoan"
               subField="homeLoanAmount"
-              label="Home Loan"
+              label="Cottage Loan"
               stepName="loans"
               placeholder={`${currency} 0.00`}
-              tooltipTitle="Enter your home loan repayment amount. Select the frequency that matches how often you make payments (e.g., monthly, annually, or bi-weekly)."
+              tooltipTitle="Enter your cottage loan amount. Select the frequency that matches how often you make payments (e.g., monthly, annually, or bi-weekly)."
             />
             <DFSelectWithWatch
               name="homeLoanFrequency"

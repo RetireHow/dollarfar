@@ -535,11 +535,6 @@ export default function CloseCityLivingCost() {
           These data are based on perceptions of visitors of this website in the
           past 5 years.
         </p>
-
-        <p>
-          If the value is 0, it means it is perceived as very low, and if the
-          value is 100, it means it is perceived as very high.
-        </p>
       </div>
     </main>
   );

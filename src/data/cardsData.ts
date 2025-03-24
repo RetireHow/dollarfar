@@ -3,7 +3,7 @@ import { assets } from "../assets/assets";
 export const cardsData = [
   {
     id: 6,
-    title: "Cost of Living Calculator",
+    title: "Cost of Living Comparison Calculator",
     description:
       "This calculator is used to compare the expenses required to maintain a certain standard of living in different locations or cities. It calculates the necessary income to sustain your lifestyle.....",
     arrowIcon: assets.arrowUpIcon,
