@@ -373,9 +373,15 @@ export default function PropertyPrice() {
                           {item_name}
                         </p>
                         <p>
-                          <span className="mr-1">
-                            {getCurrencySymbol(cityPriceData?.currency)}
-                          </span>
+                          {item_name ==
+                          "Mortgage Interest Rate in Percentages (%), Yearly, for 20 Years Fixed-Rate" ? (
+                            ""
+                          ) : (
+                            <span className="mr-1">
+                              {getCurrencySymbol(cityPriceData?.currency)}
+                            </span>
+                          )}
+
                           {average_price?.toFixed(2)}
                         </p>
 
