@@ -36,7 +36,6 @@ export default function CustomCollapese() {
       yearLastUpdate: city2YearLastUpdate,
     } = {},
   } = COLCModifiedCostData.metaData || {};
-  console.log(COLCModifiedCostData.metaData);
 
   const { selectedCityName1, selectedCityName2 } = useAppSelector(
     (state) => state.COLCalculator

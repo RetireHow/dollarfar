@@ -152,30 +152,6 @@ export function calculatePropertyPrice(data: PropertyPriceData[]):PropertyPriceO
       (pricePerSqmOutsideCentre as number)) *
     100;
 
-  // Output Results
-  console.log("Price to income ratio:", priceToIncomeRatio.toFixed(2));
-  console.log(
-    "Mortgage as Percentage of Income:",
-    mortgageAsPercentageOfIncome.toFixed(2) + "%"
-  );
-  console.log("Loan Affordability Index:", loanAffordabilityIndex.toFixed(2));
-  console.log(
-    "Price to Rent Ratio - City Centre:",
-    priceToRentRatioCityCentre.toFixed(2)
-  );
-  console.log(
-    "Price to Rent Ratio - Outside of Centre:",
-    priceToRentRatioOutsideCentre.toFixed(2)
-  );
-  console.log(
-    "Gross Rental Yield (City Centre):",
-    grossRentalYieldCityCentre.toFixed(2) + "%"
-  );
-  console.log(
-    "Gross Rental Yield (Outside of Centre):",
-    grossRentalYieldOutsideCentre.toFixed(2) + "%"
-  );
-
   return {
     priceToIncomeRatio: priceToIncomeRatio.toFixed(2),
     mortgageAsPercentageOfIncome: mortgageAsPercentageOfIncome.toFixed(2),

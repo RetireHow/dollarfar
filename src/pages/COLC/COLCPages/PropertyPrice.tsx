@@ -169,7 +169,6 @@ export default function PropertyPrice() {
   const [cityPriceData, setCityPriceData] = useState<TransformedData>(
     {} as TransformedData
   );
-  console.log("Property Prices ========> ", cityPriceData?.category);
   const [exchangeRatesData, setExchangeRatesData] = useState<string[]>([]);
 
   const [selectedCurrency, setSelectedCurrency] = useState<string>("");
