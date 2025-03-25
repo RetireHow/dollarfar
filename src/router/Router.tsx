@@ -43,6 +43,7 @@ import CloseCityLivingCost from "../pages/COLC/COLCPages/CloseCityLivingCost";
 import PropertyPriceExplanationPage from "../pages/COLC/COLCPages/PropertyPriceExplanationPage";
 import HealthCareExplanationPage from "../pages/COLC/COLCPages/HealthCareExplanationPage";
 import EstimatedCostCalculatorPage from "../pages/COLC/COLCPages/EstimatedCostCalculatorPage";
+import CrimeExplanation from "../pages/COLC/COLCPages/CrimeExplanation";
 
 export const router = createBrowserRouter([
   {
@@ -129,6 +130,10 @@ export const router = createBrowserRouter([
       {
         path: "cost-of-living-calculator/crime/:countryCity",
         element: <Crime />,
+      },
+      {
+        path: "cost-of-living-calculator/crime/crime-explanation",
+        element: <CrimeExplanation />,
       },
       {
         path: "cost-of-living-calculator/health-care/:countryCity",

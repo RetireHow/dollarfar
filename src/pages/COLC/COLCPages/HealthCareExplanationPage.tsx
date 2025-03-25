@@ -1,6 +1,11 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function HealthCareExplanationPage() {
+   useEffect(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, []);
+
   const navigate = useNavigate();
   const handleBack = () => {
     navigate(-1);

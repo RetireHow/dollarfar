@@ -41,7 +41,7 @@ export default function Crime() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-  
+
   const { countryCity } = useParams();
   const country = countryCity?.split("-")[0];
   const city = countryCity?.split("-")[1];
@@ -114,7 +114,7 @@ export default function Crime() {
       <section className="border-[1px] border-gray-300 p-3 mb-[3rem] mt-[1rem] rounded-lg inline-block md:w-[300px] bg-[#FBFBF8]">
         <div className="font-bold mb-2 text-[1.3rem] flex justify-between items-center">
           <p>Index</p>
-          <Link to="/cost-of-living-calculator/crime-index">
+          <Link to="/cost-of-living-calculator/crime/crime-explanation">
             <p title="About these indices">
               <Icon
                 className="text-green-500 cursor-pointer"
