@@ -5,6 +5,7 @@ import { months } from "../colc.utils";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { getCurrencySymbol } from "../../../utils/getCurrencySymbol";
 import { numberWithCommas } from "../../../utils/numberWithCommas";
+import COLCLoading from "../COLCLoading";
 
 type PriceItem = {
   item_name: string;
@@ -236,7 +237,7 @@ export default function CloseCityLivingCost() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-  
+
   const { countryCity } = useParams();
   const country = countryCity?.split("-")[0];
   const city = countryCity?.split("-")[1];
@@ -252,8 +253,11 @@ export default function CloseCityLivingCost() {
   const [estimatedCostDataSinglePerson, setEstimatedCostDataSinglePerson] =
     useState<EstimatedCostDataResponse>({} as EstimatedCostDataResponse);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const loadCityPriceData = async () => {
     try {
+      setIsLoading(true);
       const res = await fetch(
         `https://dollarfar-backend-rust.vercel.app/api/single-city-prices?country=${country}&city=${city}&currency=${selectedCurrency}`
       );
@@ -263,9 +267,11 @@ export default function CloseCityLivingCost() {
       }
       setCityPriceData(transformData(data?.data));
       setSelectedCurrency(data?.data?.currency);
+      setIsLoading(false);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("There is something wrong!");
+      setIsLoading(false);
     }
   };
 
@@ -336,206 +342,229 @@ export default function CloseCityLivingCost() {
   };
 
   return (
-    <main className="md:m-10 m-3">
-      <h3 className="md:text-[1.5rem] font-semibold mb-[2rem]">
-        Cost of Living in {cityPriceData?.name}
-      </h3>
-
-      <div className="mb-[1rem]">
-        <button
-          onClick={handleBack}
-          className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
-        >
-          Go Back
-        </button>
-      </div>
-
-      {estimatedCostData?.data?.error ? (
-        <p className="text-red-500 p-3 border-[1px] mb-4">
-          {estimatedCostData?.data?.error}
-        </p>
+    <>
+      {isLoading ? (
+        <COLCLoading />
       ) : (
-        <section className="border-[1px] border-gray-300 rounded-lg p-5 mb-5 bg-[#FBFBF8]">
-          <p>
-            <span className="font-semibold">Summary</span> of cost of living in
-            {city}, {country}:
-          </p>
+        <main className="md:m-10 m-3">
+          <h3 className="md:text-[1.5rem] font-semibold mb-[2rem]">
+            Cost of Living in {cityPriceData?.name}
+          </h3>
 
-          <ul className="list-disc ml-8">
-            <li>
-              A family of four estimated monthly costs are
-              <span className="ml-1 font-semibold">
-                {selectedCurrency && getCurrencySymbol(selectedCurrency)}
-                {estimatedCostData?.data?.overall_estimate?.toFixed(2)}
-              </span>{" "}
-              without rent
-              <span className="ml-1">(using our estimator)</span>.
-            </li>
-            <li>
-              A single person estimated monthly costs are{" "}
-              <span className="mr-1 font-semibold">
-                {selectedCurrency && getCurrencySymbol(selectedCurrency)}
-                {estimatedCostDataSinglePerson?.data?.overall_estimate?.toFixed(
-                  2
-                )}
-              </span>
-              without rent.
-            </li>
-          </ul>
-        </section>
-      )}
+          <div className="mb-[1rem]">
+            <button
+              onClick={handleBack}
+              className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
+            >
+              Go Back
+            </button>
+          </div>
 
-      <section className="mb-3 flex md:flex-row flex-col md:items-center md:gap-10 gap-2">
-        <div className="flex items-center gap-1">
-          <p className="font-semibold">Currency:</p>
-          <select
-            className="border-[1px] border-gray-500 px-5 py-1"
-            name="currency-selection"
-            id="currency-selection"
-            onChange={(e) => setSelectedCurrency(e.target.value)}
-          >
-            <option value={cityPriceData?.currency}>
-              {cityPriceData?.currency}
-            </option>
-            {exchangeRatesData?.map((item) => (
-              <option value={item}>{item}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <Link to="/cost-of-living-calculator/property-prices/sticky-currency">
-            <p className="text-blue-700 hover:text-blue-800 hover:underline">
-              Sticky Currency
+          {estimatedCostData?.data?.error ? (
+            <p className="text-red-500 p-3 border-[1px] mb-4">
+              {estimatedCostData?.data?.error}
             </p>
-          </Link>
-        </div>
-      </section>
+          ) : (
+            <section className="border-[1px] border-gray-300 rounded-lg p-5 mb-5 bg-[#FBFBF8]">
+              <p>
+                <span className="font-semibold">Summary</span> of cost of living
+                in
+                {city}, {country}:
+              </p>
 
-      <section className="overflow-x-auto">
-        {cityPriceData?.category?.map((item) => {
-          const { name: category, items } = item;
-          return (
-            <section className="mb-3 min-w-[500px]">
-              <div className="grid gap-2 grid-cols-5 font-semibold text-[1rem] p-1">
-                <p className="flex md:items-center gap-1 col-span-3">
-                  {category == "Restaurants" ? (
-                    <Icon icon="ri:restaurant-2-fill" width="24" height="24" />
-                  ) : category == "Markets" ? (
-                    <Icon icon="mdi:cart" width="24" height="24" />
-                  ) : category == "Transportation" ? (
-                    <Icon icon="tabler:car-filled" width="24" height="24" />
-                  ) : category == "Rent Per Month" ? (
-                    <Icon icon="fa6-solid:bed" width="24" height="24" />
-                  ) : category == "Utilities (Monthly)" ? (
-                    <Icon
-                      icon="healthicons:electricity"
-                      width="24"
-                      height="24"
-                    />
-                  ) : category == "Buy Apartment Price" ? (
-                    <Icon
-                      icon="material-symbols:apartment"
-                      width="24"
-                      height="24"
-                    />
-                  ) : category == "Salaries And Financing" ? (
-                    <Icon icon="mingcute:wallet-fill" width="24" height="24" />
-                  ) : category == "Sports And Leisure" ? (
-                    <Icon icon="maki:bicycle-share" width="24" height="24" />
-                  ) : category == "Clothing And Shoes" ? (
-                    <Icon icon="map:clothing-store" width="24" height="24" />
-                  ) : category == "Childcare" ? (
-                    <Icon
-                      icon="healthicons:child-care"
-                      width="24"
-                      height="24"
-                    />
-                  ) : (
-                    ""
-                  )}
-                  <span>{category}</span>
-                </p>
-
-                <div>Price</div>
-                <div>Range</div>
-              </div>
-
-              {/* Children  */}
-              <div className="rounded-lg p-2 border-[1px] border-gray-200 bg-[#FBFBF8] text-[14px]">
-                {items?.map((item, index) => {
-                  const {
-                    item_name,
-                    average_price,
-                    lowest_price,
-                    highest_price,
-                  } = item || {};
-                  return (
-                    <>
-                      <div
-                        key={index}
-                        className="grid gap-2 grid-cols-5 border-b-[1px] border-gray-300 rounded-lg hover:bg-[#42c6c623] p-1"
-                      >
-                        <p className="flex items-center col-span-3">
-                          {item_name}
-                        </p>
-                        <p>
-                          {item_name ==
-                          "Mortgage Interest Rate in Percentages (%), Yearly, for 20 Years Fixed-Rate" ? (
-                            ""
-                          ) : (
-                            <span className="mr-1">
-                              {getCurrencySymbol(cityPriceData?.currency)}
-                            </span>
-                          )}
-
-                          {average_price?.toFixed(2)}
-                        </p>
-
-                        {lowest_price && highest_price && (
-                          <div className="flex items-center gap-1">
-                            <p>
-                              {numberWithCommas(
-                                Number(lowest_price?.toFixed(2))
-                              )}
-                            </p>
-                            <p>
-                              <Icon
-                                className="text-green-600"
-                                icon="material-symbols-light:arrow-range-rounded"
-                                width="24"
-                                height="24"
-                              />
-                            </p>
-                            <p>
-                              {numberWithCommas(
-                                Number(highest_price?.toFixed(2))
-                              )}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    </>
-                  );
-                })}
-              </div>
+              <ul className="list-disc ml-8">
+                <li>
+                  A family of four estimated monthly costs are
+                  <span className="ml-1 font-semibold">
+                    {selectedCurrency && getCurrencySymbol(selectedCurrency)}
+                    {estimatedCostData?.data?.overall_estimate?.toFixed(2)}
+                  </span>{" "}
+                  without rent
+                  <span className="ml-1">(using our estimator)</span>.
+                </li>
+                <li>
+                  A single person estimated monthly costs are{" "}
+                  <span className="mr-1 font-semibold">
+                    {selectedCurrency && getCurrencySymbol(selectedCurrency)}
+                    {estimatedCostDataSinglePerson?.data?.overall_estimate?.toFixed(
+                      2
+                    )}
+                  </span>
+                  without rent.
+                </li>
+              </ul>
             </section>
-          );
-        })}
-      </section>
+          )}
 
-      <div className="space-y-[0.3rem]">
-        <p>Contributors: {cityPriceData?.contributors}</p>
+          <section className="mb-3 flex md:flex-row flex-col md:items-center md:gap-10 gap-2">
+            <div className="flex items-center gap-1">
+              <p className="font-semibold">Currency:</p>
+              <select
+                className="border-[1px] border-gray-500 px-5 py-1"
+                name="currency-selection"
+                id="currency-selection"
+                onChange={(e) => setSelectedCurrency(e.target.value)}
+              >
+                <option value={cityPriceData?.currency}>
+                  {cityPriceData?.currency}
+                </option>
+                {exchangeRatesData?.map((item) => (
+                  <option value={item}>{item}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <Link to="/cost-of-living-calculator/property-prices/sticky-currency">
+                <p className="text-blue-700 hover:text-blue-800 hover:underline">
+                  Sticky Currency
+                </p>
+              </Link>
+            </div>
+          </section>
 
-        <p>
-          Last update: {months[cityPriceData?.monthLastUpdate - 1]}{" "}
-          {cityPriceData?.yearLastUpdate}
-        </p>
+          <section className="overflow-x-auto">
+            {cityPriceData?.category?.map((item) => {
+              const { name: category, items } = item;
+              return (
+                <section className="mb-3 min-w-[500px]">
+                  <div className="grid gap-2 grid-cols-5 font-semibold text-[1rem] p-1">
+                    <p className="flex md:items-center gap-1 col-span-3">
+                      {category == "Restaurants" ? (
+                        <Icon
+                          icon="ri:restaurant-2-fill"
+                          width="24"
+                          height="24"
+                        />
+                      ) : category == "Markets" ? (
+                        <Icon icon="mdi:cart" width="24" height="24" />
+                      ) : category == "Transportation" ? (
+                        <Icon icon="tabler:car-filled" width="24" height="24" />
+                      ) : category == "Rent Per Month" ? (
+                        <Icon icon="fa6-solid:bed" width="24" height="24" />
+                      ) : category == "Utilities (Monthly)" ? (
+                        <Icon
+                          icon="healthicons:electricity"
+                          width="24"
+                          height="24"
+                        />
+                      ) : category == "Buy Apartment Price" ? (
+                        <Icon
+                          icon="material-symbols:apartment"
+                          width="24"
+                          height="24"
+                        />
+                      ) : category == "Salaries And Financing" ? (
+                        <Icon
+                          icon="mingcute:wallet-fill"
+                          width="24"
+                          height="24"
+                        />
+                      ) : category == "Sports And Leisure" ? (
+                        <Icon
+                          icon="maki:bicycle-share"
+                          width="24"
+                          height="24"
+                        />
+                      ) : category == "Clothing And Shoes" ? (
+                        <Icon
+                          icon="map:clothing-store"
+                          width="24"
+                          height="24"
+                        />
+                      ) : category == "Childcare" ? (
+                        <Icon
+                          icon="healthicons:child-care"
+                          width="24"
+                          height="24"
+                        />
+                      ) : (
+                        ""
+                      )}
+                      <span>{category}</span>
+                    </p>
 
-        <p>
-          These data are based on perceptions of visitors of this website in the
-          past 5 years.
-        </p>
-      </div>
-    </main>
+                    <div>Price</div>
+                    <div>Range</div>
+                  </div>
+
+                  {/* Children  */}
+                  <div className="rounded-lg p-2 border-[1px] border-gray-200 bg-[#FBFBF8] text-[14px]">
+                    {items?.map((item, index) => {
+                      const {
+                        item_name,
+                        average_price,
+                        lowest_price,
+                        highest_price,
+                      } = item || {};
+                      return (
+                        <>
+                          <div
+                            key={index}
+                            className="grid gap-2 grid-cols-5 border-b-[1px] border-gray-300 rounded-lg hover:bg-[#42c6c623] p-1"
+                          >
+                            <p className="flex items-center col-span-3">
+                              {item_name}
+                            </p>
+                            <p>
+                              {item_name ==
+                              "Mortgage Interest Rate in Percentages (%), Yearly, for 20 Years Fixed-Rate" ? (
+                                ""
+                              ) : (
+                                <span className="mr-1">
+                                  {getCurrencySymbol(cityPriceData?.currency)}
+                                </span>
+                              )}
+
+                              {average_price?.toFixed(2)}
+                            </p>
+
+                            {lowest_price && highest_price && (
+                              <div className="flex items-center gap-1">
+                                <p>
+                                  {numberWithCommas(
+                                    Number(lowest_price?.toFixed(2))
+                                  )}
+                                </p>
+                                <p>
+                                  <Icon
+                                    className="text-green-600"
+                                    icon="material-symbols-light:arrow-range-rounded"
+                                    width="24"
+                                    height="24"
+                                  />
+                                </p>
+                                <p>
+                                  {numberWithCommas(
+                                    Number(highest_price?.toFixed(2))
+                                  )}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </>
+                      );
+                    })}
+                  </div>
+                </section>
+              );
+            })}
+          </section>
+
+          <div className="space-y-[0.3rem]">
+            <p>Contributors: {cityPriceData?.contributors}</p>
+
+            <p>
+              Last update: {months[cityPriceData?.monthLastUpdate - 1]}{" "}
+              {cityPriceData?.yearLastUpdate}
+            </p>
+
+            <p>
+              These data are based on perceptions of visitors of this website in
+              the past 5 years.
+            </p>
+          </div>
+        </main>
+      )}
+    </>
   );
 }
