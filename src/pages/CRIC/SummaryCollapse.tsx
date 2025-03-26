@@ -44,7 +44,6 @@ export default function SummaryCollapse() {
       },
     },
   } = useAppSelector((state) => state.CRICalculator);
-  const { currency } = useAppSelector((state) => state.globalCurrency);
   const items: CollapseProps["items"] = [
     {
       key: "1",
@@ -81,7 +80,7 @@ export default function SummaryCollapse() {
             <li className="flex md:gap-0 gap-5 justify-between items-center">
               <p>Annual Retirement Income Goal</p>
               <p>
-                {currency}
+                
                 {Number(getValue(annualRetirementIncomeGoal))
                   ? numberWithCommas(Number(annualRetirementIncomeGoal))
                   : getValue(annualRetirementIncomeGoal)}
@@ -90,7 +89,7 @@ export default function SummaryCollapse() {
             <li className="flex md:gap-0 gap-5 justify-between items-center">
               <p>Current Annual Income</p>
               <p>
-                {currency}
+                
                 {Number(getValue(currentAnnualIncome))
                   ? numberWithCommas(Number(currentAnnualIncome))
                   : getValue(currentAnnualIncome)}
@@ -118,7 +117,7 @@ export default function SummaryCollapse() {
             <li className="flex md:gap-0 gap-5 justify-between items-center">
               <p>Monthly Retirement Pension Estimate</p>
               <p>
-                {currency}
+                
                 {Number(getValue(monthlyRetirementPensionEstimate))
                   ? numberWithCommas(Number(monthlyRetirementPensionEstimate))
                   : getValue(monthlyRetirementPensionEstimate)}
@@ -146,7 +145,7 @@ export default function SummaryCollapse() {
             <li className="flex md:gap-0 gap-5 justify-between items-center">
               <p>Estimated Annual Pension</p>
               <p>
-                {currency}
+                
                 {Number(getValue(annualPension))
                   ? numberWithCommas(Number(annualPension))
                   : getValue(annualPension)}
@@ -191,7 +190,7 @@ export default function SummaryCollapse() {
                 <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>Current Total Value</p>
                   <p>
-                    {currency}
+                    
                     {Number(getValue(TFSA.TFSAcurrentTotal))
                       ? numberWithCommas(Number(TFSA.TFSAcurrentTotal))
                       : getValue(TFSA.TFSAcurrentTotal)}
@@ -210,7 +209,7 @@ export default function SummaryCollapse() {
                 <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>Ongoing Contribution Amount</p>
                   <p>
-                    {currency}
+                    
                     {Number(getValue(TFSA.TFSAOngoingContributionAmount))
                       ? numberWithCommas(
                           Number(TFSA.TFSAOngoingContributionAmount)
@@ -246,7 +245,7 @@ export default function SummaryCollapse() {
                 <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>Current Total Value</p>
                   <p>
-                    {currency}
+                    
                     {Number(getValue(NRA.NRAcurrentTotal))
                       ? numberWithCommas(Number(NRA.NRAcurrentTotal))
                       : getValue(NRA.NRAcurrentTotal)}
@@ -265,7 +264,7 @@ export default function SummaryCollapse() {
                 <li className="flex md:gap-0 gap-5 justify-between items-center">
                   <p>Ongoing Contribution Amount</p>
                   <p>
-                    {currency}
+                    
                     {Number(getValue(NRA.NRAOngoingContributionAmount))
                       ? numberWithCommas(
                           Number(NRA.NRAOngoingContributionAmount)
@@ -328,7 +327,7 @@ export default function SummaryCollapse() {
             <li className="flex md:gap-0 gap-5 justify-between items-center">
               <p>Estimated Income</p>
               <p>
-                {currency}
+                
                 {Number(getValue(otherIncomeAmount))
                   ? numberWithCommas(Number(otherIncomeAmount))
                   : getValue(otherIncomeAmount)}
@@ -369,7 +368,7 @@ export default function SummaryCollapse() {
                 OAS Pension (Ages from {getValue(OASPensionReceivingAge)} to 74)
               </p>
               <p>
-                {currency}
+                
                 {Number(getValue(oldAgeSecurityBefore75.toString()))
                   ? numberWithCommas(
                       parseInt(oldAgeSecurityBefore75.toString())
@@ -381,7 +380,7 @@ export default function SummaryCollapse() {
             <li className="flex md:gap-0 gap-5 justify-between items-center">
               <p>OAS Pension (Ages 75 and up)</p>
               <p>
-                {currency}
+                
                 {Number(getValue(oldAgeSecurityAfter75.toString()))
                   ? numberWithCommas(parseInt(oldAgeSecurityAfter75.toString()))
                   : getValue(oldAgeSecurityAfter75.toString())}

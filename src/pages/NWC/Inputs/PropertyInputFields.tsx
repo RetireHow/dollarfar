@@ -16,8 +16,6 @@ const PropertyInputFields = () => {
     },
   } = useAppSelector((state) => state.NWCalculator);
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
-
-  const { currency } = useAppSelector((state) => state.globalCurrency);
   const {
     assets: {
       property: { principalResidence, cottage, realEstateAssets },
@@ -53,7 +51,7 @@ const PropertyInputFields = () => {
       />
       {/* Sub Input Fields */}
       {showSubInputs && (
-        <div className="mt-3 text-[14px] flex gap-[1.5rem] overflow-x-auto pb-2">
+        <div className="mt-3 text-[14px] flex flex-col gap-[0.5rem] pb-2">
           <div>
             <label
               className="flex items-center gap-1 font-semibold"
@@ -63,11 +61,13 @@ const PropertyInputFields = () => {
               <CustomTooltip title="The current market value of your primary home or residence." />
             </label>
             <input
-              className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
-                isNegative(principalResidence) ? "border-red-500 border-[2px]" : "border-[#838383] border-[1px]"
+              className={`rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+                isNegative(principalResidence)
+                  ? "border-red-500 border-[2px]"
+                  : "border-[#838383] border-[1px]"
               }`}
               type="number"
-              placeholder={`${currency}0`}
+              placeholder={`0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -91,11 +91,13 @@ const PropertyInputFields = () => {
               <CustomTooltip title="The estimated market value of your secondary residence or vacation property." />
             </label>
             <input
-              className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
-                isNegative(cottage) ? "border-red-500 border-[2px]" : "border-[#838383] border-[1px]"
+              className={`rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+                isNegative(cottage)
+                  ? "border-red-500 border-[2px]"
+                  : "border-[#838383] border-[1px]"
               }`}
               type="number"
-              placeholder={`${currency}0`}
+              placeholder={`0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -119,11 +121,13 @@ const PropertyInputFields = () => {
               <CustomTooltip title="Any additional real estate holdings or properties you own, excluding your primary residence and cottage." />
             </label>
             <input
-              className={`min-w-[140px] rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
-                isNegative(realEstateAssets) ? "border-red-500 border-[2px]" : "border-[#838383] border-[1px]"
+              className={`rounded-[8px] p-[0.6rem] w-full outline-none duration-300 ${
+                isNegative(realEstateAssets)
+                  ? "border-red-500 border-[2px]"
+                  : "border-[#838383] border-[1px]"
               }`}
               type="number"
-              placeholder={`${currency}0`}
+              placeholder={`0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -153,11 +157,11 @@ const PropertyInputFields = () => {
                 />
               </label>
               <input
-                className="border-[1px] min-w-[140px] border-[#838383] rounded-[8px] p-[0.6rem] w-full"
+                className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] w-full"
                 type="number"
-                name={input.label.trim().split(" ").join("")}
+                name={input.label.trim().split(" ").join()}
                 value={input.value}
-                placeholder={`${currency}0`}
+                placeholder={`0`}
                 onChange={(e) => handleDynamicInputChange(e, input.id)}
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
@@ -170,10 +174,10 @@ const PropertyInputFields = () => {
           {/* New Dynamic Input Field */}
           {showNewInputField && (
             <div className="mt-3 flex flex-col items-center">
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center justify-between gap-4 w-full">
                 <input
                   ref={dynamicFieldTitleRef}
-                  className="border-[1px] border-[#838383] rounded-[5px]  px-1 py-[2px] flex-1"
+                  className="border-[1px] border-[#838383] rounded-[5px] flex-1 px-1 py-[2px]"
                   type="text"
                   name="label"
                   value={newInput.label}
@@ -196,11 +200,11 @@ const PropertyInputFields = () => {
                 </div>
               </div>
               <input
-                className="border-[1px] border-[#838383] rounded-[8px] px-2 py-[2px]  mt-[2px] w-full"
+                className="border-[1px] border-[#838383] rounded-[8px] px-2 py-[8px] mt-[2px] w-full"
                 type="number"
                 name="value"
                 value={newInput.value}
-                placeholder={`${currency}0`}
+                placeholder={`0`}
                 onChange={handleInputChange}
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
@@ -212,7 +216,7 @@ const PropertyInputFields = () => {
 
           {/* "+ Add More" button in Sub-menu Container */}
           <div>
-            <div className="mb-1 opacity-0">
+            <div className="opacity-0">
               <label
                 className="flex items-center gap-1 font-medium"
                 htmlFor="property"
@@ -228,7 +232,7 @@ const PropertyInputFields = () => {
               className="font-semibold text-nowrap border-[1px] border-[#E5E5E5] rounded-[8px] py-[0.2rem] px-[1rem]"
               onClick={handleAddNewInput}
             >
-              <span className="text-[1.3rem] pr-1">+</span> Add More
+              <span className="text-[1.3rem] pr-1">+</span> Add More Property
             </button>
           </div>
         </div>

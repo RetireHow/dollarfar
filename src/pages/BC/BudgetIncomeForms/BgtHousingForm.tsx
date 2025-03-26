@@ -44,8 +44,6 @@ export default function BgtHousingForm() {
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
-  const { currency } = useAppSelector((state) => state.globalCurrency);
-
   return (
     <div className="space-y-[2rem]">
       <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">
@@ -80,7 +78,7 @@ export default function BgtHousingForm() {
               subField="mortgageAmount"
               label="Mortgage"
               stepName="housing"
-              placeholder={`${currency} 0.00`}
+              placeholder={` 0.00`}
               tooltipTitle="Monthly payment towards your home loan principal and interest."
             />
             <DFSelectWithWatch
@@ -97,7 +95,7 @@ export default function BgtHousingForm() {
               subField="rentAmount"
               label="Rent"
               stepName="housing"
-              placeholder={`${currency} 0.00`}
+              placeholder={` 0.00`}
               tooltipTitle="Monthly rent paid for your residence."
             />
             <DFSelectWithWatch
@@ -114,7 +112,7 @@ export default function BgtHousingForm() {
               subField="homeInsuranceAmount"
               label="Home Insurance"
               stepName="housing"
-              placeholder={`${currency} 0.00`}
+              placeholder={` 0.00`}
               tooltipTitle="Insurance premium covering property damage and liabilities."
             />
             <DFSelectWithWatch
@@ -133,7 +131,7 @@ export default function BgtHousingForm() {
                 subField="utilitiesAmount"
                 label="Utilities ( e.g., Electricity )"
                 stepName="housing"
-                placeholder={`${currency} 0.00`}
+                placeholder={` 0.00`}
                 tooltipTitle="Combined cost of water, gas, and electricity bills."
               />
               <DFSelectWithWatch
@@ -161,7 +159,7 @@ export default function BgtHousingForm() {
                 subField="telecomServiceAmount"
                 label="Telecom Services ( e.g., Cable TV )"
                 stepName="housing"
-                placeholder={`${currency} 0.00`}
+                placeholder={` 0.00`}
                 tooltipTitle="Combined cost of cable TV, internet, home phone, and cell phone services."
               />
               <DFSelectWithWatch
@@ -189,7 +187,7 @@ export default function BgtHousingForm() {
                 subField="maintenanceAmount"
                 label="Maintenances / Repairs"
                 stepName="housing"
-                placeholder={`${currency} 0.00`}
+                placeholder={` 0.00`}
                 tooltipTitle="Combined cost of cable TV, internet, home phone, and cell phone services."
               />
               <DFSelectWithWatch

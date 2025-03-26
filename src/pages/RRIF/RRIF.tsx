@@ -10,7 +10,6 @@ import RRIFTable from "./RRIFTable";
 import DownloadModal from "../../components/DownloadModal";
 import { RRIFPdf } from "./RRIFPdf";
 import { useAppSelector } from "../../redux/hooks";
-import CurrencySelect from "../../components/UI/CurrencySelect";
 import useTitle from "../../hooks/useTitle";
 
 const data = {
@@ -81,8 +80,7 @@ export default function RRIF() {
             <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
               Registered Retirement Income Fund (RRIF) Calculator
             </h3>
-            <div className="md:flex grid grid-cols-2 items-center flex-wrap md:gap-5 gap-3 md:text-[1rem] text-[14px] md:w-auto w-full">
-              <CurrencySelect />
+            <div className="lg:w-auto w-full">
               <DownloadModal
                 calculatorData={calculatorData}
                 fileName="RRIF Report"

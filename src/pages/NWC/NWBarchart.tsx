@@ -27,9 +27,6 @@ export const NWBarChart = () => {
   const { totalAssets, totalLiabilities, netWorth } = useAppSelector(
     (state) => state.NWCalculator
   );
-  const { currency, currencyFullName } = useAppSelector(
-    (state) => state.globalCurrency
-  );
   // Data for the chart
   const data: ChartData<"bar", number[], string> = {
     labels: ["Assets", "Liabilities", "Net Worth"],
@@ -61,7 +58,7 @@ export const NWBarChart = () => {
       x: {
         ticks: {
           callback: function (value: number | string) {
-            return `${currency}${numberWithCommas(value as number)}`; // Format the ticks with a dollar sign
+            return `${numberWithCommas(value as number)}`; // Format the ticks with a dollar sign
           },
         },
         grid: {
@@ -115,8 +112,7 @@ export const NWBarChart = () => {
           <p>Net Worth</p>
         </div>
         <div className="flex items-center md:gap-3 gap-1">
-          <p className="">{currency}</p>
-          <p>{currencyFullName}</p>
+          <p className=""></p>
         </div>
       </div>
     </div>

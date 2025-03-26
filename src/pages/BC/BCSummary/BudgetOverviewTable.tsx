@@ -13,7 +13,6 @@ export default function BudgetOverviewTable() {
     totalAnnualCashFlow,
     totalMonthlyCashFlow,
   } = useAppSelector((state) => state.budgetCalculator);
-  const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <section>
       <div className="overflow-x-auto text-center bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md">
@@ -31,11 +30,11 @@ export default function BudgetOverviewTable() {
                 Total Income
               </td>
               <td className="border-b-[1px] border-gray-200 p-4">
-                {currency}
+                
                 {numberWithCommas(totalAnnualIncome)}
               </td>
               <td className="border-b-[1px] border-gray-200 p-4">
-                {currency}
+                
                 {numberWithCommas(Number(totalMonthlyIncome.toFixed(2)))}
               </td>
             </tr>
@@ -44,11 +43,11 @@ export default function BudgetOverviewTable() {
                 Total Expenses
               </td>
               <td className="border-b-[1px] border-gray-200 p-4">
-                {currency}
+                
                 {numberWithCommas(totalAnnualExpenses)}
               </td>
               <td className="border-b-[1px] border-gray-200 p-4">
-                {currency}
+                
                 {numberWithCommas(Number(totalMonthlyExpenses.toFixed(2)))}
               </td>
             </tr>
@@ -72,7 +71,7 @@ export default function BudgetOverviewTable() {
               </td>
               <td className="border-b-[1px] border-gray-200 p-4 space-x-1">
                 <span>
-                  {currency}
+                  
                   {numberWithCommas(Number(totalAnnualCashFlow.toFixed(2)))}
                 </span>
                 {totalAnnualIncome > totalAnnualExpenses ? (
@@ -85,7 +84,7 @@ export default function BudgetOverviewTable() {
               </td>
               <td className="border-b-[1px] border-gray-200 p-4 space-x-1">
                 <span>
-                  {currency}
+                  
                   {numberWithCommas(Number(totalMonthlyCashFlow.toFixed(2)))}
                 </span>
                 {totalMonthlyIncome > totalMonthlyExpenses ? (
@@ -105,12 +104,12 @@ export default function BudgetOverviewTable() {
         <p className="font-medium mt-[0.5rem] text-[1.2rem]">
           Great job! You have{" "}
           <span className="text-[#06D206]">
-            {currency}
+            
             {numberWithCommas(Number(totalAnnualCashFlow.toFixed(2)))} annually
           </span>{" "}
           or{" "}
           <span className="text-[#06D206]">
-            {currency}
+            
             {numberWithCommas(Number(totalMonthlyCashFlow.toFixed(2)))} monthly
           </span>{" "}
           left to save or invest.
@@ -119,7 +118,7 @@ export default function BudgetOverviewTable() {
         <p className="font-medium mt-[0.5rem] text-[1.2rem]">
           Heads up! Your expenses exceed your income by{" "}
           <span className="text-red-500">
-            {currency}
+            
             {numberWithCommas(
               Number(Math.abs(totalAnnualCashFlow).toFixed(2))
             )}{" "}
@@ -127,7 +126,7 @@ export default function BudgetOverviewTable() {
           </span>
           or{" "}
           <span className="text-red-500">
-            {currency}
+            
             {numberWithCommas(
               Math.abs(Number(totalMonthlyCashFlow.toFixed(2)))
             )}{" "}

@@ -4,7 +4,6 @@ import Description from "./Description";
 import PageHero from "../../components/UI/PageHero";
 import { CIRCPdf } from "./CIRCPdf";
 import DownloadModal from "../../components/DownloadModal";
-import CurrencySelect from "../../components/UI/CurrencySelect";
 import useTitle from "../../hooks/useTitle";
 import CRICForm from "./CRICForm";
 import CalculationCard from "./CalculationCard";
@@ -86,8 +85,7 @@ export default function CIRC() {
             <h3 className="md:text-[1.5rem] text-[1rem] font-bold md:mb-0 mb-3">
               Compound Interest Rate Calculator
             </h3>
-            <div className="md:flex grid grid-cols-2 items-center flex-wrap md:gap-5 gap-3 md:text-[1rem] text-[14px] md:w-auto w-full">
-              <CurrencySelect />
+            <div className="lg:w-auto w-full">
               <DownloadModal
                 calculatorData={calculatorData}
                 fileName="CIRC Report"

@@ -33,7 +33,6 @@ export default function BgtIncomeForm() {
       dynamicMoreIncomes,
     },
   } = useAppSelector((state) => state.budgetCalculator);
-  const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <div className="space-y-[2rem]">
       <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">
@@ -61,7 +60,7 @@ export default function BgtIncomeForm() {
                 subField="salaryAmount"
                 label="Salary / Wages"
                 stepName="income"
-                placeholder={`${currency} 0.00`}
+                placeholder={` 0.00`}
                 tooltipTitle="Enter the combined frequency based income from all employment sources, including regular wages and salaries."
               />
               <DFSelectWithWatch
@@ -88,7 +87,7 @@ export default function BgtIncomeForm() {
                 subField="govtBenefitsAmount"
                 label="Government Benefits (e.g., Child Benefit )"
                 stepName="income"
-                placeholder={`${currency} 0.00`}
+                placeholder={` 0.00`}
                 tooltipTitle="Enter any government assistance received, such as child benefits, unemployment insurance, or other aid."
               />
               <DFSelectWithWatch
@@ -115,7 +114,7 @@ export default function BgtIncomeForm() {
                 subField="netIncomeAmount"
                 label="Net Income"
                 stepName="income"
-                placeholder={`${currency} 0.00`}
+                placeholder={` 0.00`}
                 tooltipTitle="Specify your take-home pay after taxes, deductions, and other adjustments in self employment or rental income situation only."
               />
               <DFSelectWithWatch
@@ -142,7 +141,7 @@ export default function BgtIncomeForm() {
                 subField="otherIncomeAmount"
                 label="Other Income"
                 stepName="income"
-                placeholder={`${currency} 0.00`}
+                placeholder={` 0.00`}
                 tooltipTitle="Add any additional income sources, like rental income, investments, dividends, or occasional earnings."
               />
               <DFSelectWithWatch

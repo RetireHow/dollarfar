@@ -80,7 +80,6 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
   const {
     name,
     email,
-    currency,
     currencyFullName,
     totalAnnualIncome,
     totalMonthlyIncome,
@@ -155,7 +154,7 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
           >
             <Text>Budget Calculator</Text>
             <Text style={styles.title}>
-              {currency} - {currencyFullName}
+               - {currencyFullName}
             </Text>
           </View>
 
@@ -207,11 +206,11 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                     Total Income
                   </Text>
                   <Text style={{ width: "170px", textAlign: "center" }}>
-                    {currency}
+                    
                     {totalAnnualIncome}
                   </Text>
                   <Text style={{ width: "170px", textAlign: "center" }}>
-                    {currency}
+                    
                     {totalMonthlyIncome.toFixed(2)}
                   </Text>
                 </View>
@@ -233,11 +232,11 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                     Total Expenses
                   </Text>
                   <Text style={{ width: "170px", textAlign: "center" }}>
-                    {currency}
+                    
                     {totalAnnualExpenses}
                   </Text>
                   <Text style={{ width: "170px", textAlign: "center" }}>
-                    {currency}
+                    
                     {totalMonthlyExpenses.toFixed(2)}
                   </Text>
                 </View>
@@ -265,11 +264,11 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                       : "Cashflow"}
                   </Text>
                   <Text style={{ width: "170px", textAlign: "center" }}>
-                    {currency}
+                    
                     {totalAnnualCashFlow}
                   </Text>
                   <Text style={{ width: "170px", textAlign: "center" }}>
-                    {currency}
+                    
                     {totalMonthlyCashFlow.toFixed(2)}
                   </Text>
                 </View>
@@ -287,7 +286,7 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                 >
                   <Text>Great job! You have </Text>{" "}
                   <Text style={{ color: "#06D206" }}>
-                    {currency}
+                    
                     {numberWithCommas(
                       Number(totalAnnualCashFlow.toFixed(2))
                     )}{" "}
@@ -295,7 +294,7 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                   </Text>{" "}
                   <Text> or </Text>{" "}
                   <Text style={{ color: "#06D206" }}>
-                    {currency}
+                    
                     {numberWithCommas(
                       Number(totalMonthlyCashFlow.toFixed(2))
                     )}{" "}
@@ -315,7 +314,7 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                 >
                   <Text>Heads up! Your expenses exceed your income by </Text>{" "}
                   <Text style={{ color: "red" }}>
-                    {currency}
+                    
                     {numberWithCommas(
                       Number(Math.abs(totalAnnualCashFlow).toFixed(2))
                     )}{" "}
@@ -323,7 +322,7 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                   </Text>
                   <Text>or </Text>{" "}
                   <Text style={{ color: "red" }}>
-                    {currency}
+                    
                     {numberWithCommas(
                       Math.abs(Number(totalMonthlyCashFlow.toFixed(2)))
                     )}{" "}
@@ -395,11 +394,11 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                       Total Income Before Tax
                     </Text>
                     <Text style={{ width: "170px", textAlign: "center" }}>
-                      {currency}
+                      
                       {totalAnnualIncome}
                     </Text>
                     <Text style={{ width: "170px", textAlign: "center" }}>
-                      {currency}
+                      
                       {totalMonthlyIncome.toFixed(2)}
                     </Text>
                   </View>
@@ -421,11 +420,11 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                       Total Income After Tax
                     </Text>
                     <Text style={{ width: "170px", textAlign: "center" }}>
-                      {currency}
+                      
                       {totalAnnualIncomeAfterTax.toFixed(2)}
                     </Text>
                     <Text style={{ width: "170px", textAlign: "center" }}>
-                      {currency}
+                      
                       {totalMonthlyIncomeAfterTax.toFixed(2)}
                     </Text>
                   </View>
@@ -447,11 +446,11 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                       Total Expenses
                     </Text>
                     <Text style={{ width: "170px", textAlign: "center" }}>
-                      {currency}
+                      
                       {totalAnnualExpenses}
                     </Text>
                     <Text style={{ width: "170px", textAlign: "center" }}>
-                      {currency}
+                      
                       {totalMonthlyExpenses.toFixed(2)}
                     </Text>
                   </View>
@@ -479,11 +478,11 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                         : "Cashflow"}
                     </Text>
                     <Text style={{ width: "170px", textAlign: "center" }}>
-                      {currency}
+                      
                       {totalAnnualCashFlowAfterTax.toFixed(2)}
                     </Text>
                     <Text style={{ width: "170px", textAlign: "center" }}>
-                      {currency}
+                      
                       {totalMonthlyCashFlowAfterTax.toFixed(2)}
                     </Text>
                   </View>
@@ -501,7 +500,7 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                   >
                     <Text>Great job! You have </Text>{" "}
                     <Text style={{ color: "#06D206" }}>
-                      {currency}
+                      
                       {numberWithCommas(
                         Number(totalAnnualCashFlowAfterTax.toFixed(2))
                       )}{" "}
@@ -509,7 +508,7 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                     </Text>{" "}
                     <Text> or </Text>{" "}
                     <Text style={{ color: "#06D206" }}>
-                      {currency}
+                      
                       {numberWithCommas(
                         Number(totalMonthlyCashFlowAfterTax.toFixed(2))
                       )}{" "}
@@ -529,7 +528,7 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                   >
                     <Text>Heads up! Your expenses exceed your income by </Text>{" "}
                     <Text style={{ color: "red" }}>
-                      {currency}
+                      
                       {numberWithCommas(
                         Number(Math.abs(totalAnnualCashFlowAfterTax).toFixed(2))
                       )}{" "}
@@ -537,7 +536,7 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                     </Text>
                     <Text>or </Text>{" "}
                     <Text style={{ color: "red" }}>
-                      {currency}
+                      
                       {numberWithCommas(
                         Math.abs(
                           Number(totalMonthlyCashFlowAfterTax.toFixed(2))
@@ -608,11 +607,11 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                   Housing
                 </Text>
                 <Text style={{ width: "170px", textAlign: "center" }}>
-                  {currency}
+                  
                   {totalAnnualHousingExpenses}
                 </Text>
                 <Text style={{ width: "170px", textAlign: "center" }}>
-                  {currency}
+                  
                   {totalMonthlyHousingExpenses}
                 </Text>
               </View>
@@ -634,11 +633,11 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                   Transport
                 </Text>
                 <Text style={{ width: "170px", textAlign: "center" }}>
-                  {currency}
+                  
                   {totalAnnualTransportExpenses}
                 </Text>
                 <Text style={{ width: "170px", textAlign: "center" }}>
-                  {currency}
+                  
                   {totalMonthlyTransportExpenses}
                 </Text>
               </View>
@@ -660,11 +659,11 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                   Education
                 </Text>
                 <Text style={{ width: "170px", textAlign: "center" }}>
-                  {currency}
+                  
                   {totalAnnualEducationalExpenses}
                 </Text>
                 <Text style={{ width: "170px", textAlign: "center" }}>
-                  {currency}
+                  
                   {totalMonthlyEducationalExpenses}
                 </Text>
               </View>
@@ -686,11 +685,11 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                   Other
                 </Text>
                 <Text style={{ width: "170px", textAlign: "center" }}>
-                  {currency}
+                  
                   {totalAnnualOtherExpenses}
                 </Text>
                 <Text style={{ width: "170px", textAlign: "center" }}>
-                  {currency}
+                  
                   {totalMonthlyOtherExpenses}
                 </Text>
               </View>
@@ -712,11 +711,11 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                   Loans
                 </Text>
                 <Text style={{ width: "170px", textAlign: "center" }}>
-                  {currency}
+                  
                   {totalAnnualLoansExpenses}
                 </Text>
                 <Text style={{ width: "170px", textAlign: "center" }}>
-                  {currency}
+                  
                   {totalMonthlyLoansExpenses}
                 </Text>
               </View>
@@ -738,11 +737,11 @@ export const BCPdf = ({ data }: { data: TCalculatorData }) => {
                   Savings
                 </Text>
                 <Text style={{ width: "170px", textAlign: "center" }}>
-                  {currency}
+                  
                   {totalAnnualSavingsExpenses}
                 </Text>
                 <Text style={{ width: "170px", textAlign: "center" }}>
-                  {currency}
+                  
                   {totalMonthlySavingsExpenses}
                 </Text>
               </View>

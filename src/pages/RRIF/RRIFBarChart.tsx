@@ -15,8 +15,6 @@ export default function RRIFBarChart() {
     (state) => state.RRIF
   );
 
-  const { currency } = useAppSelector((state) => state.globalCurrency);
-
   return (
     <div
       id="RRIF-Chart"
@@ -41,12 +39,12 @@ export default function RRIFBarChart() {
 
             <XAxis dataKey="age" name="Age" fontSize={12} />
             <YAxis
-              tickFormatter={(value) => `${currency}${value}`}
+              tickFormatter={(value) => `${value}`}
               fontSize={12}
             />
             <Tooltip
               formatter={(value: number) =>
-                `${currency}${numberWithCommas(value)}`
+                `${numberWithCommas(value)}`
               }
               contentStyle={{ fontSize: "12px" }}
             />

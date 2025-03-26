@@ -14,7 +14,6 @@ export default function CalculationCard() {
     contributionFrequency,
     years,
   } = useAppSelector((state) => state.compoundInterest);
-  const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <section className="w-full">
       <h1 className="md:text-[2rem] text-[1.5rem] font-bold mb-3">Result</h1>
@@ -25,7 +24,6 @@ export default function CalculationCard() {
               Total interest earned:
             </h3>
             <h1 className="md:text-[1.5rem] text-[1.2rem] font-bold">
-              {currency}
               {numberWithCommas(Number(totalInterestEarned))}
             </h1>
           </div>
@@ -34,7 +32,6 @@ export default function CalculationCard() {
               Total Contribution:
             </h3>
             <h1 className="md:text-[1.5rem] text-[1.2rem] font-bold">
-              {currency}
               {numberWithCommas(Number(totalContribution))}
             </h1>
           </div>
@@ -46,7 +43,6 @@ export default function CalculationCard() {
               Initial principal amount:
             </h3>
             <h1 className="md:text-[1.5rem] text-[1.2rem] font-bold">
-              {currency}
               {numberWithCommas(Number(initialInvestment))}
             </h1>
           </div>
@@ -55,7 +51,6 @@ export default function CalculationCard() {
               Current total principal amount:
             </h3>
             <h1 className="md:text-[1.5rem] text-[1.2rem] font-bold">
-              {currency}
               {numberWithCommas(Number(totalFutureValue))}
             </h1>
           </div>
@@ -64,7 +59,6 @@ export default function CalculationCard() {
       <p className="mt-5 md:text-[1.2rem]">
         Your initial principal amount of{" "}
         <span className="font-semibold">
-          {currency}
           {numberWithCommas(Number(initialInvestment))}
         </span>{" "}
         plus your{" "}
@@ -73,14 +67,12 @@ export default function CalculationCard() {
         </span>
         contribution of{" "}
         <span className="font-semibold">
-          {currency}
           {numberWithCommas(Number(contribution))}
         </span>{" "}
         at an annualized interest rate of{" "}
         <span className="font-semibold">{annualInterestRate}%</span> will be
         worth{" "}
         <span className="font-semibold">
-          {currency}
           {numberWithCommas(Number(totalFutureValue))}
         </span>{" "}
         after <span className="font-semibold">{years}</span> years when

@@ -1,6 +1,5 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import CustomTooltip from "./CustomTooltip";
-import { useAppSelector } from "../../redux/hooks";
 
 type TData = {
   fieldTitle?: string;
@@ -22,7 +21,7 @@ export default function DisplayTotal({ data }: { data: TData }) {
   const handleShowInputs = () => {
     setShowSubInputs(!showSubInputs);
   };
-  const { currency } = useAppSelector((state) => state.globalCurrency);
+
   return (
     <div>
       <div className="flex justify-between items-center md:text-[1rem] text-[14px] mb-1 overflow-x-auto">
@@ -51,7 +50,7 @@ export default function DisplayTotal({ data }: { data: TData }) {
         onClick={handleShowInputs}
         className="border-[1px] border-[#838383] rounded-[8px] p-[0.6rem] w-full cursor-pointer"
       >
-        Total Value: {currency}{total || "0.00"}
+        Total Value: {total || "0.00"}
       </div>
     </div>
   );

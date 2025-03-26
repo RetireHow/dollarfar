@@ -25,8 +25,6 @@ export default function RRIFCard() {
     0
   );
 
-  const { currency } = useAppSelector((state) => state.globalCurrency);
-
   return (
     <section className="flex flex-col justify-center">
       <div className="space-y-[1rem] bg-[#F8F8F8] md:p-[1.5rem] p-[1rem] rounded-[10px] w-full">
@@ -37,7 +35,7 @@ export default function RRIFCard() {
         <div className="flex items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4 font-medium">
           <p>Initial RRIF Balance</p>
           <p>
-            {currency}
+            
             {numberWithCommas(RRIFInitalBalance)}
           </p>
         </div>
@@ -51,7 +49,7 @@ export default function RRIFCard() {
           <div className="flex md:gap-0 gap-8 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4 font-medium">
             <p>Monthly Withdrawal Amount</p>
             <p>
-              {currency}
+              
               {numberWithCommas(Math.round(annualWithdrawalAmount / 12))}
             </p>
           </div>
@@ -61,7 +59,7 @@ export default function RRIFCard() {
           <div className="flex md:gap-0 gap-8 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4 font-medium">
             <p>Annual Withdrawal Amount</p>
             <p>
-              {currency}
+              
               {numberWithCommas(annualWithdrawalAmount)}
             </p>
           </div>
@@ -73,7 +71,7 @@ export default function RRIFCard() {
             {withdrawalEndYear})
           </p>
           <p>
-            {currency}
+            
             {numberWithCommas(totalWithdrawnAmount)}
           </p>
         </div>
@@ -81,7 +79,7 @@ export default function RRIFCard() {
         <div className="flex md:gap-0 gap-8 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4 font-medium">
           <p>Remaining RRIF Balance (End of Withdrawal Period)</p>
           <p>
-            {currency}
+            
             {numberWithCommas(remainingBalanceInRRIF)}
           </p>
         </div>

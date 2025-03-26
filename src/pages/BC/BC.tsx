@@ -4,7 +4,6 @@ import PageHero from "../../components/UI/PageHero";
 import { BCPdf } from "./BCPdf";
 import BudgetCalcLayout from "./BudgetCalcLayout";
 import BudgetDescription from "./BudgetDescription";
-import CurrencySelect from "../../components/UI/CurrencySelect";
 import useTitle from "../../hooks/useTitle";
 import { useAppSelector } from "../../redux/hooks";
 
@@ -87,8 +86,7 @@ export default function BC() {
             <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
               Budget Calculator
             </h3>
-            <div className="md:flex grid grid-cols-2 items-center flex-wrap md:gap-5 gap-3 md:text-[1rem] text-[14px] md:w-auto w-full">
-              <CurrencySelect />
+            <div className="lg:w-auto w-full">
               <DownloadModal
                 calculatorData={calculatorData}
                 fileName="Budget Calculator Report"

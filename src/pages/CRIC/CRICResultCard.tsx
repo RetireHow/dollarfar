@@ -3,7 +3,6 @@ import { calculateAnnualAverageRetirementIncome } from "../../utils/calculateAnn
 import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function CRICResultCard() {
-  const { currency } = useAppSelector((state) => state.globalCurrency);
   const {
     generalInfo: { annualRetirementIncomeGoal },
     finalResult,
@@ -19,7 +18,7 @@ export default function CRICResultCard() {
         <div className="flex md:gap-0 gap-5 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4">
           <p className="font-medium">Annual Retirement Income Goal</p>
           <div className="flex items-center">
-            <p>{currency}</p>
+            <p></p>
             <p>
               {annualRetirementIncomeGoal !== "Select One"
                 ? numberWithCommas(Number(annualRetirementIncomeGoal))
@@ -33,7 +32,7 @@ export default function CRICResultCard() {
             Annual Average Retirement Income Estimate
           </p>
           <div className="flex items-center">
-            <p>{currency}</p>
+            <p></p>
             <p>
               {annualAverageRetirementIncome
                 ? numberWithCommas(annualAverageRetirementIncome)
@@ -47,7 +46,7 @@ export default function CRICResultCard() {
             Difference
           </p>
           <div className="flex items-center gap-[2px] md:text-[1.25rem] text-[1rem]">
-            <p>{currency}</p>
+            <p></p>
             <p>
               {Number(annualRetirementIncomeGoal) &&
               Number(annualAverageRetirementIncome)

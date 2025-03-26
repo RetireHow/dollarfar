@@ -6,9 +6,6 @@ import { isNegative } from "../../utils/isNegative";
 import { calculateTotalFields } from "../../utils/calculateTotalFields";
 
 const CRICPieChart = () => {
-  const { currency, currencyFullName } = useAppSelector(
-    (state) => state.globalCurrency
-  );
   const {
     generalInfo: { annualRetirementIncomeGoal },
     finalResult,
@@ -73,7 +70,7 @@ const CRICPieChart = () => {
                         fill: isNegative(difference) ? "red" : "#10B981",
                       }}
                     >
-                      {currency}
+                      
                       {numberWithCommas(difference)}
                     </text>
                     {/* Total Income Label */}
@@ -96,12 +93,12 @@ const CRICPieChart = () => {
                 )}
               >
                 {data.map((entry, index) => (
-                  <Cell key={`cell-${currency}${index}`} fill={entry.color} />
+                  <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Pie>
               <Tooltip
                 formatter={(value: number, name: string) => [
-                  `${currency}${numberWithCommas(value)}`,
+                  `${numberWithCommas(value)}`,
                   name,
                 ]}
               />
@@ -114,7 +111,7 @@ const CRICPieChart = () => {
         <li className="flex items-center gap-[0.5rem] font-semibold">
           <div className="bg-[#AA5656] min-w-[30px] h-[10px] rounded-[10px]"></div>
           <p>
-            Annual Retirement Income Goal : {currency}
+            Annual Retirement Income Goal : 
             {numberWithCommas(Number(annualRetirementIncomeGoal))}
           </p>
         </li>
@@ -123,7 +120,7 @@ const CRICPieChart = () => {
           <div className="bg-[#4682B4] min-w-[30px] h-[10px] rounded-[10px]"></div>
           <p>
             Retirement income at the onset (Age {finalResult[0]?.age}) :{" "}
-            {currency}
+            
             {numberWithCommas(
               parseInt(calculateTotalFields(finalResult[0])?.toString())
             )}
@@ -133,14 +130,13 @@ const CRICPieChart = () => {
         {/* <li className="flex items-center gap-[0.5rem] font-semibold">
           <div className="bg-[#FF8C00] min-w-[30px] h-[10px] rounded-[10px]"></div>
           <p>
-            Current Annual Income ({currency}
+            Current Annual Income (
             {numberWithCommas(Number(currentAnnualIncome))})
           </p>
         </li> */}
 
         <li className="flex items-center gap-[0.5rem] font-semibold">
-          <p className="min-w-[30px]">{currency}</p>
-          <p>{currencyFullName}</p>
+          <p className="min-w-[30px]"></p>
         </li>
       </ul>
     </div>

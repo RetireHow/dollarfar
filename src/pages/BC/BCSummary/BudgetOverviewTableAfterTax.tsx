@@ -20,7 +20,7 @@ function BCTooltipIncomeAfterTax({
     currency: string;
   };
 }) {
-  const { incomeBeforeTax, incomeAfterTax, taxPaid, taxRate, currency } =
+  const { incomeBeforeTax, incomeAfterTax, taxPaid, taxRate } =
     data || {};
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -62,23 +62,23 @@ function BCTooltipIncomeAfterTax({
           <p className="text-[1.2rem]">
             Your total annual income was{" "}
             <span className="font-bold">
-              {currency}
+              
               {numberWithCommas(incomeBeforeTax)}
             </span>{" "}
             before tax. After paying{" "}
             <span className="font-bold">{taxRate}%</span> tax of{" "}
             <span className="font-bold">
-              {currency}
+              
               {numberWithCommas(Number(taxPaid.toFixed(2)))}
             </span>{" "}
             on{" "}
             <span className="font-bold">
-              {currency}
+              
               {numberWithCommas(incomeBeforeTax)}
             </span>{" "}
             , your annual income is now{" "}
             <span className="font-bold">
-              {currency}
+              
               {numberWithCommas(incomeAfterTax)}
             </span>
             .
@@ -122,11 +122,11 @@ export default function BudgetOverviewTableAfterTax() {
                 Total Income Before Tax
               </td>
               <td className="border-b-[1px] border-gray-200 p-4">
-                {currency}
+                
                 {numberWithCommas(totalAnnualIncome)}
               </td>
               <td className="border-b-[1px] border-gray-200 p-4">
-                {currency}
+                
                 {numberWithCommas(totalMonthlyIncome)}
               </td>
             </tr>
@@ -144,11 +144,11 @@ export default function BudgetOverviewTableAfterTax() {
                 />
               </td>
               <td className="border-b-[1px] border-gray-200 p-4">
-                {currency}
+                
                 {numberWithCommas(totalAnnualIncomeAfterTax)}
               </td>
               <td className="border-b-[1px] border-gray-200 p-4">
-                {currency}
+                
                 {numberWithCommas(
                   Number(totalMonthlyIncomeAfterTax.toFixed(2))
                 )}
@@ -159,11 +159,11 @@ export default function BudgetOverviewTableAfterTax() {
                 Total Expenses
               </td>
               <td className="border-b-[1px] border-gray-200 p-4">
-                {currency}
+                
                 {numberWithCommas(totalAnnualExpenses)}
               </td>
               <td className="border-b-[1px] border-gray-200 p-4">
-                {currency}
+                
                 {numberWithCommas(totalMonthlyExpenses)}
               </td>
             </tr>
@@ -187,7 +187,7 @@ export default function BudgetOverviewTableAfterTax() {
               </td>
               <td className="border-b-[1px] border-gray-200 p-4 space-x-1">
                 <span>
-                  {currency}
+                  
                   {numberWithCommas(Number(totalAnnualCashFlowAfterTax.toFixed(2)))}
                 </span>
                 {totalAnnualIncomeAfterTax > totalAnnualExpenses ? (
@@ -200,7 +200,7 @@ export default function BudgetOverviewTableAfterTax() {
               </td>
               <td className="border-b-[1px] border-gray-200 p-4 space-x-1">
                 <span>
-                  {currency}
+                  
                   {numberWithCommas(
                     Number(totalMonthlyCashFlowAfterTax.toFixed(2))
                   )}
@@ -222,7 +222,7 @@ export default function BudgetOverviewTableAfterTax() {
         <p className="font-medium mt-[0.5rem] text-[1.2rem]">
           Great job! You have{" "}
           <span className="text-[#06D206]">
-            {currency}
+            
             {numberWithCommas(
               Number(totalAnnualCashFlowAfterTax.toFixed(2))
             )}{" "}
@@ -230,7 +230,7 @@ export default function BudgetOverviewTableAfterTax() {
           </span>{" "}
           or{" "}
           <span className="text-[#06D206]">
-            {currency}
+            
             {numberWithCommas(
               Number(totalMonthlyCashFlowAfterTax.toFixed(2))
             )}{" "}
@@ -242,7 +242,7 @@ export default function BudgetOverviewTableAfterTax() {
         <p className="font-medium mt-[0.5rem] text-[1.2rem]">
           Heads up! Your expenses exceed your income by{" "}
           <span className="text-red-500">
-            {currency}
+            
             {numberWithCommas(
               Number(Math.abs(totalAnnualCashFlowAfterTax).toFixed(2))
             )}{" "}
@@ -250,7 +250,7 @@ export default function BudgetOverviewTableAfterTax() {
           </span>
           or{" "}
           <span className="text-red-500">
-            {currency}
+            
             {numberWithCommas(
               Math.abs(Number(totalMonthlyCashFlowAfterTax.toFixed(2)))
             )}{" "}

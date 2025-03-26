@@ -35,8 +35,6 @@ export default function RRSPForm() {
     contributionAmount,
   } = input;
 
-  const { currency } = useAppSelector((state) => state.globalCurrency);
-
   const [showError, setShowError] = useState(false);
 
   const handleCalculate = () => {
@@ -127,7 +125,7 @@ export default function RRSPForm() {
         <input
           className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
           type="number"
-          placeholder={`${currency}0`}
+          placeholder={`0`}
           onWheel={(e) => e.currentTarget.blur()}
           name="currentRRSPSavings"
           onChange={(e) => {
@@ -151,7 +149,7 @@ export default function RRSPForm() {
         <input
           className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"
           type="number"
-          placeholder={`${currency}0`}
+          placeholder={`0`}
           onWheel={(e) => e.currentTarget.blur()}
           name="contributionAmount"
           onChange={(e) => {

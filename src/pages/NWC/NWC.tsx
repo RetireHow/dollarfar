@@ -8,7 +8,6 @@ import NWDescription from "./NWDescription";
 import NWForm from "./NWForm";
 import NWTotal from "./NWTotal";
 import { numberWithCommas } from "../../utils/numberWithCommas";
-import CurrencySelect from "../../components/UI/CurrencySelect";
 import useTitle from "../../hooks/useTitle";
 
 const data = {
@@ -44,8 +43,7 @@ export default function NWC() {
             <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
               Net Worth Calculator
             </h3>
-            <div className="md:flex grid grid-cols-2 items-center flex-wrap md:gap-5 gap-3 md:text-[1rem] text-[14px] md:w-auto w-full">
-              <CurrencySelect />
+            <div className="lg:w-auto w-full">
               <DownloadModal
                 calculatorData={calculatorData}
                 fileName="NWC Report"
@@ -67,11 +65,11 @@ export default function NWC() {
           <NWTotal />
         </div>
         <p className="md:text-[1.1rem] text-[14px] font-semibold text-center md:mt-5">
-          "Based on the information provided, your total assets are {currency}
+          "Based on the information provided, your total assets are 
           {numberWithCommas(totalAssets)}, and your total liabilities are{" "}
-          {currency}
+          
           {numberWithCommas(totalLiabilities)}. This gives you a net worth of{" "}
-          {currency}
+          
           {numberWithCommas(netWorth)}."
         </p>
       </section>

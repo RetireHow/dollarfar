@@ -15,8 +15,6 @@ export const BarGraphChart = () => {
     (state) => state.compoundInterest
   );
 
-  const { currency } = useAppSelector((state) => state.globalCurrency);
-
   return (
     <section className="border-[1px] border-gray-300 rounded-lg p-[1rem] flex-1 shadow-md bg-[#F8F8F8]">
       <div>
@@ -39,12 +37,12 @@ export const BarGraphChart = () => {
 
               <XAxis dataKey="year" name="Year" fontSize={12} />
               <YAxis
-                tickFormatter={(value) => `${currency}${value}`}
+                tickFormatter={(value) => `${value}`}
                 fontSize={12}
               />
               <Tooltip
                 formatter={(value: number) =>
-                  `${currency}${numberWithCommas(value)}`
+                  `${numberWithCommas(value)}`
                 }
                 contentStyle={{ fontSize: "12px" }}
               />

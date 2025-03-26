@@ -79,7 +79,6 @@ export const NWCPdf = ({ data }: { data: TData }) => {
     name,
     email,
     base64,
-    currency,
     currencyFullName,
     assets: {
       property,
@@ -140,7 +139,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
           <View style={styles.section}>
             <Text>Net Worth Calculator</Text>
             <Text style={styles.title}>
-              {currency} - {currencyFullName}
+               - {currencyFullName}
             </Text>
           </View>
 
@@ -176,7 +175,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                 >
                   <Text style={{ color: "#696969" }}>Property</Text>
                   <Text>
-                    {currency}
+                    
                     {property}
                   </Text>
                 </View>
@@ -190,7 +189,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                     Savings & Investments
                   </Text>
                   <Text>
-                    {currency}
+                    
                     {savingsInvestment}
                   </Text>
                 </View>
@@ -202,7 +201,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                 >
                   <Text style={{ color: "#696969" }}>Personal Items</Text>
                   <Text>
-                    {currency}
+                    
                     {personalItems}
                   </Text>
                 </View>
@@ -214,7 +213,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                 >
                   <Text style={{ color: "#696969" }}>Business Ownership</Text>
                   <Text>
-                    {currency}
+                    
                     {businessOwnershipInterest}
                   </Text>
                 </View>
@@ -226,7 +225,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                 >
                   <Text style={{ color: "#696969" }}>Vehicles</Text>
                   <Text>
-                    {currency}
+                    
                     {vehicles}
                   </Text>
                 </View>
@@ -238,7 +237,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                 >
                   <Text style={{ color: "#696969" }}>Other Assets</Text>
                   <Text>
-                    {currency}
+                    
                     {otherAssets}
                   </Text>
                 </View>
@@ -275,7 +274,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                 >
                   <Text style={{ color: "#696969" }}>Home Loan</Text>
                   <Text>
-                    {currency}
+                    
                     {homeLoan}
                   </Text>
                 </View>
@@ -289,7 +288,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                     Personal & Other Loans
                   </Text>
                   <Text>
-                    {currency}
+                    
                     {personalOtherLoans}
                   </Text>
                 </View>
@@ -301,7 +300,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                 >
                   <Text style={{ color: "#696969" }}>Vehicle Loans</Text>
                   <Text>
-                    {currency}
+                    
                     {vehicleLoans}
                   </Text>
                 </View>
@@ -313,7 +312,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                 >
                   <Text style={{ color: "#696969" }}>Tax liability</Text>
                   <Text>
-                    {currency}
+                    
                     {taxLiability}
                   </Text>
                 </View>
@@ -325,7 +324,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                 >
                   <Text style={{ color: "#696969" }}>Credit Card Dues</Text>
                   <Text>
-                    {currency}
+                    
                     {creditCardDues}
                   </Text>
                 </View>
@@ -337,7 +336,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                 >
                   <Text style={{ color: "#696969" }}>Other Debts</Text>
                   <Text>
-                    {currency}
+                    
                     {otherDebts}
                   </Text>
                 </View>
@@ -370,7 +369,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
             >
               <Text style={{ color: "#696969" }}>Assets</Text>
               <Text>
-                {currency}
+                
                 {totalAssets}
               </Text>
             </View>
@@ -382,7 +381,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
             >
               <Text style={{ color: "#696969" }}>Liabilities</Text>
               <Text>
-                {currency}
+                
                 {totalLiabilities}
               </Text>
             </View>
@@ -399,7 +398,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
             >
               <Text>Net Worth</Text>
               <Text>
-                {currency}
+                
                 {totalAssets - totalLiabilities}
               </Text>
             </View>
@@ -468,7 +467,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                     width: 20,
                   }}
                 >
-                  {currency}
+                  
                 </Text>
                 <Text>{currencyFullName}</Text>
               </View>
@@ -482,9 +481,9 @@ export const NWCPdf = ({ data }: { data: TData }) => {
               lineHeight: "20px",
             }}
           >
-            "Based on the information provided, your total assets are {currency}
-            {totalAssets}, and your total liabilities are {currency}
-            {totalLiabilities}. This gives you a net worth of {currency}
+            "Based on the information provided, your total assets are 
+            {totalAssets}, and your total liabilities are 
+            {totalLiabilities}. This gives you a net worth of 
             {totalAssets - totalLiabilities}."
           </Text>
         </View>

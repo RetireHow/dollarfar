@@ -1,7 +1,4 @@
-import { useAppSelector } from "../../redux/hooks";
-
 export default function Description() {
-  const {currency} = useAppSelector(state => state.globalCurrency)
   return (
     <article>
       <section className="md:mx-[5rem] mx-[1rem]">
@@ -12,7 +9,7 @@ export default function Description() {
           <p>
             Compound interest is the interest on interest. The interest you earn
             on the deposit will be reinvested instead of paying it out. In
-            simple terms, if you have an investment of {currency}100,000 for 3 years
+            simple terms, if you have an investment of 100,000 for 3 years
             and you will get a compounding benefit every quarter, then your
             money will be reinvested every quarter with an earned interest in
             the last months.
@@ -20,11 +17,11 @@ export default function Description() {
 
           <p className="mt-5">
             Suppose the interest rate of your investment is 12% p.a.; you will
-            receive 1% monthly interest on {currency}100,000 in the initial three
+            receive 1% monthly interest on 100,000 in the initial three
             months of your investment. After three months (quarter), your
-            investment will be reinvested to earn interest ({currency}100,000 + 3000),
-            and you will start receiving 1% monthly interest on {currency}103000.
-            After two quarters, interest will occur on {currency}106003, and it will
+            investment will be reinvested to earn interest (100,000 + 3000),
+            and you will start receiving 1% monthly interest on 103000.
+            After two quarters, interest will occur on 106003, and it will
             go on until maturity.
           </p>
         </div>
@@ -66,14 +63,14 @@ export default function Description() {
           Example of Compound Interest Calculation
         </h3>
         <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mb-[1rem]">
-          Suppose you have invested {currency}20,000 for 5 years. You earn 10%
+          Suppose you have invested 20,000 for 5 years. You earn 10%
           interest on your investment, and your interest gets compounded
           annually.
         </p>
         <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mb-[1rem]">
-          So, in the first year, you earn {currency}2,000 on your investment of {currency}
-          20,000. In the second year, your principal amount changes to {currency}
-          22,000. You now earn {currency}2,200 as interest on your new principal
+          So, in the first year, you earn 2,000 on your investment of 
+          20,000. In the second year, your principal amount changes to 
+          22,000. You now earn 2,200 as interest on your new principal
           amount, so you now have a total of 22,000 + 2,200 = 24,200. By using
           the above formula, you can easily understand the calculation of the
           coming years.

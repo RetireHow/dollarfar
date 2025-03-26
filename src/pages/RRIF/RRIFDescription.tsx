@@ -1,8 +1,4 @@
-import { useAppSelector } from "../../redux/hooks";
-
 export default function RRIFDescription() {
-  const { currency } = useAppSelector((state) => state.globalCurrency);
-
   return (
     <article>
       <section className="md:mx-[5rem] mx-[1rem]">
@@ -125,7 +121,7 @@ export default function RRIFDescription() {
         </h3>
         <div className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
-            - Initial RRIF Balance : {currency}50,00,000
+            - Initial RRIF Balance : 50,00,000
           </p>
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
             - Withdrawal Start Age : 50
@@ -134,7 +130,7 @@ export default function RRIFDescription() {
             - Withdrawal End Age : 75
           </p>
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
-            - Annual Withdrawal Amount : {currency}3,00,000
+            - Annual Withdrawal Amount : 3,00,000
           </p>
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
             - Expected Rate of Return : 5%
@@ -152,7 +148,7 @@ export default function RRIFDescription() {
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
             - After 25 years, the RRIF balance will reduce gradually, providing
             steady withdrawals and accounting for the return rate. At the end of
-            25 years, the remaining balance may be {currency}1,677,626, depending
+            25 years, the remaining balance may be 1,677,626, depending
             on actual return rates and withdrawals.
           </p>
         </div>

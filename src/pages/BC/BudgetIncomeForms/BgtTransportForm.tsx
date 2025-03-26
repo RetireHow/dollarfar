@@ -39,8 +39,6 @@ export default function BgtTransportForm() {
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
-  const { currency } = useAppSelector((state) => state.globalCurrency);
-
   return (
     <div className="space-y-[2rem]">
       <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">
@@ -70,7 +68,7 @@ export default function BgtTransportForm() {
               subField="carPaymentAmount"
               label="Car Payment"
               stepName="transport"
-              placeholder={`${currency} 0.00`}
+              placeholder={` 0.00`}
               tooltipTitle="Enter your monthly car loan or lease payment amount."
             />
             <DFSelectWithWatch
@@ -87,7 +85,7 @@ export default function BgtTransportForm() {
               subField="carInsuranceAmount"
               label="Car Insurance"
               stepName="transport"
-              placeholder={`${currency} 0.00`}
+              placeholder={` 0.00`}
               tooltipTitle="Include your monthly car insurance premium."
             />
             <DFSelectWithWatch
@@ -104,7 +102,7 @@ export default function BgtTransportForm() {
               subField="carRepairsAmount"
               label="Car Repairs"
               stepName="transport"
-              placeholder={`${currency} 0.00`}
+              placeholder={` 0.00`}
               tooltipTitle="Estimate your average monthly expenses for car repairs and maintenance."
             />
             <DFSelectWithWatch
@@ -123,7 +121,7 @@ export default function BgtTransportForm() {
                 subField="gasFuelEtrTollAmount"
                 label="Travel Budgets ( e.g., fuel )"
                 stepName="transport"
-                placeholder={`${currency} 0.00`}
+                placeholder={` 0.00`}
                 tooltipTitle="Provide your monthly spending on fuel and toll roads combined."
               />
               <DFSelectWithWatch

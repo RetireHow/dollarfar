@@ -74,8 +74,6 @@ type TData = {
 // Define a new PDF document component
 export const CIRCPdf = ({ data }: { data: TData }) => {
   const {
-    currency,
-    currencyFullName,
     name,
     email,
     base64,
@@ -128,9 +126,6 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
           {/* Title  */}
           <View style={styles.section}>
             <Text>Compound Interest Rate</Text>
-            <Text style={styles.title}>
-              {currency} - {currencyFullName}
-            </Text>
           </View>
 
           {/* Card Container  */}
@@ -154,10 +149,7 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>Initial Principle</Text>
-                <Text>
-                  {currency}
-                  {numberWithCommas(Number(initialInvestment))}
-                </Text>
+                <Text>{numberWithCommas(Number(initialInvestment))}</Text>
               </View>
               <View
                 style={{
@@ -184,10 +176,7 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>Contribution Amount</Text>
-                <Text>
-                  {currency}
-                  {numberWithCommas(Number(contribution))}
-                </Text>
+                <Text>{numberWithCommas(Number(contribution))}</Text>
               </View>
               <View
                 style={{
@@ -231,10 +220,7 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>Total Contribution</Text>
-                <Text>
-                  {currency}
-                  {numberWithCommas(Number(totalContribution))}
-                </Text>
+                <Text>{numberWithCommas(Number(totalContribution))}</Text>
               </View>
               <View
                 style={{
@@ -243,10 +229,7 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>Total Interest</Text>
-                <Text>
-                  {currency}
-                  {numberWithCommas(Number(totalInterestEarned))}
-                </Text>
+                <Text>{numberWithCommas(Number(totalInterestEarned))}</Text>
               </View>
               <View
                 style={{
@@ -259,10 +242,7 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
                 }}
               >
                 <Text>Total Amount</Text>
-                <Text>
-                  {currency}
-                  {numberWithCommas(Number(totalFutureValue))}
-                </Text>
+                <Text>{numberWithCommas(Number(totalFutureValue))}</Text>
               </View>
             </View>
           </View>
@@ -277,7 +257,6 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
           >
             <Text>Your initial principal amount of</Text>
             <Text style={{ fontWeight: "extrabold" }}>
-              {currency}
               {numberWithCommas(Number(initialInvestment))}
             </Text>
             <Text>plus your</Text>
@@ -286,7 +265,6 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
             </Text>
             <Text>contribution of</Text>
             <Text style={{ fontWeight: "extrabold" }}>
-              {currency}
               {numberWithCommas(Number(contribution))}
             </Text>
             <Text>at an annualized interest rate of</Text>
@@ -295,7 +273,6 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
             </Text>
             <Text>will be worth</Text>
             <Text style={{ fontWeight: "extrabold" }}>
-              {currency}
               {numberWithCommas(Number(totalFutureValue))}
             </Text>
             <Text>after</Text>
@@ -421,15 +398,12 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
                       {year}
                     </Text>
                     <Text style={{ width: "170px", textAlign: "center" }}>
-                      {currency}
                       {numberWithCommas(Number(totalContribution))}
                     </Text>
                     <Text style={{ width: "170px", textAlign: "center" }}>
-                      {currency}
                       {numberWithCommas(Number(totalInterest))}
                     </Text>
                     <Text style={{ width: "170px", textAlign: "center" }}>
-                      {currency}
                       {numberWithCommas(Number(totalValue))}
                     </Text>
                   </View>

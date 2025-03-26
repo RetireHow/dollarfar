@@ -5,7 +5,6 @@ import CRICLayout from "./CRICLayout";
 import { useAppSelector } from "../../redux/hooks";
 import DownloadModal from "../../components/DownloadModal";
 import { CRICPdf } from "./CRICPdf";
-import CurrencySelect from "../../components/UI/CurrencySelect";
 
 const data = {
   title: "Comprehensive Retirement Income Calculator",
@@ -58,8 +57,7 @@ export default function CRIC() {
             <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
               Comprehensive Retirement Income Calculator
             </h3>
-            <div className="md:flex grid grid-cols-2 items-center flex-wrap md:gap-5 gap-3 md:text-[1rem] text-[14px] md:w-auto w-full">
-              <CurrencySelect />
+            <div className="lg:w-auto w-full">
               <DownloadModal
                 calculatorData={calculatorData}
                 fileName="Comprehensive Retirement Income Calculator"

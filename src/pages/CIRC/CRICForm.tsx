@@ -88,8 +88,6 @@ export default function CRICForm({
     initialInvestment,
   } = useAppSelector((state) => state.compoundInterest);
 
-  const {currency} = useAppSelector(state => state.globalCurrency)
-
   const handleCalculate = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     // reset the local states
@@ -129,7 +127,7 @@ export default function CRICForm({
           className={`outline-none border-[1px] border-[#d1d5db] px-[12px] py-[9px] w-full duration-300 rounded-[8px] `}
           type="number"
           id="Initial-investment"
-          placeholder={`${currency}0.00`}
+          placeholder={`0.00`}
           value={initialInvestment}
           onWheel={(e) => e.currentTarget.blur()}
           onChange={(e) => {
@@ -161,7 +159,7 @@ export default function CRICForm({
           className={`outline-none border-[1px] border-[#d1d5db] px-[12px] py-[9px] w-full duration-300 rounded-[8px] `}
           type="number"
           id="contribution-amount"
-          placeholder={`${currency}0.00`}
+          placeholder={`0.00`}
           value={contribution}
           onWheel={(e) => e.currentTarget.blur()}
           onChange={(e) => {
@@ -321,7 +319,7 @@ export default function CRICForm({
               className={`outline-none border-[1px] border-[#d1d5db] px-[12px] py-[9px] w-full duration-300 rounded-[8px] `}
               type="number"
               id="interest-rate"
-              placeholder={`${currency}0.00`}
+              placeholder={`0.00`}
               value={years}
               onWheel={(e) => e.currentTarget.blur()}
               onChange={(e) => {

@@ -48,8 +48,6 @@ export default function BgtSavingsForm() {
     },
   } = useAppSelector((state) => state.budgetCalculator);
 
-  const { currency } = useAppSelector((state) => state.globalCurrency);
-
   return (
     <div className="space-y-[2rem]">
       <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">
@@ -79,7 +77,7 @@ export default function BgtSavingsForm() {
               subField="vacationFundAmount"
               label="Vacation Fund"
               stepName="savings"
-              placeholder={`${currency} 0.00`}
+              placeholder={` 0.00`}
               tooltipTitle="Enter the amount you save monthly for vacations or travel plans."
             />
             <DFSelectWithWatch
@@ -97,7 +95,7 @@ export default function BgtSavingsForm() {
               subField="emergencyAmount"
               label="Emergency"
               stepName="savings"
-              placeholder={`${currency} 0.00`}
+              placeholder={` 0.00`}
               tooltipTitle="Provide your monthly contributions to an emergency savings fund."
             />
             <DFSelectWithWatch
@@ -115,7 +113,7 @@ export default function BgtSavingsForm() {
               subField="retirementAmount"
               label="Retirement"
               stepName="savings"
-              placeholder={`${currency} 0.00`}
+              placeholder={` 0.00`}
               tooltipTitle="Include your monthly savings or investments designated for retirement."
             />
             <DFSelectWithWatch
@@ -134,7 +132,7 @@ export default function BgtSavingsForm() {
                 subField="investmentsAmount"
                 label="Investments"
                 stepName="savings"
-                placeholder={`${currency} 0.00`}
+                placeholder={` 0.00`}
                 tooltipTitle="Enter your average monthly contributions to general investments."
               />
               <DFSelectWithWatch

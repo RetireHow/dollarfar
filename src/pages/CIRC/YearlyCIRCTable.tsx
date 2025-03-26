@@ -2,7 +2,6 @@ import { useAppSelector } from "../../redux/hooks";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function YearlyCIRCTable() {
-  const { currency } = useAppSelector((state) => state.globalCurrency);
   const { yearByYearBreakdown } = useAppSelector(
     (state) => state.compoundInterest
   );
@@ -31,15 +30,12 @@ export default function YearlyCIRCTable() {
               <tr key={index} className="hover:bg-gray-200">
                 <td className="border-b-[1px] border-gray-200 p-4">{year}</td>
                 <td className="border-b-[1px] border-gray-200 p-4">
-                  {currency}
                   {numberWithCommas(Number(totalValue))}
                 </td>
                 <td className="border-b-[1px] border-gray-200 p-4">
-                  {currency}
                   {numberWithCommas(Number(totalContribution))}
                 </td>
                 <td className="border-b-[1px] border-gray-200 p-4">
-                  {currency}
                   {numberWithCommas(Number(totalInterest))}
                 </td>
               </tr>

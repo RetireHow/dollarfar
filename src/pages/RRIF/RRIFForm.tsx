@@ -17,65 +17,6 @@ import { handleKeyDown } from "../../utils/handleKeyDown";
 import { isNegative } from "../../utils/isNegative";
 import { toast } from "react-toastify";
 
-// type TOptions = {
-//   label: string;
-//   value: string;
-// };
-
-// const customStyles: StylesConfig<TOptions, boolean> = {
-//   container: (provided) => ({
-//     ...provided,
-//     width: "100%",
-//     borderRadius: "5px",
-//     padding: "1px",
-//   }),
-//   control: (provided) => ({
-//     ...provided,
-//     border: "0px solid #D9D9D9",
-//     boxShadow: "none",
-//     "&:hover": {
-//       border: "0px solid #D9D9D9",
-//     },
-//     padding: "0px 0",
-//     borderRadius: "0",
-//     cursor: "pointer",
-//   }),
-//   menu: (provided) => ({
-//     ...provided,
-//     width: "100%",
-//   }),
-//   option: (provided, state) => ({
-//     ...provided,
-//     backgroundColor: state.isSelected ? "#000" : provided.backgroundColor,
-//     color: state.isSelected ? "#fff" : provided.color,
-//     "&:hover": {
-//       backgroundColor: state.isSelected ? "#000" : provided.backgroundColor,
-//     },
-//     cursor: "pointer",
-//   }),
-//   singleValue: (provided) => ({
-//     ...provided,
-//     color: "#333",
-//   }),
-//   dropdownIndicator: (provided) => ({
-//     ...provided,
-//     color: "#000", // Change this to the color you want for the arrow
-//     "&:hover": {
-//       color: "#000", // Optional: change color on hover if desired
-//     },
-//   }),
-
-//   placeholder: (provided) => ({
-//     ...provided,
-//     color: "#858585", // Set the placeholder color
-//     fontWeight: "normal",
-//   }),
-// };
-
-// const withdrawalFrequencyOptions = [
-//   { label: "Annually", value: "Annually" }
-// ];
-
 export default function RRIFForm() {
   const dispatch = useAppDispatch();
   const {

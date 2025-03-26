@@ -16,7 +16,6 @@ export default function RRIFTable() {
   ]?.balanceAtEndOfTheYear || 0
 
   const years = withdrawalEndYear - withdrawalStartYear;
-  const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <section>
       <div  className="overflow-x-auto text-center bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md">
@@ -36,16 +35,16 @@ export default function RRIFTable() {
             {data?.map((item: TAgePeriod, index) => (
               <tr key={index} className="hover:bg-gray-200">
                 <td className="border-b-[1px] border-gray-200 p-4">{item.age}</td>
-                <td className="border-b-[1px] border-gray-200 p-4">{currency}{numberWithCommas(item.balanceAtBeginningOfTheYear)}</td>
-                <td className="border-b-[1px] border-gray-200 p-4">{currency}{numberWithCommas(Number(item.annualWithdrawalAmount))}</td>
-                <td className="border-b-[1px] border-gray-200 p-4">{currency}{(Number(item.annualWithdrawalAmount)/12).toFixed(2)}</td>
+                <td className="border-b-[1px] border-gray-200 p-4">{numberWithCommas(item.balanceAtBeginningOfTheYear)}</td>
+                <td className="border-b-[1px] border-gray-200 p-4">{numberWithCommas(Number(item.annualWithdrawalAmount))}</td>
+                <td className="border-b-[1px] border-gray-200 p-4">{(Number(item.annualWithdrawalAmount)/12).toFixed(2)}</td>
                 <td className="border-b-[1px] border-gray-200 p-4">
                   {item.minWithdrawalPercentage ||
                     item.mannualWithdrawalPercentage}
                   %
                 </td>
                 <td className="border-b-[1px] border-gray-200 p-4">{rateOfReturn}%</td>
-                <td className="border-b-[1px] border-gray-200 p-4">{currency}{numberWithCommas(item.balanceAtEndOfTheYear)}</td>
+                <td className="border-b-[1px] border-gray-200 p-4">{numberWithCommas(item.balanceAtEndOfTheYear)}</td>
               </tr>
             ))}
           </tbody>
@@ -55,7 +54,7 @@ export default function RRIFTable() {
       <p className="font-semibold md:text-[1.1rem] text-[14px] text-center leading-[2rem]">
         After {years} years, the RRIF balance will reduce gradually, providing
         steady withdrawals and accounting for the return rate. At the end of{" "}
-        {years} years, the remaining balance may be {currency}
+        {years} years, the remaining balance may be 
         {numberWithCommas(remainingBalanceInRRIF)}, depending on actual return rates and
         withdrawals.
       </p>

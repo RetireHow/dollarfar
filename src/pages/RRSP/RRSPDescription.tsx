@@ -1,7 +1,4 @@
-import { useAppSelector } from "../../redux/hooks";
-
 export default function RRSPDescription() {
-  const {currency} = useAppSelector(state => state.globalCurrency)
   return (
     <article>
       <section className="md:mx-[5rem] mx-[1rem]">
@@ -91,13 +88,13 @@ export default function RRSPDescription() {
             Retirement Age: 55
           </p>
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
-            Pre-Tax Income: {currency}100,000
+            Pre-Tax Income: 100,000
           </p>
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
-            Ongoing Contribution Amount: {currency}1,000 per month
+            Ongoing Contribution Amount: 1,000 per month
           </p>
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
-            Current RRSP Savings: {currency}150,000
+            Current RRSP Savings: 150,000
           </p>
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
             Contribution Frequency: Monthly

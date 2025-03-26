@@ -17,8 +17,6 @@ const PersonalItemsInputFields = () => {
   } = useAppSelector((state) => state.NWCalculator);
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
 
-  const { currency } = useAppSelector((state) => state.globalCurrency);
-
   const {
     assets: {
       personalItems: {artWork, collectibles, jewelry},
@@ -54,7 +52,7 @@ const PersonalItemsInputFields = () => {
 
       {/* Sub Input Fields */}
       {showSubInputs && (
-        <div className="mt-3 text-[14px] flex gap-[1.5rem] overflow-x-auto pb-2">
+        <div className="mt-3 text-[14px] flex flex-col gap-[0.5rem] overflow-x-auto pb-2">
           <div>
             <label
               className="flex items-center gap-1 font-semibold"
@@ -68,7 +66,7 @@ const PersonalItemsInputFields = () => {
                 isNegative(jewelry) ? "border-red-500 border-[2px]" : "border-[#838383] border-[1px]"
               }`}
               type="number"
-              placeholder={`${currency}0`}
+              placeholder={`0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -96,7 +94,7 @@ const PersonalItemsInputFields = () => {
                 isNegative(artWork) ? "border-red-500 border-[2px]" : "border-[#838383] border-[1px]"
               }`}
               type="number"
-              placeholder={`${currency}0`}
+              placeholder={`0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -124,7 +122,7 @@ const PersonalItemsInputFields = () => {
               isNegative(collectibles) ? "border-red-500 border-[2px]" : "border-[#838383] border-[1px]"
             }`}
               type="number"
-              placeholder={`${currency}0`}
+              placeholder={`0`}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
               }
@@ -158,7 +156,7 @@ const PersonalItemsInputFields = () => {
                 type="number"
                 name={input.label.trim().split(" ").join("")}
                 value={input.value}
-                placeholder={`${currency}0`}
+                placeholder={`0`}
                 onChange={(e) => handleDynamicInputChange(e, input.id)}
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
@@ -171,7 +169,7 @@ const PersonalItemsInputFields = () => {
           {/* New Dynamic Input Field */}
           {showNewInputField && (
             <div className="mt-3 flex flex-col items-center">
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center justify-between gap-4 w-full">
                 <input
                   ref={dynamicFieldTitleRef}
                   className="border-[1px] border-[#838383] rounded-[5px]  px-1 py-[2px] flex-1"
@@ -197,11 +195,11 @@ const PersonalItemsInputFields = () => {
                 </div>
               </div>
               <input
-                className="border-[1px] border-[#838383] rounded-[8px] px-2 py-[2px]  mt-[2px] w-full"
+                className="border-[1px] border-[#838383] rounded-[8px] px-2 py-[8px] mt-[2px] w-full"
                 type="number"
                 name="value"
                 value={newInput.value}
-                placeholder={`${currency}0`}
+                placeholder={`0`}
                 onChange={handleInputChange}
                 onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                   e.currentTarget.blur()
@@ -229,7 +227,7 @@ const PersonalItemsInputFields = () => {
               className="font-semibold text-nowrap border-[1px] border-[#E5E5E5] rounded-[8px] py-[0.2rem] px-[1rem]"
               onClick={handleAddNewInput}
             >
-              <span className="text-[1.3rem] pr-1">+</span> Add More
+              <span className="text-[1.3rem] pr-1">+</span> Add More Personal Items
             </button>
           </div>
         </div>

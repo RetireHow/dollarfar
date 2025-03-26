@@ -81,7 +81,6 @@ export const CRICPdf = ({ data }: { data: TData }) => {
   const {
     name,
     email,
-    currency,
     currencyFullName,
     generalInfo,
     pensionPlan,
@@ -137,7 +136,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
           <View style={styles.section}>
             <Text>Comprehensive Retirement Income Calculator</Text>
             <Text style={styles.title}>
-              {currency}-{currencyFullName}
+              -{currencyFullName}
             </Text>
           </View>
 
@@ -224,7 +223,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                       Annual Retirement Income Goal
                     </Text>
                     <Text>
-                      {currency}
+                      
                       {getValue(generalInfo.annualRetirementIncomeGoal) !==
                       "N/A"
                         ? numberWithCommas(
@@ -243,7 +242,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                       Current Annual Income
                     </Text>
                     <Text>
-                      {currency}
+                      
                       {getValue(generalInfo.currentAnnualIncome) !== "N/A"
                         ? numberWithCommas(
                             Number(generalInfo.currentAnnualIncome)
@@ -293,7 +292,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                         Estimated Annual Pension
                       </Text>
                       <Text>
-                        {currency}
+                        
                         {Number(getValue(employerPension.annualPension))
                           ? numberWithCommas(
                               Number(employerPension.annualPension)
@@ -389,7 +388,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                     >
                       <Text style={{ color: "#696969" }}>Estimated Income</Text>
                       <Text>
-                        {currency}
+                        
                         {Number(getValue(otherIncome.otherIncomeAmount))
                           ? numberWithCommas(
                               Number(otherIncome.otherIncomeAmount)
@@ -477,7 +476,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                         Monthly Pension Estimate
                       </Text>
                       <Text>
-                        {currency}
+                        
                         {Number(
                           getValue(pensionPlan.monthlyRetirementPensionEstimate)
                         )
@@ -545,7 +544,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                             Current Total Value
                           </Text>
                           <Text>
-                            {currency}
+                            
                             {Number(getValue(TFSA.TFSAcurrentTotal))
                               ? numberWithCommas(
                                   Number(getValue(TFSA.TFSAcurrentTotal))
@@ -579,7 +578,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                             Ongoing Contribution Amount
                           </Text>
                           <Text>
-                            {currency}
+                            
                             {Number(
                               getValue(TFSA.TFSAOngoingContributionAmount)
                             )
@@ -636,7 +635,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                             Current Total Value
                           </Text>
                           <Text>
-                            {currency}
+                            
                             {Number(getValue(NRA.NRAcurrentTotal))
                               ? numberWithCommas(
                                   Number(getValue(NRA.NRAcurrentTotal))
@@ -670,7 +669,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                             Ongoing Contribution Amount
                           </Text>
                           <Text>
-                            {currency}
+                            
                             {Number(getValue(NRA.NRAOngoingContributionAmount))
                               ? numberWithCommas(
                                   Number(
@@ -745,7 +744,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                       {oldAgeSecurity.OASPensionReceivingAge} to 74)
                     </Text>
                     <Text>
-                      {currency}
+                      
                       {calculatedResult.OASResult.OASBenefitAmount
                         .oldAgeSecurityAfter75
                         ? numberWithCommas(
@@ -769,7 +768,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                       OAS Pension (Ages 75 and up)
                     </Text>
                     <Text>
-                      {currency}
+                      
                       {calculatedResult.OASResult.OASBenefitAmount
                         .oldAgeSecurityAfter75
                         ? numberWithCommas(
@@ -836,7 +835,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 Annual Retirement Income Goal
               </Text>
               <Text>
-                {currency}
+                
                 {generalInfo.annualRetirementIncomeGoal !== "Select One"
                   ? numberWithCommas(
                       Number(generalInfo.annualRetirementIncomeGoal)
@@ -854,7 +853,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 Retirement income at the onset
               </Text>
               <Text>
-                {currency}
+                
                 {finalResult.length > 0
                   ? numberWithCommas(calculateTotalFields(finalResult[0]))
                   : 0}
@@ -876,7 +875,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 {isNegative(retirementDifference) ? "Deficit" : "Surplus"}
               </Text>
               <Text>
-                {currency}
+                
                 {finalResult.length > 0 &&
                 generalInfo.annualRetirementIncomeGoal !== "Select One"
                   ? numberWithCommas(retirementDifference)
@@ -913,7 +912,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 }}
               ></Text>
               <Text>
-                Annual Retirement Income goal : {currency}
+                Annual Retirement Income goal : 
                 {generalInfo.annualRetirementIncomeGoal !== "Select One"
                   ? numberWithCommas(
                       Number(generalInfo.annualRetirementIncomeGoal)
@@ -934,7 +933,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 }}
               ></Text>
               <Text>
-                {pensionPlan.selectedPP} : {currency}
+                {pensionPlan.selectedPP} : 
                 {numberWithCommas(
                   calculatedResult.PPResult.PPBenefitAmount
                 )}{" "}
@@ -955,7 +954,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 }}
               ></Text>
               <Text>
-                Employer Pension: {currency}
+                Employer Pension: 
                 {numberWithCommas(
                   calculatedResult.employerPensionResult
                     .employerPensionsAgeByAge[0]?.employerPensionAmount
@@ -977,7 +976,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 }}
               ></Text>
               <Text>
-                Retirement Savings: {currency}
+                Retirement Savings: 
                 {numberWithCommas(
                   calculatedResult.retirementSavingsResult
                     .retirementSavingsAgeByAge[0]?.retirementSavingsAmount
@@ -999,7 +998,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 }}
               ></Text>
               <Text>
-                Other Income: {currency}
+                Other Income: 
                 {numberWithCommas(
                   calculatedResult.otherIncomeResult.otherIncomesAgeByAge[0]
                     ?.otherIncomeAmount
@@ -1022,14 +1021,14 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 }}
               ></Text>
               <Text>
-                Old Age Security: {currency}
+                Old Age Security: 
                 {numberWithCommas(
                   calculatedResult.OASResult.OASBenefitAmount
                     .oldAgeSecurityBefore75
                 )}{" "}
                 annually (from age{" "}
                 {getValue(oldAgeSecurity.OASPensionReceivingAge)} to 74);{" "}
-                {currency}
+                
                 {numberWithCommas(
                   calculatedResult.OASResult.OASBenefitAmount
                     .oldAgeSecurityAfter75
@@ -1047,7 +1046,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                   width: 20,
                 }}
               >
-                {currency}
+                
               </Text>
               <Text>{currencyFullName}</Text>
             </View>

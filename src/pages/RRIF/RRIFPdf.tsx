@@ -77,7 +77,6 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
     withdrawalEndYear,
     remainingRRRIFBalanceEndOfPeriod,
     totalWithdrawnOverLifeTime,
-    currency,
     withdrawType,
   } = data || {};
 
@@ -144,7 +143,7 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
               >
                 <Text style={{ color: "#696969" }}>Initial RRIF Balance</Text>
                 <Text>
-                  {currency}
+                  
                   {numberWithCommas(RRIFInitalBalance)}
                 </Text>
               </View>
@@ -171,7 +170,7 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
                     Annual Withdrawal Amount
                   </Text>
                   <Text>
-                    {currency}
+                    
                     {numberWithCommas(annualWithdrawalAmount)}
                   </Text>
                 </View>
@@ -188,7 +187,7 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
                     Monthly Withdrawal Amount
                   </Text>
                   <Text>
-                    {currency}
+                    
                     {numberWithCommas(Math.round(annualWithdrawalAmount / 12))}
                   </Text>
                 </View>
@@ -252,7 +251,7 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
                   {withdrawalEndYear})
                 </Text>
                 <Text>
-                  {currency}
+                  
                   {numberWithCommas(totalWithdrawnOverLifeTime)}
                 </Text>
               </View>
@@ -268,7 +267,7 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
                   Remaining RRIF Balance (End of Withdrawal Period)
                 </Text>
                 <Text>
-                  {currency}
+                  
                   {numberWithCommas(
                     Math.round(remainingRRRIFBalanceEndOfPeriod)
                   )}

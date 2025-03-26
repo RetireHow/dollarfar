@@ -8,7 +8,6 @@ import DownloadModal from "../../components/DownloadModal";
 import { RRSPPdf } from "./RRSPPdf";
 import RRSPAreaChart from "./RRSPAreaChart";
 import { useAppSelector } from "../../redux/hooks";
-import CurrencySelect from "../../components/UI/CurrencySelect";
 import useTitle from "../../hooks/useTitle";
 
 const data = {
@@ -40,8 +39,7 @@ export default function RRSP() {
             <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
               Registered Retirement Savings Plan (RRSP) Calculator
             </h3>
-            <div className="md:flex grid grid-cols-2 items-center flex-wrap md:gap-5 gap-3 md:text-[1rem] text-[14px] md:w-auto w-full">
-              <CurrencySelect />
+            <div className="lg:w-auto w-full">
               <DownloadModal
                 calculatorData={{ result, input, currency, currencyFullName }}
                 fileName="RRSP Report"

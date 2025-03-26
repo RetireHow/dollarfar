@@ -1,8 +1,6 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useAppSelector } from "../../redux/hooks";
 
 export default function COLDescription() {
-  const { currency } = useAppSelector((state) => state.globalCurrency);
   return (
     <article className="md:mx-[5rem] mx-[1rem]">
       <section>
@@ -55,15 +53,15 @@ export default function COLDescription() {
             A: Mumbai (Example):
           </p>
           <p className="text-[#696969] md:text-[1rem] text-[14px]">
-            Total Monthly Income: {currency}100,000 <br />
-            Housing Costs: {currency}30,000 <br />
-            Transportation Costs: {currency}8,000 <br />
-            Food Costs: {currency}12,000 <br />
-            Healthcare Costs: {currency}5,000 <br />
-            Utilities: {currency}4,000 <br />
-            Miscellaneous: {currency}10,000 <br />
+            Total Monthly Income: 100,000 <br />
+            Housing Costs: 30,000 <br />
+            Transportation Costs: 8,000 <br />
+            Food Costs: 12,000 <br />
+            Healthcare Costs: 5,000 <br />
+            Utilities: 4,000 <br />
+            Miscellaneous: 10,000 <br />
             <span className="font-semibold text-black">
-              Total Expenses: {currency}69,000
+              Total Expenses: 69,000
             </span>
           </p>
         </div>
@@ -74,15 +72,15 @@ export default function COLDescription() {
             B: Bangalore (Example):
           </p>
           <p className="text-[#696969]">
-            Total Monthly Income: {currency}90,000 <br />
-            Housing Costs: {currency}25,000 <br />
-            Transportation Costs: {currency}6,000 <br />
-            Food Costs: {currency}10,000 <br />
-            Healthcare Costs: {currency}4,000 <br />
-            Utilities: {currency}3,500 (Blue) <br />
-            Miscellaneous: {currency}8,000 <br />
+            Total Monthly Income: 90,000 <br />
+            Housing Costs: 25,000 <br />
+            Transportation Costs: 6,000 <br />
+            Food Costs: 10,000 <br />
+            Healthcare Costs: 4,000 <br />
+            Utilities: 3,500 (Blue) <br />
+            Miscellaneous: 8,000 <br />
             <span className="font-semibold text-black">
-              Total Expenses: {currency}56,500
+              Total Expenses: 56,500
             </span>
           </p>
         </div>
@@ -94,7 +92,7 @@ export default function COLDescription() {
           </p>
           <p className="text-[#696969]">
             Cost of Living Index: <br />
-            {`{(${currency}56,500-${currency}69,000)/69000}`}×100=18.12% <br />
+            {`{(56,500-69,000)/69000}`}×100=18.12% <br />
             Living in Bangalore is approximately 18.12% cheaper than living in
             Mumbai.
           </p>

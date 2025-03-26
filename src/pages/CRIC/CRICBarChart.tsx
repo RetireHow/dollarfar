@@ -13,9 +13,6 @@ import { useAppSelector } from "../../redux/hooks";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 
 function CRICBarChart() {
-  const { currency, currencyFullName } = useAppSelector(
-    (state) => state.globalCurrency
-  );
 
   const {
     generalInfo: { lifeExpectency },
@@ -63,13 +60,13 @@ function CRICBarChart() {
                   //   position: "insideLeft",
                   // }}
 
-                  tickFormatter={(value) => `${currency}${value}`}
+                  tickFormatter={(value) => `${value}`}
                   fontSize={12}
                   // dataKey="annualRIG"
                 />
                 <Tooltip
                   formatter={(value: number) =>
-                    `${currency}${numberWithCommas(value)}`
+                    `${numberWithCommas(value)}`
                   }
                   contentStyle={{ fontSize: "12px" }}
                 />
@@ -130,7 +127,7 @@ function CRICBarChart() {
           {/* <li className="flex items-center gap-[0.5rem]">
             <div className="bg-[#AA5656] min-w-[30px] h-[10px] rounded-[10px]"></div>
             <p>
-              Annual Retirement Income goal : {currency}
+              Annual Retirement Income goal : 
               {annualRetirementIncomeGoal}
             </p>
           </li> */}
@@ -139,7 +136,7 @@ function CRICBarChart() {
             <li className="flex items-center gap-[0.5rem]">
               <div className="bg-[#4CAF50] min-w-[30px] h-[10px] rounded-[10px]"></div>
               <p>
-                {selectedPP} : {currency}
+                {selectedPP} : 
                 {Number(PPBenefitAmount)
                   ? numberWithCommas(PPBenefitAmount)
                   : 0}{" "}
@@ -153,7 +150,7 @@ function CRICBarChart() {
               <div className="bg-[#FFC107] min-w-[30px] h-[10px] rounded-[10px]"></div>
               {isIndexedToInflation == "Yes" ? (
                 <p>
-                  Employer Pension: {currency}
+                  Employer Pension: 
                   {Number(employerPensionsAgeByAge[0]?.employerPensionAmount)
                     ? numberWithCommas(
                         employerPensionsAgeByAge[0]?.employerPensionAmount
@@ -163,13 +160,13 @@ function CRICBarChart() {
                 </p>
               ) : (
                 <p>
-                  Employer Pension: Declining from {currency}
+                  Employer Pension: Declining from 
                   {Number(employerPensionsAgeByAge[0]?.employerPensionAmount)
                     ? numberWithCommas(
                         employerPensionsAgeByAge[0]?.employerPensionAmount
                       )
                     : 0}{" "}
-                  to {currency}
+                  to 
                   {numberWithCommas(
                     employerPensionsAgeByAge[
                       employerPensionsAgeByAge?.length - 1
@@ -186,7 +183,7 @@ function CRICBarChart() {
             <li className="flex items-center gap-[0.5rem]">
               <div className="bg-[#2196F3] min-w-[30px] h-[10px] rounded-[10px]"></div>
               <p>
-                Accumulated Savings: {currency}
+                Accumulated Savings: 
                 {Number(annualRetirementIncomeFromBothAccount)
                   ? numberWithCommas(annualRetirementIncomeFromBothAccount)
                   : 0}{" "}
@@ -200,7 +197,7 @@ function CRICBarChart() {
             <li className="flex items-center gap-[0.5rem]">
               <div className="bg-[#9C27B0] min-w-[30px] h-[10px] rounded-[10px]"></div>
               <p>
-                Other Income: {currency}
+                Other Income: 
                 {Number(otherIncomeAmountAnnually)
                   ? numberWithCommas(otherIncomeAmountAnnually)
                   : 0}{" "}
@@ -214,12 +211,12 @@ function CRICBarChart() {
             <li className="flex items-center gap-[0.5rem]">
               <div className="bg-[#FF5722] min-w-[30px] h-[10px] rounded-[10px]"></div>
               <p>
-                Old Age Security: {currency}
+                Old Age Security: 
                 {Number(oldAgeSecurityBefore75)
                   ? numberWithCommas(parseInt(oldAgeSecurityBefore75?.toString()))
                   : 0}{" "}
                 annually (from <span className="mx-1">age</span>
-                {OASPensionReceivingAge} to 74); {currency}
+                {OASPensionReceivingAge} to 74); 
                 {Number(oldAgeSecurityAfter75)
                   ? numberWithCommas(parseInt(oldAgeSecurityAfter75?.toString()))
                   : 0}{" "}
@@ -229,8 +226,7 @@ function CRICBarChart() {
           )}
 
           <li className="flex items-center gap-[0.5rem]">
-            <p className="min-w-[30px]">{currency}</p>
-            <p>{currencyFullName}</p>
+            <p className="min-w-[30px]"></p>
           </li>
         </ul>
       </div>

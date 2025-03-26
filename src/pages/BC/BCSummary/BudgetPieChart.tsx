@@ -5,7 +5,6 @@ import { useAppSelector } from "../../../redux/hooks";
 // Sample data for the chart
 
 const BudgetPieChart = () => {
-  const { currency } = useAppSelector((state) => state.globalCurrency);
 
   const {
     housing: { totalAnnualHousingExpenses },
@@ -72,7 +71,7 @@ const BudgetPieChart = () => {
               //         fontFamily: "geist",
               //       }}
               //     >
-              //       {currency}
+              //       
               //       {numberWithCommas(0)}
               //     </text>
               //     <text
@@ -88,12 +87,12 @@ const BudgetPieChart = () => {
               // )}
             >
               {data.map((entry, index) => (
-                <Cell key={`cell-${currency}${index}`} fill={entry.color} />
+                <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
             <Tooltip
               formatter={(value: number, name: string) => [
-                `${currency}${value}`,
+                `${value}`,
                 name,
               ]}
             />

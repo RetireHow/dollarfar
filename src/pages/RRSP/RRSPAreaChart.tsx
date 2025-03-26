@@ -14,8 +14,6 @@ export default function RRSPAreaChart() {
   const { result } = useAppSelector((state) => state.rrspCalculator);
   const { savingsByAge } = result || {};
 
-  const { currency } = useAppSelector((state) => state.globalCurrency);
-
   const maxSavings = Math.ceil(
     Math.max(
       ...savingsByAge!.map((entry) =>
@@ -45,12 +43,12 @@ export default function RRSPAreaChart() {
             <XAxis dataKey="age" />
             <YAxis
               dataKey="savingsAmount"
-              tickFormatter={(value) => `${currency}${value}`}
+              tickFormatter={(value) => `${value}`}
               domain={[0, maxSavings]}
             />
             <Tooltip
               formatter={(value: number) =>
-                `${currency}${numberWithCommas(Math.round(value))}`
+                `${numberWithCommas(Math.round(value))}`
               }
             />
             <Area

@@ -11,8 +11,6 @@ const OtherDebtsFields = () => {
   const dispatch = useAppDispatch();
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);
 
-  const { currency } = useAppSelector((state) => state.globalCurrency);
-
   const {
     liabilities: {
       otherDebts: { otherDebt },
@@ -53,7 +51,7 @@ const OtherDebtsFields = () => {
             : "border-[#838383] border-[1px]"
         }`}
         type="number"
-        placeholder={`${currency}0`}
+        placeholder={`0`}
         onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
           e.currentTarget.blur()
         }
@@ -88,7 +86,7 @@ const OtherDebtsFields = () => {
               type="number"
               name={input.label.trim().split(" ").join("")}
               value={input.value}
-              placeholder={`${currency}0`}
+              placeholder={`0`}
               onChange={(e) => handleDynamicInputChange(e, input.id)}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()
@@ -131,7 +129,7 @@ const OtherDebtsFields = () => {
               type="number"
               name="value"
               value={newInput.value}
-              placeholder={`${currency}0`}
+              placeholder={`0`}
               onChange={handleInputChange}
               onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
                 e.currentTarget.blur()

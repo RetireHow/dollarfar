@@ -121,7 +121,7 @@ function CRICRetirementDifferenceModal({
     currency: string;
   };
 }) {
-  const { retirementIncomeGoal, retirementIncome, difference, currency } =
+  const { retirementIncomeGoal, retirementIncome, difference } =
     data || {};
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -166,17 +166,17 @@ function CRICRetirementDifferenceModal({
             <p>
               You're almost there! Your estimated retirement income is{" "}
               <span className="font-semibold text-black">
-                {currency}
+                
                 {numberWithCommas(retirementIncome)}
               </span>
               , but your goal is{" "}
               <span className="font-semibold text-black">
-                {currency}
+                
                 {numberWithCommas(retirementIncomeGoal)}
               </span>
               —a difference of{" "}
               <span className="font-semibold text-black">
-                {currency}
+                
                 {numberWithCommas(difference)}
               </span>
               . Small adjustments can help you bridge this gap and secure the
@@ -187,12 +187,12 @@ function CRICRetirementDifferenceModal({
           <div className="text-[1.2rem] p-4">
             Congratulations! 🎉 Your estimated retirement income is{" "}
             <span className="font-semibold text-black">
-              {currency}
+              
               {numberWithCommas(retirementIncome)}
             </span>
             , meeting your goal of{" "}
             <span className="font-semibold text-black">
-              {currency}
+              
               {numberWithCommas(retirementIncomeGoal)}
             </span>
             . You’re on track for the comfortable retirement you planned
@@ -280,29 +280,29 @@ export default function CRICTable() {
                 >
                   <td className="border-b-[1px] border-gray-200 p-4">{age}</td>
                   <td className="border-b-[1px] border-gray-200 p-4">
-                    {currency}
+                    
                     {PPBenefitAmount ? numberWithCommas(PPBenefitAmount) : 0}
                   </td>
                   <td className="border-b-[1px] border-gray-200 p-4">
-                    {currency}
+                    
                     {OASAmount
                       ? numberWithCommas(parseInt(OASAmount?.toString()))
                       : 0}
                   </td>
                   <td className="border-b-[1px] border-gray-200 p-4">
-                    {currency}
+                    
                     {employerPensionAmount
                       ? numberWithCommas(employerPensionAmount)
                       : 0}
                   </td>
                   <td className="border-b-[1px] border-gray-200 p-4">
-                    {currency}
+                    
                     {retirementSavingsAmount
                       ? numberWithCommas(retirementSavingsAmount)
                       : 0}
                   </td>
                   <td className="border-b-[1px] border-gray-200 p-4">
-                    {currency}
+                    
                     {otherIncomeAmount
                       ? numberWithCommas(otherIncomeAmount)
                       : 0}
@@ -315,7 +315,7 @@ export default function CRICTable() {
                         : "text-green-500"
                     }`}
                   >
-                    {currency}
+                    
                     {calculateTotalFields(item)
                       ? numberWithCommas(
                           parseInt(calculateTotalFields(item)?.toString())
