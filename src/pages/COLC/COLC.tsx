@@ -17,6 +17,7 @@ const data = {
 
 export default function COLC() {
   useTitle("Dollarfar | COLC");
+
   const {
     selectedCityName1,
     selectedCityName2,

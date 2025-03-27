@@ -4,6 +4,7 @@ import { Modal } from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import html2canvas from "html2canvas";
+import { Link } from "react-router-dom";
 
 interface DownloadModalProps {
   calculatorData: any;
@@ -32,7 +33,6 @@ const DownloadModal = ({
     name,
     email,
   };
-
 
   useEffect(() => {
     const captureChart = async () => {
@@ -118,7 +118,9 @@ const DownloadModal = ({
               Name
             </label>
             <input
-              className={`p-[0.8rem] border-[1px] border-[#838383] rounded-[8px] outline-none w-full ${checked && 'bg-gray-100 disabled:cursor-not-allowed'}`}
+              className={`p-[0.8rem] border-[1px] border-[#838383] rounded-[8px] outline-none w-full ${
+                checked && "bg-gray-100 disabled:cursor-not-allowed"
+              }`}
               autoFocus
               type="text"
               placeholder="Enter Name"
@@ -131,7 +133,9 @@ const DownloadModal = ({
               Email Address
             </label>
             <input
-              className={`p-[0.8rem] border-[1px] border-[#838383] rounded-[8px] outline-none w-full ${checked && 'bg-gray-100 disabled:cursor-not-allowed'}`}
+              className={`p-[0.8rem] border-[1px] border-[#838383] rounded-[8px] outline-none w-full ${
+                checked && "bg-gray-100 disabled:cursor-not-allowed"
+              }`}
               type="email"
               placeholder="Enter Email Address"
               onChange={(e) => setEmail(e.target.value)}
@@ -139,26 +143,30 @@ const DownloadModal = ({
             />
           </div>
           <div>
-            <div
-              onClick={() => setChecked(!checked)}
-              className="text-[12px] flex flex-wrap items-center gap-1 cursor-pointer select-none"
-            >
+            <div className="text-[12px] flex flex-wrap items-center gap-1 select-none">
               {checked ? (
-                <Icon className="text-[1.2rem]" icon="mingcute:checkbox-fill" />
+                <Icon
+                  onClick={() => setChecked(!checked)}
+                  className="text-[1.2rem] cursor-pointer"
+                  icon="mingcute:checkbox-fill"
+                />
               ) : (
                 <Icon
-                  className="text-[1.2rem]"
+                  onClick={() => setChecked(!checked)}
+                  className="text-[1.2rem] cursor-pointer"
                   icon="mdi:checkbox-blank-outline"
                 />
               )}
               <span className="text-[#838383]">
                 By proceeding, you are agreeing to our
               </span>
-              <span>Terms and Conditions & Privacy Policy.</span>
+              <Link className="hover:underline" to="/terms-and-condition">
+                Terms and Conditions
+              </Link>
             </div>
             {showError && !checked && (
               <p className="text-red-500 text-[12px] mt-1">
-                Please check Terms and Conditions & Privacy Policy
+                Please check Terms and Conditions
               </p>
             )}
           </div>

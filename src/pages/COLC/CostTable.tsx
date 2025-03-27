@@ -6,8 +6,8 @@ import EstimatedCost from "./EstimatedCost";
 export default function CostTable() {
   return (
     <section className="mt-5">
-      <CityIndices />
-      <EstimatedCost />
+      <div><CityIndices /></div>
+      <div><EstimatedCost /></div>
       <div className="overflow-x-auto">
         <div className="min-w-[550px]">
           <ChangeCurrency />

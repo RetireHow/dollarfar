@@ -44,6 +44,7 @@ import PropertyPriceExplanationPage from "../pages/COLC/COLCPages/PropertyPriceE
 import HealthCareExplanationPage from "../pages/COLC/COLCPages/HealthCareExplanationPage";
 import EstimatedCostCalculatorPage from "../pages/COLC/COLCPages/EstimatedCostCalculatorPage";
 import CrimeExplanation from "../pages/COLC/COLCPages/CrimeExplanation";
+import TermsAndConditionPage from "../pages/TermsAndConditionPage";
 
 export const router = createBrowserRouter([
   {
@@ -66,6 +67,10 @@ export const router = createBrowserRouter([
       {
         path: "loan-calculator",
         element: <LC />,
+      },
+      {
+        path: "terms-and-condition",
+        element: <TermsAndConditionPage />,
       },
       {
         path: "budget-calculator",
