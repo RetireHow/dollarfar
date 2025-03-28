@@ -11,9 +11,7 @@ import BgtLoanForm from "../pages/BC/BudgetIncomeForms/BgtLoanForm";
 import BgtSavingsForm from "../pages/BC/BudgetIncomeForms/BgtSavingsForm";
 import CIRC from "../pages/CIRC/CIRC";
 import NWC from "../pages/NWC/NWC";
-import LC from "../pages/LC/LC";
 import BC from "../pages/BC/BC";
-import ESP from "../pages/ESP/ESP";
 import COLC from "../pages/COLC/COLC";
 import RRSP from "../pages/RRSP/RRSP";
 import RRIF from "../pages/RRIF/RRIF";
@@ -59,14 +57,9 @@ export const router = createBrowserRouter([
         path: "compound-interest-rate-calculator",
         element: <CIRC />,
       },
-
       {
         path: "net-worth-calculator",
         element: <NWC />,
-      },
-      {
-        path: "loan-calculator",
-        element: <LC />,
       },
       {
         path: "terms-and-condition",
@@ -109,10 +102,6 @@ export const router = createBrowserRouter([
             element: <BCSummary />,
           },
         ],
-      },
-      {
-        path: "education-savings-plan-calculator",
-        element: <ESP />,
       },
       {
         path: "cost-of-living-calculator",
