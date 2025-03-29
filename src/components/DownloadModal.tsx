@@ -5,6 +5,8 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import html2canvas from "html2canvas";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import Error from "./UI/Error";
 
 interface DownloadModalProps {
   calculatorData: any;
@@ -22,6 +24,7 @@ const DownloadModal = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [checked, setChecked] = useState(false);
   const [showError, setShowError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,19 +67,47 @@ const DownloadModal = ({
   };
 
   const handleDownloadPdf = async () => {
+    // Validate fields
+    if (!email || !name || !phone) {
+      return setShowError(true);
+    }
     setIsLoading(true);
     if (!checked) {
       return setShowError(true);
     }
+
+    console.log('Form Values : ', { name, phone, email });
+
+    
 
     setTimeout(() => {
       setIsModalOpen(false);
       setIsLoading(false);
       setShowError(false);
       setChecked(false);
-      setEmail("");
-      setName("");
+      // setEmail("");
+      // setName("");
     }, 300);
+
+    try {
+      const res = await fetch("https://dollarfar-backend-rust.vercel.app/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, phone }),
+      });
+    
+      // Parse JSON response
+      const resData = await res.json();
+      console.log("Success Response Data=========> ", resData)
+    
+      // Assuming responseData contains info about the success or failure of the operation
+      toast.success("An email sent to your mail.");
+    } catch (error) {
+      console.error("Email Sending Error========> ", error);
+      toast.error("There is something wrong!");
+    }
   };
 
   const handleValidateCheck = () => {
@@ -127,10 +158,11 @@ const DownloadModal = ({
               onChange={(e) => setName(e.target.value)}
               disabled={checked}
             />
+            {showError && !name && <Error message="This field is required" />}
           </div>
           <div className="md:text-[1rem] text-[14px]">
             <label className="block font-semibold mb-2" htmlFor="name">
-              Email Address
+              Email
             </label>
             <input
               className={`p-[0.8rem] border-[1px] border-[#838383] rounded-[8px] outline-none w-full ${
@@ -141,6 +173,22 @@ const DownloadModal = ({
               onChange={(e) => setEmail(e.target.value)}
               disabled={checked}
             />
+            {showError && !email && <Error message="This field is required" />}
+          </div>
+          <div className="md:text-[1rem] text-[14px]">
+            <label className="block font-semibold mb-2" htmlFor="name">
+              Phone
+            </label>
+            <input
+              className={`p-[0.8rem] border-[1px] border-[#838383] rounded-[8px] outline-none w-full ${
+                checked && "bg-gray-100 disabled:cursor-not-allowed"
+              }`}
+              type="text"
+              placeholder="Enter Phone Number"
+              onChange={(e) => setPhone(e.target.value)}
+              disabled={checked}
+            />
+            {showError && !phone && <Error message="This field is required" />}
           </div>
           <div>
             <div className="text-[12px] flex flex-wrap items-center gap-1 select-none">
