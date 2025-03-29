@@ -5,7 +5,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import html2canvas from "html2canvas";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import Error from "./UI/Error";
 
 interface DownloadModalProps {
@@ -66,6 +66,30 @@ const DownloadModal = ({
     setName("");
   };
 
+  // const sendEmail = async (name: string, email: string, phone: string) => {
+  //   try {
+  //     const res = await fetch(
+  //       "https://dollarfar-backend-rust.vercel.app/api/send-email",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ name, email, phone }),
+  //       }
+  //     );
+
+  //     // Parse JSON response
+  //     await res.json();
+
+  //     // Assuming responseData contains info about the success or failure of the operation
+  //     toast.success("An email sent to your mail.");
+  //   } catch (error) {
+  //     console.error("Email Sending Error========> ", error);
+  //     toast.error("There is something wrong!");
+  //   }
+  // };
+
   const handleDownloadPdf = async () => {
     // Validate fields
     if (!email || !name || !phone) {
@@ -76,10 +100,6 @@ const DownloadModal = ({
       return setShowError(true);
     }
 
-    console.log('Form Values : ', { name, phone, email });
-
-    
-
     setTimeout(() => {
       setIsModalOpen(false);
       setIsLoading(false);
@@ -88,26 +108,7 @@ const DownloadModal = ({
       // setEmail("");
       // setName("");
     }, 300);
-
-    try {
-      const res = await fetch("https://dollarfar-backend-rust.vercel.app/api/send-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, phone }),
-      });
-    
-      // Parse JSON response
-      const resData = await res.json();
-      console.log("Success Response Data=========> ", resData)
-    
-      // Assuming responseData contains info about the success or failure of the operation
-      toast.success("An email sent to your mail.");
-    } catch (error) {
-      console.error("Email Sending Error========> ", error);
-      toast.error("There is something wrong!");
-    }
+    // await sendEmail(name, email, phone);
   };
 
   const handleValidateCheck = () => {
