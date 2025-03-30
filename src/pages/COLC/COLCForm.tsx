@@ -119,6 +119,7 @@ export default function COLCForm() {
           city1DefaultCurrencyData.statusCode == 400
         ) {
           setApiDataLoading(false);
+          console.log("City Error===========> ", {city1DefaultCurrencyData})
           return toast.error(city1DefaultCurrencyData.message);
         }
 
@@ -206,15 +207,15 @@ export default function COLCForm() {
           city2OtherCurrencyData
         );
 
-        const response = await fetch(
-          `${baseUrl}/api/city-prices?city1=${cityName1}&country1=${countryName1}&city2=${cityName2}&country2=${countryName2}`
-        );
-        const data = await response.json();
+        // const response = await fetch(
+        //   `${baseUrl}/api/single-city-prices?city1=${cityName1}&country1=${countryName1}&city2=${cityName2}&country2=${countryName2}`
+        // );
+        // const data = await response.json();
 
-        if (!data.success && data.statusCode == 400) {
-          setApiDataLoading(false);
-          return toast.error(data.message);
-        }
+        // if (!data.success && data.statusCode == 400) {
+        //   setApiDataLoading(false);
+        //   return toast.error(data.message);
+        // }
 
         // City Indices API
         const cityIndicesRes1 = await fetch(

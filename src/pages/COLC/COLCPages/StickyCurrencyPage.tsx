@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import COLCLoading from "../COLCLoading";
+import { baseUrl } from "../../../api/apiConstant";
 export interface ExchangeRateDataResponse {
   message: string;
   success: boolean;
@@ -44,7 +45,7 @@ export default function StickyCurrencyPage() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `https://dollarfar-backend-rust.vercel.app/api/currency-exchange-rates`
+        `${baseUrl}/api/currency-exchange-rates`
       );
       const data: ExchangeRateDataResponse = await res.json();
       if (!data?.success) {

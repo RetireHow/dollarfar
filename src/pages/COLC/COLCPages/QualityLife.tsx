@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getColorForIndex, getRating } from "../colc.utils";
 import COLCLoading from "../COLCLoading";
+import { baseUrl } from "../../../api/apiConstant";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getMaxMinContributors(data: any) {
@@ -100,7 +101,7 @@ export default function QualityLife() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `https://dollarfar-backend-rust.vercel.app/api/city-indices?country=${country}&city=${city}`
+        `${baseUrl}/api/city-indices?country=${country}&city=${city}`
       );
       const data: TCityIndecesResponse = await res.json();
       if (!data?.success) {

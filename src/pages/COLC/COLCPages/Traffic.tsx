@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import TrafficPieChart from "./TrafficPieChart";
 import COLCProgressBar from "../COLCProgressBar";
 import COLCLoading from "../COLCLoading";
+import { baseUrl } from "../../../api/apiConstant";
 
 export interface TTrafficDataResponse {
   message: string;
@@ -403,7 +404,7 @@ export default function Traffic() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `https://dollarfar-backend-rust.vercel.app/api/city-traffic?country=${country}&city=${city}`
+        `${baseUrl}/api/city-traffic?country=${country}&city=${city}`
       );
       const data: TTrafficDataResponse = await res.json();
       if (!data?.success) {

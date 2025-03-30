@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { baseUrl } from "../../api/apiConstant";
 
 function calculateDistanceVincentyWithDetour(
   lat1: number,
@@ -147,7 +148,7 @@ export default function CloseCityList({
   const loadCloseCitiesData = async () => {
     try {
       const res = await fetch(
-        `https://dollarfar-backend-rust.vercel.app/api/close-cities-with-prices?country=${selectedCountry}&city=${selectedCity}`
+        `${baseUrl}/api/close-cities-with-prices?country=${selectedCountry}&city=${selectedCity}`
       );
       const data: CloseCityDataResponse = await res.json();
       if (!data?.success) {

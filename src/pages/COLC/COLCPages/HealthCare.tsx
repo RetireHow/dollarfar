@@ -5,6 +5,7 @@ import { getColorForIndex, getIndex, getRating, months } from "../colc.utils";
 import { toast } from "react-toastify";
 import COLCProgressBar from "../COLCProgressBar";
 import COLCLoading from "../COLCLoading";
+import { baseUrl } from "../../../api/apiConstant";
 
 export interface THealthCareDataResponse {
   message: string;
@@ -57,7 +58,7 @@ export default function HealthCare() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `https://dollarfar-backend-rust.vercel.app/api/city-healthcare?country=${country}&city=${city}`
+        `${baseUrl}/api/city-healthcare?country=${country}&city=${city}`
       );
       const data: THealthCareDataResponse = await res.json();
       if (!data?.success) {

@@ -5,6 +5,7 @@ import { getColorForIndex, getIndex, getRating, months } from "../colc.utils";
 import { toast } from "react-toastify";
 import COLCProgressBar from "../COLCProgressBar";
 import COLCLoading from "../COLCLoading";
+import { baseUrl } from "../../../api/apiConstant";
 
 export interface TCrimeDataResponse {
   message: string;
@@ -55,7 +56,7 @@ export default function Crime() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `https://dollarfar-backend-rust.vercel.app/api/city-crime?country=${country}&city=${city}`
+        `${baseUrl}/api/city-crime?country=${country}&city=${city}`
       );
       const data: TCrimeDataResponse = await res.json();
       if (!data?.success) {

@@ -4,6 +4,7 @@ import { useAppSelector } from "../../redux/hooks";
 import { getCurrencySymbol } from "../../utils/getCurrencySymbol";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import { Link } from "react-router-dom";
+import { baseUrl } from "../../api/apiConstant";
 
 export interface EstimatedCostDataResponse {
   message: string;
@@ -45,7 +46,7 @@ export default function EstimatedCost() {
   const loadEstimatedCostData = async () => {
     try {
       const res = await fetch(
-        `https://dollarfar-backend-rust.vercel.app/api/city-cost-estimator?country=${selectedCountryName2}&city=${selectedCityName2}&members=${members}&children=${children}&isRent=${isRent}&currency=${homeCurrencyCode}`
+        `${baseUrl}/api/city-cost-estimator?country=${selectedCountryName2}&city=${selectedCityName2}&members=${members}&children=${children}&isRent=${isRent}&currency=${homeCurrencyCode}`
       );
       const data: EstimatedCostDataResponse = await res.json();
       if (!data?.success) {

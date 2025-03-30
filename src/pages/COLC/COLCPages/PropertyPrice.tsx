@@ -6,6 +6,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { getCurrencySymbol } from "../../../utils/getCurrencySymbol";
 import { numberWithCommas } from "../../../utils/numberWithCommas";
 import COLCLoading from "../COLCLoading";
+import { baseUrl } from "../../../api/apiConstant";
 
 type PriceItem = {
   item_name: string;
@@ -189,7 +190,7 @@ export default function PropertyPrice() {
   const loadCityPriceData = async () => {
     try {
       const res = await fetch(
-        `https://dollarfar-backend-rust.vercel.app/api/single-city-prices?country=${country}&city=${city}&currency=${selectedCurrency}`
+        `${baseUrl}/api/single-city-prices?country=${country}&city=${city}&currency=${selectedCurrency}`
       );
       const data: CityPriceDataResponse = await res.json();
       if (!data?.success) {

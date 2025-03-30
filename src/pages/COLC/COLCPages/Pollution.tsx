@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getColorForIndex, getRating, months } from "../colc.utils";
 import COLCLoading from "../COLCLoading";
+import { baseUrl } from "../../../api/apiConstant";
 
 export interface PollutionResponse {
   message: string;
@@ -61,7 +62,7 @@ export default function Pollution() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `https://dollarfar-backend-rust.vercel.app/api/city-pollution?country=${country}&city=${city}`
+        `${baseUrl}/api/city-pollution?country=${country}&city=${city}`
       );
       const data: PollutionResponse = await res.json();
       if (!data?.success) {
