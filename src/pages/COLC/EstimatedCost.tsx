@@ -62,7 +62,7 @@ export default function EstimatedCost() {
   const loadEstimatedCostSinglePersonData = async () => {
     try {
       const res = await fetch(
-        `https://dollarfar-backend-rust.vercel.app/api/city-cost-estimator?country=${selectedCountryName2}&city=${selectedCityName2}&members=1&children=0&isRent=false&currency=${homeCurrencyCode}`
+        `${baseUrl}/api/city-cost-estimator?country=${selectedCountryName2}&city=${selectedCityName2}&members=1&children=0&isRent=false&currency=${homeCurrencyCode}`
       );
       const data: EstimatedCostDataResponse = await res.json();
       if (!data?.success) {

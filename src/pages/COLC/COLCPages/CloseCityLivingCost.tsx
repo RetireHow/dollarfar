@@ -279,7 +279,7 @@ export default function CloseCityLivingCost() {
   const loadEstimatedCostData = async () => {
     try {
       const res = await fetch(
-        `https://dollarfar-backend-rust.vercel.app/api/city-cost-estimator?country=${country}&city=${city}&members=4&children=0&isRent=false&currency=${selectedCurrency}`
+        `${baseUrl}/api/city-cost-estimator?country=${country}&city=${city}&members=4&children=0&isRent=false&currency=${selectedCurrency}`
       );
       const data: EstimatedCostDataResponse = await res.json();
       if (!data?.success) {
@@ -294,7 +294,7 @@ export default function CloseCityLivingCost() {
   const loadEstimatedCostSinglePersonData = async () => {
     try {
       const res = await fetch(
-        `https://dollarfar-backend-rust.vercel.app/api/city-cost-estimator?country=${country}&city=${city}&members=1&children=0&isRent=false&currency=${selectedCurrency}`
+        `${baseUrl}/api/city-cost-estimator?country=${country}&city=${city}&members=1&children=0&isRent=false&currency=${selectedCurrency}`
       );
       const data: EstimatedCostDataResponse = await res.json();
       if (!data?.success) {
@@ -314,7 +314,7 @@ export default function CloseCityLivingCost() {
   const loadCurrencyData = async () => {
     try {
       const res = await fetch(
-        `https://dollarfar-backend-rust.vercel.app/api/currency-exchange-rates`
+        `${baseUrl}/api/currency-exchange-rates`
       );
       const data: ExchangeRateDataResponse = await res.json();
       if (!data?.success) {

@@ -210,7 +210,7 @@ export default function PropertyPrice() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `https://dollarfar-backend-rust.vercel.app/api/currency-exchange-rates`
+        `${baseUrl}/api/currency-exchange-rates`
       );
       const data: ExchangeRateDataResponse = await res.json();
       if (!data?.success) {
