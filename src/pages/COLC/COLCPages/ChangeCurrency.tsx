@@ -153,15 +153,15 @@ export default function ChangeCurrency() {
           city2OtherCurrencyData
         );
 
-        const response = await fetch(
-          `${baseUrl}/api/single-city-prices?city1=${cityName1}&country1=${countryName1}&city2=${cityName2}&country2=${countryName2}`
-        );
-        const data = await response.json();
+        // const response = await fetch(
+        //   `${baseUrl}/api/single-city-prices?city1=${cityName1}&country1=${countryName1}&city2=${cityName2}&country2=${countryName2}`
+        // );
+        // const data = await response.json();
 
-        if (!data.success && data.statusCode == 400) {
-          setApiDataLoading(false);
-          return toast.error(data.message);
-        }
+        // if (!data.success && data.statusCode == 400) {
+        //   setApiDataLoading(false);
+        //   return toast.error(data.message);
+        // }
         dispatch(
           setCOLCModifiedCostData(costOfLivingData as TCostOfLivingData)
         );
