@@ -154,7 +154,7 @@ export default function ChangeCurrency() {
         );
 
         const response = await fetch(
-          `${baseUrl}/api/city-prices?city1=${cityName1}&country1=${countryName1}&city2=${cityName2}&country2=${countryName2}`
+          `${baseUrl}/api/single-city-prices?city1=${cityName1}&country1=${countryName1}&city2=${cityName2}&country2=${countryName2}`
         );
         const data = await response.json();
 
