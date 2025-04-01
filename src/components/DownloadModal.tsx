@@ -5,8 +5,10 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import html2canvas from "html2canvas";
 import { Link } from "react-router-dom";
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Error from "./UI/Error";
+import { baseUrl } from "../api/apiConstant";
+import { delay } from "../utils/delay";
 
 interface DownloadModalProps {
   calculatorData: any;
@@ -66,29 +68,26 @@ const DownloadModal = ({
     setName("");
   };
 
-  // const sendEmail = async (name: string, email: string, phone: string) => {
-  //   try {
-  //     const res = await fetch(
-  //       "https://dollarfar-backend-rust.vercel.app/api/send-email",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({ name, email, phone }),
-  //       }
-  //     );
+  const sendEmail = async (name: string, email: string, phone: string) => {
+    try {
+      const res = await fetch(`${baseUrl}/api/send-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, phone }),
+      });
 
-  //     // Parse JSON response
-  //     await res.json();
+      // Parse JSON response
+      await res.json();
 
-  //     // Assuming responseData contains info about the success or failure of the operation
-  //     toast.success("An email sent to your mail.");
-  //   } catch (error) {
-  //     console.error("Email Sending Error========> ", error);
-  //     toast.error("There is something wrong!");
-  //   }
-  // };
+      // Assuming responseData contains info about the success or failure of the operation
+      toast.success("An email sent to your mail.");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error("There is something wrong!");
+    }
+  };
 
   const handleDownloadPdf = async () => {
     // Validate fields
@@ -99,16 +98,12 @@ const DownloadModal = ({
     if (!checked) {
       return setShowError(true);
     }
-
-    setTimeout(() => {
-      setIsModalOpen(false);
-      setIsLoading(false);
-      setShowError(false);
-      setChecked(false);
-      // setEmail("");
-      // setName("");
-    }, 300);
-    // await sendEmail(name, email, phone);
+    await sendEmail(name, email, phone);
+    await delay(300);
+    setIsModalOpen(false);
+    setIsLoading(false);
+    setShowError(false);
+    setChecked(false);
   };
 
   const handleValidateCheck = () => {
