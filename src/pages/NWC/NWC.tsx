@@ -9,6 +9,7 @@ import NWForm from "./NWForm";
 import NWTotal from "./NWTotal";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import useTitle from "../../hooks/useTitle";
+import NWCInputBreakdownTable from "./NWCBreakdownTable";
 
 const data = {
   title: "Net Worth Calculator",
@@ -22,15 +23,13 @@ export default function NWC() {
   const { totalAssets, totalLiabilities, netWorth, assets, liabilities } =
     useAppSelector((state) => state.NWCalculator);
 
-  const { currency, currencyFullName } = useAppSelector(
-    (state) => state.globalCurrency
-  );
-
   const calculatorData = {
-    assets: { ...assets.totals, totalAssets },
-    liabilities: { ...liabilities.totals, totalLiabilities },
-    currency,
-    currencyFullName,
+    assets: { ...assets.totals, totalAssets, assetsBreakdown: assets },
+    liabilities: {
+      ...liabilities.totals,
+      totalLiabilities,
+      liabilitiesBreakdown: liabilities,
+    },
   };
 
   return (
@@ -54,7 +53,10 @@ export default function NWC() {
           </div>
         </div>
 
-        <p className="py-2 text-gray-500"><span className="font-bold text-black">Note:</span> Negative value is not allowed for any input field.</p>
+        <p className="py-2 text-gray-500">
+          <span className="font-bold text-black">Note:</span> Negative value is
+          not allowed for any input field.
+        </p>
 
         <NWForm />
         <div
@@ -65,13 +67,13 @@ export default function NWC() {
           <NWTotal />
         </div>
         <p className="md:text-[1.1rem] text-[14px] font-semibold text-center md:mt-5">
-          "Based on the information provided, your total assets are 
+          "Based on the information provided, your total assets are{" "}
           {numberWithCommas(totalAssets)}, and your total liabilities are{" "}
-          
           {numberWithCommas(totalLiabilities)}. This gives you a net worth of{" "}
-          
           {numberWithCommas(netWorth)}."
         </p>
+
+        <NWCInputBreakdownTable />
       </section>
       <NWDescription />
     </main>

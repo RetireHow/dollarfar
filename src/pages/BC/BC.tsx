@@ -24,16 +24,85 @@ export default function BC() {
       totalAnnualIncomeAfterTax,
       totalMonthlyIncomeAfterTax,
       incomeTaxRate,
+
+      dynamicGovtBenefits,
+      dynamicMoreIncomes,
+      dynamicNetIncomes,
+      dynamicOtherIncomes,
+      dynamicSalaries,
+      govtBenefits,
+      netIncome,
+      otherIncome,
+      salary,
     },
-    housing: { totalAnnualHousingExpenses, totalMonthlyHousingExpenses },
-    transport: { totalAnnualTransportExpenses, totalMonthlyTransportExpenses },
+    housing: {
+      totalAnnualHousingExpenses,
+      totalMonthlyHousingExpenses,
+
+      dynamicMaintenances,
+      dynamicMoreHousingExpenses,
+      dynamicTelecomServices,
+      dynamicUtilities,
+      homeInsurance,
+      maintenance,
+      mortgage1,
+      mortgage2,
+      mortgage3,
+      rent,
+      telecomService,
+      utilities,
+    },
+    transport: {
+      totalAnnualTransportExpenses,
+      totalMonthlyTransportExpenses,
+
+      carInsurance,
+      carPayment,
+      carRepairs,
+      dynamicGasFuelEtrToll,
+      dynamicMoreTransportExpenses,
+      gasFuelEtrToll,
+    },
     education: {
       totalAnnualEducationalExpenses,
       totalMonthlyEducationalExpenses,
+
+      dynamicMoreEducatoinExpenses,
+      dynamicSchoolCollegeFees,
+      schoolCollegeFee,
     },
-    other: { totalAnnualOtherExpenses, totalMonthlyOtherExpenses },
-    loans: { totalAnnualLoansExpenses, totalMonthlyLoansExpenses },
-    savings: { totalAnnualSavingsExpenses, totalMonthlySavingsExpenses },
+    other: {
+      totalAnnualOtherExpenses,
+      totalMonthlyOtherExpenses,
+
+      clothing,
+      dynamicEntertainmentEvents,
+      dynamicMoreOtherExpenses,
+      eatingOut,
+      entertainmentEvents,
+      househole,
+      medical,
+    },
+    loans: {
+      totalAnnualLoansExpenses,
+      totalMonthlyLoansExpenses,
+
+      dynamicMoreLoansExpenses,
+      homeLoan,
+      personalLoan,
+      studentLoan,
+    },
+    savings: {
+      totalAnnualSavingsExpenses,
+      totalMonthlySavingsExpenses,
+
+      dynamicInvestments,
+      dynamicMoreInvestments,
+      emergency,
+      investments,
+      retirement,
+      vacationFund,
+    },
     totalAnnualExpenses,
     totalMonthlyExpenses,
     totalAnnualCashFlow,
@@ -41,12 +110,8 @@ export default function BC() {
     totalAnnualCashFlowAfterTax,
     totalMonthlyCashFlowAfterTax,
   } = useAppSelector((state) => state.budgetCalculator);
-  const { currency, currencyFullName } = useAppSelector(
-    (state) => state.globalCurrency
-  );
+  
   const calculatorData = {
-    currency,
-    currencyFullName,
     totalAnnualIncome,
     totalMonthlyIncome,
     totalAnnualIncomeAfterTax,
@@ -70,6 +135,61 @@ export default function BC() {
     totalMonthlyLoansExpenses,
     totalAnnualSavingsExpenses,
     totalMonthlySavingsExpenses,
+
+    // Breakdown data
+    dynamicGovtBenefits,
+    dynamicMoreIncomes,
+    dynamicNetIncomes,
+    dynamicOtherIncomes,
+    dynamicSalaries,
+    govtBenefits,
+    netIncome,
+    otherIncome,
+    salary,
+
+    dynamicMaintenances,
+    dynamicMoreHousingExpenses,
+    dynamicTelecomServices,
+    dynamicUtilities,
+    homeInsurance,
+    maintenance,
+    mortgage1,
+    mortgage2,
+    mortgage3,
+    rent,
+    telecomService,
+    utilities,
+
+    carInsurance,
+    carPayment,
+    carRepairs,
+    dynamicGasFuelEtrToll,
+    dynamicMoreTransportExpenses,
+    gasFuelEtrToll,
+
+    dynamicMoreEducatoinExpenses,
+    dynamicSchoolCollegeFees,
+    schoolCollegeFee,
+
+    clothing,
+    dynamicEntertainmentEvents,
+    dynamicMoreOtherExpenses,
+    eatingOut,
+    entertainmentEvents,
+    househole,
+    medical,
+
+    dynamicMoreLoansExpenses,
+    homeLoan,
+    personalLoan,
+    studentLoan,
+
+    dynamicInvestments,
+    dynamicMoreInvestments,
+    emergency,
+    investments,
+    retirement,
+    vacationFund,
   };
 
   return (

@@ -25,9 +25,6 @@ export default function RRIF() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  const { currency, currencyFullName } = useAppSelector(
-    (state) => state.globalCurrency
-  );
   const {
     RRIFInitalBalance,
     currentAge,
@@ -63,8 +60,7 @@ export default function RRIF() {
     withdrawType,
     totalWithdrawnOverLifeTime: totalWithdrawnAmount,
     remainingRRRIFBalanceEndOfPeriod: remainingBalanceInRRIF,
-    currency,
-    currencyFullName,
+    ageBreakdownDataOverLifeTimeManually
   };
 
   return (

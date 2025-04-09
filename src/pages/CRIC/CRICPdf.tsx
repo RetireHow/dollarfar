@@ -72,8 +72,6 @@ type TData = {
   name?: string;
   email?: string;
   base64: string;
-  currency: string;
-  currencyFullName: string;
 };
 
 // Define a new PDF document component
@@ -81,7 +79,6 @@ export const CRICPdf = ({ data }: { data: TData }) => {
   const {
     name,
     email,
-    currencyFullName,
     generalInfo,
     pensionPlan,
     employerPension,
@@ -136,7 +133,6 @@ export const CRICPdf = ({ data }: { data: TData }) => {
           <View style={styles.section}>
             <Text>Comprehensive Retirement Income Calculator</Text>
             <Text style={styles.title}>
-              -{currencyFullName}
             </Text>
           </View>
 
@@ -1048,7 +1044,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
               >
                 
               </Text>
-              <Text>{currencyFullName}</Text>
+              <Text></Text>
             </View>
           </View>
         </View>

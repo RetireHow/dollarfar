@@ -58,24 +58,6 @@ export default function BgtLoanForm() {
           <div className="flex md:flex-row flex-col md:items-center gap-3">
             <DFInputWithWatch
               type="number"
-              name="homeLoan"
-              subField="homeLoanAmount"
-              label="Cottage Loan"
-              stepName="loans"
-              placeholder={` 0.00`}
-              tooltipTitle="Enter your cottage loan amount. Select the frequency that matches how often you make payments (e.g., monthly, annually, or bi-weekly)."
-            />
-            <DFSelectWithWatch
-              name="homeLoanFrequency"
-              field="homeLoan"
-              label="Frequency"
-              stepName="loans"
-            />
-          </div>
-
-          <div className="flex md:flex-row flex-col md:items-center gap-3">
-            <DFInputWithWatch
-              type="number"
               name="personalLoan"
               subField="personalLoanAmount"
               label="Personal Loan"

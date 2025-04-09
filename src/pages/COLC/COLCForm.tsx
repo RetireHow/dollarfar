@@ -266,7 +266,7 @@ export default function COLCForm() {
       <form className="grid lg:grid-cols-2 grid-cols-1 gap-6 mb-[3rem]">
         <div className="md:text-[1rem] text-[14px]">
           <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
-            <p>City your are moving from</p>
+            <p>City you are moving from</p>
             <CustomTooltip title="Select the city you’re currently living in to start the comparison." />
           </div>
           <div className="relative">
@@ -306,8 +306,8 @@ export default function COLCForm() {
 
         <div className="md:text-[1rem] text-[14px]">
           <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
-            <p>City your are moving to</p>
-            <CustomTooltip title="Select the city you’re moving to for a detailed cost of living comparison." />
+            <p>City you are moving to or curious to know about</p>
+            <CustomTooltip title="Select the city you’re moving to or curious to know about for a detailed cost of living comparison." />
           </div>
           <div className="relative">
             <Select

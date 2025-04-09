@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Page,
   Text,
@@ -7,6 +8,7 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import { assets } from "../../assets/assets";
+import { getArrayFromObject } from "./nwc.utils";
 
 // Define styles for the PDF
 const styles = StyleSheet.create({
@@ -51,6 +53,7 @@ type TAssets = {
   vehicles: number;
   otherAssets: number;
   totalAssets: number;
+  assetsBreakdown: any;
 };
 
 type TLiabilities = {
@@ -61,6 +64,7 @@ type TLiabilities = {
   creditCardDues: number;
   otherDebts: number;
   totalLiabilities: number;
+  liabilitiesBreakdown: any;
 };
 
 type TData = {
@@ -70,7 +74,6 @@ type TData = {
   email?: string;
   base64: string;
   currency: string;
-  currencyFullName: string;
 };
 
 // Define a new PDF document component
@@ -79,26 +82,28 @@ export const NWCPdf = ({ data }: { data: TData }) => {
     name,
     email,
     base64,
-    currencyFullName,
     assets: {
       property,
-      vehicles,
+      savingsInvestment,
       personalItems,
       businessOwnershipInterest,
+      vehicles,
       otherAssets,
-      savingsInvestment,
       totalAssets,
+      assetsBreakdown,
     },
     liabilities: {
-      creditCardDues,
       homeLoan,
-      otherDebts,
       personalOtherLoans,
-      taxLiability,
       vehicleLoans,
+      taxLiability,
+      creditCardDues,
+      otherDebts,
       totalLiabilities,
+      liabilitiesBreakdown,
     },
   } = data || {};
+  console.log(assetsBreakdown);
 
   return (
     <Document>
@@ -138,9 +143,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
           {/* Title  */}
           <View style={styles.section}>
             <Text>Net Worth Calculator</Text>
-            <Text style={styles.title}>
-               - {currencyFullName}
-            </Text>
+            <Text style={styles.title}></Text>
           </View>
 
           {/* Card Container  */}
@@ -174,10 +177,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Property</Text>
-                  <Text>
-                    
-                    {property}
-                  </Text>
+                  <Text>{property}</Text>
                 </View>
                 <View
                   style={{
@@ -188,10 +188,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   <Text style={{ color: "#696969" }}>
                     Savings & Investments
                   </Text>
-                  <Text>
-                    
-                    {savingsInvestment}
-                  </Text>
+                  <Text>{savingsInvestment}</Text>
                 </View>
                 <View
                   style={{
@@ -200,10 +197,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Personal Items</Text>
-                  <Text>
-                    
-                    {personalItems}
-                  </Text>
+                  <Text>{personalItems}</Text>
                 </View>
                 <View
                   style={{
@@ -212,10 +206,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Business Ownership</Text>
-                  <Text>
-                    
-                    {businessOwnershipInterest}
-                  </Text>
+                  <Text>{businessOwnershipInterest}</Text>
                 </View>
                 <View
                   style={{
@@ -224,10 +215,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Vehicles</Text>
-                  <Text>
-                    
-                    {vehicles}
-                  </Text>
+                  <Text>{vehicles}</Text>
                 </View>
                 <View
                   style={{
@@ -236,10 +224,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Other Assets</Text>
-                  <Text>
-                    
-                    {otherAssets}
-                  </Text>
+                  <Text>{otherAssets}</Text>
                 </View>
               </View>
             </View>
@@ -273,10 +258,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Home Loan</Text>
-                  <Text>
-                    
-                    {homeLoan}
-                  </Text>
+                  <Text>{homeLoan}</Text>
                 </View>
                 <View
                   style={{
@@ -287,10 +269,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   <Text style={{ color: "#696969" }}>
                     Personal & Other Loans
                   </Text>
-                  <Text>
-                    
-                    {personalOtherLoans}
-                  </Text>
+                  <Text>{personalOtherLoans}</Text>
                 </View>
                 <View
                   style={{
@@ -299,10 +278,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Vehicle Loans</Text>
-                  <Text>
-                    
-                    {vehicleLoans}
-                  </Text>
+                  <Text>{vehicleLoans}</Text>
                 </View>
                 <View
                   style={{
@@ -311,10 +287,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Tax liability</Text>
-                  <Text>
-                    
-                    {taxLiability}
-                  </Text>
+                  <Text>{taxLiability}</Text>
                 </View>
                 <View
                   style={{
@@ -323,10 +296,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Credit Card Dues</Text>
-                  <Text>
-                    
-                    {creditCardDues}
-                  </Text>
+                  <Text>{creditCardDues}</Text>
                 </View>
                 <View
                   style={{
@@ -335,10 +305,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                   }}
                 >
                   <Text style={{ color: "#696969" }}>Other Debts</Text>
-                  <Text>
-                    
-                    {otherDebts}
-                  </Text>
+                  <Text>{otherDebts}</Text>
                 </View>
               </View>
             </View>
@@ -368,10 +335,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
               }}
             >
               <Text style={{ color: "#696969" }}>Assets</Text>
-              <Text>
-                
-                {totalAssets}
-              </Text>
+              <Text>{totalAssets}</Text>
             </View>
             <View
               style={{
@@ -380,10 +344,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
               }}
             >
               <Text style={{ color: "#696969" }}>Liabilities</Text>
-              <Text>
-                
-                {totalLiabilities}
-              </Text>
+              <Text>{totalLiabilities}</Text>
             </View>
 
             <View
@@ -397,10 +358,7 @@ export const NWCPdf = ({ data }: { data: TData }) => {
               }}
             >
               <Text>Net Worth</Text>
-              <Text>
-                
-                {totalAssets - totalLiabilities}
-              </Text>
+              <Text>{totalAssets - totalLiabilities}</Text>
             </View>
           </View>
 
@@ -466,10 +424,8 @@ export const NWCPdf = ({ data }: { data: TData }) => {
                     color: "#000",
                     width: 20,
                   }}
-                >
-                  
-                </Text>
-                <Text>{currencyFullName}</Text>
+                ></Text>
+                <Text></Text>
               </View>
             </View>
           </View>
@@ -481,16 +437,974 @@ export const NWCPdf = ({ data }: { data: TData }) => {
               lineHeight: "20px",
             }}
           >
-            "Based on the information provided, your total assets are 
-            {totalAssets}, and your total liabilities are 
-            {totalLiabilities}. This gives you a net worth of 
-            {totalAssets - totalLiabilities}."
+            "Based on the information provided, your total assets are{" "}
+            {totalAssets}, and your total liabilities are {totalLiabilities}.
+            This gives you a net worth of {totalAssets - totalLiabilities}."
           </Text>
         </View>
 
         {/* Watermark */}
         <Text style={styles.watermark}>Dollarfar.com</Text>
+      </Page>
 
+      {/* page 2  */}
+      <Page style={{ position: "relative" }}>
+        <Text
+          style={{
+            fontSize: "14px",
+            fontWeight: "bold",
+            marginLeft: "15px",
+            marginRight: "15px",
+            marginTop: "15px",
+          }}
+        >
+          Assets And Liabilities Breakdown Data
+        </Text>
+        {/* ======================|| Assets Tables ||================================== */}
+        <View
+          style={{
+            margin: 15,
+            padding: 10,
+            borderColor: "#D3D3D3",
+            borderWidth: "1px",
+            borderStyle: "solid",
+            borderRadius: "5px",
+          }}
+        >
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: "14px",
+              marginBottom: "10px",
+            }}
+          >
+            Assets
+          </Text>
+
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "wrap",
+              columnGap: 5,
+              rowGap: 15,
+            }}
+          >
+            {/* Property  */}
+            <View>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "12px",
+                  marginBottom: "5px",
+                }}
+              >
+                Property
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "10px",
+                  backgroundColor: "black",
+                  color: "#fff",
+                  padding: 5,
+                  gap: 10,
+                }}
+              >
+                <Text style={{ width: "100px" }}>Name</Text>
+                <Text style={{ width: "50px" }}>Amount</Text>
+              </View>
+              {/* Table Body  */}
+              <View style={{ backgroundColor: "#F8F8F8" }}>
+                {getArrayFromObject(assetsBreakdown?.property)?.map(
+                  (item, index) => {
+                    return (
+                      <View
+                        key={index}
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          fontSize: "10px",
+                          color: "#000",
+                          padding: 5,
+                          borderBottomColor: "#e5e7eb",
+                          borderBottomWidth: "1px",
+                          borderBottomStyle: "solid",
+                          gap: 15,
+                        }}
+                      >
+                        <Text style={{ width: "100px" }}>{item?.title}</Text>
+                        <Text style={{ width: "50px" }}>{item?.value}</Text>
+                      </View>
+                    );
+                  }
+                )}
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "10px",
+                    color: "#000",
+                    padding: 5,
+                    borderBottomColor: "#e5e7eb",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                    gap: 15,
+                    backgroundColor: "#E0E0E0",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Text style={{ width: "100px" }}>Total</Text>
+                  <Text style={{ width: "50px" }}>{property}</Text>
+                </View>
+              </View>
+            </View>
+            {/* Savings and Investment  */}
+            <View>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "12px",
+                  marginBottom: "5px",
+                }}
+              >
+                Savings And Investments
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "10px",
+                  backgroundColor: "black",
+                  color: "#fff",
+                  padding: 5,
+                  gap: 10,
+                }}
+              >
+                <Text style={{ width: "100px" }}>Name</Text>
+                <Text style={{ width: "50px" }}>Amount</Text>
+              </View>
+              {/* Table Body  */}
+              <View style={{ backgroundColor: "#F8F8F8" }}>
+                {getArrayFromObject(assetsBreakdown?.savingsInvestment)?.map(
+                  (item, index) => {
+                    return (
+                      <View
+                        key={index}
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          fontSize: "10px",
+                          color: "#000",
+                          padding: 5,
+                          borderBottomColor: "#e5e7eb",
+                          borderBottomWidth: "1px",
+                          borderBottomStyle: "solid",
+                          gap: 15,
+                        }}
+                      >
+                        <Text style={{ width: "100px" }}>{item?.title}</Text>
+                        <Text style={{ width: "50px" }}>{item?.value}</Text>
+                      </View>
+                    );
+                  }
+                )}
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "10px",
+                    color: "#000",
+                    padding: 5,
+                    borderBottomColor: "#e5e7eb",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                    gap: 15,
+                    backgroundColor: "#E0E0E0",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Text style={{ width: "100px" }}>Total</Text>
+                  <Text style={{ width: "50px" }}>{savingsInvestment}</Text>
+                </View>
+              </View>
+            </View>
+            {/* Personal Items  */}
+            <View>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "12px",
+                  marginBottom: "5px",
+                }}
+              >
+                Personal Items
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "10px",
+                  backgroundColor: "black",
+                  color: "#fff",
+                  padding: 5,
+                  gap: 10,
+                }}
+              >
+                <Text style={{ width: "100px" }}>Name</Text>
+                <Text style={{ width: "50px" }}>Amount</Text>
+              </View>
+              {/* Table Body  */}
+              <View style={{ backgroundColor: "#F8F8F8" }}>
+                {getArrayFromObject(assetsBreakdown?.personalItems)?.map(
+                  (item, index) => {
+                    return (
+                      <View
+                        key={index}
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          fontSize: "10px",
+                          color: "#000",
+                          padding: 5,
+                          borderBottomColor: "#e5e7eb",
+                          borderBottomWidth: "1px",
+                          borderBottomStyle: "solid",
+                          gap: 15,
+                        }}
+                      >
+                        <Text style={{ width: "100px" }}>{item?.title}</Text>
+                        <Text style={{ width: "50px" }}>{item?.value}</Text>
+                      </View>
+                    );
+                  }
+                )}
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "10px",
+                    color: "#000",
+                    padding: 5,
+                    borderBottomColor: "#e5e7eb",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                    gap: 15,
+                    backgroundColor: "#E0E0E0",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Text style={{ width: "100px" }}>Total</Text>
+                  <Text style={{ width: "50px" }}>{personalItems}</Text>
+                </View>
+              </View>
+            </View>
+            {/* Business Interest  */}
+            <View>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "12px",
+                  marginBottom: "5px",
+                }}
+              >
+                Business Interest
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "10px",
+                  backgroundColor: "black",
+                  color: "#fff",
+                  padding: 5,
+                  gap: 10,
+                }}
+              >
+                <Text style={{ width: "100px" }}>Name</Text>
+                <Text style={{ width: "50px" }}>Amount</Text>
+              </View>
+              {/* Table Body  */}
+              <View style={{ backgroundColor: "#F8F8F8" }}>
+                {getArrayFromObject(
+                  assetsBreakdown?.businessOwnershipInterest
+                )?.map((item, index) => {
+                  return (
+                    <View
+                      key={index}
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        fontSize: "10px",
+                        color: "#000",
+                        padding: 5,
+                        borderBottomColor: "#e5e7eb",
+                        borderBottomWidth: "1px",
+                        borderBottomStyle: "solid",
+                        gap: 15,
+                      }}
+                    >
+                      <Text style={{ width: "100px" }}>{item?.title}</Text>
+                      <Text style={{ width: "50px" }}>{item?.value}</Text>
+                    </View>
+                  );
+                })}
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "10px",
+                    color: "#000",
+                    padding: 5,
+                    borderBottomColor: "#e5e7eb",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                    gap: 15,
+                    backgroundColor: "#E0E0E0",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Text style={{ width: "100px" }}>Total</Text>
+                  <Text style={{ width: "50px" }}>
+                    {businessOwnershipInterest}
+                  </Text>
+                </View>
+              </View>
+            </View>
+            {/* Vehicles  */}
+            <View>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "12px",
+                  marginBottom: "5px",
+                }}
+              >
+                Vehicles
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "10px",
+                  backgroundColor: "black",
+                  color: "#fff",
+                  padding: 5,
+                  gap: 10,
+                }}
+              >
+                <Text style={{ width: "100px" }}>Name</Text>
+                <Text style={{ width: "50px" }}>Amount</Text>
+              </View>
+              {/* Table Body  */}
+              <View style={{ backgroundColor: "#F8F8F8" }}>
+                {getArrayFromObject(assetsBreakdown?.vehicles)?.map(
+                  (item, index) => {
+                    return (
+                      <View
+                        key={index}
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          fontSize: "10px",
+                          color: "#000",
+                          padding: 5,
+                          borderBottomColor: "#e5e7eb",
+                          borderBottomWidth: "1px",
+                          borderBottomStyle: "solid",
+                          gap: 15,
+                        }}
+                      >
+                        <Text style={{ width: "100px" }}>{item?.title}</Text>
+                        <Text style={{ width: "50px" }}>{item?.value}</Text>
+                      </View>
+                    );
+                  }
+                )}
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "10px",
+                    color: "#000",
+                    padding: 5,
+                    borderBottomColor: "#e5e7eb",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                    gap: 15,
+                    backgroundColor: "#E0E0E0",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Text style={{ width: "100px" }}>Total</Text>
+                  <Text style={{ width: "50px" }}>{vehicles}</Text>
+                </View>
+              </View>
+            </View>
+            {/* Other Assets  */}
+            <View>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "12px",
+                  marginBottom: "5px",
+                }}
+              >
+                Other Assets
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "10px",
+                  backgroundColor: "black",
+                  color: "#fff",
+                  padding: 5,
+                  gap: 10,
+                }}
+              >
+                <Text style={{ width: "100px" }}>Name</Text>
+                <Text style={{ width: "50px" }}>Amount</Text>
+              </View>
+              {/* Table Body  */}
+              <View style={{ backgroundColor: "#F8F8F8" }}>
+                {getArrayFromObject(assetsBreakdown?.otherAssets)?.map(
+                  (item, index) => {
+                    return (
+                      <View
+                        key={index}
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          fontSize: "10px",
+                          color: "#000",
+                          padding: 5,
+                          borderBottomColor: "#e5e7eb",
+                          borderBottomWidth: "1px",
+                          borderBottomStyle: "solid",
+                          gap: 15,
+                        }}
+                      >
+                        <Text style={{ width: "100px" }}>{item?.title}</Text>
+                        <Text style={{ width: "50px" }}>{item?.value}</Text>
+                      </View>
+                    );
+                  }
+                )}
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "10px",
+                    color: "#000",
+                    padding: 5,
+                    borderBottomColor: "#e5e7eb",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                    gap: 15,
+                    backgroundColor: "#E0E0E0",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Text style={{ width: "100px" }}>Total</Text>
+                  <Text style={{ width: "50px" }}>{otherAssets}</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* ======================|| Liabilities Tables ||================================== */}
+        <View
+          style={{
+            margin: 15,
+            padding: 10,
+            borderColor: "#D3D3D3",
+            borderWidth: "1px",
+            borderStyle: "solid",
+            borderRadius: "5px",
+          }}
+        >
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: "14px",
+              marginBottom: "10px",
+            }}
+          >
+            Liabilities
+          </Text>
+
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "wrap",
+              columnGap: 5,
+              rowGap: 15,
+            }}
+          >
+            {/* Home Loan  */}
+            <View>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "12px",
+                  marginBottom: "5px",
+                }}
+              >
+                Home Loan
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "10px",
+                  backgroundColor: "black",
+                  color: "#fff",
+                  padding: 5,
+                  gap: 10,
+                }}
+              >
+                <Text style={{ width: "100px" }}>Name</Text>
+                <Text style={{ width: "50px" }}>Amount</Text>
+              </View>
+              {/* Table Body  */}
+              <View style={{ backgroundColor: "#F8F8F8" }}>
+                {getArrayFromObject(liabilitiesBreakdown?.homeLoan)?.map(
+                  (item, index) => {
+                    return (
+                      <View
+                        key={index}
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          fontSize: "10px",
+                          color: "#000",
+                          padding: 5,
+                          borderBottomColor: "#e5e7eb",
+                          borderBottomWidth: "1px",
+                          borderBottomStyle: "solid",
+                          gap: 15,
+                        }}
+                      >
+                        <Text style={{ width: "100px" }}>{item?.title}</Text>
+                        <Text style={{ width: "50px" }}>{item?.value}</Text>
+                      </View>
+                    );
+                  }
+                )}
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "10px",
+                    color: "#000",
+                    padding: 5,
+                    borderBottomColor: "#e5e7eb",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                    gap: 15,
+                    backgroundColor: "#E0E0E0",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Text style={{ width: "100px" }}>Total</Text>
+                  <Text style={{ width: "50px" }}>{homeLoan}</Text>
+                </View>
+              </View>
+            </View>
+            {/* Personal And Other Loans  */}
+            <View>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "12px",
+                  marginBottom: "5px",
+                }}
+              >
+                Personal And Other Loans
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "10px",
+                  backgroundColor: "black",
+                  color: "#fff",
+                  padding: 5,
+                  gap: 10,
+                }}
+              >
+                <Text style={{ width: "100px" }}>Name</Text>
+                <Text style={{ width: "50px" }}>Amount</Text>
+              </View>
+              {/* Table Body  */}
+              <View style={{ backgroundColor: "#F8F8F8" }}>
+                {getArrayFromObject(
+                  liabilitiesBreakdown?.personalOtherLoans
+                )?.map((item, index) => {
+                  return (
+                    <View
+                      key={index}
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        fontSize: "10px",
+                        color: "#000",
+                        padding: 5,
+                        borderBottomColor: "#e5e7eb",
+                        borderBottomWidth: "1px",
+                        borderBottomStyle: "solid",
+                        gap: 15,
+                      }}
+                    >
+                      <Text style={{ width: "100px" }}>{item?.title}</Text>
+                      <Text style={{ width: "50px" }}>{item?.value}</Text>
+                    </View>
+                  );
+                })}
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "10px",
+                    color: "#000",
+                    padding: 5,
+                    borderBottomColor: "#e5e7eb",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                    gap: 15,
+                    backgroundColor: "#E0E0E0",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Text style={{ width: "100px" }}>Total</Text>
+                  <Text style={{ width: "50px" }}>{personalOtherLoans}</Text>
+                </View>
+              </View>
+            </View>
+            {/* Vehicle Loans  */}
+            <View>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "12px",
+                  marginBottom: "5px",
+                }}
+              >
+                Vehicle Loans
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "10px",
+                  backgroundColor: "black",
+                  color: "#fff",
+                  padding: 5,
+                  gap: 10,
+                }}
+              >
+                <Text style={{ width: "100px" }}>Name</Text>
+                <Text style={{ width: "50px" }}>Amount</Text>
+              </View>
+              {/* Table Body  */}
+              <View style={{ backgroundColor: "#F8F8F8" }}>
+                {getArrayFromObject(liabilitiesBreakdown?.vehicleLoans)?.map(
+                  (item, index) => {
+                    return (
+                      <View
+                        key={index}
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          fontSize: "10px",
+                          color: "#000",
+                          padding: 5,
+                          borderBottomColor: "#e5e7eb",
+                          borderBottomWidth: "1px",
+                          borderBottomStyle: "solid",
+                          gap: 15,
+                        }}
+                      >
+                        <Text style={{ width: "100px" }}>{item?.title}</Text>
+                        <Text style={{ width: "50px" }}>{item?.value}</Text>
+                      </View>
+                    );
+                  }
+                )}
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "10px",
+                    color: "#000",
+                    padding: 5,
+                    borderBottomColor: "#e5e7eb",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                    gap: 15,
+                    backgroundColor: "#E0E0E0",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Text style={{ width: "100px" }}>Total</Text>
+                  <Text style={{ width: "50px" }}>{vehicleLoans}</Text>
+                </View>
+              </View>
+            </View>
+            {/* Tax Liability  */}
+            <View>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "12px",
+                  marginBottom: "5px",
+                }}
+              >
+                Tax Liability
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "10px",
+                  backgroundColor: "black",
+                  color: "#fff",
+                  padding: 5,
+                  gap: 10,
+                }}
+              >
+                <Text style={{ width: "100px" }}>Name</Text>
+                <Text style={{ width: "50px" }}>Amount</Text>
+              </View>
+              {/* Table Body  */}
+              <View style={{ backgroundColor: "#F8F8F8" }}>
+                {getArrayFromObject(liabilitiesBreakdown?.taxLiability)?.map(
+                  (item, index) => {
+                    return (
+                      <View
+                        key={index}
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          fontSize: "10px",
+                          color: "#000",
+                          padding: 5,
+                          borderBottomColor: "#e5e7eb",
+                          borderBottomWidth: "1px",
+                          borderBottomStyle: "solid",
+                          gap: 15,
+                        }}
+                      >
+                        <Text style={{ width: "100px" }}>{item?.title}</Text>
+                        <Text style={{ width: "50px" }}>{item?.value}</Text>
+                      </View>
+                    );
+                  }
+                )}
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "10px",
+                    color: "#000",
+                    padding: 5,
+                    borderBottomColor: "#e5e7eb",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                    gap: 15,
+                    backgroundColor: "#E0E0E0",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Text style={{ width: "100px" }}>Total</Text>
+                  <Text style={{ width: "50px" }}>{taxLiability}</Text>
+                </View>
+              </View>
+            </View>
+            {/* Credit Card Dues  */}
+            <View>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "12px",
+                  marginBottom: "5px",
+                }}
+              >
+                Credit Card Dues
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "10px",
+                  backgroundColor: "black",
+                  color: "#fff",
+                  padding: 5,
+                  gap: 10,
+                }}
+              >
+                <Text style={{ width: "100px" }}>Name</Text>
+                <Text style={{ width: "50px" }}>Amount</Text>
+              </View>
+              {/* Table Body  */}
+              <View style={{ backgroundColor: "#F8F8F8" }}>
+                {getArrayFromObject(liabilitiesBreakdown?.creditCardDues)?.map(
+                  (item, index) => {
+                    return (
+                      <View
+                        key={index}
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          fontSize: "10px",
+                          color: "#000",
+                          padding: 5,
+                          borderBottomColor: "#e5e7eb",
+                          borderBottomWidth: "1px",
+                          borderBottomStyle: "solid",
+                          gap: 15,
+                        }}
+                      >
+                        <Text style={{ width: "100px" }}>{item?.title}</Text>
+                        <Text style={{ width: "50px" }}>{item?.value}</Text>
+                      </View>
+                    );
+                  }
+                )}
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "10px",
+                    color: "#000",
+                    padding: 5,
+                    borderBottomColor: "#e5e7eb",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                    gap: 15,
+                    backgroundColor: "#E0E0E0",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Text style={{ width: "100px" }}>Total</Text>
+                  <Text style={{ width: "50px" }}>{creditCardDues}</Text>
+                </View>
+              </View>
+            </View>
+            {/* Other Debts  */}
+            <View>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "12px",
+                  marginBottom: "5px",
+                }}
+              >
+                Other Debts
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  fontSize: "10px",
+                  backgroundColor: "black",
+                  color: "#fff",
+                  padding: 5,
+                  gap: 10,
+                }}
+              >
+                <Text style={{ width: "100px" }}>Name</Text>
+                <Text style={{ width: "50px" }}>Amount</Text>
+              </View>
+              {/* Table Body  */}
+              <View style={{ backgroundColor: "#F8F8F8" }}>
+                {getArrayFromObject(liabilitiesBreakdown?.otherDebts)?.map(
+                  (item, index) => {
+                    return (
+                      <View
+                        key={index}
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          fontSize: "10px",
+                          color: "#000",
+                          padding: 5,
+                          borderBottomColor: "#e5e7eb",
+                          borderBottomWidth: "1px",
+                          borderBottomStyle: "solid",
+                          gap: 15,
+                        }}
+                      >
+                        <Text style={{ width: "100px" }}>{item?.title}</Text>
+                        <Text style={{ width: "50px" }}>{item?.value}</Text>
+                      </View>
+                    );
+                  }
+                )}
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "10px",
+                    color: "#000",
+                    padding: 5,
+                    borderBottomColor: "#e5e7eb",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                    gap: 15,
+                    backgroundColor: "#E0E0E0",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Text style={{ width: "100px" }}>Total</Text>
+                  <Text style={{ width: "50px" }}>{otherDebts}</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Footer  */}
         <View
           style={{
             flexDirection: "row",

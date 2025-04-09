@@ -215,7 +215,7 @@ export default function OtherIncome() {
                 <p>
                   What type of income is it?
                   <CRICRedStar />
-                  <CRICTooltip title="Select the type of income: Employment, Business, Rental Property, Annuity, Pension (from other countries)." />
+                  <CRICTooltip title="Please input your aggregate income during retirement from the following sources : Employment/Business, Rental property net income, Annuity, Pension from other countries" />
                 </p>
               </div>
               <Select

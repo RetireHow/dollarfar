@@ -54,8 +54,6 @@ type TYearByYearBreakdown = {
 };
 
 type TData = {
-  currency: string;
-  currencyFullName: string;
   name: string;
   email: string;
   base64: string;
@@ -241,7 +239,7 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
                   padding: 8,
                 }}
               >
-                <Text>Total Amount</Text>
+                <Text>Total Savings</Text>
                 <Text>{numberWithCommas(Number(totalFutureValue))}</Text>
               </View>
             </View>
@@ -372,7 +370,7 @@ export const CIRCPdf = ({ data }: { data: TData }) => {
                 Total Interest
               </Text>
               <Text style={{ width: "170px", textAlign: "center" }}>
-                Total Principal
+                Total Savings
               </Text>
             </View>
             {/* Table Body  */}

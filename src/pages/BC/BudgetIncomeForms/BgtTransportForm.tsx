@@ -11,6 +11,7 @@ import BudgetDynamicFieldWithFrequency from "../BudgetDynamicFieldWithFrequency"
 import DFForm from "../../../components/Form/DFForm";
 import { calculateTotalTransportExpenses } from "../../../redux/features/BgtSlice/BgtSlice";
 
+
 export default function BgtTransportForm() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();

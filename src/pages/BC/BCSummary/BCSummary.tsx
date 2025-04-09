@@ -53,8 +53,8 @@ export default function BCSummary() {
           Category-Wise Expenses
         </h3>
         <div className="space-y-[4rem]">
-        <BudgetPieChart />
-        <CategoryWiseExpensesTable />
+          <BudgetPieChart />
+          <CategoryWiseExpensesTable />
         </div>
       </div>
 

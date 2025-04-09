@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAppSelector } from "../../redux/hooks";
+import { isNegative } from "../../utils/isNegative";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function RRIFCard() {
@@ -76,7 +77,7 @@ export default function RRIFCard() {
           </p>
         </div>
 
-        <div className="flex md:gap-0 gap-8 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4 font-medium">
+        <div className={`flex md:gap-0 gap-8 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4 font-medium ${isNegative(remainingBalanceInRRIF) ? 'text-red-500' : 'text-black'}`}>
           <p>Remaining RRIF Balance (End of Withdrawal Period)</p>
           <p>
             

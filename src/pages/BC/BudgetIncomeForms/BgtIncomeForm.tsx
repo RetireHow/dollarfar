@@ -8,6 +8,7 @@ import DFSelectWithWatch from "../../../components/Form/DFSelectWithWatch";
 import BudgetDynamicFieldWithFrequency from "../BudgetDynamicFieldWithFrequency";
 import { calculateTotalIncome } from "../../../redux/features/BgtSlice/BgtSlice";
 
+
 export default function BgtIncomeForm() {
   const navigate = useNavigate();
   const { activeStep } = useAppSelector((state) => state.stepper);

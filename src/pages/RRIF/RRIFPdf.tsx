@@ -45,6 +45,15 @@ const styles = StyleSheet.create({
   },
 });
 
+type TAgePeriod = {
+  balanceAtBeginningOfTheYear: number;
+  balanceAtEndOfTheYear: number;
+  annualWithdrawalAmount?: number;
+  age: number;
+  minWithdrawalPercentage?: number;
+  mannualWithdrawalPercentage?: string;
+};
+
 type TData = {
   RRIFInitalBalance: number;
   currentAge: number;
@@ -55,9 +64,8 @@ type TData = {
   withdrawalEndYear: number;
   totalWithdrawnOverLifeTime: number;
   remainingRRRIFBalanceEndOfPeriod: number;
+  ageBreakdownDataOverLifeTimeManually: TAgePeriod[];
   withdrawType: string;
-  currency: string;
-  currencyFullName: string;
   name: string;
   email: string;
   base64: string;
@@ -78,7 +86,15 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
     remainingRRRIFBalanceEndOfPeriod,
     totalWithdrawnOverLifeTime,
     withdrawType,
+    ageBreakdownDataOverLifeTimeManually,
   } = data || {};
+
+  const remainingBalanceInRRIF =
+    ageBreakdownDataOverLifeTimeManually[
+      ageBreakdownDataOverLifeTimeManually.length - 1
+    ]?.balanceAtEndOfTheYear || 0;
+
+  const years = withdrawalEndYear - withdrawalStartYear;
 
   return (
     <Document>
@@ -118,7 +134,7 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
           {/* Title  */}
           <View style={styles.section}>
             <Text>Registered Retirement Income Fund (RRIF) Calculator</Text>
-            <Text style={styles.title}>$ - CAD</Text>
+            <Text style={styles.title}></Text>
           </View>
 
           {/* Card Container  */}
@@ -142,10 +158,7 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
                 }}
               >
                 <Text style={{ color: "#696969" }}>Initial RRIF Balance</Text>
-                <Text>
-                  
-                  {numberWithCommas(RRIFInitalBalance)}
-                </Text>
+                <Text>{numberWithCommas(RRIFInitalBalance)}</Text>
               </View>
               <View
                 style={{
@@ -169,10 +182,7 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
                   <Text style={{ color: "#696969" }}>
                     Annual Withdrawal Amount
                   </Text>
-                  <Text>
-                    
-                    {numberWithCommas(annualWithdrawalAmount)}
-                  </Text>
+                  <Text>{numberWithCommas(annualWithdrawalAmount)}</Text>
                 </View>
               )}
 
@@ -187,7 +197,6 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
                     Monthly Withdrawal Amount
                   </Text>
                   <Text>
-                    
                     {numberWithCommas(Math.round(annualWithdrawalAmount / 12))}
                   </Text>
                 </View>
@@ -250,10 +259,7 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
                   Total Withdrawn Over Lifetime (Age {withdrawalStartYear} to{" "}
                   {withdrawalEndYear})
                 </Text>
-                <Text>
-                  
-                  {numberWithCommas(totalWithdrawnOverLifeTime)}
-                </Text>
+                <Text>{numberWithCommas(totalWithdrawnOverLifeTime)}</Text>
               </View>
               <View
                 style={{
@@ -267,7 +273,6 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
                   Remaining RRIF Balance (End of Withdrawal Period)
                 </Text>
                 <Text>
-                  
                   {numberWithCommas(
                     Math.round(remainingRRRIFBalanceEndOfPeriod)
                   )}
@@ -284,7 +289,113 @@ export const RRIFPdf = ({ data }: { data: TData }) => {
 
         {/* Watermark */}
         <Text style={styles.watermark}>Dollarfar.com</Text>
+      </Page>
 
+      {/* page 2  */}
+      <Page style={{ position: "relative" }}>
+        {/* ======================|| RRIF Table ||================================== */}
+        <View style={{ padding: 15 }}>
+          <Text style={{ fontSize: "14px", marginBottom: 10 }}>
+            Age Breakdown Data
+          </Text>
+          {/* Table Heading  */}
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              fontSize: "10px",
+              backgroundColor: "black",
+              color: "#fff",
+              padding: 10,
+              gap: 10,
+            }}
+          >
+            <Text style={{ width: "170px", textAlign: "center" }}>Age</Text>
+            <Text style={{ width: "170px", textAlign: "center" }}>
+              Balance at Beginning of the Year
+            </Text>
+            <Text style={{ width: "170px", textAlign: "center" }}>
+              Min Annual Withdrawal Amount
+            </Text>
+            <Text style={{ width: "170px", textAlign: "center" }}>
+              Monthly Withdrawal Amount
+            </Text>
+            <Text style={{ width: "170px", textAlign: "center" }}>
+              Min Withdrawal Percentage
+            </Text>
+            <Text style={{ width: "170px", textAlign: "center" }}>
+              Rate of Interest
+            </Text>
+            <Text style={{ width: "170px", textAlign: "center" }}>
+              Balance at End of the Year
+            </Text>
+          </View>
+          {/* Table Body  */}
+          <View style={{ backgroundColor: "#F8F8F8" }}>
+            {ageBreakdownDataOverLifeTimeManually?.map((item: TAgePeriod) => {
+              const {
+                age,
+                balanceAtBeginningOfTheYear,
+                annualWithdrawalAmount,
+                balanceAtEndOfTheYear,
+                mannualWithdrawalPercentage,
+                minWithdrawalPercentage,
+              } = item || {};
+              return (
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    fontSize: "10px",
+                    color: "#000",
+                    padding: 10,
+                    borderBottomColor: "#e5e7eb",
+                    borderBottomWidth: "1px",
+                    borderBottomStyle: "solid",
+                  }}
+                >
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    {age}
+                  </Text>
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    {balanceAtBeginningOfTheYear}
+                  </Text>
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    {annualWithdrawalAmount}
+                  </Text>
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    {(Number(item.annualWithdrawalAmount) / 12).toFixed(2)}
+                  </Text>
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    {minWithdrawalPercentage || mannualWithdrawalPercentage}%
+                  </Text>
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    {rateOfReturn}%
+                  </Text>
+                  <Text style={{ width: "170px", textAlign: "center" }}>
+                    {balanceAtEndOfTheYear}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+        </View>
+        <View style={{ fontSize: "12px", paddingLeft: 15, paddingRight: 15 }}>
+          <Text>
+            After {years} years, the RRIF balance will reduce gradually,
+            providing steady withdrawals and accounting for the return rate. At
+            the end of {years} years, the remaining balance may be{" "}
+            {remainingBalanceInRRIF}, depending on actual return rates and
+            withdrawals.
+          </Text>
+        </View>
+
+        {/* Watermark */}
+        <Text style={styles.watermark}>Dollarfar.com</Text>
+
+        {/* Footer  */}
         <View
           style={{
             flexDirection: "row",

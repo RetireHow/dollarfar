@@ -11,6 +11,7 @@ import DFSelectWithWatch from "../../../components/Form/DFSelectWithWatch";
 import BudgetDynamicFieldWithFrequency from "../BudgetDynamicFieldWithFrequency";
 import { calculateTotalHousingExpenses } from "../../../redux/features/BgtSlice/BgtSlice";
 
+
 export default function BgtHousingForm() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -31,7 +32,9 @@ export default function BgtHousingForm() {
 
   const {
     housing: {
-      mortgage: { mortgageFrequency, mortgageAmount },
+      mortgage1: { mortgageFrequency1, mortgageAmount1 },
+      mortgage2: { mortgageFrequency2, mortgageAmount2 },
+      mortgage3: { mortgageFrequency3, mortgageAmount3 },
       rent: { rentFrequency, rentAmount },
       homeInsurance: { homeInsuranceFrequency, homeInsuranceAmount },
       telecomService: { telecomServiceFrequency, telecomServiceAmount },
@@ -51,8 +54,12 @@ export default function BgtHousingForm() {
       </h3>
       <DFForm
         defaultValues={{
-          mortgage: mortgageAmount,
-          mortgageFrequency,
+          mortgage1: mortgageAmount1,
+          mortgageFrequency1,
+          mortgage2: mortgageAmount2,
+          mortgageFrequency2,
+          mortgage3: mortgageAmount3,
+          mortgageFrequency3,
 
           rent: rentAmount,
           rentFrequency,
@@ -74,20 +81,55 @@ export default function BgtHousingForm() {
           <div className="flex md:flex-row flex-col md:items-center gap-3">
             <DFInputWithWatch
               type="number"
-              name="mortgage"
-              subField="mortgageAmount"
-              label="Mortgage"
+              name="mortgage1"
+              subField="mortgageAmount1"
+              label="Mortgage1"
               stepName="housing"
               placeholder={` 0.00`}
               tooltipTitle="Monthly payment towards your home loan principal and interest."
             />
             <DFSelectWithWatch
-              name="mortgageFrequency"
-              field="mortgage"
+              name="mortgageFrequency1"
+              field="mortgage1"
               label="Frequency"
               stepName="housing"
             />
           </div>
+          <div className="flex md:flex-row flex-col md:items-center gap-3">
+            <DFInputWithWatch
+              type="number"
+              name="mortgage2"
+              subField="mortgageAmount2"
+              label="Mortgage2"
+              stepName="housing"
+              placeholder={` 0.00`}
+              tooltipTitle="Monthly payment towards your home loan principal and interest."
+            />
+            <DFSelectWithWatch
+              name="mortgageFrequency2"
+              field="mortgage2"
+              label="Frequency"
+              stepName="housing"
+            />
+          </div>
+          <div className="flex md:flex-row flex-col md:items-center gap-3">
+            <DFInputWithWatch
+              type="number"
+              name="mortgage3"
+              subField="mortgageAmount3"
+              label="Mortgage3"
+              stepName="housing"
+              placeholder={` 0.00`}
+              tooltipTitle="Monthly payment towards your home loan principal and interest."
+            />
+            <DFSelectWithWatch
+              name="mortgageFrequency3"
+              field="mortgage3"
+              label="Frequency"
+              stepName="housing"
+            />
+          </div>
+
           <div className="flex md:flex-row flex-col md:items-center gap-3">
             <DFInputWithWatch
               type="number"

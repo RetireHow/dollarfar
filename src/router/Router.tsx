@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Landing from "../pages/Landing/Landing";
 import MainLayout from "../layouts/MainLayout";
-// import Research from "../pages/Research";
+import Research from "../pages/Research";
 import BgtIncomeForm from "../pages/BC/BudgetIncomeForms/BgtIncomeForm";
 import BgtHousingForm from "../pages/BC/BudgetIncomeForms/BgtHousingForm";
 import BgtTransportForm from "../pages/BC/BudgetIncomeForms/BgtTransportForm";
@@ -221,10 +221,10 @@ export const router = createBrowserRouter([
         ],
       },
 
-      // {
-      //   path: "research",
-      //   element: <Research />,
-      // },
+      {
+        path: "research",
+        element: <Research />,
+      },
     ],
   },
 ]);

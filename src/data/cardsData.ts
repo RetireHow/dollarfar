@@ -48,7 +48,7 @@ export const cardsData = [
     id: 8,
     title: "Registered Retirement Savings Plan (RRSP) Calculator",
     description:
-      "This calculator is a financial tool that helps users estimate how much money they can accumulate in their RRSP account over time and how much tax they can save.....",
+      "This calculator is a financial tool that helps users estimate how much money they can accumulate in their RRSP account over time.",
     arrowIcon: assets.arrowUpIcon,
     calcIcon: assets.registeredRetirementSavings,
     btnText: "Calculate",

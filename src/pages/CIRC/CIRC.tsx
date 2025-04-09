@@ -50,12 +50,7 @@ export default function CIRC() {
     initialInvestment,
     years,
   } = useAppSelector((state) => state.compoundInterest);
-  const { currency, currencyFullName } = useAppSelector(
-    (state) => state.globalCurrency
-  );
   const calculatorData = {
-    currency,
-    currencyFullName,
     totalFutureValue,
     totalContribution,
     totalInterestEarned,

@@ -52,13 +52,11 @@ interface TRRSPPdfData {
   name?: string;
   email?: string;
   base64: string;
-  currency: string;
-  currencyFullName: string;
 }
 
 // Define a new PDF document component
 export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
-  const { name, email, base64, input, result, currencyFullName } =
+  const { name, email, base64, input, result } =
     data || {};
   const {
     contributionAmount,
@@ -110,7 +108,6 @@ export const RRSPPdf = ({ data }: { data: TRRSPPdfData }) => {
           <View style={styles.section}>
             <Text>Registered Retirement Savings Plan (RRSP) Calculator</Text>
             <Text style={styles.title}>
-               - {currencyFullName}
             </Text>
           </View>
 

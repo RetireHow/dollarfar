@@ -57,11 +57,22 @@ type TIncome = {
 };
 
 // =======================|| Housing Types ||======================
-type TMortgage = {
-  mortgageAmount: string;
-  mortgageFrequency: string;
+type TMortgage1 = {
+  mortgageAmount1: string;
+  mortgageFrequency1: string;
   totalAnnualAmount: number;
 };
+type TMortgage2 = {
+  mortgageAmount2: string;
+  mortgageFrequency2: string;
+  totalAnnualAmount: number;
+};
+type TMortgage3 = {
+  mortgageAmount3: string;
+  mortgageFrequency3: string;
+  totalAnnualAmount: number;
+};
+
 type TRent = {
   rentAmount: string;
   rentFrequency: string;
@@ -89,7 +100,9 @@ type TMaintenance = {
 };
 
 type THousing = {
-  mortgage: TMortgage;
+  mortgage1: TMortgage1;
+  mortgage2: TMortgage2;
+  mortgage3: TMortgage3;
   rent: TRent;
   homeInsurance: THomeInsurance;
   utilities: TUtilities;
@@ -330,9 +343,19 @@ const initialState: TBudgetSlice = {
   },
 
   housing: {
-    mortgage: {
-      mortgageAmount: "",
-      mortgageFrequency: "12",
+    mortgage1: {
+      mortgageAmount1: "",
+      mortgageFrequency1: "12",
+      totalAnnualAmount: 0,
+    },
+    mortgage2: {
+      mortgageAmount2: "",
+      mortgageFrequency2: "12",
+      totalAnnualAmount: 0,
+    },
+    mortgage3: {
+      mortgageAmount3: "",
+      mortgageFrequency3: "12",
       totalAnnualAmount: 0,
     },
     rent: {
@@ -667,7 +690,9 @@ const budgetSlice = createSlice({
 
     calculateTotalHousingExpenses: (state) => {
       const staticFieldsTotalAnnualHousingExpenses =
-        state.housing.mortgage.totalAnnualAmount +
+        state.housing.mortgage1.totalAnnualAmount +
+        state.housing.mortgage2.totalAnnualAmount +
+        state.housing.mortgage3.totalAnnualAmount +
         state.housing.rent.totalAnnualAmount +
         state.housing.homeInsurance.totalAnnualAmount +
         state.housing.utilities.totalAnnualAmount +

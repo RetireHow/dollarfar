@@ -28,9 +28,6 @@ export default function CRIC() {
     calculatedResult,
     finalResult,
   } = useAppSelector((state) => state.CRICalculator);
-  const { currency, currencyFullName } = useAppSelector(
-    (state) => state.globalCurrency
-  );
   const calculatorData = {
     generalInfo,
     pensionPlan,
@@ -40,8 +37,6 @@ export default function CRIC() {
     oldAgeSecurity,
     calculatedResult,
     finalResult,
-    currency,
-    currencyFullName,
   };
 
   return (

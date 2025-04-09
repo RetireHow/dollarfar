@@ -47,9 +47,7 @@ export default function CalculationCard() {
             </h1>
           </div>
           <div>
-            <h3 className="font-medium md:text-[1.2rem]">
-              Current total principal amount:
-            </h3>
+            <h3 className="font-medium md:text-[1.2rem]">Total Savings:</h3>
             <h1 className="md:text-[1.5rem] text-[1.2rem] font-bold">
               {numberWithCommas(Number(totalFutureValue))}
             </h1>

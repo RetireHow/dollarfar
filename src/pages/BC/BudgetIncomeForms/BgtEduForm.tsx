@@ -11,11 +11,12 @@ import BudgetDynamicFieldWithFrequency from "../BudgetDynamicFieldWithFrequency"
 import DFForm from "../../../components/Form/DFForm";
 import { calculateTotalEducationalExpenses } from "../../../redux/features/BgtSlice/BgtSlice";
 
+
 export default function BgtEduForm() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const handleNext = () => {
-    dispatch(calculateTotalEducationalExpenses())
+    dispatch(calculateTotalEducationalExpenses());
     dispatch(nextStep());
     navigate("/budget-calculator/other-expenses");
   };

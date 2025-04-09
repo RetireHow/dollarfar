@@ -5,9 +5,6 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import html2canvas from "html2canvas";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import Error from "./UI/Error";
-import { baseUrl } from "../api/apiConstant";
 import { delay } from "../utils/delay";
 
 interface DownloadModalProps {
@@ -26,7 +23,7 @@ const DownloadModal = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  // const [phone, setPhone] = useState("");
   const [checked, setChecked] = useState(false);
   const [showError, setShowError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -68,37 +65,37 @@ const DownloadModal = ({
     setName("");
   };
 
-  const sendEmail = async (name: string, email: string, phone: string) => {
-    try {
-      const res = await fetch(`${baseUrl}/api/send-email`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, phone }),
-      });
+  // const sendEmail = async (name: string, email: string, phone: string) => {
+  //   try {
+  //     const res = await fetch(`${baseUrl}/api/send-email`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ name, email, phone }),
+  //     });
 
-      // Parse JSON response
-      await res.json();
+  //     // Parse JSON response
+  //     await res.json();
 
-      // Assuming responseData contains info about the success or failure of the operation
-      toast.success("An email sent to your mail.");
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      toast.error("There is something wrong!");
-    }
-  };
+  //     // Assuming responseData contains info about the success or failure of the operation
+  //     toast.success("An email sent to your mail.");
+  //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //   } catch (error) {
+  //     toast.error("There is something wrong!");
+  //   }
+  // };
 
   const handleDownloadPdf = async () => {
     // Validate fields
-    if (!email || !name || !phone) {
-      return setShowError(true);
-    }
+    // if (!email || !name) {
+    //   return setShowError(true);
+    // }
     setIsLoading(true);
     if (!checked) {
       return setShowError(true);
     }
-    await sendEmail(name, email, phone);
+    // await sendEmail(name, email, phone);
     await delay(300);
     setIsModalOpen(false);
     setIsLoading(false);
@@ -154,7 +151,7 @@ const DownloadModal = ({
               onChange={(e) => setName(e.target.value)}
               disabled={checked}
             />
-            {showError && !name && <Error message="This field is required" />}
+            {/* {showError && !name && <Error message="This field is required" />} */}
           </div>
           <div className="md:text-[1rem] text-[14px]">
             <label className="block font-semibold mb-2" htmlFor="name">
@@ -169,9 +166,9 @@ const DownloadModal = ({
               onChange={(e) => setEmail(e.target.value)}
               disabled={checked}
             />
-            {showError && !email && <Error message="This field is required" />}
+            {/* {showError && !email && <Error message="This field is required" />} */}
           </div>
-          <div className="md:text-[1rem] text-[14px]">
+          {/* <div className="md:text-[1rem] text-[14px]">
             <label className="block font-semibold mb-2" htmlFor="name">
               Phone
             </label>
@@ -185,7 +182,7 @@ const DownloadModal = ({
               disabled={checked}
             />
             {showError && !phone && <Error message="This field is required" />}
-          </div>
+          </div> */}
           <div>
             <div className="text-[12px] flex flex-wrap items-center gap-1 select-none">
               {checked ? (

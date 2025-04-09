@@ -13,7 +13,7 @@ import useTitle from "../../hooks/useTitle";
 const data = {
   title: "Registered Retirement Savings Plan (RRSP) Calculator",
   description:
-    "This calculator is a financial tool that helps users estimate how much money they can accumulate in their RRSP account over time and how much tax they can save.....",
+    "This calculator is a financial tool that helps users estimate how much money they can accumulate in their RRSP account over time.",
   image: assets.registeredRetirementIncome,
 };
 
@@ -23,9 +23,6 @@ export default function RRSP() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
   const { result, input } = useAppSelector((state) => state.rrspCalculator);
-  const { currency, currencyFullName } = useAppSelector(
-    (state) => state.globalCurrency
-  );
   return (
     <main className="mb-[5rem]">
       <div data-html2canvas-ignore>
@@ -41,7 +38,7 @@ export default function RRSP() {
             </h3>
             <div className="lg:w-auto w-full">
               <DownloadModal
-                calculatorData={{ result, input, currency, currencyFullName }}
+                calculatorData={{ result, input }}
                 fileName="RRSP Report"
                 id="RRSP-Chart"
                 PdfComponent={RRSPPdf}

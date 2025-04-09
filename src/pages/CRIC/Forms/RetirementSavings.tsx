@@ -627,6 +627,7 @@ export default function RetirementSavings() {
                   non-registered account ?
                   <CRICRedStar />
                   <CRICTooltipWithLink />
+                  <span className="text-gray-500 ml-1">(Click on this icon to calculate average tax rate.)</span>
                 </p>
               </div>
               <Input
