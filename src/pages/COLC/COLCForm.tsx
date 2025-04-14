@@ -114,12 +114,19 @@ export default function COLCForm() {
           `${baseUrl}/api/single-city-prices?country=${countryName1}&city=${cityName1}&currency=null`
         );
         const city1DefaultCurrencyData = await res1.json();
+
+        if (city1DefaultCurrencyData?.data?.error) {
+          toast.error(
+            `${city1DefaultCurrencyData?.data?.error} Please try with anyother city except ${cityName1}, ${countryName1}.`
+          );
+          return setApiDataLoading(false);
+        }
+
         if (
           !city1DefaultCurrencyData.success &&
           city1DefaultCurrencyData.statusCode == 400
         ) {
           setApiDataLoading(false);
-          console.log("City Error===========> ", {city1DefaultCurrencyData})
           return toast.error(city1DefaultCurrencyData.message);
         }
 
@@ -137,6 +144,14 @@ export default function COLCForm() {
           `${baseUrl}/api/single-city-prices?country=${countryName2}&city=${cityName2}&currency=null`
         );
         const city2DefaultCurrencyData = await res2.json();
+
+        if (city2DefaultCurrencyData?.data?.error) {
+          toast.error(
+            `${city2DefaultCurrencyData?.data?.error} Please try with anyother city except ${cityName2}, ${countryName2}.`
+          );
+          return setApiDataLoading(false);
+        }
+
         if (
           !city2DefaultCurrencyData.success &&
           city2DefaultCurrencyData.statusCode == 400
@@ -160,6 +175,14 @@ export default function COLCForm() {
           `${baseUrl}/api/single-city-prices?country=${countryName1}&city=${cityName1}&currency=${city2DefaultCurrencyData?.data?.currency}`
         );
         const city1OtherCurrencyData = await res3.json();
+
+        if (city1OtherCurrencyData?.data?.error) {
+          toast.error(
+            `${city1OtherCurrencyData?.data?.error} Please try with anyother city except ${cityName2}, ${countryName2}.`
+          );
+          return setApiDataLoading(false);
+        }
+
         if (
           !city1OtherCurrencyData.success &&
           city1OtherCurrencyData.statusCode == 400
@@ -182,6 +205,14 @@ export default function COLCForm() {
           `${baseUrl}/api/single-city-prices?country=${countryName2}&city=${cityName2}&currency=${city1DefaultCurrencyData?.data?.currency}`
         );
         const city2OtherCurrencyData = await res4.json();
+
+        if (city2OtherCurrencyData?.data?.error) {
+          toast.error(
+            `${city2OtherCurrencyData?.data?.error} Please try with anyother city except ${cityName2}, ${countryName2}.`
+          );
+          return setApiDataLoading(false);
+        }
+
         if (
           !city2OtherCurrencyData.success &&
           city2OtherCurrencyData.statusCode == 400
@@ -206,16 +237,6 @@ export default function COLCForm() {
           city2DefaultCurrencyData,
           city2OtherCurrencyData
         );
-
-        // const response = await fetch(
-        //   `${baseUrl}/api/single-city-prices?city1=${cityName1}&country1=${countryName1}&city2=${cityName2}&country2=${countryName2}`
-        // );
-        // const data = await response.json();
-
-        // if (!data.success && data.statusCode == 400) {
-        //   setApiDataLoading(false);
-        //   return toast.error(data.message);
-        // }
 
         // City Indices API
         const cityIndicesRes1 = await fetch(
