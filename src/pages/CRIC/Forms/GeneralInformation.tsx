@@ -11,7 +11,6 @@ import { Input, Select } from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
 import {
-  nextStep,
   resetActiveStep,
   setTotalSteps,
 } from "../../../redux/features/stepperSlice/CRICStepperSlice";
@@ -77,8 +76,6 @@ export default function GeneralInformation() {
       toast.error("Please fill in the required fields.");
       return setShowError(true);
     }
-
-    dispatch(nextStep());
     navigate("/CRIC/PP");
   };
 
@@ -304,7 +301,7 @@ export default function GeneralInformation() {
               borderRadius: "8px",
             }}
             variant="borderless"
-            placeholder="Enter your estimated income"
+            placeholder="Enter retirement income stop age"
             type="number"
             onWheel={(e) => e.currentTarget.blur()}
             onKeyDown={handleKeyDownUtil}

@@ -12,7 +12,6 @@ import CRICRedStar from "../CRICRedStar";
 import MandatoryUserHints from "../MandatoryUserHints";
 import { Select } from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { nextStep, previousStep } from "../../../redux/features/stepperSlice/CRICStepperSlice";
 
 const canadaLivingAgeOptions = [{ value: "Select One", label: "Select One" }];
 for (let i = 1; i <= 40; i++) {
@@ -52,12 +51,10 @@ export default function OldAgeSecurity() {
       }
     }
     dispatch(calculateOASBenefit(undefined));
-    dispatch(nextStep());
     navigate("/CRIC/summary");
   };
 
   const handleBack = () => {
-    dispatch(previousStep());
     navigate(-1);
   };
 
@@ -231,6 +228,27 @@ export default function OldAgeSecurity() {
               { value: "68", label: "68" },
               { value: "69", label: "69" },
               { value: "70", label: "70" },
+
+              { value: "71", label: "71" },
+              { value: "72", label: "72" },
+              { value: "73", label: "73" },
+              { value: "74", label: "74" },
+              { value: "75", label: "75" },
+              { value: "76", label: "76" },
+              { value: "77", label: "77" },
+              { value: "78", label: "78" },
+              { value: "79", label: "79" },
+              { value: "80", label: "80" },
+              { value: "81", label: "81" },
+              { value: "82", label: "82" },
+              { value: "83", label: "83" },
+              { value: "84", label: "84" },
+              { value: "85", label: "85" },
+              { value: "86", label: "86" },
+              { value: "87", label: "87" },
+              { value: "88", label: "88" },
+              { value: "89", label: "89" },
+              { value: "90", label: "90" },
             ]}
             suffixIcon={
               <Icon

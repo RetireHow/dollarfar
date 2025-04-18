@@ -57,6 +57,50 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     opacity: 0.5,
   },
+
+  // Table
+  page: {
+    padding: 40,
+    fontSize: 10,
+    fontFamily: "Helvetica",
+  },
+  table: {
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#D1D5DB",
+    marginBottom: 20,
+  },
+  tableRow: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderColor: "#D1D5DB",
+    alignItems: "center",
+  },
+  tableHeader: {
+    backgroundColor: "#1F2937", // Tailwind's gray-800
+    color: "white",
+    fontWeight: "bold",
+  },
+  cell: {
+    padding: 6,
+    textAlign: "center",
+    borderRightWidth: 1,
+    borderColor: "#D1D5DB",
+    flexGrow: 1,
+    flexBasis: 0,
+    flexShrink: 1, // allow shrinking
+    flexWrap: "wrap", // this is actually handled by <Text>, not <View>
+  },
+  lastCell: {
+    borderRightWidth: 0,
+  },
+  redText: {
+    color: "red",
+    fontWeight: "bold",
+  },
+  greenText: {
+    color: "green",
+  },
 });
 
 type TData = {
@@ -81,18 +125,27 @@ export const CRICPdf = ({ data }: { data: TData }) => {
     email,
     generalInfo,
     pensionPlan,
-    employerPension,
     retirementSavings: { TFSA, NRA, TFSAorNRASavingsReceivingAge },
+
+    employerPension,
     otherIncome,
+
     oldAgeSecurity,
     calculatedResult,
     finalResult,
     base64,
   } = data || {};
 
+  const {
+    employerPensionResult: { addedEmployerPensionsList, description },
+    otherIncomeResult: { addedOtherIncomesList, summaryText },
+  } = calculatedResult || {};
+
   const retirementDifference =
-    calculateTotalFields(finalResult[0]) -
-      Number(generalInfo.annualRetirementIncomeGoal) || 0;
+    (finalResult[0] &&
+      calculateTotalFields(finalResult[0]) -
+        Number(generalInfo.annualRetirementIncomeGoal)) ||
+    0;
 
   return (
     <Document>
@@ -132,8 +185,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
           {/* Title  */}
           <View style={styles.section}>
             <Text>Comprehensive Retirement Income Calculator</Text>
-            <Text style={styles.title}>
-            </Text>
+            <Text style={styles.title}></Text>
           </View>
 
           {/* Card Container  */}
@@ -147,19 +199,20 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 backgroundColor: "#F8F8F8",
                 flexDirection: "row",
                 gap: 5,
-                fontSize: 12,
+                fontSize: 10,
               }}
             >
+              {/* =======================|| Right Side ||==========================  */}
               <View>
                 {/* Step-1  */}
                 <View
-                  style={{ flexDirection: "column", gap: 10, marginBottom: 30 }}
+                  style={{ flexDirection: "column", gap: 5, marginBottom: 15 }}
                 >
                   <View
                     style={{
                       color: "#000",
                       fontWeight: "bold",
-                      fontSize: "16px",
+                      fontSize: "12px",
                     }}
                   >
                     <Text>General information</Text>
@@ -219,7 +272,6 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                       Annual Retirement Income Goal
                     </Text>
                     <Text>
-                      
                       {getValue(generalInfo.annualRetirementIncomeGoal) !==
                       "N/A"
                         ? numberWithCommas(
@@ -238,7 +290,6 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                       Current Annual Income
                     </Text>
                     <Text>
-                      
                       {getValue(generalInfo.currentAnnualIncome) !== "N/A"
                         ? numberWithCommas(
                             Number(generalInfo.currentAnnualIncome)
@@ -248,205 +299,19 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                   </View>
                 </View>
                 {/* Step-2  */}
-
-                {employerPension.hasEmployerPension == "Yes" && (
-                  <View
-                    style={{
-                      flexDirection: "column",
-                      gap: 10,
-                      marginBottom: 30,
-                    }}
-                  >
-                    <View
-                      style={{
-                        color: "#000",
-                        fontWeight: "bold",
-                        fontSize: "16px",
-                      }}
-                    >
-                      <Text>Employer Pension</Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        gap: 5,
-                      }}
-                    >
-                      <Text style={{ color: "#696969" }}>
-                        Pension Plan Type
-                      </Text>
-                      <Text>{getValue(employerPension.pensionPlanType)}</Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Text style={{ color: "#696969" }}>
-                        Estimated Annual Pension
-                      </Text>
-                      <Text>
-                        
-                        {Number(getValue(employerPension.annualPension))
-                          ? numberWithCommas(
-                              Number(employerPension.annualPension)
-                            )
-                          : getValue(employerPension.annualPension)}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Text style={{ color: "#696969" }}>
-                        Age to Receive Pension
-                      </Text>
-                      <Text>
-                        {getValue(employerPension.pensionReceivingAge)}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Text style={{ color: "#696969" }}>
-                        Is Pension Indexed to Inflation?
-                      </Text>
-                      <Text>
-                        {getValue(employerPension.isIndexedToInflation)}
-                      </Text>
-                    </View>
-                    {employerPension.isIndexedToInflation == "No" && (
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Text style={{ color: "#696969" }}>Inflation Rate</Text>
-                        <Text>{getValue(employerPension.inflationRate)}%</Text>
-                      </View>
-                    )}
-                  </View>
-                )}
-
-                {/* Step-3  */}
-                {otherIncome.hasOtherIncome == "Yes" && (
-                  <View
-                    style={{
-                      flexDirection: "column",
-                      gap: 10,
-                      marginBottom: 30,
-                    }}
-                  >
-                    <View
-                      style={{
-                        color: "#000",
-                        fontWeight: "bold",
-                        fontSize: "16px",
-                      }}
-                    >
-                      <Text>Other Income</Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Text style={{ color: "#696969" }}>Income Type</Text>
-                      <Text>{getValue(otherIncome.otherIncomeType)}</Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Text style={{ color: "#696969" }}>
-                        Estimated Income Frequency
-                      </Text>
-                      <Text>
-                        {getFrequencyTitle(otherIncome.otherIncomeFrequency)}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Text style={{ color: "#696969" }}>Estimated Income</Text>
-                      <Text>
-                        
-                        {Number(getValue(otherIncome.otherIncomeAmount))
-                          ? numberWithCommas(
-                              Number(otherIncome.otherIncomeAmount)
-                            )
-                          : getValue(otherIncome.otherIncomeAmount)}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Text style={{ color: "#696969" }}>
-                        Start Receiving Age
-                      </Text>
-                      <Text>
-                        {getValue(otherIncome.otherIncomeStartReceivingAge)}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Text style={{ color: "#696969" }}>
-                        Stop Receiving Age
-                      </Text>
-                      <Text>
-                        {getValue(otherIncome.otherIncomeStopReceivingAge)}
-                      </Text>
-                    </View>
-                  </View>
-                )}
-              </View>
-
-              <Text
-                style={{
-                  backgroundColor: "#0000004D",
-                  width: "1px",
-                  height: "100%",
-                  marginLeft: 10,
-                  marginRight: 10,
-                }}
-              ></Text>
-
-              {/* Step-1  */}
-              <View>
                 {pensionPlan.selectedPP !== "Not Applicable" && (
                   <View
                     style={{
                       flexDirection: "column",
                       gap: 10,
-                      marginBottom: 30,
+                      marginBottom: 15,
                     }}
                   >
                     <View
                       style={{
                         color: "#000",
                         fontWeight: "bold",
-                        fontSize: "16px",
+                        fontSize: "12px",
                       }}
                     >
                       <Text>{pensionPlan.selectedPP}</Text>
@@ -472,7 +337,6 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                         Monthly Pension Estimate
                       </Text>
                       <Text>
-                        
                         {Number(
                           getValue(pensionPlan.monthlyRetirementPensionEstimate)
                         )
@@ -490,13 +354,13 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                     </View>
                   </View>
                 )}
-                {/* Step-2  */}
+                {/* Step-3  */}
                 {(TFSA.hasTFSA == "Yes" || NRA.hasNRA == "Yes") && (
                   <View
                     style={{
                       flexDirection: "column",
                       gap: 10,
-                      marginBottom: 30,
+                      marginBottom: 15,
                     }}
                   >
                     {/* Retirement Savings  */}
@@ -504,7 +368,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                       style={{
                         color: "#000",
                         fontWeight: "bold",
-                        fontSize: "16px",
+                        fontSize: "12px",
                       }}
                     >
                       <Text>Accumulated Savings</Text>
@@ -522,7 +386,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                           <Text
                             style={{
                               fontWeight: "extrabold",
-                              fontSize: "12px",
+                              fontSize: "10px",
                               paddingBottom: 4,
                               borderBottom: "1px solid gray",
                             }}
@@ -540,7 +404,6 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                             Current Total Value
                           </Text>
                           <Text>
-                            
                             {Number(getValue(TFSA.TFSAcurrentTotal))
                               ? numberWithCommas(
                                   Number(getValue(TFSA.TFSAcurrentTotal))
@@ -574,7 +437,6 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                             Ongoing Contribution Amount
                           </Text>
                           <Text>
-                            
                             {Number(
                               getValue(TFSA.TFSAOngoingContributionAmount)
                             )
@@ -613,7 +475,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                           <Text
                             style={{
                               fontWeight: "extrabold",
-                              fontSize: "12px",
+                              fontSize: "10px",
                               paddingBottom: 4,
                               borderBottom: "1px solid gray",
                             }}
@@ -631,7 +493,6 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                             Current Total Value
                           </Text>
                           <Text>
-                            
                             {Number(getValue(NRA.NRAcurrentTotal))
                               ? numberWithCommas(
                                   Number(getValue(NRA.NRAcurrentTotal))
@@ -665,7 +526,6 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                             Ongoing Contribution Amount
                           </Text>
                           <Text>
-                            
                             {Number(getValue(NRA.NRAOngoingContributionAmount))
                               ? numberWithCommas(
                                   Number(
@@ -699,11 +559,11 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                     )}
                   </View>
                 )}
-                {/* Step- 3 */}
+                {/* Step- 4 */}
                 <View
                   style={{
                     flexDirection: "column",
-                    gap: 10,
+                    gap: 5,
                   }}
                 >
                   <View
@@ -712,7 +572,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                       fontWeight: "bold",
                     }}
                   >
-                    <Text style={{ fontSize: "16px" }}>
+                    <Text style={{ fontSize: "12px" }}>
                       Old Age Security (OAS)
                     </Text>
                   </View>
@@ -740,7 +600,6 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                       {oldAgeSecurity.OASPensionReceivingAge} to 74)
                     </Text>
                     <Text>
-                      
                       {calculatedResult.OASResult.OASBenefitAmount
                         .oldAgeSecurityAfter75
                         ? numberWithCommas(
@@ -764,7 +623,6 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                       OAS Pension (Ages 75 and up)
                     </Text>
                     <Text>
-                      
                       {calculatedResult.OASResult.OASBenefitAmount
                         .oldAgeSecurityAfter75
                         ? numberWithCommas(
@@ -794,6 +652,395 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                   </View>
                 </View>
               </View>
+
+              <Text
+                style={{
+                  backgroundColor: "#0000004D",
+                  width: "1px",
+                  height: "100%",
+                  marginLeft: 10,
+                  marginRight: 10,
+                }}
+              ></Text>
+
+              {/* =======================|| Right Side ||==========================  */}
+              {/* Step-1  */}
+              <View>
+                {/* =========================== || Stpe 4 =================== */}
+                {/* Step-2  */}
+                {employerPension.hasEmployerPension == "Yes" && (
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      gap: 5,
+                      marginBottom: 15,
+                    }}
+                  >
+                    <View
+                      style={{
+                        color: "#000",
+                        fontWeight: "bold",
+                        fontSize: "12px",
+                      }}
+                    >
+                      <Text>Employer Pension</Text>
+                    </View>
+
+                    {addedEmployerPensionsList?.map((item) => {
+                      return (
+                        <View
+                          style={{
+                            flexDirection: "column",
+                            gap: 5,
+                            border: "1px solid #D1D5DB",
+                            padding: "5px",
+                            borderRadius: "5px",
+                          }}
+                        >
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              gap: 5,
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Pension Plan Type
+                            </Text>
+                            <Text>{getValue(item.pensionPlanType)}</Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Estimated Annual Pension
+                            </Text>
+                            <Text>
+                              {Number(getValue(item.annualPension))
+                                ? numberWithCommas(Number(item.annualPension))
+                                : getValue(item.annualPension)}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Age to Receive Pension
+                            </Text>
+                            <Text>{getValue(item.pensionReceivingAge)}</Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Is Pension Indexed to Inflation?
+                            </Text>
+                            <Text>{getValue(item.isIndexedToInflation)}</Text>
+                          </View>
+                          {item.isIndexedToInflation == "No" && (
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                              }}
+                            >
+                              <Text style={{ color: "#696969" }}>
+                                Inflation Rate
+                              </Text>
+                              <Text>{getValue(item.inflationRate)}%</Text>
+                            </View>
+                          )}
+                        </View>
+                      );
+                    })}
+
+                    {/* Account with only Fields  */}
+                    {employerPension.hasEmployerPension == "Yes" &&
+                      employerPension.pensionPlanType !== "Select One" && (
+                        <View
+                          style={{
+                            flexDirection: "column",
+                            gap: 5,
+                            border: "1px solid #D1D5DB",
+                            padding: "5px",
+                            borderRadius: "5px",
+                          }}
+                        >
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              gap: 5,
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Pension Plan Type
+                            </Text>
+                            <Text>
+                              {getValue(employerPension.pensionPlanType)}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Estimated Annual Pension
+                            </Text>
+                            <Text>
+                              {Number(getValue(employerPension.annualPension))
+                                ? numberWithCommas(
+                                    Number(employerPension.annualPension)
+                                  )
+                                : getValue(employerPension.annualPension)}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Age to Receive Pension
+                            </Text>
+                            <Text>
+                              {getValue(employerPension.pensionReceivingAge)}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Is Pension Indexed to Inflation?
+                            </Text>
+                            <Text>
+                              {getValue(employerPension.isIndexedToInflation)}
+                            </Text>
+                          </View>
+                          {employerPension.isIndexedToInflation == "No" && (
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                              }}
+                            >
+                              <Text style={{ color: "#696969" }}>
+                                Inflation Rate
+                              </Text>
+                              <Text>
+                                {getValue(employerPension.inflationRate)}%
+                              </Text>
+                            </View>
+                          )}
+                        </View>
+                      )}
+                  </View>
+                )}
+
+                {/* Step-3  */}
+                {otherIncome.hasOtherIncome == "Yes" && (
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      gap: 5,
+                      marginBottom: 15,
+                    }}
+                  >
+                    <View
+                      style={{
+                        color: "#000",
+                        fontWeight: "bold",
+                        fontSize: "12px",
+                      }}
+                    >
+                      <Text>Other Income</Text>
+                    </View>
+                    {addedOtherIncomesList.map((item) => {
+                      return (
+                        <View
+                          style={{
+                            flexDirection: "column",
+                            gap: 5,
+                            border: "1px solid #D1D5DB",
+                            padding: "5px",
+                            borderRadius: "5px",
+                          }}
+                        >
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Income Type
+                            </Text>
+                            <Text>{getValue(item.otherIncomeType)}</Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Estimated Income Frequency
+                            </Text>
+                            <Text>
+                              {getFrequencyTitle(item.otherIncomeFrequency)}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Estimated Income
+                            </Text>
+                            <Text>
+                              {Number(getValue(item.otherIncomeAmount))
+                                ? numberWithCommas(
+                                    Number(item.otherIncomeAmount)
+                                  )
+                                : getValue(item.otherIncomeAmount)}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Start Receiving Age
+                            </Text>
+                            <Text>
+                              {getValue(item.otherIncomeStartReceivingAge)}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Stop Receiving Age
+                            </Text>
+                            <Text>
+                              {getValue(item.otherIncomeStopReceivingAge)}
+                            </Text>
+                          </View>
+                        </View>
+                      );
+                    })}
+                    {/* Account with only Fields  */}
+                    {otherIncome.otherIncomeType !== "Select One" &&
+                      otherIncome.hasOtherIncome == "Yes" && (
+                        <View
+                          style={{
+                            flexDirection: "column",
+                            gap: 5,
+                            border: "1px solid #D1D5DB",
+                            padding: "5px",
+                            borderRadius: "5px",
+                          }}
+                        >
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Income Type
+                            </Text>
+                            <Text>{getValue(otherIncome.otherIncomeType)}</Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Estimated Income Frequency
+                            </Text>
+                            <Text>
+                              {getFrequencyTitle(
+                                otherIncome.otherIncomeFrequency
+                              )}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Estimated Income
+                            </Text>
+                            <Text>
+                              {Number(getValue(otherIncome.otherIncomeAmount))
+                                ? numberWithCommas(
+                                    Number(otherIncome.otherIncomeAmount)
+                                  )
+                                : getValue(otherIncome.otherIncomeAmount)}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Start Receiving Age
+                            </Text>
+                            <Text>
+                              {getValue(
+                                otherIncome.otherIncomeStartReceivingAge
+                              )}
+                            </Text>
+                          </View>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Text style={{ color: "#696969" }}>
+                              Stop Receiving Age
+                            </Text>
+                            <Text>
+                              {getValue(
+                                otherIncome.otherIncomeStopReceivingAge
+                              )}
+                            </Text>
+                          </View>
+                        </View>
+                      )}
+                  </View>
+                )}
+              </View>
             </View>
           </View>
         </View>
@@ -805,7 +1052,14 @@ export const CRICPdf = ({ data }: { data: TData }) => {
       {/* page 2  */}
       <Page style={{ position: "relative" }}>
         {/* ================Totals Card================  */}
-        <View style={{ margin: 30 }}>
+        <View
+          style={{
+            marginLeft: 30,
+            marginRight: 30,
+            marginTop: 30,
+            marginBottom: 15,
+          }}
+        >
           <View
             style={{
               border: "1px solid #EAECF0",
@@ -819,7 +1073,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
             }}
           >
             <View style={{ fontWeight: "bold", color: "#000" }}>
-              <Text style={{ fontSize: "16px" }}>Totals</Text>
+              <Text style={{ fontSize: "12px" }}>Totals</Text>
             </View>
             <View
               style={{
@@ -831,7 +1085,6 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 Annual Retirement Income Goal
               </Text>
               <Text>
-                
                 {generalInfo.annualRetirementIncomeGoal !== "Select One"
                   ? numberWithCommas(
                       Number(generalInfo.annualRetirementIncomeGoal)
@@ -849,7 +1102,6 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 Retirement income at the onset
               </Text>
               <Text>
-                
                 {finalResult.length > 0
                   ? numberWithCommas(calculateTotalFields(finalResult[0]))
                   : 0}
@@ -871,7 +1123,6 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 {isNegative(retirementDifference) ? "Deficit" : "Surplus"}
               </Text>
               <Text>
-                
                 {finalResult.length > 0 &&
                 generalInfo.annualRetirementIncomeGoal !== "Select One"
                   ? numberWithCommas(retirementDifference)
@@ -882,8 +1133,10 @@ export const CRICPdf = ({ data }: { data: TData }) => {
         </View>
 
         {/* Chart Container  */}
-        <View style={{ padding: 15, marginTop: 5 }}>
-          <Image style={{ width: "100%", height: 350 }} src={base64} />
+        <View style={{ padding: 15 }}>
+          {base64 && (
+            <Image style={{ width: "100%", height: 350 }} src={base64} />
+          )}
 
           {/* Legends Container  */}
           <View
@@ -894,6 +1147,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
               gap: 20,
               fontWeight: "extrabold",
               marginLeft: 40,
+              marginTop: 10,
             }}
           >
             {/* <View
@@ -929,10 +1183,8 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 }}
               ></Text>
               <Text>
-                {pensionPlan.selectedPP} : 
-                {numberWithCommas(
-                  calculatedResult.PPResult.PPBenefitAmount
-                )}{" "}
+                {pensionPlan.selectedPP} :
+                {numberWithCommas(calculatedResult.PPResult.PPBenefitAmount)}{" "}
                 Annually (starting from age {getValue(pensionPlan.ppStartYear)}{" "}
                 to {getValue(generalInfo.lifeExpectency)})
               </Text>
@@ -949,14 +1201,12 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                   height: "6px",
                 }}
               ></Text>
-              <Text>
-                Employer Pension: 
-                {numberWithCommas(
-                  calculatedResult.employerPensionResult
-                    .employerPensionsAgeByAge[0]?.employerPensionAmount
-                )}{" "}
-                annually (starting at age{" "}
-                {getValue(employerPension.pensionReceivingAge)})
+              <Text
+                style={{
+                  marginRight: 20,
+                }}
+              >
+                {description}
               </Text>
             </View>
 
@@ -972,7 +1222,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 }}
               ></Text>
               <Text>
-                Retirement Savings: 
+                Retirement Savings:
                 {numberWithCommas(
                   calculatedResult.retirementSavingsResult
                     .retirementSavingsAgeByAge[0]?.retirementSavingsAmount
@@ -993,15 +1243,12 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                   height: "6px",
                 }}
               ></Text>
-              <Text>
-                Other Income: 
-                {numberWithCommas(
-                  calculatedResult.otherIncomeResult.otherIncomesAgeByAge[0]
-                    ?.otherIncomeAmount
-                )}{" "}
-                annually (from age{" "}
-                {getValue(otherIncome.otherIncomeStartReceivingAge)} to{" "}
-                {getValue(otherIncome.otherIncomeStopReceivingAge)})
+              <Text
+                style={{
+                  marginRight: 20,
+                }}
+              >
+                {summaryText}
               </Text>
             </View>
 
@@ -1017,14 +1264,13 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                 }}
               ></Text>
               <Text>
-                Old Age Security: 
+                Old Age Security:
                 {numberWithCommas(
                   calculatedResult.OASResult.OASBenefitAmount
                     .oldAgeSecurityBefore75
                 )}{" "}
                 annually (from age{" "}
                 {getValue(oldAgeSecurity.OASPensionReceivingAge)} to 74);{" "}
-                
                 {numberWithCommas(
                   calculatedResult.OASResult.OASBenefitAmount
                     .oldAgeSecurityAfter75
@@ -1041,9 +1287,7 @@ export const CRICPdf = ({ data }: { data: TData }) => {
                   color: "#000",
                   width: 20,
                 }}
-              >
-                
-              </Text>
+              ></Text>
               <Text></Text>
             </View>
           </View>
@@ -1051,6 +1295,93 @@ export const CRICPdf = ({ data }: { data: TData }) => {
 
         {/* Watermark */}
         <Text style={styles.watermark}>Dollarfar.com</Text>
+      </Page>
+
+      {/* ===========================|| Page 3 : Table ||==========================  */}
+      <Page size="A4" style={styles.page}>
+        <Text style={{ fontSize: 16, marginBottom: 10, fontWeight: "bold" }}>
+          Retirement Income Overview
+        </Text>
+
+        <View style={styles.table}>
+          {/* Table Header */}
+          <View style={[styles.tableRow, styles.tableHeader]}>
+            {[
+              "Age",
+              "Canada Pension Plan",
+              "Old Age Security",
+              `Employer Pension`,
+              `Accumulated Savings`,
+              "Other Income",
+              "Total Estimated Retirement Income",
+            ].map((heading, idx) => (
+              <Text
+                key={idx}
+                style={[
+                  styles.cell,
+                  styles.lastCell,
+                  // isNegative(diff) ? styles.redText : styles.greenText,
+                ].filter(Boolean)}
+              >
+                {heading}
+              </Text>
+            ))}
+          </View>
+
+          {/* Table Body */}
+          {finalResult?.map((item, index) => {
+            const {
+              age,
+              OASAmount,
+              PPBenefitAmount,
+              employerPensionAmount,
+              otherIncomeAmount,
+              retirementSavingsAmount,
+            } = item || {};
+
+            const totalIncome = calculateTotalFields(item);
+            const diff =
+              totalIncome - Number(generalInfo.annualRetirementIncomeGoal);
+
+            return (
+              <View style={styles.tableRow} key={index}>
+                <Text style={styles.cell}>{age}</Text>
+                <Text style={styles.cell}>
+                  {PPBenefitAmount ? numberWithCommas(PPBenefitAmount) : 0}
+                </Text>
+                <Text style={styles.cell}>
+                  {OASAmount
+                    ? numberWithCommas(parseInt(OASAmount.toString()))
+                    : 0}
+                </Text>
+                <Text style={styles.cell}>
+                  {employerPensionAmount
+                    ? numberWithCommas(employerPensionAmount)
+                    : 0}
+                </Text>
+                <Text style={styles.cell}>
+                  {retirementSavingsAmount
+                    ? numberWithCommas(retirementSavingsAmount)
+                    : 0}
+                </Text>
+                <Text style={styles.cell}>
+                  {otherIncomeAmount ? numberWithCommas(otherIncomeAmount) : 0}
+                </Text>
+                <Text
+                  style={[
+                    styles.cell,
+                    styles.lastCell,
+                    isNegative(diff) ? styles.redText : styles.greenText,
+                  ]}
+                >
+                  {totalIncome
+                    ? numberWithCommas(parseInt(totalIncome.toString()))
+                    : 0}
+                </Text>
+              </View>
+            );
+          })}
+        </View>
 
         {/* Footer  */}
         <View
@@ -1059,14 +1390,12 @@ export const CRICPdf = ({ data }: { data: TData }) => {
             justifyContent: "space-between",
             color: "#4D4D4D",
             fontSize: 12,
-            paddingLeft: 24,
-            paddingRight: 24,
-            paddingTop: 16,
-            paddingBottom: 16,
             backgroundColor: "#F6F8FC",
             position: "absolute",
             width: "100%",
             bottom: 0,
+            left: 0,
+            padding: 10,
           }}
         >
           <Text>dollarfar.com</Text>

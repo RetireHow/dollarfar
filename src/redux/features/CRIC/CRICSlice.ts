@@ -2,14 +2,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   calculateCPPBenefit,
-  calculateEmployerPensionAgeByAge,
   calculateOAS,
   calculateOASBenefitsAgeByAge,
-  calculateOtherIncomeAgeByAge,
   calculatePensionPlanAgeByAge,
   calculateRetirementSavingsAgeByAge,
   calculateTFSAorNonRegAccountSavings,
+  generateEmployerPensionChartData,
   mergeArraysByAge,
+  mergeOtherIncomeByAgeWithSummary,
 } from "./CRIC.utils";
 import {
   CRICState,
@@ -19,6 +19,7 @@ import {
   TNRA,
   TOldAgeSecurity,
   TOtherIncome,
+  TOtherIncomeItem,
   TPensionPlan,
   TRetirementSavings,
   TTFSA,
@@ -48,6 +49,7 @@ const initialState: CRICState = {
     pensionReceivingAge: "Select One",
     isIndexedToInflation: "Yes",
     inflationRate: "",
+    pensionStopReceivingAge: "",
   },
 
   retirementSavings: {
@@ -99,6 +101,8 @@ const initialState: CRICState = {
     },
     employerPensionResult: {
       employerPensionsAgeByAge: [],
+      addedEmployerPensionsList: [],
+      description: "",
     },
 
     retirementSavingsResult: {
@@ -117,6 +121,8 @@ const initialState: CRICState = {
     otherIncomeResult: {
       otherIncomeAmountAnnually: 0,
       otherIncomesAgeByAge: [],
+      addedOtherIncomesList: [],
+      summaryText: "",
     },
   },
 
@@ -246,8 +252,7 @@ const CRICSlice = createSlice({
       // reset fields
       state.retirementSavings.TFSA.TFSAcurrentTotal = "";
       state.retirementSavings.TFSA.TFSAOngoingContributionAmount = "";
-      state.retirementSavings.TFSA.TFSAOngoingContributionFrequency =
-        "1";
+      state.retirementSavings.TFSA.TFSAOngoingContributionFrequency = "1";
       state.retirementSavings.TFSA.TFSAreturnRate = "";
     },
 
@@ -258,13 +263,12 @@ const CRICSlice = createSlice({
       // reset fields
       state.retirementSavings.NRA.NRAcurrentTotal = "";
       state.retirementSavings.NRA.NRAOngoingContributionAmount = "";
-      state.retirementSavings.NRA.NRAOngoingContributionFrequency =
-        "1";
+      state.retirementSavings.NRA.NRAOngoingContributionFrequency = "1";
       state.retirementSavings.NRA.NRAreturnRate = "";
       state.retirementSavings.NRA.NRAtaxRate = "";
     },
 
-    //Calculate functions
+    //Calculate Form Step functions
     calculateOASBenefit: (state) => {
       const {
         OASPensionReceivingAge,
@@ -319,53 +323,173 @@ const CRICSlice = createSlice({
 
     calculateOtherIncome: (state) => {
       const {
+        otherIncomeType,
         otherIncomeFrequency,
         otherIncomeAmount,
         otherIncomeStartReceivingAge,
         otherIncomeStopReceivingAge,
+        hasOtherIncome,
       } = state.otherIncome;
+
       const { annualRetirementIncomeGoal } = state.generalInfo;
 
-      const yearsDifference =
-        Number(otherIncomeStopReceivingAge) -
-        Number(otherIncomeStartReceivingAge);
+      if (
+        otherIncomeType !== "Select One" &&
+        otherIncomeFrequency !== "Select One" &&
+        otherIncomeAmount !== "Select One" &&
+        otherIncomeStartReceivingAge !== "Select One" &&
+        otherIncomeStopReceivingAge !== "Select One" &&
+        hasOtherIncome == "Yes" &&
+        state.calculatedResult.otherIncomeResult.addedOtherIncomesList.length ==
+          0
+      ) {
+        const otherIncomes = [
+          {
+            otherIncomeType,
+            otherIncomeFrequency,
+            otherIncomeAmount,
+            otherIncomeStartReceivingAge,
+            otherIncomeStopReceivingAge,
+          },
+        ];
+        const { yearlyIncomeData, summaryText } =
+          mergeOtherIncomeByAgeWithSummary(
+            otherIncomes,
+            Number(annualRetirementIncomeGoal)
+          );
 
-      const totalIncomeFrequencyInYear =
-        Number(otherIncomeFrequency) * yearsDifference;
+        state.calculatedResult.otherIncomeResult.otherIncomesAgeByAge =
+          yearlyIncomeData;
+        state.calculatedResult.otherIncomeResult.summaryText = summaryText;
+      } else if (
+        otherIncomeType == "Select One" &&
+        otherIncomeFrequency == "Select One" &&
+        otherIncomeAmount == "Select One" &&
+        otherIncomeStartReceivingAge == "Select One" &&
+        otherIncomeStopReceivingAge == "Select One" &&
+        hasOtherIncome == "Yes" &&
+        state.calculatedResult.otherIncomeResult.addedOtherIncomesList.length >
+          0
+      ) {
+        const { yearlyIncomeData, summaryText } =
+          mergeOtherIncomeByAgeWithSummary(
+            state.calculatedResult.otherIncomeResult.addedOtherIncomesList,
+            Number(annualRetirementIncomeGoal)
+          );
 
-      const otherIncomeAmountAnnually =
-        (totalIncomeFrequencyInYear * Number(otherIncomeAmount)) /
-        yearsDifference;
+        state.calculatedResult.otherIncomeResult.otherIncomesAgeByAge =
+          yearlyIncomeData;
+        state.calculatedResult.otherIncomeResult.summaryText = summaryText;
+      } else if (
+        otherIncomeType !== "Select One" &&
+        otherIncomeFrequency !== "Select One" &&
+        otherIncomeAmount !== "Select One" &&
+        otherIncomeStartReceivingAge !== "Select One" &&
+        otherIncomeStopReceivingAge !== "Select One" &&
+        hasOtherIncome == "Yes" &&
+        state.calculatedResult.otherIncomeResult.addedOtherIncomesList.length >
+          0
+      ) {
+        const otherIncome = {
+          otherIncomeType,
+          otherIncomeFrequency,
+          otherIncomeAmount,
+          otherIncomeStartReceivingAge,
+          otherIncomeStopReceivingAge,
+        };
 
-      state.calculatedResult.otherIncomeResult.otherIncomeAmountAnnually =
-        otherIncomeAmountAnnually;
-      state.calculatedResult.otherIncomeResult.otherIncomesAgeByAge =
-        calculateOtherIncomeAgeByAge(
-          Number(otherIncomeStartReceivingAge),
-          Number(otherIncomeStopReceivingAge),
-          Number(otherIncomeAmountAnnually),
-          Number(annualRetirementIncomeGoal)
-        );
+        const { yearlyIncomeData, summaryText } =
+          mergeOtherIncomeByAgeWithSummary(
+            [
+              ...state.calculatedResult.otherIncomeResult.addedOtherIncomesList,
+              otherIncome,
+            ],
+            Number(annualRetirementIncomeGoal)
+          );
+
+        state.calculatedResult.otherIncomeResult.otherIncomesAgeByAge =
+          yearlyIncomeData;
+        state.calculatedResult.otherIncomeResult.summaryText = summaryText;
+      }
+
+      if (hasOtherIncome == "No") {
+        state.calculatedResult.otherIncomeResult.otherIncomesAgeByAge = [];
+      }
     },
 
     calculateEmployerPension: (state) => {
       const {
         annualPension,
+        pensionReceivingAge,
+        hasEmployerPension,
+        pensionPlanType,
+        isIndexedToInflation,
+        inflationRate,
+      } = state.employerPension;
+
+      const { lifeExpectency, annualRetirementIncomeGoal } = state.generalInfo;
+
+      const addedEmployerPensionList =
+        state.calculatedResult.employerPensionResult.addedEmployerPensionsList;
+
+      const employerPensionPlan = {
+        pensionPlanType,
+        annualPension,
         inflationRate,
         pensionReceivingAge,
         isIndexedToInflation,
-      } = state.employerPension;
-      const { lifeExpectency, annualRetirementIncomeGoal } = state.generalInfo;
+        pensionStopReceivingAge: lifeExpectency,
+      };
 
-      if (lifeExpectency) {
+      if (hasEmployerPension == "No") {
         state.calculatedResult.employerPensionResult.employerPensionsAgeByAge =
-          calculateEmployerPensionAgeByAge(
-            Number(annualPension),
-            isIndexedToInflation == "No" ? Number(inflationRate) : 0,
-            Number(pensionReceivingAge),
-            Number(lifeExpectency),
-            Number(annualRetirementIncomeGoal)
-          );
+          [];
+      } else if (
+        lifeExpectency.trim() &&
+        hasEmployerPension == "Yes" &&
+        pensionPlanType == "Select One" &&
+        annualPension == "" &&
+        pensionReceivingAge == "Select One" &&
+        addedEmployerPensionList.length > 0
+      ) {
+        const { chartData, description } = generateEmployerPensionChartData(
+          addedEmployerPensionList,
+          Number(annualRetirementIncomeGoal)
+        );
+
+        state.calculatedResult.employerPensionResult.employerPensionsAgeByAge =
+          chartData;
+        state.calculatedResult.employerPensionResult.description = description;
+      } else if (
+        lifeExpectency.trim() &&
+        hasEmployerPension == "Yes" &&
+        pensionPlanType != "Select One" &&
+        annualPension != "" &&
+        pensionReceivingAge != "Select One" &&
+        addedEmployerPensionList.length == 0
+      ) {
+        const { chartData, description } = generateEmployerPensionChartData(
+          [employerPensionPlan],
+          Number(annualRetirementIncomeGoal)
+        );
+        state.calculatedResult.employerPensionResult.employerPensionsAgeByAge =
+          chartData;
+        state.calculatedResult.employerPensionResult.description = description;
+      } else if (
+        lifeExpectency.trim() &&
+        hasEmployerPension == "Yes" &&
+        pensionPlanType != "Select One" &&
+        annualPension != "" &&
+        pensionReceivingAge != "Select One" &&
+        addedEmployerPensionList.length > 0
+      ) {
+        const { chartData, description } = generateEmployerPensionChartData(
+          [...addedEmployerPensionList, employerPensionPlan],
+          Number(annualRetirementIncomeGoal)
+        );
+        state.calculatedResult.employerPensionResult.employerPensionsAgeByAge =
+          chartData;
+        state.calculatedResult.employerPensionResult.description = description;
       }
     },
 
@@ -455,6 +579,84 @@ const CRICSlice = createSlice({
       );
       state.finalResult = finalResultAgeByAge;
     },
+
+    addMoreOtherIncome: (state, action: PayloadAction<TOtherIncomeItem>) => {
+      state.calculatedResult.otherIncomeResult.addedOtherIncomesList.push(
+        action.payload
+      );
+      // Reset the fields
+      state.otherIncome.hasOtherIncome = "Yes";
+      state.otherIncome.otherIncomeType = "Select One";
+      state.otherIncome.otherIncomeFrequency = "Select One";
+      state.otherIncome.otherIncomeAmount = "Select One";
+      state.otherIncome.otherIncomeStartReceivingAge = "Select One";
+      state.otherIncome.otherIncomeStopReceivingAge = "Select One";
+    },
+
+    removeAddedOtherIncome: (state, action: PayloadAction<number>) => {
+      const restAddedOtherIncomes =
+        state.calculatedResult.otherIncomeResult.addedOtherIncomesList.filter(
+          (_, index) => index != action.payload
+        );
+      state.calculatedResult.otherIncomeResult.addedOtherIncomesList =
+        restAddedOtherIncomes;
+    },
+
+    updateAddedOtherIncome: (
+      state,
+      action: PayloadAction<{ index: number; item: TOtherIncomeItem }>
+    ) => {
+      const updateIndex =
+        state.calculatedResult.otherIncomeResult.addedOtherIncomesList.findIndex(
+          (_, itemIndex) => itemIndex == action.payload.index
+        );
+      if (updateIndex >= 0) {
+        state.calculatedResult.otherIncomeResult.addedOtherIncomesList[
+          updateIndex
+        ] = action.payload.item;
+      }
+    },
+
+    // Employer Pension CRUD
+    addMoreEmployerPension: (
+      state,
+      action: PayloadAction<TEmployerPension>
+    ) => {
+      state.calculatedResult.employerPensionResult.addedEmployerPensionsList.push(
+        action.payload
+      );
+      // Reset the fields
+      state.employerPension.hasEmployerPension = "Yes";
+      state.employerPension.pensionPlanType = "Select One";
+      state.employerPension.annualPension = "";
+      state.employerPension.pensionReceivingAge = "Select One";
+      state.employerPension.isIndexedToInflation = "Yes";
+      state.employerPension.inflationRate = "";
+    },
+
+    removeAddedEmployerPension: (state, action: PayloadAction<number>) => {
+      const restAddedEmployerPensions =
+        state.calculatedResult.employerPensionResult.addedEmployerPensionsList.filter(
+          (_, index) => index != action.payload
+        );
+      state.calculatedResult.employerPensionResult.addedEmployerPensionsList =
+        restAddedEmployerPensions;
+    },
+
+    updateAddedEmployerPension: (
+      state,
+      action: PayloadAction<{ index: number; item: TEmployerPension }>
+    ) => {
+      const updateIndex =
+        state.calculatedResult.employerPensionResult.addedEmployerPensionsList.findIndex(
+          (_, itemIndex) => itemIndex == action.payload.index
+        );
+      if (updateIndex >= 0) {
+        state.calculatedResult.employerPensionResult.addedEmployerPensionsList[
+          updateIndex
+        ] = action.payload.item;
+      }
+    },
   },
 });
 
@@ -477,6 +679,14 @@ export const {
 
   resetTFSAWithSelectedNo,
   resetNRAWithSelectedNo,
+
+  addMoreOtherIncome,
+  removeAddedOtherIncome,
+  updateAddedOtherIncome,
+
+  addMoreEmployerPension,
+  removeAddedEmployerPension,
+  updateAddedEmployerPension,
 } = CRICSlice.actions;
 
 export default CRICSlice.reducer;

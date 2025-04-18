@@ -13,7 +13,6 @@ import CRICTooltip from "../CRICTooltip";
 import MandatoryUserHints from "../MandatoryUserHints";
 import { Select } from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { nextStep, previousStep } from "../../../redux/features/stepperSlice/CRICStepperSlice";
 
 const monthlyPensionEstimateOptions = [
   { value: "Select One", label: "Select One" },
@@ -53,12 +52,10 @@ export default function CanadaPensionPlanRough() {
         })
       );
     }
-    dispatch(nextStep());
     navigate("/CRIC/employer-pension");
   };
 
   const handleBack = () => {
-    dispatch(previousStep());
     navigate(-1);
   };
 

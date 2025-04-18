@@ -1,3 +1,5 @@
+import { TOtherIncomeItem } from "./CRIC.types";
+
 export type TOAS = {
   oldAgeSecurityBefore75: number;
   oldAgeSecurityAfter75: number;
@@ -67,44 +69,80 @@ export function calculateCPPBenefit(fullBenefit: number, startAge: number) {
   return Math.round(adjustedBenefit * 12);
 }
 
-
-
 //========== || Calculate Year by Year result ==========||
-export function calculateEmployerPensionAgeByAge(
-  pension: number,
-  inflationRate: number,
-  pensionStartReceivingAge: number,
-  pensionStopReceivingAge: number,
-  annualRIG: number
-) {
-  const pensionsAgeByAge = [];
-  let currentPension: number = pension;
-  const inflationFactor: number = inflationRate / 100;
-
-  for (
-    let age = pensionStartReceivingAge;
-    age <= pensionStopReceivingAge;
-    age++
-  ) {
-    if (age == pensionStartReceivingAge) {
-      pensionsAgeByAge.push({
-        age,
-        employerPensionAmount: currentPension,
-        annualRIG,
-      });
-    } else {
-      currentPension = currentPension - currentPension * inflationFactor;
-      currentPension = Number(parseInt(currentPension.toString()));
-      pensionsAgeByAge.push({
-        age,
-        employerPensionAmount: currentPension,
-        annualRIG,
-      });
-    }
-  }
-  return pensionsAgeByAge;
+export interface PensionAccount {
+  pensionPlanType?: string;
+  annualPension?: string;
+  startAmount?: string;
+  inflationRate?: string;
+  pensionReceivingAge: string;
+  isIndexedToInflation?: string;
+  pensionStopReceivingAge: string;
 }
 
+export interface PensionDataPoint {
+  age: number;
+  employerPensionAmount: number;
+  annualRIG: number;
+}
+
+export interface PensionChartResult {
+  chartData: PensionDataPoint[];
+  description: string;
+}
+
+export function generateEmployerPensionChartData(
+  accounts: PensionAccount[],
+  annualRIG: number
+): PensionChartResult {
+  const mergedPensions: Record<number, number> = {};
+  let description = "";
+
+  accounts.forEach((account) => {
+    let currentPension = parseFloat(
+      account.annualPension || account.startAmount || "0"
+    );
+    const initialPension = currentPension;
+    const applyDecline =
+      account.isIndexedToInflation?.trim().toLowerCase() === "no";
+    const inflationRate = applyDecline
+      ? parseFloat(account.inflationRate || "0")
+      : 0;
+    const inflationFactor = applyDecline ? inflationRate / 100 : 0;
+    const startAge = parseInt(account.pensionReceivingAge);
+    const stopAge = parseInt(account.pensionStopReceivingAge);
+
+    for (let age = startAge; age <= stopAge; age++) {
+      if (age !== startAge && applyDecline) {
+        currentPension -= currentPension * inflationFactor;
+        currentPension = Number(parseInt(currentPension.toString()));
+      }
+
+      mergedPensions[age] = (mergedPensions[age] || 0) + currentPension;
+    }
+
+    if (applyDecline) {
+      description += `Employer Pension: Declining from ${initialPension.toLocaleString()} to ${currentPension.toLocaleString()} annually between age ${startAge} and ${stopAge}; `;
+    } else {
+      description += `Employer Pension: Fixed at ${initialPension.toLocaleString()} annually between age ${startAge} and ${stopAge}; `;
+    }
+  });
+
+  const chartData: PensionDataPoint[] = Object.entries(mergedPensions).map(
+    ([age, employerPensionAmount]) => ({
+      age: Number(age),
+      employerPensionAmount,
+      annualRIG,
+    })
+  );
+
+  return {
+    chartData,
+    description: description.trim(),
+  };
+}
+
+//Canada Pension Plan Calculation Function
 export function calculatePensionPlanAgeByAge(
   ppStartAge: number,
   ppStopAge: number,
@@ -118,17 +156,74 @@ export function calculatePensionPlanAgeByAge(
   return ppBenefitsAgeByAgeResults;
 }
 
-export function calculateOtherIncomeAgeByAge(
-  otherIncomeStartAge: number,
-  otherIncomeStopAge: number,
-  otherIncomeAmount: number,
+export function mergeOtherIncomeByAgeWithSummary(
+  accounts: TOtherIncomeItem[],
   annualRIG: number
 ) {
-  const otherIncomesAgeByAgeResults = [];
-  for (let age = otherIncomeStartAge; age <= otherIncomeStopAge; age++) {
-    otherIncomesAgeByAgeResults.push({ age, otherIncomeAmount, annualRIG });
+  const incomeByAge: Record<number, number> = {};
+
+  // Step 1: Build the yearly income map
+  accounts.forEach((account: TOtherIncomeItem) => {
+    const amount = parseFloat(account.otherIncomeAmount);
+    const frequency = parseInt(account.otherIncomeFrequency, 10);
+    const startAge = parseInt(account.otherIncomeStartReceivingAge, 10);
+    const stopAge = parseInt(account.otherIncomeStopReceivingAge, 10);
+
+    const yearlyIncome = amount * frequency;
+
+    for (let age = startAge; age <= stopAge; age++) {
+      if (!incomeByAge[age]) {
+        incomeByAge[age] = 0;
+      }
+      incomeByAge[age] += yearlyIncome;
+    }
+  });
+
+  // Step 2: Convert to array
+  const mergedIncomeArray = Object.entries(incomeByAge)
+    .map(([age, total]) => ({
+      age: parseInt(age, 10),
+      otherIncomeAmount: total,
+      annualRIG,
+    }))
+    .sort((a, b) => a.age - b.age); // Sort by age
+
+  // Step 3: Generate summary text by grouping consecutive age ranges with same income
+  const summaryRanges = [];
+  let start = mergedIncomeArray[0]?.age;
+  let end = start;
+  let currentIncome = mergedIncomeArray[0]?.otherIncomeAmount;
+
+  for (let i = 1; i < mergedIncomeArray.length; i++) {
+    const entry = mergedIncomeArray[i];
+
+    if (entry.otherIncomeAmount === currentIncome && entry.age === end + 1) {
+      end = entry.age;
+    } else {
+      summaryRanges.push({ start, end, amount: currentIncome });
+      start = entry.age;
+      end = entry.age;
+      currentIncome = entry.otherIncomeAmount;
+    }
   }
-  return otherIncomesAgeByAgeResults;
+
+  // Push the final range
+  if (start !== undefined) {
+    summaryRanges.push({ start, end, amount: currentIncome });
+  }
+
+  // Step 4: Format summary string
+  const summary = summaryRanges
+    .map(
+      ({ amount, start, end }) =>
+        `${amount?.toLocaleString()} annually (from age ${start} to ${end})`
+    )
+    .join("; ");
+
+  return {
+    yearlyIncomeData: mergedIncomeArray,
+    summaryText: `Other Income: ${summary}`,
+  };
 }
 
 export function calculateOASBenefitsAgeByAge(
@@ -186,52 +281,16 @@ export function calculateRetirementSavingsAgeByAge(
  * @returns {Array<{ year: number, savingsAmount: number, taxPaid: number }> } - Array of savings year by year.
  */
 
-
-
-// export function calculateTFSAorNonRegAccountSavings(
-//   currentTotal: number,
-//   ongoingContribution: number = 0,
-//   contributionFrequency: number,
-//   rateOfReturn: number = 0,
-//   startAge: number,
-//   endAge: number,
-//   taxRate: number = 0
-// ) {
-//   const retirementYears = endAge - startAge;
-//   const afterTaxReturn = (rateOfReturn / 100) * (1 - taxRate / 100);
-
-//   const savingsYearByYear = [];
-//   let currentSavings = currentTotal;
-
-//   for (let age = 1; age <= retirementYears; age++) {
-//     currentSavings *= 1 + afterTaxReturn;
-//     currentSavings += ongoingContribution * contributionFrequency;
-//     savingsYearByYear.push({
-//       age: startAge + age,
-//       savingsAmount: Number(currentSavings.toFixed(2)),
-//     });
-//   }
-
-//   const annualRetirementIncome = currentSavings / retirementYears;
-
-//   return {
-//     annualRetirementIncome,
-//     savingsYearByYear,
-//   };
-// }
-
-
-
 export function calculateTFSAorNonRegAccountSavings(
-  currentTotal:number = 0,
-  ongoingContribution:number = 0,
-  contributionFrequency:number,
-  rateOfReturn:number = 0,
-  startAge:number,
-  endAge:number,
-  taxRate:number = 0
+  currentTotal: number = 0,
+  ongoingContribution: number = 0,
+  contributionFrequency: number,
+  rateOfReturn: number = 0,
+  startAge: number,
+  endAge: number,
+  taxRate: number = 0
 ) {
-   const periodsPerYear = contributionFrequency;
+  const periodsPerYear = contributionFrequency;
   const afterTaxReturn = (rateOfReturn / 100) * (1 - taxRate / 100); // Adjusted for after-tax return
   const ratePerPeriod = afterTaxReturn / periodsPerYear;
   const savingsByYear = [];
@@ -249,28 +308,12 @@ export function calculateTFSAorNonRegAccountSavings(
     });
   }
 
-  const annualRetirementIncome = totalSavings / (endAge-startAge);
+  const annualRetirementIncome = totalSavings / (endAge - startAge);
   return {
     savingsYearByYear: savingsByYear,
-    annualRetirementIncome
+    annualRetirementIncome,
   };
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 type InputItem = { age: number; [key: string]: number }; // Each item must have an "age" field and other numeric fields
 type MergedItem = { age: number; [key: string]: number }; // Final merged items

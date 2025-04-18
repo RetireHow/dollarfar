@@ -21,12 +21,13 @@ export type TOldAgeSecurity = {
 };
 
 export type TEmployerPension = {
-  hasEmployerPension: string;
+  hasEmployerPension?: string;
   pensionPlanType: string;
   annualPension: string;
   pensionReceivingAge: string;
   isIndexedToInflation: string;
   inflationRate: string;
+  pensionStopReceivingAge:string;
 };
 
 export type TTFSA = {
@@ -52,6 +53,14 @@ export type TRetirementSavings = {
   TFSAorNRASavingsReceivingAge: string;
 };
 
+export type TOtherIncomeItem = {
+  otherIncomeType: string;
+  otherIncomeFrequency: string;
+  otherIncomeAmount: string;
+  otherIncomeStartReceivingAge: string;
+  otherIncomeStopReceivingAge: string;
+};
+
 export type TOtherIncome = {
   hasOtherIncome: string;
   otherIncomeType: string;
@@ -59,6 +68,19 @@ export type TOtherIncome = {
   otherIncomeAmount: string;
   otherIncomeStartReceivingAge: string;
   otherIncomeStopReceivingAge: string;
+};
+
+export type TOtherIncomeAgeByAge = {
+  age: number;
+  otherIncomeAmount: number;
+  annualRIG: number;
+};
+
+export type TOtherIncomeResult = {
+  otherIncomeAmountAnnually: number;
+  otherIncomesAgeByAge: TOtherIncomeAgeByAge[];
+  addedOtherIncomesList: TOtherIncomeItem[];
+  summaryText:string;
 };
 
 export type TOASAmountAgeByAge = {
@@ -94,6 +116,8 @@ export type TEmployerPensionAgeByAge = {
 
 export type TEmployerPensionResult = {
   employerPensionsAgeByAge: TEmployerPensionAgeByAge[];
+  addedEmployerPensionsList:TEmployerPension[];
+  description:string;
 };
 
 export type TTFSASavingsYearByYear = {
@@ -127,17 +151,6 @@ export type TRetirementSavingsResult = {
   nonRegAccountSavings: TNonRegAccountSavings;
   annualRetirementIncomeFromBothAccount: number;
   retirementSavingsAgeByAge: TRetirementSavingsAgeByAge[];
-};
-
-export type TOtherIncomeAgeByAge = {
-  age: number;
-  otherIncomeAmount: number;
-  annualRIG: number;
-};
-
-export type TOtherIncomeResult = {
-  otherIncomeAmountAnnually: number;
-  otherIncomesAgeByAge: TOtherIncomeAgeByAge[];
 };
 
 export type TCalculatedResult = {

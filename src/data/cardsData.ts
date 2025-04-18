@@ -2,7 +2,7 @@ import { assets } from "../assets/assets";
 
 export const cardsData = [
   {
-    id: 6,
+    id: 1,
     title: "Cost of Living Comparison Calculator",
     description:
       "This calculator is used to compare the expenses required to maintain a certain standard of living in different locations or cities. It calculates the necessary income to sustain your lifestyle.....",
@@ -12,7 +12,7 @@ export const cardsData = [
     navLink: "cost-of-living-calculator",
   },
   {
-    id: 1,
+    id: 2,
     title: "Compound Interest Rate Calculator",
     description:
       "This calculator helps you determine how much an investment will grow over time when interest is applied not just to the principal amount but also to the accumulated interest.....",
@@ -23,7 +23,7 @@ export const cardsData = [
   },
 
   {
-    id: 2,
+    id: 3,
     title: "Net Worth Calculator",
     description:
       "This tool calculates your net worth by subtracting your total liabilities from your total assets. It gives you a snapshot of your financial health and helps you understand your financial standing.....",
@@ -45,7 +45,7 @@ export const cardsData = [
   },
 
   {
-    id: 8,
+    id: 5,
     title: "Registered Retirement Savings Plan (RRSP) Calculator",
     description:
       "This calculator is a financial tool that helps users estimate how much money they can accumulate in their RRSP account over time.",
@@ -55,7 +55,7 @@ export const cardsData = [
     navLink: "registered-retirement-savings-plan-calculator",
   },
   {
-    id: 9,
+    id: 6,
     title: "Registered Retirement Income Fund (RRIF) Calculator",
     description:
       "This calculator is a tool that helps individuals in Canada estimate their withdrawals from an RRIF after converting their RRSP (Registered Retirement Savings Plan) into an RRIF.....",
@@ -68,7 +68,7 @@ export const cardsData = [
     id: 7,
     title: "Comprehensive Retirement Income Calculator",
     description:
-      "This calculator estimates helps users estimate how much money they need to save to comfortably retire based on their current financial situation, income, savings, lifestyle, and future expenses.....",
+      "This calculator helps users roughly estimate their retirement income from all sources including, pensions, government benefits and other incomes from investments based on input data  (Ball park estimate)",
     arrowIcon: assets.arrowUpIcon,
     calcIcon: assets.comprehensiveRetirement,
     btnText: "Calculate",

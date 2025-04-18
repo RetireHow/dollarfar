@@ -22,12 +22,11 @@ import {
   antSelectFrequencyOptions,
   antYesNoSelectOptions,
 } from "../options/selectOptions";
-import { nextStep, previousStep } from "../../../redux/features/stepperSlice/CRICStepperSlice";
 
 const TFSAorNRASavingsReceivingAgeOptions = [
   { value: "Select One", label: "Select One" },
 ];
-for (let i = 50; i <= 75; i++) {
+for (let i = 50; i <= 100; i++) {
   TFSAorNRASavingsReceivingAgeOptions.push({
     value: i.toString(),
     label: i.toString(),
@@ -195,13 +194,10 @@ export default function RetirementSavings() {
       );
       return setShowError(true);
     }
-
-    dispatch(nextStep());
     navigate("/CRIC/other-income");
   };
 
   const handleBack = () => {
-    dispatch(previousStep());
     navigate(-1);
   };
 
@@ -278,7 +274,7 @@ export default function RetirementSavings() {
                   borderRadius: "8px",
                 }}
                 variant="borderless"
-                placeholder="Enter your estimated income"
+                placeholder="Enter TFSA Total Value"
                 type="number"
                 onWheel={(e) => e.currentTarget.blur()}
                 onKeyDown={handleKeyDownUtil}
@@ -359,7 +355,7 @@ export default function RetirementSavings() {
                   borderRadius: "8px",
                 }}
                 variant="borderless"
-                placeholder="Enter your estimated income"
+                placeholder="Enter ongoing contribution amount to TFSA"
                 type="number"
                 onWheel={(e) => e.currentTarget.blur()}
                 onKeyDown={handleKeyDownUtil}
@@ -383,7 +379,7 @@ export default function RetirementSavings() {
               <div className="font-semibold mb-2">
                 <p>
                   What rate of return/interest rate would you like to use for
-                  this TFS account?
+                  this TFSA account?
                   <CRICRedStar />
                   <CRICTooltip title="Enter the estimated annual rate of return or interest rate you expect from your TFSA investments. This rate will help calculate how your savings grow over time." />
                 </p>
@@ -397,7 +393,7 @@ export default function RetirementSavings() {
                   borderRadius: "8px",
                 }}
                 variant="borderless"
-                placeholder="Enter your estimated income"
+                placeholder="Enter interest rate for TFSA"
                 type="number"
                 onWheel={(e) => e.currentTarget.blur()}
                 onKeyDown={handleKeyDownUtil}
@@ -479,7 +475,7 @@ export default function RetirementSavings() {
                   borderRadius: "8px",
                 }}
                 variant="borderless"
-                placeholder="Enter your estimated income"
+                placeholder="Enter total amount of non-registered account"
                 type="number"
                 onWheel={(e) => e.currentTarget.blur()}
                 onKeyDown={handleKeyDownUtil}
@@ -563,7 +559,7 @@ export default function RetirementSavings() {
                   borderRadius: "8px",
                 }}
                 variant="borderless"
-                placeholder="Enter your estimated income"
+                placeholder="Enter ongoing contribution amount of non-registered account"
                 type="number"
                 onWheel={(e) => e.currentTarget.blur()}
                 onKeyDown={handleKeyDownUtil}
@@ -601,7 +597,7 @@ export default function RetirementSavings() {
                   borderRadius: "8px",
                 }}
                 variant="borderless"
-                placeholder="Enter your estimated income"
+                placeholder="Enter interest rate of non-registered account"
                 type="number"
                 onWheel={(e) => e.currentTarget.blur()}
                 onKeyDown={handleKeyDownUtil}
@@ -639,7 +635,7 @@ export default function RetirementSavings() {
                   borderRadius: "8px",
                 }}
                 variant="borderless"
-                placeholder="Enter your estimated income"
+                placeholder="Enter average tax rate"
                 type="number"
                 onWheel={(e) => e.currentTarget.blur()}
                 onKeyDown={handleKeyDownUtil}

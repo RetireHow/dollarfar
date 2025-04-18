@@ -12,7 +12,7 @@ type TItem = {
 };
 
 function calculateTotalFields(item: TItem): number {
-  if (!item.age) {
+  if (!item?.age) {
     return 0;
   }
   return Object.entries(item)
@@ -211,7 +211,6 @@ export default function CRICTable() {
     generalInfo: { annualRetirementIncomeGoal },
     retirementSavings: { TFSA, NRA },
     employerPension: { pensionPlanType },
-    otherIncome: { otherIncomeType },
     calculatedResult: {
       retirementSavingsResult: {
         TFSASavings: { annualRetirementIncome: TFSAAnnualRetirementIncome },
@@ -254,7 +253,7 @@ export default function CRICTable() {
                   />
                 )}
               </th>
-              <th className="border-b-[1px] border-gray-200 p-4">Other Income/{otherIncomeType}</th>
+              <th className="border-b-[1px] border-gray-200 p-4">Other Income</th>
 
               <th className="border-b-[1px] border-gray-200 p-4 min-w-[170px]">
                 Total Estimated Retirement Income

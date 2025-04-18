@@ -4,13 +4,16 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import CRICBarChart from "./CRICBarChart";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { calculateFinalResult } from "../../redux/features/CRIC/CRICSlice";
+import {
+  calculateEmployerPension,
+  calculateFinalResult,
+  calculateOtherIncome,
+} from "../../redux/features/CRIC/CRICSlice";
 import SummaryCollapse from "./SummaryCollapse";
 import { toast } from "react-toastify";
 import CRICPieChart from "./CRICPieChart";
 import { delay } from "../../utils/delay";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { previousStep } from "../../redux/features/stepperSlice/CRICStepperSlice";
 
 export default function Summary() {
   const dispatch = useAppDispatch();
@@ -30,7 +33,6 @@ export default function Summary() {
   }, []);
 
   const handleBack = () => {
-    dispatch(previousStep());
     navigate(-1);
   };
 
@@ -52,6 +54,8 @@ export default function Summary() {
     await delay(1000);
     setIsLoading(false);
     setIsCalculationCompleted(true);
+    dispatch(calculateOtherIncome(undefined));
+    dispatch(calculateEmployerPension(undefined));
     dispatch(calculateFinalResult(undefined));
     toast.success("Your retirement plan calculation is complete!");
   };
