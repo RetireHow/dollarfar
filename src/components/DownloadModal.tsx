@@ -6,6 +6,9 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import html2canvas from "html2canvas";
 import { Link } from "react-router-dom";
 import { delay } from "../utils/delay";
+import Error from "./UI/Error";
+import { toast } from "react-toastify";
+import { baseUrl } from "../api/apiConstant";
 
 interface DownloadModalProps {
   calculatorData: any;
@@ -23,11 +26,13 @@ const DownloadModal = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  // const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("");
   const [checked, setChecked] = useState(false);
   const [showError, setShowError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [base64, setBase64] = useState("");
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const pdfData = {
     ...calculatorData,
@@ -62,40 +67,45 @@ const DownloadModal = ({
     setChecked(false);
     setIsLoading(false);
     setEmail("");
+    setPhone("");
     setName("");
   };
 
-  // const sendEmail = async (name: string, email: string, phone: string) => {
-  //   try {
-  //     const res = await fetch(`${baseUrl}/api/send-email`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ name, email, phone }),
-  //     });
+  const sendEmail = async (name: string, email: string, phone: string) => {
+    try {
+      const res = await fetch(`${baseUrl}/api/send-email-by-zeptoapi`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, phone }),
+      });
 
-  //     // Parse JSON response
-  //     await res.json();
+      // Parse JSON response
+      await res.json();
 
-  //     // Assuming responseData contains info about the success or failure of the operation
-  //     toast.success("An email sent to your mail.");
-  //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  //   } catch (error) {
-  //     toast.error("There is something wrong!");
-  //   }
-  // };
+      // Assuming responseData contains info about the success or failure of the operation
+      toast.success("An email sent to your mail.");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      console.log("Error occured while sending mail=========> ", error)
+      toast.error("There is something wrong!");
+    }
+  };
 
   const handleDownloadPdf = async () => {
     // Validate fields
-    // if (!email || !name) {
-    //   return setShowError(true);
-    // }
+    if (!email?.trim() || !name?.trim() || !phone?.trim()) {
+      return setShowError(true);
+    }
+    if (email?.trim() && !emailRegex.test(email)) {
+      return setShowError(true);
+    }
     setIsLoading(true);
     if (!checked) {
       return setShowError(true);
     }
-    // await sendEmail(name, email, phone);
+    await sendEmail(name, email, phone);
     await delay(300);
     setIsModalOpen(false);
     setIsLoading(false);
@@ -108,6 +118,21 @@ const DownloadModal = ({
       return setShowError(true);
     }
   };
+
+  const handleChecked = () => {
+    setChecked(!checked);
+  };
+
+  useEffect(() => {
+    if (checked) {
+      if (!email?.trim() || !name?.trim() || !phone?.trim()) {
+        return setShowError(true);
+      }
+      if (email?.trim() && !emailRegex.test(email)) {
+        return setShowError(true);
+      }
+    }
+  }, [checked, name, phone, email, emailRegex]);
 
   return (
     <>
@@ -150,8 +175,11 @@ const DownloadModal = ({
               placeholder="Enter Name"
               onChange={(e) => setName(e.target.value)}
               disabled={checked}
+              value={name}
             />
-            {/* {showError && !name && <Error message="This field is required" />} */}
+            {showError && !name?.trim() && (
+              <Error message="This field is required" />
+            )}
           </div>
           <div className="md:text-[1rem] text-[14px]">
             <label className="block font-semibold mb-2" htmlFor="name">
@@ -165,10 +193,16 @@ const DownloadModal = ({
               placeholder="Enter Email Address"
               onChange={(e) => setEmail(e.target.value)}
               disabled={checked}
+              value={email}
             />
-            {/* {showError && !email && <Error message="This field is required" />} */}
+            {showError && !email?.trim() && (
+              <Error message="This field is required" />
+            )}
+            {showError && email?.trim() && !emailRegex.test(email) && (
+              <Error message="Email is not valid!" />
+            )}
           </div>
-          {/* <div className="md:text-[1rem] text-[14px]">
+          <div className="md:text-[1rem] text-[14px]">
             <label className="block font-semibold mb-2" htmlFor="name">
               Phone
             </label>
@@ -180,20 +214,23 @@ const DownloadModal = ({
               placeholder="Enter Phone Number"
               onChange={(e) => setPhone(e.target.value)}
               disabled={checked}
+              value={phone}
             />
-            {showError && !phone && <Error message="This field is required" />}
-          </div> */}
+            {showError && !phone?.trim() && (
+              <Error message="This field is required" />
+            )}
+          </div>
           <div>
             <div className="text-[12px] flex flex-wrap items-center gap-1 select-none">
               {checked ? (
                 <Icon
-                  onClick={() => setChecked(!checked)}
+                  onClick={handleChecked}
                   className="text-[1.2rem] cursor-pointer"
                   icon="mingcute:checkbox-fill"
                 />
               ) : (
                 <Icon
-                  onClick={() => setChecked(!checked)}
+                  onClick={handleChecked}
                   className="text-[1.2rem] cursor-pointer"
                   icon="mdi:checkbox-blank-outline"
                 />
@@ -213,7 +250,7 @@ const DownloadModal = ({
           </div>
 
           <div>
-            {base64 && checked && (
+            {base64 && checked && name && email && phone && (
               <PDFDownloadLink
                 document={<PdfComponent data={pdfData} />}
                 fileName={fileName}

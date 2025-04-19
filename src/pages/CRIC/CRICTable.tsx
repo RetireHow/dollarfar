@@ -210,7 +210,6 @@ export default function CRICTable() {
     finalResult,
     generalInfo: { annualRetirementIncomeGoal },
     retirementSavings: { TFSA, NRA },
-    employerPension: { pensionPlanType },
     calculatedResult: {
       retirementSavingsResult: {
         TFSASavings: { annualRetirementIncome: TFSAAnnualRetirementIncome },
@@ -231,7 +230,7 @@ export default function CRICTable() {
               <th className="border-b-[1px] border-gray-200 p-4">Age</th>
               <th className="border-b-[1px] border-gray-200 p-4">Canada Pension Plan</th>
               <th className="border-b-[1px] border-gray-200 p-4">Old Age Security</th>
-              <th className="border-b-[1px] border-gray-200 p-4">Employer Pension/{pensionPlanType}</th>
+              <th className="border-b-[1px] border-gray-200 p-4">Employer Pension</th>
               <th className="border-b-[1px] border-gray-200 p-4">
                 Accumulated Savings (
                 {TFSA.hasTFSA == "Yes" && NRA.hasNRA == "Yes"
