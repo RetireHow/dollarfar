@@ -32,6 +32,7 @@ export const CIRCContributionFrequencyOptions: TOption[] = [
   { value: "4", label: "Quarterly" },
 ];
 
+
 export default function CIRC() {
   useTitle("Dollarfar | CIRC");
 
@@ -116,11 +117,14 @@ export default function CIRC() {
             then your calculated result will be displayed here.{" "}
           </p>
         ) : (
-          <>
+          <section
+            id="compoundInterestRateCalculationArea"
+            className="space-y-[3.5rem]"
+          >
             <CalculationCard />
             <BarGraphChart />
             <YearlyCIRCTable />
-          </>
+          </section>
         )}
       </section>
 

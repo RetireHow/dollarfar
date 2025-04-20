@@ -2,10 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { BlobProviderParams, PDFDownloadLink } from "@react-pdf/renderer";
 import html2canvas from "html2canvas";
 import { Link } from "react-router-dom";
-import { delay } from "../utils/delay";
 import Error from "./UI/Error";
 import { toast } from "react-toastify";
 import { baseUrl } from "../api/apiConstant";
@@ -85,10 +84,10 @@ const DownloadModal = ({
       await res.json();
 
       // Assuming responseData contains info about the success or failure of the operation
-      toast.success("An email sent to your mail.");
+      toast.success("An email sent to your mail.", { position: "top-center" });
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.log("Error occured while sending mail=========> ", error)
+      console.log("Error occured while sending mail=========> ", error);
       toast.error("There is something wrong!");
     }
   };
@@ -101,38 +100,45 @@ const DownloadModal = ({
     if (email?.trim() && !emailRegex.test(email)) {
       return setShowError(true);
     }
-    setIsLoading(true);
     if (!checked) {
       return setShowError(true);
     }
+    setIsLoading(true);
     await sendEmail(name, email, phone);
-    await delay(300);
-    setIsModalOpen(false);
     setIsLoading(false);
+    setIsModalOpen(false);
     setShowError(false);
     setChecked(false);
   };
 
-  const handleValidateCheck = () => {
-    if (!checked) {
-      return setShowError(true);
-    }
-  };
+  const renderDownloadButton = ({ loading }: BlobProviderParams) =>
+    loading ? (
+      <button
+        className="text-white w-full rounded-[10px] py-[0.8rem] flex justify-center items-center h-[50px] bg-black"
+        type="button"
+        id="download-pdf"
+      >
+        Generating PDF...
+      </button>
+    ) : (
+      <button
+        className={` w-full rounded-[10px] py-[0.8rem] flex justify-center items-center h-[50px]  ${
+          isLoading ? "bg-gray-300 text-gray-500" : "bg-black text-white"
+        }`}
+        type="button"
+        id="download-pdf"
+        disabled={isLoading ? true : false}
+        onClick={handleDownloadPdf}
+      >
+        Download PDF
+      </button>
+    );
 
   const handleChecked = () => {
     setChecked(!checked);
   };
 
-  useEffect(() => {
-    if (checked) {
-      if (!email?.trim() || !name?.trim() || !phone?.trim()) {
-        return setShowError(true);
-      }
-      if (email?.trim() && !emailRegex.test(email)) {
-        return setShowError(true);
-      }
-    }
-  }, [checked, name, phone, email, emailRegex]);
+  const isFormComplete = checked && base64 && name && email && phone;
 
   return (
     <>
@@ -151,15 +157,17 @@ const DownloadModal = ({
         className="geist"
       >
         <div className="space-y-[1rem]">
-          <div className="flex items-center justify-between">
-            <h3 className="md:text-[1.5rem] text-[18px] font-bold">
-              Enter your details to reflect on pdf
-            </h3>
-            <Icon
-              onClick={handleCancel}
-              className="text-red-500 text-[1.8rem] cursor-pointer"
-              icon="material-symbols:close"
-            />
+          <div>
+            <div className="flex items-center justify-between">
+              <h3 className="md:text-[1.5rem] text-[18px] font-bold">
+                Enter your details to reflect on pdf
+              </h3>
+              <Icon
+                onClick={handleCancel}
+                className="text-red-500 text-[1.8rem] cursor-pointer"
+                icon="material-symbols:close"
+              />
+            </div>
           </div>
 
           <div className="md:text-[1rem] text-[14px]">
@@ -250,38 +258,23 @@ const DownloadModal = ({
           </div>
 
           <div>
-            {base64 && checked && name && email && phone && (
+            {isFormComplete && (
               <PDFDownloadLink
                 document={<PdfComponent data={pdfData} />}
                 fileName={fileName}
               >
-                <button
-                  className="text-white w-full rounded-[10px] py-[0.8rem] flex justify-center items-center h-[50px] bg-black"
-                  type="button"
-                  id="download-pdf"
-                  disabled={!checked || isLoading ? true : false}
-                  onClick={handleDownloadPdf}
-                >
-                  {isLoading ? (
-                    <Icon
-                      className="text-white text-[2rem]"
-                      icon="line-md:loading-loop"
-                    />
-                  ) : (
-                    "Download"
-                  )}
-                </button>
+                {renderDownloadButton as unknown as React.ReactNode}
               </PDFDownloadLink>
             )}
 
-            {!checked && (
+            {(!name || !email || !phone || !checked) && (
               <button
-                onClick={() => {
-                  handleValidateCheck();
-                }}
                 className="text-white w-full rounded-[10px] py-[0.8rem] flex justify-center items-center h-[50px] bg-black"
+                type="button"
+                id="download-pdf"
+                onClick={handleDownloadPdf}
               >
-                Download
+                Download PDF
               </button>
             )}
           </div>
