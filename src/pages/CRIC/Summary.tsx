@@ -26,6 +26,13 @@ export default function Summary() {
       currentAnnualIncome,
       lifeExpectency,
     },
+    calculatedResult: {
+      OASResult: { OASAmountsAgeByAge },
+      otherIncomeResult: { otherIncomesAgeByAge },
+      PPResult: { PPBenefitsAgeByAge },
+      employerPensionResult: { employerPensionsAgeByAge },
+      retirementSavingsResult: { retirementSavingsAgeByAge },
+    },
   } = useAppSelector((state) => state.CRICalculator);
 
   useEffect(() => {
@@ -37,6 +44,15 @@ export default function Summary() {
   };
 
   const handleCalculate = async () => {
+    if (
+      OASAmountsAgeByAge.length == 0 &&
+      otherIncomesAgeByAge.length == 0 &&
+      PPBenefitsAgeByAge.length == 0 &&
+      employerPensionsAgeByAge.length == 0 &&
+      retirementSavingsAgeByAge.length == 0
+    ) {
+      return toast.error("Information is missing to proceed calculation. Please fill in the required fields of at least one form step");
+    }
     // reset the local states
     setIsLoading(false);
     setIsCalculationCompleted(false);

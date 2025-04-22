@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
   calculateOASBenefit,
+  updateAgeByAgeField,
   updateOldAgeSecurityField,
 } from "../../../redux/features/CRIC/CRICSlice";
 import { useEffect, useState } from "react";
@@ -50,7 +51,16 @@ export default function OldAgeSecurity() {
         return setShowError(true);
       }
     }
-    dispatch(calculateOASBenefit(undefined));
+    if (Number(numberOYearsLivedInCanada) < 10) {
+      dispatch(
+        updateAgeByAgeField({
+          mainKey: "OASResult",
+          subKey: "OASAmountsAgeByAge",
+        })
+      );
+    } else {
+      dispatch(calculateOASBenefit(undefined));
+    }
     navigate("/CRIC/summary");
   };
 

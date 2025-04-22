@@ -50,10 +50,23 @@ export default function RRSPForm() {
 
   return (
     <section className="space-y-[2rem] md:text-[1rem] text-[14px]">
+      <p>
+        To see how much you could save on taxes with your RRSP contribution,{" "}
+        <a
+          href="https://www.eytaxcalculators.com/en/2025-rrsp-savings-calculator.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "underline", color: "#007bff" }}
+        >
+          click here to open the RRSP Tax Savings Calculator
+        </a>{" "}
+        in a new tab.
+      </p>
+
       <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
         <div>
           <div className="flex items-center gap-2 font-semibold mb-2">
-            <p>Current Age (Years)</p>
+            <p>Your Current Age</p>
             <CustomTooltip title="Enter your current age in years. This helps calculate the time available for your savings to grow before retirement." />
           </div>
           <input
@@ -82,8 +95,8 @@ export default function RRSPForm() {
 
         <div>
           <div className="flex items-center gap-2 font-semibold mb-2">
-            <p>Your plan to Retire in (Years)</p>
-            <CustomTooltip title="Specify the number of years from now when you plan to retire. This determines your investment horizon." />
+            <p>Your Retirement Age</p>
+            <CustomTooltip title="Enter the age you plan to retire and begin using your savings. Your retirement start age must be greater than your current age." />
           </div>
           <input
             className="outline-none border-[1px] px-[12px] py-2 w-full duration-300 rounded-[8px] border-[#838383]"

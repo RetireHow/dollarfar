@@ -42,6 +42,7 @@ export default function SummaryCollapse() {
     calculatedResult: {
       OASResult: {
         OASBenefitAmount: { oldAgeSecurityAfter75, oldAgeSecurityBefore75 },
+        OASAmountsAgeByAge,
       },
       otherIncomeResult: { addedOtherIncomesList },
       employerPensionResult: { addedEmployerPensionsList },
@@ -971,6 +972,9 @@ export default function SummaryCollapse() {
           >
             Old Age Security
           </Link>
+          {OASAmountsAgeByAge?.length == 0 && (
+            <span className="ml-1">(Not Eligible)</span>
+          )}
         </h3>
       ),
       children: (
@@ -1005,18 +1009,29 @@ export default function SummaryCollapse() {
                   74)
                 </Link>
               </p>
-              <p>
-                <Link
-                  to="/CRIC/OAS"
-                  className="border-b-[1px] border-b-gray-600 hover:border-b-blue-600"
-                >
-                  {Number(getValue(oldAgeSecurityBefore75.toString()))
-                    ? numberWithCommas(
-                        parseInt(oldAgeSecurityBefore75.toString())
-                      )
-                    : getValue(oldAgeSecurityBefore75.toString())}
-                </Link>
-              </p>
+              {OASAmountsAgeByAge?.length == 0 ? (
+                <p>
+                  <Link
+                    to="/CRIC/OAS"
+                    className="border-b-[1px] border-b-gray-600 hover:border-b-blue-600"
+                  >
+                    Not Eligible
+                  </Link>
+                </p>
+              ) : (
+                <p>
+                  <Link
+                    to="/CRIC/OAS"
+                    className="border-b-[1px] border-b-gray-600 hover:border-b-blue-600"
+                  >
+                    {Number(getValue(oldAgeSecurityBefore75.toString()))
+                      ? numberWithCommas(
+                          parseInt(oldAgeSecurityBefore75.toString())
+                        )
+                      : getValue(oldAgeSecurityBefore75.toString())}
+                  </Link>
+                </p>
+              )}
             </li>
 
             <li className="flex md:gap-0 gap-5 justify-between items-center">
@@ -1028,21 +1043,37 @@ export default function SummaryCollapse() {
                   OAS Pension (Ages 75 and up)
                 </Link>
               </p>
-              <p>
-                <Link
-                  to="/CRIC/OAS"
-                  className="border-b-[1px] border-b-gray-600 hover:border-b-blue-600"
-                >
-                  {Number(getValue(oldAgeSecurityAfter75.toString()))
-                    ? numberWithCommas(
-                        parseInt(oldAgeSecurityAfter75.toString())
-                      )
-                    : getValue(oldAgeSecurityAfter75.toString())}
-                </Link>
-              </p>
+
+              {OASAmountsAgeByAge?.length == 0 ? (
+                <p>
+                  <Link
+                    to="/CRIC/OAS"
+                    className="border-b-[1px] border-b-gray-600 hover:border-b-blue-600"
+                  >
+                    Not Eligible
+                  </Link>
+                </p>
+              ) : (
+                <p>
+                  <Link
+                    to="/CRIC/OAS"
+                    className="border-b-[1px] border-b-gray-600 hover:border-b-blue-600"
+                  >
+                    {Number(getValue(oldAgeSecurityAfter75.toString()))
+                      ? numberWithCommas(
+                          parseInt(oldAgeSecurityAfter75.toString())
+                        )
+                      : getValue(oldAgeSecurityAfter75.toString())}
+                  </Link>
+                </p>
+              )}
             </li>
 
-            <li className="flex md:gap-0 gap-5 justify-between items-center">
+            <li
+              className={`flex md:gap-0 gap-5 justify-between items-center ${
+                OASAmountsAgeByAge?.length == 0 && "text-red-500 font-medium"
+              }`}
+            >
               <p>
                 <Link
                   to="/CRIC/OAS"

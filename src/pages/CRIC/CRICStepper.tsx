@@ -38,7 +38,7 @@ export default function CRICStepper({
     },
     calculatedResult: {
       otherIncomeResult: { addedOtherIncomesList },
-      employerPensionResult:{addedEmployerPensionsList}
+      employerPensionResult: { addedEmployerPensionsList },
     },
   } = useAppSelector((state) => state.CRICalculator);
 
@@ -151,7 +151,10 @@ export default function CRICStepper({
 
     // ================|| Start Employer Pension ||====================
     if (location?.pathname == "/CRIC/employer-pension") {
-      if (hasEmployerPension == "Yes" && addedEmployerPensionsList.length == 0) {
+      if (
+        hasEmployerPension == "Yes" &&
+        addedEmployerPensionsList.length == 0
+      ) {
         if (
           pensionPlanType == "Select One" ||
           pensionReceivingAge == "Select One" ||
@@ -273,7 +276,16 @@ export default function CRICStepper({
         willLiveInCanadaAtleast40Years !== "Select One" &&
         willLiveInCanadaUntil65 !== "Select One"
       ) {
-        dispatch(calculateOASBenefit(undefined));
+        if (Number(numberOYearsLivedInCanada) < 10) {
+          dispatch(
+            updateAgeByAgeField({
+              mainKey: "OASResult",
+              subKey: "OASAmountsAgeByAge",
+            })
+          );
+        } else {
+          dispatch(calculateOASBenefit(undefined));
+        }
       }
     }
     // ================|| End OAS ||====================
