@@ -2,7 +2,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { toast } from "react-toastify";
 import {
+  calculateEmployerPension,
   calculateOASBenefit,
+  calculateOtherIncome,
   calculatePPBenefit,
   calculateRetirementSavings,
   resetNRAWithSelectedNo,
@@ -124,6 +126,7 @@ export default function CRICStepper({
           }
         }
       }
+      dispatch(calculateOtherIncome(undefined));
     }
     // ================|| End Other Income ||======================
 
@@ -252,6 +255,7 @@ export default function CRICStepper({
           "Please select ongoing contribution frequency for non registered account(s)."
         );
       }
+      dispatch(calculateEmployerPension(undefined));
     }
     // ================|| End Accumulated Savings ||====================
 

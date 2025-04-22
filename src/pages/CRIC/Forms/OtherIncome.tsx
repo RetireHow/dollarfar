@@ -5,6 +5,7 @@ import CRICTooltip from "../CRICTooltip";
 import CRICRedStar from "../CRICRedStar";
 import {
   addMoreOtherIncome,
+  calculateOtherIncome,
   updateOtherIncomeField,
 } from "../../../redux/features/CRIC/CRICSlice";
 import MandatoryUserHints from "../MandatoryUserHints";
@@ -148,6 +149,7 @@ export default function OtherIncome() {
         }
       }
     }
+    dispatch(calculateOtherIncome(undefined));
     navigate("/CRIC/OAS");
   };
 

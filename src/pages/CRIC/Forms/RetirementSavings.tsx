@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import CRICTooltip from "../CRICTooltip";
 import CRICRedStar from "../CRICRedStar";
 import {
+  calculateEmployerPension,
   calculateRetirementSavings,
   resetNRAWithSelectedNo,
   resetTFSAWithSelectedNo,
@@ -194,6 +195,7 @@ export default function RetirementSavings() {
       );
       return setShowError(true);
     }
+    dispatch(calculateEmployerPension(undefined));
     navigate("/CRIC/other-income");
   };
 
