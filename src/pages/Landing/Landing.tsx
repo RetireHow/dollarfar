@@ -3,6 +3,7 @@ import { cardsData } from "../../data/cardsData";
 import CalculatorCard from "./CalculatorCard";
 import heroEllipseImage from "../../assets/hero-ellipse.svg";
 import useTitle from "../../hooks/useTitle";
+
 export default function Landing() {
   const handleGetStarted = () => {
     window.scrollTo({ top: 630, behavior: "smooth" });

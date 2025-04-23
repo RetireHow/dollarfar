@@ -269,51 +269,121 @@ export function calculateRetirementSavingsAgeByAge(
   }
 }
 
-/**
- * Calculate savings year by year considering ongoing contributions, frequency, rate of return, and tax on savings.
- *
- * @param {number} currentTotal - Initial savings amount.
- * @param {number} ongoingContribution - Amount contributed per period.
- * @param {number} contributionFrequency - Number of contributions per year.
- * @param {number} rateOfReturn - Annual rate of return in percentage.
- * @param {number} totalSavingsYears - Total number of years for savings.
- * @param {number} [taxRate=0] - Optional tax rate in percentage applied to the annual savings.
- * @returns {Array<{ year: number, savingsAmount: number, taxPaid: number }> } - Array of savings year by year.
- */
+interface RetirementResult {
+  savingsYearByYear: Array<{
+    age: number;
+    savingsAmount: number;
+    realValue?: number;
+  }>;
+  annualRetirementIncome: number;
+  realAnnualIncome: number;
+  totalSavingsAtRetirement: number;
+}
 
 export function calculateTFSAorNonRegAccountSavings(
+  currentAge: number,
+  retirementStartAge: number,
+  retirementEndAge: number,
   currentTotal: number = 0,
   ongoingContribution: number = 0,
-  contributionFrequency: number,
-  rateOfReturn: number = 0,
-  startAge: number,
-  endAge: number,
-  taxRate: number = 0
-) {
-  const periodsPerYear = contributionFrequency;
-  const afterTaxReturn = (rateOfReturn / 100) * (1 - taxRate / 100); // Adjusted for after-tax return
-  const ratePerPeriod = afterTaxReturn / periodsPerYear;
-  const savingsByYear = [];
-  let totalSavings = currentTotal;
+  contributionFrequency: number = 1,
+  preRetirementReturn: number = 10,
+  postRetirementReturn: number = 5,
+  taxRate: number = 0,
+  inflationRate: number = 0
+): RetirementResult {
+  // --- Validations ---
+  if (currentAge >= retirementStartAge)
+    throw new Error("Current age must be before retirement age.");
+  if (retirementStartAge >= retirementEndAge)
+    throw new Error("Retirement start age must be before end age.");
+  if (currentTotal < 0) throw new Error("Current savings cannot be negative.");
+  if (ongoingContribution < 0)
+    throw new Error("Contributions cannot be negative.");
+  if (contributionFrequency <= 0)
+    throw new Error("Contribution frequency must be positive.");
+  if (preRetirementReturn < 0 || postRetirementReturn < 0)
+    throw new Error("Returns cannot be negative.");
+  if (taxRate < 0 || taxRate > 100)
+    throw new Error("Tax rate must be between 0 and 100.");
+  if (inflationRate < 0) throw new Error("Inflation rate cannot be negative.");
 
-  for (let age = startAge; age < endAge; age++) {
-    for (let period = 0; period < periodsPerYear; period++) {
-      const growth = totalSavings * ratePerPeriod;
-      totalSavings += growth + ongoingContribution;
-    }
+  // --- Constants & Helpers ---
+  const taxFactor = 1 - taxRate / 100;
+  const inflationFactor = 1 + inflationRate / 100;
+  const afterTaxGrowth = (balance: number, rate: number) =>
+    balance * (rate / 100) * taxFactor;
+
+  const adjustForInflation = (value: number, years: number) =>
+    inflationRate > 0 ? value / Math.pow(inflationFactor, years) : value;
+
+  const yearsToRetirement = retirementStartAge - currentAge;
+  const retirementYears = retirementEndAge - retirementStartAge;
+  const savingsByYear: RetirementResult["savingsYearByYear"] = [];
+
+  // --- Pre-Retirement Growth ---
+  let savings = currentTotal;
+  for (let year = 1; year <= yearsToRetirement; year++) {
+    const growth = afterTaxGrowth(savings, preRetirementReturn);
+    savings += growth + ongoingContribution * contributionFrequency;
 
     savingsByYear.push({
-      age,
-      savingsAmount: Math.round(totalSavings),
+      age: currentAge + year,
+      savingsAmount: Math.round(savings),
+      realValue: Math.round(adjustForInflation(savings, year)),
     });
   }
 
-  const annualRetirementIncome = totalSavings / (endAge - startAge);
+  const totalSavingsAtRetirement = savings;
+
+  // --- Retirement Phase ---
+  const postTaxReturn = (postRetirementReturn / 100) * taxFactor;
+  const realReturn =
+    inflationRate > 0
+      ? (1 + postTaxReturn) / inflationFactor - 1
+      : postTaxReturn;
+
+  let realAnnualIncome: number;
+  if (retirementYears <= 0)
+    throw new Error("Retirement duration must be positive.");
+
+  if (Math.abs(realReturn) < 1e-6) {
+    realAnnualIncome = totalSavingsAtRetirement / retirementYears;
+  } else {
+    const annuityFactor = 1 - Math.pow(1 + realReturn, -retirementYears);
+    realAnnualIncome = (totalSavingsAtRetirement * realReturn) / annuityFactor;
+  }
+
+  const nominalAnnualIncome =
+    realAnnualIncome * Math.pow(inflationFactor, yearsToRetirement);
+
+  // --- Withdrawals Over Retirement ---
+  let retirementBalance = totalSavingsAtRetirement;
+  for (let year = 1; year <= retirementYears; year++) {
+    const age = retirementStartAge + year - 1;
+    const growth = afterTaxGrowth(retirementBalance, postRetirementReturn);
+    const withdrawal =
+      nominalAnnualIncome * Math.pow(inflationFactor, year - 1);
+
+    retirementBalance += growth - withdrawal;
+
+    savingsByYear.push({
+      age,
+      savingsAmount: Math.round(retirementBalance),
+      realValue: Math.round(
+        adjustForInflation(retirementBalance, yearsToRetirement + year)
+      ),
+    });
+  }
+
   return {
     savingsYearByYear: savingsByYear,
-    annualRetirementIncome,
+    annualRetirementIncome: Math.round(nominalAnnualIncome),
+    realAnnualIncome: Math.round(realAnnualIncome),
+    totalSavingsAtRetirement: Math.round(totalSavingsAtRetirement),
   };
 }
+
 
 type InputItem = { age: number; [key: string]: number }; // Each item must have an "age" field and other numeric fields
 type MergedItem = { age: number; [key: string]: number }; // Final merged items
@@ -324,6 +394,7 @@ type MergedItem = { age: number; [key: string]: number }; // Final merged items
  * @param {...Array<InputItem>} arrays - Arrays of objects to merge. Each object must have an "age" field.
  * @returns {Array<MergedItem>} - The merged array, where each object contains "age" and all fields with missing values set to 0.
  */
+
 export function mergeArraysByAge(...arrays: InputItem[][]): MergedItem[] {
   const ageMap = new Map<number, MergedItem>();
   const allFields = new Set<string>();
