@@ -5,6 +5,7 @@ import CRICTooltip from "../CRICTooltip";
 import CRICRedStar from "../CRICRedStar";
 import {
   addMoreEmployerPension,
+  calculateEmployerPension,
   updateEmployerPensionField,
 } from "../../../redux/features/CRIC/CRICSlice";
 import { handleKeyDownUtil } from "../../../utils/handleKeyDownUtil";
@@ -79,7 +80,7 @@ export default function EmployerPension() {
         }
       }
     }
-
+    dispatch(calculateEmployerPension(undefined));
     navigate("/CRIC/retirement-savings");
   };
 

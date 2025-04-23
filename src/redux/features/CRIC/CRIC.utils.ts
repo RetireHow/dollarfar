@@ -293,20 +293,6 @@ export function calculateTFSAorNonRegAccountSavings(
   inflationRate: number = 0
 ): RetirementResult {
   // --- Validations ---
-  if (currentAge >= retirementStartAge)
-    throw new Error("Current age must be before retirement age.");
-  if (retirementStartAge >= retirementEndAge)
-    throw new Error("Retirement start age must be before end age.");
-  if (currentTotal < 0) throw new Error("Current savings cannot be negative.");
-  if (ongoingContribution < 0)
-    throw new Error("Contributions cannot be negative.");
-  if (contributionFrequency <= 0)
-    throw new Error("Contribution frequency must be positive.");
-  if (preRetirementReturn < 0 || postRetirementReturn < 0)
-    throw new Error("Returns cannot be negative.");
-  if (taxRate < 0 || taxRate > 100)
-    throw new Error("Tax rate must be between 0 and 100.");
-  if (inflationRate < 0) throw new Error("Inflation rate cannot be negative.");
 
   // --- Constants & Helpers ---
   const taxFactor = 1 - taxRate / 100;

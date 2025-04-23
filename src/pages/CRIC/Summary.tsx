@@ -8,6 +8,7 @@ import {
   calculateEmployerPension,
   calculateFinalResult,
   calculateOtherIncome,
+  calculateRetirementSavings,
 } from "../../redux/features/CRIC/CRICSlice";
 import SummaryCollapse from "./SummaryCollapse";
 import { toast } from "react-toastify";
@@ -51,7 +52,9 @@ export default function Summary() {
       employerPensionsAgeByAge.length == 0 &&
       retirementSavingsAgeByAge.length == 0
     ) {
-      return toast.error("Information is missing to proceed calculation. Please fill in the required fields of at least one form step");
+      return toast.error(
+        "Information is missing to proceed calculation. Please fill in the required fields of at least one form step"
+      );
     }
     // reset the local states
     setIsLoading(false);
@@ -72,6 +75,7 @@ export default function Summary() {
     setIsCalculationCompleted(true);
     dispatch(calculateOtherIncome(undefined));
     dispatch(calculateEmployerPension(undefined));
+    dispatch(calculateRetirementSavings(undefined));
     dispatch(calculateFinalResult(undefined));
     toast.success("Your retirement plan calculation is complete!");
   };

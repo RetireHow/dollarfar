@@ -175,6 +175,7 @@ export default function CRICStepper({
           }
         }
       }
+      dispatch(calculateEmployerPension(undefined));
     }
     // ================|| End Employer Pension ||====================
 
@@ -255,7 +256,7 @@ export default function CRICStepper({
           "Please select ongoing contribution frequency for non registered account(s)."
         );
       }
-      dispatch(calculateEmployerPension(undefined));
+      dispatch(calculateRetirementSavings(undefined));
     }
     // ================|| End Accumulated Savings ||====================
 

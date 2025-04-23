@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import CRICTooltip from "../CRICTooltip";
 import CRICRedStar from "../CRICRedStar";
 import {
-  calculateEmployerPension,
   calculateRetirementSavings,
   resetNRAWithSelectedNo,
   resetTFSAWithSelectedNo,
@@ -95,6 +94,7 @@ export default function RetirementSavings() {
   const [showError, setShowError] = useState(false);
 
   const {
+    generalInfo: { dobYear },
     retirementSavings: {
       TFSA: {
         TFSAOngoingContributionAmount,
@@ -116,6 +116,17 @@ export default function RetirementSavings() {
   } = useAppSelector((state) => state.CRICalculator);
 
   const handleNext = () => {
+    if (
+      dobYear !== "Select One" &&
+      TFSAorNRASavingsReceivingAge !== "Select One"
+    ) {
+      const currentAge = new Date().getFullYear() - Number(dobYear);
+      if (currentAge > Number(TFSAorNRASavingsReceivingAge)) {
+        return toast.error(
+          "Your current age must be less than retirement age. Please check your date of birth."
+        );
+      }
+    }
     //Exclude the account when select No
     if (hasTFSA == "No") {
       dispatch(resetTFSAWithSelectedNo(undefined));
@@ -195,7 +206,8 @@ export default function RetirementSavings() {
       );
       return setShowError(true);
     }
-    dispatch(calculateEmployerPension(undefined));
+
+    dispatch(calculateRetirementSavings(undefined));
     navigate("/CRIC/other-income");
   };
 
