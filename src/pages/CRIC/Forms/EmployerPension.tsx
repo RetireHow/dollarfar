@@ -80,6 +80,10 @@ export default function EmployerPension() {
         }
       }
     }
+    if (isIndexedToInflation == "No" && !inflationRate.trim()) {
+      toast.error("Please fill in the required field.");
+      return setShowError(true);
+    }
     dispatch(calculateEmployerPension(undefined));
     navigate("/CRIC/retirement-savings");
   };

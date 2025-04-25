@@ -29,6 +29,8 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { Modal } from "antd";
 import { useState } from "react";
 import { isNegative } from "../../utils/isNegative";
+import { EmployerPensionViewModal } from "./EmployerPensionViewModal";
+import { OtherIncomeViewModal } from "./OtherIncomeViewModal";
 
 function CRICTooltipWithTwoAccount({
   data,
@@ -121,8 +123,7 @@ function CRICRetirementDifferenceModal({
     currency: string;
   };
 }) {
-  const { retirementIncomeGoal, retirementIncome, difference } =
-    data || {};
+  const { retirementIncomeGoal, retirementIncome, difference } = data || {};
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
@@ -166,17 +167,14 @@ function CRICRetirementDifferenceModal({
             <p>
               You're almost there! Your estimated retirement income is{" "}
               <span className="font-semibold text-black">
-                
                 {numberWithCommas(retirementIncome)}
               </span>
               , but your goal is{" "}
               <span className="font-semibold text-black">
-                
                 {numberWithCommas(retirementIncomeGoal)}
               </span>
               —a difference of{" "}
               <span className="font-semibold text-black">
-                
                 {numberWithCommas(difference)}
               </span>
               . Small adjustments can help you bridge this gap and secure the
@@ -187,12 +185,10 @@ function CRICRetirementDifferenceModal({
           <div className="text-[1.2rem] p-4">
             Congratulations! 🎉 Your estimated retirement income is{" "}
             <span className="font-semibold text-black">
-              
               {numberWithCommas(retirementIncome)}
             </span>
             , meeting your goal of{" "}
             <span className="font-semibold text-black">
-              
               {numberWithCommas(retirementIncomeGoal)}
             </span>
             . You’re on track for the comfortable retirement you planned
@@ -221,16 +217,40 @@ export default function CRICTable() {
     },
   } = useAppSelector((state) => state.CRICalculator);
 
+  // Initialize column visibility flags
+  const shouldShowCPP = finalResult?.some(
+    (item) => Number(item?.PPBenefitAmount) > 0
+  );
+  const shouldShowOAS = finalResult?.some(
+    (item) => Number(item?.OASAmount) > 0
+  );
+  const shouldShowEmployerPension = finalResult?.some(
+    (item) => Number(item?.employerPensionAmount) > 0
+  );
+  const shouldShowSavings = finalResult?.some(
+    (item) => Number(item?.retirementSavingsAmount) > 0
+  );
+  const shouldShowOtherIncome = finalResult?.some(
+    (item) => Number(item?.otherIncomeAmount) > 0
+  );
+
   return (
     <section className="mt-[5rem]">
       <div className="overflow-x-auto rounded-[10px]">
         <table className="mb-[1.5rem] bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md w-full text-center min-w-[600px] text-[14px]">
-          <thead className="text-[1rem] font-extrabold bg-gray-800 text-white">
+          {/* <thead className="text-[1rem] font-extrabold bg-gray-800 text-white">
             <tr className="border-b-[1px] border-b-[#0000001A]">
               <th className="border-b-[1px] border-gray-200 p-4">Age</th>
-              <th className="border-b-[1px] border-gray-200 p-4">Canada Pension Plan</th>
-              <th className="border-b-[1px] border-gray-200 p-4">Old Age Security</th>
-              <th className="border-b-[1px] border-gray-200 p-4">Employer Pension</th>
+              <th className="border-b-[1px] border-gray-200 p-4">
+                Canada Pension Plan
+              </th>
+              <th className="border-b-[1px] border-gray-200 p-4">
+                Old Age Security
+              </th>
+              <th className="border-b-[1px] border-gray-200 p-4">
+                Employer Pension/RRIF
+                <EmployerPensionViewModal />
+              </th>
               <th className="border-b-[1px] border-gray-200 p-4">
                 Accumulated Savings (
                 {TFSA.hasTFSA == "Yes" && NRA.hasNRA == "Yes"
@@ -252,14 +272,61 @@ export default function CRICTable() {
                   />
                 )}
               </th>
-              <th className="border-b-[1px] border-gray-200 p-4">Other Income</th>
+              <th className="border-b-[1px] border-gray-200 p-4">
+                Other Income
+                <OtherIncomeViewModal />
+              </th>
 
               <th className="border-b-[1px] border-gray-200 p-4 min-w-[170px]">
                 Total Estimated Retirement Income
               </th>
             </tr>
+          </thead> */}
+          <thead className="text-[1rem] font-extrabold bg-gray-800 text-white">
+            <tr>
+              <th className="p-4">Age</th>
+              {shouldShowCPP && <th className="p-4">Canada Pension Plan</th>}
+              {shouldShowOAS && <th className="p-4">Old Age Security</th>}
+              {shouldShowEmployerPension && (
+                <th className="p-4">
+                  Employer Pension/RRIF <EmployerPensionViewModal />
+                </th>
+              )}
+              {shouldShowSavings && (
+                <th className="p-4">
+                  Accumulated Savings (
+                  {TFSA.hasTFSA === "Yes" && NRA.hasNRA === "Yes"
+                    ? "TFSA + Non Reg. Account(s)"
+                    : TFSA.hasTFSA === "Yes"
+                    ? "TFSA"
+                    : NRA.hasNRA === "Yes"
+                    ? "Non Reg. Account(s)"
+                    : ""}
+                  )
+                  {TFSA.hasTFSA === "Yes" && NRA.hasNRA === "Yes" && (
+                    <CRICTooltipWithTwoAccount
+                      data={{
+                        TFSAAnnualBalance: TFSAAnnualRetirementIncome,
+                        NRAAnnualBalance: NRAAnnualRetirementIncome,
+                        annualRetirementIncomeFromBothAccount,
+                        currency,
+                      }}
+                    />
+                  )}
+                </th>
+              )}
+              {shouldShowOtherIncome && (
+                <th className="p-4">
+                  Other Income <OtherIncomeViewModal />
+                </th>
+              )}
+              <th className="p-4 min-w-[170px]">
+                Total Estimated Retirement Income
+              </th>
+            </tr>
           </thead>
-          <tbody>
+
+          {/* <tbody>
             {finalResult?.map((item: TItem, index: number) => {
               const {
                 age,
@@ -278,29 +345,24 @@ export default function CRICTable() {
                 >
                   <td className="border-b-[1px] border-gray-200 p-4">{age}</td>
                   <td className="border-b-[1px] border-gray-200 p-4">
-                    
                     {PPBenefitAmount ? numberWithCommas(PPBenefitAmount) : 0}
                   </td>
                   <td className="border-b-[1px] border-gray-200 p-4">
-                    
                     {OASAmount
                       ? numberWithCommas(parseInt(OASAmount?.toString()))
                       : 0}
                   </td>
                   <td className="border-b-[1px] border-gray-200 p-4">
-                    
                     {employerPensionAmount
                       ? numberWithCommas(employerPensionAmount)
                       : 0}
                   </td>
                   <td className="border-b-[1px] border-gray-200 p-4">
-                    
                     {retirementSavingsAmount
                       ? numberWithCommas(retirementSavingsAmount)
                       : 0}
                   </td>
                   <td className="border-b-[1px] border-gray-200 p-4">
-                    
                     {otherIncomeAmount
                       ? numberWithCommas(otherIncomeAmount)
                       : 0}
@@ -313,12 +375,91 @@ export default function CRICTable() {
                         : "text-green-500"
                     }`}
                   >
-                    
                     {calculateTotalFields(item)
                       ? numberWithCommas(
                           parseInt(calculateTotalFields(item)?.toString())
                         )
                       : 0}
+                    {isNegative(difference) ? (
+                      <span className="text-[1.3rem] ml-1">😢</span>
+                    ) : (
+                      <span className="text-[1.3rem] ml-1">😃</span>
+                    )}
+                    <CRICRetirementDifferenceModal
+                      data={{
+                        retirementIncomeGoal: Number(
+                          annualRetirementIncomeGoal
+                        ),
+                        retirementIncome: parseInt(
+                          calculateTotalFields(item)?.toString()
+                        ),
+                        difference,
+                        currency,
+                      }}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody> */}
+          <tbody>
+            {finalResult?.map((item, index) => {
+              const {
+                age,
+                OASAmount,
+                PPBenefitAmount,
+                employerPensionAmount,
+                otherIncomeAmount,
+                retirementSavingsAmount,
+              } = item;
+
+              const difference =
+                calculateTotalFields(item) - Number(annualRetirementIncomeGoal);
+
+              return (
+                <tr key={index} className="hover:bg-gray-200">
+                  <td className="p-4">{age}</td>
+                  {shouldShowCPP && (
+                    <td className="p-4">
+                      {PPBenefitAmount ? numberWithCommas(PPBenefitAmount) : 0}
+                    </td>
+                  )}
+                  {shouldShowOAS && (
+                    <td className="p-4">
+                      {OASAmount ? numberWithCommas(OASAmount) : 0}
+                    </td>
+                  )}
+                  {shouldShowEmployerPension && (
+                    <td className="p-4">
+                      {employerPensionAmount
+                        ? numberWithCommas(employerPensionAmount)
+                        : 0}
+                    </td>
+                  )}
+                  {shouldShowSavings && (
+                    <td className="p-4">
+                      {retirementSavingsAmount
+                        ? numberWithCommas(retirementSavingsAmount)
+                        : 0}
+                    </td>
+                  )}
+                  {shouldShowOtherIncome && (
+                    <td className="p-4">
+                      {otherIncomeAmount
+                        ? numberWithCommas(otherIncomeAmount)
+                        : 0}
+                    </td>
+                  )}
+                  <td
+                    className={`p-4 flex items-center justify-center ${
+                      isNegative(difference)
+                        ? "text-red-500 font-medium"
+                        : "text-green-500"
+                    }`}
+                  >
+                    {numberWithCommas(
+                      parseInt(calculateTotalFields(item)?.toString())
+                    )}
                     {isNegative(difference) ? (
                       <span className="text-[1.3rem] ml-1">😢</span>
                     ) : (

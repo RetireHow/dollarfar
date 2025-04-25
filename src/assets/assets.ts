@@ -17,6 +17,7 @@ import registeredRetirementIncome from "./registered-retirement-income.svg";
 import dollarfarPngLogo from "./dollarfar-png-logo.png";
 import costOfLeavingFrame from "./cost-of-leaving-frame.png";
 import comprehensiveRetirementFrame from "./comprehensive-retirement-frame.png";
+import landingPic from "./Landing-Pic.jpg"
 
 import happyImg from "./happy.gif";
 import neutralImg from "./neutral.gif";
@@ -45,4 +46,5 @@ export const assets = {
   happyImg,
   neutralImg,
   sadImg,
+  landingPic
 };

@@ -333,6 +333,14 @@ const CRICSlice = createSlice({
 
       const { annualRetirementIncomeGoal } = state.generalInfo;
 
+      if (otherIncomeType == "Select One") {
+        // reset the fields
+        state.otherIncome.otherIncomeFrequency = "Select One";
+        state.otherIncome.otherIncomeAmount = "Select One";
+        state.otherIncome.otherIncomeStartReceivingAge = "Select One";
+        state.otherIncome.otherIncomeStopReceivingAge = "Select One";
+      }
+
       if (
         otherIncomeType !== "Select One" &&
         otherIncomeFrequency !== "Select One" &&
@@ -441,6 +449,15 @@ const CRICSlice = createSlice({
         pensionStopReceivingAge: lifeExpectency,
       };
 
+      if (pensionPlanType == "Select One") {
+        // reset the fields
+        state.employerPension.annualPension = "";
+        state.employerPension.pensionReceivingAge = "Select One";
+        state.employerPension.pensionPlanType = "Select One";
+        state.employerPension.isIndexedToInflation = "Yes";
+        state.employerPension.inflationRate = "";
+      }
+
       if (hasEmployerPension == "No") {
         state.calculatedResult.employerPensionResult.employerPensionsAgeByAge =
           [];
@@ -504,19 +521,18 @@ const CRICSlice = createSlice({
         const {
           annualRetirementIncome: TFSAAnnualRetirementIncome,
           savingsYearByYear: TFSASavingsYearByYear,
-        } =
-          calculateTFSAorNonRegAccountSavings(
-            currentAge, // currentAge: Your current age
-            Number(TFSAorNRASavingsReceivingAge), // retirementStartAge: Age you plan to start withdrawing
-            Number(lifeExpectency), // retirementEndAge: Age you plan to stop withdrawing
-            Number(TFSA.TFSAcurrentTotal), // currentTotal: Current total savings
-            Number(TFSA.TFSAOngoingContributionAmount), // ongoingContribution: Amount you contribute each period
-            Number(TFSA.TFSAOngoingContributionFrequency), // contributionFrequency: Contributions per year (1 = annual)
-            Number(TFSA.TFSAreturnRate), // preRetirementReturn: Expected annual return before retirement (%)
-            Number(TFSA.TFSAreturnRate), // postRetirementReturn: Expected annual return during retirement (%)
-            0, // taxRate: Tax on growth (0 for TFSA, >0 for non-registered)
-            0 // inflationRate: Annual inflation rate (%)
-          );
+        } = calculateTFSAorNonRegAccountSavings(
+          currentAge, // currentAge: Your current age
+          Number(TFSAorNRASavingsReceivingAge), // retirementStartAge: Age you plan to start withdrawing
+          Number(lifeExpectency), // retirementEndAge: Age you plan to stop withdrawing
+          Number(TFSA.TFSAcurrentTotal), // currentTotal: Current total savings
+          Number(TFSA.TFSAOngoingContributionAmount), // ongoingContribution: Amount you contribute each period
+          Number(TFSA.TFSAOngoingContributionFrequency), // contributionFrequency: Contributions per year (1 = annual)
+          Number(TFSA.TFSAreturnRate), // preRetirementReturn: Expected annual return before retirement (%)
+          Number(TFSA.TFSAreturnRate), // postRetirementReturn: Expected annual return during retirement (%)
+          0, // taxRate: Tax on growth (0 for TFSA, >0 for non-registered)
+          0 // inflationRate: Annual inflation rate (%)
+        );
         state.calculatedResult.retirementSavingsResult.TFSASavings.savingsYearByYear =
           TFSASavingsYearByYear;
         state.calculatedResult.retirementSavingsResult.TFSASavings.annualRetirementIncome =
@@ -527,19 +543,18 @@ const CRICSlice = createSlice({
         const {
           annualRetirementIncome: NRAAnnualRetirementIncome,
           savingsYearByYear: NRASavingsYearByYear,
-        } =
-          calculateTFSAorNonRegAccountSavings(
-            currentAge, // currentAge: Your current age
-            Number(TFSAorNRASavingsReceivingAge), // retirementStartAge: Age you plan to start withdrawing
-            Number(lifeExpectency), // retirementEndAge: Age you plan to stop withdrawing
-            Number(NRA.NRAcurrentTotal), // currentTotal: Current total savings
-            Number(NRA.NRAOngoingContributionAmount), // ongoingContribution: Amount you contribute each period
-            Number(NRA.NRAOngoingContributionFrequency), // contributionFrequency: Contributions per year (1 = annual)
-            Number(NRA.NRAreturnRate), // preRetirementReturn: Expected annual return before retirement (%)
-            Number(NRA.NRAreturnRate), // postRetirementReturn: Expected annual return during retirement (%)
-            Number(NRA.NRAtaxRate), // taxRate: Tax on growth (0 for TFSA, >0 for non-registered)
-            0 // inflationRate: Annual inflation rate (%)
-          );
+        } = calculateTFSAorNonRegAccountSavings(
+          currentAge, // currentAge: Your current age
+          Number(TFSAorNRASavingsReceivingAge), // retirementStartAge: Age you plan to start withdrawing
+          Number(lifeExpectency), // retirementEndAge: Age you plan to stop withdrawing
+          Number(NRA.NRAcurrentTotal), // currentTotal: Current total savings
+          Number(NRA.NRAOngoingContributionAmount), // ongoingContribution: Amount you contribute each period
+          Number(NRA.NRAOngoingContributionFrequency), // contributionFrequency: Contributions per year (1 = annual)
+          Number(NRA.NRAreturnRate), // preRetirementReturn: Expected annual return before retirement (%)
+          Number(NRA.NRAreturnRate), // postRetirementReturn: Expected annual return during retirement (%)
+          Number(NRA.NRAtaxRate), // taxRate: Tax on growth (0 for TFSA, >0 for non-registered)
+          0 // inflationRate: Annual inflation rate (%)
+        );
         state.calculatedResult.retirementSavingsResult.nonRegAccountSavings.savingsYearByYear =
           NRASavingsYearByYear;
         state.calculatedResult.retirementSavingsResult.nonRegAccountSavings.annualRetirementIncome =

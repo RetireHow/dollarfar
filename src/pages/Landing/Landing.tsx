@@ -45,8 +45,8 @@ export default function Landing() {
 
         <div className="lg:mb-0 mb-[2rem] md:mt-0 mt-[-2rem] md:max-w-[40%] max-w-full">
           <img
-            className="md:w-full w-[80%]"
-            src={assets.heroImageOptimized}
+            className="md:w-full w-[80%] rounded-2xl border-[1px] border-gray-300 shadow-md"
+            src={assets.heroImage}
             alt="Hero Image"
           />
         </div>

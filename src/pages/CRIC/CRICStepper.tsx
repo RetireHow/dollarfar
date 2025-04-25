@@ -53,6 +53,8 @@ export default function CRICStepper({
       hasEmployerPension,
       pensionPlanType,
       pensionReceivingAge,
+      isIndexedToInflation,
+      inflationRate,
     },
   } = useAppSelector((state) => state.CRICalculator);
   const {
@@ -174,6 +176,11 @@ export default function CRICStepper({
             return toast.error("Please fill in the required fields.");
           }
         }
+      }
+      if (isIndexedToInflation == "No" && !inflationRate.trim()) {
+        return toast.error(
+          "Please fill in the required field : Inflation Rate"
+        );
       }
       dispatch(calculateEmployerPension(undefined));
     }
