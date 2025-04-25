@@ -6,7 +6,7 @@ import budgetCalcIcon from "./budget-calc-icon.svg";
 import educationCalcIcon from "./Education-calc-icon.svg";
 import costOfLivingCalcIcon from "./cost-of-living-calc.svg";
 import arrowUpIcon from "./up-arrow.svg";
-import heroImage from "./hero-image.svg";
+import heroImage from "./landing-page-hero-image.jpg";
 import heroImageOptimized from "./hero-image-optimized.jpg";
 import arrowWhite from "./arrow-white.svg";
 import leftArrow from "./left-arrow.svg";
@@ -17,7 +17,7 @@ import registeredRetirementIncome from "./registered-retirement-income.svg";
 import dollarfarPngLogo from "./dollarfar-png-logo.png";
 import costOfLeavingFrame from "./cost-of-leaving-frame.png";
 import comprehensiveRetirementFrame from "./comprehensive-retirement-frame.png";
-import landingPic from "./Landing-Pic.jpg"
+import landingPic from "./Landing-Pic.jpg";
 
 import happyImg from "./happy.gif";
 import neutralImg from "./neutral.gif";
@@ -46,5 +46,5 @@ export const assets = {
   happyImg,
   neutralImg,
   sadImg,
-  landingPic
+  landingPic,
 };
