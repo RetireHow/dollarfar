@@ -1,5 +1,6 @@
 import { useAppSelector } from "../../redux/hooks";
 import { getFrequencyTitle } from "../../utils/getFrequencyTitle";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 export default function BCBreakdownInputData() {
   const {
@@ -106,16 +107,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Salary/Wages</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {salary?.salaryAmount}
+                {numberWithCommas(Number(salary?.salaryAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(salary?.salaryFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {salary?.totalAnnualAmount}
+                {numberWithCommas(Number(salary?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(salary?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((salary?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -131,10 +134,12 @@ export default function BCBreakdownInputData() {
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(totalAnnualAmount)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -149,16 +154,18 @@ export default function BCBreakdownInputData() {
                 Government Benefits
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {govtBenefits?.govtBenefitsAmount}
+                {numberWithCommas(Number(govtBenefits?.govtBenefitsAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(govtBenefits?.govtBenefitsFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {govtBenefits?.totalAnnualAmount}
+                {numberWithCommas(Number(govtBenefits?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(govtBenefits?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((govtBenefits?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -169,15 +176,19 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -190,16 +201,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Net Income</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {netIncome?.netIncomeAmount}
+                {numberWithCommas(Number(netIncome?.netIncomeAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(netIncome?.netIncomeFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {netIncome?.totalAnnualAmount}
+                {numberWithCommas(Number(netIncome?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(netIncome?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((netIncome?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -210,15 +223,19 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -231,16 +248,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Other Income</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {otherIncome?.otherIncomeAmount}
+                {numberWithCommas(Number(otherIncome?.otherIncomeAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(otherIncome?.otherIncomeFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {otherIncome?.totalAnnualAmount}
+                {numberWithCommas(Number(otherIncome?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(otherIncome?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((otherIncome?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -251,15 +270,19 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -271,15 +294,19 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -292,10 +319,10 @@ export default function BCBreakdownInputData() {
                 Total
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {totalAnnualIncome}
+                {numberWithCommas(Number(totalAnnualIncome))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {totalMonthlyIncome}
+                {numberWithCommas(Number(totalMonthlyIncome))}
               </td>
             </tr>
           ) : (
@@ -326,16 +353,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Mortgage1</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {mortgage1?.mortgageAmount1}
+                {numberWithCommas(Number(mortgage1?.mortgageAmount1))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(mortgage1?.mortgageFrequency1)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {mortgage1?.totalAnnualAmount}
+                {numberWithCommas(Number(mortgage1?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(mortgage1?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((mortgage1?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -348,16 +377,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Mortgage2</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {mortgage2?.mortgageAmount2}
+                {numberWithCommas(Number(mortgage2?.mortgageAmount2))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(mortgage2?.mortgageFrequency2)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {mortgage2?.totalAnnualAmount}
+                {numberWithCommas(Number(mortgage2?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(mortgage2?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((mortgage2?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -370,16 +401,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Mortgage3</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {mortgage3?.mortgageAmount3}
+                {numberWithCommas(Number(mortgage3?.mortgageAmount3))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(mortgage3?.mortgageFrequency3)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {mortgage3?.totalAnnualAmount}
+                {numberWithCommas(Number(mortgage3?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(mortgage3?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((mortgage3?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -393,16 +426,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Rent</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {rent?.rentAmount}
+                {numberWithCommas(Number(rent?.rentAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(rent?.rentFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {rent?.totalAnnualAmount}
+                {numberWithCommas(Number(rent?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(rent?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((rent?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -418,16 +453,18 @@ export default function BCBreakdownInputData() {
                 Home Insurance
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {homeInsurance?.homeInsuranceAmount}
+                {numberWithCommas(Number(homeInsurance?.homeInsuranceAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(homeInsurance?.homeInsuranceFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {homeInsurance?.totalAnnualAmount}
+                {numberWithCommas(Number(homeInsurance?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(homeInsurance?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((homeInsurance?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -441,16 +478,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Utilities</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {utilities?.utilitiesAmount}
+                {numberWithCommas(Number(utilities?.utilitiesAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(utilities?.utilitiesFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {utilities?.totalAnnualAmount}
+                {numberWithCommas(Number(utilities?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(utilities?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((utilities?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -461,15 +500,19 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -484,16 +527,18 @@ export default function BCBreakdownInputData() {
                 Telecom Services
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {telecomService?.telecomServiceAmount}
+                {numberWithCommas(Number(telecomService?.telecomServiceAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(telecomService?.telecomServiceFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {telecomService?.totalAnnualAmount}
+                {numberWithCommas(Number(telecomService?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(telecomService?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((telecomService?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -504,15 +549,19 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -527,16 +576,18 @@ export default function BCBreakdownInputData() {
                 Maintenances / Repairs
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {maintenance?.maintenanceAmount}
+                {numberWithCommas(Number(maintenance?.maintenanceAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(maintenance?.maintenanceFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {maintenance?.totalAnnualAmount}
+                {numberWithCommas(Number(maintenance?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(maintenance?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((maintenance?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -547,15 +598,19 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -567,15 +622,19 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -589,10 +648,10 @@ export default function BCBreakdownInputData() {
                 Total
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {totalAnnualHousingExpenses}
+                {numberWithCommas(Number(totalAnnualHousingExpenses))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {totalMonthlyHousingExpenses}
+                {numberWithCommas(Number(totalMonthlyHousingExpenses))}
               </td>
             </tr>
           ) : (
@@ -623,16 +682,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Car Payment</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {carPayment?.carPaymentAmount}
+                {numberWithCommas(Number(carPayment?.carPaymentAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(carPayment?.carPaymentFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {carPayment?.totalAnnualAmount}
+                {numberWithCommas(Number(carPayment?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(carPayment?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((carPayment?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -647,16 +708,18 @@ export default function BCBreakdownInputData() {
                 Car Insurance
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {carInsurance?.carInsuranceAmount}
+                {numberWithCommas(Number(carInsurance?.carInsuranceAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(carInsurance?.carInsuranceFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {carInsurance?.totalAnnualAmount}
+                {numberWithCommas(Number(carInsurance?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(carInsurance?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((carInsurance?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -669,16 +732,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Car Repairs</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {carRepairs?.carRepairsAmount}
+                {numberWithCommas(Number(carRepairs?.carRepairsAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(carRepairs?.carRepairsFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {carRepairs?.totalAnnualAmount}
+                {numberWithCommas(Number(carRepairs?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(carRepairs?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((carRepairs?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -694,16 +759,18 @@ export default function BCBreakdownInputData() {
                 Travel Budgets
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {gasFuelEtrToll?.gasFuelEtrTollAmount}
+                {numberWithCommas(Number(gasFuelEtrToll?.gasFuelEtrTollAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(gasFuelEtrToll?.gasFuelEtrTollFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {gasFuelEtrToll?.totalAnnualAmount}
+                {numberWithCommas(Number(gasFuelEtrToll?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(gasFuelEtrToll?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((gasFuelEtrToll?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -714,15 +781,19 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -734,15 +805,19 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -756,10 +831,10 @@ export default function BCBreakdownInputData() {
                 Total
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {totalAnnualTransportExpenses}
+                {numberWithCommas(Number(totalAnnualTransportExpenses))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {totalMonthlyTransportExpenses}
+                {numberWithCommas(Number(totalMonthlyTransportExpenses))}
               </td>
             </tr>
           ) : (
@@ -792,16 +867,20 @@ export default function BCBreakdownInputData() {
                 Education Fees (Scheel Fee)
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {schoolCollegeFee?.schoolCollegeFeeAmount}
+                {numberWithCommas(
+                  Number(schoolCollegeFee?.schoolCollegeFeeAmount)
+                )}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(schoolCollegeFee?.schoolCollegeFeeFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {schoolCollegeFee?.totalAnnualAmount}
+                {numberWithCommas(Number(schoolCollegeFee?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(schoolCollegeFee?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((schoolCollegeFee?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -812,15 +891,19 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -832,15 +915,19 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -854,10 +941,10 @@ export default function BCBreakdownInputData() {
                 Total
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {totalAnnualEducationalExpenses}
+                {numberWithCommas(Number(totalAnnualEducationalExpenses))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {totalMonthlyEducationalExpenses}
+                {numberWithCommas(Number(totalMonthlyEducationalExpenses))}
               </td>
             </tr>
           ) : (
@@ -888,16 +975,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Household</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {househole?.householeAmount}
+                {numberWithCommas(Number(househole?.householeAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(househole?.householeFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {househole?.totalAnnualAmount}
+                {numberWithCommas(Number(househole?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(househole?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((househole?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -910,16 +999,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Clothing</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {clothing?.clothingAmount}
+                {numberWithCommas(Number(clothing?.clothingAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(clothing?.clothingFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {clothing?.totalAnnualAmount}
+                {numberWithCommas(Number(clothing?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(clothing?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((clothing?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -932,16 +1023,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Eating Out</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {eatingOut?.eatingOutAmount}
+                {numberWithCommas(Number(eatingOut?.eatingOutAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(eatingOut?.eatingOutFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {eatingOut?.totalAnnualAmount}
+                {numberWithCommas(Number(eatingOut?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(eatingOut?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((eatingOut?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -954,16 +1047,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Medical</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {medical?.medicalAmount}
+                {numberWithCommas(Number(medical?.medicalAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(medical?.medicalFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {medical?.totalAnnualAmount}
+                {numberWithCommas(Number(medical?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(medical?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((medical?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -978,7 +1073,9 @@ export default function BCBreakdownInputData() {
                 Entertainment/Events ( e.g., Sports )
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {entertainmentEvents?.entertainmentEventsAmount}
+                {numberWithCommas(
+                  Number(entertainmentEvents?.entertainmentEventsAmount)
+                )}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(
@@ -986,10 +1083,16 @@ export default function BCBreakdownInputData() {
                 )}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {entertainmentEvents?.totalAnnualAmount}
+                {numberWithCommas(
+                  Number(entertainmentEvents?.totalAnnualAmount)
+                )}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(entertainmentEvents?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number(
+                    (entertainmentEvents?.totalAnnualAmount / 12)?.toFixed(2)
+                  )
+                )}
               </td>
             </tr>
           ) : (
@@ -1000,15 +1103,19 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -1020,15 +1127,19 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -1042,10 +1153,10 @@ export default function BCBreakdownInputData() {
                 Total
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {totalAnnualOtherExpenses}
+                {numberWithCommas(Number(totalAnnualOtherExpenses))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {totalMonthlyOtherExpenses}
+                {numberWithCommas(Number(totalMonthlyOtherExpenses))}
               </td>
             </tr>
           ) : (
@@ -1076,16 +1187,18 @@ export default function BCBreakdownInputData() {
                 Personal Loan
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {personalLoan?.personalLoanAmount}
+                {numberWithCommas(Number(personalLoan?.personalLoanAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(personalLoan?.personalLoanFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {personalLoan?.totalAnnualAmount}
+                {numberWithCommas(Number(personalLoan?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(personalLoan?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((personalLoan?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -1098,16 +1211,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Student Loan</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {studentLoan?.studentLoanAmount}
+                {numberWithCommas(Number(studentLoan?.studentLoanAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(studentLoan?.studentLoanFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {studentLoan?.totalAnnualAmount}
+                {numberWithCommas(Number(studentLoan?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(studentLoan?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((studentLoan?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -1120,15 +1235,19 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -1142,10 +1261,10 @@ export default function BCBreakdownInputData() {
                 Total
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {totalAnnualLoansExpenses}
+                {numberWithCommas(Number(totalAnnualLoansExpenses))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {totalMonthlyLoansExpenses}
+                {numberWithCommas(Number(totalMonthlyLoansExpenses))}
               </td>
             </tr>
           ) : (
@@ -1176,16 +1295,18 @@ export default function BCBreakdownInputData() {
                 Vacation Fund
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {vacationFund?.vacationFundAmount}
+                {numberWithCommas(Number(vacationFund?.vacationFundAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(vacationFund?.vacationFundFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {vacationFund?.totalAnnualAmount}
+                {numberWithCommas(Number(vacationFund?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(vacationFund?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((vacationFund?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -1198,16 +1319,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Emergency</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {emergency?.emergencyAmount}
+                {numberWithCommas(Number(emergency?.emergencyAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(emergency?.emergencyFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {emergency?.totalAnnualAmount}
+                {numberWithCommas(Number(emergency?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(emergency?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((emergency?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -1221,16 +1344,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Retirement</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {retirement?.retirementAmount}
+                {numberWithCommas(Number(retirement?.retirementAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(retirement?.retirementFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {retirement?.totalAnnualAmount}
+                {numberWithCommas(Number(retirement?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(retirement?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((retirement?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -1243,16 +1368,18 @@ export default function BCBreakdownInputData() {
             <tr className="hover:bg-[#faf8f8]">
               <td className="border-[1px] border-gray-300 p-3">Investments</td>
               <td className="border-[1px] border-gray-300 p-3">
-                {investments?.investmentsAmount}
+                {numberWithCommas(Number(investments?.investmentsAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
                 {getFrequencyTitle(investments?.investmentsFrequency)}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {investments?.totalAnnualAmount}
+                {numberWithCommas(Number(investments?.totalAnnualAmount))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {(investments?.totalAnnualAmount / 12)?.toFixed(2)}
+                {numberWithCommas(
+                  Number((investments?.totalAnnualAmount / 12)?.toFixed(2))
+                )}
               </td>
             </tr>
           ) : (
@@ -1263,20 +1390,23 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
           })}
-
 
           {/* More Savings  */}
           {dynamicMoreInvestments?.map((item, index) => {
@@ -1284,15 +1414,19 @@ export default function BCBreakdownInputData() {
             return (
               <tr key={index} className="hover:bg-[#faf8f8]">
                 <td className="border-[1px] border-gray-300 p-3">{title}</td>
-                <td className="border-[1px] border-gray-300 p-3">{amount}</td>
+                <td className="border-[1px] border-gray-300 p-3">
+                  {numberWithCommas(Number(amount))}
+                </td>
                 <td className="border-[1px] border-gray-300 p-3">
                   {getFrequencyTitle(frequency)}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {totalAnnualAmount}
+                  {numberWithCommas(Number(totalAnnualAmount))}
                 </td>
                 <td className="border-[1px] border-gray-300 p-3">
-                  {(totalAnnualAmount / 12)?.toFixed(2)}
+                  {numberWithCommas(
+                    Number((totalAnnualAmount / 12)?.toFixed(2))
+                  )}
                 </td>
               </tr>
             );
@@ -1306,10 +1440,10 @@ export default function BCBreakdownInputData() {
                 Total
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {totalAnnualSavingsExpenses}
+                {numberWithCommas(Number(totalAnnualSavingsExpenses))}
               </td>
               <td className="border-[1px] border-gray-300 p-3">
-                {totalMonthlySavingsExpenses}
+                {numberWithCommas(Number(totalMonthlySavingsExpenses))}
               </td>
             </tr>
           ) : (
