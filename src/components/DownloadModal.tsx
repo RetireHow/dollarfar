@@ -70,7 +70,12 @@ const DownloadModal = ({
     setName("");
   };
 
-  const sendEmail = async (name: string, email: string, phone: string) => {
+  const sendEmail = async (
+    name: string,
+    email: string,
+    phone: string,
+    fileName: string
+  ) => {
     try {
       const res = await fetch(`${baseUrl}/api/send-email-by-zeptoapi`, {
         method: "POST",
@@ -109,7 +114,8 @@ const DownloadModal = ({
       return setShowError(true);
     }
     setIsLoading(true);
-    await sendEmail(name, email, phone);
+    console.log({fileName})
+    await sendEmail(name, email, phone, fileName);
     setIsLoading(false);
     setIsModalOpen(false);
     setShowError(false);
