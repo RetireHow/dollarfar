@@ -79,7 +79,7 @@ export default function RRIF() {
             <div className="lg:w-auto w-full">
               <DownloadModal
                 calculatorData={calculatorData}
-                fileName="RRIF Report"
+                fileName="Registered Retirement Income Fund Calculator Report"
                 id="RRIF-Chart"
                 PdfComponent={RRIFPdf}
               />

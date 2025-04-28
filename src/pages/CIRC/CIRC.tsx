@@ -84,7 +84,7 @@ export default function CIRC() {
             <div className="lg:w-auto w-full">
               <DownloadModal
                 calculatorData={calculatorData}
-                fileName="CIRC Report"
+                fileName="Compound Interest Rate Calculator Report"
                 id="circ-chart"
                 PdfComponent={CIRCPdf}
               />

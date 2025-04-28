@@ -45,7 +45,7 @@ export default function NWC() {
             <div className="lg:w-auto w-full">
               <DownloadModal
                 calculatorData={calculatorData}
-                fileName="NWC Report"
+                fileName="Networth Calculator Report"
                 id="NWC-Chart"
                 PdfComponent={NWCPdf}
               />

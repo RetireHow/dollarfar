@@ -39,7 +39,7 @@ export default function RRSP() {
             <div className="lg:w-auto w-full">
               <DownloadModal
                 calculatorData={{ result, input }}
-                fileName="RRSP Report"
+                fileName="Registered Retirement Savings Plan Calculator Report"
                 id="RRSP-Chart"
                 PdfComponent={RRSPPdf}
               />

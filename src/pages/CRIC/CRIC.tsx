@@ -55,7 +55,7 @@ export default function CRIC() {
             <div className="lg:w-auto w-full">
               <DownloadModal
                 calculatorData={calculatorData}
-                fileName="Comprehensive Retirement Income Calculator"
+                fileName="Comprehensive Retirement Income Calculator Report"
                 id="CRIC-Chart"
                 PdfComponent={CRICPdf}
               />

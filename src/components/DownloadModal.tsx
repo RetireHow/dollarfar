@@ -77,7 +77,12 @@ const DownloadModal = ({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, phone }),
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          downloadedFileName: fileName,
+        }),
       });
 
       // Parse JSON response
