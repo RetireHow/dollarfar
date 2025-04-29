@@ -6,7 +6,7 @@ export default function AdminDashboard() {
   return (
     <main>
       <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <UserTable />
+          <UserTable />
       </ErrorBoundary>
     </main>
   );
