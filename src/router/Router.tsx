@@ -44,8 +44,8 @@ import EstimatedCostCalculatorPage from "../pages/COLC/COLCPages/EstimatedCostCa
 import CrimeExplanation from "../pages/COLC/COLCPages/CrimeExplanation";
 import TermsAndConditionPage from "../pages/TermsAndConditionPage";
 import AdminLogin from "../pages/Admin/AdminLogin";
-import UserTable from "../pages/Admin/UserTable";
 import PrivateRoute from "./PrivateRoute";
+import AdminDashboard from "../pages/Admin/AdminDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -229,10 +229,10 @@ export const router = createBrowserRouter([
         element: <AdminLogin />,
       },
       {
-        path: "user-table",
+        path: "admin-dashboard",
         element: (
           <PrivateRoute>
-            <UserTable />
+            <AdminDashboard />
           </PrivateRoute>
         ),
       },

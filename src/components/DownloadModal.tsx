@@ -114,7 +114,6 @@ const DownloadModal = ({
       return setShowError(true);
     }
     setIsLoading(true);
-    console.log({fileName})
     await sendEmail(name, email, phone, fileName);
     setIsLoading(false);
     setIsModalOpen(false);
