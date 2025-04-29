@@ -43,6 +43,9 @@ import HealthCareExplanationPage from "../pages/COLC/COLCPages/HealthCareExplana
 import EstimatedCostCalculatorPage from "../pages/COLC/COLCPages/EstimatedCostCalculatorPage";
 import CrimeExplanation from "../pages/COLC/COLCPages/CrimeExplanation";
 import TermsAndConditionPage from "../pages/TermsAndConditionPage";
+import AdminLogin from "../pages/Admin/AdminLogin";
+import UserTable from "../pages/Admin/UserTable";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -219,6 +222,19 @@ export const router = createBrowserRouter([
             element: <Summary />,
           },
         ],
+      },
+
+      {
+        path: "admin-login",
+        element: <AdminLogin />,
+      },
+      {
+        path: "user-table",
+        element: (
+          <PrivateRoute>
+            <UserTable />
+          </PrivateRoute>
+        ),
       },
 
       {
