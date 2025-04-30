@@ -19,6 +19,7 @@ const AdminLogin: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -33,13 +34,16 @@ const AdminLogin: React.FC = () => {
     setError("");
     // Simulate login or call actual API
     console.log("Logging in:", { email, password });
+    setLoading(true);
     const result = await fetchAdmin(email, password);
+    setLoading(false);
     if (result?.statusCode == 200 && result?.success) {
       localStorage.setItem("email", result?.data?.email);
       localStorage.setItem("name", result?.data?.name);
       toast.success("Login success!");
       navigate("/admin-dashboard");
     } else {
+      setLoading(false);
       toast.error("Login failed : You are not an authenticated user.");
     }
   };
@@ -107,9 +111,20 @@ const AdminLogin: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+            disabled={loading ? true : false}
+            className={`w-full text-white py-2 rounded-md hover:bg-blue-700 transition flex justify-center items-center h-[45px] ${
+              loading ? "bg-blue-300 hover:bg-blue-300" : "bg-blue-600"
+            }`}
           >
-            Login
+            {loading ? (
+              <Icon
+                icon="eos-icons:three-dots-loading"
+                width="30"
+                height="30"
+              />
+            ) : (
+              "Login"
+            )}
           </button>
         </form>
       </div>
