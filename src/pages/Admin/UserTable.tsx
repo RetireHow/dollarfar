@@ -4,11 +4,55 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
+// const usersData = [
+//   {
+//     name: "Alice Johnson",
+//     phone: "+1234567890",
+//     email: "alice@example.com",
+//     downloadedFiles: [
+//       {
+//         downloadedFileName: "report_2024.pdf",
+//         createdAt: "2025-04-25T10:30:00.000Z",
+//         updatedAt: "2025-04-25T10:30:00.000Z",
+//       },
+//       {
+//         downloadedFileName: "invoice_march.csv",
+//         createdAt: "2025-04-26T12:00:00.000Z",
+//         updatedAt: "2025-04-26T12:00:00.000Z",
+//       },
+//     ],
+//   },
+//   {
+//     name: "Bob Smith",
+//     phone: "+1987654321",
+//     email: "bob@example.com",
+//     downloadedFiles: [
+//       {
+//         downloadedFileName: "presentation.pptx",
+//         createdAt: "2025-04-27T09:15:00.000Z",
+//         updatedAt: "2025-04-27T09:15:00.000Z",
+//       },
+//     ],
+//   },
+//   {
+//     name: "Charlie Lee",
+//     phone: "+1123456789",
+//     email: "charlie@example.com",
+//     downloadedFiles: [],
+//   },
+// ];
+
+type DownloadedFile = {
+  downloadedFileName: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 type TUser = {
   name: string;
   phone: string;
   email: string;
-  downloadedFiles: string[];
+  downloadedFiles: DownloadedFile[];
   createdAt: string;
   updatedAt: string;
 };
@@ -65,7 +109,7 @@ const UserTable = () => {
                 Downloaded Reports
               </th>
               <th className="text-left px-4 py-2 text-sm font-semibold text-gray-700">
-                Downloaded At
+                User Created At
               </th>
             </tr>
           </thead>
@@ -92,7 +136,23 @@ const UserTable = () => {
                     {user.email}
                   </td>
                   <td className="px-4 py-2 text-sm text-gray-800">
-                    {user.downloadedFiles.join(", ")}
+                    <tr>
+                      <th className="p-1 text-left">Name</th>
+                      <th className="p-1 text-left">Downloaded At</th>
+                    </tr>
+
+                    {user.downloadedFiles?.map((file, index) => (
+                      <tr key={index}>
+                        <td className="p-1 text-left">
+                          {file?.downloadedFileName}
+                        </td>
+                        <td className="p-1 text-left">
+                          {moment(file.createdAt).format(
+                            "MMMM Do YYYY, h:mm:ss a"
+                          )}
+                        </td>
+                      </tr>
+                    ))}
                   </td>
                   <td className="px-4 py-2 text-sm text-gray-800">
                     {moment(user.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
@@ -127,13 +187,25 @@ const UserTable = () => {
                 <span className="font-semibold">Email:</span> {user.email}
               </p>
               <p className="text-sm">
-                <span className="font-semibold">Downloaded Reports:</span>{" "}
-                {user.downloadedFiles.join(", ")}
-              </p>
-              <p className="text-sm">
-                <span className="font-semibold">Downloaded At:</span>{" "}
+                <span className="font-semibold">User Created At:</span>{" "}
                 {moment(user.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
               </p>
+              <div className="text-sm">
+                <span className="font-semibold">Downloaded Reports:</span>{" "}
+                <ul className="list-disc list-inside space-y-1 mt-1">
+                  {user.downloadedFiles?.map((file, index) => (
+                    <li key={index}>
+                      <span>{file?.downloadedFileName}</span> (
+                      <span>
+                        {moment(file.createdAt).format(
+                          "MMMM Do YYYY, h:mm:ss a"
+                        )}
+                      </span>
+                      )
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           ))}
         </div>
