@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { baseUrl } from "../../api/apiConstant";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 type TUser = {
   name: string;
@@ -15,6 +15,7 @@ type TUser = {
 
 const UserTable = () => {
   const [users, setUsers] = useState<TUser[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -23,7 +24,9 @@ const UserTable = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        setIsLoading(true);
         const res = await fetch(`${baseUrl}/api/pdf-downloaded-users`);
+        if (!res.ok) throw new Error("Failed to fetch users");
         // Parse JSON response
         const data = await res.json();
         // Sort by createdAt descending
@@ -32,8 +35,12 @@ const UserTable = () => {
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
         setUsers(sortedUsers);
-      } catch (error: any) {
-        toast.error("There is something wrong!", error?.message);
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "Unknown error";
+        toast.error(`There was a problem fetching users: ${message}`);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchUsers();
@@ -62,55 +69,75 @@ const UserTable = () => {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-100">
-            {users.map((user, index) => (
-              <tr key={index} className="hover:bg-gray-50">
-                <td className="px-4 py-2 text-sm text-gray-800">{user.name}</td>
-                <td className="px-4 py-2 text-sm text-gray-800">
-                  {user.phone}
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-800">
-                  {user.email}
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-800">
-                  {user.downloadedFiles.join(", ")}
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-800">
-                  {moment(user.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
-                </td>
-              </tr>
-            ))}
-          </tbody>
+          {isLoading ? (
+            <tr>
+              <td colSpan={5}>
+                <div className="py-5 text-green-600 font-bold text-[2rem] md:flex hidden justify-center items-center gap-1">
+                  <Icon icon="line-md:loading-loop" width="35" height="35" />
+                  <p>Loading...</p>
+                </div>
+              </td>
+            </tr>
+          ) : (
+            <tbody className="bg-white divide-y divide-gray-100">
+              {users.map((user, index) => (
+                <tr key={index} className="hover:bg-gray-50">
+                  <td className="px-4 py-2 text-sm text-gray-800">
+                    {user.name}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-800">
+                    {user.phone}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-800">
+                    {user.email}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-800">
+                    {user.downloadedFiles.join(", ")}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-800">
+                    {moment(user.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          )}
         </table>
       </div>
 
       {/* Mobile view */}
-      <div className="md:hidden space-y-4">
-        {users.map((user, index) => (
-          <div
-            key={index}
-            className="border rounded-lg p-4 shadow-sm bg-white space-y-2"
-          >
-            <p className="text-sm">
-              <span className="font-semibold">Name:</span> {user.name}
-            </p>
-            <p className="text-sm">
-              <span className="font-semibold">Phone:</span> {user.phone}
-            </p>
-            <p className="text-sm">
-              <span className="font-semibold">Email:</span> {user.email}
-            </p>
-            <p className="text-sm">
-              <span className="font-semibold">Downloaded Reports:</span>{" "}
-              {user.downloadedFiles.join(", ")}
-            </p>
-            <p className="text-sm">
-              <span className="font-semibold">Downloaded At:</span>{" "}
-              {moment(user.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
-            </p>
-          </div>
-        ))}
-      </div>
+      {isLoading ? (
+        <div className="md:hidden py-5 text-green-600 font-bold text-[2rem] flex justify-center items-center gap-1">
+          <Icon icon="line-md:loading-loop" width="35" height="35" />
+          <p>Loading...</p>
+        </div>
+      ) : (
+        <div className="md:hidden space-y-4">
+          {users.map((user, index) => (
+            <div
+              key={index}
+              className="border rounded-lg p-4 shadow-sm bg-white space-y-2"
+            >
+              <p className="text-sm">
+                <span className="font-semibold">Name:</span> {user.name}
+              </p>
+              <p className="text-sm">
+                <span className="font-semibold">Phone:</span> {user.phone}
+              </p>
+              <p className="text-sm">
+                <span className="font-semibold">Email:</span> {user.email}
+              </p>
+              <p className="text-sm">
+                <span className="font-semibold">Downloaded Reports:</span>{" "}
+                {user.downloadedFiles.join(", ")}
+              </p>
+              <p className="text-sm">
+                <span className="font-semibold">Downloaded At:</span>{" "}
+                {moment(user.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
