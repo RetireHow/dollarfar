@@ -93,22 +93,22 @@ const UserTable = () => {
     <div className="container mx-auto px-4 py-6 min-h-screen">
       <h1 className="text-[1.5rem] font-semibold mb-2">Users List</h1>
       <div className="overflow-x-auto md:block hidden">
-        <table className="min-w-full border border-gray-200 divide-y divide-gray-200">
+        <table className="min-w-full border border-gray-300 divide-y divide-gray-200">
           <thead className="bg-gray-100">
             <tr>
-              <th className="text-left px-4 py-2 text-sm font-semibold text-gray-700">
+              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 border border-gray-300">
                 Name
               </th>
-              <th className="text-left px-4 py-2 text-sm font-semibold text-gray-700">
+              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 border border-gray-300">
                 Phone
               </th>
-              <th className="text-left px-4 py-2 text-sm font-semibold text-gray-700">
+              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 border border-gray-300">
                 Email
               </th>
-              <th className="text-left px-4 py-2 text-sm font-semibold text-gray-700">
+              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 border border-gray-300">
                 Downloaded Reports
               </th>
-              <th className="text-left px-4 py-2 text-sm font-semibold text-gray-700">
+              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 border border-gray-300">
                 User Created At
               </th>
             </tr>
@@ -123,30 +123,30 @@ const UserTable = () => {
               </td>
             </tr>
           ) : (
-            <tbody className="bg-white divide-y divide-gray-100">
+            <tbody className="bg-white divide-y divide-gray-300">
               {users.map((user, index) => (
                 <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-4 py-2 text-sm text-gray-800">
+                  <td className="px-4 py-2 text-sm text-gray-800 border border-gray-300">
                     {user.name}
                   </td>
-                  <td className="px-4 py-2 text-sm text-gray-800">
+                  <td className="px-4 py-2 text-sm text-gray-800 border border-gray-300">
                     {user.phone}
                   </td>
-                  <td className="px-4 py-2 text-sm text-gray-800">
+                  <td className="px-4 py-2 text-sm text-gray-800 border border-gray-300">
                     {user.email}
                   </td>
-                  <td className="px-4 py-2 text-sm text-gray-800">
+                  <td className="px-4 py-2 text-sm text-gray-800 border border-gray-300">
                     <tr>
-                      <th className="p-1 text-left">Name</th>
-                      <th className="p-1 text-left">Downloaded At</th>
+                      <th className="pl-2 text-left border border-gray-300 bg-gray-100">Name</th>
+                      <th className="pl-2 text-left border border-gray-300 bg-gray-100">Downloaded At</th>
                     </tr>
 
                     {user.downloadedFiles?.map((file, index) => (
                       <tr key={index}>
-                        <td className="p-1 text-left">
+                        <td className=" pl-2 text-left w-[250px] border border-gray-300">
                           {file?.downloadedFileName}
                         </td>
-                        <td className="p-1 text-left">
+                        <td className="pl-2  text-left border border-gray-300">
                           {moment(file.createdAt).format(
                             "MMMM Do YYYY, h:mm:ss a"
                           )}
