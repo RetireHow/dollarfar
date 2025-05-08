@@ -46,6 +46,9 @@ import TermsAndConditionPage from "../pages/TermsAndConditionPage";
 import AdminLogin from "../pages/Admin/AdminLogin";
 import PrivateRoute from "./PrivateRoute";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
+import SendOtpForm from "../pages/Admin/OTPVerification/SendOtpForm";
+import VerifyOtpForm from "../pages/Admin/OTPVerification/VerifyOtpForm";
+import ResetPasswordForm from "../pages/Admin/OTPVerification/ResetPasswordForm";
 
 export const router = createBrowserRouter([
   {
@@ -235,6 +238,19 @@ export const router = createBrowserRouter([
             <AdminDashboard />
           </PrivateRoute>
         ),
+      },
+
+      {
+        path: "send-otp",
+        element: <SendOtpForm />,
+      },
+      {
+        path: "verify-otp-form",
+        element: <VerifyOtpForm />,
+      },
+      {
+        path: "reset-password-form",
+        element: <ResetPasswordForm />,
       },
 
       {

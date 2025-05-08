@@ -4,7 +4,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import React, { useState, FormEvent, ChangeEvent } from "react";
 import { baseUrl } from "../../api/apiConstant";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const fetchAdmin = async (email: string, password: string) => {
   const res = await fetch(
@@ -57,7 +57,7 @@ const AdminLogin: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div className="py-[2rem] min-h-screen flex items-start justify-center bg-gray-100 px-4">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
           Admin Login
@@ -91,7 +91,7 @@ const AdminLogin: React.FC = () => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={password}
                 onChange={handlePasswordChange}
-                placeholder="••••••••"
+                placeholder="Enter password"
                 required
               />
               {isVisible ? (
@@ -108,6 +108,11 @@ const AdminLogin: React.FC = () => {
                 />
               )}
             </div>
+            <Link to="/send-otp">
+              <p className="text-right mt-1 hover:underline cursor-pointer">
+                Forgot password? Reset
+              </p>
+            </Link>
           </div>
           <button
             type="submit"

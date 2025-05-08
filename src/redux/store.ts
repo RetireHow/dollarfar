@@ -12,6 +12,7 @@ import RRSPReducer from "./features/RRSP/RRSPSlice";
 import globalCurrencyReducer from "./features/other/globalCurrency";
 import CRICReducer from "./features/CRIC/CRICSlice";
 import COLCReducer from "./features/COLC/COLCSlice";
+import OTPReducer from "./features/OTP/OTP";
 
 // Create and configure the store
 export const store = configureStore({
@@ -28,6 +29,7 @@ export const store = configureStore({
 
     CRICalculator: CRICReducer,
     CRICStepper: CRICStepperReducer,
+    OTP: OTPReducer,
   },
   devTools: import.meta.env.MODE === "development",
 });
