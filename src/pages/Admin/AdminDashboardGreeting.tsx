@@ -21,6 +21,7 @@ type TUser = {
 const AdminDashboardGreeting = () => {
   const [users, setUsers] = useState<TUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loggedInUserName, setLoggedInUserName] = useState("");
 
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Set to start of the day
@@ -54,15 +55,20 @@ const AdminDashboardGreeting = () => {
       }
     };
     fetchUsers();
+
+    const loggedInUserName = localStorage.getItem("name");
+    if (loggedInUserName) {
+      setLoggedInUserName(loggedInUserName);
+    }
+    // const loggedInUserEmail = localStorage.getItem('email');
   }, []);
   return (
     <div className="bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-400 text-white shadow-lg rounded-xl p-8 max-w-4xl mx-auto mt-10">
       <div className="flex items-center space-x-4">
-        <div className="w-16 h-16 rounded-full bg-white text-indigo-600 flex items-center justify-center text-3xl font-semibold">
-          RM
-        </div>
         <div>
-          <h2 className="text-3xl font-semibold">Welcome back, Rao Mova!</h2>
+          <h2 className="text-3xl font-semibold">
+            Welcome back, {loggedInUserName}!
+          </h2>
           <p className="mt-1 text-lg">
             Your dashboard is ready to assist you in managing users, monitoring
             system activities, and accessing analytics.
