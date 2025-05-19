@@ -49,6 +49,7 @@ import AdminDashboard from "../pages/Admin/AdminDashboard";
 import SendOtpForm from "../pages/Admin/OTPVerification/SendOtpForm";
 import VerifyOtpForm from "../pages/Admin/OTPVerification/VerifyOtpForm";
 import ResetPasswordForm from "../pages/Admin/OTPVerification/ResetPasswordForm";
+import { Ebook1 } from "../pages/Ebook1";
 
 export const router = createBrowserRouter([
   {
@@ -251,6 +252,11 @@ export const router = createBrowserRouter([
       {
         path: "reset-password-form",
         element: <ResetPasswordForm />,
+      },
+
+      {
+        path: "/ebook1",
+        element: <Ebook1 />,
       },
 
       {
