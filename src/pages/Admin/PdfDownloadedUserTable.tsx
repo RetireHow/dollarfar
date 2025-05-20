@@ -57,7 +57,7 @@ type TUser = {
   updatedAt: string;
 };
 
-const UserTable = () => {
+const PdfDownloadedUserTable = () => {
   const [users, setUsers] = useState<TUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -91,7 +91,9 @@ const UserTable = () => {
   }, []);
   return (
     <div className="container mx-auto px-4 py-6 min-h-screen">
-      <h1 className="text-[1.5rem] font-semibold mb-2">Users List</h1>
+      <h1 className="text-[1.5rem] font-semibold mb-2">
+        PDF Report Downloaded Users List
+      </h1>
       <div className="overflow-x-auto md:block hidden">
         <table className="min-w-full border border-gray-300 divide-y divide-gray-200">
           <thead className="bg-gray-100">
@@ -137,8 +139,12 @@ const UserTable = () => {
                   </td>
                   <td className="px-4 py-2 text-sm text-gray-800 border border-gray-300">
                     <tr>
-                      <th className="pl-2 text-left border border-gray-300 bg-gray-100">Name</th>
-                      <th className="pl-2 text-left border border-gray-300 bg-gray-100">Downloaded At</th>
+                      <th className="pl-2 text-left border border-gray-300 bg-gray-100">
+                        Name
+                      </th>
+                      <th className="pl-2 text-left border border-gray-300 bg-gray-100">
+                        Downloaded At
+                      </th>
                     </tr>
 
                     {user.downloadedFiles?.map((file, index) => (
@@ -214,4 +220,4 @@ const UserTable = () => {
   );
 };
 
-export default UserTable;
+export default PdfDownloadedUserTable;

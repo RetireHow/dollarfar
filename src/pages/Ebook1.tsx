@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import RedStar from "../components/UI/RedStar";
+import { baseUrl } from "../api/apiConstant";
+// import { useNavigate } from "react-router-dom";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 interface FormData {
   fullName: string;
@@ -17,6 +21,8 @@ interface FormErrors {
 }
 
 export const Ebook1: React.FC = () => {
+  // const navigate = useNavigate();
+
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     email: "",
@@ -25,6 +31,7 @@ export const Ebook1: React.FC = () => {
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -58,17 +65,39 @@ export const Ebook1: React.FC = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
       // Proceed with API call or further processing
-      console.log("Form Data:", formData);
-      toast.success("Thank you!", { position: "top-center" });
-      // Reset form if needed
-      // setFormData({ fullName: '', email: '', mobile: '', city: '' });
+      try {
+        setLoading(true);
+        const res = await fetch(
+          `${baseUrl}/api/sendEmailAndStoreEbookDownloadingUserInfo`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          }
+        );
+        if (!res.ok) {
+          throw new Error("Internal server error!");
+        }
+        const data = await res.json();
+        console.log("Download Ebook1 Response===========> ", data);
+        setLoading(false);
+        toast.success("Thank you! An email sent. Please check your inbox.", {
+          position: "top-center",
+        });
+        // navigate("/admin-dashboard");
+      } catch (error: any) {
+        toast.error(error.message);
+        setLoading(false);
+      }
     }
   };
 
@@ -201,9 +230,20 @@ export const Ebook1: React.FC = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300"
+            disabled={loading ? true : false}
+            className={`w-full text-white py-2 rounded-md hover:bg-blue-700 transition flex justify-center items-center h-[45px] ${
+              loading ? "bg-blue-300 hover:bg-blue-300" : "bg-blue-600"
+            }`}
           >
-            Submit
+            {loading ? (
+              <Icon
+                icon="eos-icons:three-dots-loading"
+                width="30"
+                height="30"
+              />
+            ) : (
+              "Submit"
+            )}
           </button>
         </form>
       </div>

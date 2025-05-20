@@ -1,7 +1,7 @@
 import { ErrorFallback } from "../../components/ErrorFallback";
 import AdminDashboardGreeting from "./AdminDashboardGreeting";
 import Logout from "./Logout";
-import UserTable from "./UserTable";
+import PdfDownloadedUserTable from "./PdfDownloadedUserTable";
 import { ErrorBoundary } from "react-error-boundary";
 
 export default function AdminDashboard() {
@@ -10,7 +10,7 @@ export default function AdminDashboard() {
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <Logout />
         <AdminDashboardGreeting />
-        <UserTable />
+        <PdfDownloadedUserTable />
       </ErrorBoundary>
     </main>
   );
