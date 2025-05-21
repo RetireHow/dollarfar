@@ -56,7 +56,9 @@ type PropertyPriceOutput = {
   grossRentalYieldOutsideCentre: string;
 };
 
-export function calculatePropertyPrice(data: PropertyPriceData[]):PropertyPriceOutput {
+export function calculatePropertyPrice(
+  data: PropertyPriceData[]
+): PropertyPriceOutput {
   // Helper function to get average price by item name
   function getAveragePrice(itemName: string) {
     for (const category of data) {

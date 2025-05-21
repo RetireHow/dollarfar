@@ -46,7 +46,7 @@ export default function EstimatedCost() {
   const loadEstimatedCostData = async () => {
     try {
       const res = await fetch(
-        `${baseUrl}/api/city-cost-estimator?country=${selectedCountryName2}&city=${selectedCityName2}&members=${members}&children=${children}&isRent=${isRent}&currency=${homeCurrencyCode}`
+        `${baseUrl}/numbeo/city-cost-esitmator?country=${selectedCountryName2}&city=${selectedCityName2}&members=${members}&children=${children}&isRent=${isRent}&currency=${homeCurrencyCode}`
       );
       const data: EstimatedCostDataResponse = await res.json();
       if (!data?.success) {
@@ -62,7 +62,7 @@ export default function EstimatedCost() {
   const loadEstimatedCostSinglePersonData = async () => {
     try {
       const res = await fetch(
-        `${baseUrl}/api/city-cost-estimator?country=${selectedCountryName2}&city=${selectedCityName2}&members=1&children=0&isRent=false&currency=${homeCurrencyCode}`
+        `${baseUrl}/numbeo/city-cost-esitmator?country=${selectedCountryName2}&city=${selectedCityName2}&members=1&children=0&isRent=false&currency=${homeCurrencyCode}`
       );
       const data: EstimatedCostDataResponse = await res.json();
       if (!data?.success) {

@@ -56,7 +56,7 @@ export default function Crime() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `${baseUrl}/api/city-crime?country=${country}&city=${city}`
+        `${baseUrl}/numbeo/city-crime?country=${country}&city=${city}`
       );
       const data: TCrimeDataResponse = await res.json();
       if (!data?.success) {

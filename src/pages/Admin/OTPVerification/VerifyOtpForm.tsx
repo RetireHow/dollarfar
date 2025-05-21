@@ -34,7 +34,7 @@ const VerifyOtpForm: React.FC = () => {
     // Implement your OTP verification logic here
     try {
       setIsLoading(true);
-      const response = await fetch(`${baseUrl}/api/verify-otp`, {
+      const response = await fetch(`${baseUrl}/otp/verify-otp`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

@@ -58,7 +58,7 @@ export default function HealthCare() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `${baseUrl}/api/city-healthcare?country=${country}&city=${city}`
+        `${baseUrl}/numbeo/city-healthcare?country=${country}&city=${city}`
       );
       const data: THealthCareDataResponse = await res.json();
       if (!data?.success) {

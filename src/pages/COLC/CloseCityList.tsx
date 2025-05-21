@@ -148,7 +148,7 @@ export default function CloseCityList({
   const loadCloseCitiesData = async () => {
     try {
       const res = await fetch(
-        `${baseUrl}/api/close-cities-with-prices?country=${selectedCountry}&city=${selectedCity}`
+        `${baseUrl}/numbeo/close-cities-with-price?country=${selectedCountry}&city=${selectedCity}`
       );
       const data: CloseCityDataResponse = await res.json();
       if (!data?.success) {

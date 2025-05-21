@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const fetchAdmin = async (email: string, password: string) => {
   const res = await fetch(
-    `${baseUrl}/api/login?email=${email}&password=${password}`
+    `${baseUrl}/admin/login-admin?email=${email}&password=${password}`
   );
   const data = await res.json();
   return data;

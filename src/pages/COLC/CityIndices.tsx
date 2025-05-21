@@ -18,7 +18,7 @@ export default function CityIndices() {
   return (
     <section className="border-[1px] bg-[#FBFBF8] border-gray-300 p-3 mb-[1rem] mt-[1rem] rounded-lg inline-block">
       <div className="font-bold mb-2 text-[1rem] flex justify-between items-center">
-        <p>Indices Difference</p>
+        <p>Indices Differences</p>
         <Link to="/cost-of-living-calculator/indices-explanation">
           <p title="About these indices">
             <Icon

@@ -111,7 +111,7 @@ export default function COLCForm() {
         setApiDataLoading(true);
         // Transform API response
         const res1 = await fetch(
-          `${baseUrl}/api/single-city-prices?country=${countryName1}&city=${cityName1}&currency=null`
+          `${baseUrl}/numbeo/city-prices?country=${countryName1}&city=${cityName1}&currency=null`
         );
         const city1DefaultCurrencyData = await res1.json();
 
@@ -122,10 +122,7 @@ export default function COLCForm() {
           return setApiDataLoading(false);
         }
 
-        if (
-          !city1DefaultCurrencyData.success &&
-          city1DefaultCurrencyData.statusCode == 400
-        ) {
+        if (!city1DefaultCurrencyData.success) {
           setApiDataLoading(false);
           return toast.error(city1DefaultCurrencyData.message);
         }
@@ -141,7 +138,7 @@ export default function COLCForm() {
         }
 
         const res2 = await fetch(
-          `${baseUrl}/api/single-city-prices?country=${countryName2}&city=${cityName2}&currency=null`
+          `${baseUrl}/numbeo/city-prices?country=${countryName2}&city=${cityName2}&currency=null`
         );
         const city2DefaultCurrencyData = await res2.json();
 
@@ -152,10 +149,7 @@ export default function COLCForm() {
           return setApiDataLoading(false);
         }
 
-        if (
-          !city2DefaultCurrencyData.success &&
-          city2DefaultCurrencyData.statusCode == 400
-        ) {
+        if (!city2DefaultCurrencyData.success) {
           setApiDataLoading(false);
           return toast.error(city2DefaultCurrencyData.message);
         }
@@ -172,7 +166,7 @@ export default function COLCForm() {
 
         //Other Currency Data
         const res3 = await fetch(
-          `${baseUrl}/api/single-city-prices?country=${countryName1}&city=${cityName1}&currency=${city2DefaultCurrencyData?.data?.currency}`
+          `${baseUrl}/numbeo/city-prices?country=${countryName1}&city=${cityName1}&currency=${city2DefaultCurrencyData?.data?.currency}`
         );
         const city1OtherCurrencyData = await res3.json();
 
@@ -183,10 +177,7 @@ export default function COLCForm() {
           return setApiDataLoading(false);
         }
 
-        if (
-          !city1OtherCurrencyData.success &&
-          city1OtherCurrencyData.statusCode == 400
-        ) {
+        if (!city1OtherCurrencyData.success) {
           setApiDataLoading(false);
           return toast.error(city1OtherCurrencyData.message);
         }
@@ -202,7 +193,7 @@ export default function COLCForm() {
         }
 
         const res4 = await fetch(
-          `${baseUrl}/api/single-city-prices?country=${countryName2}&city=${cityName2}&currency=${city1DefaultCurrencyData?.data?.currency}`
+          `${baseUrl}/numbeo/city-prices?country=${countryName2}&city=${cityName2}&currency=${city1DefaultCurrencyData?.data?.currency}`
         );
         const city2OtherCurrencyData = await res4.json();
 
@@ -213,10 +204,7 @@ export default function COLCForm() {
           return setApiDataLoading(false);
         }
 
-        if (
-          !city2OtherCurrencyData.success &&
-          city2OtherCurrencyData.statusCode == 400
-        ) {
+        if (!city2OtherCurrencyData.success) {
           setApiDataLoading(false);
           return toast.error(city2OtherCurrencyData.message);
         }
@@ -240,27 +228,27 @@ export default function COLCForm() {
 
         // City Indices API
         const cityIndicesRes1 = await fetch(
-          `${baseUrl}/api/city-indices?city=${cityName1}&country=${countryName1}`
+          `${baseUrl}/numbeo/city-indices?city=${cityName1}&country=${countryName1}`
         );
         const cityIndicesData1: TCityIndicesResponse =
           await cityIndicesRes1.json();
 
         const cityIndicesRes2 = await fetch(
-          `${baseUrl}/api/city-indices?city=${cityName2}&country=${countryName2}`
+          `${baseUrl}/numbeo/city-indices?city=${cityName2}&country=${countryName2}`
         );
         const cityIndicesData2: TCityIndicesResponse =
           await cityIndicesRes2.json();
 
-        if (cityIndicesData1?.success && cityIndicesData1?.statusCode == 200) {
+        if (cityIndicesData1?.success) {
           dispatch(setCity1Indices(cityIndicesData1.data));
         }
-        if (cityIndicesData2?.success && cityIndicesData2?.statusCode == 200) {
+        if (cityIndicesData2?.success) {
           dispatch(setCity2Indices(cityIndicesData2.data));
         }
-        if (!cityIndicesData1?.success && cityIndicesData1?.statusCode == 400) {
+        if (!cityIndicesData1?.success) {
           return toast.error(cityIndicesData1?.message);
         }
-        if (!cityIndicesData2?.success && cityIndicesData2?.statusCode == 400) {
+        if (!cityIndicesData2?.success) {
           return toast.error(cityIndicesData1?.message);
         }
 

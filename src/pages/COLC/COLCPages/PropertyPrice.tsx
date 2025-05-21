@@ -190,7 +190,7 @@ export default function PropertyPrice() {
   const loadCityPriceData = async () => {
     try {
       const res = await fetch(
-        `${baseUrl}/api/single-city-prices?country=${country}&city=${city}&currency=${selectedCurrency}`
+        `${baseUrl}/numbeo/city-prices?country=${country}&city=${city}&currency=${selectedCurrency}`
       );
       const data: CityPriceDataResponse = await res.json();
       if (!data?.success) {
@@ -210,7 +210,7 @@ export default function PropertyPrice() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `${baseUrl}/api/currency-exchange-rates`
+        `${baseUrl}/numbeo/exchange-rates`
       );
       const data: ExchangeRateDataResponse = await res.json();
       if (!data?.success) {

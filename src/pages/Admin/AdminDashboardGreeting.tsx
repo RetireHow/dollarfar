@@ -36,7 +36,7 @@ const AdminDashboardGreeting = () => {
     const fetchUsers = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch(`${baseUrl}/api/pdf-downloaded-users`);
+        const res = await fetch(`${baseUrl}/report-downloaded-users/all-users`);
         if (!res.ok) throw new Error("Failed to fetch users");
         // Parse JSON response
         const data = await res.json();

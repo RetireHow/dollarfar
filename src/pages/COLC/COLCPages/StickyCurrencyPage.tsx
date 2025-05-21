@@ -45,7 +45,7 @@ export default function StickyCurrencyPage() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `${baseUrl}/api/currency-exchange-rates`
+        `${baseUrl}/numbeo/exchange-rates`
       );
       const data: ExchangeRateDataResponse = await res.json();
       if (!data?.success) {

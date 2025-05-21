@@ -404,7 +404,7 @@ export default function Traffic() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `${baseUrl}/api/city-traffic?country=${country}&city=${city}`
+        `${baseUrl}/numbeo/city-traffic?country=${country}&city=${city}`
       );
       const data: TTrafficDataResponse = await res.json();
       if (!data?.success) {

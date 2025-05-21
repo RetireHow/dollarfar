@@ -30,7 +30,7 @@ const SendOtpForm: React.FC = () => {
     // Implement your OTP sending logic here
     try {
       setIsLoading(true);
-      const response = await fetch(`${baseUrl}/api/send-and-store-otp`, {
+      const response = await fetch(`${baseUrl}/otp/send-otp`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

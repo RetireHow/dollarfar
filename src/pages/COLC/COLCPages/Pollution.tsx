@@ -62,7 +62,7 @@ export default function Pollution() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `${baseUrl}/api/city-pollution?country=${country}&city=${city}`
+        `${baseUrl}/numbeo/city-pollution?country=${country}&city=${city}`
       );
       const data: PollutionResponse = await res.json();
       if (!data?.success) {

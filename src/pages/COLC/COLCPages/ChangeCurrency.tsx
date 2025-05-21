@@ -58,7 +58,7 @@ export default function ChangeCurrency() {
         setApiDataLoading(true);
         // Transform API response
         const res1 = await fetch(
-          `${baseUrl}/api/single-city-prices?country=${countryName1}&city=${cityName1}&currency=${selectedCurrency}`
+          `${baseUrl}/numbeo/city-prices?country=${countryName1}&city=${cityName1}&currency=${selectedCurrency}`
         );
         const city1DefaultCurrencyData = await res1.json();
         if (
@@ -80,7 +80,7 @@ export default function ChangeCurrency() {
         }
 
         const res2 = await fetch(
-          `${baseUrl}/api/single-city-prices?country=${countryName2}&city=${cityName2}&currency=null`
+          `${baseUrl}/numbeo/city-prices?country=${countryName2}&city=${cityName2}&currency=null`
         );
         const city2DefaultCurrencyData = await res2.json();
         if (
@@ -103,7 +103,7 @@ export default function ChangeCurrency() {
 
         //Other Currency Data
         const res3 = await fetch(
-          `${baseUrl}/api/single-city-prices?country=${countryName1}&city=${cityName1}&currency=${city2DefaultCurrencyData?.data?.currency}`
+          `${baseUrl}/numbeo/city-prices?country=${countryName1}&city=${cityName1}&currency=${city2DefaultCurrencyData?.data?.currency}`
         );
         const city1OtherCurrencyData = await res3.json();
         if (
@@ -125,7 +125,7 @@ export default function ChangeCurrency() {
         }
 
         const res4 = await fetch(
-          `${baseUrl}/api/single-city-prices?country=${countryName2}&city=${cityName2}&currency=${city1DefaultCurrencyData?.data?.currency}`
+          `${baseUrl}/numbeo/city-prices?country=${countryName2}&city=${cityName2}&currency=${city1DefaultCurrencyData?.data?.currency}`
         );
         const city2OtherCurrencyData = await res4.json();
         if (
@@ -180,7 +180,7 @@ export default function ChangeCurrency() {
   const loadCurrencyData = async () => {
     try {
       const res = await fetch(
-        `${baseUrl}/api/currency-exchange-rates`
+        `${baseUrl}/numbeo/exchange-rates`
       );
       const data: ExchangeRateDataResponse = await res.json();
       if (!data?.success) {

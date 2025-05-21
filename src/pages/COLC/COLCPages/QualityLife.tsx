@@ -101,7 +101,7 @@ export default function QualityLife() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `${baseUrl}/api/city-indices?country=${country}&city=${city}`
+        `${baseUrl}/numbeo/city-indices?country=${country}&city=${city}`
       );
       const data: TCityIndecesResponse = await res.json();
       if (!data?.success) {

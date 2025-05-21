@@ -260,7 +260,7 @@ export default function CloseCityLivingCost() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `${baseUrl}/api/single-city-prices?country=${country}&city=${city}&currency=${selectedCurrency}`
+        `${baseUrl}/numbeo/city-prices?country=${country}&city=${city}&currency=${selectedCurrency}`
       );
       const data: CityPriceDataResponse = await res.json();
       if (!data?.success) {
@@ -279,7 +279,7 @@ export default function CloseCityLivingCost() {
   const loadEstimatedCostData = async () => {
     try {
       const res = await fetch(
-        `${baseUrl}/api/city-cost-estimator?country=${country}&city=${city}&members=4&children=0&isRent=false&currency=${selectedCurrency}`
+        `${baseUrl}/numbeo/city-cost-esitmator?country=${country}&city=${city}&members=4&children=0&isRent=false&currency=${selectedCurrency}`
       );
       const data: EstimatedCostDataResponse = await res.json();
       if (!data?.success) {
@@ -294,7 +294,7 @@ export default function CloseCityLivingCost() {
   const loadEstimatedCostSinglePersonData = async () => {
     try {
       const res = await fetch(
-        `${baseUrl}/api/city-cost-estimator?country=${country}&city=${city}&members=1&children=0&isRent=false&currency=${selectedCurrency}`
+        `${baseUrl}/numbeo/city-cost-esitmator?country=${country}&city=${city}&members=1&children=0&isRent=false&currency=${selectedCurrency}`
       );
       const data: EstimatedCostDataResponse = await res.json();
       if (!data?.success) {
@@ -314,7 +314,7 @@ export default function CloseCityLivingCost() {
   const loadCurrencyData = async () => {
     try {
       const res = await fetch(
-        `${baseUrl}/api/currency-exchange-rates`
+        `${baseUrl}/numbeo/exchange-rates`
       );
       const data: ExchangeRateDataResponse = await res.json();
       if (!data?.success) {

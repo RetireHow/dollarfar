@@ -39,7 +39,7 @@ const ResetPasswordForm: React.FC = () => {
     // Implement your password reset logic here
     try {
       setIsLoading(true);
-      const response = await fetch(`${baseUrl}/api/reset-password`, {
+      const response = await fetch(`${baseUrl}/otp/reset-password`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

@@ -75,7 +75,7 @@ export const Ebook1: React.FC = () => {
       try {
         setLoading(true);
         const res = await fetch(
-          `${baseUrl}/api/sendEmailAndStoreEbookDownloadingUserInfo`,
+          `${baseUrl}/ebook-downloaded-users/create-user`,
           {
             method: "POST",
             headers: {
