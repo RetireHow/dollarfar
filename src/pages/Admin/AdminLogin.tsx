@@ -7,9 +7,13 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 
 const fetchAdmin = async (email: string, password: string) => {
-  const res = await fetch(
-    `${baseUrl}/admin/login-admin?email=${email}&password=${password}`
-  );
+  const res = await fetch(`${baseUrl}/admin/login-admin`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
   const data = await res.json();
   return data;
 };
@@ -36,8 +40,9 @@ const AdminLogin: React.FC = () => {
     console.log("Logging in:", { email, password });
     setLoading(true);
     const result = await fetchAdmin(email, password);
+    console.log({ result });
     setLoading(false);
-    if (result?.statusCode == 200 && result?.success) {
+    if (result?.success) {
       localStorage.setItem("email", result?.data?.email);
       localStorage.setItem("name", result?.data?.name);
       toast.success("Login success!");
