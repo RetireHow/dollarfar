@@ -1,4 +1,5 @@
 import { ErrorFallback } from "../../components/ErrorFallback";
+import EbookDownloadedUserTable from "../Ebook/EbookDownloadedUserTable";
 import AdminDashboardGreeting from "./AdminDashboardGreeting";
 import Logout from "./Logout";
 import PdfDownloadedUserTable from "./PdfDownloadedUserTable";
@@ -11,6 +12,7 @@ export default function AdminDashboard() {
         <Logout />
         <AdminDashboardGreeting />
         <PdfDownloadedUserTable />
+        <EbookDownloadedUserTable/>
       </ErrorBoundary>
     </main>
   );

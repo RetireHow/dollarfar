@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import RedStar from "../components/UI/RedStar";
-import { baseUrl } from "../api/apiConstant";
+import RedStar from "../../components/UI/RedStar";
+import { baseUrl } from "../../api/apiConstant";
 // import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react/dist/iconify.js";
 

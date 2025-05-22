@@ -9,7 +9,7 @@ export default function NWTotal() {
   return (
     <div>
       <h3 className="md:text-[2rem] text-[18px] font-bold mb-[0.5rem]">Net Worth</h3>
-      <div className="bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md p-[1.5rem] ">
+      <div className="bg-neutral-100 dark:bg-neutral-900 rounded-lg border-[1px] border-gray-300 shadow-md p-[1.5rem] ">
         <div className="md:text-[1.25rem] text-[1rem] flex items-center justify-between">
           <p>Assets</p>
           <p>

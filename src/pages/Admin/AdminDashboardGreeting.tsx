@@ -19,13 +19,15 @@ type TUser = {
 };
 
 const AdminDashboardGreeting = () => {
-  const [users, setUsers] = useState<TUser[]>([]);
+  const [reportUsers, setReportUsers] = useState<TUser[]>([]);
+  const [ebookUsers, setEbookUsers] = useState<TUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingEbook, setIsLoadingEbook] = useState<boolean>(false);
   const [loggedInUserName, setLoggedInUserName] = useState("");
 
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Set to start of the day
-  const usersAddedToday = users.filter((user) => {
+  const usersAddedToday = reportUsers.filter((user) => {
     const createdAt = new Date(user.createdAt);
     return createdAt >= today;
   });
@@ -45,7 +47,7 @@ const AdminDashboardGreeting = () => {
           (a: TUser, b: TUser) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
-        setUsers(sortedUsers);
+        setReportUsers(sortedUsers);
       } catch (error) {
         const message =
           error instanceof Error ? error.message : "Unknown error";
@@ -55,6 +57,37 @@ const AdminDashboardGreeting = () => {
       }
     };
     fetchUsers();
+
+    const loggedInUserName = localStorage.getItem("name");
+    if (loggedInUserName) {
+      setLoggedInUserName(loggedInUserName);
+    }
+    // const loggedInUserEmail = localStorage.getItem('email');
+  }, []);
+
+  useEffect(() => {
+    const fetchEbookUsers = async () => {
+      try {
+        setIsLoadingEbook(true);
+        const res = await fetch(`${baseUrl}/ebook-downloaded-users/all-users`);
+        if (!res.ok) throw new Error("Failed to fetch ebook users");
+        // Parse JSON response
+        const data = await res.json();
+        // Sort by createdAt descending
+        const sortedUsers = data?.data?.sort(
+          (a: TUser, b: TUser) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        setEbookUsers(sortedUsers);
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "Unknown error";
+        toast.error(`There was a problem fetching users: ${message}`);
+      } finally {
+        setIsLoadingEbook(false);
+      }
+    };
+    fetchEbookUsers();
 
     const loggedInUserName = localStorage.getItem("name");
     if (loggedInUserName) {
@@ -96,18 +129,37 @@ const AdminDashboardGreeting = () => {
           </div>
           <div>
             <h3 className="text-xl font-semibold text-gray-700">Total Users</h3>
-            <p className="text-gray-600">
-              {isLoading ? (
-                <Icon
-                  className="text-gray-500"
-                  icon="line-md:loading-loop"
-                  width="20"
-                  height="20"
-                />
-              ) : (
-                <span>{users?.length}</span>
-              )}
-            </p>
+            <div className="flex items-center gap-1">
+              <p className="text-neutral-700">Report Downloaded:</p>
+              <p className="text-gray-600">
+                {isLoading ? (
+                  <Icon
+                    className="text-gray-500"
+                    icon="line-md:loading-loop"
+                    width="20"
+                    height="20"
+                  />
+                ) : (
+                  <span>{reportUsers?.length}</span>
+                )}
+              </p>
+            </div>
+
+             <div className="flex items-center gap-1">
+              <p className="text-neutral-700">Ebook Downloaded:</p>
+              <p className="text-gray-600">
+                {isLoadingEbook ? (
+                  <Icon
+                    className="text-gray-500"
+                    icon="line-md:loading-loop"
+                    width="20"
+                    height="20"
+                  />
+                ) : (
+                  <span>{ebookUsers?.length}</span>
+                )}
+              </p>
+            </div>
           </div>
         </div>
 
