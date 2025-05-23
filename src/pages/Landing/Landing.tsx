@@ -22,10 +22,10 @@ export default function Landing() {
           className="md:max-w-full md:px-0 px-4 flex-1"
         >
           <div className="lg:ml-[5rem] md:ml-[2rem] ml-0 lg:text-left text-center">
-            <h3 className="font-extrabold lg:text-[54px] md:text-[2rem] text-[22px] md:leading-tight leading-[35px] mb-[1rem]">
+            <h3 className="font-extrabold lg:text-[54px] md:text-[2rem] text-[22px] md:leading-tight leading-[35px] mb-[1rem] dark:text-darkModeHeadingTextColor">
               Master Your Finances with Powerful Calculators
             </h3>
-            <p className="md:text-[20px] text-[14px] text-[#696969]">
+            <p className="md:text-[20px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
               Explore our suite of financial calculators to plan, save, and grow
               your wealth. From budgeting and investments to loans and
               retirement, we've got the tools you need for a smarter financial
@@ -34,7 +34,7 @@ export default function Landing() {
             <div className="flex lg:justify-start justify-center">
               <button
                 onClick={handleGetStarted}
-                className="bg-black text-white md:text-[18px] text-[1rem] font-bold flex items-center justify-center gap-3 px-8 py-2 rounded-[10px] mt-[2.5rem] hover:scale-105 duration-300 animate-bounce hover:animate-none"
+                className="bg-black text-white dark:text-darkModeHeadingTextColor dark:border-[1px] md:text-[18px] text-[1rem] font-bold flex items-center justify-center gap-3 px-8 py-2 rounded-[10px] mt-[2.5rem] hover:scale-105 duration-300 animate-bounce hover:animate-none"
               >
                 <span>Get Started</span>
                 <img src={assets.arrowWhite} alt="Arrow Icon" />
@@ -54,10 +54,10 @@ export default function Landing() {
 
       <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem]">
         <div className="text-center md:mt-[5rem] mt-[3rem] md:mb-[2.5rem] mb-[1.5rem]">
-          <h1 className="font-bold md:text-[2.5rem] text-[20px] md:mb-0 mb-2">
+          <h1 className="font-bold md:text-[2.5rem] text-[20px] md:mb-0 mb-2 dark:text-darkModeHeadingTextColor">
             Our calculators and tools for you
           </h1>
-          <h3 className="md:text-[1.25rem] text-[14px] text-[#696969]">
+          <h3 className="md:text-[1.25rem] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
             Choose the calculator that fits your needs and start making informed
             financial decisions today!
           </h3>

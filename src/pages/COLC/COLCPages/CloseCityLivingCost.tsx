@@ -348,14 +348,14 @@ export default function CloseCityLivingCost() {
         <COLCLoading />
       ) : (
         <main className="md:m-10 m-3">
-          <h3 className="md:text-[1.5rem] font-semibold mb-[2rem]">
+          <h3 className="md:text-[1.5rem] font-semibold mb-[2rem] dark:text-darkModeHeadingTextColor">
             Cost of Living in {cityPriceData?.name}
           </h3>
 
           <div className="mb-[1rem]">
             <button
               onClick={handleBack}
-              className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
+              className=" hover:text-white dark:text-darkModeNormalTextColor border-[1px] hover:bg-black duration-300 border-gray-300 dark:border-darkModeBorderColor px-8 py-3 rounded-md"
             >
               Go Back
             </button>
@@ -366,7 +366,7 @@ export default function CloseCityLivingCost() {
               {estimatedCostData?.data?.error}
             </p>
           ) : (
-            <section className="border-[1px] border-gray-300 rounded-lg p-5 mb-5 bg-[#FBFBF8]">
+            <section className="border-[1px] border-gray-300 dark:border-darkModeBorderColor rounded-lg p-5 mb-5 bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor">
               <p>
                 <span className="font-semibold">Summary</span> of cost of living
                 in
@@ -399,9 +399,9 @@ export default function CloseCityLivingCost() {
 
           <section className="mb-3 flex md:flex-row flex-col md:items-center md:gap-10 gap-2">
             <div className="flex items-center gap-1">
-              <p className="font-semibold">Currency:</p>
+              <p className="font-semibold dark:text-darkModeNormalTextColor">Currency:</p>
               <select
-                className="border-[1px] border-gray-500 px-5 py-1"
+                className="border-[1px] border-gray-500 px-5 py-1 dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor"
                 name="currency-selection"
                 id="currency-selection"
                 onChange={(e) => setSelectedCurrency(e.target.value)}
@@ -428,7 +428,7 @@ export default function CloseCityLivingCost() {
               const { name: category, items } = item;
               return (
                 <section className="mb-3 min-w-[500px]">
-                  <div className="grid gap-2 grid-cols-5 font-semibold text-[1rem] p-1">
+                  <div className="grid gap-2 grid-cols-5 font-semibold text-[1rem] p-1 dark:text-darkModeHeadingTextColor">
                     <p className="flex md:items-center gap-1 col-span-3">
                       {category == "Restaurants" ? (
                         <Icon
@@ -489,7 +489,7 @@ export default function CloseCityLivingCost() {
                   </div>
 
                   {/* Children  */}
-                  <div className="rounded-lg p-2 border-[1px] border-gray-200 bg-[#FBFBF8] text-[14px]">
+                  <div className="rounded-lg p-2 border-[1px] border-gray-200 dark:border-darkModeBorderColor bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor text-[14px]">
                     {items?.map((item, index) => {
                       const {
                         item_name,
@@ -501,7 +501,7 @@ export default function CloseCityLivingCost() {
                         <>
                           <div
                             key={index}
-                            className="grid gap-2 grid-cols-5 border-b-[1px] border-gray-300 rounded-lg hover:bg-[#42c6c623] p-1"
+                            className="grid gap-2 grid-cols-5 border-b-[1px] border-gray-300 dark:border-darkModeBorderColor rounded-lg hover:bg-[#42c6c623] p-1"
                           >
                             <p className="flex items-center col-span-3">
                               {item_name}
@@ -551,7 +551,7 @@ export default function CloseCityLivingCost() {
             })}
           </section>
 
-          <div className="space-y-[0.3rem]">
+          <div className="space-y-[0.3rem] dark:text-darkModeNormalTextColor">
             <p>Contributors: {cityPriceData?.contributors}</p>
 
             <p>

@@ -43,7 +43,7 @@ const BudgetPieChart = () => {
   return (
     <div
       id="BC-Chart"
-      className="flex md:flex-row flex-col justify-center items-center md:gap-[2rem] bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md p-5"
+      className="flex md:flex-row flex-col justify-center items-center md:gap-[2rem] bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md p-5 BudgetPieChart"
     >
       <div className="md:w-[300px] w-[250px] md:mt-0 mt-[-5rem]">
         <ResponsiveContainer width="100%" height={400}>

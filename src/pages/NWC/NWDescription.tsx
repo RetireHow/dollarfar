@@ -70,7 +70,7 @@ export default function NWDescription() {
         <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mt-5">
           The net worth calculation formula is as stated below:
         </p>
-        <p className="font-bold text-black md:text-[18px] text-[14px] mt-5">
+        <p className="font-bold text-black dark:text-darkModeNormalTextColor md:text-[18px] text-[14px] mt-5">
           Net worth = [Value of Asset 1 + Value of Asset 2 + Value of Asset 3 +
           Value of Asset N] - [Value of Liability 1 + Value of Liability 2 +
           Value of Liability 3 + Value of Liability N]
@@ -82,7 +82,7 @@ export default function NWDescription() {
         <div className="text-[18px] leading-[27px] mt-5">
           <ul className="list-disc list-inside md:text-[1rem] text-[14px]">
             <li>
-              <span className="text-black font-bold mx-1">Assets:</span>
+              <span className="font-bold mx-1">Assets:</span>
               <span className="text-[#696969]">
                 While calculating the net worth, all the sources of income or
                 ways that yield a financial benefit will fall under the category
@@ -91,7 +91,7 @@ export default function NWDescription() {
               </span>
             </li>
             <li>
-              <span className="text-black font-bold mx-1">Liabilities:</span>
+              <span className="font-bold mx-1">Liabilities:</span>
               <span className="text-[#696969]">
                 Contrary to assets, liabilities are all such sources that result
                 in the drain of financial resources. These can either be basic

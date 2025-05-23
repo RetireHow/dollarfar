@@ -32,7 +32,6 @@ export const CIRCContributionFrequencyOptions: TOption[] = [
   { value: "4", label: "Quarterly" },
 ];
 
-
 export default function CIRC() {
   useTitle("Dollarfar | CIRC");
 
@@ -74,11 +73,11 @@ export default function CIRC() {
         <PageHero data={data} />
       </div>
 
-      <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] space-y-[3.5rem]">
+      <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] dark:border-darkModeBorderColor rounded-[10px] md:p-[2.5rem] p-[1rem] space-y-[3.5rem]">
         {/* Header  */}
         <div className="border-b-[1px] border-[#0000001A] md:pb-[2.5rem] pb-[1.3rem]">
           <div className="flex justify-between items-center flex-wrap">
-            <h3 className="md:text-[1.5rem] text-[1rem] font-bold md:mb-0 mb-3">
+            <h3 className="md:text-[1.5rem] text-[1rem] font-bold md:mb-0 mb-3 dark:text-darkModeHeadingTextColor">
               Compound Interest Rate Calculator
             </h3>
             <div className="lg:w-auto w-full">
@@ -111,9 +110,9 @@ export default function CIRC() {
             </div>
           </div>
         ) : !isLoading && !isCalculationCompleted ? (
-          <p className="text-[1.5rem] text-center py-20 text-gray-500">
+          <p className="text-[1.5rem] text-center py-20 text-gray-500 dark:text-darkModeNormalTextColor">
             Please click on the{" "}
-            <span className="font-bold text-black">Calculate</span> button and
+            <span className="font-bold text-black dark:text-darkModeNormalTextColor">Calculate</span> button and
             then your calculated result will be displayed here.{" "}
           </p>
         ) : (

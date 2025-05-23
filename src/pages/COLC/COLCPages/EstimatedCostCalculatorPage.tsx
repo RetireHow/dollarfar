@@ -92,20 +92,20 @@ export default function EstimatedCostCalculatorPage() {
       <div className="mb-10">
         <button
           onClick={handleBack}
-          className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
+          className=" hover:text-white border-[1px] hover:bg-black dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor duration-300 border-gray-300 px-8 py-3 rounded-md"
         >
           Go Back
         </button>
       </div>
 
-      <h3 className="text-[1rem] font-semibold mb-2">
+      <h3 className="text-[1rem] font-semibold mb-2 dark:text-darkModeHeadingTextColor">
         Estimated cost calculator in {selectedCityName2}, {selectedCountryName2}
       </h3>
       <section className="flex md:flex-row flex-col md:items-center gap-5 mb-10 text-[14px]">
         <div className="flex items-center gap-1 w-full">
-          <p className="font-semibold">Members:</p>
+          <p className="font-semibold dark:text-darkModeHeadingTextColor">Members:</p>
           <select
-            className="border-[1px] border-gray-500 px-5 py-1 w-full"
+            className="border-[1px] border-gray-500 px-5 py-1 w-full dark:border-darkModeBorderColor dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor"
             name="members"
             id="members"
             onChange={(e) => dispatch(setMembers(e.target.value))}
@@ -119,9 +119,9 @@ export default function EstimatedCostCalculatorPage() {
         </div>
 
         <div className="flex items-center gap-1 w-full">
-          <p className="font-semibold">Children:</p>
+          <p className="font-semibold dark:text-darkModeHeadingTextColor">Children:</p>
           <select
-            className="border-[1px] border-gray-500 px-5 py-1 w-full"
+            className="border-[1px] border-gray-500 px-5 py-1 w-full dark:border-darkModeBorderColor dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor"
             name="children"
             id="children"
             onChange={(e) => dispatch(setChildren(e.target.value))}
@@ -135,9 +135,9 @@ export default function EstimatedCostCalculatorPage() {
         </div>
 
         <div className="flex items-center gap-1 w-full">
-          <p className="font-semibold">Rent:</p>
+          <p className="font-semibold dark:text-darkModeHeadingTextColor">Rent:</p>
           <select
-            className="border-[1px] border-gray-500 px-5 py-1 w-full"
+            className="border-[1px] border-gray-500 px-5 py-1 w-full dark:border-darkModeBorderColor dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor"
             name="isRent"
             id="isRent"
             onChange={(e) => dispatch(setIsRent(e.target.value))}
@@ -160,7 +160,7 @@ export default function EstimatedCostCalculatorPage() {
             {estimatedCostData?.data?.error}
           </p>
         ) : (
-          <div className="border-[1px] border-gray-300 rounded-lg p-5 mb-5 bg-[#FBFBF8] inline-block">
+          <div className="border-[1px] border-gray-300 rounded-lg p-5 mb-5 bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor inline-block">
             <div className="flex items-center justify-between">
               <p>
                 <span className="font-semibold">Summary</span> of cost of living
@@ -205,10 +205,10 @@ export default function EstimatedCostCalculatorPage() {
       </section>
 
       <section className="overflow-x-auto">
-        <h3 className="font-semibold text-[1rem] mb-1">
+        <h3 className="font-semibold text-[1rem] mb-1 dark:text-darkModeHeadingTextColor">
           Estimated Cost Breakdown
         </h3>
-        <table className="text-left border bg-[#FBFBF8] text-[14px]">
+        <table className="text-left border bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor text-[14px]">
           <thead>
             <tr>
               <th className="border-[1px] border-gray-300 md:p-3 p-2">

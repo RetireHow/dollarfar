@@ -144,11 +144,11 @@ export default function QualityLife() {
         <COLCLoading />
       ) : (
         <main className="md:m-10 m-3">
-          <h3 className="md:text-[1.5rem] font-semibold mb-[2rem]">
+          <h3 className="md:text-[1.5rem] font-semibold mb-[2rem] dark:text-darkModeHeadingTextColor">
             Quality of Life in {name}
           </h3>
 
-          <div className="mb-[1rem]">
+          <div className="mb-[1rem] dark:text-darkModeHeadingTextColor">
             <button
               onClick={handleBack}
               className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
@@ -157,7 +157,7 @@ export default function QualityLife() {
             </button>
           </div>
 
-          <section className="border-[1px] border-gray-300 p-3 mt-[1rem] rounded-lg inline-block md:w-[400px] w-full bg-[#FBFBF8]">
+          <section className="border-[1px] border-gray-300 p-3 mt-[1rem] rounded-lg inline-block md:w-[400px] w-full bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor">
             <div className="font-bold mb-5 text-[1.3rem] flex justify-between items-center">
               <p>Index</p>
               <Link to="/cost-of-living-calculator/quality-life/quality-life-indices-explanation">
@@ -313,7 +313,7 @@ export default function QualityLife() {
             </div>
           </section>
 
-          <div className="space-y-[0.3rem] mt-[0.5rem]">
+          <div className="space-y-[0.3rem] mt-[0.5rem] dark:text-darkModeNormalTextColor">
             <p>
               Minimum contributors for an underlying section:{" "}
               {

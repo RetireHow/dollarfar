@@ -12,18 +12,18 @@ export default function CrimeExplanation() {
   };
   return (
     <main className="m-5">
-      <div className="mb-[1rem]">
+      <div className="mb-[1rem] dark:text-darkModeHeadingTextColor">
         <button
           onClick={handleBack}
-          className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
+          className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 dark:border-darkModeBorderColor px-8 py-3 rounded-md"
         >
           Go Back
         </button>
       </div>
-      <h3 className="font-semibold text-[1.5rem] mb-[0.5rem]">
+      <h3 className="font-semibold text-[1.5rem] mb-[0.5rem] dark:text-darkModeHeadingTextColor">
         About Crime Indexes
       </h3>
-      <div className="space-y-[0.5rem]">
+      <div className="space-y-[0.5rem] dark:text-darkModeNormalTextColor">
         <p>
           The data in this section is derived from surveys conducted by visitors
           to our website. Questions in these surveys are designed to be similar

@@ -4,7 +4,7 @@ export default function COLDescription() {
   return (
     <article className="md:mx-[5rem] mx-[1rem]">
       <section>
-        <h1 className="font-semibold md:text-[1.5rem] text-[18px]">
+        <h1 className="font-semibold md:text-[1.5rem] text-[18px] dark:text-darkModeHeadingTextColor">
           What is Cost of Living?
         </h1>
         <p className="text-[#696969] mt-[0.5rem] md:text-[1rem] text-[14px]">
@@ -20,7 +20,7 @@ export default function COLDescription() {
       </section>
 
       <section className="mt-[3rem]">
-        <h1 className="font-semibold md:text-[1.5rem] text-[18px]">
+        <h1 className="font-semibold md:text-[1.5rem] text-[18px] dark:text-darkModeHeadingTextColor">
           How to Calculate Cost of Living?
         </h1>
         <p className="text-[#696969] mt-[0.5rem] md:text-[1rem] text-[14px]">
@@ -28,7 +28,7 @@ export default function COLDescription() {
           comparing the expenses in one location to another. The formula can be
           simplified as follows:
         </p>
-        <p className="font-semibold mt-[0.5rem] md:text-[1rem] text-[14px]">
+        <p className="font-semibold mt-[0.5rem] md:text-[1rem] text-[14px] dark:text-darkModeNormalTextColor">
           Cost of Living Index ={" "}
           {`{(Total Expenses in City B - Total Expenses in City A)/Total Expenses in City A}`}{" "}
           × 100
@@ -43,11 +43,11 @@ export default function COLDescription() {
       </section>
 
       <section className="mt-[3rem]">
-        <h1 className="font-semibold md:text-[1.5rem] text-[18px]">
+        <h1 className="font-semibold md:text-[1.5rem] text-[18px] dark:text-darkModeHeadingTextColor">
           Cost of Living Calculation Example
         </h1>
         <div className="mt-[1rem]">
-          <p className="flex items-center gap-1 font-semibold md:text-[1rem] text-[14px]">
+          <p className="flex items-center gap-1 font-semibold md:text-[1rem] text-[14px] dark:text-darkModeNormalTextColor">
             {" "}
             <Icon icon="guidance:left-arrow" width="24" height="24" /> Location
             A: Mumbai (Example):
@@ -60,13 +60,13 @@ export default function COLDescription() {
             Healthcare Costs: 5,000 <br />
             Utilities: 4,000 <br />
             Miscellaneous: 10,000 <br />
-            <span className="font-semibold text-black">
+            <span className="font-semibold text-black dark:text-darkModeNormalTextColor">
               Total Expenses: 69,000
             </span>
           </p>
         </div>
         <div className="mt-[1rem] md:text-[1rem] text-[14px]">
-          <p className="flex items-center gap-1 font-semibold">
+          <p className="flex items-center gap-1 font-semibold dark:text-darkModeNormalTextColor">
             {" "}
             <Icon icon="guidance:left-arrow" width="24" height="24" /> Location
             B: Bangalore (Example):
@@ -79,18 +79,18 @@ export default function COLDescription() {
             Healthcare Costs: 4,000 <br />
             Utilities: 3,500 (Blue) <br />
             Miscellaneous: 8,000 <br />
-            <span className="font-semibold text-black">
+            <span className="font-semibold text-black dark:text-darkModeNormalTextColor">
               Total Expenses: 56,500
             </span>
           </p>
         </div>
         <div className="mt-[1rem] md:text-[1rem] text-[14px]">
-          <p className="flex items-center gap-1 font-semibold">
+          <p className="flex items-center gap-1 font-semibold dark:text-darkModeNormalTextColor">
             {" "}
             <Icon icon="guidance:left-arrow" width="24" height="24" /> Cost of
             Living Comparison:
           </p>
-          <p className="text-[#696969]">
+          <p className="text-[#696969] dark:text-darkModeNormalTextColor">
             Cost of Living Index: <br />
             {`{(56,500-69,000)/69000}`}×100=18.12% <br />
             Living in Bangalore is approximately 18.12% cheaper than living in

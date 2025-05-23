@@ -12,7 +12,7 @@ export default function TrafficIndexExplanation() {
   };
   return (
     <main className="m-5">
-      <div className="mb-[1rem]">
+      <div className="mb-[1rem] dark:text-darkModeHeadingTextColor">
         <button
           onClick={handleBack}
           className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
@@ -20,10 +20,10 @@ export default function TrafficIndexExplanation() {
           Go Back
         </button>
       </div>
-      <h3 className="text-[1.5rem] font-semibold mb-[0.5rem]">
+      <h3 className="text-[1.5rem] font-semibold mb-[0.5rem] dark:text-darkModeHeadingTextColor">
         About Traffic Indexes
       </h3>
-      <p className="mb-[1rem]">
+      <p className="mb-[1rem] dark:text-darkModeNormalTextColor">
         Please note that the indices provided in this section are based on
         user-contributed data. We aim to provide a platform for individuals to
         share their experiences and perceptions regarding traffic conditions in
@@ -36,7 +36,7 @@ export default function TrafficIndexExplanation() {
         for a comprehensive understanding of traffic conditions.
       </p>
 
-      <div className="space-y-[1rem]">
+      <div className="space-y-[1rem] dark:text-darkModeNormalTextColor">
         <p>
           <span className="font-semibold">Traffic Index</span> is a composite
           measure that that considers factors such as commute time,
@@ -76,7 +76,7 @@ export default function TrafficIndexExplanation() {
         </p>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto dark:text-darkModeNormalTextColor">
         <pre className="mt-5">
           <code>
             {`protected void calculateIndex() {
@@ -101,7 +101,7 @@ export default function TrafficIndexExplanation() {
           </code>
         </pre>
       </div>
-      <div className="space-y-[1rem] mt-5">
+      <div className="space-y-[1rem] mt-5 dark:text-darkModeNormalTextColor">
         <p>
           To estimate number of trees to cover CO2 consumption, we assume 240
           days of commuting during the year and we are using the cite "A single

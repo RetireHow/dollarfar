@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
-import { Modal } from "antd";
+import { ConfigProvider, theme as antdTheme, Modal } from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { BlobProviderParams, PDFDownloadLink } from "@react-pdf/renderer";
 import html2canvas from "html2canvas";
@@ -32,6 +32,7 @@ const DownloadModal = ({
   const [base64, setBase64] = useState("");
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isDarkMode = document.documentElement.classList.contains("dark");
 
   const pdfData = {
     ...calculatorData,
@@ -152,144 +153,152 @@ const DownloadModal = ({
 
   return (
     <>
-      <div
-        onClick={showModal}
-        className="flex items-center justify-between gap-2 border-[1px] border-gray-300 md:px-[1.25rem] px-[0.5rem] md:py-[10px] py-[8px] rounded-[10px] font-medium md:w-[140px] w-full cursor-pointer"
-        data-html2canvas-ignore
+      <ConfigProvider
+        theme={{
+          algorithm: isDarkMode
+            ? antdTheme.darkAlgorithm
+            : antdTheme.defaultAlgorithm,
+        }}
       >
-        <p>Download</p>
-        <Icon className="text-[1.5rem]" icon="material-symbols:download" />
-      </div>
-      <Modal
-        open={isModalOpen}
-        closeIcon={false}
-        footer={false}
-        className="geist"
-      >
-        <div className="space-y-[1rem]">
-          <div>
-            <div className="flex items-center justify-between">
-              <h3 className="md:text-[1.5rem] text-[18px] font-bold">
-                Enter your details to reflect on pdf
-              </h3>
-              <Icon
-                onClick={handleCancel}
-                className="text-red-500 text-[1.8rem] cursor-pointer"
-                icon="material-symbols:close"
-              />
-            </div>
-          </div>
-
-          <div className="md:text-[1rem] text-[14px]">
-            <label className="block font-semibold mb-2" htmlFor="name">
-              Name
-            </label>
-            <input
-              className={`p-[0.8rem] border-[1px] border-[#838383] rounded-[8px] outline-none w-full ${
-                checked && "bg-gray-100 disabled:cursor-not-allowed"
-              }`}
-              autoFocus
-              type="text"
-              placeholder="Enter Name"
-              onChange={(e) => setName(e.target.value)}
-              disabled={checked}
-              value={name}
-            />
-            {showError && !name?.trim() && (
-              <Error message="This field is required" />
-            )}
-          </div>
-          <div className="md:text-[1rem] text-[14px]">
-            <label className="block font-semibold mb-2" htmlFor="name">
-              Email
-            </label>
-            <input
-              className={`p-[0.8rem] border-[1px] border-[#838383] rounded-[8px] outline-none w-full ${
-                checked && "bg-gray-100 disabled:cursor-not-allowed"
-              }`}
-              type="email"
-              placeholder="Enter Email Address"
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={checked}
-              value={email}
-            />
-            {showError && !email?.trim() && (
-              <Error message="This field is required" />
-            )}
-            {showError && email?.trim() && !emailRegex.test(email) && (
-              <Error message="Email is not valid!" />
-            )}
-          </div>
-          <div className="md:text-[1rem] text-[14px]">
-            <label className="block font-semibold mb-2" htmlFor="name">
-              Phone
-            </label>
-            <input
-              className={`p-[0.8rem] border-[1px] border-[#838383] rounded-[8px] outline-none w-full ${
-                checked && "bg-gray-100 disabled:cursor-not-allowed"
-              }`}
-              type="text"
-              placeholder="Enter Phone Number"
-              onChange={(e) => setPhone(e.target.value)}
-              disabled={checked}
-              value={phone}
-            />
-            {showError && !phone?.trim() && (
-              <Error message="This field is required" />
-            )}
-          </div>
-          <div>
-            <div className="text-[12px] flex flex-wrap items-center gap-1 select-none">
-              {checked ? (
-                <Icon
-                  onClick={handleChecked}
-                  className="text-[1.2rem] cursor-pointer"
-                  icon="mingcute:checkbox-fill"
-                />
-              ) : (
-                <Icon
-                  onClick={handleChecked}
-                  className="text-[1.2rem] cursor-pointer"
-                  icon="mdi:checkbox-blank-outline"
-                />
-              )}
-              <span className="text-[#838383]">
-                By proceeding, you are agreeing to our
-              </span>
-              <Link className="hover:underline" to="/terms-and-condition">
-                Terms and Conditions
-              </Link>
-            </div>
-            {showError && !checked && (
-              <p className="text-red-500 text-[12px] mt-1">
-                Please check Terms and Conditions
-              </p>
-            )}
-          </div>
-
-          <div>
-            {isFormComplete && (
-              <PDFDownloadLink
-                document={<PdfComponent data={pdfData} />}
-                fileName={fileName}
-              >
-                {renderDownloadButton as unknown as React.ReactNode}
-              </PDFDownloadLink>
-            )}
-
-            {(!name || !email || !phone || !checked) && (
-              <button
-                className="text-white w-full rounded-[10px] py-[0.8rem] flex justify-center items-center h-[50px] bg-black"
-                type="button"
-                id="download-pdf"
-                onClick={handleDownloadPdf}
-              >
-                Download PDF
-              </button>
-            )}
-          </div>
+        <div
+          onClick={showModal}
+          className="flex items-center justify-between gap-2 border-[1px] border-gray-300 dark:text-darkModeHeadingTextColor md:px-[1.25rem] px-[0.5rem] md:py-[10px] py-[8px] rounded-[10px] font-medium md:w-[140px] w-full cursor-pointer"
+          data-html2canvas-ignore
+        >
+          <p>Download</p>
+          <Icon className="text-[1.5rem]" icon="material-symbols:download" />
         </div>
-      </Modal>
+        <Modal
+          open={isModalOpen}
+          closeIcon={false}
+          footer={false}
+          className="geist"
+        >
+          <div className="space-y-[1rem]">
+            <div>
+              <div className="flex items-center justify-between">
+                <h3 className="md:text-[1.5rem] text-[18px] font-bold">
+                  Enter your details to reflect on pdf
+                </h3>
+                <Icon
+                  onClick={handleCancel}
+                  className="text-red-500 text-[1.8rem] cursor-pointer"
+                  icon="material-symbols:close"
+                />
+              </div>
+            </div>
+
+            <div className="md:text-[1rem] text-[14px]">
+              <label className="block font-semibold mb-2" htmlFor="name">
+                Name
+              </label>
+              <input
+                className={`p-[0.8rem] border-[1px] border-[#838383] dark:bg-darkModeBgColor dark:text-darkModeHeadingTextColor rounded-[8px] outline-none w-full ${
+                  checked && "bg-gray-100 disabled:cursor-not-allowed"
+                }`}
+                autoFocus
+                type="text"
+                placeholder="Enter Name"
+                onChange={(e) => setName(e.target.value)}
+                disabled={checked}
+                value={name}
+              />
+              {showError && !name?.trim() && (
+                <Error message="This field is required" />
+              )}
+            </div>
+            <div className="md:text-[1rem] text-[14px]">
+              <label className="block font-semibold mb-2" htmlFor="name">
+                Email
+              </label>
+              <input
+                className={`p-[0.8rem] border-[1px] border-[#838383] dark:bg-darkModeBgColor dark:text-darkModeHeadingTextColor rounded-[8px] outline-none w-full ${
+                  checked && "bg-gray-100 disabled:cursor-not-allowed"
+                }`}
+                type="email"
+                placeholder="Enter Email Address"
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={checked}
+                value={email}
+              />
+              {showError && !email?.trim() && (
+                <Error message="This field is required" />
+              )}
+              {showError && email?.trim() && !emailRegex.test(email) && (
+                <Error message="Email is not valid!" />
+              )}
+            </div>
+            <div className="md:text-[1rem] text-[14px]">
+              <label className="block font-semibold mb-2" htmlFor="name">
+                Phone
+              </label>
+              <input
+                className={`p-[0.8rem] border-[1px] border-[#838383] dark:bg-darkModeBgColor dark:text-darkModeHeadingTextColor rounded-[8px] outline-none w-full ${
+                  checked && "bg-gray-100 disabled:cursor-not-allowed"
+                }`}
+                type="text"
+                placeholder="Enter Phone Number"
+                onChange={(e) => setPhone(e.target.value)}
+                disabled={checked}
+                value={phone}
+              />
+              {showError && !phone?.trim() && (
+                <Error message="This field is required" />
+              )}
+            </div>
+            <div>
+              <div className="text-[12px] flex flex-wrap items-center gap-1 select-none">
+                {checked ? (
+                  <Icon
+                    onClick={handleChecked}
+                    className="text-[1.2rem] cursor-pointer"
+                    icon="mingcute:checkbox-fill"
+                  />
+                ) : (
+                  <Icon
+                    onClick={handleChecked}
+                    className="text-[1.2rem] cursor-pointer"
+                    icon="mdi:checkbox-blank-outline"
+                  />
+                )}
+                <span className="text-[#838383]">
+                  By proceeding, you are agreeing to our
+                </span>
+                <Link className="hover:underline" to="/terms-and-condition">
+                  Terms and Conditions
+                </Link>
+              </div>
+              {showError && !checked && (
+                <p className="text-red-500 text-[12px] mt-1">
+                  Please check Terms and Conditions
+                </p>
+              )}
+            </div>
+
+            <div>
+              {isFormComplete && (
+                <PDFDownloadLink
+                  document={<PdfComponent data={pdfData} />}
+                  fileName={fileName}
+                >
+                  {renderDownloadButton as unknown as React.ReactNode}
+                </PDFDownloadLink>
+              )}
+
+              {(!name || !email || !phone || !checked) && (
+                <button
+                  className="text-white w-full rounded-[10px] py-[0.8rem] flex justify-center items-center h-[50px] bg-black"
+                  type="button"
+                  id="download-pdf"
+                  onClick={handleDownloadPdf}
+                >
+                  Download PDF
+                </button>
+              )}
+            </div>
+          </div>
+        </Modal>
+      </ConfigProvider>
     </>
   );
 };

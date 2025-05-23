@@ -8,12 +8,12 @@ export default function IndexExplanation() {
   return (
     <>
       <Link to="/cost-of-living-calculator">
-        <button className="ml-[1.5rem] mt-[1.5rem]  hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md">
+        <button className="ml-[1.5rem] mt-[1.5rem]  hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 dark:border-darkModeBorderColor dark:text-darkModeHeadingTextColor px-8 py-3 rounded-md">
           Go Back
         </button>
       </Link>
-      <main className="m-[1.5rem] space-y-[1rem]">
-        <h3 className="font-bold text-[1.5rem]">
+      <main className="m-[1.5rem] space-y-[1rem] dark:text-darkModeNormalTextColor">
+        <h3 className="font-bold text-[1.5rem] dark:text-darkModeHeadingTextColor">
           Understanding our Cost of Living Indexes
         </h3>
         <p>

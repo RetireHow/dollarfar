@@ -201,9 +201,9 @@ export default function ChangeCurrency() {
   return (
     <section className="mb-3 flex md:flex-row flex-col md:items-center md:gap-10 gap-2">
       <div className="flex items-center gap-1">
-        <p className="font-semibold">Currency:</p>
+        <p className="font-semibold dark:text-darkModeHeadingTextColor">Currency:</p>
         <select
-          className="border-[1px] border-gray-500 px-5 py-1"
+          className="border-[1px] border-gray-500 dark:border-darkModeBorderColor px-5 py-1 dark:text-darkModeNormalTextColor dark:bg-darkModeBgColor outline-none"
           name="currency-selection"
           id="currency-selection"
           onChange={handleChangeCurrency}

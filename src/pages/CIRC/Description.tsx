@@ -2,7 +2,7 @@ export default function Description() {
   return (
     <article>
       <section className="md:mx-[5rem] mx-[1rem]">
-        <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
+        <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem] dark:text-darkModeHeadingTextColor">
           What is Compound Interest?
         </h3>
         <div className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
@@ -28,7 +28,7 @@ export default function Description() {
       </section>
 
       <section className="md:mx-[5rem] mx-[1rem] md:mt-[3rem] mt-[2rem]">
-        <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
+        <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem] dark:text-darkModeHeadingTextColor">
           What is Compound Interest Calculator?
         </h3>
         <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
@@ -40,16 +40,16 @@ export default function Description() {
       </section>
 
       <section className="md:mx-[5rem] mx-[1rem] md:mt-[3rem] mt-[2rem]">
-        <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
+        <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem] dark:text-darkModeHeadingTextColor">
           How is Compound Interest Calculator Work?
         </h3>
         <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
           The compound interest calculator follows this below-standardized
           formula to compute the total compound interest:
         </p>
-        <p className="font-bold text-black mt-5 md:text-[1rem] text-[14px]">A = P (1 + R/N) ^ nt</p>
+        <p className="font-bold text-black dark:text-darkModeNormalTextColor mt-5 md:text-[1rem] text-[14px]">A = P (1 + R/N) ^ nt</p>
 
-        <div className="mt-5 md:text-[1rem] text-[14px] space-y-[0.5rem]">
+        <div className="mt-5 md:text-[1rem] text-[14px] space-y-[0.5rem] dark:text-darkModeNormalTextColor">
           <p>A = Compound Interest</p>
           <p>P = Principal Amount</p>
           <p>R = Rate of Interest</p>
@@ -59,7 +59,7 @@ export default function Description() {
       </section>
 
       <section className="md:mx-[5rem] mx-[1rem] md:mt-[3rem] mt-[2rem]">
-        <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem]">
+        <h3 className="md:text-[28px] text-[18px] font-extrabold md:mb-[1.5rem] mb-[0.5rem] dark:text-darkModeHeadingTextColor">
           Example of Compound Interest Calculation
         </h3>
         <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] mb-[1rem]">
@@ -75,7 +75,7 @@ export default function Description() {
           the above formula, you can easily understand the calculation of the
           coming years.
         </p>
-        <p className="font-bold text-black md:text-[1rem] text-[14px]">
+        <p className="font-bold text-black dark:text-darkModeNormalTextColor md:text-[1rem] text-[14px]">
           A = 20,000 (1 + 10/1) ^ 5 = 32,210.20
         </p>
       </section>

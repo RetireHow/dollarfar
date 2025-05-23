@@ -1,0 +1,45 @@
+
+.dark{
+  background-color: #171717;
+  color: #d4d4d4;
+}
+
+.dark .BudgetPieChart{
+  background-color: #171717;
+  color: #d4d4d4;
+}
+.dark .BudgetOverviewTable{
+  background-color: #171717;
+  color: #d4d4d4;
+}
+.dark .CategoryWiseExpenseTable{
+  background-color: #171717;
+  color: #d4d4d4;
+}
+
+.dark .BudgetPieChart ul{
+  color: #d4d4d4;
+}
+
+.dark input {
+  background-color: #171717;
+  color: #d4d4d4;
+}
+
+
+.dark table thead {
+  background-color: #171717;
+}
+
+.dark table tbody tr:last-child {
+  background-color: #171717;
+}
+
+.dark table tbody tr:hover {
+  background-color: #363535;
+}
+
+.dark button {
+  color: #fff;
+  border: #4b4848 1px solid;
+}

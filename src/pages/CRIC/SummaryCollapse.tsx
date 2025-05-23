@@ -52,7 +52,7 @@ export default function SummaryCollapse() {
     {
       key: "1",
       label: (
-        <h3 className="md:text-[1.2rem] text-[1rem] font-bold text-gray-600">
+        <h3 className="md:text-[1.2rem] text-[1rem] font-bold text-gray-600 dark:text-darkModeHeadingTextColor">
           <Link
             to="/CRIC"
             className="border-b-[1px] border-b-gray-600 hover:border-b-blue-600"
@@ -185,7 +185,7 @@ export default function SummaryCollapse() {
     {
       key: "2",
       label: (
-        <h3 className="md:text-[1.2rem] text-[1rem] font-bold text-gray-600">
+        <h3 className="md:text-[1.2rem] text-[1rem] font-bold text-gray-600 dark:text-darkModeHeadingTextColor">
           <Link
             to="/CRIC/PP"
             className="border-b-[1px] border-b-gray-600 hover:border-b-blue-600"
@@ -244,7 +244,7 @@ export default function SummaryCollapse() {
     {
       key: "3",
       label: (
-        <h3 className="md:text-[1.2rem] text-[1rem] font-bold text-gray-600">
+        <h3 className="md:text-[1.2rem] text-[1rem] font-bold text-gray-600 dark:text-darkModeHeadingTextColor">
           <Link
             to="/CRIC/employer-pension"
             className="border-b-[1px] border-b-gray-600 hover:border-b-blue-600"
@@ -469,7 +469,7 @@ export default function SummaryCollapse() {
     {
       key: "4",
       label: (
-        <h3 className="md:text-[1.2rem] text-[1rem] font-bold text-gray-600">
+        <h3 className="md:text-[1.2rem] text-[1rem] font-bold text-gray-600 dark:text-darkModeHeadingTextColor">
           <Link
             to="/CRIC/retirement-savings"
             className="border-b-[1px] border-b-gray-600 hover:border-b-blue-600"
@@ -482,7 +482,7 @@ export default function SummaryCollapse() {
         <div className="space-y-3 rounded-lg md:p-5 p-3 border-[1px] shadow-sm bg-[#FFF]">
           {TFSA.hasTFSA == "Yes" && (
             <div>
-              <h3 className="font-bold text-[1.1rem] mb-[0.8rem]">
+              <h3 className="font-bold text-[1.1rem] mb-[0.8rem] dark:text-darkModeHeadingTextColor">
                 <Link
                   to="/CRIC/retirement-savings"
                   className="border-b-[1px] border-b-gray-600 hover:border-b-blue-600"
@@ -590,7 +590,7 @@ export default function SummaryCollapse() {
 
           {NRA.hasNRA == "Yes" && (
             <div>
-              <h3 className="font-bold text-[1.1rem] mb-[0.8rem]">
+              <h3 className="font-bold text-[1.1rem] mb-[0.8rem] dark:text-darkModeHeadingTextColor">
                 <Link
                   to="/CRIC/retirement-savings"
                   className="border-b-[1px] border-b-gray-600 hover:border-b-blue-600"
@@ -740,7 +740,7 @@ export default function SummaryCollapse() {
     {
       key: "5",
       label: (
-        <h3 className="md:text-[1.2rem] text-[1rem] font-bold text-gray-600">
+        <h3 className="md:text-[1.2rem] text-[1rem] font-bold text-gray-600 dark:text-darkModeHeadingTextColor">
           <Link
             to="/CRIC/other-income"
             className="border-b-[1px] border-b-gray-600 hover:border-b-blue-600"
@@ -965,7 +965,7 @@ export default function SummaryCollapse() {
     {
       key: "6",
       label: (
-        <h3 className="md:text-[1.2rem] text-[1rem] font-bold text-gray-600">
+        <h3 className="md:text-[1.2rem] text-[1rem] font-bold text-gray-600 dark:text-darkModeHeadingTextColor">
           <Link
             to="/CRIC/OAS"
             className="border-b-[1px] border-b-gray-600 hover:border-b-blue-600"
@@ -1124,7 +1124,7 @@ export default function SummaryCollapse() {
   });
   return (
     <Collapse
-      rootClassName="bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md"
+      rootClassName="bg-[#F8F8F8] summaryCollapse rounded-lg border-[1px] border-gray-300 shadow-md"
       expandIconPosition="end"
       defaultActiveKey={["1", "2", "3", "4", "5", "6"]}
       expandIcon={(panelProps) => {

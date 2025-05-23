@@ -50,7 +50,7 @@ export default function NWForm() {
         </div>
       </div>
 
-      <div className="md:col-span-2 flex justify-center items-center">
+      <div className="md:col-span-2 flex justify-center items-center border-[1px] rounded-md dark:border-gray-500">
         <button
           onClick={handleCalculate}
           className="bg-black text-[18px] text-white p-[0.8rem] rounded-[10px] w-full"

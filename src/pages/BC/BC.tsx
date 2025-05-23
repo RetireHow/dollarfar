@@ -6,6 +6,8 @@ import BudgetCalcLayout from "./BudgetCalcLayout";
 import BudgetDescription from "./BudgetDescription";
 import useTitle from "../../hooks/useTitle";
 import { useAppSelector } from "../../redux/hooks";
+import "./BCDarkmodeStyle.css";
+import { ConfigProvider, theme as antdTheme } from "antd";
 
 const data = {
   title: "Budget calculator/cash flow calculator",
@@ -110,7 +112,7 @@ export default function BC() {
     totalAnnualCashFlowAfterTax,
     totalMonthlyCashFlowAfterTax,
   } = useAppSelector((state) => state.budgetCalculator);
-  
+
   const calculatorData = {
     totalAnnualIncome,
     totalMonthlyIncome,
@@ -192,35 +194,45 @@ export default function BC() {
     vacationFund,
   };
 
-  return (
-    <main className="mb-[5rem]">
-      <PageHero data={data} />
+    const isDarkMode = document.documentElement.classList.contains("dark");
 
-      <section
-        id="NWReport"
-        className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] md:mb-[5rem] mb-[3rem]"
-      >
-        {/* Header  */}
-        <div className="border-b-[1px] border-[#0000001A] md:pb-[2.5rem] pb-[1.3rem] mb-[3rem]">
-          <div className="flex justify-between items-center flex-wrap">
-            <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
-              Budget Calculator
-            </h3>
-            <div className="lg:w-auto w-full">
-              <DownloadModal
-                calculatorData={calculatorData}
-                fileName="Budget Calculator Report"
-                id="BC-Chart"
-                PdfComponent={BCPdf}
-              />
+  return (
+    <ConfigProvider
+      theme={{
+        algorithm: isDarkMode
+          ? antdTheme.darkAlgorithm
+          : antdTheme.defaultAlgorithm,
+      }}
+    >
+      <main className="mb-[5rem]">
+        <PageHero data={data} />
+
+        <section
+          id="NWReport"
+          className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] md:mb-[5rem] mb-[3rem]"
+        >
+          {/* Header  */}
+          <div className="border-b-[1px] border-[#0000001A] md:pb-[2.5rem] pb-[1.3rem] mb-[3rem]">
+            <div className="flex justify-between items-center flex-wrap">
+              <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
+                Budget Calculator
+              </h3>
+              <div className="lg:w-auto w-full">
+                <DownloadModal
+                  calculatorData={calculatorData}
+                  fileName="Budget Calculator Report"
+                  id="BC-Chart"
+                  PdfComponent={BCPdf}
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        <BudgetCalcLayout />
-      </section>
+          <BudgetCalcLayout />
+        </section>
 
-      <BudgetDescription />
-    </main>
+        <BudgetDescription />
+      </main>
+    </ConfigProvider>
   );
 }

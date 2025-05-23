@@ -32,12 +32,12 @@ export default function COLC() {
         <PageHero data={data} />
       </div>
 
-      <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[3rem]">
+      <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] dark:border-darkModeBorderColor rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[3rem]">
         <COLCForm />
         {!COLCModifiedCostData?.output ? (
           <div className="flex justify-center">
-            <h3 className="text-[1.3rem] font-medium text-gray-600 text-center max-w-[600px]">
-              Click on the <span className="text-black font-bold">Compare</span>{" "}
+            <h3 className="text-[1.3rem] font-medium text-gray-600 dark:text-darkModeNormalTextColor text-center max-w-[600px]">
+              Click on the <span className="text-black font-bold dark:text-darkModeNormalTextColor">Compare</span>{" "}
               button and then the cost of living comparision between your two
               selected cities will be shown here.
             </h3>

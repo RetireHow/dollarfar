@@ -17,8 +17,8 @@ export default function PageHero({data}:{data:TPageHeroProps}) {
           <span>Back</span>
         </button>
       </Link>
-      <h3 className="md:text-[28px] font-extrabold">{title}</h3>
-      <p className="md:text-[18px] text-[14px] text-[#DADADA] leading-[27px] md:mr-[8rem]">
+      <h3 className="md:text-[28px] font-extrabold dark:text-darkModeHeadingTextColor">{title}</h3>
+      <p className="md:text-[18px] text-[14px] text-[#DADADA] dark:text-darkModeNormalTextColor leading-[27px] md:mr-[8rem]">
         {description}
       </p>
       <div className="absolute bottom-0 right-0 flex justify-end">

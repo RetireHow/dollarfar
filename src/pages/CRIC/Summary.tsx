@@ -135,7 +135,7 @@ export default function Summary() {
         ) : !isLoading && !isCalculationCompleted ? (
           <p className="text-[1.5rem] text-center py-20 text-gray-500">
             Please click on the{" "}
-            <span className="font-bold text-black">Calculate</span> button and
+            <span className="font-bold">Calculate</span> button and
             then your calculated result will be displayed here.{" "}
           </p>
         ) : (

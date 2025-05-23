@@ -12,7 +12,7 @@ export default function PropertyPriceExplanationPage() {
   };
   return (
     <main className="m-5">
-      <div className="mb-[1rem]">
+      <div className="mb-[1rem] dark:text-darkModeHeadingTextColor">
         <button
           onClick={handleBack}
           className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
@@ -20,10 +20,10 @@ export default function PropertyPriceExplanationPage() {
           Go Back
         </button>
       </div>
-      <h3 className="text-[1.5rem] font-semibold mb-3">
+      <h3 className="text-[1.5rem] font-semibold mb-3 dark:text-darkModeHeadingTextColor">
         About Property Value and Investment Indexes
       </h3>
-      <div className="space-y-[0.5rem]">
+      <div className="space-y-[0.5rem] dark:text-darkModeNormalTextColor">
         <p>
           Note that there is no standard formula to calculate property price
           indexes. Our formulas differ from Case-Shiller Index, UK Housing Price

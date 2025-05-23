@@ -193,9 +193,9 @@ const TrafficTable = ({
     <>
       {isAllZero ? (
         <section className="space-y-[1rem] mt-[3rem]">
-          <h3 className="md:text-[1.3rem] font-semibold">{title}</h3>
+          <h3 className="md:text-[1.3rem] font-semibold dark:text-darkModeHeadingTextColor">{title}</h3>
           <div className="overflow-x-auto">
-            <table className="table-auto md:max-w-[50%] bg-[#FBFBF8] w-full border-collapse">
+            <table className="table-auto md:max-w-[50%] bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor w-full border-collapse">
               <tbody>
                 <tr>
                   <td className="border p-2">Distance</td>
@@ -452,10 +452,10 @@ export default function Traffic() {
         <COLCLoading />
       ) : (
         <main className="md:m-10 m-3">
-          <h3 className="md:text-[1.5rem] font-semibold mb-[2rem]">
+          <h3 className="md:text-[1.5rem] font-semibold mb-[2rem] dark:text-darkModeHeadingTextColor">
             Traffic in {name}
           </h3>
-          <div className="mb-[1rem]">
+          <div className="mb-[1rem] dark:text-darkModeHeadingTextColor">
             <button
               onClick={handleBack}
               className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
@@ -464,7 +464,7 @@ export default function Traffic() {
             </button>
           </div>
 
-          <div className="border-[1px] border-gray-300 rounded-lg p-3 bg-[#FBFBF8]">
+          <div className="border-[1px] border-gray-300 rounded-lg p-3 bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor">
             In this city, we estimate that each passenger produces approximately{" "}
             <span className="font-semibold">
               {((240 * index_co2_emission) / 1000)?.toFixed(2)}kg
@@ -485,7 +485,7 @@ export default function Traffic() {
 
           <TrafficPieChart transportation={primary_means_percentage_map} />
 
-          <section className="border-[1px] bg-[#FBFBF8] border-gray-300 p-3 mb-[3rem] mt-[1rem] rounded-lg inline-block md:w-[400px] w-full">
+          <section className="border-[1px] bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor border-gray-300 p-3 mb-[3rem] mt-[1rem] rounded-lg inline-block md:w-[400px] w-full">
             <div className="font-bold mb-2 text-[1.3rem] flex justify-between items-center">
               <p>Index</p>
               <Link to="/cost-of-living-calculator/traffic/traffic-index-explanation">
@@ -525,12 +525,12 @@ export default function Traffic() {
           </section>
 
           <section className="space-y-[1rem] mb-[3rem]">
-            <h3 className="md:text-[1.3rem] font-semibold">
+            <h3 className="md:text-[1.3rem] font-semibold dark:text-darkModeHeadingTextColor">
               Main Means of Transportation to Work or School
             </h3>
 
             <div className="overflow-x-auto">
-              <table className="table-auto md:max-w-[50%] bg-[#FBFBF8] w-full border-collapse">
+              <table className="table-auto md:max-w-[50%] bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor w-full border-collapse">
                 <tbody>
                   {primary_means_percentage_map?.["Working from Home"] ? (
                     <tr>
@@ -762,7 +762,7 @@ export default function Traffic() {
             title="Overall Average Travel Time and Distance to Work (School)"
           />
 
-          <div className="mt-[0.5rem] space-y-[0.3rem]">
+          <div className="mt-[0.5rem] space-y-[0.3rem] dark:text-darkModeNormalTextColor">
             <p>Contributors: {contributors}</p>
             <p>
               These data are based on perceptions of visitors of this website in

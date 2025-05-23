@@ -90,7 +90,7 @@ export default function EstimatedCost() {
           {estimatedCostData?.data?.error}
         </p>
       ) : (
-        <section className="border-[1px] border-gray-300 rounded-lg p-5 mb-5 bg-[#FBFBF8] inline-block">
+        <section className="border-[1px] border-gray-300 dark:border-darkModeBorderColor rounded-lg p-5 mb-5 bg-[#FBFBF8] inline-block dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor">
           <p>
             <span className="font-semibold">Summary</span> of cost of living in{" "}
             {selectedCityName2}, {selectedCountryName2}:

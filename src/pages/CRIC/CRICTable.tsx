@@ -166,15 +166,15 @@ function CRICRetirementDifferenceModal({
           <div className="p-4 text-[1.2rem]">
             <p>
               You're almost there! Your estimated retirement income is{" "}
-              <span className="font-semibold text-black">
+              <span className="font-semibold ">
                 {numberWithCommas(retirementIncome)}
               </span>
               , but your goal is{" "}
-              <span className="font-semibold text-black">
+              <span className="font-semibold ">
                 {numberWithCommas(retirementIncomeGoal)}
               </span>
               —a difference of{" "}
-              <span className="font-semibold text-black">
+              <span className="font-semibold ">
                 {numberWithCommas(difference)}
               </span>
               . Small adjustments can help you bridge this gap and secure the
@@ -184,11 +184,11 @@ function CRICRetirementDifferenceModal({
         ) : (
           <div className="text-[1.2rem] p-4">
             Congratulations! 🎉 Your estimated retirement income is{" "}
-            <span className="font-semibold text-black">
+            <span className="font-semibold ">
               {numberWithCommas(retirementIncome)}
             </span>
             , meeting your goal of{" "}
-            <span className="font-semibold text-black">
+            <span className="font-semibold ">
               {numberWithCommas(retirementIncomeGoal)}
             </span>
             . You’re on track for the comfortable retirement you planned
@@ -237,7 +237,7 @@ export default function CRICTable() {
   return (
     <section className="mt-[5rem]">
       <div className="overflow-x-auto rounded-[10px]">
-        <table className="mb-[1.5rem] bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md w-full text-center min-w-[600px] text-[14px]">
+        <table className="mb-[1.5rem] bg-[#F8F8F8] CRICTable rounded-lg border-[1px] border-gray-300 shadow-md w-full text-center min-w-[600px] text-[14px]">
           {/* <thead className="text-[1rem] font-extrabold bg-gray-800 text-white">
             <tr className="border-b-[1px] border-b-[#0000001A]">
               <th className="border-b-[1px] border-gray-200 p-4">Age</th>

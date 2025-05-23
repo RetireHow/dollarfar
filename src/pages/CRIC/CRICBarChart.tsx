@@ -40,7 +40,7 @@ function CRICBarChart() {
         <div className="flex-1">
           <div
             id="CRIC-Chart"
-            className="bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md p-2"
+            className="bg-[#F8F8F8] CRICBarChart rounded-lg border-[1px] border-gray-300 shadow-md p-2"
             style={{ width: "100%", height: 500 }}
           >
             <ResponsiveContainer>

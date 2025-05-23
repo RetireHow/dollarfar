@@ -10,6 +10,7 @@ import NWTotal from "./NWTotal";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import useTitle from "../../hooks/useTitle";
 import NWCInputBreakdownTable from "./NWCBreakdownTable";
+import "./NWCDarkmodeStyle.css";
 
 const data = {
   title: "Net Worth Calculator",
@@ -33,7 +34,7 @@ export default function NWC() {
   };
 
   return (
-    <main className="mb-[5rem]">
+    <main className="mb-[5rem] dark:text-darkModeHeadingTextColor">
       <PageHero data={data} />
       <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] md:mb-[5rem] mb-[3rem]">
         {/* Header  */}
@@ -54,7 +55,7 @@ export default function NWC() {
         </div>
 
         <p className="py-2 text-gray-500">
-          <span className="font-bold text-black">Note:</span> Negative value is
+          <span className="font-bold">Note:</span> Negative value is
           not allowed for any input field.
         </p>
 

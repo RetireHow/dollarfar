@@ -2,8 +2,9 @@
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useAppDispatch } from "../../redux/hooks";
-
 import data from "../../data/apiCities.json";
+
+import { ConfigProvider, theme as antdTheme } from "antd";
 
 type TCityIndicesResponse = {
   message: string;
@@ -72,6 +73,7 @@ export default function COLCForm() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+  const isDarkMode = document.documentElement.classList.contains("dark");
 
   const dispatch = useAppDispatch();
 
@@ -271,11 +273,19 @@ export default function COLCForm() {
   };
 
   return (
-    <>
-      <form className="grid lg:grid-cols-2 grid-cols-1 gap-6 mb-[3rem]">
+    <ConfigProvider
+      theme={{
+        algorithm: isDarkMode
+          ? antdTheme.darkAlgorithm
+          : antdTheme.defaultAlgorithm,
+      }}
+    >
+      <form className="grid lg:grid-cols-2 grid-cols-1 gap-6 mb-[3rem] dark:text-darkModeHeadingTextColor">
         <div className="md:text-[1rem] text-[14px]">
           <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
-            <p>City you are moving from</p>
+            <p className="dark:text-darkModeHeadingTextColor">
+              City you are moving from
+            </p>
             <CustomTooltip title="Select the city you’re currently living in to start the comparison." />
           </div>
           <div className="relative">
@@ -315,7 +325,9 @@ export default function COLCForm() {
 
         <div className="md:text-[1rem] text-[14px]">
           <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
-            <p>City you are moving to or curious to know about</p>
+            <p className="dark:text-darkModeHeadingTextColor">
+              City you are moving to or curious to know about
+            </p>
             <CustomTooltip title="Select the city you’re moving to or curious to know about for a detailed cost of living comparison." />
           </div>
           <div className="relative">
@@ -356,7 +368,7 @@ export default function COLCForm() {
           <div className="flex justify-end lg:col-span-3">
             <button
               disabled
-              className="text-white cursor-not-allowed px-[0.8rem] h-[50px] rounded-[10px] w-full bg-gray-300 flex justify-center items-center"
+              className="text-white cursor-not-allowed px-[0.8rem] h-[50px] rounded-[10px] w-full bg-gray-300 dark:bg-darkModeBgColor flex justify-center items-center"
             >
               <Icon
                 icon="eos-icons:three-dots-loading"
@@ -370,8 +382,8 @@ export default function COLCForm() {
             <button
               onClick={handleCompare}
               disabled={cityName1 && cityName2 ? false : true}
-              className={`text-white p-[0.8rem] rounded-[10px] w-full ${
-                cityName1 && cityName2 ? "bg-black" : "bg-gray-300"
+              className={`text-white p-[0.8rem] border-[1px] dark:border-gray-700 rounded-[10px] w-full ${
+                cityName1 && cityName2 ? "bg-black" : "bg-gray-300 dark:bg-darkModeBgColor dark:text-gray-500"
               }`}
             >
               Compare
@@ -379,6 +391,6 @@ export default function COLCForm() {
           </div>
         )}
       </form>
-    </>
+    </ConfigProvider>
   );
 }

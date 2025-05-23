@@ -15,9 +15,9 @@ export default function CalculationCard() {
     years,
   } = useAppSelector((state) => state.compoundInterest);
   return (
-    <section className="w-full">
+    <section className="w-full dark:text-darkModeNormalTextColor">
       <h1 className="md:text-[2rem] text-[1.5rem] font-bold mb-3">Result</h1>
-      <div className="border-[1px] border-gray-300 p-5 rounded-lg flex md:flex-row flex-col md:items-center md:justify-between bg-[#F8F8F8] shadow-md">
+      <div className="border-[1px] border-gray-300 p-5 rounded-lg flex md:flex-row flex-col md:items-center md:justify-between bg-[#F8F8F8] dark:bg-darkModeBgColor shadow-md">
         <div className="md:space-y-[1.5rem] space-y-[1rem]">
           <div>
             <h3 className="font-medium md:text-[1.2rem]">

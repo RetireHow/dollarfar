@@ -246,11 +246,11 @@ export default function PropertyPrice() {
         <COLCLoading />
       ) : (
         <main className="md:m-10 m-3">
-          <h3 className="md:text-[1.5rem] font-semibold mb-[2rem]">
+          <h3 className="md:text-[1.5rem] font-semibold mb-[2rem] dark:text-darkModeHeadingTextColor">
             Property Prices in {cityPriceData?.name}
           </h3>
 
-          <div className="mb-[1rem]">
+          <div className="mb-[1rem] dark:text-darkModeHeadingTextColor">
             <button
               onClick={handleBack}
               className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
@@ -259,7 +259,7 @@ export default function PropertyPrice() {
             </button>
           </div>
 
-          <section className="border-[1px] bg-[#FBFBF8] border-gray-300 p-3 mb-[1.8rem] mt-[1rem] rounded-lg inline-block md:w-[400px] w-full">
+          <section className="border-[1px] bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeHeadingTextColor border-gray-300 p-3 mb-[1.8rem] mt-[1rem] rounded-lg inline-block md:w-[400px] w-full">
             <div className="font-bold mb-2 text-[1.3rem] flex justify-between items-center">
               <p>Index</p>
               <Link to="/cost-of-living-calculator/property-prices/property-price-index-explanation">
@@ -318,9 +318,9 @@ export default function PropertyPrice() {
 
           <section className="mb-3 flex md:flex-row flex-col md:items-center md:gap-10 gap-2">
             <div className="flex items-center gap-1">
-              <p className="font-semibold">Currency:</p>
+              <p className="font-semibold dark:text-darkModeHeadingTextColor">Currency:</p>
               <select
-                className="border-[1px] border-gray-500 px-5 py-1"
+                className="border-[1px] border-gray-500 px-5 py-1 dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor"
                 name="currency-selection"
                 id="currency-selection"
                 onChange={(e) => setSelectedCurrency(e.target.value)}
@@ -347,7 +347,7 @@ export default function PropertyPrice() {
               const { name: category, items } = item;
               return (
                 <section className="mb-3 min-w-[500px]">
-                  <div className="grid gap-2 grid-cols-5 font-semibold text-[1rem] p-1">
+                  <div className="grid gap-2 grid-cols-5 font-semibold text-[1rem] p-1 dark:text-darkModeHeadingTextColor">
                     <p className="flex md:items-center gap-1 col-span-3">
                       {category == "Rent Per Month" ? (
                         <Icon icon="fa6-solid:bed" width="24" height="24" />
@@ -374,7 +374,7 @@ export default function PropertyPrice() {
                   </div>
 
                   {/* Children  */}
-                  <div className="rounded-lg p-2 border-[1px] border-gray-200 bg-[#FBFBF8] text-[14px]">
+                  <div className="rounded-lg p-2 border-[1px] border-gray-200 dark:border-darkModeBorderColor bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor text-[14px]">
                     {items?.map((item, index) => {
                       const {
                         item_name,
@@ -386,7 +386,7 @@ export default function PropertyPrice() {
                         <>
                           <div
                             key={index}
-                            className="grid gap-2 grid-cols-5 border-b-[1px] border-gray-300 rounded-lg hover:bg-[#42c6c623] p-1"
+                            className="grid gap-2 grid-cols-5 border-b-[1px] border-gray-300 dark:border-darkModeBorderColor rounded-lg hover:bg-[#42c6c623] p-1"
                           >
                             <p className="flex items-center col-span-3">
                               {item_name}
@@ -436,7 +436,7 @@ export default function PropertyPrice() {
             })}
           </section>
 
-          <div className="space-y-[0.3rem]">
+          <div className="space-y-[0.3rem] dark:text-darkModeNormalTextColor">
             <p>Contributors: {cityPriceData?.contributors}</p>
 
             <p>

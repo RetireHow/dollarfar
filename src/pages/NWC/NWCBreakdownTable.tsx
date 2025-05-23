@@ -28,7 +28,7 @@ const FinanceTable  = ({
           </td>
         </tr>
       ))}
-      <tr className="bg-gray-100 font-bold">
+      <tr className="bg-gray-100 dark:bg-gray-800 font-bold">
         <td className="border-[1px] border-gray-300 p-2">Total</td>
         <td className="border-[1px] border-gray-300 p-2">
           {numberWithCommas(Number(total))}

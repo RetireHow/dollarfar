@@ -47,7 +47,7 @@ export default function CustomCollapese() {
         const { category, items } = item || {};
         return (
           <section>
-            <div className="grid gap-2 grid-cols-6 font-semibold text-[1rem] p-1 mt-5">
+            <div className="grid gap-2 grid-cols-6 font-semibold text-[1rem] p-1 mt-5 dark:text-darkModeHeadingTextColor">
               <p className="flex md:items-center gap-1 col-span-3">
                 {category == "Restaurants" ? (
                   <Icon icon="ri:restaurant-2-fill" width="24" height="24" />
@@ -85,7 +85,7 @@ export default function CustomCollapese() {
             </div>
 
             {/* Children  */}
-            <div className="rounded-lg p-2 border-[1px] border-gray-200 bg-[#FBFBF8] md:text-[14px] text-[0.8rem]">
+            <div className="rounded-lg p-2 border-[1px] border-gray-200 dark:border-darkModeBorderColor bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor md:text-[14px] text-[0.8rem]">
               {items?.map((item, index) => {
                 const {
                   itemName,
@@ -100,7 +100,7 @@ export default function CustomCollapese() {
                     "Mortgage Interest Rate in Percentages (%), Yearly, for 20 Years Fixed-Rate" ? (
                       <div
                         key={index}
-                        className="grid gap-2 grid-cols-6 border-b-[1px] border-gray-300 rounded-lg hover:bg-[#42c6c623] p-1"
+                        className="grid gap-2 grid-cols-6 border-b-[1px] border-gray-300 dark:border-darkModeBorderColor rounded-lg hover:bg-[#42c6c623] p-1"
                       >
                         <p className="flex items-center col-span-3">
                           {itemName}
@@ -151,7 +151,7 @@ export default function CustomCollapese() {
                     ) : (
                       <div
                         key={index}
-                        className="grid gap-2 grid-cols-6 border-b-[1px] border-gray-300 rounded-lg hover:bg-[#42c6c623] p-1"
+                        className="grid gap-2 grid-cols-6 border-b-[1px] border-gray-300 dark:border-darkModeBorderColor rounded-lg hover:bg-[#42c6c623] p-1"
                       >
                         <p className="flex items-center col-span-3">
                           {itemName}
@@ -232,8 +232,8 @@ export default function CustomCollapese() {
           </section>
         );
       })}
-      <div className="rounded-lg bg-[#FBFBF8] border-[1px] border-gray-200 mt-2 p-2 text-[14px]">
-        <div className="grid gap-2 grid-cols-6 border-b-[1px] border-gray-300 hover:bg-[#42c6c623] p-1">
+      <div className="rounded-lg bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor border-[1px] border-gray-200 dark:border-darkModeBorderColor mt-2 p-2 text-[14px]">
+        <div className="grid gap-2 grid-cols-6 border-b-[1px] border-gray-300 dark:border-darkModeBorderColor hover:bg-[#42c6c623] p-1">
           <p className="flex items-center col-span-3">Last update:</p>
           <p>
             {months[(city1MonthLastUpdate as number) - 1]} {city1YearLastUpdate}
@@ -242,7 +242,7 @@ export default function CustomCollapese() {
             {months[(city2MonthLastUpdate as number) - 1]} {city2YearLastUpdate}
           </p>
         </div>
-        <div className="grid gap-2 grid-cols-6 border-b-[1px] border-gray-300 hover:bg-[#42c6c623] p-1">
+        <div className="grid gap-2 grid-cols-6 border-b-[1px] border-gray-300 dark:border-darkModeBorderColor hover:bg-[#42c6c623] p-1">
           <p className="flex items-center col-span-3">
             Contributors in the past 12 months:
           </p>

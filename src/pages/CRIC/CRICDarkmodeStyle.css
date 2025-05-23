@@ -1,0 +1,21 @@
+.dark .CRIC div{
+    background: #171717 !important;
+}
+
+.dark .CRICBarChart{
+    background: #171717;
+}
+
+.dark .CRICTable{
+    background: #171717;
+}
+
+.dark .CRICPieChart{
+    background: #171717;
+}
+.dark .summaryCollapse{
+    background: #171717;
+}
+.dark ul li{
+    color: #fff;
+}

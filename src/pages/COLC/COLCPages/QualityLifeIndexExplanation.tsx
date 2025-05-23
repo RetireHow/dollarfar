@@ -12,7 +12,7 @@ export default function QualityLifeIndexExplanation() {
   };
   return (
     <main className="m-5">
-      <div className="mb-[1rem]">
+      <div className="mb-[1rem] dark:text-darkModeHeadingTextColor">
         <button
           onClick={handleBack}
           className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
@@ -20,10 +20,10 @@ export default function QualityLifeIndexExplanation() {
           Go Back
         </button>
       </div>
-      <h3 className="font-semibold text-[1.5rem] mb-[0.3rem]">
+      <h3 className="font-semibold text-[1.5rem] mb-[0.3rem] dark:text-darkModeHeadingTextColor">
         About Quality of Life Indexes
       </h3>
-      <article className="space-y-[0.5rem]">
+      <article className="space-y-[0.5rem] dark:text-darkModeNormalTextColor">
         <p>
           Quality of Life Index is an estimation of the overall quality of life
           in a city or country.It takes into account various factors that impact
