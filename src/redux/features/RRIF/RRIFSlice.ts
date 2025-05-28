@@ -63,14 +63,14 @@ export const ageWithdrawalPercentages: Record<number, number> = {
 };
 
 const initialState: TRRIFState = {
-  RRIFInitalBalance: 0,
-  currentAge: 0,
-  rateOfReturn: 0,
+  RRIFInitalBalance: "",
+  currentAge: "",
+  rateOfReturn: "",
   withdrawType: "Government",
-  annualWithdrawalAmount: 0,
+  annualWithdrawalAmount: "",
   withdrawalFrequency: { label: "Annually", value: "Annually" },
-  withdrawalStartYear: 0,
-  withdrawalEndYear: 0,
+  withdrawalStartYear: "",
+  withdrawalEndYear: "",
 
   remainingRRRIFBalanceEndOfPeriod: 0, //End of Withdrawal Period
   totalWithdrawnOverLifeTime: 0, //From withdrawalStartYear to  withdrawalEndYear,
@@ -86,13 +86,13 @@ const RRIFSlice = createSlice({
       state,
       action: PayloadAction<{
         key: keyof TRRIFState;
-        value: any;
+        value: string;
       }>
     ) {
       const { key, value } = action.payload;
 
       if (key) {
-        state[key] = value;
+        (state[key] as string) = value;
       }
     },
 
@@ -105,12 +105,19 @@ const RRIFSlice = createSlice({
         annualWithdrawalAmount,
       } = state;
       const ageBreakdownData: TAgePeriod[] = [];
-      let balanceAtBeginningOfYear = RRIFInitalBalance;
+      let balanceAtBeginningOfYear = Number(RRIFInitalBalance);
 
-      for (let year = withdrawalStartYear; year <= withdrawalEndYear; year++) {
-        const interest = balanceAtBeginningOfYear * (rateOfReturn / 100);
+      for (
+        let year = Number(withdrawalStartYear);
+        year <= Number(withdrawalEndYear);
+        year++
+      ) {
+        const interest =
+          Number(balanceAtBeginningOfYear) * (Number(rateOfReturn) / 100);
         const balanceAtEndOfYear =
-          balanceAtBeginningOfYear + interest - annualWithdrawalAmount;
+          Number(balanceAtBeginningOfYear) +
+          interest -
+          Number(annualWithdrawalAmount);
 
         // Update the beginning balance for the next year
         balanceAtBeginningOfYear = balanceAtEndOfYear;
@@ -119,7 +126,7 @@ const RRIFSlice = createSlice({
       state.ageBreakdownDataOverLifeTimeManually = ageBreakdownData;
     },
 
-    calculateRRIF(state){
+    calculateRRIF(state) {
       //Calculate balance age by age
       const {
         RRIFInitalBalance,
@@ -139,11 +146,11 @@ const RRIFSlice = createSlice({
         withdrawType === "Mannual"
       ) {
         state.ageBreakdownDataOverLifeTimeManually = calcBalanceAgeByAge(
-          RRIFInitalBalance,
-          rateOfReturn,
-          annualWithdrawalAmount,
-          withdrawalStartYear,
-          withdrawalEndYear
+          Number(RRIFInitalBalance),
+          Number(rateOfReturn),
+          Number(annualWithdrawalAmount),
+          Number(withdrawalStartYear),
+          Number(withdrawalEndYear)
         );
       } else if (
         RRIFInitalBalance &&
@@ -154,17 +161,17 @@ const RRIFSlice = createSlice({
       ) {
         const { ageBreakdownData, totalWithdrawanOverLifeTime } =
           calcBalanceAgeByAgeGovernmentAge(
-            RRIFInitalBalance,
-            rateOfReturn,
-            withdrawalStartYear,
-            withdrawalEndYear
+            Number(RRIFInitalBalance),
+            Number(rateOfReturn),
+            Number(withdrawalStartYear),
+            Number(withdrawalEndYear)
           );
         state.ageBreakdownDataOverLifeTimeManually = ageBreakdownData;
         state.totalWithdrawnOverLifeTime = Number(
           totalWithdrawanOverLifeTime.toFixed(2)
         );
         state.remainingRRRIFBalanceEndOfPeriod = Number(
-          (state.RRIFInitalBalance - state.totalWithdrawnOverLifeTime).toFixed(
+          (Number(state.RRIFInitalBalance) - state.totalWithdrawnOverLifeTime).toFixed(
             2
           )
         );
@@ -180,11 +187,11 @@ const RRIFSlice = createSlice({
       ) {
         state.remainingRRRIFBalanceEndOfPeriod =
           calculateRemainingRRIFBalanceAtTheEndOfPeriod(
-            rateOfReturn,
-            annualWithdrawalAmount,
-            RRIFInitalBalance,
-            withdrawalStartYear,
-            withdrawalEndYear
+            Number(rateOfReturn),
+            Number(annualWithdrawalAmount),
+            Number(RRIFInitalBalance),
+            Number(withdrawalStartYear),
+            Number(withdrawalEndYear)
           );
       }
 
@@ -196,13 +203,12 @@ const RRIFSlice = createSlice({
         withdrawalEndYear > withdrawalStartYear
       ) {
         state.totalWithdrawnOverLifeTime = calculateTotalWithdrawnOverLifeTime(
-          annualWithdrawalAmount,
-          withdrawalStartYear,
-          withdrawalEndYear
+          Number(annualWithdrawalAmount),
+          Number(withdrawalStartYear),
+          Number(withdrawalEndYear)
         );
       }
-    }
-
+    },
   },
 });
 

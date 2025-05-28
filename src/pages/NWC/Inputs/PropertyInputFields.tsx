@@ -12,7 +12,7 @@ const PropertyInputFields = () => {
   const dispatch = useAppDispatch();
   const {
     assets: {
-      totals: { property: totalProperty },
+      totals: { property: totalProperty }
     },
   } = useAppSelector((state) => state.NWCalculator);
   const dynamicFieldTitleRef = useRef<HTMLInputElement>(null);

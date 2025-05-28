@@ -9,6 +9,7 @@ import { RRSPPdf } from "./RRSPPdf";
 import RRSPAreaChart from "./RRSPAreaChart";
 import { useAppSelector } from "../../redux/hooks";
 import useTitle from "../../hooks/useTitle";
+import { ConfigProvider, theme as antdTheme } from "antd";
 
 const data = {
   title: "Registered Retirement Savings Plan (RRSP) Calculator",
@@ -23,8 +24,16 @@ export default function RRSP() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
   const { result, input } = useAppSelector((state) => state.rrspCalculator);
+  const isDarkMode = document.documentElement.classList.contains("dark");
   return (
-    <main className="mb-[5rem]">
+    <ConfigProvider
+      theme={{
+        algorithm: isDarkMode
+          ? antdTheme.darkAlgorithm
+          : antdTheme.defaultAlgorithm,
+      }}
+    >
+       <main className="mb-[5rem]">
       <div data-html2canvas-ignore>
         <PageHero data={data} />
       </div>
@@ -58,5 +67,6 @@ export default function RRSP() {
         <RRSPDescription />
       </div>
     </main>
+    </ConfigProvider>
   );
 }

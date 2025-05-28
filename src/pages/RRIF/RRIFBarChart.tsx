@@ -18,7 +18,7 @@ export default function RRIFBarChart() {
   return (
     <div
       id="RRIF-Chart"
-      className="bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md p-5 flex-1 mb-[5rem]"
+      className="bg-[#F8F8F8] RRIFBarChart rounded-lg border-[1px] border-gray-300 shadow-md p-5 flex-1 mb-[5rem]"
     >
       <div className="h-[350px]">
         <ResponsiveContainer width="100%" height="100%">

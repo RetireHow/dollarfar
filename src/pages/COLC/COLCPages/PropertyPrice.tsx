@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { calculatePropertyPrice, months } from "../colc.utils";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { getCurrencySymbol } from "../../../utils/getCurrencySymbol";
 import { numberWithCommas } from "../../../utils/numberWithCommas";
-import COLCLoading from "../COLCLoading";
 import { baseUrl } from "../../../api/apiConstant";
+import { useAppSelector } from "../../../redux/hooks";
+import PropertyPriceLoadingSkeleton from "../SkeletonLoaders/PropertyPriceLoadingSkeleton";
 
 type PriceItem = {
   item_name: string;
@@ -158,20 +159,17 @@ type PropertyPriceOutput = {
   grossRentalYieldOutsideCentre: string;
 };
 
-export default function PropertyPrice() {
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
-
-  const { countryCity } = useParams();
-  const country = countryCity?.split("-")[0];
-  const city = countryCity?.split("-")[1];
-
+function PropertyPriceDynamicComponent({
+  country,
+  city,
+}: {
+  country: string;
+  city: string;
+}) {
   const [cityPriceData, setCityPriceData] = useState<TransformedData>(
     {} as TransformedData
   );
   const [exchangeRatesData, setExchangeRatesData] = useState<string[]>([]);
-
   const [selectedCurrency, setSelectedCurrency] = useState<string>("");
   const [propertyPriceCalculatedData, setPropertyPriceCalculatedData] =
     useState<PropertyPriceOutput>({} as PropertyPriceOutput);
@@ -184,9 +182,7 @@ export default function PropertyPrice() {
     priceToRentRatioCityCentre,
     priceToRentRatioOutsideCentre,
   } = propertyPriceCalculatedData || {};
-
   const [isLoading, setIsLoading] = useState(false);
-
   const loadCityPriceData = async () => {
     try {
       const res = await fetch(
@@ -205,13 +201,10 @@ export default function PropertyPrice() {
       toast.error("There is something wrong!");
     }
   };
-
   const loadCurrencyData = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch(
-        `${baseUrl}/numbeo/exchange-rates`
-      );
+      const res = await fetch(`${baseUrl}/numbeo/exchange-rates`);
       const data: ExchangeRateDataResponse = await res.json();
       if (!data?.success) {
         return toast.error("There is internal server error.");
@@ -235,227 +228,246 @@ export default function PropertyPrice() {
     loadCurrencyData();
   }, []);
 
+  if (isLoading) {
+    return <PropertyPriceLoadingSkeleton />;
+  }
+
+  return (
+    <div>
+      <div className="border-[1px] bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeHeadingTextColor border-gray-300 p-3 mb-[1.8rem] mt-[1rem] rounded-lg w-full">
+        <div className="font-bold mb-2 text-[1.3rem] flex justify-between items-center">
+          <p>{city}</p>
+          <Link to="/cost-of-living-calculator/property-prices/property-price-index-explanation">
+            <p title="About these indices">
+              <Icon
+                className="text-green-500 cursor-pointer"
+                icon="rivet-icons:exclamation-mark-circle-solid"
+                width="18"
+                height="18"
+              />
+            </p>
+          </Link>
+        </div>
+
+        <div className="md:space-y-[0.8rem] space-y-[1rem]">
+          <div className="flex items-center">
+            <span className="flex-1">Price to Income Ratio:</span>{" "}
+            <span>{priceToIncomeRatio}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="flex-1">Mortgage as Percentage of Income:</span>{" "}
+            <span>{mortgageAsPercentageOfIncome}%</span>
+          </div>
+          <div className="flex items-center">
+            <span className="flex-1">Loan Affordability Index:</span>{" "}
+            <span>{loanAffordabilityIndex}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="flex-1">Price to Rent Ratio - City Centre:</span>{" "}
+            <span>{priceToRentRatioCityCentre}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="flex-1">
+              Price to Rent Ratio - Outside of Centre:
+            </span>{" "}
+            <span>{priceToRentRatioOutsideCentre}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="flex-1">Gross Rental Yield (City Centre):</span>{" "}
+            <span>{grossRentalYieldCityCentre}%</span>
+          </div>
+          <div className="flex items-center">
+            <span className="flex-1">
+              Gross Rental Yield (Outside of Centre):
+            </span>{" "}
+            <span>{grossRentalYieldOutsideCentre}%</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="mb-3 flex md:flex-row flex-col md:items-center md:gap-10 gap-2">
+        <div className="flex items-center gap-1">
+          <p className="font-semibold dark:text-darkModeHeadingTextColor">
+            Currency:
+          </p>
+          <select
+            className="border-[1px] border-gray-500 px-5 py-1 dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor"
+            name="currency-selection"
+            id="currency-selection"
+            onChange={(e) => setSelectedCurrency(e.target.value)}
+          >
+            <option value={cityPriceData?.currency}>
+              {cityPriceData?.currency}
+            </option>
+            {exchangeRatesData?.map((item) => (
+              <option value={item}>{item}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <Link to="/cost-of-living-calculator/property-prices/sticky-currency">
+            <p className="text-blue-700 hover:text-blue-800 hover:underline">
+              Sticky Currency
+            </p>
+          </Link>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto">
+        {cityPriceData?.category?.map((item) => {
+          const { name: category, items } = item;
+          return (
+            <section className="mb-3 min-w-[500px]">
+              <div className="grid gap-2 grid-cols-5 font-semibold text-[1rem] p-1 dark:text-darkModeHeadingTextColor">
+                <p className="flex md:items-center gap-1 col-span-3">
+                  {category == "Rent Per Month" ? (
+                    <Icon icon="fa6-solid:bed" width="24" height="24" />
+                  ) : category == "Buy Apartment Price" ? (
+                    <Icon
+                      icon="material-symbols:apartment"
+                      width="24"
+                      height="24"
+                    />
+                  ) : category == "Salaries And Financing" ? (
+                    <Icon icon="mingcute:wallet-fill" width="24" height="24" />
+                  ) : (
+                    ""
+                  )}
+                  <span>{category}</span>
+                </p>
+
+                <div>Price</div>
+                <div>Range</div>
+              </div>
+
+              {/* Children  */}
+              <div className="rounded-lg p-2 border-[1px] border-gray-200 dark:border-darkModeBorderColor bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor text-[14px]">
+                {items?.map((item, index) => {
+                  const {
+                    item_name,
+                    average_price,
+                    lowest_price,
+                    highest_price,
+                  } = item || {};
+                  return (
+                    <>
+                      <div
+                        key={index}
+                        className="grid gap-2 grid-cols-5 border-b-[1px] border-gray-300 dark:border-darkModeBorderColor rounded-lg hover:bg-[#42c6c623] p-1"
+                      >
+                        <p className="flex items-center col-span-3">
+                          {item_name}
+                        </p>
+                        <p>
+                          {item_name ==
+                          "Mortgage Interest Rate in Percentages (%), Yearly, for 20 Years Fixed-Rate" ? (
+                            ""
+                          ) : (
+                            <span className="mr-1">
+                              {getCurrencySymbol(cityPriceData?.currency)}
+                            </span>
+                          )}
+
+                          {average_price?.toFixed(2)}
+                        </p>
+
+                        {lowest_price && highest_price && (
+                          <div className="flex items-center gap-1">
+                            <p>
+                              {numberWithCommas(
+                                Number(lowest_price?.toFixed(2))
+                              )}
+                            </p>
+                            <p>
+                              <Icon
+                                className="text-green-600"
+                                icon="material-symbols-light:arrow-range-rounded"
+                                width="24"
+                                height="24"
+                              />
+                            </p>
+                            <p>
+                              {numberWithCommas(
+                                Number(highest_price?.toFixed(2))
+                              )}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })}
+      </div>
+
+      <div className="space-y-[0.3rem] dark:text-darkModeNormalTextColor">
+        <p>Contributors: {cityPriceData?.contributors}</p>
+
+        <p>
+          Last update: {months[cityPriceData?.monthLastUpdate - 1]}{" "}
+          {cityPriceData?.yearLastUpdate}
+        </p>
+
+        <p>
+          These data are based on perceptions of visitors of this website in the
+          past 5 years.
+        </p>
+
+        <p>
+          If the value is 0, it means it is perceived as very low, and if the
+          value is 100, it means it is perceived as very high.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export default function PropertyPrice() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  const {
+    selectedCountryName2,
+    selectedCityName2,
+    selectedCountryName1,
+    selectedCityName1,
+  } = useAppSelector((state) => state.COLCalculator);
+
   const navigate = useNavigate();
   const handleBack = () => {
     navigate(-1);
   };
 
   return (
-    <>
-      {isLoading ? (
-        <COLCLoading />
-      ) : (
-        <main className="md:m-10 m-3">
-          <h3 className="md:text-[1.5rem] font-semibold mb-[2rem] dark:text-darkModeHeadingTextColor">
-            Property Prices in {cityPriceData?.name}
-          </h3>
+    <main className="md:m-10 m-3">
+      <h3 className="md:text-[1.5rem] font-semibold mb-[2rem] dark:text-darkModeHeadingTextColor">
+        Property Prices comparison between {selectedCityName2} and{" "}
+        {selectedCityName1}
+      </h3>
 
-          <div className="mb-[1rem] dark:text-darkModeHeadingTextColor">
-            <button
-              onClick={handleBack}
-              className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
-            >
-              Go Back
-            </button>
-          </div>
+      <div className="mb-[1rem] dark:text-darkModeHeadingTextColor">
+        <button
+          onClick={handleBack}
+          className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
+        >
+          Go Back
+        </button>
+      </div>
 
-          <section className="border-[1px] bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeHeadingTextColor border-gray-300 p-3 mb-[1.8rem] mt-[1rem] rounded-lg inline-block md:w-[400px] w-full">
-            <div className="font-bold mb-2 text-[1.3rem] flex justify-between items-center">
-              <p>Index</p>
-              <Link to="/cost-of-living-calculator/property-prices/property-price-index-explanation">
-                <p title="About these indices">
-                  <Icon
-                    className="text-green-500 cursor-pointer"
-                    icon="rivet-icons:exclamation-mark-circle-solid"
-                    width="18"
-                    height="18"
-                  />
-                </p>
-              </Link>
-            </div>
-
-            <div className="md:space-y-[0.8rem] space-y-[1rem]">
-              <div className="flex items-center">
-                <span className="flex-1">Price to Income Ratio:</span>{" "}
-                <span>{priceToIncomeRatio}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="flex-1">
-                  Mortgage as Percentage of Income:
-                </span>{" "}
-                <span>{mortgageAsPercentageOfIncome}%</span>
-              </div>
-              <div className="flex items-center">
-                <span className="flex-1">Loan Affordability Index:</span>{" "}
-                <span>{loanAffordabilityIndex}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="flex-1">
-                  Price to Rent Ratio - City Centre:
-                </span>{" "}
-                <span>{priceToRentRatioCityCentre}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="flex-1">
-                  Price to Rent Ratio - Outside of Centre:
-                </span>{" "}
-                <span>{priceToRentRatioOutsideCentre}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="flex-1">
-                  Gross Rental Yield (City Centre):
-                </span>{" "}
-                <span>{grossRentalYieldCityCentre}%</span>
-              </div>
-              <div className="flex items-center">
-                <span className="flex-1">
-                  Gross Rental Yield (Outside of Centre):
-                </span>{" "}
-                <span>{grossRentalYieldOutsideCentre}%</span>
-              </div>
-            </div>
-          </section>
-
-          <section className="mb-3 flex md:flex-row flex-col md:items-center md:gap-10 gap-2">
-            <div className="flex items-center gap-1">
-              <p className="font-semibold dark:text-darkModeHeadingTextColor">Currency:</p>
-              <select
-                className="border-[1px] border-gray-500 px-5 py-1 dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor"
-                name="currency-selection"
-                id="currency-selection"
-                onChange={(e) => setSelectedCurrency(e.target.value)}
-              >
-                <option value={cityPriceData?.currency}>
-                  {cityPriceData?.currency}
-                </option>
-                {exchangeRatesData?.map((item) => (
-                  <option value={item}>{item}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <Link to="/cost-of-living-calculator/property-prices/sticky-currency">
-                <p className="text-blue-700 hover:text-blue-800 hover:underline">
-                  Sticky Currency
-                </p>
-              </Link>
-            </div>
-          </section>
-
-          <section className="overflow-x-auto">
-            {cityPriceData?.category?.map((item) => {
-              const { name: category, items } = item;
-              return (
-                <section className="mb-3 min-w-[500px]">
-                  <div className="grid gap-2 grid-cols-5 font-semibold text-[1rem] p-1 dark:text-darkModeHeadingTextColor">
-                    <p className="flex md:items-center gap-1 col-span-3">
-                      {category == "Rent Per Month" ? (
-                        <Icon icon="fa6-solid:bed" width="24" height="24" />
-                      ) : category == "Buy Apartment Price" ? (
-                        <Icon
-                          icon="material-symbols:apartment"
-                          width="24"
-                          height="24"
-                        />
-                      ) : category == "Salaries And Financing" ? (
-                        <Icon
-                          icon="mingcute:wallet-fill"
-                          width="24"
-                          height="24"
-                        />
-                      ) : (
-                        ""
-                      )}
-                      <span>{category}</span>
-                    </p>
-
-                    <div>Price</div>
-                    <div>Range</div>
-                  </div>
-
-                  {/* Children  */}
-                  <div className="rounded-lg p-2 border-[1px] border-gray-200 dark:border-darkModeBorderColor bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor text-[14px]">
-                    {items?.map((item, index) => {
-                      const {
-                        item_name,
-                        average_price,
-                        lowest_price,
-                        highest_price,
-                      } = item || {};
-                      return (
-                        <>
-                          <div
-                            key={index}
-                            className="grid gap-2 grid-cols-5 border-b-[1px] border-gray-300 dark:border-darkModeBorderColor rounded-lg hover:bg-[#42c6c623] p-1"
-                          >
-                            <p className="flex items-center col-span-3">
-                              {item_name}
-                            </p>
-                            <p>
-                              {item_name ==
-                              "Mortgage Interest Rate in Percentages (%), Yearly, for 20 Years Fixed-Rate" ? (
-                                ""
-                              ) : (
-                                <span className="mr-1">
-                                  {getCurrencySymbol(cityPriceData?.currency)}
-                                </span>
-                              )}
-
-                              {average_price?.toFixed(2)}
-                            </p>
-
-                            {lowest_price && highest_price && (
-                              <div className="flex items-center gap-1">
-                                <p>
-                                  {numberWithCommas(
-                                    Number(lowest_price?.toFixed(2))
-                                  )}
-                                </p>
-                                <p>
-                                  <Icon
-                                    className="text-green-600"
-                                    icon="material-symbols-light:arrow-range-rounded"
-                                    width="24"
-                                    height="24"
-                                  />
-                                </p>
-                                <p>
-                                  {numberWithCommas(
-                                    Number(highest_price?.toFixed(2))
-                                  )}
-                                </p>
-                              </div>
-                            )}
-                          </div>
-                        </>
-                      );
-                    })}
-                  </div>
-                </section>
-              );
-            })}
-          </section>
-
-          <div className="space-y-[0.3rem] dark:text-darkModeNormalTextColor">
-            <p>Contributors: {cityPriceData?.contributors}</p>
-
-            <p>
-              Last update: {months[cityPriceData?.monthLastUpdate - 1]}{" "}
-              {cityPriceData?.yearLastUpdate}
-            </p>
-
-            <p>
-              These data are based on perceptions of visitors of this website in
-              the past 5 years.
-            </p>
-
-            <p>
-              If the value is 0, it means it is perceived as very low, and if
-              the value is 100, it means it is perceived as very high.
-            </p>
-          </div>
-        </main>
-      )}
-    </>
+      <section className="grid md:grid-cols-2 grid-cols-1 gap-5">
+        <PropertyPriceDynamicComponent
+          country={selectedCountryName2}
+          city={selectedCityName2}
+        />
+        <PropertyPriceDynamicComponent
+          country={selectedCountryName1}
+          city={selectedCityName1}
+        />
+      </section>
+    </main>
   );
 }

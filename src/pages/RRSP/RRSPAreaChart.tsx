@@ -23,7 +23,7 @@ export default function RRSPAreaChart() {
   );
   return (
     <div
-      className="bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md p-5"
+      className="bg-[#F8F8F8] RRSPAreaChart rounded-lg border-[1px] border-gray-300 shadow-md p-5"
       id="RRSP-Chart"
     >
       <div className="w-[100%] h-[350px]">

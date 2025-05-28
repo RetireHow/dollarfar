@@ -4,18 +4,19 @@ import CustomTooltip from "../../components/UI/CustomTooltip";
 // import Select from "react-select";
 // import { StylesConfig } from "react-select";
 
-import { Radio } from "antd";
+import { ConfigProvider, Radio, theme as antdTheme } from "antd";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   ageWithdrawalPercentages,
   calculateRRIF,
   updateRRIFState,
 } from "../../redux/features/RRIF/RRIFSlice";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import { handleKeyDown } from "../../utils/handleKeyDown";
 import { isNegative } from "../../utils/isNegative";
 import { toast } from "react-toastify";
+import { TRRIFState } from "../../redux/features/RRIF/RRIF.types";
 
 export default function RRIFForm() {
   const dispatch = useAppDispatch();
@@ -39,29 +40,57 @@ export default function RRIFForm() {
       !withdrawType ||
       !withdrawalStartYear ||
       !withdrawalEndYear ||
-      isNegative(RRIFInitalBalance) ||
-      isNegative(withdrawalStartYear) ||
-      isNegative(withdrawalEndYear) ||
-      isNegative(rateOfReturn) ||
-      isNegative(annualWithdrawalAmount)
+      isNegative(Number(RRIFInitalBalance)) ||
+      isNegative(Number(withdrawalStartYear)) ||
+      isNegative(Number(withdrawalEndYear)) ||
+      isNegative(Number(rateOfReturn)) ||
+      isNegative(Number(annualWithdrawalAmount))
     ) {
       return setShowError(true);
     }
 
-    if (withdrawalStartYear && withdrawalStartYear < 50) {
+    if (withdrawalStartYear && Number(withdrawalStartYear) < 50) {
       return toast.error(
         "Withdrawal start age must be greater than or equal to 50."
       );
     }
 
-    if (ageWithdrawalPercentages[withdrawalStartYear]) {
+    if (ageWithdrawalPercentages[Number(withdrawalStartYear)]) {
       const result =
-        RRIFInitalBalance *
-        (ageWithdrawalPercentages[withdrawalStartYear] / 100);
+        Number(RRIFInitalBalance) *
+        (ageWithdrawalPercentages[Number(withdrawalStartYear)] / 100);
       setMinWithdrawalAbmount(Math.round(result));
     }
     dispatch(calculateRRIF());
+
+    //Save inputs into local storage
+    const inputs = {
+      rateOfReturn,
+      withdrawType,
+      withdrawalStartYear,
+      withdrawalEndYear,
+      annualWithdrawalAmount,
+      RRIFInitalBalance,
+    };
+    const inputsString = JSON.stringify(inputs);
+    localStorage.setItem("RRIFInputs", inputsString);
   };
+
+  useEffect(() => {
+    const inputsString = localStorage.getItem("RRIFInputs");
+    if (!inputsString) {
+      return;
+    }
+    const inputs = JSON.parse(inputsString as string);
+    Object.entries(inputs)?.forEach((input) => {
+      dispatch(
+        updateRRIFState({
+          key: input[0] as keyof TRRIFState,
+          value: input[1] as string,
+        })
+      );
+    });
+  }, []);
 
   return (
     <section className="space-y-[2rem] md:text-[1rem] text-[14px]">
@@ -78,13 +107,14 @@ export default function RRIFForm() {
             dispatch(
               updateRRIFState({
                 key: "RRIFInitalBalance",
-                value: Number(e.target.value),
+                value: e.target.value,
               })
             )
           }
           onKeyDown={handleKeyDown}
+          value={RRIFInitalBalance}
         />
-        {isNegative(RRIFInitalBalance) && showError && (
+        {isNegative(Number(RRIFInitalBalance)) && showError && (
           <p className="text-red-500 text-[14px] font-bold">
             Initial RRIF Balance can not be negative
           </p>
@@ -113,7 +143,7 @@ export default function RRIFForm() {
                 dispatch(
                   updateRRIFState({
                     key: "rateOfReturn",
-                    value: Number(e.target.value),
+                    value: e.target.value,
                   })
                 )
               }
@@ -131,17 +161,17 @@ export default function RRIFForm() {
           thumbActiveClassName="active-thumb"
           min={0}
           max={16}
-          value={rateOfReturn}
+          value={Number(rateOfReturn)}
           minDistance={10}
           onChange={(newValue) =>
-            dispatch(updateRRIFState({ key: "rateOfReturn", value: newValue }))
+            dispatch(updateRRIFState({ key: "rateOfReturn", value: newValue.toString() }))
           }
         />
         <div className="flex justify-between items-center text-[1rem] font-medium text-[#696969] pt-5">
           <p>0%</p>
           <p>16%</p>
         </div>
-        {isNegative(rateOfReturn) && showError && (
+        {isNegative(Number(rateOfReturn)) && showError && (
           <p className="text-red-500 text-[14px] font-bold">
             Rate of return can not be negative
           </p>
@@ -151,25 +181,34 @@ export default function RRIFForm() {
       <div>
         <p className="font-semibold mb-2">Withdraw Type</p>
         <div>
-          <Radio.Group
-            name="radiogroup"
-            value={withdrawType}
-            optionType="default"
-            style={{ fontWeight: "bold" }}
-            onChange={(e) => {
-              dispatch(
-                updateRRIFState({
-                  key: "withdrawType",
-                  value: e.target.value,
-                })
-              );
+          <ConfigProvider
+            theme={{
+              algorithm:
+                localStorage.getItem("theme") == "dark"
+                  ? antdTheme.darkAlgorithm
+                  : antdTheme.defaultAlgorithm,
             }}
           >
-            <Radio className="md:mb-0 mb-3" value="Government">
-              Required minimum based on age
-            </Radio>
-            <Radio value="Mannual">Optional Amount</Radio>
-          </Radio.Group>
+            <Radio.Group
+              name="radiogroup"
+              value={withdrawType}
+              optionType="default"
+              style={{ fontWeight: "bold" }}
+              onChange={(e) => {
+                dispatch(
+                  updateRRIFState({
+                    key: "withdrawType",
+                    value: e.target.value,
+                  })
+                );
+              }}
+            >
+              <Radio className="md:mb-0 mb-3" value="Government">
+                Required minimum based on age
+              </Radio>
+              <Radio value="Mannual">Optional Amount</Radio>
+            </Radio.Group>
+          </ConfigProvider>
         </div>
       </div>
 
@@ -188,13 +227,14 @@ export default function RRIFForm() {
               dispatch(
                 updateRRIFState({
                   key: "withdrawalStartYear",
-                  value: Number(e.target.value),
+                  value: e.target.value,
                 })
               )
             }
             onKeyDown={handleKeyDown}
+            value={withdrawalStartYear}
           />
-          {isNegative(withdrawalStartYear) && showError && (
+          {isNegative(Number(withdrawalStartYear)) && showError && (
             <p className="text-red-500 text-[14px] font-bold">
               Withdrawal Start Age can not be negative
             </p>
@@ -220,13 +260,14 @@ export default function RRIFForm() {
               dispatch(
                 updateRRIFState({
                   key: "withdrawalEndYear",
-                  value: Number(e.target.value),
+                  value: e.target.value,
                 })
               )
             }
             onKeyDown={handleKeyDown}
+            value={withdrawalEndYear}
           />
-          {isNegative(withdrawalEndYear) && showError && (
+          {isNegative(Number(withdrawalEndYear)) && showError && (
             <p className="text-red-500 text-[14px] font-bold">
               Withdrawal End Age can not be negative
             </p>
@@ -238,29 +279,6 @@ export default function RRIFForm() {
           )}
         </div>
       </div>
-
-      {/* <div>
-        <div className="flex items-center gap-2 font-semibold mb-2">
-          <p>Withdrawal Frequency</p>
-          <CustomTooltip title="Choose how often you want to withdraw from your RRIF: Monthly, Yearly, or Weekly." />
-        </div>
-        <Select
-          onChange={(value) =>
-            dispatch(
-              updateRRIFState({
-                key: "withdrawalFrequency",
-                value: value,
-              })
-            )
-          }
-          options={withdrawalFrequencyOptions}
-          value={withdrawalFrequency as TOptions}
-          styles={customStyles}
-          isMulti={false}
-          placeholder="Select withdrawal frequency"
-          className="rounded-md border-[1px] duration-300 border-[#838383]"
-        ></Select>
-      </div> */}
 
       {withdrawType == "Mannual" && (
         <div>
@@ -277,20 +295,21 @@ export default function RRIFForm() {
               dispatch(
                 updateRRIFState({
                   key: "annualWithdrawalAmount",
-                  value: Number(e.target.value),
+                  value: e.target.value,
                 })
               );
             }}
             onKeyDown={handleKeyDown}
+            value={annualWithdrawalAmount}
           />
-          {annualWithdrawalAmount > 0 &&
-            annualWithdrawalAmount < minWithdrowalAmount && (
+          {Number(annualWithdrawalAmount) > 0 &&
+            Number(annualWithdrawalAmount) < minWithdrowalAmount && (
               <p className="font-semibold text-[14px]  border-[1px] border-gray-500 p-3 rounded-md mt-1">
                 Please select an income stream that is greater than the required
                 minimum {numberWithCommas(minWithdrowalAmount)}
               </p>
             )}
-          {isNegative(annualWithdrawalAmount) && showError && (
+          {isNegative(Number(annualWithdrawalAmount)) && showError && (
             <p className="text-red-500 text-[14px] font-bold">
               Withdrawal Amount can not be negative
             </p>

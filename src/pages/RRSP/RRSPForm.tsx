@@ -4,10 +4,11 @@ import CustomTooltip from "../../components/UI/CustomTooltip";
 import { Select } from "antd";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { calculate, setInput } from "../../redux/features/RRSP/RRSPSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import ShowNegativeMessage from "../../components/UI/ShowNegativeMessage";
 import { isNegative } from "../../utils/isNegative";
+import { RRSPInput } from "../../redux/features/RRSP/RRSP.types";
 
 type TAntSelectOption = {
   value: string;
@@ -46,7 +47,35 @@ export default function RRSPForm() {
       return setShowError(true);
     }
     dispatch(calculate());
+
+    //Save inputs into local storage
+    const inputs = {
+      contributionFrequency,
+      currentAge,
+      currentRRSPSavings,
+      rateOfReturn,
+      retirementAge,
+      contributionAmount,
+    };
+    const inputsString = JSON.stringify(inputs);
+    localStorage.setItem("RRSPInputs", inputsString);
   };
+
+  useEffect(() => {
+    const inputsString = localStorage.getItem("RRSPInputs");
+    if (!inputsString) {
+      return;
+    }
+    const inputs = JSON.parse(inputsString as string);
+    Object.entries(inputs)?.forEach((input) => {
+      dispatch(
+        setInput({
+          key: input[0] as keyof RRSPInput,
+          value: input[1] as string,
+        })
+      );
+    });
+  }, []);
 
   return (
     <section className="space-y-[2rem] md:text-[1rem] text-[14px]">

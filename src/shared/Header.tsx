@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import siteLogo from "../assets/Dollar-logo.svg";
+import siteLogoWhite from "../assets/DF_Logo_White.svg";
 import useTheme from "../hooks/useTheme";
 import {
   ConfigProvider,
@@ -9,6 +10,7 @@ import {
   Space,
 } from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useEffect, useState } from "react";
 
 type CustomMenuItem = {
   key: string;
@@ -36,7 +38,8 @@ const items: CustomMenuItem[] = [
 
 export default function Header() {
   const [theme, setTheme] = useTheme();
-  const isDarkMode = document.documentElement.classList.contains("dark");
+
+  const [isDarkMode, setIsDarkmode] = useState(false);
 
   const handleThemeChange: MenuProps["onClick"] = ({ key }) => {
     const selectedItem = items?.find((item) => item?.key === key);
@@ -48,6 +51,11 @@ export default function Header() {
       }
     }
   };
+
+  useEffect(() => {
+    const isDarkMode = document.documentElement.classList.contains("dark");
+    setIsDarkmode(isDarkMode);
+  }, [isDarkMode, theme]);
 
   return (
     <ConfigProvider
@@ -65,13 +73,16 @@ export default function Header() {
         <Link to="/">
           <img
             className="w-[100px] h-[100px]"
-            src={siteLogo}
+            src={isDarkMode ? siteLogoWhite : siteLogo}
             alt="Logo Image"
           />
         </Link>
         {/* <Link to="/research">Research</Link> */}
 
-        <Dropdown menu={{ items, onClick: handleThemeChange }} className="border-[1px] border-gray-300 dark:border-gray-500 px-4 py-2 rounded-md">
+        <Dropdown
+          menu={{ items, onClick: handleThemeChange }}
+          className="border-[1px] border-gray-300 dark:border-gray-500 px-4 py-2 rounded-md"
+        >
           <Space>
             {theme === "dark" ? (
               <div className="flex items-center gap-2">

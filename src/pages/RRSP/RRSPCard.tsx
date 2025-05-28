@@ -6,7 +6,7 @@ export default function RRSPCard() {
   const { investmentEarnings, totalContributions, totalSavings } = result || {};
   return (
     <section className="flex flex-col justify-center">
-      <div className="space-y-[1rem] bg-[#F8F8F8] md:p-[1.5rem] p-[1rem] rounded-[10px] w-full">
+      <div className="space-y-[1rem] bg-[#F8F8F8] RRSPResultCard md:p-[1.5rem] p-[1rem] rounded-[10px] w-full">
         <div className="flex items-center justify-between md:text-[1.5rem] text-[18px] font-semibold pb-4">
           <p>Result of Calculation</p>
         </div>

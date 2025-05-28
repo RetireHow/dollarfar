@@ -22,7 +22,7 @@ type TCompoundInterestState = {
   yearByYearBreakdown: TYearByYearBreakdownItem[];
 };
 
-type TPayloadKey = {
+export type TPayloadKey = {
   initialInvestment: string;
   contribution: string;
   contributionFrequency: string;

@@ -13,21 +13,44 @@ import VehicleLoans from "./Inputs/VehicleLoans";
 import VehiclesFields from "./Inputs/VehiclesFields";
 import { useDispatch } from "react-redux";
 import { calculateNetWorth } from "../../redux/features/NWSlice/NWSlice";
+import { useAppSelector } from "../../redux/hooks";
 
 export default function NWForm() {
   const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  const { assets, liabilities } = useAppSelector((state) => state.NWCalculator);
+
   const handleCalculate = (e: FormEvent) => {
     e.preventDefault();
     dispatch(calculateNetWorth());
+
+    //Store inputs into local storage
+    localStorage.setItem("nwcInputs", JSON.stringify({ assets, liabilities }));
   };
+
+  useEffect(() => {
+    const assetsString = localStorage.getItem("nwcInputs");
+    if (!assetsString) {
+      return;
+    }
+    const assets = JSON.parse(assetsString)?.assets;
+
+    Object.keys(assets)?.forEach((category) => {
+      Object.entries(assets[category])?.forEach((item) => {
+        console.log(item);
+      });
+    });
+  }, []);
 
   return (
     <section className="md:mb-[5rem] mb-[3rem] grid md:grid-cols-2 grid-cols-1 gap-[2.5rem]">
       <div>
-        <h3 className="font-bold md:text-[2rem] text-[18px] mb-[1.5rem]">Assets</h3>
+        <h3 className="font-bold md:text-[2rem] text-[18px] mb-[1.5rem]">
+          Assets
+        </h3>
         <div className="space-y-[2.5rem] md:text-[1rem] text-[14px]">
           <PropertyInputFields />
           <SAndIInputFields />
@@ -39,7 +62,9 @@ export default function NWForm() {
       </div>
 
       <div>
-        <h3 className="font-bold md:text-[2rem] text-[18px] mb-[1.5rem]">Liabilities</h3>
+        <h3 className="font-bold md:text-[2rem] text-[18px] mb-[1.5rem]">
+          Liabilities
+        </h3>
         <div className="space-y-[2.5rem]">
           <HomeLoanFields />
           <PAndOLoanFields />

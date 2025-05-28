@@ -28,7 +28,7 @@ export default function RRSPDescription() {
           contributions” with compounded interest over a period of time. Here's
           a simplified formula:
         </p>
-        <p className="text-black font-semibold md:text-[18px] text-[14px] leading-[27px] mt-5">
+        <p className=" font-semibold md:text-[18px] text-[14px] leading-[27px] mt-5">
           <span>FV = </span>
           <span>{"P(1 + r)^n +{C((1 + r)^n - 1)}/{r}"}</span>
         </p>
@@ -56,19 +56,19 @@ export default function RRSPDescription() {
         </div>
 
         <div className="mt-5">
-          <p className="text-black font-semibold md:text-[18px] text-[14px] leading-[27px]">
+          <p className=" font-semibold md:text-[18px] text-[14px] leading-[27px]">
             Investment Earnings
           </p>
-          <p className="text-black font-medium md:text-[18px] text-[14px] leading-[27px]">
+          <p className=" font-medium md:text-[18px] text-[14px] leading-[27px]">
             Investment Earnings = FV total − Total Contributions
           </p>
         </div>
 
         <div className="mt-5">
-          <p className="text-black font-semibold md:text-[18px] text-[14px] leading-[27px]">
+          <p className=" font-semibold md:text-[18px] text-[14px] leading-[27px]">
             Savings (Net Savings):
           </p>
-          <p className="text-black font-medium md:text-[18px] text-[14px] leading-[27px]">
+          <p className=" font-medium md:text-[18px] text-[14px] leading-[27px]">
             Savings (Net Savings) = Total Savings at Retirement − Total
             Contributions at Retiremen
           </p>
@@ -80,7 +80,9 @@ export default function RRSPDescription() {
           How does RRSP Work?
         </h3>
         <div className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
-          <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">Inputs:</p>
+          <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
+            Inputs:
+          </p>
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
             Current Age: 25
           </p>
@@ -105,7 +107,7 @@ export default function RRSPDescription() {
         </div>
 
         <div className="mt-5">
-          <h3 className="text-black font-semibold md:text-[18px] text-[14px] leading-[27px]">
+          <h3 className=" font-semibold md:text-[18px] text-[14px] leading-[27px]">
             1. RRSP Balance at Retirement (Future Value)
           </h3>
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
@@ -121,7 +123,9 @@ export default function RRSPDescription() {
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
             n = (55 − 25) × 12 = 360
           </p>
-          <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">C = 1,000</p>
+          <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
+            C = 1,000
+          </p>
         </div>
 
         <div className="mt-5">
@@ -134,23 +138,26 @@ export default function RRSPDescription() {
         </div>
 
         <div className="mt-5">
-          <h3 className="text-black font-semibold md:text-[18px] text-[14px] leading-[27px]">
+          <h3 className=" font-semibold md:text-[18px] text-[14px] leading-[27px]">
             2. Investment Earnings
           </h3>
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] flex flex-wrap">
-            <span>Total Contributions</span><span>=C×n=</span><span>1,000×360=360,000</span>
+            <span>Total Contributions</span>
+            <span>=C×n=</span>
+            <span>1,000×360=360,000</span>
           </p>
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px] flex flex-wrap">
-            <span>Investment Earnings</span>=<span>1,506,052.13−</span> <span>360,000=1,146,052.13</span>
+            <span>Investment Earnings</span>=<span>1,506,052.13−</span>{" "}
+            <span>360,000=1,146,052.13</span>
           </p>
         </div>
 
         <div className="mt-5">
-          <h3 className="text-black font-semibold md:text-[18px] text-[14px] leading-[27px]">
-          3. Savings (Net Savings)
+          <h3 className=" font-semibold md:text-[18px] text-[14px] leading-[27px]">
+            3. Savings (Net Savings)
           </h3>
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
-          Savings = Total Contributions
+            Savings = Total Contributions
           </p>
           {/* <p className="text-[#696969] text-[18px] leading-[27px]">
           Savings=1,506,052.13 - 360,000=1,146,052.13

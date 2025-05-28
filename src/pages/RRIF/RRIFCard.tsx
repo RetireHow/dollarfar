@@ -28,7 +28,7 @@ export default function RRIFCard() {
 
   return (
     <section className="flex flex-col justify-center">
-      <div className="space-y-[1rem] bg-[#F8F8F8] md:p-[1.5rem] p-[1rem] rounded-[10px] w-full">
+      <div className="space-y-[1rem] bg-[#F8F8F8] RRIFResultCard md:p-[1.5rem] p-[1rem] rounded-[10px] w-full">
         <div className="flex items-center justify-between md:text-[1.5rem] text-[18px] font-semibold pb-4">
           <p>Result</p>
         </div>
@@ -37,7 +37,7 @@ export default function RRIFCard() {
           <p>Initial RRIF Balance</p>
           <p>
             
-            {numberWithCommas(RRIFInitalBalance)}
+            {numberWithCommas(Number(RRIFInitalBalance))}
           </p>
         </div>
 
@@ -61,7 +61,7 @@ export default function RRIFCard() {
             <p>Annual Withdrawal Amount</p>
             <p>
               
-              {numberWithCommas(annualWithdrawalAmount)}
+              {numberWithCommas(Number(annualWithdrawalAmount))}
             </p>
           </div>
         )}
@@ -77,7 +77,7 @@ export default function RRIFCard() {
           </p>
         </div>
 
-        <div className={`flex md:gap-0 gap-8 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4 font-medium ${isNegative(remainingBalanceInRRIF) ? 'text-red-500' : 'text-black'}`}>
+        <div className={`flex md:gap-0 gap-8 items-center justify-between border-b-[1px] border-[#0000001A] md:text-[1.25rem] text-[1rem] pb-4 font-medium ${isNegative(remainingBalanceInRRIF) ? 'text-red-500' : ''}`}>
           <p>Remaining RRIF Balance (End of Withdrawal Period)</p>
           <p>
             

@@ -14,11 +14,11 @@ export default function RRIFTable() {
   const remainingBalanceInRRIF =
     data[data.length - 1]?.balanceAtEndOfTheYear || 0;
 
-  const years = withdrawalEndYear - withdrawalStartYear;
+  const years = Number(withdrawalEndYear) - Number(withdrawalStartYear);
   return (
     <section>
-      <div className="overflow-x-auto text-center bg-[#F8F8F8] rounded-lg border-[1px] border-gray-300 shadow-md">
-        <table className="mb-[1.5rem] bg-[#F8F8F8] w-full rounded-[8px] text-center min-w-[600px] text-[14px]">
+      <div className="overflow-x-auto text-center bg-[#F8F8F8] RRIFTable rounded-lg border-[1px] border-gray-300 shadow-md">
+        <table className="mb-[1.5rem] bg-[#F8F8F8] RRIFTable w-full rounded-[8px] text-center min-w-[600px] text-[14px]">
           <thead className="text-[1rem] font-extrabold bg-gray-800 text-white">
             <tr className="border-b-[1px] border-b-[#0000001A]">
               <th className="border-b-[1px] border-gray-200 p-4">Age</th>

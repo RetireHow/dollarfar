@@ -8,13 +8,20 @@ import {
 } from "antd";
 import CIRCTooltip from "./CIRCTooltip";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { Dispatch, MouseEvent, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  MouseEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import ReactSlider from "react-slider";
 import "./Slider.css";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   calculateCRIInvestmentReducer,
   clearCIRCFields,
+  TPayloadKey,
   updateCRICField,
 } from "../../redux/features/compoundInterestSlice/compoundInterestSlice";
 import Error from "../../components/UI/Error";
@@ -48,6 +55,7 @@ const PopConfirm = () => {
   const confirm: PopconfirmProps["onConfirm"] = () => {
     dispatch(clearCIRCFields());
     message.success("All input fields are cleared!");
+    localStorage.removeItem("CIRCInputs");
   };
 
   const cancel: PopconfirmProps["onCancel"] = () => {
@@ -94,7 +102,7 @@ export default function CRICForm({
     contributionFrequency,
     initialInvestment,
   } = useAppSelector((state) => state.compoundInterest);
-    const isDarkMode = document.documentElement.classList.contains("dark");
+  const isDarkMode = document.documentElement.classList.contains("dark");
 
   const handleCalculate = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -110,6 +118,18 @@ export default function CRICForm({
       return setShowError(true);
     }
 
+    //Save inputs into local storage
+    const inputs = {
+      annualInterestRate,
+      years,
+      compoundingFrequency,
+      contribution,
+      contributionFrequency,
+      initialInvestment,
+    };
+    const inputsString = JSON.stringify(inputs);
+    localStorage.setItem("CIRCInputs", inputsString);
+
     setIsLoading(true);
     await delay(1000);
     setIsLoading(false);
@@ -117,6 +137,22 @@ export default function CRICForm({
     dispatch(calculateCRIInvestmentReducer());
     toast.success("Your investment calculation is complete!");
   };
+
+  useEffect(() => {
+    const inputsString = localStorage.getItem("CIRCInputs");
+    if (!inputsString) {
+      return;
+    }
+    const inputs = JSON.parse(inputsString as string);
+    Object.entries(inputs)?.forEach((input) => {
+      dispatch(
+        updateCRICField({
+          key: input[0] as keyof TPayloadKey,
+          value: input[1] as string,
+        })
+      );
+    });
+  }, []);
 
   return (
     <ConfigProvider

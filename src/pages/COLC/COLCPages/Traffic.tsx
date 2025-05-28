@@ -1,12 +1,13 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Progress } from "antd";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import TrafficPieChart from "./TrafficPieChart";
 import COLCProgressBar from "../COLCProgressBar";
-import COLCLoading from "../COLCLoading";
 import { baseUrl } from "../../../api/apiConstant";
+import { useAppSelector } from "../../../redux/hooks";
+import { TrafficSkeletonLoader } from "../SkeletonLoaders/TrafficSkeletonLoader";
 
 export interface TTrafficDataResponse {
   message: string;
@@ -159,9 +160,11 @@ type TTrafficTableData = {
 const TrafficTable = ({
   data,
   title,
+  city,
 }: {
   data: TTrafficTableData;
   title: string;
+  city: string;
 }) => {
   const {
     time_waiting,
@@ -193,9 +196,11 @@ const TrafficTable = ({
     <>
       {isAllZero ? (
         <section className="space-y-[1rem] mt-[3rem]">
-          <h3 className="md:text-[1.3rem] font-semibold dark:text-darkModeHeadingTextColor">{title}</h3>
+          <h3 className="md:text-[1.3rem] font-semibold dark:text-darkModeHeadingTextColor">
+            {title} : {city}
+          </h3>
           <div className="overflow-x-auto">
-            <table className="table-auto md:max-w-[50%] bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor w-full border-collapse">
+            <table className="bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor border-collapse w-full">
               <tbody>
                 <tr>
                   <td className="border p-2">Distance</td>
@@ -386,20 +391,17 @@ const TrafficTable = ({
   );
 };
 
-export default function Traffic() {
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
-
-  const { countryCity } = useParams();
-  const country = countryCity?.split("-")[0];
-  const city = countryCity?.split("-")[1];
+function TrafficDynamicComponent({
+  country,
+  city,
+}: {
+  country: string;
+  city: string;
+}) {
   const [trafficData, setTrafficData] = useState<TTrafficDataResponse>(
     {} as TTrafficDataResponse
   );
-
   const [isLoading, setIsLoading] = useState(false);
-
   const loadCrimeData = async () => {
     try {
       setIsLoading(true);
@@ -418,11 +420,9 @@ export default function Traffic() {
       setIsLoading(false);
     }
   };
-
   useEffect(() => {
     loadCrimeData();
   }, []);
-
   const {
     "analyze using Train/Metro": trainMetro,
     overall_average_analyze,
@@ -441,336 +441,375 @@ export default function Traffic() {
     contributors,
   } = trafficData.data || {};
 
+  // Decide what to render
+  if (isLoading) {
+    return <TrafficSkeletonLoader />;
+  }
+
+  return (
+    <div>
+      <div className="border-[1px] border-gray-300 rounded-lg p-3 bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor">
+        <h3 className="font-bold">{city}</h3>
+        In this city, we estimate that each passenger produces approximately{" "}
+        <span className="font-semibold">
+          {((240 * index_co2_emission) / 1000)?.toFixed(2)}kg
+        </span>{" "}
+        of CO2 annually as a result of commuting to work or school. To
+        counterbalance this carbon emission, it would require approximately{" "}
+        <span className="font-semibold">
+          {((240 * index_co2_emission) / 1000 / 21.77)?.toFixed(2)} trees
+        </span>{" "}
+        per passenger to produce enough oxygen.{" "}
+        <Link
+          to="/cost-of-living-calculator/traffic/traffic-index-explanation"
+          className="text-blue-600 hover:underline"
+        >
+          The following formulas are used to make these estimations.
+        </Link>
+      </div>
+
+      <div className="md:h-[800px]">
+        <TrafficPieChart
+          transportation={primary_means_percentage_map}
+          name={name}
+        />
+      </div>
+
+      <div className="border-[1px] bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor border-gray-300 p-3 mb-[3rem] mt-[1rem] rounded-lg w-full">
+        <div className="font-bold mb-2 text-[1.3rem] flex justify-between items-center">
+          <p>{name}</p>
+          <Link to="/cost-of-living-calculator/traffic/traffic-index-explanation">
+            <p title="About these indices">
+              <Icon
+                className="text-green-500 cursor-pointer"
+                icon="rivet-icons:exclamation-mark-circle-solid"
+                width="18"
+                height="18"
+              />
+            </p>
+          </Link>
+        </div>
+
+        <div className="space-y-[0.5rem]">
+          <div className="flex items-center">
+            <span className="flex-1">Traffic Index:</span>{" "}
+            <span>{index_traffic?.toFixed(2)}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="flex-1">Time Index (in minutes):</span>{" "}
+            <span>{index_time?.toFixed(2)}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="flex-1">Time Exp. Index:</span>{" "}
+            <span>{index_time_exp?.toFixed(2)}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="flex-1">Inefficiency Index:</span>{" "}
+            <span>{index_inefficiency?.toFixed(2)}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="flex-1">CO2 Emission Index:</span>{" "}
+            <span>{index_co2_emission?.toFixed(2)}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-[1rem] mb-[3rem]">
+        <h3 className="md:text-[1.3rem] font-semibold dark:text-darkModeHeadingTextColor">
+          Main Means of Transportation to Work or School : {city}
+        </h3>
+
+        <div className="overflow-x-auto">
+          <table className="bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor border-collapse w-full">
+            <tbody>
+              {primary_means_percentage_map?.["Working from Home"] ? (
+                <tr>
+                  <td className="border p-2">Working from Home</td>
+                  <td className="border p-2 min-w-[50px]">
+                    <Progress
+                      percent={Number(
+                        primary_means_percentage_map?.[
+                          "Working from Home"
+                        ]?.toFixed(2)
+                      )}
+                      showInfo={false}
+                      strokeColor="#4682b4"
+                      strokeLinecap="butt"
+                      size={{ height: 20 }}
+                    />
+                  </td>
+                  <td className="border p-2">
+                    {primary_means_percentage_map?.[
+                      "Working from Home"
+                    ]?.toFixed(2)}
+                    <span className="ml-1">%</span>
+                  </td>
+                </tr>
+              ) : (
+                ""
+              )}
+
+              {primary_means_percentage_map?.Walking ? (
+                <tr>
+                  <td className="border p-2">Walking</td>
+                  <td className="border p-2">
+                    <Progress
+                      percent={Number(
+                        primary_means_percentage_map?.Walking?.toFixed(2)
+                      )}
+                      showInfo={false}
+                      size={{ height: 20 }}
+                      strokeLinecap="butt"
+                      strokeColor="#4682b4"
+                    />
+                  </td>
+                  <td className="border p-2">
+                    {primary_means_percentage_map?.Walking?.toFixed(2)}
+                    <span className="ml-1">%</span>
+                  </td>
+                </tr>
+              ) : (
+                ""
+              )}
+
+              {primary_means_percentage_map?.Car ? (
+                <tr>
+                  <td className="border p-2">Car</td>
+                  <td className={`border p-2`}>
+                    <Progress
+                      percent={Number(
+                        primary_means_percentage_map?.Car?.toFixed(2)
+                      )}
+                      showInfo={false}
+                      size={{ height: 20 }}
+                      strokeLinecap="butt"
+                      strokeColor="#4682b4"
+                    />
+                  </td>
+                  <td className="border p-2">
+                    {primary_means_percentage_map?.Car?.toFixed(2)}
+                    <span className="ml-1">%</span>
+                  </td>
+                </tr>
+              ) : (
+                ""
+              )}
+
+              {primary_means_percentage_map?.Bicycle ? (
+                <tr>
+                  <td className="border p-2">Bicycle</td>
+                  <td className="border p-2">
+                    <Progress
+                      percent={Number(
+                        primary_means_percentage_map?.Bicycle?.toFixed(2)
+                      )}
+                      showInfo={false}
+                      size={{ height: 20 }}
+                      strokeLinecap="butt"
+                      strokeColor="#4682b4"
+                    />
+                  </td>
+                  <td className="border p-2">
+                    {primary_means_percentage_map?.Bicycle?.toFixed(2)}
+                    <span className="ml-1">%</span>
+                  </td>
+                </tr>
+              ) : (
+                ""
+              )}
+
+              {primary_means_percentage_map?.Motorcycle ? (
+                <tr>
+                  <td className="border p-2">Motorcycle</td>
+                  <td className="border p-2">
+                    <Progress
+                      percent={Number(
+                        primary_means_percentage_map?.Motorcycle?.toFixed(2)
+                      )}
+                      showInfo={false}
+                      size={{ height: 20 }}
+                      strokeLinecap="butt"
+                      strokeColor="#4682b4"
+                    />
+                  </td>
+                  <td className="border p-2">
+                    {primary_means_percentage_map?.Motorcycle?.toFixed(2)}
+                    <span className="ml-1">%</span>
+                  </td>
+                </tr>
+              ) : (
+                ""
+              )}
+
+              {primary_means_percentage_map?.["Bus/Trolleybus"] ? (
+                <tr>
+                  <td className="border p-2">Bus/Trolleybus</td>
+                  <td className="border p-2">
+                    <Progress
+                      percent={Number(
+                        primary_means_percentage_map?.[
+                          "Bus/Trolleybus"
+                        ]?.toFixed(2)
+                      )}
+                      showInfo={false}
+                      size={{ height: 20 }}
+                      strokeLinecap="butt"
+                      strokeColor="#4682b4"
+                    />
+                  </td>
+                  <td className="border p-2">
+                    {primary_means_percentage_map?.["Bus/Trolleybus"]?.toFixed(
+                      2
+                    )}
+                    <span className="ml-1">%</span>
+                  </td>
+                </tr>
+              ) : (
+                ""
+              )}
+
+              {primary_means_percentage_map?.["Train/Metro"] ? (
+                <tr>
+                  <td className="border p-2">Tram/Streetcar</td>
+                  <td className="border p-2">
+                    <Progress
+                      percent={Number(
+                        primary_means_percentage_map?.["Train/Metro"]?.toFixed(
+                          2
+                        )
+                      )}
+                      showInfo={false}
+                      size={{ height: 20 }}
+                      strokeLinecap="butt"
+                      strokeColor="#4682b4"
+                    />
+                  </td>
+                  <td className="border p-2">
+                    {primary_means_percentage_map?.["Train/Metro"]?.toFixed(2)}
+                    <span className="ml-1">%</span>
+                  </td>
+                </tr>
+              ) : (
+                ""
+              )}
+
+              {primary_means_percentage_map?.["Train/Metro"] ? (
+                <tr>
+                  <td className="border p-2">Train/Metro</td>
+                  <td className="border p-2">
+                    <Progress
+                      percent={Number(
+                        primary_means_percentage_map?.["Train/Metro"]?.toFixed(
+                          2
+                        )
+                      )}
+                      showInfo={false}
+                      size={{ height: 20 }}
+                      strokeLinecap="butt"
+                      strokeColor="#4682b4"
+                    />
+                  </td>
+                  <td className="border p-2">
+                    {primary_means_percentage_map?.["Train/Metro"]?.toFixed(2)}
+                    <span className="ml-1">%</span>
+                  </td>
+                </tr>
+              ) : (
+                ""
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <TrafficTable
+        data={walking}
+        title="Average when primarily using Walking"
+        city={city}
+      />
+      <TrafficTable
+        data={car}
+        title="Average when primarily using Car"
+        city={city}
+      />
+      <TrafficTable
+        data={bicycle}
+        title="Average when primarily using Bicycle"
+        city={city}
+      />
+      <TrafficTable
+        data={motorcycle}
+        title="Average when primarily using Motorcycle"
+        city={city}
+      />
+      <TrafficTable
+        data={busTrolleybus}
+        title="Average when primarily using Bus/Trolleybus"
+        city={city}
+      />
+      <TrafficTable
+        data={trainMetro}
+        title=" Average when primarily using Train/Metro"
+        city={city}
+      />
+      <TrafficTable
+        data={overall_average_analyze}
+        title="Overall Average Travel Time and Distance to Work (School)"
+        city={city}
+      />
+
+      <div className="mt-[0.5rem] space-y-[0.3rem] dark:text-darkModeNormalTextColor">
+        <p>Contributors: {contributors}</p>
+        <p>
+          These data are based on perceptions of visitors of this website in the
+          past 5 years.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export default function Traffic() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  const {
+    selectedCountryName2,
+    selectedCityName2,
+    selectedCountryName1,
+    selectedCityName1,
+  } = useAppSelector((state) => state.COLCalculator);
+
   const navigate = useNavigate();
   const handleBack = () => {
     navigate(-1);
   };
 
   return (
-    <>
-      {isLoading ? (
-        <COLCLoading />
-      ) : (
-        <main className="md:m-10 m-3">
-          <h3 className="md:text-[1.5rem] font-semibold mb-[2rem] dark:text-darkModeHeadingTextColor">
-            Traffic in {name}
-          </h3>
-          <div className="mb-[1rem] dark:text-darkModeHeadingTextColor">
-            <button
-              onClick={handleBack}
-              className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
-            >
-              Go Back
-            </button>
-          </div>
+    <main className="md:m-10 m-3">
+      <h3 className="md:text-[1.5rem] font-semibold mb-[2rem] dark:text-darkModeHeadingTextColor">
+        Traffic comparison between {selectedCityName2} and {selectedCityName1}
+      </h3>
+      <div className="mb-[1rem] dark:text-darkModeHeadingTextColor">
+        <button
+          onClick={handleBack}
+          className=" hover:text-white border-[1px] hover:bg-black duration-300 border-gray-300 px-8 py-3 rounded-md"
+        >
+          Go Back
+        </button>
+      </div>
 
-          <div className="border-[1px] border-gray-300 rounded-lg p-3 bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor">
-            In this city, we estimate that each passenger produces approximately{" "}
-            <span className="font-semibold">
-              {((240 * index_co2_emission) / 1000)?.toFixed(2)}kg
-            </span>{" "}
-            of CO2 annually as a result of commuting to work or school. To
-            counterbalance this carbon emission, it would require approximately{" "}
-            <span className="font-semibold">
-              {((240 * index_co2_emission) / 1000 / 21.77)?.toFixed(2)} trees
-            </span>{" "}
-            per passenger to produce enough oxygen.{" "}
-            <Link
-              to="/cost-of-living-calculator/traffic/traffic-index-explanation"
-              className="text-blue-600 hover:underline"
-            >
-              The following formulas are used to make these estimations.
-            </Link>
-          </div>
-
-          <TrafficPieChart transportation={primary_means_percentage_map} />
-
-          <section className="border-[1px] bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor border-gray-300 p-3 mb-[3rem] mt-[1rem] rounded-lg inline-block md:w-[400px] w-full">
-            <div className="font-bold mb-2 text-[1.3rem] flex justify-between items-center">
-              <p>Index</p>
-              <Link to="/cost-of-living-calculator/traffic/traffic-index-explanation">
-                <p title="About these indices">
-                  <Icon
-                    className="text-green-500 cursor-pointer"
-                    icon="rivet-icons:exclamation-mark-circle-solid"
-                    width="18"
-                    height="18"
-                  />
-                </p>
-              </Link>
-            </div>
-
-            <div className="space-y-[0.5rem]">
-              <div className="flex items-center">
-                <span className="flex-1">Traffic Index:</span>{" "}
-                <span>{index_traffic?.toFixed(2)}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="flex-1">Time Index (in minutes):</span>{" "}
-                <span>{index_time?.toFixed(2)}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="flex-1">Time Exp. Index:</span>{" "}
-                <span>{index_time_exp?.toFixed(2)}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="flex-1">Inefficiency Index:</span>{" "}
-                <span>{index_inefficiency?.toFixed(2)}</span>
-              </div>
-              <div className="flex items-center">
-                <span className="flex-1">CO2 Emission Index:</span>{" "}
-                <span>{index_co2_emission?.toFixed(2)}</span>
-              </div>
-            </div>
-          </section>
-
-          <section className="space-y-[1rem] mb-[3rem]">
-            <h3 className="md:text-[1.3rem] font-semibold dark:text-darkModeHeadingTextColor">
-              Main Means of Transportation to Work or School
-            </h3>
-
-            <div className="overflow-x-auto">
-              <table className="table-auto md:max-w-[50%] bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor w-full border-collapse">
-                <tbody>
-                  {primary_means_percentage_map?.["Working from Home"] ? (
-                    <tr>
-                      <td className="border p-2">Working from Home</td>
-                      <td className="border p-2 min-w-[50px]">
-                        <Progress
-                          percent={Number(
-                            primary_means_percentage_map?.[
-                              "Working from Home"
-                            ]?.toFixed(2)
-                          )}
-                          showInfo={false}
-                          strokeColor="#4682b4"
-                          strokeLinecap="butt"
-                          size={{ height: 20 }}
-                        />
-                      </td>
-                      <td className="border p-2">
-                        {primary_means_percentage_map?.[
-                          "Working from Home"
-                        ]?.toFixed(2)}
-                        <span className="ml-1">%</span>
-                      </td>
-                    </tr>
-                  ) : (
-                    ""
-                  )}
-
-                  {primary_means_percentage_map?.Walking ? (
-                    <tr>
-                      <td className="border p-2">Walking</td>
-                      <td className="border p-2">
-                        <Progress
-                          percent={Number(
-                            primary_means_percentage_map?.Walking?.toFixed(2)
-                          )}
-                          showInfo={false}
-                          size={{ height: 20 }}
-                          strokeLinecap="butt"
-                          strokeColor="#4682b4"
-                        />
-                      </td>
-                      <td className="border p-2">
-                        {primary_means_percentage_map?.Walking?.toFixed(2)}
-                        <span className="ml-1">%</span>
-                      </td>
-                    </tr>
-                  ) : (
-                    ""
-                  )}
-
-                  {primary_means_percentage_map?.Car ? (
-                    <tr>
-                      <td className="border p-2">Car</td>
-                      <td className={`border p-2`}>
-                        <Progress
-                          percent={Number(
-                            primary_means_percentage_map?.Car?.toFixed(2)
-                          )}
-                          showInfo={false}
-                          size={{ height: 20 }}
-                          strokeLinecap="butt"
-                          strokeColor="#4682b4"
-                        />
-                      </td>
-                      <td className="border p-2">
-                        {primary_means_percentage_map?.Car?.toFixed(2)}
-                        <span className="ml-1">%</span>
-                      </td>
-                    </tr>
-                  ) : (
-                    ""
-                  )}
-
-                  {primary_means_percentage_map?.Bicycle ? (
-                    <tr>
-                      <td className="border p-2">Bicycle</td>
-                      <td className="border p-2">
-                        <Progress
-                          percent={Number(
-                            primary_means_percentage_map?.Bicycle?.toFixed(2)
-                          )}
-                          showInfo={false}
-                          size={{ height: 20 }}
-                          strokeLinecap="butt"
-                          strokeColor="#4682b4"
-                        />
-                      </td>
-                      <td className="border p-2">
-                        {primary_means_percentage_map?.Bicycle?.toFixed(2)}
-                        <span className="ml-1">%</span>
-                      </td>
-                    </tr>
-                  ) : (
-                    ""
-                  )}
-
-                  {primary_means_percentage_map?.Motorcycle ? (
-                    <tr>
-                      <td className="border p-2">Motorcycle</td>
-                      <td className="border p-2">
-                        <Progress
-                          percent={Number(
-                            primary_means_percentage_map?.Motorcycle?.toFixed(2)
-                          )}
-                          showInfo={false}
-                          size={{ height: 20 }}
-                          strokeLinecap="butt"
-                          strokeColor="#4682b4"
-                        />
-                      </td>
-                      <td className="border p-2">
-                        {primary_means_percentage_map?.Motorcycle?.toFixed(2)}
-                        <span className="ml-1">%</span>
-                      </td>
-                    </tr>
-                  ) : (
-                    ""
-                  )}
-
-                  {primary_means_percentage_map?.["Bus/Trolleybus"] ? (
-                    <tr>
-                      <td className="border p-2">Bus/Trolleybus</td>
-                      <td className="border p-2">
-                        <Progress
-                          percent={Number(
-                            primary_means_percentage_map?.[
-                              "Bus/Trolleybus"
-                            ]?.toFixed(2)
-                          )}
-                          showInfo={false}
-                          size={{ height: 20 }}
-                          strokeLinecap="butt"
-                          strokeColor="#4682b4"
-                        />
-                      </td>
-                      <td className="border p-2">
-                        {primary_means_percentage_map?.[
-                          "Bus/Trolleybus"
-                        ]?.toFixed(2)}
-                        <span className="ml-1">%</span>
-                      </td>
-                    </tr>
-                  ) : (
-                    ""
-                  )}
-
-                  {primary_means_percentage_map?.["Train/Metro"] ? (
-                    <tr>
-                      <td className="border p-2">Tram/Streetcar</td>
-                      <td className="border p-2">
-                        <Progress
-                          percent={Number(
-                            primary_means_percentage_map?.[
-                              "Train/Metro"
-                            ]?.toFixed(2)
-                          )}
-                          showInfo={false}
-                          size={{ height: 20 }}
-                          strokeLinecap="butt"
-                          strokeColor="#4682b4"
-                        />
-                      </td>
-                      <td className="border p-2">
-                        {primary_means_percentage_map?.["Train/Metro"]?.toFixed(
-                          2
-                        )}
-                        <span className="ml-1">%</span>
-                      </td>
-                    </tr>
-                  ) : (
-                    ""
-                  )}
-
-                  {primary_means_percentage_map?.["Train/Metro"] ? (
-                    <tr>
-                      <td className="border p-2">Train/Metro</td>
-                      <td className="border p-2">
-                        <Progress
-                          percent={Number(
-                            primary_means_percentage_map?.[
-                              "Train/Metro"
-                            ]?.toFixed(2)
-                          )}
-                          showInfo={false}
-                          size={{ height: 20 }}
-                          strokeLinecap="butt"
-                          strokeColor="#4682b4"
-                        />
-                      </td>
-                      <td className="border p-2">
-                        {primary_means_percentage_map?.["Train/Metro"]?.toFixed(
-                          2
-                        )}
-                        <span className="ml-1">%</span>
-                      </td>
-                    </tr>
-                  ) : (
-                    ""
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <TrafficTable
-            data={walking}
-            title="Average when primarily using Walking"
-          />
-          <TrafficTable data={car} title="Average when primarily using Car" />
-          <TrafficTable
-            data={bicycle}
-            title="Average when primarily using Bicycle"
-          />
-          <TrafficTable
-            data={motorcycle}
-            title="Average when primarily using Motorcycle"
-          />
-          <TrafficTable
-            data={busTrolleybus}
-            title="Average when primarily using Bus/Trolleybus"
-          />
-          <TrafficTable
-            data={trainMetro}
-            title=" Average when primarily using Train/Metro"
-          />
-          <TrafficTable
-            data={overall_average_analyze}
-            title="Overall Average Travel Time and Distance to Work (School)"
-          />
-
-          <div className="mt-[0.5rem] space-y-[0.3rem] dark:text-darkModeNormalTextColor">
-            <p>Contributors: {contributors}</p>
-            <p>
-              These data are based on perceptions of visitors of this website in
-              the past 5 years.
-            </p>
-          </div>
-        </main>
-      )}
-    </>
+      <section className="grid md:grid-cols-2 grid-cols-1 gap-5">
+        <TrafficDynamicComponent
+          country={selectedCountryName2}
+          city={selectedCityName2}
+        />
+        <TrafficDynamicComponent
+          country={selectedCountryName1}
+          city={selectedCityName1}
+        />
+      </section>
+    </main>
   );
 }

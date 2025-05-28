@@ -53,8 +53,10 @@ const renderCustomizedLabel = ({
 
 const TrafficPieChart = ({
   transportation,
+  name
 }: {
   transportation: PrimaryMeansPercentageMap;
+  name:string;
 }) => {
   const {
     "Bus/Trolleybus": bus,
@@ -64,7 +66,7 @@ const TrafficPieChart = ({
     Bicycle,
     Car,
     Motorcycle,
-    Walking,
+    Walking
   } = transportation || {};
 
   const data = [
@@ -96,9 +98,9 @@ const TrafficPieChart = ({
 
   return (
     <section className="overflow-x-auto">
-      <div className="border-[1px] border-gray-300 bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor inline-block p-3 rounded-md mt-[3rem] mb-[2rem]">
-    <h3 className="font-semibold">Main Means of Transportation to Work or School</h3>
-    <div id="BC-Chart" className="flex md:flex-row flex-col gap-10 items-center md:mb-0 mb-[2rem]">
+      <div className="border-[1px] border-gray-300 bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor w-full p-3 rounded-md mt-[3rem] mb-[2rem]">
+    <h3 className="font-semibold">Main Means of Transportation to Work or School : {name}</h3>
+    <div id="BC-Chart" className="flex flex-col gap-10 items-center">
       <div className="min-w-[350px]">
         <ResponsiveContainer width="100%" height={400}>
           <PieChart>
@@ -127,7 +129,7 @@ const TrafficPieChart = ({
         </ResponsiveContainer>
       </div>
 
-      <ul className="space-y-[0.5rem] text-[14px] text-[#475569] md:mt-0 mt-[-3rem]">
+      <ul className="space-y-[0.5rem] text-[14px] text-[#475569]">
         {Bicycle ? (
           <li className="flex items-center gap-[0.5rem] font-semibold">
             <div className="bg-[#4CAF50] min-w-[30px] h-[10px] rounded-[10px]"></div>

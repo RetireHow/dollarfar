@@ -11,6 +11,7 @@ import {
 } from "../../../redux/features/COLC/COLCSlice";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { baseUrl } from "../../../api/apiConstant";
+import EstimatedCostLoadingSkeleton from "../SkeletonLoaders/EstimatedCostLoadingSkeleton";
 
 export interface EstimatedCostDataResponse {
   message: string;
@@ -103,7 +104,9 @@ export default function EstimatedCostCalculatorPage() {
       </h3>
       <section className="flex md:flex-row flex-col md:items-center gap-5 mb-10 text-[14px]">
         <div className="flex items-center gap-1 w-full">
-          <p className="font-semibold dark:text-darkModeHeadingTextColor">Members:</p>
+          <p className="font-semibold dark:text-darkModeHeadingTextColor">
+            Members:
+          </p>
           <select
             className="border-[1px] border-gray-500 px-5 py-1 w-full dark:border-darkModeBorderColor dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor"
             name="members"
@@ -119,7 +122,9 @@ export default function EstimatedCostCalculatorPage() {
         </div>
 
         <div className="flex items-center gap-1 w-full">
-          <p className="font-semibold dark:text-darkModeHeadingTextColor">Children:</p>
+          <p className="font-semibold dark:text-darkModeHeadingTextColor">
+            Children:
+          </p>
           <select
             className="border-[1px] border-gray-500 px-5 py-1 w-full dark:border-darkModeBorderColor dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor"
             name="children"
@@ -135,7 +140,9 @@ export default function EstimatedCostCalculatorPage() {
         </div>
 
         <div className="flex items-center gap-1 w-full">
-          <p className="font-semibold dark:text-darkModeHeadingTextColor">Rent:</p>
+          <p className="font-semibold dark:text-darkModeHeadingTextColor">
+            Rent:
+          </p>
           <select
             className="border-[1px] border-gray-500 px-5 py-1 w-full dark:border-darkModeBorderColor dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor"
             name="isRent"
@@ -154,88 +161,94 @@ export default function EstimatedCostCalculatorPage() {
         </div>
       </section>
 
-      <section className="mb-5">
-        {estimatedCostData?.data?.error ? (
-          <p className="text-red-500 p-3 border-[1px] mb-4">
-            {estimatedCostData?.data?.error}
-          </p>
-        ) : (
-          <div className="border-[1px] border-gray-300 rounded-lg p-5 mb-5 bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor inline-block">
-            <div className="flex items-center justify-between">
-              <p>
-                <span className="font-semibold">Summary</span> of cost of living
-                in {selectedCityName2}, {selectedCountryName2}:
+      {isEstimateLoading ? (
+        <EstimatedCostLoadingSkeleton />
+      ) : (
+        <section>
+          <div className="mb-5">
+            {estimatedCostData?.data?.error ? (
+              <p className="text-red-500 p-3 border-[1px] mb-4">
+                {estimatedCostData?.data?.error}
               </p>
-              {isEstimateLoading && (
-                <Icon
-                  className="text-orange-500"
-                  icon="line-md:loading-loop"
-                  width="30"
-                  height="30"
-                />
-              )}
-            </div>
-
-            <ul className="list-disc ml-8 text-[14px] space-y-[0.5rem] mt-3">
-              <li>
-                A family of{" "}
-                {members == "5"
-                  ? "five"
-                  : members == "4"
-                  ? "four"
-                  : members == "3"
-                  ? "three"
-                  : members == "2"
-                  ? "two"
-                  : "single person"}{" "}
-                estimated monthly costs are
-                <span className="ml-1 font-semibold">
-                  {homeCurrencyCode && getCurrencySymbol(homeCurrencyCode)}{" "}
-                  {numberWithCommas(
-                    Number(
-                      estimatedCostData?.data?.overall_estimate?.toFixed(2)
-                    )
+            ) : (
+              <div className="border-[1px] border-gray-300 rounded-lg p-5 mb-5 bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor inline-block">
+                <div className="flex items-center justify-between">
+                  <p>
+                    <span className="font-semibold">Summary</span> of cost of
+                    living in {selectedCityName2}, {selectedCountryName2}:
+                  </p>
+                  {isEstimateLoading && (
+                    <Icon
+                      className="text-orange-500"
+                      icon="line-md:loading-loop"
+                      width="30"
+                      height="30"
+                    />
                   )}
-                </span>{" "}
-                {isRent == "true" ? "with" : "without"} rent
-              </li>
-            </ul>
-          </div>
-        )}
-      </section>
+                </div>
 
-      <section className="overflow-x-auto">
-        <h3 className="font-semibold text-[1rem] mb-1 dark:text-darkModeHeadingTextColor">
-          Estimated Cost Breakdown
-        </h3>
-        <table className="text-left border bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor text-[14px]">
-          <thead>
-            <tr>
-              <th className="border-[1px] border-gray-300 md:p-3 p-2">
-                Category
-              </th>
-              <th className="border-[1px] border-gray-300 md:p-3 p-2">
-                Estimated Cost
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {estimatedCostData?.data?.breakdown?.map((item) => {
-              return (
-                <tr key={item?.category} className="hover:bg-[#42c6c623]">
-                  <td className="border-[1px] border-gray-300 md:p-3 p-2">
-                    {item?.category}
-                  </td>
-                  <td className="border-[1px] border-gray-300 md:p-3 p-2 space-x-1">
-                    <span>{getCurrencySymbol(homeCurrencyCode)}</span>
-                    <span>{item?.estimate?.toFixed(2)}</span>
-                  </td>
+                <ul className="list-disc ml-8 text-[14px] space-y-[0.5rem] mt-3">
+                  <li>
+                    A family of{" "}
+                    {members == "5"
+                      ? "five"
+                      : members == "4"
+                      ? "four"
+                      : members == "3"
+                      ? "three"
+                      : members == "2"
+                      ? "two"
+                      : "single person"}{" "}
+                    estimated monthly costs are
+                    <span className="ml-1 font-semibold">
+                      {homeCurrencyCode && getCurrencySymbol(homeCurrencyCode)}{" "}
+                      {numberWithCommas(
+                        Number(
+                          estimatedCostData?.data?.overall_estimate?.toFixed(2)
+                        )
+                      )}
+                    </span>{" "}
+                    {isRent == "true" ? "with" : "without"} rent
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
+
+          <div className="overflow-x-auto">
+            <h3 className="font-semibold text-[1rem] mb-1 dark:text-darkModeHeadingTextColor">
+              Estimated Cost Breakdown
+            </h3>
+            <table className="text-left border bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor text-[14px]">
+              <thead>
+                <tr>
+                  <th className="border-[1px] border-gray-300 md:p-3 p-2">
+                    Category
+                  </th>
+                  <th className="border-[1px] border-gray-300 md:p-3 p-2">
+                    Estimated Cost
+                  </th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </section>
+              </thead>
+              <tbody>
+                {estimatedCostData?.data?.breakdown?.map((item) => {
+                  return (
+                    <tr key={item?.category} className="hover:bg-[#42c6c623]">
+                      <td className="border-[1px] border-gray-300 md:p-3 p-2">
+                        {item?.category}
+                      </td>
+                      <td className="border-[1px] border-gray-300 md:p-3 p-2 space-x-1">
+                        <span>{getCurrencySymbol(homeCurrencyCode)}</span>
+                        <span>{item?.estimate?.toFixed(2)}</span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
     </main>
   );
 }

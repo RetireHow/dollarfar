@@ -13,14 +13,14 @@ export interface TwithdrawalFrequency {
 }
 
 export interface TRRIFState {
-  RRIFInitalBalance: number;
-  currentAge: number;
-  rateOfReturn: number;
+  RRIFInitalBalance: string;
+  currentAge: string;
+  rateOfReturn: string;
   withdrawType: string | number;
-  annualWithdrawalAmount: number;
-  withdrawalFrequency: number | TwithdrawalFrequency;
-  withdrawalStartYear: number;
-  withdrawalEndYear: number;
+  annualWithdrawalAmount: string;
+  withdrawalFrequency: string | TwithdrawalFrequency;
+  withdrawalStartYear: string;
+  withdrawalEndYear: string;
 
   remainingRRRIFBalanceEndOfPeriod: number;
   totalWithdrawnOverLifeTime: number;

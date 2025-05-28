@@ -34,10 +34,10 @@ export default function RRIFDescription() {
           withdrawal percentages** set by the Canadian government. The amount is
           a percentage of the RRIF balance and increases with age.
         </p>
-        <p className="text-black font-semibold md:text-[18px] text-[14px] leading-[27px] mt-5">
+        <p className=" font-semibold md:text-[18px] text-[14px] leading-[27px] mt-5">
           Basic RRIF Withdrawal Formula
         </p>
-        <p className="text-black font-semibold md:text-[18px] text-[14px] leading-[27px] mt-5">
+        <p className=" font-semibold md:text-[18px] text-[14px] leading-[27px] mt-5">
           Minimum Withdrawal = RRIF Balance * Government Percentage
         </p>
         <div>
@@ -57,10 +57,10 @@ export default function RRIFDescription() {
           a compounding interest formula, taking into account the withdrawals,
           growth rate, and number of years the money is invested.
         </p>
-        <p className="text-black font-semibold md:text-[18px] text-[14px] leading-[27px] mt-5">
+        <p className=" font-semibold md:text-[18px] text-[14px] leading-[27px] mt-5">
           Future Value of RRIF :
         </p>
-        <p className="text-black font-semibold md:text-[18px] text-[14px] leading-[27px] mt-5">
+        <p className=" font-semibold md:text-[18px] text-[14px] leading-[27px] mt-5">
           <span>FV = P(1 + r)^n -</span>
           <span>{"{W{(1 + r)^n - 1}}/{r}"}</span>
         </p>
@@ -148,8 +148,8 @@ export default function RRIFDescription() {
           <p className="text-[#696969] md:text-[18px] text-[14px] leading-[27px]">
             - After 25 years, the RRIF balance will reduce gradually, providing
             steady withdrawals and accounting for the return rate. At the end of
-            25 years, the remaining balance may be 1,677,626, depending
-            on actual return rates and withdrawals.
+            25 years, the remaining balance may be 1,677,626, depending on
+            actual return rates and withdrawals.
           </p>
         </div>
       </section>

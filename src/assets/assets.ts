@@ -1,4 +1,5 @@
 import siteLogo from "./Dollar-logo.svg";
+import siteLogoWhite from "./DF_Logo_White.svg";
 import compoundInterestCalcIcon from "./compound-interest-calc.svg";
 import netWorthCalcIcon from "./net-worth-icon.svg";
 import loanCalcIcon from "./Loan-calc-icon.svg";
@@ -25,6 +26,7 @@ import sadImg from "./sad.gif";
 
 export const assets = {
   siteLogo,
+  siteLogoWhite,
   compoundInterestCalcIcon,
   netWorthCalcIcon,
   loanCalcIcon,

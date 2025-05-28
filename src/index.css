@@ -124,3 +124,36 @@ body {
   animation-delay: 2s; /* No initial delay */
 }
 
+
+/* Dark Mode Styles  */
+.dark{
+  color:white !important;
+}
+
+
+/* RRIF  */
+.dark .RRIFResultCard{
+  background-color: #000;
+  border:1px solid #413f3f;
+}
+
+.dark .RRIFBarChart{
+  background-color: #000;
+}
+
+.dark .RRIFTable{
+  background-color: #000;
+}
+
+.dark .RRIFTable table tr td{
+  border:1px solid #413f3f;
+}
+
+/* RRSP  */
+.dark .RRSPAreaChart{
+  background-color: #000;
+}
+.dark .RRSPResultCard{
+  background-color: #000;
+  border:1px solid #413f3f;
+}
