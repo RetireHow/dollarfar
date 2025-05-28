@@ -16,7 +16,6 @@ const ResetPasswordForm: React.FC = () => {
   const { newPassword, confirmPassword, email, otp } = useAppSelector(
     (state) => state.OTP
   );
-  console.log("otp================> ", typeof otp);
 
   const [showError, setShowError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -58,8 +57,8 @@ const ResetPasswordForm: React.FC = () => {
         toast.success(data?.message);
         navigate("/admin-login");
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error: any) {
-      console.log(error);
       setIsLoading(false);
       toast.error("There is something went wrong!");
     } finally {

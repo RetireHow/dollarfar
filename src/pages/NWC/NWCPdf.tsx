@@ -103,7 +103,6 @@ export const NWCPdf = ({ data }: { data: TData }) => {
       liabilitiesBreakdown,
     },
   } = data || {};
-  console.log(assetsBreakdown);
 
   return (
     <Document>

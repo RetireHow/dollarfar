@@ -98,7 +98,6 @@ const DownloadModal = ({
       toast.success("An email sent to your mail.", { position: "top-center" });
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.log("Error occured while sending mail=========> ", error);
       toast.error("There is something wrong!");
     }
   };

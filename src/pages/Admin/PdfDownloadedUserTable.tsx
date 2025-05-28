@@ -2,45 +2,8 @@ import { useEffect, useState } from "react";
 import { baseUrl } from "../../api/apiConstant";
 import { toast } from "react-toastify";
 import moment from "moment";
-import { Icon } from "@iconify/react/dist/iconify.js";
-
-// const usersData = [
-//   {
-//     name: "Alice Johnson",
-//     phone: "+1234567890",
-//     email: "alice@example.com",
-//     downloadedFiles: [
-//       {
-//         downloadedFileName: "report_2024.pdf",
-//         createdAt: "2025-04-25T10:30:00.000Z",
-//         updatedAt: "2025-04-25T10:30:00.000Z",
-//       },
-//       {
-//         downloadedFileName: "invoice_march.csv",
-//         createdAt: "2025-04-26T12:00:00.000Z",
-//         updatedAt: "2025-04-26T12:00:00.000Z",
-//       },
-//     ],
-//   },
-//   {
-//     name: "Bob Smith",
-//     phone: "+1987654321",
-//     email: "bob@example.com",
-//     downloadedFiles: [
-//       {
-//         downloadedFileName: "presentation.pptx",
-//         createdAt: "2025-04-27T09:15:00.000Z",
-//         updatedAt: "2025-04-27T09:15:00.000Z",
-//       },
-//     ],
-//   },
-//   {
-//     name: "Charlie Lee",
-//     phone: "+1123456789",
-//     email: "charlie@example.com",
-//     downloadedFiles: [],
-//   },
-// ];
+import PdfDownloadUserTableSkeletonLoader from "./PdfDownloadUserTableSkeletonLoader";
+import PdfDownloadUserCardSkeletonLoader from "./PdfDownloadUserCardSkeletonLoader";
 
 type DownloadedFile = {
   downloadedFileName: string;
@@ -98,7 +61,7 @@ const PdfDownloadedUserTable = () => {
         <table className="min-w-full border border-gray-300 divide-y divide-gray-200">
           <thead className="bg-gray-100">
             <tr>
-               <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 border border-gray-300">
+              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 border border-gray-300">
                 No.
               </th>
               <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 border border-gray-300">
@@ -119,20 +82,13 @@ const PdfDownloadedUserTable = () => {
             </tr>
           </thead>
           {isLoading ? (
-            <tr>
-              <td colSpan={5}>
-                <div className="py-5 text-green-600 font-bold text-[2rem] md:flex hidden justify-center items-center gap-1">
-                  <Icon icon="line-md:loading-loop" width="35" height="35" />
-                  <p>Loading...</p>
-                </div>
-              </td>
-            </tr>
+            <PdfDownloadUserTableSkeletonLoader />
           ) : (
             <tbody className="bg-white divide-y divide-gray-300">
               {users.map((user, index) => (
                 <tr key={index} className="hover:bg-gray-50">
                   <td className="px-4 py-2 text-sm text-gray-800 border border-gray-300">
-                    {index+1}
+                    {index + 1}
                   </td>
                   <td className="px-4 py-2 text-sm text-gray-800 border border-gray-300">
                     {user.name}
@@ -178,10 +134,7 @@ const PdfDownloadedUserTable = () => {
 
       {/* Mobile view */}
       {isLoading ? (
-        <div className="md:hidden py-5 text-green-600 font-bold text-[2rem] flex justify-center items-center gap-1">
-          <Icon icon="line-md:loading-loop" width="35" height="35" />
-          <p>Loading...</p>
-        </div>
+        <PdfDownloadUserCardSkeletonLoader />
       ) : (
         <div className="md:hidden space-y-4">
           {users.map((user, index) => (

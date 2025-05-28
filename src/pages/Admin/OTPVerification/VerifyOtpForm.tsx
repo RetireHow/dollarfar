@@ -19,7 +19,6 @@ const VerifyOtpForm: React.FC = () => {
 
   const handleResend = () => {
     // Implement your resend OTP logic here
-    console.log("Resend OTP");
   };
 
   const handleOTPChange = (value: string) => {
@@ -48,8 +47,8 @@ const VerifyOtpForm: React.FC = () => {
         toast.success(data?.message);
         navigate("/reset-password-form");
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error: any) {
-      console.log(error);
       setIsLoading(false);
       toast.error("There is something went wrong!");
     } finally {

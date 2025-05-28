@@ -44,8 +44,6 @@ export default function Header() {
   const handleThemeChange: MenuProps["onClick"] = ({ key }) => {
     const selectedItem = items?.find((item) => item?.key === key);
     if (selectedItem) {
-      console.log("Selected Key:", selectedItem.key);
-      console.log("Selected Label:", selectedItem.label);
       if (typeof setTheme === "function") {
         setTheme(selectedItem.label.toLowerCase());
       }

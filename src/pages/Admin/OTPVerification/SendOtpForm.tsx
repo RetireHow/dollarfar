@@ -44,8 +44,8 @@ const SendOtpForm: React.FC = () => {
         toast.success(data?.message);
         navigate("/verify-otp-form");
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error: any) {
-      console.log(error);
       setIsLoading(false);
       toast.error("There is something went wrong!");
     } finally {

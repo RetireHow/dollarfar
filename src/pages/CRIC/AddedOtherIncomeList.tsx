@@ -11,7 +11,6 @@ export default function AddedOtherIncomeList() {
       otherIncomeResult: { addedOtherIncomesList },
     },
   } = useAppSelector((state) => state.CRICalculator);
-  console.log(addedOtherIncomesList)
   const handleRemoveAddedOtherIncome = (index: number) => {
     const isConfirmed = window.confirm("Are you sure to delete this ?");
     if (!isConfirmed) {

@@ -87,8 +87,7 @@ export const Ebook1: React.FC = () => {
         if (!res.ok) {
           throw new Error("Internal server error!");
         }
-        const data = await res.json();
-        console.log("Download Ebook1 Response===========> ", data);
+        await res.json();
         setLoading(false);
         toast.success("Thank you! An email sent. Please check your inbox.", {
           position: "top-center",

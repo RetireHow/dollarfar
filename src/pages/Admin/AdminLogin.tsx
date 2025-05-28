@@ -37,10 +37,8 @@ const AdminLogin: React.FC = () => {
 
     setError("");
     // Simulate login or call actual API
-    console.log("Logging in:", { email, password });
     setLoading(true);
     const result = await fetchAdmin(email, password);
-    console.log({ result });
     setLoading(false);
     if (result?.success) {
       localStorage.setItem("email", result?.data?.email);

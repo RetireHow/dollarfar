@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { baseUrl } from "../../api/apiConstant";
 import { toast } from "react-toastify";
 import moment from "moment";
-import { Icon } from "@iconify/react/dist/iconify.js";
+import EbookDownloadUserTableSkeletonLoader from "./EbookDownloadUserTableSkeletonLoader";
+import EbookDownloadUserCardSkeletonLoader from "./EbookDownloadUserCardSkeletonLoader";
 
 type TUser = {
   fullName: string;
@@ -17,7 +18,6 @@ type TUser = {
 const EbookDownloadedUserTable = () => {
   const [users, setUsers] = useState<TUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  console.log({ users });
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -77,20 +77,13 @@ const EbookDownloadedUserTable = () => {
             </tr>
           </thead>
           {isLoading ? (
-            <tr>
-              <td colSpan={5}>
-                <div className="py-5 text-green-600 font-bold text-[2rem] md:flex hidden justify-center items-center gap-1">
-                  <Icon icon="line-md:loading-loop" width="35" height="35" />
-                  <p>Loading...</p>
-                </div>
-              </td>
-            </tr>
+            <EbookDownloadUserTableSkeletonLoader />
           ) : (
             <tbody className="bg-white divide-y divide-gray-300">
               {users.map((user, index) => (
                 <tr key={index} className="hover:bg-gray-50">
                   <td className="px-4 py-2 text-sm text-gray-800 border border-gray-300">
-                    {index+1}
+                    {index + 1}
                   </td>
                   <td className="px-4 py-2 text-sm text-gray-800 border border-gray-300">
                     {user.fullName}
@@ -116,10 +109,7 @@ const EbookDownloadedUserTable = () => {
 
       {/* Mobile view */}
       {isLoading ? (
-        <div className="md:hidden py-5 text-green-600 font-bold text-[2rem] flex justify-center items-center gap-1">
-          <Icon icon="line-md:loading-loop" width="35" height="35" />
-          <p>Loading...</p>
-        </div>
+        <EbookDownloadUserCardSkeletonLoader />
       ) : (
         <div className="md:hidden space-y-4">
           {users.map((user, index) => (
@@ -145,7 +135,9 @@ const EbookDownloadedUserTable = () => {
               </p>
               <p className="text-sm">
                 <span className="font-semibold">Downloaded At:</span>{" "}
-                <span>{moment(user.createdAt).format("MMMM Do YYYY, h:mm:ss a")}</span>
+                <span>
+                  {moment(user.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+                </span>
               </p>
             </div>
           ))}
