@@ -98,7 +98,7 @@ const AdminDashboardGreeting = () => {
       {isLoading || isLoadingEbook ? (
         <AdminDashboardGreetingSkeleton />
       ) : (
-        <div className="bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-400 text-white shadow-lg rounded-xl p-8 max-w-4xl mx-auto mt-10">
+        <div className="bg-white dark:bg-neutral-900 border-[1px] border-gray-300 dark:border-gray-600 shadow-lg rounded-xl p-8 max-w-4xl mx-auto mt-10">
           <div className="flex items-center space-x-4">
             <div>
               <h2 className="text-3xl font-semibold">
@@ -112,11 +112,11 @@ const AdminDashboardGreeting = () => {
           </div>
 
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4">
-              <div className="p-4 bg-indigo-100 rounded-full">
+            <div className="bg-white dark:bg-neutral-800 p-6 rounded-xl shadow-md flex items-center space-x-4">
+              <div className="p-4 bg-gray-100 dark:bg-neutral-700 dark:text-white rounded-full">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6 text-indigo-600"
+                  className="w-6 h-6 text-gray-600 dark:text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -130,30 +130,30 @@ const AdminDashboardGreeting = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-gray-700">
+                <h3 className="text-xl font-semibold text-gray-700 dark:text-white">
                   Total Users
                 </h3>
                 <div className="flex items-center gap-1">
-                  <p className="text-neutral-700">Report Downloaded:</p>
-                  <p className="text-gray-600">
+                  <p className="text-neutral-700 dark:text-white">Report Downloaded:</p>
+                  <p className="text-gray-600 dark:text-white">
                     <span>{reportUsers?.length}</span>
                   </p>
                 </div>
 
                 <div className="flex items-center gap-1">
-                  <p className="text-neutral-700">Ebook Downloaded:</p>
-                  <p className="text-gray-600">
+                  <p className="text-neutral-700 dark:text-white">Ebook Downloaded:</p>
+                  <p className="text-gray-600 dark:text-white">
                     <span>{ebookUsers?.length}</span>
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4">
-              <div className="p-4 bg-indigo-100 rounded-full">
+            <div className="bg-white dark:bg-neutral-800 p-6 rounded-xl shadow-md flex items-center space-x-4">
+              <div className="p-4 bg-gray-100 dark:bg-neutral-700 rounded-full">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6 text-indigo-600"
+                  className="w-6 h-6 text-gray-600 dark:text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -167,10 +167,10 @@ const AdminDashboardGreeting = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-gray-700">
+                <h3 className="text-xl font-semibold text-gray-700 dark:text-white">
                   Users Added Today
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-white">
                   <span>{usersAddedToday?.length}</span>
                 </p>
               </div>

@@ -60,9 +60,9 @@ const AdminLogin: React.FC = () => {
   };
 
   return (
-    <div className="py-[2rem] min-h-screen flex items-start justify-center bg-gray-100 px-4">
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+    <div className="py-[2rem] min-h-screen flex items-start justify-center bg-gray-100 dark:bg-neutral-900 px-4">
+      <div className="max-w-md w-full bg-white dark:bg-neutral-900 p-8 rounded-lg shadow-md dark:border-[1px] dark:border-gray-500">
+        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-white">
           Admin Login
         </h2>
         {error && (
@@ -70,7 +70,10 @@ const AdminLogin: React.FC = () => {
         )}
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label htmlFor="email" className="block text-gray-700 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-gray-700 dark:text-white mb-1"
+            >
               Email
             </label>
             <input
@@ -84,7 +87,10 @@ const AdminLogin: React.FC = () => {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-gray-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-gray-700 dark:text-white mb-1"
+            >
               Password
             </label>
             <div className="relative">
@@ -120,8 +126,10 @@ const AdminLogin: React.FC = () => {
           <button
             type="submit"
             disabled={loading ? true : false}
-            className={`w-full text-white py-2 rounded-md hover:bg-blue-700 transition flex justify-center items-center h-[45px] ${
-              loading ? "bg-blue-300 hover:bg-blue-300" : "bg-blue-600"
+            className={`w-full text-white py-2 rounded-md hover:bg-blue-700 dark:hover:bg-neutral-700 transition flex justify-center items-center h-[45px] ${
+              loading
+                ? "bg-blue-300 hover:bg-blue-300 dark:bg-neutral-600 dark:hover:bg-neutral-600"
+                : "bg-blue-600 dark:bg-neutral-700"
             }`}
           >
             {loading ? (

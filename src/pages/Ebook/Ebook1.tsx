@@ -101,9 +101,9 @@ export const Ebook1: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-lg">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
+    <div className="min-h-screen bg-gray-100 dark:bg-neutral-900 flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-neutral-900 shadow-md rounded-lg p-8 w-full max-w-lg dark:border-[1px] dark:border-gray-500">
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-6 text-center">
           Download Your eBook
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
@@ -111,7 +111,7 @@ export const Ebook1: React.FC = () => {
           <div>
             <label
               htmlFor="fullName"
-              className="block text-sm font-bold text-gray-700"
+              className="block text-sm font-bold text-gray-700 dark:text-white"
             >
               Full Name
               <RedStar />
@@ -141,7 +141,7 @@ export const Ebook1: React.FC = () => {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-bold text-gray-700"
+              className="block text-sm font-bold text-gray-700 dark:text-white"
             >
               Email
               <RedStar />
@@ -171,7 +171,7 @@ export const Ebook1: React.FC = () => {
           <div>
             <label
               htmlFor="mobile"
-              className="block text-sm font-bold text-gray-700"
+              className="block text-sm font-bold text-gray-700 dark:text-white"
             >
               Mobile
               <RedStar />
@@ -201,7 +201,7 @@ export const Ebook1: React.FC = () => {
           <div>
             <label
               htmlFor="city"
-              className="block text-sm font-bold text-gray-700"
+              className="block text-sm font-bold text-gray-700 dark:text-white"
             >
               City
               <RedStar />
@@ -230,8 +230,8 @@ export const Ebook1: React.FC = () => {
           <button
             type="submit"
             disabled={loading ? true : false}
-            className={`w-full text-white py-2 rounded-md hover:bg-blue-700 transition flex justify-center items-center h-[45px] ${
-              loading ? "bg-blue-300 hover:bg-blue-300" : "bg-blue-600"
+            className={`w-full text-white py-2 rounded-md hover:bg-blue-700 dark:hover:bg-neutral-700 transition flex justify-center items-center h-[45px] ${
+              loading ? "bg-blue-300 hover:bg-blue-300 dark:bg-neutral-300 dark:hover:bg-neutral-300" : "bg-blue-600 dark:bg-neutral-800"
             }`}
           >
             {loading ? (

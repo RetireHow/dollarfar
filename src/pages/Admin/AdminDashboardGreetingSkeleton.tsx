@@ -1,11 +1,11 @@
 const AdminDashboardGreetingSkeleton = () => {
   return (
-    <div className="bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-400 text-white shadow-lg rounded-xl p-8 max-w-4xl mx-auto mt-10">
+    <div className="bg-white dark:bg-neutral-900 border-[1px] shadow-lg rounded-xl p-8 max-w-4xl mx-auto mt-10">
       <div className="flex items-center space-x-4">
         <div>
           <div className="text-3xl font-semibold flex md:flex-row flex-col items-center gap-2">
             <p>Welcome back,</p>
-            <p className="w-48 h-7 bg-indigo-300 rounded animate-pulse"></p>
+            <p className="w-48 h-7 bg-gray-200 rounded animate-pulse"></p>
           </div>
 
           <p className="mt-1 text-lg">
@@ -18,10 +18,10 @@ const AdminDashboardGreetingSkeleton = () => {
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
         {/* Card 1 */}
         <div className="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4">
-          <div className="p-4 bg-indigo-100 rounded-full">
+          <div className="p-4 bg-gray-100 rounded-full">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6 text-indigo-600"
+              className="w-6 h-6 text-gray-600"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -49,10 +49,10 @@ const AdminDashboardGreetingSkeleton = () => {
 
         {/* Card 2 */}
         <div className="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4">
-          <div className="p-4 bg-indigo-100 rounded-full">
+          <div className="p-4 bg-gray-100 rounded-full">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6 text-indigo-600"
+              className="w-6 h-6 text-gray-600"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

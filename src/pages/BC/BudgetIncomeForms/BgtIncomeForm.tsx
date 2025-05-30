@@ -6,21 +6,16 @@ import DFForm from "../../../components/Form/DFForm";
 import DFInputWithWatch from "../../../components/Form/DFInputWithWatch";
 import DFSelectWithWatch from "../../../components/Form/DFSelectWithWatch";
 import BudgetDynamicFieldWithFrequency from "../BudgetDynamicFieldWithFrequency";
-import { calculateTotalIncome } from "../../../redux/features/BgtSlice/BgtSlice";
-
+import {
+  calculateTotalIncome,
+  updateBgtStaticField,
+} from "../../../redux/features/BgtSlice/BgtSlice";
 
 export default function BgtIncomeForm() {
   const navigate = useNavigate();
   const { activeStep } = useAppSelector((state) => state.stepper);
   const dispatch = useAppDispatch();
-  const handleNext = () => {
-    dispatch(calculateTotalIncome());
-    dispatch(nextStep());
-    navigate("housing-expenses");
-  };
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+
   const {
     income: {
       salary: { salaryFrequency, salaryAmount },
@@ -34,6 +29,55 @@ export default function BgtIncomeForm() {
       dynamicMoreIncomes,
     },
   } = useAppSelector((state) => state.budgetCalculator);
+
+  const handleNext = () => {
+    dispatch(calculateTotalIncome());
+    dispatch(nextStep());
+    navigate("housing-expenses");
+
+    //Store into local storage
+    const incomeInputString = JSON.stringify({
+      salaryAmount,
+      salaryFrequency,
+      govtBenefitsFrequency,
+      govtBenefitsAmount,
+      netIncomeFrequency,
+      netIncomeAmount,
+      otherIncomeFrequency,
+      otherIncomeAmount,
+      dynamicSalaries,
+      dynamicGovtBenefits,
+      dynamicNetIncomes,
+      dynamicOtherIncomes,
+      dynamicMoreIncomes,
+    });
+    localStorage.setItem("BCIncomeInputs", incomeInputString);
+  };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("BCIncomeInputs");
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData);
+        console.log(parsedData);
+        dispatch(
+          updateBgtStaticField({
+            stepName: "income",
+            field: "salary",
+            subField: "salaryAmount",
+            value: "999",
+          })
+        );
+      } catch (error) {
+        console.error("Failed to parse localStorage data:", error);
+      }
+    }
+  }, []);
+
   return (
     <div className="space-y-[2rem]">
       <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">

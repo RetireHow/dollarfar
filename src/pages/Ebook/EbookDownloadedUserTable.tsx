@@ -54,24 +54,24 @@ const EbookDownloadedUserTable = () => {
       </h1>
       <div className="overflow-x-auto md:block hidden">
         <table className="min-w-full border border-gray-300 divide-y divide-gray-200">
-          <thead className="bg-gray-100">
+          <thead className="bg-gray-100 dark:bg-neutral-900">
             <tr>
-              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 border border-gray-300">
+              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300">
                 No.
               </th>
-              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 border border-gray-300">
+              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300">
                 Full Name
               </th>
-              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 border border-gray-300">
+              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300">
                 City
               </th>
-              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 border border-gray-300">
+              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300">
                 Phone
               </th>
-              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 border border-gray-300">
+              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300">
                 Email
               </th>
-              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 border border-gray-300">
+              <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300">
                 Downloaded At
               </th>
             </tr>
@@ -79,25 +79,25 @@ const EbookDownloadedUserTable = () => {
           {isLoading ? (
             <EbookDownloadUserTableSkeletonLoader />
           ) : (
-            <tbody className="bg-white divide-y divide-gray-300">
+            <tbody className="bg-white dark:bg-neutral-900 divide-y divide-gray-300">
               {users.map((user, index) => (
                 <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-4 py-2 text-sm text-gray-800 border border-gray-300">
+                  <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300">
                     {index + 1}
                   </td>
-                  <td className="px-4 py-2 text-sm text-gray-800 border border-gray-300">
+                  <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300">
                     {user.fullName}
                   </td>
-                  <td className="px-4 py-2 text-sm text-gray-800 border border-gray-300">
+                  <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300">
                     {user.city}
                   </td>
-                  <td className="px-4 py-2 text-sm text-gray-800 border border-gray-300">
+                  <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300">
                     {user.mobile}
                   </td>
-                  <td className="px-4 py-2 text-sm text-gray-800 border border-gray-300">
+                  <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300">
                     {user.email}
                   </td>
-                  <td className="px-4 py-2 text-sm text-gray-800">
+                  <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300">
                     {moment(user.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
                   </td>
                 </tr>
@@ -115,7 +115,7 @@ const EbookDownloadedUserTable = () => {
           {users.map((user, index) => (
             <div
               key={index}
-              className="border rounded-lg p-4 shadow-sm bg-white space-y-2"
+              className="border rounded-lg p-4 shadow-sm space-y-2"
             >
               <p className="text-sm">
                 <span className="font-semibold">Name:</span>{" "}
