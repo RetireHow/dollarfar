@@ -51,6 +51,7 @@ import VerifyOtpForm from "../pages/Admin/OTPVerification/VerifyOtpForm";
 import ResetPasswordForm from "../pages/Admin/OTPVerification/ResetPasswordForm";
 import { Ebook1 } from "../pages/Ebook/Ebook1";
 import CostOfLivingPersonalizedCalculator from "../pages/CostOfLivingPersonalizedCalculator";
+import CostOfLivingEstimator from "../pages/AdvanceEstimator";
 
 export const router = createBrowserRouter([
   {
@@ -267,6 +268,10 @@ export const router = createBrowserRouter([
       {
         path: "personalized-calculator",
         element: <CostOfLivingPersonalizedCalculator />,
+      },
+      {
+        path: "estimator",
+        element: <CostOfLivingEstimator />,
       },
     ],
   },

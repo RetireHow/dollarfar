@@ -70,7 +70,7 @@ export interface CategorizedData {
   [category: string]: PriceItem[];
 }
 
-interface PriceItem {
+export interface PriceItem {
   data_points: number;
   item_id: number;
   lowest_price: number;
@@ -79,27 +79,27 @@ interface PriceItem {
   item_name: string;
 }
 
-interface PriceData {
+export interface PriceData {
   [category: string]: PriceItem[];
 }
 
-interface ExtendedPriceItem extends PriceItem {
+export interface ExtendedPriceItem extends PriceItem {
   frequency: "daily" | "weekly" | "monthly" | "yearly" | "one time";
   total: number;
 }
 
-interface CategoryItems {
+export interface CategoryItems {
   [category: string]: ExtendedPriceItem[];
 }
 
-interface SavedBudget {
+export interface SavedBudget {
   name: string;
   date: string;
   total: number;
   categories: CategoryItems;
 }
 
-interface Suggestion {
+export interface Suggestion {
   label: string;
   value: string;
 }
@@ -429,6 +429,10 @@ const ExportPDFModal = ({
 };
 
 export default function CostOfLivingPersonalizedCalculator() {
+  // Add this new state at the top of the component
+  const [selectedBudgetForComparison, setSelectedBudgetForComparison] =
+    useState<SavedBudget | null>(null);
+
   const { selectedCountryName2, selectedCityName2, homeCurrencyCode } =
     useAppSelector((state) => state.COLCalculator);
 
@@ -1128,56 +1132,317 @@ export default function CostOfLivingPersonalizedCalculator() {
 
       {/* Compare Locations Modal */}
       {showCompareModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl p-6 max-w-md w-full">
-            <h3 className="text-xl font-bold mb-4">Compare Locations</h3>
-            <p className="text-gray-600 mb-4">
-              Compare your current budget with saved budgets from other
-              locations.
-            </p>
-
-            {savedBudgets.length > 0 && (
-              <div className="mb-4">
-                <h4 className="font-medium mb-2">Saved Budgets:</h4>
-                <ul className="space-y-2">
-                  {savedBudgets.map((budget, index) => (
-                    <li
-                      key={index}
-                      className="flex justify-between items-center p-2 bg-gray-50 rounded"
-                    >
-                      <span>
-                        {budget.name} ({getCurrencySymbol(currency)}
-                        {budget.total.toFixed(2)})
-                      </span>
-                      <button
-                        className="text-indigo-600 hover:text-indigo-800"
-                        onClick={() => {
-                          // This would implement the comparison logic
-                          alert(
-                            `Comparison would show details between current budget ($${calculateMonthlyTotal().toFixed(
-                              2
-                            )}) and ${budget.name} ($${budget.total.toFixed(
-                              2
-                            )})`
-                          );
-                        }}
-                      >
-                        Compare
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div className="flex justify-end">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[4500]">
+          <div className="bg-white rounded-xl p-6 max-w-5xl w-full max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-bold">Compare Locations</h3>
               <button
-                onClick={() => setShowCompareModal(false)}
-                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                onClick={() => {
+                  setShowCompareModal(false);
+                  setSelectedBudgetForComparison(null);
+                }}
+                className="text-red-500 hover:text-red-700"
               >
-                Close
+                <Icon icon="material-symbols:close" className="text-2xl" />
               </button>
             </div>
+
+            {!selectedBudgetForComparison ? (
+              <>
+                <p className="text-gray-600 mb-4">
+                  Compare your current budget with saved budgets from other
+                  locations.
+                </p>
+
+                {savedBudgets.length > 0 ? (
+                  <div className="mb-4">
+                    <h4 className="font-medium mb-2">Saved Budgets:</h4>
+                    <ul className="space-y-2">
+                      {savedBudgets.map((budget, index) => (
+                        <li
+                          key={index}
+                          className="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                        >
+                          <div>
+                            <span className="font-medium">{budget.name}</span>
+                            <span className="text-gray-600 text-sm block">
+                              {budget.date} • {getCurrencySymbol(currency)}
+                              {budget.total.toFixed(2)}
+                            </span>
+                          </div>
+                          <button
+                            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm"
+                            onClick={() =>
+                              setSelectedBudgetForComparison(budget)
+                            }
+                          >
+                            Compare
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-center py-4">
+                    No saved budgets to compare with.
+                  </p>
+                )}
+              </>
+            ) : (
+              <div className="comparison-details">
+                <div className="flex justify-between items-center mb-6">
+                  <h4 className="text-lg font-semibold">
+                    Comparing current budget with{" "}
+                    {selectedBudgetForComparison.name}
+                  </h4>
+                  <button
+                    onClick={() => setSelectedBudgetForComparison(null)}
+                    className="text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
+                  >
+                    <Icon icon="mdi:arrow-left" /> Back to list
+                  </button>
+                </div>
+
+                {/* Summary Comparison */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                  <div className="bg-indigo-50 p-4 rounded-lg">
+                    <h5 className="font-medium text-indigo-800 mb-2">
+                      Current Budget
+                    </h5>
+                    <p className="text-2xl font-bold">
+                      {getCurrencySymbol(currency)}
+                      {calculateMonthlyTotal().toFixed(2)}
+                    </p>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {selectedCity} • {new Date().toLocaleDateString()}
+                    </p>
+                  </div>
+
+                  <div className="bg-gray-100 p-4 rounded-lg">
+                    <h5 className="font-medium text-gray-800 mb-2">
+                      Saved Budget
+                    </h5>
+                    <p className="text-2xl font-bold">
+                      {getCurrencySymbol(currency)}
+                      {selectedBudgetForComparison.total.toFixed(2)}
+                    </p>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {selectedBudgetForComparison.name} •{" "}
+                      {selectedBudgetForComparison.date}
+                    </p>
+                  </div>
+
+                  <div
+                    className={`p-4 rounded-lg ${
+                      calculateMonthlyTotal() >
+                      selectedBudgetForComparison.total
+                        ? "bg-red-50"
+                        : "bg-green-50"
+                    }`}
+                  >
+                    <h5 className="font-medium mb-2">Difference</h5>
+                    <p
+                      className={`text-2xl font-bold ${
+                        calculateMonthlyTotal() >
+                        selectedBudgetForComparison.total
+                          ? "text-red-600"
+                          : "text-green-600"
+                      }`}
+                    >
+                      {calculateMonthlyTotal() >
+                      selectedBudgetForComparison.total
+                        ? "+"
+                        : ""}
+                      {getCurrencySymbol(currency)}
+                      {Math.abs(
+                        calculateMonthlyTotal() -
+                          selectedBudgetForComparison.total
+                      ).toFixed(2)}
+                    </p>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {calculateMonthlyTotal() >
+                      selectedBudgetForComparison.total
+                        ? "Current budget is more expensive"
+                        : "Current budget is cheaper"}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Category-wise Comparison */}
+                <h5 className="font-medium mb-4">Category Comparison</h5>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Category
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Current
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Saved
+                        </th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Difference
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {activeCategories.map((category) => {
+                        const currentTotal = calculateCategoryTotal(category);
+                        const savedTotal =
+                          selectedBudgetForComparison.categories[
+                            category
+                          ]?.reduce(
+                            (sum, item) => sum + (item?.total || 0),
+                            0
+                          ) || 0;
+                        const difference = currentTotal - savedTotal;
+
+                        return (
+                          <tr key={category}>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {category}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                              {getCurrencySymbol(currency)}
+                              {currentTotal.toFixed(2)}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                              {savedTotal
+                                ? `${getCurrencySymbol(
+                                    currency
+                                  )}${savedTotal.toFixed(2)}`
+                                : "N/A"}
+                            </td>
+                            <td
+                              className={`px-4 py-3 whitespace-nowrap text-sm font-medium ${
+                                difference > 0
+                                  ? "text-red-600"
+                                  : difference < 0
+                                  ? "text-green-600"
+                                  : "text-gray-500"
+                              }`}
+                            >
+                              {savedTotal ? (
+                                <>
+                                  {difference > 0 ? "+" : ""}
+                                  {getCurrencySymbol(currency)}
+                                  {Math.abs(difference).toFixed(2)}
+                                </>
+                              ) : (
+                                "N/A"
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Item-level Comparison for each category */}
+                {activeCategories.map((category) => {
+                  const currentItems = categoryItems[category] || [];
+                  const savedItems =
+                    selectedBudgetForComparison.categories[category] || [];
+
+                  return (
+                    <div key={category} className="mt-8">
+                      <h5 className="font-medium mb-3">{category} Items</h5>
+                      <div className="overflow-x-auto">
+                        <table className="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
+                          <thead className="bg-gray-50">
+                            <tr>
+                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Item
+                              </th>
+                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Current
+                              </th>
+                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Saved
+                              </th>
+                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Difference
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-gray-200">
+                            {/* Current items */}
+                            {currentItems.map((item, index) => {
+                              const savedItem = savedItems[index];
+                              const savedPrice = savedItem?.total || 0;
+                              const difference = item.total - savedPrice;
+
+                              return (
+                                <tr key={`current-${index}`}>
+                                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {item.item_name} (Current)
+                                  </td>
+                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                    {getCurrencySymbol(currency)}
+                                    {item.total.toFixed(2)}
+                                  </td>
+                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                    {savedItem
+                                      ? `${getCurrencySymbol(
+                                          currency
+                                        )}${savedPrice.toFixed(2)}`
+                                      : "N/A"}
+                                  </td>
+                                  <td
+                                    className={`px-4 py-3 whitespace-nowrap text-sm font-medium ${
+                                      difference > 0
+                                        ? "text-red-600"
+                                        : difference < 0
+                                        ? "text-green-600"
+                                        : "text-gray-500"
+                                    }`}
+                                  >
+                                    {savedItem ? (
+                                      <>
+                                        {difference > 0 ? "+" : ""}
+                                        {getCurrencySymbol(currency)}
+                                        {Math.abs(difference).toFixed(2)}
+                                      </>
+                                    ) : (
+                                      "N/A"
+                                    )}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+
+                            {/* Saved items that aren't in current */}
+                            {savedItems
+                              .slice(currentItems.length)
+                              .map((item, index) => (
+                                <tr key={`saved-extra-${index}`}>
+                                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {item.item_name} (Saved)
+                                  </td>
+                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                    N/A
+                                  </td>
+                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                    {getCurrencySymbol(currency)}
+                                    {item.total.toFixed(2)}
+                                  </td>
+                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                    N/A
+                                  </td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       )}
