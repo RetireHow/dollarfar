@@ -7,23 +7,23 @@ const PdfDownloadUserCardSkeletonLoader = () => {
       {skeletonCards.map((_, index) => (
         <div
           key={index}
-          className="border rounded-lg p-4 shadow-sm bg-white space-y-2 animate-pulse"
+          className="border rounded-lg p-4 shadow-sm bg-white dark:bg-neutral-900 space-y-2 animate-pulse"
         >
           {/* Name */}
-          <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+          <div className="h-4 bg-gray-200 dark:bg-neutral-700 rounded w-2/3"></div>
           {/* Phone */}
-          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+          <div className="h-4 bg-gray-200 dark:bg-neutral-700 rounded w-1/2"></div>
           {/* Email */}
-          <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+          <div className="h-4 bg-gray-200 dark:bg-neutral-700 rounded w-3/4"></div>
           {/* Created At */}
-          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+          <div className="h-4 bg-gray-200 dark:bg-neutral-700 rounded w-1/2"></div>
           {/* Downloaded Reports Label */}
-          <div className="h-4 bg-gray-300 rounded w-1/3 mt-2"></div>
+          <div className="h-4 bg-gray-300 dark:bg-neutral-700 rounded w-1/3 mt-2"></div>
           {/* Downloaded File Entries */}
           <ul className="list-disc list-inside space-y-1 mt-1">
             {downloadedFileLines.map((_, idx) => (
               <li key={idx}>
-                <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+                <div className="h-3 bg-gray-200 dark:bg-neutral-700 rounded w-5/6"></div>
               </li>
             ))}
           </ul>

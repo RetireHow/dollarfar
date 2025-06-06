@@ -37,7 +37,10 @@ export default function COLC() {
         {!COLCModifiedCostData?.output ? (
           <div className="flex justify-center">
             <h3 className="text-[1.3rem] font-medium text-gray-600 dark:text-darkModeNormalTextColor text-center max-w-[600px]">
-              Click on the <span className="text-black font-bold dark:text-darkModeNormalTextColor">Compare</span>{" "}
+              Click on the{" "}
+              <span className="text-black font-bold dark:text-darkModeNormalTextColor">
+                Compare
+              </span>{" "}
               button and then the cost of living comparision between your two
               selected cities will be shown here.
             </h3>

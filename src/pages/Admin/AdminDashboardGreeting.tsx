@@ -25,12 +25,26 @@ const AdminDashboardGreeting = () => {
   const [isLoadingEbook, setIsLoadingEbook] = useState<boolean>(false);
   const [loggedInUserName, setLoggedInUserName] = useState("");
 
+  const totalDownloadedReports = reportUsers?.reduce((total, curr) => {
+    return total + curr?.downloadedFiles?.length;
+  }, 0);
+
   const today = new Date();
-  today.setHours(0, 0, 0, 0); // Set to start of the day
-  const usersAddedToday = reportUsers.filter((user) => {
-    const createdAt = new Date(user.createdAt);
-    return createdAt >= today;
-  });
+  today.setHours(0, 0, 0, 0); // Start of today
+
+  const reportDownloadedToday = reportUsers?.reduce((total, curr) => {
+    const filesDownloadedToday =
+      curr?.downloadedFiles?.filter((item) => {
+        const createdAt = new Date(item.createdAt);
+        return createdAt >= today;
+      }) || [];
+    return total + filesDownloadedToday.length;
+  }, 0);
+
+  const ebookDownloadedToday = ebookUsers?.reduce((total, curr) => {
+    const createdAt = new Date(curr.createdAt);
+    return createdAt >= today ? total + 1 : total;
+  }, 0);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -112,7 +126,7 @@ const AdminDashboardGreeting = () => {
           </div>
 
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="bg-white dark:bg-neutral-800 p-6 rounded-xl shadow-md flex items-center space-x-4">
+            <div className="bg-white dark:bg-neutral-800 p-6 rounded-xl shadow-md border-[1px] border-gray-200 dark:border-gray-600 flex items-center space-x-4">
               <div className="p-4 bg-gray-100 dark:bg-neutral-700 dark:text-white rounded-full">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -131,17 +145,21 @@ const AdminDashboardGreeting = () => {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-gray-700 dark:text-white">
-                  Total Users
+                  Total
                 </h3>
                 <div className="flex items-center gap-1">
-                  <p className="text-neutral-700 dark:text-white">Report Downloaded:</p>
+                  <p className="text-neutral-700 dark:text-white">
+                    Report Downloaded:
+                  </p>
                   <p className="text-gray-600 dark:text-white">
-                    <span>{reportUsers?.length}</span>
+                    <span>{totalDownloadedReports}</span>
                   </p>
                 </div>
 
                 <div className="flex items-center gap-1">
-                  <p className="text-neutral-700 dark:text-white">Ebook Downloaded:</p>
+                  <p className="text-neutral-700 dark:text-white">
+                    Ebook Downloaded:
+                  </p>
                   <p className="text-gray-600 dark:text-white">
                     <span>{ebookUsers?.length}</span>
                   </p>
@@ -149,7 +167,7 @@ const AdminDashboardGreeting = () => {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-neutral-800 p-6 rounded-xl shadow-md flex items-center space-x-4">
+            <div className="bg-white dark:bg-neutral-800 p-6 rounded-xl shadow-md border-[1px] border-gray-200 dark:border-gray-600 flex items-center space-x-4">
               <div className="p-4 bg-gray-100 dark:bg-neutral-700 rounded-full">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -168,11 +186,25 @@ const AdminDashboardGreeting = () => {
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-gray-700 dark:text-white">
-                  Users Added Today
+                  Today
                 </h3>
-                <p className="text-gray-600 dark:text-white">
-                  <span>{usersAddedToday?.length}</span>
-                </p>
+                <div className="flex items-center gap-1">
+                  <p className="text-neutral-700 dark:text-white">
+                    Report Downloaded:
+                  </p>
+                  <p className="text-gray-600 dark:text-white">
+                    <span>{reportDownloadedToday}</span>
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-1">
+                  <p className="text-neutral-700 dark:text-white">
+                    Ebook Downloaded:
+                  </p>
+                  <p className="text-gray-600 dark:text-white">
+                    <span>{ebookDownloadedToday}</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>

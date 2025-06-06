@@ -17,11 +17,11 @@ const AdminDashboardGreetingSkeleton = () => {
 
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
         {/* Card 1 */}
-        <div className="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4">
-          <div className="p-4 bg-gray-100 rounded-full">
+        <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl shadow-md flex items-center space-x-4">
+          <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-full">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6 text-gray-600"
+              className="w-6 h-6 text-gray-600 dark:text-gray-300"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -35,24 +35,30 @@ const AdminDashboardGreetingSkeleton = () => {
             </svg>
           </div>
           <div className="flex flex-col">
-            <h3 className="text-xl font-semibold text-gray-700">Total Users</h3>
+            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300">
+              Total
+            </h3>
             <div className="flex items-center gap-2">
-              <p className="text-neutral-700">Report Downloaded:</p>
-              <div className="w-6 h-3 bg-gray-200 rounded animate-pulse" />
+              <p className="text-neutral-700 dark:text-gray-300">
+                Report Downloaded:
+              </p>
+              <div className="w-6 h-3 bg-gray-200 dark:bg-neutral-700 rounded animate-pulse" />
             </div>
             <div className="flex items-center gap-2">
-              <p className="text-neutral-700">Ebook Downloaded:</p>
-              <div className="w-6 h-3 bg-gray-200 rounded animate-pulse" />
+              <p className="text-neutral-700 dark:text-gray-300">
+                Ebook Downloaded:
+              </p>
+              <div className="w-6 h-3 bg-gray-200 dark:bg-neutral-700 rounded animate-pulse" />
             </div>
           </div>
         </div>
 
         {/* Card 2 */}
-        <div className="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4">
-          <div className="p-4 bg-gray-100 rounded-full">
+        <div className="bg-white dark:bg-neutral-900 p-6 rounded-xl shadow-md flex items-center space-x-4">
+          <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded-full">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6 text-gray-600"
+              className="w-6 h-6 text-gray-600 dark:text-gray-300"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -65,11 +71,22 @@ const AdminDashboardGreetingSkeleton = () => {
               />
             </svg>
           </div>
-          <div className="flex flex-col gap-2">
-            <h3 className="text-xl font-semibold text-gray-700">
-              Users Added Today
+          <div className="flex flex-col">
+            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300">
+              Today
             </h3>
-            <div className="w-6 h-3 bg-gray-200 rounded animate-pulse" />
+            <div className="flex items-center gap-2">
+              <p className="text-neutral-700 dark:text-gray-300">
+                Report Downloaded:
+              </p>
+              <div className="w-6 h-3 bg-gray-200 dark:bg-neutral-700 rounded animate-pulse" />
+            </div>
+            <div className="flex items-center gap-2">
+              <p className="text-neutral-700 dark:text-gray-300">
+                Ebook Downloaded:
+              </p>
+              <div className="w-6 h-3 bg-gray-200 dark:bg-neutral-700 rounded animate-pulse" />
+            </div>
           </div>
         </div>
       </div>

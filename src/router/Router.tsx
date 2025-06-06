@@ -50,6 +50,7 @@ import SendOtpForm from "../pages/Admin/OTPVerification/SendOtpForm";
 import VerifyOtpForm from "../pages/Admin/OTPVerification/VerifyOtpForm";
 import ResetPasswordForm from "../pages/Admin/OTPVerification/ResetPasswordForm";
 import { Ebook1 } from "../pages/Ebook/Ebook1";
+import CostOfLivingPersonalizedCalculator from "../pages/CostOfLivingPersonalizedCalculator";
 
 export const router = createBrowserRouter([
   {
@@ -262,6 +263,10 @@ export const router = createBrowserRouter([
       {
         path: "research",
         element: <Research />,
+      },
+      {
+        path: "personalized-calculator",
+        element: <CostOfLivingPersonalizedCalculator />,
       },
     ],
   },

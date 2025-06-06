@@ -1,4 +1,5 @@
 export function getCurrencySymbol(currencyCode: string) {
+  if (!currencyCode) return "";
   return (0)
     .toLocaleString(undefined, {
       style: "currency",

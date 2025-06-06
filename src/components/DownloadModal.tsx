@@ -78,18 +78,24 @@ const DownloadModal = ({
     fileName: string
   ) => {
     try {
-      const res = await fetch(`${baseUrl}/api/send-email-by-zeptoapi`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          downloadedFileName: fileName,
-        }),
-      });
+      const res = await fetch(
+        `${baseUrl}/report-downloaded-users/create-user`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            phone,
+            downloadedFileName: fileName,
+          }),
+        }
+      );
+      if (!res.ok) {
+        return toast.error("There is something went wrong!");
+      }
 
       // Parse JSON response
       await res.json();
