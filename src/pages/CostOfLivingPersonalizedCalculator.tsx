@@ -433,6 +433,9 @@ const ExportPDFModal = ({
 };
 
 export default function CostOfLivingPersonalizedCalculator() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   // Add this new state at the top of the component
   const [selectedBudgetForComparison, setSelectedBudgetForComparison] =
     useState<SavedBudget | null>(null);
@@ -803,7 +806,7 @@ export default function CostOfLivingPersonalizedCalculator() {
               </p>
             </div>
 
-            <div className="flex md:flex-row flex-col items-center gap-5">
+            <div className="flex md:flex-row flex-col md:items-center gap-5">
               <div className="w-full md:w-auto">
                 <label
                   htmlFor="city-select"
@@ -834,7 +837,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                   )}
                 </div>
               </div>
-              <div className="w-[150px]">
+              <div className="md:w-[150px] w-full">
                 <label
                   className="block text-sm font-medium text-gray-700 mb-1"
                   htmlFor="currency"
