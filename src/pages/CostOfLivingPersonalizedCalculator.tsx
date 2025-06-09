@@ -496,6 +496,7 @@ export default function CostOfLivingPersonalizedCalculator() {
 
       setPriceData(mockData);
       const newCategories = Object.keys(mockData);
+      localStorage.setItem("destinationPlace", selectedCity);
       //Initially Selected Categories
       if (data?.data?.prices?.length > 0) {
         setActiveCategories([
