@@ -135,6 +135,7 @@ type ExportPDFModalProps = {
   categoryItems: CategoryItems;
   calculateMonthlyTotal: () => number;
   calculateCategoryTotal: (category: string) => number;
+  currency: string;
 };
 
 const ExportPDFModal = ({
@@ -143,6 +144,7 @@ const ExportPDFModal = ({
   categoryItems,
   calculateMonthlyTotal,
   calculateCategoryTotal,
+  currency,
 }: ExportPDFModalProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
@@ -180,27 +182,27 @@ const ExportPDFModal = ({
 
       <h1 style="color: #4361ee; text-align: center;">Budget Report for ${selectedCity}</h1>
       <p style="text-align: center;">Generated on ${moment().format("LL")}</p>
-      <h2 style="text-align: center; color: #3a0ca3;">Total Monthly Cost: $${calculateMonthlyTotal().toFixed(
-        2
-      )}</h2>
+      <h2 style="text-align: center; color: #3a0ca3;">Total Monthly Cost: ${getCurrencySymbol(
+        currency
+      )}${calculateMonthlyTotal().toFixed(2)}</h2>
       <h3 style="border-bottom: 1px solid #eee; padding-bottom: 5px;">Categories:</h3>
       <ul style="list-style: none; padding-left: 0;">
         ${activeCategories
           .map(
             (category) => `
           <li style="margin-bottom: 15px; background: #f8f9fa; padding: 10px; border-radius: 5px;">
-            <strong style="color: #3a0ca3;">${category}:</strong> $${calculateCategoryTotal(
-              category
-            ).toFixed(2)}
+            <strong style="color: #3a0ca3;">${category}:</strong> ${getCurrencySymbol(
+              currency
+            )}${calculateCategoryTotal(category).toFixed(2)}
             <ul style="list-style: none; padding-left: 15px; margin-top: 5px;">
               ${
                 categoryItems[category]
                   ?.map(
                     (item) => `
                 <li style="margin-bottom: 5px;">
-                  ${item.item_name} (${item.frequency}): $${item.total.toFixed(
-                      2
-                    )}
+                  ${item.item_name} (${item.frequency}): ${getCurrencySymbol(
+                      currency
+                    )}${item.total.toFixed(2)}
                 </li>
               `
                   )
@@ -1104,6 +1106,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                     categoryItems={categoryItems}
                     calculateMonthlyTotal={calculateMonthlyTotal}
                     calculateCategoryTotal={calculateCategoryTotal}
+                    currency={currency}
                   />
                 </div>
               </section>
