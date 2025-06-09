@@ -262,6 +262,11 @@ export default function COLCForm() {
           setCOLCModifiedCostData(costOfLivingData as TCostOfLivingData)
         );
         dispatch(setHomeCurrencyCode(city1DefaultCurrencyData?.data?.currency));
+        //Store cityName2 & countryName2 into localStorage
+        localStorage.setItem(
+          "destinationPlace",
+          `${cityName2},${countryName2}`
+        );
         setApiDataLoading(false);
       } catch (error: any) {
         setApiDataLoading(false);
@@ -383,7 +388,9 @@ export default function COLCForm() {
               onClick={handleCompare}
               disabled={cityName1 && cityName2 ? false : true}
               className={`text-white p-[0.8rem] border-[1px] dark:border-gray-700 rounded-[10px] w-full ${
-                cityName1 && cityName2 ? "bg-black" : "bg-gray-300 dark:bg-darkModeBgColor dark:text-gray-500"
+                cityName1 && cityName2
+                  ? "bg-black"
+                  : "bg-gray-300 dark:bg-darkModeBgColor dark:text-gray-500"
               }`}
             >
               Compare
