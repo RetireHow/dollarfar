@@ -780,8 +780,12 @@ export default function CostOfLivingPersonalizedCalculator() {
   //Fetch from localStorage
   useEffect(() => {
     const destinationPlace = localStorage.getItem("destinationPlace");
-    setSelectedCity(destinationPlace as string);
+    if (destinationPlace) {
+      setSelectedCity(destinationPlace as string);
+    }
   }, []);
+
+  console.log(currency);
 
   return (
     <main className="min-h-screen bg-gray-50 p-4 md:p-8">
@@ -829,7 +833,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                   )}
                 </div>
               </div>
-              <div className="w-full">
+              <div className="w-[150px]">
                 <label
                   className="block text-sm font-medium text-gray-700 mb-1"
                   htmlFor="currency"
