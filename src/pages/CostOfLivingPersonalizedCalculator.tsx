@@ -124,6 +124,7 @@ import { ConfigProvider, theme as antdTheme, Modal } from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Link } from "react-router-dom";
 import Error from "../components/UI/Error";
+import moment from "moment";
 
 type ExportPDFModalProps = {
   selectedCity: string;
@@ -175,7 +176,7 @@ const ExportPDFModal = ({
       </div>
 
       <h1 style="color: #4361ee; text-align: center;">Budget Report for ${selectedCity}</h1>
-      <p style="text-align: center;">Generated on ${new Date().toLocaleString()}</p>
+      <p style="text-align: center;">Generated on ${moment().format('LL')}</p>
       <h2 style="text-align: center; color: #3a0ca3;">Total Monthly Cost: $${calculateMonthlyTotal().toFixed(
         2
       )}</h2>
@@ -730,7 +731,7 @@ export default function CostOfLivingPersonalizedCalculator() {
 
     const newBudget = {
       name: budgetName,
-      date: new Date().toLocaleDateString(),
+      date: moment().format('LL'),
       total: calculateMonthlyTotal(),
       categories: { ...categoryItems },
     };
@@ -1214,7 +1215,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                       {calculateMonthlyTotal().toFixed(2)}
                     </p>
                     <p className="text-sm text-gray-600 mt-1">
-                      {selectedCity} • {new Date().toLocaleDateString()}
+                      {selectedCity} • {moment().format('LL')}
                     </p>
                   </div>
 
