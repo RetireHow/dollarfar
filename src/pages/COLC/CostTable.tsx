@@ -19,9 +19,9 @@ export default function CostTable() {
         <div className="p-4 bg-blue-50 border-l-4 border-blue-500 rounded-xl flex items-start space-x-3 shadow-sm mb-5">
         <Sparkles className="text-blue-500 mt-1 shrink-0" />
 
-        <div className="text-sm text-gray-800">
-          <p className="font-medium">Want a more personalized estimate?</p>
-          <p className="mt-1">
+        <div className="text-gray-800">
+          <p className="text-lg font-bold">Want a more personalized estimate?</p>
+          <p className="mt-1 text-md">
             Use our{" "}
             <Link
               to="/personalized-calculator"
