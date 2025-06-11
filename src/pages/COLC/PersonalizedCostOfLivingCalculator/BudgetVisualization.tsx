@@ -108,21 +108,22 @@ export const BudgetVisualization = ({
           <h4 className="text-lg font-medium mb-4 text-center">
             Budget Distribution
           </h4>
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="90%" height="90%">
             <PieChart>
               <Pie
                 data={pieChartData}
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                innerRadius={30} // optional
-                outerRadius={70} // smaller pie
+                innerRadius={20} // optional
+                outerRadius={50} // smaller pie
                 fill="#8884d8"
                 dataKey="value"
                 nameKey="name"
                 label={({ name, percent }) =>
                   `${name}: ${(percent * 100).toFixed(0)}%`
                 }
+                style={{fontSize:12}}
               >
                 {pieChartData.map((_, index) => (
                   <Cell
@@ -137,7 +138,7 @@ export const BudgetVisualization = ({
                   name,
                 ]}
               />
-              {/* <Legend /> */}
+              {<Legend />}
             </PieChart>
           </ResponsiveContainer>
         </div>
