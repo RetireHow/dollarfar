@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState, useRef, ChangeEvent } from "react";
-import { getCurrencySymbol } from "../utils/getCurrencySymbol";
+import { getCurrencySymbol } from "../../../utils/getCurrencySymbol";
 import { toast } from "react-toastify";
-import { baseUrl } from "../api/apiConstant";
-import { useAppSelector } from "../redux/hooks";
+import { baseUrl } from "../../../api/apiConstant";
+import { useAppSelector } from "../../../redux/hooks";
 
 function categorizeCityPrices(data: CityPriceApiResponse): CategorizedData {
   const categories: string[] = [
@@ -125,9 +125,10 @@ const CATEGORY_COLORS = [
 import { ConfigProvider, theme as antdTheme, Modal } from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Link } from "react-router-dom";
-import Error from "../components/UI/Error";
+import Error from "../../../components/UI/Error";
 import moment from "moment";
-import { generateUniqueId } from "../utils/generateUniqueId";
+import { generateUniqueId } from "../../../utils/generateUniqueId";
+import { BudgetVisualization } from "./BudgetVisualization";
 
 type ExportPDFModalProps = {
   selectedCity: string;
@@ -460,6 +461,10 @@ export default function CostOfLivingPersonalizedCalculator() {
   const [showCompareModal, setShowCompareModal] = useState(false);
   const [currency, setCurrency] = useState<string>(homeCurrencyCode);
   const [currencies, setCurrencies] = useState<string[]>([]);
+
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [selectedBudgetDetails, setSelectedBudgetDetails] =
+    useState<SavedBudget | null>(null);
 
   const fetchCurrencyData = async () => {
     try {
@@ -1057,6 +1062,12 @@ export default function CostOfLivingPersonalizedCalculator() {
               ))}
             </form>
 
+            <BudgetVisualization
+            activeCategories={activeCategories}
+            categoryItems={categoryItems}
+            currency={currency}
+            />
+
             {/* Grand Total */}
             {activeCategories.length > 0 && (
               <section className="mt-12 p-6 bg-gradient-to-r from-indigo-600 to-indigo-800 rounded-xl text-white">
@@ -1220,7 +1231,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                               {budget.total.toFixed(2)}
                             </span>
                           </div>
-                          <div className="flex items-center gap-3">
+                          <div className="flex flex-wrap items-center gap-3">
                             <button
                               className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm"
                               onClick={() =>
@@ -1228,6 +1239,15 @@ export default function CostOfLivingPersonalizedCalculator() {
                               }
                             >
                               Compare
+                            </button>
+                            <button
+                              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+                              onClick={() => {
+                                setSelectedBudgetDetails(budget);
+                                setShowDetailsModal(true);
+                              }}
+                            >
+                              Details
                             </button>
                             <button
                               className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
@@ -1532,6 +1552,118 @@ export default function CostOfLivingPersonalizedCalculator() {
                 })}
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Budget Details Modal */}
+      {showDetailsModal && selectedBudgetDetails && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[5000]">
+          <div className="bg-white rounded-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-xl font-bold">Budget Details</h3>
+              <button
+                onClick={() => {
+                  setShowDetailsModal(false);
+                  setSelectedBudgetDetails(null);
+                }}
+                className="text-red-500 hover:text-red-700"
+              >
+                <Icon icon="material-symbols:close" className="text-2xl" />
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <h4 className="text-lg font-semibold">
+                {selectedBudgetDetails.name}
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div className="bg-gray-50 p-3 rounded-lg">
+                  <p className="text-sm text-gray-500">Location</p>
+                  <p className="font-medium">
+                    {selectedBudgetDetails.location}
+                  </p>
+                </div>
+                <div className="bg-gray-50 p-3 rounded-lg">
+                  <p className="text-sm text-gray-500">Date Saved</p>
+                  <p className="font-medium">{selectedBudgetDetails.date}</p>
+                </div>
+                <div className="bg-gray-50 p-3 rounded-lg">
+                  <p className="text-sm text-gray-500">Total Monthly Cost</p>
+                  <p className="font-medium">
+                    {getCurrencySymbol(currency)}
+                    {selectedBudgetDetails.total.toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <h5 className="font-bold text-lg mb-3">Categories Breakdown</h5>
+            <div className="space-y-6">
+              {Object.entries(selectedBudgetDetails.categories).map(
+                ([category, items]) => (
+                  <div
+                    key={category}
+                    className="border border-gray-200 rounded-lg overflow-hidden"
+                  >
+                    <div className="bg-gray-50 px-4 py-3 flex justify-between items-center">
+                      <h6 className="font-bold">{category}</h6>
+                      <p className="font-semibold">
+                        {getCurrencySymbol(currency)}
+                        {items
+                          .reduce((sum, item) => sum + item.total, 0)
+                          .toFixed(2)}
+                      </p>
+                    </div>
+                    <div className="divide-y divide-gray-200">
+                      {items.map((item, index) => (
+                        <div
+                          key={index}
+                          className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4"
+                        >
+                          <div className="md:col-span-2">
+                            <p className="font-medium">{item.item_name}</p>
+                            <p className="text-sm text-gray-500 capitalize">
+                              {item.frequency}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500">
+                              Average Price
+                            </p>
+                            <p>
+                              {getCurrencySymbol(currency)}
+                              {item.average_price.toFixed(2)}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500">
+                              Monthly Cost
+                            </p>
+                            <p>
+                              {getCurrencySymbol(currency)}
+                              {item.total.toFixed(2)}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
+
+            <div className="mt-6 flex justify-end">
+              <button
+                onClick={() => {
+                  setShowDetailsModal(false);
+                  setSelectedBudgetDetails(null);
+                }}
+                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
