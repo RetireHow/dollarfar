@@ -57,7 +57,7 @@ export const BudgetVisualization = ({
   ];
 
   return (
-    <div className="mt-8 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+    <div className="mt-8 bg-white dark:bg-neutral-900 p-6 rounded-xl shadow-sm border border-gray-200">
       <h3 className="text-xl font-semibold mb-6 text-center">
         Budget Visualization
       </h3>

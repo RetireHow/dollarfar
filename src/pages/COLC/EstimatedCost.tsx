@@ -120,7 +120,7 @@ export default function EstimatedCost() {
                 to="/cost-of-living-calculator/estimated-cost-calculator"
                 className="ml-1 text-blue-600 hover:underline"
               >
-                (using our estimator).
+                (using our estimator based on family size).
               </Link>
             </li>
             <li>
