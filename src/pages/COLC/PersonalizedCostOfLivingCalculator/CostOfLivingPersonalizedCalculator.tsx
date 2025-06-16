@@ -174,73 +174,117 @@ const ExportPDFModal = ({
 
   const handleExportPDF = () => {
     const content = `
-      <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
-      <p style="margin: 0;">Website from where this report is downloaded:</p>
-      <a href="https://dollarfar.com/personalized-calculator" style="color: #4361ee; text-decoration: none;" target="_blank">
+    <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+      <p style="margin: 0; color: #2b6777; font-size: 14px;">Website from where this report is downloaded:</p>
+      <a href="https://dollarfar.com/personalized-calculator" style="color: #52ab98; text-decoration: none; font-weight: 500;" target="_blank">
         https://dollarfar.com/personalized-calculator
       </a>
-      </div>
+    </div>
 
-      <h1 style="color: #4361ee; text-align: center;">Budget Report for ${selectedCity}</h1>
-      <p style="text-align: center;">Generated on ${moment().format("LL")}</p>
-      <h2 style="text-align: center; color: #3a0ca3;">Total Monthly Cost: ${getCurrencySymbol(
-        currency
-      )}${calculateMonthlyTotal().toFixed(2)}</h2>
-      <h3 style="border-bottom: 1px solid #eee; padding-bottom: 5px;">Categories:</h3>
-      <ul style="list-style: none; padding-left: 0;">
-        ${activeCategories
-          .map(
-            (category) => `
-          <li style="margin-bottom: 15px; background: #f8f9fa; padding: 10px; border-radius: 5px;">
-            <strong style="color: #3a0ca3;">${category}:</strong> ${getCurrencySymbol(
-              currency
-            )}${calculateCategoryTotal(category).toFixed(2)}
-            <ul style="list-style: none; padding-left: 15px; margin-top: 5px;">
-              ${
-                categoryItems[category]
-                  ?.map(
-                    (item) => `
-                <li style="margin-bottom: 5px;">
-                  ${item.item_name} (${item.frequency}): ${getCurrencySymbol(
-                      currency
-                    )}${item.total.toFixed(2)}
-                </li>
-              `
-                  )
-                  .join("") || ""
-              }
-            </ul>
-          </li>
-        `
-          )
-          .join("")}
-      </ul>
-    `;
+    <h1 style="color: #2b6777; text-align: center; font-size: 28px; margin-bottom: 5px; border-bottom: 2px solid #52ab98; padding-bottom: 10px;">
+      Budget Report for ${selectedCity}
+    </h1>
+    <p style="text-align: center; color: #666; font-size: 14px; margin-bottom: 20px;">
+      Generated on ${moment().format("LL")}
+    </p>
+    
+    <div style="background: #e8f4f8; padding: 15px; border-radius: 8px; margin-bottom: 25px; text-align: center;">
+      <h2 style="color: #2b6777; margin: 0; font-size: 22px;">
+        Total Monthly Cost: ${getCurrencySymbol(
+          currency
+        )}${calculateMonthlyTotal().toFixed(2)}
+      </h2>
+    </div>
+    
+    <h3 style="border-bottom: 2px solid #52ab98; padding-bottom: 8px; color: #2b6777; font-size: 20px; margin-bottom: 15px;">
+      Categories Breakdown
+    </h3>
+    
+    <ul style="list-style: none; padding-left: 0; margin-top: 0;">
+      ${activeCategories
+        .map(
+          (category, index) => `
+        <li style="margin-bottom: 15px; background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid ${
+          ["#2b6777", "#52ab98", "#86b3b1", "#c8d8e4"][index % 4]
+        };">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <strong style="color: #2b6777; font-size: 16px;">${category}</strong>
+            <span style="color: #2b6777; font-weight: 600;">
+              ${getCurrencySymbol(currency)}${calculateCategoryTotal(
+            category
+          ).toFixed(2)}
+            </span>
+          </div>
+          <ul style="list-style: none; padding-left: 15px; margin-top: 10px; border-top: 1px dashed #ddd; padding-top: 10px;">
+            ${
+              categoryItems[category]
+                ?.map(
+                  (item) => `
+              <li style="margin-bottom: 8px; display: flex; justify-content: space-between;">
+                <span style="color: #333;">
+                  ${
+                    item.item_name
+                  } <span style="color: #666; font-size: 13px;">(${
+                    item.frequency
+                  })</span>
+                </span>
+                <span style="color: #52ab98; font-weight: 500;">
+                  ${getCurrencySymbol(currency)}${item.total.toFixed(2)}
+                </span>
+              </li>
+            `
+                )
+                .join("") ||
+              "<li style='color: #666; font-style: italic;'>No items in this category</li>"
+            }
+          </ul>
+        </li>
+      `
+        )
+        .join("")}
+    </ul>
+    
+    <div style="margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; color: #666; font-size: 12px; text-align: center;">
+      <p>Report generated by DollarFar Cost of Living Calculator</p>
+      <p>For personal budgeting purposes only</p>
+    </div>
+  `;
 
     const printWindow = window.open("", "_blank");
     printWindow?.document.write(`
-      <html>
-        <head>
-          <title>Budget Report for ${selectedCity}</title>
-          <style>
-            body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
-            h1 { margin-bottom: 10px; }
-            h2 { margin: 20px 0; }
-            ul { margin-top: 10px; }
-          </style>
-        </head>
-        <body>
-          ${content}
-          <script>
-            window.onload = function() {
-              setTimeout(function() {
-                window.print();
-              }, 200);
-            };
-          </script>
-        </body>
-      </html>
-    `);
+    <html>
+      <head>
+        <title>Budget Report for ${selectedCity}</title>
+        <style>
+          body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            padding: 30px; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            color: #333;
+            line-height: 1.5;
+          }
+          h1 { margin-bottom: 10px; }
+          h2 { margin: 20px 0; }
+          ul { margin-top: 10px; }
+          @media print {
+            body { padding: 15px; }
+            a { color: #52ab98 !important; text-decoration: none !important; }
+          }
+        </style>
+      </head>
+      <body>
+        ${content}
+        <script>
+          window.onload = function() {
+            setTimeout(function() {
+              window.print();
+            }, 300);
+          };
+        </script>
+      </body>
+    </html>
+  `);
     printWindow?.document.close();
   };
 
@@ -282,6 +326,8 @@ const ExportPDFModal = ({
       toast.success("An email was sent to your mail.", {
         position: "top-center",
       });
+
+      // Then show PDF
       handleExportPDF();
     } catch (error: any) {
       console.error("Email sending failed:", error);
@@ -300,48 +346,62 @@ const ExportPDFModal = ({
   };
 
   return (
-    <>
-      <ConfigProvider
-        theme={{
-          algorithm: isDarkMode
-            ? antdTheme.darkAlgorithm
-            : antdTheme.defaultAlgorithm,
+    <ConfigProvider
+      theme={{
+        algorithm: isDarkMode
+          ? antdTheme.darkAlgorithm
+          : antdTheme.defaultAlgorithm,
+        token: {
+          colorPrimary: "#2b6777",
+          colorLink: "#52ab98",
+          colorLinkHover: "#3d8a7a",
+        },
+      }}
+    >
+      <button
+        type="button"
+        className="px-4 py-2 bg-[#2b6777] hover:bg-[#1a4d5a] dark:bg-[#52ab98] dark:hover:bg-[#3d8a7a] text-white rounded-lg font-medium transition-all disabled:opacity-50 flex items-center gap-2"
+        onClick={showModal}
+        disabled={isLoading}
+      >
+        <Icon icon="mdi:file-pdf-box" className="text-xl" />
+        Export as PDF
+      </button>
+
+      <Modal
+        open={isModalOpen}
+        closeIcon={false}
+        footer={false}
+        className="geist"
+        styles={{
+          content: {
+            borderRadius: "12px",
+            padding: "24px",
+          },
         }}
       >
-        <button
-          type="button"
-          className="px-4 py-2 border border-white text-white rounded-lg font-medium hover:bg-white hover:bg-opacity-10 transition-all disabled:opacity-50"
-          onClick={showModal}
-          disabled={isLoading}
-        >
-          Export as PDF
-        </button>
-        <Modal
-          open={isModalOpen}
-          closeIcon={false}
-          footer={false}
-          className="geist"
-        >
-          <div className="space-y-[1rem]">
-            <div>
-              <div className="flex items-center justify-between">
-                <h3 className="md:text-[1.5rem] text-[18px] font-bold">
-                  Please enter your details
-                </h3>
-                <Icon
-                  onClick={handleCancel}
-                  className="text-red-500 text-[1.8rem] cursor-pointer"
-                  icon="material-symbols:close"
-                />
-              </div>
-            </div>
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl md:text-2xl font-bold text-[#2b6777] dark:text-[#52ab98]">
+              Please enter your details
+            </h3>
+            <Icon
+              onClick={handleCancel}
+              className="text-[#e74c3c] hover:text-[#c0392b] text-2xl cursor-pointer transition-colors"
+              icon="material-symbols:close"
+            />
+          </div>
 
-            <div className="md:text-[1rem] text-[14px]">
-              <label className="block font-semibold mb-2" htmlFor="name">
+          <div className="space-y-4">
+            <div>
+              <label
+                className="block font-medium mb-2 text-[#2b6777] dark:text-[#52ab98]"
+                htmlFor="name"
+              >
                 Name
               </label>
               <input
-                className={`p-[0.8rem] border-[1px] border-[#838383] dark:bg-darkModeBgColor dark:text-darkModeHeadingTextColor rounded-[8px] outline-none w-full`}
+                className="p-3 border border-gray-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 text-gray-800 dark:text-gray-200 rounded-lg outline-none w-full focus:ring-2 focus:ring-[#52ab98] focus:border-transparent transition-all"
                 autoFocus
                 type="text"
                 placeholder="Enter Name"
@@ -352,12 +412,16 @@ const ExportPDFModal = ({
                 <Error message="This field is required" />
               )}
             </div>
-            <div className="md:text-[1rem] text-[14px]">
-              <label className="block font-semibold mb-2" htmlFor="name">
+
+            <div>
+              <label
+                className="block font-medium mb-2 text-[#2b6777] dark:text-[#52ab98]"
+                htmlFor="email"
+              >
                 Email
               </label>
               <input
-                className={`p-[0.8rem] border-[1px] border-[#838383] dark:bg-darkModeBgColor dark:text-darkModeHeadingTextColor rounded-[8px] outline-none w-full`}
+                className="p-3 border border-gray-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 text-gray-800 dark:text-gray-200 rounded-lg outline-none w-full focus:ring-2 focus:ring-[#52ab98] focus:border-transparent transition-all"
                 type="email"
                 placeholder="Enter Email Address"
                 onChange={(e) => setEmail(e.target.value)}
@@ -370,12 +434,16 @@ const ExportPDFModal = ({
                 <Error message="Email is not valid!" />
               )}
             </div>
-            <div className="md:text-[1rem] text-[14px]">
-              <label className="block font-semibold mb-2" htmlFor="name">
+
+            <div>
+              <label
+                className="block font-medium mb-2 text-[#2b6777] dark:text-[#52ab98]"
+                htmlFor="phone"
+              >
                 Phone
               </label>
               <input
-                className={`p-[0.8rem] border-[1px] border-[#838383] dark:bg-darkModeBgColor dark:text-darkModeHeadingTextColor rounded-[8px] outline-none w-full`}
+                className="p-3 border border-gray-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 text-gray-800 dark:text-gray-200 rounded-lg outline-none w-full focus:ring-2 focus:ring-[#52ab98] focus:border-transparent transition-all"
                 type="text"
                 placeholder="Enter Phone Number"
                 onChange={(e) => setPhone(e.target.value)}
@@ -385,53 +453,62 @@ const ExportPDFModal = ({
                 <Error message="This field is required" />
               )}
             </div>
-            <div>
-              <div className="text-[12px] flex flex-wrap items-center gap-1 select-none">
+
+            <div className="flex items-start gap-3">
+              <button
+                onClick={() => setChecked(!checked)}
+                className="mt-1 flex-shrink-0"
+              >
                 {checked ? (
                   <Icon
-                    onClick={() => setChecked(false)}
-                    className="text-[1.2rem] cursor-pointer"
+                    className="text-[#52ab98] text-2xl"
                     icon="mingcute:checkbox-fill"
                   />
                 ) : (
                   <Icon
-                    onClick={() => setChecked(true)}
-                    className="text-[1.2rem] cursor-pointer"
+                    className="text-gray-400 text-2xl"
                     icon="mdi:checkbox-blank-outline"
                   />
                 )}
-
-                <span className="text-[#838383]">
-                  By proceeding, you are agreeing to our
+              </button>
+              <div>
+                <span className="text-gray-600 dark:text-gray-400 text-sm">
+                  By proceeding, you are agreeing to our{" "}
+                  <Link
+                    className="text-[#52ab98] hover:underline hover:text-[#3d8a7a] transition-colors"
+                    to="/terms-and-condition"
+                  >
+                    Terms and Conditions
+                  </Link>
                 </span>
-                <Link className="hover:underline" to="/terms-and-condition">
-                  Terms and Conditions
-                </Link>
+                {showError && !checked && (
+                  <p className="text-red-500 text-xs mt-1">
+                    Please accept the Terms and Conditions
+                  </p>
+                )}
               </div>
-              {showError && !checked && (
-                <p className="text-red-500 text-[12px] mt-1">
-                  Please check Terms and Conditions
-                </p>
-              )}
-            </div>
-            <div className="flex justify-center">
-              {isLoading ? (
-                <p className="text-green-600 font-bold text-center">
-                  Loading...
-                </p>
-              ) : (
-                <button
-                  onClick={handleSendEmail}
-                  className="border-[1px] border-gray-500 hover:bg-neutral-800 duration-300 hover:text-white px-4 py-2 rounded-md"
-                >
-                  Download PDF
-                </button>
-              )}
             </div>
           </div>
-        </Modal>
-      </ConfigProvider>
-    </>
+
+          <div className="flex justify-center pt-2">
+            {isLoading ? (
+              <div className="flex items-center gap-2 text-[#52ab98]">
+                <Icon icon="eos-icons:loading" className="text-2xl" />
+                <span>Preparing your PDF...</span>
+              </div>
+            ) : (
+              <button
+                onClick={handleSendEmail}
+                className="px-6 py-3 bg-[#2b6777] hover:bg-[#1a4d5a] dark:bg-[#52ab98] dark:hover:bg-[#3d8a7a] text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+              >
+                <Icon icon="material-symbols:download" className="text-xl" />
+                Download PDF
+              </button>
+            )}
+          </div>
+        </div>
+      </Modal>
+    </ConfigProvider>
   );
 };
 
@@ -800,12 +877,12 @@ export default function CostOfLivingPersonalizedCalculator() {
 
   return (
     <main className="min-h-screen bg-gray-50 p-4 md:p-8">
-      <div className="max-w-6xl mx-auto bg-white dark:bg-neutral-900 rounded-xl shadow-md overflow-hidden p-6 md:p-8">
+      <div className="max-w-6xl mx-auto bg-white dark:bg-neutral-900 rounded-xl shadow-lg overflow-hidden p-6 md:p-8">
         {/* Header with City Selection */}
         <header className="mb-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-300">
+              <h1 className="text-3xl font-bold text-[#2b6777] dark:text-[#52ab98]">
                 Personalized Cost of Living Calculator
               </h1>
               <p className="text-gray-600 dark:text-gray-200">
@@ -817,7 +894,7 @@ export default function CostOfLivingPersonalizedCalculator() {
               <div className="w-full md:w-auto">
                 <label
                   htmlFor="city-select"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  className="block text-sm font-medium text-[#2b6777] dark:text-[#52ab98] mb-1"
                 >
                   Type and Pick City
                 </label>
@@ -827,7 +904,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                     value={selectedCity}
                     onChange={handleCityChange}
                     placeholder="Type and Pick City Here"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#52ab98]"
                   />
                   {showDropdown && suggestions.length > 0 && (
                     <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
@@ -835,7 +912,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                         <li
                           key={index}
                           onClick={() => handleCitySelect(item)}
-                          className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
+                          className="px-4 py-2 hover:bg-[#52ab98] hover:text-white cursor-pointer transition-colors"
                         >
                           {item.label}
                         </li>
@@ -846,7 +923,7 @@ export default function CostOfLivingPersonalizedCalculator() {
               </div>
               <div className="md:w-[150px] w-full">
                 <label
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  className="block text-sm font-medium text-[#2b6777] dark:text-[#52ab98] mb-1"
                   htmlFor="currency"
                 >
                   Select Currency
@@ -856,7 +933,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                     setCurrency(e.target.value);
                     resetCalculator();
                   }}
-                  className="border-[1px] border-gray-300 dark:bg-neutral-900 p-2 rounded-md md:w-[110px] w-full outline-none"
+                  className="border-[1px] border-gray-300 dark:bg-neutral-900 p-2 rounded-md md:w-[110px] w-full outline-none focus:ring-2 focus:ring-[#52ab98]"
                 >
                   <option selected value={currency}>
                     {currency}
@@ -879,7 +956,7 @@ export default function CostOfLivingPersonalizedCalculator() {
 
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600 mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#52ab98] mb-4"></div>
             <p className="text-gray-600">
               Loading cost of living data for {selectedCity}...
             </p>
@@ -888,7 +965,7 @@ export default function CostOfLivingPersonalizedCalculator() {
           <>
             {/* Category Selection */}
             <section className="mb-10">
-              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-300 mb-4">
+              <h2 className="text-xl font-semibold text-[#2b6777] dark:text-[#52ab98] mb-4">
                 Select Categories
               </h2>
               <div className="flex flex-wrap gap-3">
@@ -898,8 +975,8 @@ export default function CostOfLivingPersonalizedCalculator() {
                     type="button"
                     className={`px-4 py-2 rounded-lg transition-all duration-200 ${
                       activeCategories.includes(category)
-                        ? "bg-indigo-600 text-white shadow-md hover:bg-indigo-700"
-                        : "bg-white dark:bg-neutral-800 text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-indigo-300"
+                        ? "bg-[#2b6777] text-white shadow-md hover:bg-[#1a4d5a]"
+                        : "bg-white dark:bg-neutral-800 text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-[#52ab98]"
                     }`}
                     onClick={() => handleCategoryToggle(category)}
                     aria-pressed={activeCategories.includes(category)}
@@ -916,7 +993,7 @@ export default function CostOfLivingPersonalizedCalculator() {
               {activeCategories.map((category, catIndex) => (
                 <section key={category} className="space-y-6">
                   <div className="flex md:flex-row flex-col gap-3 md:justify-between md:items-center">
-                    <h2 className="text-xl font-semibold text-gray-800 dark:text-neutral-300 flex items-center">
+                    <h2 className="text-xl font-semibold text-[#2b6777] dark:text-[#52ab98] flex items-center">
                       <span
                         className="w-4 h-4 rounded-full mr-2"
                         style={{
@@ -928,7 +1005,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                     </h2>
                     <button
                       type="button"
-                      className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center disabled:opacity-50"
+                      className="px-4 py-2 bg-[#2b6777] text-white rounded-lg hover:bg-[#1a4d5a] transition-colors flex items-center disabled:opacity-50"
                       onClick={() => addItem(category)}
                       disabled={isLoading}
                     >
@@ -955,11 +1032,11 @@ export default function CostOfLivingPersonalizedCalculator() {
                       className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 bg-gray-50 dark:bg-neutral-800 rounded-lg border border-gray-200 transition-all hover:shadow-sm"
                     >
                       <div className="md:col-span-2">
-                        <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-1">
+                        <label htmlFor="item-name" className="block text-sm font-medium text-[#2b6777] dark:text-[#52ab98] mb-1">
                           Item Name
                         </label>
                         <select
-                          className="w-full px-3 py-2 border dark:bg-neutral-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-100"
+                          className="w-full px-3 py-2 border dark:bg-neutral-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#52ab98] focus:border-[#52ab98] disabled:bg-gray-100"
                           value={item.item_name}
                           onChange={(e) =>
                             handleItemChange(category, index, e.target.value)
@@ -978,7 +1055,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-1">
+                        <label htmlFor="price" className="block text-sm font-medium text-[#2b6777] dark:text-[#52ab98] mb-1">
                           Price
                         </label>
                         <div className="flex items-center h-10 px-3 py-2 bg-white dark:bg-neutral-900 border border-gray-300 rounded-md">
@@ -988,11 +1065,11 @@ export default function CostOfLivingPersonalizedCalculator() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-1">
+                        <label htmlFor="frequency" className="block text-sm font-medium text-[#2b6777] dark:text-[#52ab98] mb-1">
                           Frequency
                         </label>
                         <select
-                          className="w-full px-3 py-2 border dark:bg-neutral-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-100"
+                          className="w-full px-3 py-2 border dark:bg-neutral-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#52ab98] focus:border-[#52ab98] disabled:bg-gray-100"
                           value={item.frequency}
                           onChange={(e) =>
                             handleFrequencyChange(
@@ -1011,7 +1088,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                         </select>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-1">
+                        <label htmlFor="monthly-cost" className="block text-sm font-medium text-[#2b6777] dark:text-[#52ab98] mb-1">
                           Monthly Cost
                         </label>
                         <div className="flex items-center h-10 px-3 py-2 bg-white dark:bg-neutral-900 border border-gray-300 rounded-md font-medium">
@@ -1047,12 +1124,12 @@ export default function CostOfLivingPersonalizedCalculator() {
                   ))}
 
                   {/* Category Total */}
-                  <div className="flex justify-end p-4 bg-indigo-50 dark:bg-neutral-900 rounded-lg">
+                  <div className="flex justify-end p-4 bg-[#e8f4f8] dark:bg-neutral-900 rounded-lg border border-[#2b6777]">
                     <div className="text-right">
-                      <p className="text-sm font-medium text-indigo-700">
+                      <p className="text-sm font-medium text-[#2b6777]">
                         {category} Monthly Total
                       </p>
-                      <p className="text-2xl font-bold text-indigo-900">
+                      <p className="text-2xl font-bold text-[#2b6777]">
                         {getCurrencySymbol(currency)}
                         {calculateCategoryTotal(category).toFixed(2)}
                       </p>
@@ -1070,7 +1147,7 @@ export default function CostOfLivingPersonalizedCalculator() {
 
             {/* Grand Total */}
             {activeCategories.length > 0 && (
-              <section className="mt-12 p-6 bg-gradient-to-r from-indigo-600 to-indigo-800 rounded-xl text-white">
+              <section className="mt-12 p-6 bg-gradient-to-r from-[#2b6777] to-[#52ab98] rounded-xl text-white">
                 <div className="flex md:flex-row flex-col gap-3 md:justify-between items-center">
                   <div>
                     <h3 className="text-lg font-medium">
@@ -1089,7 +1166,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                   <button
                     type="button"
-                    className="px-4 py-2 bg-white dark:bg-indigo-500 hover:dark:bg-indigo-700 text-indigo-700 rounded-lg font-medium hover:bg-opacity-90 transition-all disabled:opacity-50"
+                    className="px-4 py-2 bg-white text-[#2b6777] rounded-lg font-medium hover:bg-opacity-90 transition-all disabled:opacity-50"
                     onClick={() => setShowSaveModal(true)}
                     disabled={isLoading}
                   >
@@ -1097,20 +1174,12 @@ export default function CostOfLivingPersonalizedCalculator() {
                   </button>
                   <button
                     type="button"
-                    className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-medium hover:bg-indigo-700 transition-all disabled:opacity-50"
+                    className="px-4 py-2 bg-[#52ab98] text-white rounded-lg font-medium hover:bg-[#3d8a7a] transition-all disabled:opacity-50"
                     onClick={() => setShowCompareModal(true)}
                     disabled={isLoading || savedBudgets.length === 0}
                   >
                     Compare Locations
                   </button>
-                  {/* <button
-                    type="button"
-                    className="px-4 py-2 border border-white text-white rounded-lg font-medium hover:bg-white hover:bg-opacity-10 transition-all disabled:opacity-50"
-                    onClick={handleExportPDF}
-                    disabled={isLoading}
-                  >
-                    Export as PDF
-                  </button> */}
                   <ExportPDFModal
                     selectedCity={selectedCity}
                     activeCategories={activeCategories}
@@ -1140,12 +1209,12 @@ export default function CostOfLivingPersonalizedCalculator() {
                 className="w-4 h-4"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
+                strokeWidth="2"
                 viewBox="0 0 24 24"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
@@ -1158,31 +1227,33 @@ export default function CostOfLivingPersonalizedCalculator() {
       {/* Save Budget Modal */}
       {showSaveModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-neutral-900 rounded-xl p-6 max-w-md w-full">
-            <h3 className="text-xl font-bold mb-4">Save This Budget</h3>
+          <div className="bg-white dark:bg-neutral-900 rounded-xl p-6 max-w-md w-full shadow-xl border border-gray-200 dark:border-neutral-700">
+            <h3 className="text-xl font-bold mb-4 text-[#2b6777] dark:text-[#52ab98]">
+              Save This Budget
+            </h3>
             <input
               type="text"
               value={budgetName}
               onChange={(e) => setBudgetName(e.target.value)}
               placeholder="Enter budget name"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-[#52ab98] dark:bg-neutral-800"
               onKeyDown={(e) => e.key === "Enter" && handleSaveBudget()}
             />
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setShowSaveModal(false)}
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 hover:dark:bg-neutral-900 rounded-lg"
+                className="px-4 py-2 text-[#2b6777] dark:text-[#52ab98] hover:bg-[#e8f4f8] hover:dark:bg-neutral-800 rounded-lg transition-colors duration-200 border border-[#2b6777] dark:border-[#52ab98]"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveBudget}
                 disabled={!budgetName.trim()}
-                className={`px-4 py-2 rounded-lg ${
+                className={`px-4 py-2 rounded-lg text-white transition-colors duration-200 ${
                   !budgetName.trim()
-                    ? "bg-indigo-300 cursor-not-allowed"
-                    : "bg-indigo-600 hover:bg-indigo-700"
-                } text-white`}
+                    ? "bg-[#86b3b1] cursor-not-allowed"
+                    : "bg-[#2b6777] hover:bg-[#1a4d5a] dark:bg-[#52ab98] dark:hover:bg-[#3d8a7a]"
+                }`}
               >
                 Save
               </button>
@@ -1194,15 +1265,17 @@ export default function CostOfLivingPersonalizedCalculator() {
       {/* Compare Locations Modal */}
       {showCompareModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[4500]">
-          <div className="bg-white dark:bg-neutral-900 dark:border-[1px] dark:border-neutral-700 rounded-xl p-6 max-w-5xl w-full max-h-[80vh] overflow-y-auto">
+          <div className="bg-white dark:bg-neutral-900 dark:border-[1px] dark:border-neutral-700 rounded-xl p-6 max-w-5xl w-full max-h-[80vh] overflow-y-auto shadow-xl">
             <div className="flex justify-between items-start mb-4">
-              <h3 className="text-xl font-bold">Compare Locations</h3>
+              <h3 className="text-xl font-bold text-[#2b6777] dark:text-[#52ab98]">
+                Compare Locations
+              </h3>
               <button
                 onClick={() => {
                   setShowCompareModal(false);
                   setSelectedBudgetForComparison(null);
                 }}
-                className="text-red-500 hover:text-red-700"
+                className="text-[#e74c3c] hover:text-[#c0392b] transition-colors"
               >
                 <Icon icon="material-symbols:close" className="text-2xl" />
               </button>
@@ -1210,32 +1283,37 @@ export default function CostOfLivingPersonalizedCalculator() {
 
             {!selectedBudgetForComparison ? (
               <>
-                <p className="text-gray-600 mb-4">
-                  Compare your current budget <span className="font-bold">({selectedCity})</span> with saved budgets from other
-                  locations.
+                <p className="text-gray-600 mb-4 dark:text-gray-300">
+                  Compare your current budget{" "}
+                  <span className="font-bold text-[#2b6777] dark:text-[#52ab98]">
+                    ({selectedCity})
+                  </span>{" "}
+                  with saved budgets from other locations.
                 </p>
 
                 {savedBudgets.length > 0 ? (
                   <div className="mb-4">
-                    <h4 className="font-medium mb-2">Saved Budgets:</h4>
+                    <h4 className="font-medium mb-2 text-[#2b6777] dark:text-[#52ab98]">
+                      Saved Budgets:
+                    </h4>
                     <ul className="space-y-2">
                       {savedBudgets.map((budget, index) => (
                         <li
                           key={index}
-                          className="flex md:flex-row flex-col gap-3 justify-between md:items-center p-3 bg-gray-50 dark:bg-neutral-900 rounded-lg hover:bg-gray-100 transition-colors"
+                          className="flex md:flex-row flex-col gap-3 justify-between md:items-center p-3 bg-gray-50 dark:bg-neutral-800 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors border border-gray-200 dark:border-neutral-700"
                         >
                           <div>
-                            <span className="font-medium">
+                            <span className="font-medium text-[#2b6777] dark:text-[#52ab98]">
                               {budget.name} ({budget.location})
                             </span>
-                            <span className="text-gray-600 text-sm block">
+                            <span className="text-gray-600 dark:text-gray-400 text-sm block">
                               {budget.date} • {getCurrencySymbol(currency)}
                               {budget.total.toFixed(2)}
                             </span>
                           </div>
                           <div className="flex flex-wrap items-center gap-3">
                             <button
-                              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 text-sm"
+                              className="px-4 py-2 bg-[#2b6777] text-white rounded-lg hover:bg-[#1a4d5a] text-sm transition-colors"
                               onClick={() =>
                                 setSelectedBudgetForComparison(budget)
                               }
@@ -1243,7 +1321,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                               Compare
                             </button>
                             <button
-                              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+                              className="px-4 py-2 bg-[#52ab98] text-white rounded-lg hover:bg-[#3d8a7a] text-sm transition-colors"
                               onClick={() => {
                                 setSelectedBudgetDetails(budget);
                                 setShowDetailsModal(true);
@@ -1252,7 +1330,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                               Details
                             </button>
                             <button
-                              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
+                              className="px-4 py-2 bg-[#e74c3c] text-white rounded-lg hover:bg-[#c0392b] text-sm transition-colors"
                               onClick={() => handleDeleteBudget(budget?.id)}
                             >
                               Delete
@@ -1274,18 +1352,18 @@ export default function CostOfLivingPersonalizedCalculator() {
                           );
                           setSavedBudgets([]);
                         }}
-                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-red-500 text-white font-semibold rounded-md shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition duration-150 ease-in-out"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#e74c3c] text-white font-semibold rounded-md shadow-md hover:bg-[#c0392b] focus:outline-none focus:ring-2 focus:ring-red-300 transition duration-150 ease-in-out"
                       >
                         <svg
                           className="w-4 h-4"
                           fill="none"
                           stroke="currentColor"
-                          stroke-width="2"
+                          strokeWidth="2"
                           viewBox="0 0 24 24"
                         >
                           <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                             d="M6 18L18 6M6 6l12 12"
                           />
                         </svg>
@@ -1294,7 +1372,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                     </div>
                   </div>
                 ) : (
-                  <p className="text-gray-500 text-center py-4">
+                  <p className="text-gray-500 dark:text-gray-400 text-center py-4">
                     No saved budgets to compare with.
                   </p>
                 )}
@@ -1302,7 +1380,7 @@ export default function CostOfLivingPersonalizedCalculator() {
             ) : (
               <div className="comparison-details">
                 <div className="flex md:flex-row flex-col gap-3 md:justify-between md:items-center mb-6">
-                  <h4 className="text-lg">
+                  <h4 className="text-lg text-[#2b6777] dark:text-[#52ab98]">
                     Comparing budget between{" "}
                     <span className="font-bold">{selectedCity}</span> and{" "}
                     <span className="font-bold">
@@ -1311,7 +1389,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                   </h4>
                   <button
                     onClick={() => setSelectedBudgetForComparison(null)}
-                    className="text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
+                    className="text-[#2b6777] hover:text-[#1a4d5a] dark:text-[#52ab98] dark:hover:text-[#3d8a7a] flex items-center gap-1 transition-colors"
                   >
                     <Icon icon="mdi:arrow-left" /> Back to list
                   </button>
@@ -1319,39 +1397,39 @@ export default function CostOfLivingPersonalizedCalculator() {
 
                 {/* Summary Comparison */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                  <div className="bg-indigo-50 dark:bg-neutral-800 p-4 rounded-lg">
-                    <h5 className="font-medium text-indigo-800 mb-2">
+                  <div className="bg-[#e8f4f8] dark:bg-neutral-800 p-4 rounded-lg border border-[#2b6777]">
+                    <h5 className="font-medium text-[#2b6777] mb-2">
                       Current Budget
                     </h5>
-                    <p className="text-2xl font-bold">
+                    <p className="text-2xl font-bold text-[#2b6777]">
                       {getCurrencySymbol(currency)}
                       {calculateMonthlyTotal().toFixed(2)}
                     </p>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                       {selectedCity} • {moment().format("LL")}
                     </p>
                   </div>
 
-                  <div className="bg-gray-100 dark:bg-neutral-800 p-4 rounded-lg">
-                    <h5 className="font-medium text-gray-800 mb-2">
+                  <div className="bg-[#f0f7f4] dark:bg-neutral-800 p-4 rounded-lg border border-[#52ab98]">
+                    <h5 className="font-medium text-[#52ab98] mb-2">
                       Saved Budget
                     </h5>
-                    <p className="text-2xl font-bold">
+                    <p className="text-2xl font-bold text-[#52ab98]">
                       {getCurrencySymbol(currency)}
                       {selectedBudgetForComparison.total.toFixed(2)}
                     </p>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                       {selectedBudgetForComparison.location} •{" "}
                       {selectedBudgetForComparison.date}
                     </p>
                   </div>
 
                   <div
-                    className={`p-4 rounded-lg ${
+                    className={`p-4 rounded-lg border ${
                       calculateMonthlyTotal() >
                       selectedBudgetForComparison.total
-                        ? "bg-red-50 dark:bg-neutral-800"
-                        : "bg-green-50 dark:bg-neutral-800"
+                        ? "bg-[#fef2f2] border-[#fecaca] dark:bg-neutral-800"
+                        : "bg-[#f0fdf4] border-[#bbf7d0] dark:bg-neutral-800"
                     }`}
                   >
                     <h5 className="font-medium mb-2 dark:text-gray-300">
@@ -1361,8 +1439,8 @@ export default function CostOfLivingPersonalizedCalculator() {
                       className={`text-2xl font-bold ${
                         calculateMonthlyTotal() >
                         selectedBudgetForComparison.total
-                          ? "text-red-600"
-                          : "text-green-600"
+                          ? "text-[#dc2626]"
+                          : "text-[#16a34a]"
                       }`}
                     >
                       {calculateMonthlyTotal() >
@@ -1375,7 +1453,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                           selectedBudgetForComparison.total
                       ).toFixed(2)}
                     </p>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                       {calculateMonthlyTotal() >
                       selectedBudgetForComparison.total
                         ? "Current budget is more expensive"
@@ -1385,26 +1463,28 @@ export default function CostOfLivingPersonalizedCalculator() {
                 </div>
 
                 {/* Category-wise Comparison */}
-                <h5 className="font-medium mb-4">Category Comparison</h5>
+                <h5 className="font-medium mb-4 text-[#2b6777] dark:text-[#52ab98]">
+                  Category Comparison
+                </h5>
                 <div className="overflow-x-auto">
-                  <table className="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
-                    <thead className="bg-gray-50">
+                  <table className="min-w-full bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-lg overflow-hidden">
+                    <thead className="bg-[#2b6777] dark:bg-[#52ab98]">
                       <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                           Category
                         </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                           {selectedCity}
                         </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                           {selectedBudgetForComparison.location}
                         </th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                           Difference
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
                       {activeCategories.map((category) => {
                         const currentTotal = calculateCategoryTotal(category);
                         const savedTotal =
@@ -1417,15 +1497,18 @@ export default function CostOfLivingPersonalizedCalculator() {
                         const difference = currentTotal - savedTotal;
 
                         return (
-                          <tr key={category}>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                          <tr
+                            key={category}
+                            className="hover:bg-gray-50 dark:hover:bg-neutral-800"
+                          >
+                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-[#2b6777] dark:text-[#52ab98]">
                               {category}
                             </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                               {getCurrencySymbol(currency)}
                               {currentTotal.toFixed(2)}
                             </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                               {savedTotal
                                 ? `${getCurrencySymbol(
                                     currency
@@ -1435,9 +1518,9 @@ export default function CostOfLivingPersonalizedCalculator() {
                             <td
                               className={`px-4 py-3 whitespace-nowrap text-sm font-medium ${
                                 difference > 0
-                                  ? "text-red-600"
+                                  ? "text-[#dc2626]"
                                   : difference < 0
-                                  ? "text-green-600"
+                                  ? "text-[#16a34a]"
                                   : "text-gray-500"
                               }`}
                             >
@@ -1466,26 +1549,28 @@ export default function CostOfLivingPersonalizedCalculator() {
 
                   return (
                     <div key={category} className="mt-8">
-                      <h5 className="font-medium mb-3">{category} Items</h5>
+                      <h5 className="font-medium mb-3 text-[#2b6777] dark:text-[#52ab98]">
+                        {category} Items
+                      </h5>
                       <div className="overflow-x-auto">
-                        <table className="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
-                          <thead className="bg-gray-50">
+                        <table className="min-w-full bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-lg overflow-hidden">
+                          <thead className="bg-[#2b6777] dark:bg-[#52ab98]">
                             <tr>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                                 Item
                               </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                                 {selectedCity}
                               </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                                 {selectedBudgetForComparison.location}
                               </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              <th className="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                                 Difference
                               </th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-gray-200">
+                          <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
                             {/* Current items */}
                             {currentItems.map((item, index) => {
                               const savedItem = savedItems[index];
@@ -1493,15 +1578,18 @@ export default function CostOfLivingPersonalizedCalculator() {
                               const difference = item.total - savedPrice;
 
                               return (
-                                <tr key={`current-${index}`}>
-                                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <tr
+                                  key={`current-${index}`}
+                                  className="hover:bg-gray-50 dark:hover:bg-neutral-800"
+                                >
+                                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-[#2b6777] dark:text-[#52ab98]">
                                     {item.item_name} (Current)
                                   </td>
-                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                                     {getCurrencySymbol(currency)}
                                     {item.total.toFixed(2)}
                                   </td>
-                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                                     {savedItem
                                       ? `${getCurrencySymbol(
                                           currency
@@ -1511,9 +1599,9 @@ export default function CostOfLivingPersonalizedCalculator() {
                                   <td
                                     className={`px-4 py-3 whitespace-nowrap text-sm font-medium ${
                                       difference > 0
-                                        ? "text-red-600"
+                                        ? "text-[#dc2626]"
                                         : difference < 0
-                                        ? "text-green-600"
+                                        ? "text-[#16a34a]"
                                         : "text-gray-500"
                                     }`}
                                   >
@@ -1535,18 +1623,21 @@ export default function CostOfLivingPersonalizedCalculator() {
                             {savedItems
                               .slice(currentItems.length)
                               .map((item, index) => (
-                                <tr key={`saved-extra-${index}`}>
-                                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <tr
+                                  key={`saved-extra-${index}`}
+                                  className="hover:bg-gray-50 dark:hover:bg-neutral-800"
+                                >
+                                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-[#52ab98]">
                                     {item.item_name} (Saved)
                                   </td>
-                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                                     N/A
                                   </td>
-                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                                     {getCurrencySymbol(currency)}
                                     {item.total.toFixed(2)}
                                   </td>
-                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                                     N/A
                                   </td>
                                 </tr>
@@ -1566,38 +1657,48 @@ export default function CostOfLivingPersonalizedCalculator() {
       {/* Budget Details Modal */}
       {showDetailsModal && selectedBudgetDetails && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[5000]">
-          <div className="bg-white dark:bg-neutral-900 rounded-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-neutral-900 rounded-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-xl border border-gray-200 dark:border-neutral-700">
             <div className="flex justify-between items-start mb-4">
-              <h3 className="text-xl font-bold">Budget Details</h3>
+              <h3 className="text-xl font-bold text-[#2b6777] dark:text-[#52ab98]">
+                Budget Details
+              </h3>
               <button
                 onClick={() => {
                   setShowDetailsModal(false);
                   setSelectedBudgetDetails(null);
                 }}
-                className="text-red-500 hover:text-red-700"
+                className="text-[#e74c3c] hover:text-[#c0392b] transition-colors"
               >
                 <Icon icon="material-symbols:close" className="text-2xl" />
               </button>
             </div>
 
             <div className="mb-6">
-              <h4 className="text-lg font-semibold">
+              <h4 className="text-lg font-semibold text-[#2b6777] dark:text-[#52ab98]">
                 {selectedBudgetDetails.name}
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                <div className="bg-gray-50 dark:bg-neutral-800 p-3 rounded-lg">
-                  <p className="text-sm text-gray-500">Location</p>
-                  <p className="font-medium">
+                <div className="bg-[#e8f4f8] dark:bg-neutral-800 p-3 rounded-lg border border-[#2b6777]">
+                  <p className="text-sm text-[#2b6777] dark:text-[#52ab98]">
+                    Location
+                  </p>
+                  <p className="font-medium text-[#2b6777] dark:text-white">
                     {selectedBudgetDetails.location}
                   </p>
                 </div>
-                <div className="bg-gray-50 dark:bg-neutral-800 p-3 rounded-lg">
-                  <p className="text-sm text-gray-500">Date Saved</p>
-                  <p className="font-medium">{selectedBudgetDetails.date}</p>
+                <div className="bg-[#e8f4f8] dark:bg-neutral-800 p-3 rounded-lg border border-[#2b6777]">
+                  <p className="text-sm text-[#2b6777] dark:text-[#52ab98]">
+                    Date Saved
+                  </p>
+                  <p className="font-medium text-[#2b6777] dark:text-white">
+                    {selectedBudgetDetails.date}
+                  </p>
                 </div>
-                <div className="bg-gray-50 dark:bg-neutral-800 p-3 rounded-lg">
-                  <p className="text-sm text-gray-500">Total Monthly Cost</p>
-                  <p className="font-medium">
+                <div className="bg-[#e8f4f8] dark:bg-neutral-800 p-3 rounded-lg border border-[#2b6777]">
+                  <p className="text-sm text-[#2b6777] dark:text-[#52ab98]">
+                    Total Monthly Cost
+                  </p>
+                  <p className="font-medium text-[#2b6777] dark:text-white">
                     {getCurrencySymbol(currency)}
                     {selectedBudgetDetails.total.toFixed(2)}
                   </p>
@@ -1605,49 +1706,55 @@ export default function CostOfLivingPersonalizedCalculator() {
               </div>
             </div>
 
-            <h5 className="font-bold text-lg mb-3">Categories Breakdown</h5>
+            <h5 className="font-bold text-lg mb-3 text-[#2b6777] dark:text-[#52ab98]">
+              Categories Breakdown
+            </h5>
             <div className="space-y-6">
               {Object.entries(selectedBudgetDetails.categories).map(
                 ([category, items]) => (
                   <div
                     key={category}
-                    className="border border-gray-200 dark:border-neutral-600 rounded-lg overflow-hidden"
+                    className="border border-[#2b6777] dark:border-[#52ab98] rounded-lg overflow-hidden"
                   >
-                    <div className="bg-gray-50 dark:bg-neutral-900 px-4 py-3 flex justify-between items-center">
-                      <h6 className="font-bold">{category}</h6>
-                      <p className="font-semibold">
+                    <div className="bg-[#e8f4f8] dark:bg-neutral-800 px-4 py-3 flex justify-between items-center">
+                      <h6 className="font-bold text-[#2b6777] dark:text-[#52ab98]">
+                        {category}
+                      </h6>
+                      <p className="font-semibold text-[#2b6777] dark:text-white">
                         {getCurrencySymbol(currency)}
                         {items
                           .reduce((sum, item) => sum + item.total, 0)
                           .toFixed(2)}
                       </p>
                     </div>
-                    <div className="divide-y divide-gray-200">
+                    <div className="divide-y divide-gray-200 dark:divide-neutral-700">
                       {items.map((item, index) => (
                         <div
                           key={index}
-                          className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4"
+                          className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors"
                         >
                           <div className="md:col-span-2">
-                            <p className="font-medium">{item.item_name}</p>
-                            <p className="text-sm text-gray-500 capitalize">
+                            <p className="font-medium text-[#2b6777] dark:text-white">
+                              {item.item_name}
+                            </p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">
                               {item.frequency}
                             </p>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-[#2b6777] dark:text-[#52ab98]">
                               Average Price
                             </p>
-                            <p>
+                            <p className="text-[#2b6777] dark:text-white">
                               {getCurrencySymbol(currency)}
                               {item.average_price.toFixed(2)}
                             </p>
                           </div>
                           <div>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-[#2b6777] dark:text-[#52ab98]">
                               Monthly Cost
                             </p>
-                            <p>
+                            <p className="text-[#2b6777] dark:text-white">
                               {getCurrencySymbol(currency)}
                               {item.total.toFixed(2)}
                             </p>
@@ -1666,7 +1773,7 @@ export default function CostOfLivingPersonalizedCalculator() {
                   setShowDetailsModal(false);
                   setSelectedBudgetDetails(null);
                 }}
-                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                className="px-4 py-2 bg-[#2b6777] hover:bg-[#1a4d5a] dark:bg-[#52ab98] dark:hover:bg-[#3d8a7a] text-white rounded-lg transition-colors"
               >
                 Close
               </button>

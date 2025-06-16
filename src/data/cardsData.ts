@@ -74,4 +74,14 @@ export const cardsData = [
     btnText: "Calculate",
     navLink: "CRIC",
   },
+  {
+    id: 8,
+    title: "Powerful Mortgage Calculator",
+    description:
+      "Quickly estimate your home loan payments, amortization schedule, and potential savings from prepayments. Compare different payment frequencies, visualize interest costs, and see how extra payments reduce your loan term.",
+    arrowIcon: assets.arrowUpIcon,
+    calcIcon: assets.mortgageIconSvg,
+    btnText: "Calculate",
+    navLink: "mortgage-calculator",
+  },
 ];

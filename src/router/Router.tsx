@@ -52,6 +52,8 @@ import ResetPasswordForm from "../pages/Admin/OTPVerification/ResetPasswordForm"
 import { Ebook1 } from "../pages/Ebook/Ebook1";
 import CostOfLivingPersonalizedCalculator from "../pages/COLC/PersonalizedCostOfLivingCalculator/CostOfLivingPersonalizedCalculator";
 import CostOfLivingEstimator from "../pages/AdvanceEstimator";
+import { MortgageCalculator } from "../pages/MortgageCalculator/MortgageCalculator";
+import {PowerfulMortgageCalculator } from "../pages/PowerfulMortgageCalculator/PowerfulMortgageCalculator";
 
 export const router = createBrowserRouter([
   {
@@ -272,6 +274,14 @@ export const router = createBrowserRouter([
       {
         path: "estimator",
         element: <CostOfLivingEstimator />,
+      },
+      {
+        path: "mortgage",
+        element: <MortgageCalculator />,
+      },
+      {
+        path: "mortgage-calculator",
+        element: <PowerfulMortgageCalculator />,
       },
     ],
   },

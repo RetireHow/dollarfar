@@ -24,6 +24,10 @@ import happyImg from "./happy.gif";
 import neutralImg from "./neutral.gif";
 import sadImg from "./sad.gif";
 
+import mortgageIcon1 from "./mortgage-icon.png"
+import mortgageIcon2 from "./mortgage-icon-2.png"
+import mortgageIconSvg from "./mortgage-icon-svg.svg"
+
 export const assets = {
   siteLogo,
   siteLogoWhite,
@@ -49,4 +53,7 @@ export const assets = {
   neutralImg,
   sadImg,
   landingPic,
+  mortgageIcon1,
+  mortgageIcon2,
+  mortgageIconSvg
 };
