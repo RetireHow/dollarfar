@@ -938,17 +938,17 @@ const FixedWidthPDFTemplate = ({
                       {year}
                     </td>
                     <td style={{ padding: "8px", textAlign: "center" }}>
-                      {formatCurrency(data.principal)}
+                      {formatCurrency(data?.principal)}
                     </td>
                     <td style={{ padding: "8px", textAlign: "center" }}>
-                      {formatCurrency(data.interest)}
+                      {formatCurrency(data?.interest)}
                     </td>
                     <td style={{ padding: "8px", textAlign: "center" }}>
-                      {formatCurrency(data.remainingBalance)}
+                      {formatCurrency(data?.remainingBalance)}
                     </td>
                     <td style={{ padding: "8px", textAlign: "center" }}>
-                      {formatCurrency(data.equity)} (
-                      {((data.equity / inputs.homePrice) * 100).toFixed(1)}%)
+                      {formatCurrency(data?.equity)} (
+                      {((data?.equity / inputs.homePrice) * 100).toFixed(1)}%)
                     </td>
                   </tr>
                 );
