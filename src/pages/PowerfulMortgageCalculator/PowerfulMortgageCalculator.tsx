@@ -31,7 +31,6 @@ import {
 import { useCustomPDF } from "../../hooks/useCustomPDF";
 import { assets } from "../../assets/assets";
 import PageHero from "../../components/UI/PageHero";
-import Error from "../../components/UI/Error";
 import { toast } from "react-toastify";
 import { baseUrl } from "../../api/apiConstant";
 import { Link } from "react-router-dom";
@@ -99,47 +98,66 @@ const ExportPDFModal = ({
   toPDF,
 }: ExportPDFModalProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [checked, setChecked] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    agreed: false,
+  });
   const [showError, setShowError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isDarkMode = document.documentElement.classList.contains("dark");
+  const primaryColor = isDarkMode ? "#52ab98" : "#2b6777";
+  const secondaryColor = isDarkMode ? "#3d8a7a" : "#1a4d5a";
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const handleCancel = () => {
-    setIsGeneratingPDF(true);
+    setIsGeneratingPDF(false);
     setPdfError(null);
     setIsModalOpen(false);
     setShowError(false);
-    setChecked(false);
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      agreed: false,
+    });
     setIsLoading(false);
-    setEmail("");
-    setPhone("");
-    setName("");
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   const handleSendEmail = async () => {
     // Validate fields
-    if (!email?.trim() || !name?.trim() || !phone?.trim()) {
+    if (
+      !formData.email.trim() ||
+      !formData.name.trim() ||
+      !formData.phone.trim()
+    ) {
       return setShowError(true);
     }
-    if (email?.trim() && !emailRegex.test(email)) {
+    if (formData.email.trim() && !emailRegex.test(formData.email)) {
       return setShowError(true);
     }
-    if (!checked) {
+    if (!formData.agreed) {
       return setShowError(true);
     }
+
     setIsLoading(true);
     setIsGeneratingPDF(true);
     setPdfError(null);
-    // API Call
+
     try {
       const res = await fetch(
         `${baseUrl}/report-downloaded-users/create-user`,
@@ -149,44 +167,44 @@ const ExportPDFModal = ({
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name,
-            email,
-            phone,
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
             downloadedFileName: "Mortgage Calculator Report",
           }),
         }
       );
 
       if (!res.ok) {
-        return toast.error("There is something went wrong!");
+        return toast.error("Failed to submit details");
       }
+
       await res.json();
-      toast.success("An email was sent to your mail.", {
+      toast.success("A confirmation email has been sent.", {
         position: "top-center",
       });
 
-      // =============================== Start Generating PDF ======================
       // Show the PDF content temporarily with fixed width
       if (targetRef.current) {
         targetRef.current.style.display = "block";
         targetRef.current.style.width = "794px";
         targetRef.current.style.margin = "0 auto";
         targetRef.current.style.padding = "0";
-        targetRef.current.style.backgroundColor = "#fff";
+        targetRef.current.style.backgroundColor = isDarkMode
+          ? "#1a1a1a"
+          : "#fff";
       }
+
       // Add small delay to ensure proper rendering
       await new Promise((resolve) => setTimeout(resolve, 500));
       await toPDF();
-      // handleExportPDF();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Email sending failed:", error);
       setPdfError("Failed to generate PDF. Please try again.");
-      toast.error(
-        `Failed to send email: ${error.message || "Unexpected error occurred"}`,
-        {
-          position: "top-center",
-        }
-      );
+      const errorMessage = "Unexpected error occurred";
+      toast.error(`Failed to send report: ${errorMessage}`, {
+        position: "top-center",
+      });
     } finally {
       // Hide the PDF content again
       if (targetRef.current) {
@@ -199,7 +217,6 @@ const ExportPDFModal = ({
       setIsLoading(false);
       setIsModalOpen(false);
       setShowError(false);
-      setChecked(false);
       setIsGeneratingPDF(false);
     }
   };
@@ -211,17 +228,31 @@ const ExportPDFModal = ({
           ? antdTheme.darkAlgorithm
           : antdTheme.defaultAlgorithm,
         token: {
-          colorPrimary: "#2b6777",
-          colorLink: "#52ab98",
-          colorLinkHover: "#3d8a7a",
+          colorPrimary: primaryColor,
+          colorLink: primaryColor,
+          colorLinkHover: secondaryColor,
+          borderRadius: 12,
+          wireframe: false,
+        },
+        components: {
+          Modal: {
+            paddingContentHorizontal: 0,
+          },
         },
       }}
     >
       <button
         type="button"
-        className="px-4 py-2 bg-[#2b6777] hover:bg-[#1a4d5a] dark:bg-[#52ab98] dark:hover:bg-[#3d8a7a] text-white rounded-lg font-medium transition-all disabled:opacity-50 flex items-center gap-2"
+        className={`px-5 py-2.5 bg-gradient-to-r ${
+          isDarkMode
+            ? "from-[#52ab98] to-[#3d8a7a] hover:from-[#3d8a7a] hover:to-[#2b6777]"
+            : "from-[#2b6777] to-[#1a4d5a] hover:from-[#1a4d5a] hover:to-[#0d3a4a]"
+        } text-white rounded-xl font-medium transition-all disabled:opacity-50 flex items-center gap-2 shadow-lg ${
+          isDarkMode ? "hover:shadow-[#52ab98]/30" : "hover:shadow-[#2b6777]/30"
+        }`}
         onClick={showModal}
-        disabled={isLoading}
+        disabled={isLoading || isGeneratingPDF}
+        aria-label="Export as PDF"
       >
         <Icon icon="mdi:file-pdf-box" className="text-xl" />
         Export as PDF
@@ -229,147 +260,311 @@ const ExportPDFModal = ({
 
       <Modal
         open={isModalOpen}
-        closeIcon={false}
-        footer={false}
-        className="geist"
+        closeIcon={null}
+        footer={null}
+        className="premium-modal"
+        onCancel={handleCancel}
+        centered
+        width={520}
         styles={{
           content: {
-            borderRadius: "12px",
-            padding: "24px",
+            padding: 0,
+            background: isDarkMode
+              ? "linear-gradient(145deg, #1e1e2d, #2a2a3a)"
+              : "linear-gradient(145deg, #ffffff, #f9f9ff)",
+            border: "none",
+            boxShadow: isDarkMode
+              ? "0 10px 25px rgba(0,0,0,0.3)"
+              : "0 10px 25px rgba(43, 103, 119, 0.15)",
+          },
+          body: {
+            padding: 0,
           },
         }}
       >
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl md:text-2xl font-bold text-[#2b6777] dark:text-[#52ab98]">
-              Please enter your details
-            </h3>
-            <Icon
-              onClick={handleCancel}
-              className="text-[#e74c3c] hover:text-[#c0392b] text-2xl cursor-pointer transition-colors"
-              icon="material-symbols:close"
-            />
-          </div>
+        <div className="relative">
+          {/* Decorative header */}
+          <div
+            className={`h-2 w-full ${
+              isDarkMode ? "bg-[#1a4d5a]" : "bg-[#2b6777]"
+            } rounded-t-xl`}
+          ></div>
 
-          <div className="space-y-4">
-            <div>
-              <label
-                className="block font-medium mb-2 text-[#2b6777] dark:text-[#52ab98]"
-                htmlFor="name"
-              >
-                Name
-              </label>
-              <input
-                className="p-3 border border-gray-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 text-gray-800 dark:text-gray-200 rounded-lg outline-none w-full focus:ring-2 focus:ring-[#52ab98] focus:border-transparent transition-all"
-                autoFocus
-                type="text"
-                placeholder="Enter Name"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-              />
-              {showError && !name?.trim() && (
-                <Error message="This field is required" />
-              )}
-            </div>
+          {/* Close button */}
+          <button
+            onClick={handleCancel}
+            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-xl cursor-pointer transition-colors bg-transparent border-none z-10"
+            aria-label="Close modal"
+          >
+            <Icon icon="ion:close" className="text-current" />
+          </button>
 
-            <div>
-              <label
-                className="block font-medium mb-2 text-[#2b6777] dark:text-[#52ab98]"
-                htmlFor="email"
+          <div className="p-8">
+            {/* Header */}
+            <div className="flex items-center gap-3 mb-6">
+              <div
+                className={`p-3 rounded-lg ${
+                  isDarkMode ? "bg-[#1a4d5a]/30" : "bg-[#c8d8e4]"
+                } ${isDarkMode ? "text-[#52ab98]" : "text-[#2b6777]"}`}
               >
-                Email
-              </label>
-              <input
-                className="p-3 border border-gray-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 text-gray-800 dark:text-gray-200 rounded-lg outline-none w-full focus:ring-2 focus:ring-[#52ab98] focus:border-transparent transition-all"
-                type="email"
-                placeholder="Enter Email Address"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-              />
-              {showError && !email?.trim() && (
-                <Error message="This field is required" />
-              )}
-              {showError && email?.trim() && !emailRegex.test(email) && (
-                <Error message="Email is not valid!" />
-              )}
-            </div>
-
-            <div>
-              <label
-                className="block font-medium mb-2 text-[#2b6777] dark:text-[#52ab98]"
-                htmlFor="phone"
-              >
-                Phone
-              </label>
-              <input
-                className="p-3 border border-gray-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 text-gray-800 dark:text-gray-200 rounded-lg outline-none w-full focus:ring-2 focus:ring-[#52ab98] focus:border-transparent transition-all"
-                type="text"
-                placeholder="Enter Phone Number"
-                onChange={(e) => setPhone(e.target.value)}
-                value={phone}
-              />
-              {showError && !phone?.trim() && (
-                <Error message="This field is required" />
-              )}
-            </div>
-
-            <div className="flex items-start gap-3">
-              <button
-                onClick={() => setChecked(!checked)}
-                className="flex-shrink-0"
-              >
-                {checked ? (
-                  <Icon
-                    className="text-[#52ab98] text-2xl"
-                    icon="mingcute:checkbox-fill"
-                  />
-                ) : (
-                  <Icon
-                    className="text-gray-400 text-2xl"
-                    icon="mdi:checkbox-blank-outline"
-                  />
-                )}
-              </button>
+                <Icon icon="mdi:file-document" className="text-2xl" />
+              </div>
               <div>
-                <span className="text-gray-600 dark:text-gray-400 text-sm">
-                  By proceeding, you are agreeing to our{" "}
-                  <Link
-                    className="text-[#52ab98] hover:underline hover:text-[#3d8a7a] transition-colors"
-                    to="/terms-and-condition"
-                  >
-                    Terms and Conditions
-                  </Link>
-                </span>
-                {showError && !checked && (
-                  <p className="text-red-500 text-xs">
-                    Please accept the Terms and Conditions
+                <h3
+                  className={`text-xl font-bold ${
+                    isDarkMode ? "text-white" : "text-[#2b6777]"
+                  }`}
+                >
+                  Download Your Report
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Enter your details to download the PDF
+                </p>
+              </div>
+            </div>
+
+            {/* Form */}
+            <div className="space-y-5">
+              <div>
+                <label
+                  className={`block text-sm font-medium mb-1.5 ${
+                    isDarkMode ? "text-gray-300" : "text-[#2b6777]"
+                  }`}
+                  htmlFor="name"
+                >
+                  Full Name
+                </label>
+                <div className="relative">
+                  <input
+                    id="name"
+                    name="name"
+                    className={`w-full px-4 py-2.5 rounded-lg border ${
+                      showError && !formData.name.trim()
+                        ? "border-red-500"
+                        : "border-gray-300 dark:border-gray-600"
+                    } bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 ${
+                      isDarkMode
+                        ? "focus:ring-[#52ab98]"
+                        : "focus:ring-[#2b6777]"
+                    } focus:border-transparent transition-all pl-11`}
+                    type="text"
+                    placeholder="John Doe"
+                    onChange={handleInputChange}
+                    value={formData.name}
+                    aria-required="true"
+                  />
+                  <Icon
+                    icon="mdi:account-outline"
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"
+                  />
+                </div>
+                {showError && !formData.name.trim() && (
+                  <p className="text-red-500 text-xs mt-1.5 flex items-center gap-1">
+                    <Icon icon="mdi:alert-circle-outline" className="text-sm" />
+                    Please enter your name
                   </p>
                 )}
               </div>
-            </div>
-          </div>
 
-          <div className="flex justify-center pt-2">
-            {isLoading || isGeneratingPDF ? (
-              <div className="flex items-center gap-2 text-[#52ab98]">
-                <Icon icon="eos-icons:loading" className="text-2xl" />
-                <span>Preparing your PDF...</span>
+              <div>
+                <label
+                  className={`block text-sm font-medium mb-1.5 ${
+                    isDarkMode ? "text-gray-300" : "text-[#2b6777]"
+                  }`}
+                  htmlFor="email"
+                >
+                  Email Address
+                </label>
+                <div className="relative">
+                  <input
+                    id="email"
+                    name="email"
+                    className={`w-full px-4 py-2.5 rounded-lg border ${
+                      showError &&
+                      (!formData.email.trim() ||
+                        !emailRegex.test(formData.email))
+                        ? "border-red-500"
+                        : "border-gray-300 dark:border-gray-600"
+                    } bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 ${
+                      isDarkMode
+                        ? "focus:ring-[#52ab98]"
+                        : "focus:ring-[#2b6777]"
+                    } focus:border-transparent transition-all pl-11`}
+                    type="email"
+                    placeholder="john@example.com"
+                    onChange={handleInputChange}
+                    value={formData.email}
+                    aria-required="true"
+                  />
+                  <Icon
+                    icon="mdi:email-outline"
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"
+                  />
+                </div>
+                {showError && !formData.email.trim() && (
+                  <p className="text-red-500 text-xs mt-1.5 flex items-center gap-1">
+                    <Icon icon="mdi:alert-circle-outline" className="text-sm" />
+                    Please enter your email
+                  </p>
+                )}
+                {showError &&
+                  formData.email.trim() &&
+                  !emailRegex.test(formData.email) && (
+                    <p className="text-red-500 text-xs mt-1.5 flex items-center gap-1">
+                      <Icon
+                        icon="mdi:alert-circle-outline"
+                        className="text-sm"
+                      />
+                      Please enter a valid email address
+                    </p>
+                  )}
               </div>
-            ) : (
-              <button
-                onClick={handleSendEmail}
-                className="px-6 py-3 bg-[#2b6777] hover:bg-[#1a4d5a] dark:bg-[#52ab98] dark:hover:bg-[#3d8a7a] text-white rounded-lg font-medium transition-colors flex items-center gap-2"
-              >
-                <Icon icon="material-symbols:download" className="text-xl" />
-                Download PDF
-              </button>
-            )}
+
+              <div>
+                <label
+                  className={`block text-sm font-medium mb-1.5 ${
+                    isDarkMode ? "text-gray-300" : "text-[#2b6777]"
+                  }`}
+                  htmlFor="phone"
+                >
+                  Phone Number
+                </label>
+                <div className="relative">
+                  <input
+                    id="phone"
+                    name="phone"
+                    className={`w-full px-4 py-2.5 rounded-lg border ${
+                      showError && !formData.phone.trim()
+                        ? "border-red-500"
+                        : "border-gray-300 dark:border-gray-600"
+                    } bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 ${
+                      isDarkMode
+                        ? "focus:ring-[#52ab98]"
+                        : "focus:ring-[#2b6777]"
+                    } focus:border-transparent transition-all pl-11`}
+                    type="tel"
+                    placeholder="+1 (123) 456-7890"
+                    onChange={handleInputChange}
+                    value={formData.phone}
+                    aria-required="true"
+                  />
+                  <Icon
+                    icon="mdi:phone-outline"
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"
+                  />
+                </div>
+                {showError && !formData.phone.trim() && (
+                  <p className="text-red-500 text-xs mt-1.5 flex items-center gap-1">
+                    <Icon icon="mdi:alert-circle-outline" className="text-sm" />
+                    Please enter your phone number
+                  </p>
+                )}
+              </div>
+
+              <div className="pt-2">
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="agreed"
+                    checked={formData.agreed}
+                    onChange={handleInputChange}
+                    className="hidden"
+                  />
+                  <div
+                    className={`flex-shrink-0 w-5 h-5 rounded-md border ${
+                      formData.agreed
+                        ? `${
+                            isDarkMode
+                              ? "bg-[#52ab98] border-[#52ab98]"
+                              : "bg-[#2b6777] border-[#2b6777]"
+                          }`
+                        : "border-gray-300 dark:border-gray-600"
+                    } flex items-center justify-center transition-colors mt-0.5`}
+                  >
+                    {formData.agreed && (
+                      <Icon icon="mdi:check" className="text-white text-sm" />
+                    )}
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      I agree to the{" "}
+                      <Link
+                        className={`${
+                          isDarkMode
+                            ? "text-[#52ab98] hover:text-[#3d8a7a]"
+                            : "text-[#2b6777] hover:text-[#1a4d5a]"
+                        } font-medium hover:underline transition-colors`}
+                        to="/terms-and-condition"
+                        target="_blank"
+                      >
+                        Terms and Conditions
+                      </Link>
+                    </span>
+                    {showError && !formData.agreed && (
+                      <p className="text-red-500 text-xs mt-1.5 flex items-center gap-1">
+                        <Icon
+                          icon="mdi:alert-circle-outline"
+                          className="text-sm"
+                        />
+                        Please accept the terms and conditions
+                      </p>
+                    )}
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="mt-8 flex flex-col gap-3">
+              {isLoading || isGeneratingPDF ? (
+                <div
+                  className={`flex items-center justify-center gap-3 py-3 px-6 rounded-lg bg-gray-100 dark:bg-gray-800 ${
+                    isDarkMode ? "text-[#52ab98]" : "text-[#2b6777]"
+                  }`}
+                  aria-live="polite"
+                >
+                  <Icon icon="svg-spinners:ring-resize" className="text-xl" />
+                  <span>Preparing your report...</span>
+                </div>
+              ) : (
+                <>
+                  <button
+                    onClick={handleSendEmail}
+                    className={`w-full py-3 bg-gradient-to-r ${
+                      isDarkMode
+                        ? "from-[#52ab98] to-[#3d8a7a] hover:from-[#3d8a7a] hover:to-[#2b6777]"
+                        : "from-[#2b6777] to-[#1a4d5a] hover:from-[#1a4d5a] hover:to-[#0d3a4a]"
+                    } text-white rounded-lg font-medium transition-all flex items-center justify-center gap-2 shadow-md ${
+                      isDarkMode
+                        ? "hover:shadow-[#52ab98]/30"
+                        : "hover:shadow-[#2b6777]/30"
+                    }`}
+                    disabled={isLoading}
+                  >
+                    <Icon
+                      icon="material-symbols:download"
+                      className="text-xl"
+                    />
+                    Download PDF Report
+                  </button>
+                  <button
+                    onClick={handleCancel}
+                    className="w-full py-2.5 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-colors border border-gray-300 dark:border-gray-600"
+                    disabled={isLoading}
+                  >
+                    Cancel
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </Modal>
     </ConfigProvider>
   );
 };
+
+export default ExportPDFModal;
 
 // Add this component above the MortgageCalculator2 component
 const FixedWidthPDFTemplate = ({
@@ -2189,80 +2384,152 @@ export const PowerfulMortgageCalculator: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transition-colors duration-200">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden transition-colors duration-200 border border-gray-100 dark:border-gray-700">
                 <div className="p-4 border-b dark:border-gray-700 flex justify-between items-center">
-                  <h3
-                    className="text-lg font-semibold text-gray-800 dark:text-white"
-                    style={{ color: COLORS.primary }}
-                  >
-                    Amortization Schedule
-                  </h3>
+                  <div className="flex items-center space-x-3">
+                    <svg
+                      className="w-5 h-5"
+                      style={{ color: COLORS.primary }}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                      />
+                    </svg>
+                    <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                      Amortization Schedule
+                    </h3>
+                  </div>
                   <button
-                    className="text-sm hover:underline font-medium transition-colors duration-200"
+                    className="flex items-center space-x-1 text-sm font-medium transition-colors duration-200 hover:opacity-80"
                     style={{ color: COLORS.primary }}
                     onClick={() => setShowAmortization(!showAmortization)}
                   >
-                    {showAmortization ? "Hide Details" : "Show Details"}
+                    <span>
+                      {showAmortization ? "Hide Details" : "Show Details"}
+                    </span>
+                    <svg
+                      className={`w-4 h-4 transform transition-transform duration-200 ${
+                        showAmortization ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
                   </button>
                 </div>
 
                 {showAmortization && (
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                      <thead className="bg-gray-50 dark:bg-gray-700">
-                        <tr>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                            Period
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                            Date
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                            Payment
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                            Principal
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                            Interest
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                            Balance
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                        {results.amortizationSchedule.map((entry, index) => (
-                          <tr
-                            key={index}
-                            className={
-                              index % 2 === 0
-                                ? "bg-white dark:bg-gray-800"
-                                : "bg-gray-50 dark:bg-gray-700"
-                            }
-                          >
-                            <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                              {entry.month}
-                            </td>
-                            <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                              {entry.date.format("MMM YYYY")}
-                            </td>
-                            <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 font-medium">
-                              {formatCurrency(entry.payment)}
-                            </td>
-                            <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                              {formatCurrency(entry.principal)}
-                            </td>
-                            <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                              {formatCurrency(entry.interest)}
-                            </td>
-                            <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 font-medium">
-                              {formatCurrency(entry.remainingBalance)}
-                            </td>
+                  <div className="relative">
+                    <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white dark:from-gray-800 to-transparent z-10"></div>
+                    <div className="overflow-x-auto max-h-96 pb-4 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent">
+                      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead className="sticky top-0 bg-gray-50 dark:bg-gray-700 z-20">
+                          <tr>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                              Period
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                              Date
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                              Payment
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                              Principal
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                              Interest
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                              Balance
+                            </th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                          {results.amortizationSchedule.map((entry, index) => (
+                            <tr
+                              key={index}
+                              className={`hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 ${
+                                index % 2 === 0
+                                  ? "bg-white dark:bg-gray-800"
+                                  : "bg-gray-50 dark:bg-gray-700"
+                              }`}
+                            >
+                              <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                                {entry.month}
+                              </td>
+                              <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                                {entry.date.format("MMM YYYY")}
+                              </td>
+                              <td className="px-6 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                                {formatCurrency(entry.payment)}
+                              </td>
+                              <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                                {formatCurrency(entry.principal)}
+                              </td>
+                              <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                                {formatCurrency(entry.interest)}
+                              </td>
+                              <td className="px-6 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                                {formatCurrency(entry.remainingBalance)}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white dark:from-gray-800 to-transparent z-10"></div>
+
+                    <div className="px-6 py-3 border-t dark:border-gray-700 flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+                      <div>
+                        Showing {results.amortizationSchedule.length} periods
+                      </div>
+                      <div className="flex space-x-4">
+                        <button className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 19l-7-7 7-7"
+                            />
+                          </svg>
+                        </button>
+                        <button className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
