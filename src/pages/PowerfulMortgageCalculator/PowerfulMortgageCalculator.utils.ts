@@ -112,22 +112,32 @@ export const generateAmortizationSchedule = (
   return schedule;
 };
 
-export const calculateEquityData = (schedule: AmortizationEntry[]): EquityData[] => {
+export const calculateEquityData = (
+  schedule: AmortizationEntry[],
+  initialLoanAmount: number,
+  downPayment: number
+): EquityData[] => {
   const monthsPerYear = 12;
   const years = Math.ceil(schedule.length / monthsPerYear);
   const equityData: EquityData[] = [];
+  
+  // The initial home value is loan amount + down payment
+  const homeValue = initialLoanAmount + downPayment;
 
   for (let year = 1; year <= years; year++) {
     const startMonth = (year - 1) * monthsPerYear;
     const endMonth = Math.min(year * monthsPerYear, schedule.length);
     const yearData = schedule.slice(startMonth, endMonth);
 
+    const lastEntry = yearData[yearData.length - 1];
+    
     equityData.push({
       year,
-      equity: yearData.length > 0 ? yearData[yearData.length - 1].equity : 0,
+      // Equity is home value minus remaining balance (plus the down payment is effectively included)
+      equity: lastEntry ? homeValue - lastEntry.remainingBalance : downPayment,
       interest: yearData.reduce((sum, entry) => sum + entry.interest, 0),
       principal: yearData.reduce((sum, entry) => sum + entry.principal, 0),
-      remainingBalance: yearData.length > 0 ? yearData[yearData.length - 1].remainingBalance : 0
+      remainingBalance: lastEntry ? lastEntry.remainingBalance : initialLoanAmount
     });
   }
 

@@ -132,7 +132,7 @@ export const PowerfulMortgageCalculator: React.FC = () => {
         "Estimated yearly homeowner's insurance cost. This protects your property against damage and typically includes liability coverage.",
     },
     hoaFees: {
-      title: "HOA Fees",
+      title: "HOA/Condo Fees",
       content:
         "Monthly homeowners association fees (if applicable). These cover shared community expenses and amenities in certain neighborhoods.",
     },
@@ -185,7 +185,7 @@ export const PowerfulMortgageCalculator: React.FC = () => {
       (sum, entry) => sum + entry.interest,
       0
     );
-    const equityData = calculateEquityData(amortizationSchedule);
+    const equityData = calculateEquityData(amortizationSchedule, loanAmount, downPaymentAmount);
 
     return {
       loanAmount,
@@ -242,7 +242,7 @@ export const PowerfulMortgageCalculator: React.FC = () => {
     { name: "Property Tax", value: results.monthlyPropertyTax },
     { name: "Insurance", value: results.monthlyHomeInsurance },
     { name: "PMI", value: results.monthlyPMI },
-    { name: "HOA", value: results.monthlyHOA },
+    { name: "HOA/Condo", value: results.monthlyHOA },
   ];
 
   const totalMonthlyCost = paymentBreakdownData.reduce(
@@ -693,7 +693,7 @@ export const PowerfulMortgageCalculator: React.FC = () => {
                       },
                       {
                         key: "hoaFees",
-                        label: "Monthly HOA Fees",
+                        label: "Monthly HOA/Condo Fees",
                         icon: "mdi:account-group",
                       },
                     ] as const
