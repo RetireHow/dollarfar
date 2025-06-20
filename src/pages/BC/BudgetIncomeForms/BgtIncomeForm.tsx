@@ -62,8 +62,6 @@ export default function BgtIncomeForm() {
     const storedData = localStorage.getItem("BCIncomeInputs");
     if (storedData) {
       try {
-        const parsedData = JSON.parse(storedData);
-        console.log(parsedData);
         dispatch(
           updateBgtStaticField({
             stepName: "income",

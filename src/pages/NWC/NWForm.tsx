@@ -36,13 +36,13 @@ export default function NWForm() {
     if (!assetsString) {
       return;
     }
-    const assets = JSON.parse(assetsString)?.assets;
+    // const assets = JSON.parse(assetsString)?.assets;
 
-    Object.keys(assets)?.forEach((category) => {
-      Object.entries(assets[category])?.forEach((item) => {
-        console.log(item);
-      });
-    });
+    // Object.keys(assets)?.forEach((category) => {
+    //   Object.entries(assets[category])?.forEach((item) => {
+    //     console.log(item);
+    //   });
+    // });
   }, []);
 
   return (
