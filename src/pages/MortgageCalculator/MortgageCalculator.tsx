@@ -1,1132 +1,1781 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState, useMemo, useEffect } from "react";
+import { NumericFormat } from "react-number-format";
+import moment from "moment";
+import { Icon } from "@iconify/react";
+
 import {
-  LineChart,
-  Line,
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
+  ComposedChart,
+  Area,
 } from "recharts";
-import { delay } from "../../utils/delay";
+import { Modal } from "antd";
+import PageHero from "../../components/UI/PageHero";
+import { assets } from "../../assets/assets";
+import { ExportMortgagePDFModal } from "./ExportMortgagePDFModal";
+import { useCustomPDF } from "../../hooks/useCustomPDF";
+import { FixedWidthMortgagePDFTemplate } from "./FixedWidthMortgagePDFTemplate";
+const data = {
+  title: "Mortgage/Loan Calculator",
+  description:
+    "Quickly estimate your home loan payments, amortization schedule, and potential savings from prepayments. Compare different payment frequencies, visualize interest costs, and see how extra payments reduce your loan term.",
+  image: assets.mortgageIconSvg,
+};
 
-type PaymentFrequency = "monthly" | "bi-weekly" | "weekly" | "semi-monthly";
-type PrepaymentFrequency = "one-time" | "each-year" | "same-as-regular";
-
-// Used the professional teal/blue color scheme (#2b6777, #52ab98)
-
-interface PaymentScheduleItem {
-  Period: string;
-  "Principal Payment": string;
-  "Interest Payment": string;
-  "Prepayment Amount": string;
-  "Total Payment": string;
-  "Ending Balance": string;
-  isYearlySummary: boolean;
+// Types
+interface MortgageInputs {
+  homePrice: number;
+  downPaymentPercentage: number;
+  downPaymentAmount: number;
+  loanTerm: number;
+  interestRate: number;
+  interestType: "fixed" | "variable";
+  paymentFrequency: "monthly" | "biweekly" | "weekly";
+  propertyTax: number;
+  homeInsurance: number;
+  hoaFees: number;
+  startDate: moment.Moment;
+  extraPayment: number;
+  extraPaymentFrequency: "monthly" | "yearly" | "one-time";
 }
 
-interface MortgageDetails {
-  paymentFrequency: string;
-  prepayment: {
-    amount: number;
-    frequency: string;
-    startWithPayment: number;
-    totalApplied: number;
-    count: number;
-  };
-  term: number;
-  amortization: number;
-  numberOfPayments: {
-    term: number;
-    originalAmortization: number;
-    actualAmortization: number;
-  };
-  paymentAmount: string;
-  principalPayments: {
-    term: string;
-    amortization: string;
-  };
-  interestPayments: {
-    term: string;
-    amortization: string;
-    originalTerm: string;
-    originalAmortization: string;
-  };
-  totalCost: {
-    term: string;
-    amortization: string;
-  };
-  interestSavings: {
-    term: string;
-    amortization: string;
-  };
-  timeSaved: {
-    years: string;
-    payments: number;
-  };
-  paymentSchedule: PaymentScheduleItem[];
+interface MortgageResults {
+  loanAmount: number;
+  periodicPayment: number;
+  monthlyEquivalent: number;
+  monthlyPropertyTax: number;
+  monthlyHomeInsurance: number;
+  monthlyPMI: number;
+  monthlyHOA: number;
+  totalInterestPaid: number;
+  totalCost: number;
+  payoffDate: moment.Moment;
+  amortizationSchedule: AmortizationEntry[];
+  equityData: EquityData[];
+  interestType: "fixed" | "variable";
 }
 
-interface FormData {
+interface AmortizationEntry {
+  month: number;
+  date: moment.Moment;
+  payment: number;
   principal: number;
-  annualRate: number;
-  amortizationYears: number;
-  termYears: number;
-  paymentFrequency: PaymentFrequency;
-  prepaymentAmount: number;
-  prepaymentFrequency: PrepaymentFrequency;
-  startWithPayment: number;
+  interest: number;
+  remainingBalance: number;
+  equity: number;
 }
 
-export function calculateMortgageDetails(
+interface EquityData {
+  year: number;
+  equity: number;
+  interest: number;
+  principal: number;
+  remainingBalance: number;
+}
+
+type HelpModalProps = {
+  title: string;
+  content: string;
+  visible: boolean;
+  onClose: () => void;
+};
+
+// Utils
+const calculatePMI = (loanAmount: number, homePrice: number): number => {
+  const ltv = loanAmount / homePrice;
+  return ltv > 0.8 ? (loanAmount * 0.01) / 12 : 0;
+};
+
+/**
+ * Calculates mortgage payment for Canadian mortgages with precise weekly/biweekly calculations
+ * @param principal - Loan amount in dollars
+ * @param amortizationYears - Total amortization period in years
+ * @param paymentFrequency - Payment frequency ('monthly', 'biweekly', 'weekly')
+ * @param annualInterestRate - Annual interest rate in percentage (e.g., 5 for 5%)
+ * @param interestType - 'fixed' or 'variable'
+ * @returns Periodic payment amount
+ */
+const calculateCanadianMortgagePayment = (
   principal: number,
-  annualRate: number,
   amortizationYears: number,
-  termYears: number,
-  paymentFrequency: PaymentFrequency = "monthly",
-  prepaymentAmount: number = 0,
-  prepaymentFrequency: PrepaymentFrequency = "one-time",
-  startWithPayment: number = 1
-): MortgageDetails {
-  // Validate inputs
-  const validFrequencies: PaymentFrequency[] = [
-    "monthly",
-    "bi-weekly",
-    "weekly",
-    "semi-monthly",
-  ];
-  const validPrepaymentFreqs: PrepaymentFrequency[] = [
-    "one-time",
-    "each-year",
-    "same-as-regular",
-  ];
+  paymentFrequency: "monthly" | "biweekly" | "weekly",
+  annualInterestRate: number,
+  interestType: "fixed" | "variable"
+): number => {
+  // Convert annual rate to decimal
+  const annualRateDecimal = annualInterestRate / 100;
 
-  if (!validFrequencies.includes(paymentFrequency)) {
-    throw new Error(
-      "Invalid payment frequency. Use: monthly, bi-weekly, weekly, or semi-monthly."
-    );
-  }
-  if (!validPrepaymentFreqs.includes(prepaymentFrequency)) {
-    throw new Error(
-      "Invalid prepayment frequency. Use: one-time, each-year, or same-as-regular."
-    );
-  }
+  // Calculate payment-specific values
+  let paymentCountPerYear: number;
+  let totalPayments: number;
+  let periodicRate: number;
 
-  // Calculate payment schedule
-  let paymentsPerYear: number;
   switch (paymentFrequency) {
     case "monthly":
-      paymentsPerYear = 12;
+      paymentCountPerYear = 12;
+      totalPayments = amortizationYears * paymentCountPerYear;
+
+      if (interestType === "fixed") {
+        // Canadian fixed rate mortgages compound semi-annually
+        const semiAnnualRate = annualRateDecimal / 2;
+        const monthlyRate = Math.pow(1 + semiAnnualRate, 1 / 6) - 1;
+        periodicRate = monthlyRate;
+      } else {
+        // Variable rates compound monthly
+        periodicRate = annualRateDecimal / 12;
+      }
       break;
-    case "bi-weekly":
-      paymentsPerYear = 26;
+
+    case "biweekly":
+      paymentCountPerYear = 26;
+      totalPayments = amortizationYears * paymentCountPerYear;
+
+      if (interestType === "fixed") {
+        // Convert annual rate to biweekly rate with semi-annual compounding
+        const semiAnnualRate = annualRateDecimal / 2;
+        const biweeklyRate = Math.pow(1 + semiAnnualRate, 1 / 13) - 1;
+        periodicRate = biweeklyRate;
+      } else {
+        // Variable rate - simple division
+        periodicRate = annualRateDecimal / 26;
+      }
+      break;
+
+    case "weekly":
+      paymentCountPerYear = 52;
+      totalPayments = amortizationYears * paymentCountPerYear;
+
+      if (interestType === "fixed") {
+        // Convert annual rate to weekly rate with semi-annual compounding
+        const semiAnnualRate = annualRateDecimal / 2;
+        const weeklyRate = Math.pow(1 + semiAnnualRate, 1 / 26) - 1;
+        periodicRate = weeklyRate;
+      } else {
+        // Variable rate - simple division
+        periodicRate = annualRateDecimal / 52;
+      }
+      break;
+
+    default:
+      throw new Error(
+        'Invalid payment frequency. Use "monthly", "biweekly", or "weekly"'
+      );
+  }
+
+  const payment =
+    (principal * periodicRate) /
+    (1 - Math.pow(1 + periodicRate, -totalPayments));
+
+  return Math.round(payment * 100) / 100; // Round to nearest cent
+};
+
+const generateAmortizationSchedule = (
+  principal: number,
+  annualRate: number,
+  years: number,
+  startDate: moment.Moment,
+  paymentFrequency: "monthly" | "biweekly" | "weekly",
+  interestType: "fixed" | "variable",
+  extraPayment: number = 0,
+  extraPaymentFrequency: "monthly" | "yearly" | "one-time" = "monthly"
+): AmortizationEntry[] => {
+  const periodicPayment = calculateCanadianMortgagePayment(
+    principal,
+    years,
+    paymentFrequency,
+    annualRate,
+    interestType
+  );
+
+  let ratePerPeriod: number;
+  let periodsPerYear: number;
+  let dateIncrement: moment.unitOfTime.DurationConstructor;
+
+  switch (paymentFrequency) {
+    case "monthly":
+      periodsPerYear = 12;
+      dateIncrement = "months";
+      if (interestType === "fixed") {
+        const semiAnnualRate = annualRate / 100 / 2;
+        ratePerPeriod = Math.pow(1 + semiAnnualRate, 1 / 6) - 1;
+      } else {
+        ratePerPeriod = annualRate / 100 / 12;
+      }
+      break;
+    case "biweekly":
+      periodsPerYear = 26;
+      dateIncrement = "weeks";
+      if (interestType === "fixed") {
+        const semiAnnualRate = annualRate / 100 / 2;
+        ratePerPeriod = Math.pow(1 + semiAnnualRate, 1 / 13) - 1;
+      } else {
+        ratePerPeriod = annualRate / 100 / 26;
+      }
       break;
     case "weekly":
-      paymentsPerYear = 52;
+      periodsPerYear = 52;
+      dateIncrement = "weeks";
+      if (interestType === "fixed") {
+        const semiAnnualRate = annualRate / 100 / 2;
+        ratePerPeriod = Math.pow(1 + semiAnnualRate, 1 / 26) - 1;
+      } else {
+        ratePerPeriod = annualRate / 100 / 52;
+      }
       break;
-    case "semi-monthly":
-      paymentsPerYear = 24;
-      break;
-    default:
-      paymentsPerYear = 12; // Default case to satisfy TypeScript
   }
-  const totalPayments = amortizationYears * paymentsPerYear;
-  const termPayments = termYears * paymentsPerYear;
 
-  // Adjust interest rate per payment period
-  const periodicRate = annualRate / 100 / paymentsPerYear;
+  const schedule: AmortizationEntry[] = [];
+  let remainingBalance = principal;
+  let currentDate = moment(startDate);
+  const totalPeriods = years * periodsPerYear;
 
-  // Calculate original payment amount (without prepayment)
-  const numerator = periodicRate * Math.pow(1 + periodicRate, totalPayments);
-  const denominator = Math.pow(1 + periodicRate, totalPayments) - 1;
-  const regularPayment = principal * (numerator / denominator);
+  for (
+    let period = 1;
+    period <= totalPeriods && remainingBalance > 0;
+    period++
+  ) {
+    const interestPayment = remainingBalance * ratePerPeriod;
+    let principalPayment = periodicPayment - interestPayment;
+    let additionalPayment = 0;
 
-  // Simulate amortization with prepayment and generate payment schedule
-  function generatePaymentSchedule() {
-    let remaining = principal;
-    let interestPaid = 0;
-    const paymentSchedule: PaymentScheduleItem[] = [];
-    let nextPrepaymentYear = 1;
-    let prepaymentCount = 0;
-
-    // Track totals
-    let yearPrincipal = 0;
-    let yearInterest = 0;
-    let yearPrepayment = 0;
-    let yearTotal = 0;
-    let currentYear = 1;
-    // let paymentsInYear = 0;
-
-    let termPrincipal = 0;
-    let termInterest = 0;
-    let termPrepayment = 0;
-    let termTotal = 0;
-
-    let mortgagePrincipal = 0;
-    let mortgageInterest = 0;
-    let mortgagePrepayment = 0;
-    let mortgageTotal = 0;
-
-    for (let i = 1; i <= totalPayments; i++) {
-      const interest = remaining * periodicRate;
-      let principalPaid = regularPayment - interest;
-      let prepaymentThisPeriod = 0;
-
-      // Apply prepayment logic
-      if (prepaymentAmount > 0 && i >= startWithPayment) {
-        const paymentYear = Math.ceil(i / paymentsPerYear);
-        const isPrepaymentDue =
-          (prepaymentFrequency === "one-time" && i === startWithPayment) ||
-          (prepaymentFrequency === "each-year" &&
-            paymentYear === nextPrepaymentYear) ||
-          prepaymentFrequency === "same-as-regular";
-
-        if (isPrepaymentDue) {
-          prepaymentThisPeriod = prepaymentAmount;
-          principalPaid += prepaymentThisPeriod;
-          prepaymentCount++;
-          if (prepaymentFrequency === "each-year") {
-            nextPrepaymentYear++;
-          }
-        }
+    if (extraPayment > 0) {
+      if (
+        extraPaymentFrequency === "monthly" &&
+        period % (periodsPerYear / 12) === 0
+      ) {
+        additionalPayment = extraPayment;
+      } else if (
+        extraPaymentFrequency === "yearly" &&
+        period % periodsPerYear === 0
+      ) {
+        additionalPayment = extraPayment;
+      } else if (extraPaymentFrequency === "one-time" && period === 1) {
+        additionalPayment = extraPayment;
       }
-
-      principalPaid = Math.min(principalPaid, remaining);
-      remaining -= principalPaid;
-      interestPaid += interest;
-
-      // Update all totals
-      yearPrincipal += principalPaid - (prepaymentThisPeriod || 0);
-      yearInterest += interest;
-      yearPrepayment += prepaymentThisPeriod;
-      yearTotal += principalPaid + interest;
-      // paymentsInYear++;
-
-      if (i <= termPayments) {
-        termPrincipal += principalPaid - (prepaymentThisPeriod || 0);
-        termInterest += interest;
-        termPrepayment += prepaymentThisPeriod;
-        termTotal += principalPaid + interest;
-      }
-
-      mortgagePrincipal += principalPaid - (prepaymentThisPeriod || 0);
-      mortgageInterest += interest;
-      mortgagePrepayment += prepaymentThisPeriod;
-      mortgageTotal += principalPaid + interest;
-
-      // Add payment to schedule
-      paymentSchedule.push({
-        Period: `${paymentFrequency.replace("-", " ")} ${i}`,
-        "Principal Payment": (principalPaid - prepaymentThisPeriod).toFixed(2),
-        "Interest Payment": interest.toFixed(2),
-        "Prepayment Amount": prepaymentThisPeriod.toFixed(2),
-        "Total Payment": (principalPaid + interest).toFixed(2),
-        "Ending Balance": remaining.toFixed(2),
-        isYearlySummary: false,
-      });
-
-      // Check if we need to add a yearly summary
-      if (i % paymentsPerYear === 0 || i === totalPayments || remaining <= 0) {
-        paymentSchedule.push({
-          Period: `Year ${currentYear} Totals`,
-          "Principal Payment": yearPrincipal.toFixed(2),
-          "Interest Payment": yearInterest.toFixed(2),
-          "Prepayment Amount": yearPrepayment.toFixed(2),
-          "Total Payment": yearTotal.toFixed(2),
-          "Ending Balance": remaining.toFixed(2),
-          isYearlySummary: true,
-        });
-
-        // Reset yearly totals
-        yearPrincipal = 0;
-        yearInterest = 0;
-        yearPrepayment = 0;
-        yearTotal = 0;
-        currentYear++;
-        // paymentsInYear = 0;
-      }
-
-      if (remaining <= 0) break;
     }
 
-    // Add After Term Totals if term ended before amortization
-    if (
-      termPayments < paymentSchedule.filter((p) => !p.isYearlySummary).length
-    ) {
-      paymentSchedule.push({
-        Period: "After Term Totals",
-        "Principal Payment": termPrincipal.toFixed(2),
-        "Interest Payment": termInterest.toFixed(2),
-        "Prepayment Amount": termPrepayment.toFixed(2),
-        "Total Payment": termTotal.toFixed(2),
-        "Ending Balance": (principal - termPrincipal - termPrepayment).toFixed(
-          2
-        ),
-        isYearlySummary: true,
-      });
+    principalPayment += additionalPayment;
+
+    if (principalPayment > remainingBalance) {
+      principalPayment = remainingBalance;
     }
 
-    // Add Mortgage Totals
-    paymentSchedule.push({
-      Period: "Mortgage Totals",
-      "Principal Payment": mortgagePrincipal.toFixed(2),
-      "Interest Payment": mortgageInterest.toFixed(2),
-      "Prepayment Amount": mortgagePrepayment.toFixed(2),
-      "Total Payment": mortgageTotal.toFixed(2),
-      "Ending Balance": "0.00",
-      isYearlySummary: true,
+    remainingBalance -= principalPayment;
+    currentDate = currentDate.add(
+      paymentFrequency === "monthly" ? 1 : 2,
+      dateIncrement
+    );
+
+    schedule.push({
+      month: period,
+      date: moment(currentDate),
+      payment: periodicPayment + additionalPayment,
+      principal: principalPayment,
+      interest: interestPayment,
+      remainingBalance,
+      equity: principal - remainingBalance,
     });
 
-    return {
-      paymentSchedule,
-      totalInterest: interestPaid,
-      prepaymentCount,
-      termPrincipal,
-      termInterest,
-      mortgagePrincipal,
-      mortgageInterest,
-    };
+    if (remainingBalance <= 0) break;
   }
 
-  const withPrepayment = generatePaymentSchedule();
-  const prepaymentTermInterest = withPrepayment.termInterest;
+  return schedule;
+};
 
-  // Simulate original amortization for comparison
-  function simulateOriginalAmortization() {
-    let remaining = principal;
-    let interestPaid = 0;
+const calculateEquityData = (
+  schedule: AmortizationEntry[],
+  initialLoanAmount: number,
+  downPayment: number
+): EquityData[] => {
+  const monthsPerYear = 12;
+  const years = Math.ceil(schedule.length / monthsPerYear);
+  const equityData: EquityData[] = [];
 
-    for (let i = 1; i <= totalPayments; i++) {
-      const interest = remaining * periodicRate;
-      const principalPaid = regularPayment - interest;
-      remaining -= principalPaid;
-      interestPaid += interest;
+  // The initial home value is loan amount + down payment
+  const homeValue = initialLoanAmount + downPayment;
 
-      if (remaining <= 0) break;
-    }
+  for (let year = 1; year <= years; year++) {
+    const startMonth = (year - 1) * monthsPerYear;
+    const endMonth = Math.min(year * monthsPerYear, schedule.length);
+    const yearData = schedule.slice(startMonth, endMonth);
 
-    return { totalInterest: interestPaid };
+    const lastEntry = yearData[yearData.length - 1];
+
+    equityData.push({
+      year,
+      // Equity is home value minus remaining balance (plus the down payment is effectively included)
+      equity: lastEntry ? homeValue - lastEntry.remainingBalance : downPayment,
+      interest: yearData.reduce((sum, entry) => sum + entry.interest, 0),
+      principal: yearData.reduce((sum, entry) => sum + entry.principal, 0),
+      remainingBalance: lastEntry
+        ? lastEntry.remainingBalance
+        : initialLoanAmount,
+    });
   }
 
-  const original = simulateOriginalAmortization();
-  const originalTermInterest = original.totalInterest;
+  return equityData;
+};
 
-  const termInterestSavings = originalTermInterest - prepaymentTermInterest;
-  const totalInterestSavings =
-    original.totalInterest - withPrepayment.totalInterest;
+const formatCurrency = (value: number): string => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+};
 
-  const actualPayments = withPrepayment.paymentSchedule.filter(
-    (p) => !p.isYearlySummary
-  ).length;
-  const actualAmortizationYears = actualPayments / paymentsPerYear;
+// UI
+const HelpModal = ({ title, content, visible, onClose }: HelpModalProps) => {
+  return (
+    <Modal
+      title={title}
+      visible={visible}
+      onOk={onClose}
+      onCancel={onClose}
+      footer={[
+        <button
+          key="submit"
+          className="px-4 py-2 rounded-md text-white"
+          style={{ backgroundColor: "#2b6777" }}
+          onClick={onClose}
+        >
+          Got it!
+        </button>,
+      ]}
+    >
+      <div className="text-gray-700 dark:text-gray-300">{content}</div>
+    </Modal>
+  );
+};
 
-  return {
-    paymentFrequency,
-    prepayment: {
-      amount: prepaymentAmount,
-      frequency: prepaymentFrequency,
-      startWithPayment: startWithPayment,
-      totalApplied: withPrepayment.prepaymentCount * prepaymentAmount,
-      count: withPrepayment.prepaymentCount,
-    },
-    term: termYears,
-    amortization: amortizationYears,
-    numberOfPayments: {
-      term: termPayments,
-      originalAmortization: totalPayments,
-      actualAmortization: actualPayments,
-    },
-    paymentAmount: regularPayment.toFixed(2),
-    principalPayments: {
-      term: (
-        withPrepayment.termPrincipal +
-        withPrepayment.prepaymentCount * prepaymentAmount
-      ).toFixed(2),
-      amortization: (
-        withPrepayment.mortgagePrincipal +
-        withPrepayment.prepaymentCount * prepaymentAmount
-      ).toFixed(2),
-    },
-    interestPayments: {
-      term: prepaymentTermInterest.toFixed(2),
-      amortization: withPrepayment.totalInterest.toFixed(2),
-      originalTerm: originalTermInterest.toFixed(2),
-      originalAmortization: original.totalInterest.toFixed(2),
-    },
-    totalCost: {
-      term: (
-        withPrepayment.termPrincipal +
-        prepaymentTermInterest +
-        withPrepayment.prepaymentCount * prepaymentAmount
-      ).toFixed(2),
-      amortization: (
-        withPrepayment.mortgagePrincipal +
-        withPrepayment.totalInterest +
-        withPrepayment.prepaymentCount * prepaymentAmount
-      ).toFixed(2),
-    },
-    interestSavings: {
-      term: termInterestSavings.toFixed(2),
-      amortization: totalInterestSavings.toFixed(2),
-    },
-    timeSaved: {
-      years: (amortizationYears - actualAmortizationYears).toFixed(1),
-      payments: totalPayments - actualPayments,
-    },
-    paymentSchedule: withPrepayment.paymentSchedule,
+// Color scheme
+const COLORS = {
+  primary: "#2b6777",
+  secondary: "#52ab98",
+  accent: "#c8d8e4",
+  background: "#f2f2f2",
+  textDark: "#333333",
+  textLight: "#ffffff",
+};
+
+const paymentBreakdownColors = [
+  COLORS.primary, // Principal & Interest
+  COLORS.secondary, // Property Tax
+  "#FF9800", // Insurance
+  "#F44336", // PMI
+  "#9E9E9E", // HOA
+];
+
+const defaultInputs: MortgageInputs = {
+  homePrice: 300000,
+  downPaymentPercentage: 20,
+  downPaymentAmount: 60000,
+  loanTerm: 30,
+  interestRate: 3.5,
+  interestType: "fixed",
+  paymentFrequency: "monthly",
+  propertyTax: 3000,
+  homeInsurance: 1200,
+  hoaFees: 200,
+  startDate: moment(),
+  extraPayment: 0,
+  extraPaymentFrequency: "monthly",
+};
+
+export const MortgageCalculator: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  const [inputs, setInputs] = useState<MortgageInputs>(defaultInputs);
+  const [activeTab, setActiveTab] = useState<"basic" | "advanced">("basic");
+  const [showAmortization, setShowAmortization] = useState(false);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState({ title: "", content: "" });
+
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [pdfError, setPdfError] = useState<string | null>(null);
+
+  const showHelpModal = (title: string, content: string) => {
+    setModalContent({ title, content });
+    setModalVisible(true);
   };
-}
 
-export function MortgageCalculator() {
-  const [formData, setFormData] = useState<FormData>({
-    principal: 300000,
-    annualRate: 5,
-    amortizationYears: 25,
-    termYears: 5,
-    paymentFrequency: "monthly",
-    prepaymentAmount: 0,
-    prepaymentFrequency: "one-time",
-    startWithPayment: 1,
+  const helpContent = {
+    homePrice: {
+      title: "Home Price",
+      content:
+        "The total purchase price of the home you're looking to buy. This is the base amount before any down payment or financing.",
+    },
+    downPayment: {
+      title: "Down Payment",
+      content:
+        "The initial upfront payment for the home. Typically 20% avoids PMI (Private Mortgage Insurance). You can enter either a percentage or dollar amount.",
+    },
+    loanTerm: {
+      title: "Loan Term",
+      content:
+        "The length of time over which you'll repay your mortgage. Common terms are 15 or 30 years. Shorter terms mean higher monthly payments but less total interest.",
+    },
+    interestRate: {
+      title: "Interest Rate",
+      content:
+        "The annual interest rate for your mortgage loan. This rate affects both your monthly payment and the total amount you'll pay over the life of the loan.",
+    },
+    interestType: {
+      title: "Interest Type",
+      content:
+        "Fixed rate: Interest rate stays the same for the term. Variable rate: Interest rate can change with market conditions.",
+    },
+    paymentFrequency: {
+      title: "Payment Frequency",
+      content:
+        "How often you make mortgage payments. Monthly is most common, but bi-weekly or weekly payments can help you pay off your loan faster.",
+    },
+    propertyTax: {
+      title: "Property Tax",
+      content:
+        "Estimated yearly property tax based on your location. This varies by municipality and is typically a percentage of your home's assessed value.",
+    },
+    homeInsurance: {
+      title: "Home Insurance",
+      content:
+        "Estimated yearly homeowner's insurance cost. This protects your property against damage and typically includes liability coverage.",
+    },
+    hoaFees: {
+      title: "HOA/Condo Fees",
+      content:
+        "Monthly homeowners association fees (if applicable). These cover shared community expenses and amenities in certain neighborhoods.",
+    },
+    startDate: {
+      title: "Loan Start Date",
+      content:
+        "When your mortgage payments will begin. This affects your amortization schedule and when your loan will be fully paid off.",
+    },
+    extraPayment: {
+      title: "Extra Payment",
+      content:
+        "Additional payments to reduce principal and shorten loan term. Even small extra payments can save thousands in interest over time.",
+    },
+  };
+
+  const results = useMemo<MortgageResults>(() => {
+    const downPaymentAmount =
+      (inputs.downPaymentPercentage / 100) * inputs.homePrice;
+    const loanAmount = inputs.homePrice - downPaymentAmount;
+
+    const periodicPayment = calculateCanadianMortgagePayment(
+      loanAmount,
+      inputs.loanTerm,
+      inputs.paymentFrequency,
+      inputs.interestRate,
+      inputs.interestType
+    );
+
+    // Convert to monthly equivalent for display
+    let monthlyEquivalent = periodicPayment;
+    if (inputs.paymentFrequency === "biweekly")
+      monthlyEquivalent = (periodicPayment * 26) / 12;
+    if (inputs.paymentFrequency === "weekly")
+      monthlyEquivalent = (periodicPayment * 52) / 12;
+
+    const monthlyPMI = calculatePMI(loanAmount, inputs.homePrice);
+    const monthlyTax = inputs.propertyTax / 12;
+    const monthlyInsurance = inputs.homeInsurance / 12;
+
+    const amortizationSchedule = generateAmortizationSchedule(
+      loanAmount,
+      inputs.interestRate,
+      inputs.loanTerm,
+      inputs.startDate,
+      inputs.paymentFrequency,
+      inputs.interestType,
+      inputs.extraPayment,
+      inputs.extraPaymentFrequency
+    );
+
+    const totalInterest = amortizationSchedule.reduce(
+      (sum, entry) => sum + entry.interest,
+      0
+    );
+    const equityData = calculateEquityData(
+      amortizationSchedule,
+      loanAmount,
+      downPaymentAmount
+    );
+
+    return {
+      loanAmount,
+      periodicPayment,
+      monthlyEquivalent,
+      monthlyPropertyTax: monthlyTax,
+      monthlyHomeInsurance: monthlyInsurance,
+      monthlyPMI,
+      monthlyHOA: inputs.hoaFees,
+      totalInterestPaid: totalInterest,
+      totalCost: loanAmount + totalInterest + downPaymentAmount,
+      payoffDate:
+        amortizationSchedule.length > 0
+          ? amortizationSchedule[amortizationSchedule.length - 1].date
+          : inputs.startDate.clone().add(inputs.loanTerm, "years"),
+      amortizationSchedule,
+      equityData,
+      interestType: inputs.interestType,
+    };
+  }, [inputs]);
+
+  const handleInputChange = (field: keyof MortgageInputs, value: any) => {
+    setInputs((prev) => {
+      if (field === "downPaymentPercentage") {
+        return {
+          ...prev,
+          downPaymentPercentage: value,
+          downPaymentAmount: (value / 100) * prev.homePrice,
+        };
+      }
+      if (field === "downPaymentAmount") {
+        return {
+          ...prev,
+          downPaymentAmount: value,
+          downPaymentPercentage: (value / prev.homePrice) * 100,
+        };
+      }
+      if (field === "homePrice") {
+        return {
+          ...prev,
+          homePrice: value,
+          downPaymentAmount: (prev.downPaymentPercentage / 100) * value,
+        };
+      }
+      if (field === "startDate" && typeof value === "string") {
+        return { ...prev, [field]: moment(value) };
+      }
+      return { ...prev, [field]: value };
+    });
+  };
+
+  // Payment breakdown data for pie chart
+  const paymentBreakdownData = [
+    { name: "Principal & Interest", value: results.monthlyEquivalent },
+    { name: "Property Tax", value: results.monthlyPropertyTax },
+    { name: "Insurance", value: results.monthlyHomeInsurance },
+    { name: "PMI", value: results.monthlyPMI },
+    { name: "HOA/Condo", value: results.monthlyHOA },
+  ];
+
+  const totalMonthlyCost = paymentBreakdownData.reduce(
+    (sum, item) => sum + item.value,
+    0
+  );
+
+  // Custom tooltip for pie chart
+  const CustomPieTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload;
+      const percent = (data.value / totalMonthlyCost) * 100;
+      return (
+        <div className="bg-white p-3 shadow-md rounded border border-gray-200">
+          <p className="font-medium">{data.name}</p>
+          <p>{formatCurrency(data.value)}</p>
+          <p>{percent.toFixed(1)}% of payment</p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  // Custom tooltip for line/bar charts
+  const CustomChartTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white p-3 shadow-md rounded border border-gray-200">
+          <p className="font-medium mb-2">{label}</p>
+          {payload.map((entry: any, index: number) => (
+            <p key={index} style={{ color: entry.color }}>
+              {entry.name}: {formatCurrency(entry.value)}
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
+
+  // PDF
+  const { toPDF, targetRef } = useCustomPDF({
+    filename: "mortgage-calculator-report.pdf",
+    page: { margin: 10, format: "a4" },
+    onBeforeGetContent: () => {
+      setIsGeneratingPDF(true);
+      setPdfError(null);
+      return Promise.resolve();
+    },
+    onBeforeSave: () => {
+      // Optional: Perform any final checks before saving
+    },
+    onAfterSave: () => {
+      setIsGeneratingPDF(false);
+    },
+    onError: (error) => {
+      setIsGeneratingPDF(false);
+      setPdfError("Failed to generate PDF. Please try again.");
+      console.error("PDF generation error:", error);
+    },
   });
 
-  const [results, setResults] = useState<MortgageDetails | null>(null);
-  const [isCalculating, setIsCalculating] = useState(false);
-  const [activeTab, setActiveTab] = useState<"summary" | "schedule">("summary");
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]:
-        name === "paymentFrequency" || name === "prepaymentFrequency"
-          ? (value as PaymentFrequency | PrepaymentFrequency)
-          : Number(value),
-    }));
-  };
-
-  const calculateMortgage = async () => {
-    setIsCalculating(true);
-    await delay(1000);
-    try {
-      const calculated = calculateMortgageDetails(
-        formData.principal,
-        formData.annualRate,
-        formData.amortizationYears,
-        formData.termYears,
-        formData.paymentFrequency,
-        formData.prepaymentAmount,
-        formData.prepaymentFrequency,
-        formData.startWithPayment
-      );
-      setResults(calculated);
-    } catch (error) {
-      console.error(error);
-      alert("Error in calculation. Please check your inputs.");
-    } finally {
-      setIsCalculating(false);
-    }
-  };
-
-  // Format currency
-  const formatCurrency = (value: string | number) => {
-    return new Intl.NumberFormat("en-CA", {
-      style: "currency",
-      currency: "CAD",
-    }).format(Number(value));
-  };
-
-  // Prepare data for charts
-  const balanceOverTimeData =
-    results?.paymentSchedule
-      .filter((item) => !item.isYearlySummary)
-      .map((item, index) => ({
-        name: `Period ${index + 1}`,
-        balance: Number(item["Ending Balance"]),
-        principal: Number(item["Principal Payment"]),
-        interest: Number(item["Interest Payment"]),
-      })) || [];
-
-  const yearlySummaryData =
-    results?.paymentSchedule
-      .filter((item) => item.Period.startsWith("Year"))
-      .map((item) => ({
-        year: item.Period.replace("Year ", "").replace(" Totals", ""),
-        principal: Number(item["Principal Payment"]),
-        interest: Number(item["Interest Payment"]),
-        prepayment: Number(item["Prepayment Amount"]),
-      })) || [];
-
-  const isDarkMode = document.documentElement.classList.contains("dark");
-
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-neutral-900 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-[#2b6777] dark:text-[#52ab98]">
-            Mortgage Calculator
+    <>
+      <PageHero data={data} />
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200 py-8 px-4">
+        {/* Help Modal */}
+        <HelpModal
+          title={modalContent.title}
+          content={modalContent.content}
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+        />
+        <header className="text-center mb-8">
+          <h1
+            className="text-3xl font-bold text-gray-800 dark:text-white"
+            style={{ color: COLORS.primary }}
+          >
+            Mortgage/Loan Calculator
           </h1>
-          <p className="mt-2 text-lg text-gray-600 dark:text-gray-300">
-            Calculate your mortgage payments, amortization schedule, and savings
-            from prepayments
+          <p className="text-gray-600 dark:text-gray-300 mt-2">
+            Calculate your payment schedule with different payment frequencies
           </p>
-        </div>
+          <div className="flex justify-end">
+            <ExportMortgagePDFModal
+              setIsGeneratingPDF={setIsGeneratingPDF}
+              isGeneratingPDF={isGeneratingPDF}
+              setPdfError={setPdfError}
+              targetRef={targetRef}
+              toPDF={toPDF}
+            />
+          </div>
+          {pdfError && (
+            <p className="text-red-500 font-semibold text-right my-2">
+              Error: PDF could not be downloaded!
+            </p>
+          )}
+        </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Form Section */}
-          <div className="lg:col-span-1 bg-white dark:bg-neutral-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-neutral-700">
-            <h2 className="text-xl font-semibold mb-4 text-[#2b6777] dark:text-[#52ab98] border-b pb-2 dark:border-neutral-700">
-              Mortgage Details
-            </h2>
-
-            <div className="space-y-4">
-              <div>
-                <label
-                  htmlFor="principal"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                >
-                  Mortgage Amount ($)
-                </label>
-                <input
-                  type="number"
-                  id="principal"
-                  name="principal"
-                  value={formData.principal}
-                  onChange={handleChange}
-                  onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
-                    e.currentTarget.blur()
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 dark:border-neutral-600 shadow-sm focus:ring-[#52ab98] focus:border-[#52ab98] p-2 border dark:bg-neutral-700 dark:text-white"
-                  min="1000"
-                  step="1000"
+        <div className="max-w-7xl mx-auto">
+          <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Input Panel */}
+            <div className="lg:col-span-1 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:shadow-xl">
+              {/* Premium Tab Navigation */}
+              <div className="flex border-b dark:border-gray-700 mb-6 relative">
+                <div
+                  className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#2b6777] to-[#52ab98] transition-all duration-300 ease-in-out"
+                  style={{
+                    width: "50%",
+                    left: activeTab === "basic" ? "0" : "50%",
+                  }}
                 />
-              </div>
 
-              <div>
-                <label
-                  htmlFor="annualRate"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                <button
+                  className={`flex-1 py-3 px-4 font-medium transition-all duration-300 relative ${
+                    activeTab === "basic"
+                      ? "text-[#2b6777] dark:text-white font-semibold"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                  }`}
+                  onClick={() => setActiveTab("basic")}
                 >
-                  Annual Interest Rate (%)
-                </label>
-                <input
-                  type="number"
-                  id="annualRate"
-                  name="annualRate"
-                  value={formData.annualRate}
-                  onChange={handleChange}
-                  onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
-                    e.currentTarget.blur()
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 dark:border-neutral-600 shadow-sm focus:ring-[#52ab98] focus:border-[#52ab98] p-2 border dark:bg-neutral-700 dark:text-white"
-                  min="0.1"
-                  max="20"
-                  step="0.01"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="amortizationYears"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                >
-                  Amortization Period (years)
-                </label>
-                <input
-                  type="number"
-                  id="amortizationYears"
-                  name="amortizationYears"
-                  value={formData.amortizationYears}
-                  onChange={handleChange}
-                  onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
-                    e.currentTarget.blur()
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 dark:border-neutral-600 shadow-sm focus:ring-[#52ab98] focus:border-[#52ab98] p-2 border dark:bg-neutral-700 dark:text-white"
-                  min="1"
-                  max="30"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="termYears"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                >
-                  Term (years)
-                </label>
-                <input
-                  type="number"
-                  id="termYears"
-                  name="termYears"
-                  value={formData.termYears}
-                  onChange={handleChange}
-                  onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
-                    e.currentTarget.blur()
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 dark:border-neutral-600 shadow-sm focus:ring-[#52ab98] focus:border-[#52ab98] p-2 border dark:bg-neutral-700 dark:text-white"
-                  min="1"
-                  max={formData.amortizationYears}
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="paymentFrequency"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                >
-                  Payment Frequency
-                </label>
-                <select
-                  id="paymentFrequency"
-                  name="paymentFrequency"
-                  value={formData.paymentFrequency}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 dark:border-neutral-600 shadow-sm focus:ring-[#52ab98] focus:border-[#52ab98] p-2 border dark:bg-neutral-700 dark:text-white"
-                >
-                  <option value="monthly">Monthly</option>
-                  <option value="bi-weekly">Bi-Weekly</option>
-                  <option value="weekly">Weekly</option>
-                  <option value="semi-monthly">Semi-Monthly</option>
-                </select>
-              </div>
-
-              <div className="pt-4 border-t border-gray-200 dark:border-neutral-700">
-                <h3 className="text-lg font-medium text-[#2b6777] dark:text-[#52ab98]">
-                  Prepayment Options
-                </h3>
-                <div className="mt-4 space-y-4">
-                  <div>
-                    <label
-                      htmlFor="prepaymentAmount"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                    >
-                      Prepayment Amount ($)
-                    </label>
-                    <input
-                      type="number"
-                      id="prepaymentAmount"
-                      name="prepaymentAmount"
-                      value={formData.prepaymentAmount}
-                      onChange={handleChange}
-                      onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
-                        e.currentTarget.blur()
-                      }
-                      className="mt-1 block w-full rounded-md border-gray-300 dark:border-neutral-600 shadow-sm focus:ring-[#52ab98] focus:border-[#52ab98] p-2 border dark:bg-neutral-700 dark:text-white"
-                      min="0"
+                  <span className="relative z-10 flex items-center justify-center">
+                    <Icon
+                      icon="mdi:calculator"
+                      className="mr-2"
+                      width={18}
+                      height={18}
                     />
+                    Basic
+                  </span>
+                </button>
+
+                <button
+                  className={`flex-1 py-3 px-4 font-medium transition-all duration-300 relative ${
+                    activeTab === "advanced"
+                      ? "text-[#2b6777] dark:text-white font-semibold"
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+                  }`}
+                  onClick={() => setActiveTab("advanced")}
+                >
+                  <span className="relative z-10 flex items-center justify-center">
+                    <Icon
+                      icon="mdi:tune"
+                      className="mr-2"
+                      width={18}
+                      height={18}
+                    />
+                    Advanced
+                  </span>
+                </button>
+              </div>
+
+              {activeTab === "basic" ? (
+                <div className="space-y-5">
+                  {/* Home Price Input */}
+                  <div className="mb-5">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center">
+                        Home Price
+                        <button
+                          onClick={() =>
+                            showHelpModal(
+                              helpContent.homePrice.title,
+                              helpContent.homePrice.content
+                            )
+                          }
+                          className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                        >
+                          <Icon
+                            icon="mdi:information-outline"
+                            width={16}
+                            height={16}
+                          />
+                        </button>
+                      </label>
+                      <span className="text-xs font-medium text-[#2b6777] dark:text-[#52ab98]">
+                        {formatCurrency(inputs.homePrice)}
+                      </span>
+                    </div>
+                    <NumericFormat
+                      thousandSeparator={true}
+                      prefix="$"
+                      className={`w-full px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#52ab98]/50 focus:border-[#2b6777] bg-white dark:bg-gray-700 dark:text-white transition-all duration-300 hover:border-gray-300 dark:hover:border-gray-600 ${
+                        inputs.homePrice <= 0
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                          : "border-gray-200 dark:border-gray-700"
+                      }`}
+                      value={inputs.homePrice}
+                      onValueChange={(values) =>
+                        handleInputChange("homePrice", values.floatValue || 0)
+                      }
+                    />
+                    {inputs.homePrice <= 0 && (
+                      <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center">
+                        <Icon icon="mdi:alert-circle" className="mr-1" />
+                        Home price must be greater than $0
+                      </p>
+                    )}
                   </div>
 
-                  <div>
-                    <label
-                      htmlFor="prepaymentFrequency"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                    >
-                      Prepayment Frequency
-                    </label>
-                    <select
-                      id="prepaymentFrequency"
-                      name="prepaymentFrequency"
-                      value={formData.prepaymentFrequency}
-                      onChange={handleChange}
-                      className="mt-1 block w-full rounded-md border-gray-300 dark:border-neutral-600 shadow-sm focus:ring-[#52ab98] focus:border-[#52ab98] p-2 border dark:bg-neutral-700 dark:text-white"
-                      disabled={formData.prepaymentAmount <= 0}
-                    >
-                      <option value="one-time">One-Time</option>
-                      <option value="each-year">Each Year</option>
-                      <option value="same-as-regular">
-                        Same as Regular Payment
-                      </option>
-                    </select>
+                  {/* Down Payment Input */}
+                  <div className="mb-5">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center">
+                        Down Payment
+                        <button
+                          onClick={() =>
+                            showHelpModal(
+                              helpContent.downPayment.title,
+                              helpContent.downPayment.content
+                            )
+                          }
+                          className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                        >
+                          <Icon
+                            icon="mdi:information-outline"
+                            width={16}
+                            height={16}
+                          />
+                        </button>
+                      </label>
+                      <span className="text-xs font-medium text-[#2b6777] dark:text-[#52ab98]">
+                        {inputs.downPaymentPercentage}% •{" "}
+                        {formatCurrency(inputs.downPaymentAmount)}
+                      </span>
+                    </div>
+
+                    <div className="flex space-x-2 mb-3">
+                      {[20, 10, 5, 3.5].map((percent) => (
+                        <button
+                          key={percent}
+                          className={`flex-1 py-2 px-3 text-sm rounded-md transition-all duration-300 ${
+                            inputs.downPaymentPercentage === percent
+                              ? "bg-gradient-to-r from-[#2b6777] to-[#52ab98] text-white shadow-md"
+                              : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600"
+                          }`}
+                          onClick={() =>
+                            handleInputChange("downPaymentPercentage", percent)
+                          }
+                        >
+                          {percent}%
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="relative">
+                        <NumericFormat
+                          suffix="%"
+                          decimalScale={2}
+                          className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#52ab98]/50 focus:border-[#2b6777] bg-white dark:bg-gray-700 dark:text-white transition-all duration-300 hover:border-gray-300 dark:hover:border-gray-600"
+                          value={inputs.downPaymentPercentage}
+                          onValueChange={(values) =>
+                            handleInputChange(
+                              "downPaymentPercentage",
+                              values.floatValue || 0
+                            )
+                          }
+                        />
+                      </div>
+                      <div className="relative">
+                        <NumericFormat
+                          thousandSeparator={true}
+                          prefix="$"
+                          className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#52ab98]/50 focus:border-[#2b6777] bg-white dark:bg-gray-700 dark:text-white transition-all duration-300 hover:border-gray-300 dark:hover:border-gray-600"
+                          value={inputs.downPaymentAmount}
+                          onValueChange={(values) =>
+                            handleInputChange(
+                              "downPaymentAmount",
+                              values.floatValue || 0
+                            )
+                          }
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  <div>
-                    <label
-                      htmlFor="startWithPayment"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                    >
-                      Start With Payment #
-                    </label>
-                    <input
-                      type="number"
-                      id="startWithPayment"
-                      name="startWithPayment"
-                      value={formData.startWithPayment}
-                      onChange={handleChange}
-                      onWheel={(e: React.WheelEvent<HTMLInputElement>) =>
-                        e.currentTarget.blur()
+                  {/* Loan Term Input */}
+                  <div className="mb-5">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center">
+                        Loan Term (years)
+                        <button
+                          onClick={() =>
+                            showHelpModal(
+                              helpContent.loanTerm.title,
+                              helpContent.loanTerm.content
+                            )
+                          }
+                          className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                        >
+                          <Icon
+                            icon="mdi:information-outline"
+                            width={16}
+                            height={16}
+                          />
+                        </button>
+                      </label>
+                    </div>
+                    <NumericFormat
+                      className={`w-full px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#52ab98]/50 focus:border-[#2b6777] bg-white dark:bg-gray-700 dark:text-white transition-all duration-300 hover:border-gray-300 dark:hover:border-gray-600 ${
+                        inputs.loanTerm <= 0
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                          : "border-gray-200 dark:border-gray-700"
+                      }`}
+                      value={inputs.loanTerm}
+                      onValueChange={(values) =>
+                        handleInputChange("loanTerm", values.floatValue || 0)
                       }
-                      className="mt-1 block w-full rounded-md border-gray-300 dark:border-neutral-600 shadow-sm focus:ring-[#52ab98] focus:border-[#52ab98] p-2 border dark:bg-neutral-700 dark:text-white"
-                      min="1"
-                      disabled={formData.prepaymentAmount <= 0}
                     />
+                    {inputs.loanTerm <= 0 && (
+                      <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center">
+                        <Icon icon="mdi:alert-circle" className="mr-1" />
+                        Loan term must be greater than 0 years
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Interest Rate Input */}
+                  <div className="mb-5">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center">
+                        Interest Rate (%)
+                        <button
+                          onClick={() =>
+                            showHelpModal(
+                              helpContent.interestRate.title,
+                              helpContent.interestRate.content
+                            )
+                          }
+                          className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                        >
+                          <Icon
+                            icon="mdi:information-outline"
+                            width={16}
+                            height={16}
+                          />
+                        </button>
+                      </label>
+                    </div>
+                    <NumericFormat
+                      suffix="%"
+                      decimalScale={2}
+                      className={`w-full px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#52ab98]/50 focus:border-[#2b6777] bg-white dark:bg-gray-700 dark:text-white transition-all duration-300 hover:border-gray-300 dark:hover:border-gray-600 ${
+                        inputs.interestRate <= 0
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                          : "border-gray-200 dark:border-gray-700"
+                      }`}
+                      value={inputs.interestRate}
+                      onValueChange={(values) =>
+                        handleInputChange(
+                          "interestRate",
+                          values.floatValue || 0
+                        )
+                      }
+                    />
+                    {inputs.interestRate <= 0 && (
+                      <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center">
+                        <Icon icon="mdi:alert-circle" className="mr-1" />
+                        Interest rate must be greater than 0%
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Interest Type Select */}
+                  <div className="mb-5">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center">
+                        Interest Type
+                        <button
+                          onClick={() =>
+                            showHelpModal(
+                              helpContent.interestType.title,
+                              helpContent.interestType.content
+                            )
+                          }
+                          className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                        >
+                          <Icon
+                            icon="mdi:information-outline"
+                            width={16}
+                            height={16}
+                          />
+                        </button>
+                      </label>
+                    </div>
+
+                    <div className="relative">
+                      <select
+                        className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#52ab98]/50 focus:border-[#2b6777] bg-white dark:bg-gray-700 dark:text-white appearance-none transition-all duration-300 hover:border-gray-300 dark:hover:border-gray-600"
+                        value={inputs.interestType}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "interestType",
+                            e.target.value as "fixed" | "variable"
+                          )
+                        }
+                      >
+                        <option value="fixed">Fixed Rate</option>
+                        <option value="variable">Variable Rate</option>
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <Icon
+                          icon="mdi:chevron-down"
+                          className="text-gray-400"
+                          width={20}
+                          height={20}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Payment Frequency Select */}
+                  <div className="mb-5">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center">
+                        Payment Frequency
+                        <button
+                          onClick={() =>
+                            showHelpModal(
+                              helpContent.paymentFrequency.title,
+                              helpContent.paymentFrequency.content
+                            )
+                          }
+                          className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                        >
+                          <Icon
+                            icon="mdi:information-outline"
+                            width={16}
+                            height={16}
+                          />
+                        </button>
+                      </label>
+                    </div>
+
+                    <div className="relative">
+                      <select
+                        className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#52ab98]/50 focus:border-[#2b6777] bg-white dark:bg-gray-700 dark:text-white appearance-none transition-all duration-300 hover:border-gray-300 dark:hover:border-gray-600"
+                        value={inputs.paymentFrequency}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "paymentFrequency",
+                            e.target.value as "monthly" | "biweekly" | "weekly"
+                          )
+                        }
+                      >
+                        <option value="monthly">Monthly</option>
+                        <option value="biweekly">Bi-weekly</option>
+                        <option value="weekly">Weekly</option>
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <Icon
+                          icon="mdi:chevron-down"
+                          className="text-gray-400"
+                          width={20}
+                          height={20}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-5">
+                  {/* Advanced Inputs */}
+                  {(
+                    [
+                      {
+                        key: "propertyTax",
+                        label: "Annual Property Tax",
+                        icon: "mdi:home-city",
+                      },
+                      {
+                        key: "homeInsurance",
+                        label: "Annual Home Insurance",
+                        icon: "mdi:shield-home",
+                      },
+                      {
+                        key: "hoaFees",
+                        label: "Monthly HOA/Condo Fees",
+                        icon: "mdi:account-group",
+                      },
+                    ] as const
+                  ).map((item) => (
+                    <div key={item.key} className="mb-5">
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center">
+                          <Icon
+                            icon={item.icon}
+                            className="mr-2"
+                            width={16}
+                            height={16}
+                          />
+                          {item.label}
+                          <button
+                            onClick={() =>
+                              showHelpModal(
+                                helpContent[item.key].title,
+                                helpContent[item.key].content
+                              )
+                            }
+                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                          >
+                            <Icon
+                              icon="mdi:information-outline"
+                              width={16}
+                              height={16}
+                            />
+                          </button>
+                        </label>
+                        <span className="text-xs font-medium text-[#2b6777] dark:text-[#52ab98]">
+                          {formatCurrency(inputs[item.key])}
+                        </span>
+                      </div>
+                      <NumericFormat
+                        thousandSeparator={true}
+                        prefix="$"
+                        className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#52ab98]/50 focus:border-[#2b6777] bg-white dark:bg-gray-700 dark:text-white transition-all duration-300 hover:border-gray-300 dark:hover:border-gray-600"
+                        value={inputs[item.key]}
+                        onValueChange={(values) =>
+                          handleInputChange(item.key, values.floatValue || 0)
+                        }
+                      />
+                    </div>
+                  ))}
+
+                  {/* Loan Start Date */}
+                  <div className="mb-5">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center">
+                        <Icon
+                          icon="mdi:calendar-start"
+                          className="mr-2"
+                          width={16}
+                          height={16}
+                        />
+                        Loan Start Date
+                        <button
+                          onClick={() =>
+                            showHelpModal(
+                              helpContent.startDate.title,
+                              helpContent.startDate.content
+                            )
+                          }
+                          className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                        >
+                          <Icon
+                            icon="mdi:information-outline"
+                            width={16}
+                            height={16}
+                          />
+                        </button>
+                      </label>
+                    </div>
+                    <div className="relative">
+                      <input
+                        type="date"
+                        className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#52ab98]/50 focus:border-[#2b6777] bg-white dark:bg-gray-700 dark:text-white appearance-none transition-all duration-300 hover:border-gray-300 dark:hover:border-gray-600"
+                        value={inputs.startDate.format("YYYY-MM-DD")}
+                        onChange={(e) =>
+                          handleInputChange("startDate", e.target.value)
+                        }
+                      />
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <Icon
+                          icon="mdi:calendar"
+                          className="text-gray-400"
+                          width={20}
+                          height={20}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Extra Payment */}
+                  <div className="mb-5">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center">
+                        <Icon
+                          icon="mdi:cash-plus"
+                          className="mr-2"
+                          width={16}
+                          height={16}
+                        />
+                        Extra Payment
+                        <button
+                          onClick={() =>
+                            showHelpModal(
+                              helpContent.extraPayment.title,
+                              helpContent.extraPayment.content
+                            )
+                          }
+                          className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                        >
+                          <Icon
+                            icon="mdi:information-outline"
+                            width={16}
+                            height={16}
+                          />
+                        </button>
+                      </label>
+                      <span className="text-xs font-medium text-[#2b6777] dark:text-[#52ab98]">
+                        {formatCurrency(inputs.extraPayment)}
+                      </span>
+                    </div>
+
+                    <NumericFormat
+                      thousandSeparator={true}
+                      prefix="$"
+                      className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#52ab98]/50 focus:border-[#2b6777] bg-white dark:bg-gray-700 dark:text-white transition-all duration-300 hover:border-gray-300 dark:hover:border-gray-600 mb-3"
+                      value={inputs.extraPayment}
+                      onValueChange={(values) =>
+                        handleInputChange(
+                          "extraPayment",
+                          values.floatValue || 0
+                        )
+                      }
+                    />
+
+                    <div className="relative">
+                      <select
+                        className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#52ab98]/50 focus:border-[#2b6777] bg-white dark:bg-gray-700 dark:text-white appearance-none transition-all duration-300 hover:border-gray-300 dark:hover:border-gray-600"
+                        value={inputs.extraPaymentFrequency}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "extraPaymentFrequency",
+                            e.target.value as "monthly" | "yearly" | "one-time"
+                          )
+                        }
+                      >
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                        <option value="one-time">One-time</option>
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <Icon
+                          icon="mdi:chevron-down"
+                          className="text-gray-400"
+                          width={20}
+                          height={20}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Reset Button */}
+              <button
+                className="w-full mt-6 py-3 px-4 bg-gradient-to-r from-[#2b6777] to-[#52ab98] rounded-lg shadow-md text-sm font-semibold text-white hover:shadow-lg transition-all duration-300 flex items-center justify-center"
+                onClick={() => setInputs(defaultInputs)}
+              >
+                <Icon
+                  icon="mdi:refresh"
+                  className="mr-2"
+                  width={18}
+                  height={18}
+                />
+                Reset Calculator
+              </button>
+            </div>
+
+            {/* Results Panel */}
+            <div className="lg:col-span-2 space-y-6">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl border border-gray-100 dark:border-gray-700">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    Payment Summary
+                  </h2>
+                  <div
+                    className="w-10 h-10 rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: COLORS.primary + "20" }}
+                  >
+                    <Icon
+                      icon="mdi:finance"
+                      className="text-xl"
+                      style={{ color: COLORS.primary }}
+                    />
+                  </div>
+                </div>
+
+                {/* Primary Metrics - Card Style */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+                  {/* Payment Card */}
+                  <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-md">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div
+                        className="w-8 h-8 rounded-md flex items-center justify-center"
+                        style={{ backgroundColor: COLORS.primary + "20" }}
+                      >
+                        <Icon
+                          icon="mdi:cash-multiple"
+                          className="text-sm"
+                          style={{ color: COLORS.primary }}
+                        />
+                      </div>
+                      <p className="text-sm font-medium text-gray-500 dark:text-gray-300">
+                        {inputs.paymentFrequency === "monthly"
+                          ? "Monthly"
+                          : inputs.paymentFrequency === "biweekly"
+                          ? "Bi-weekly"
+                          : "Weekly"}{" "}
+                        Payment
+                      </p>
+                    </div>
+                    <p
+                      className="text-3xl font-bold"
+                      style={{ color: COLORS.primary }}
+                    >
+                      {formatCurrency(results.periodicPayment)}
+                    </p>
+                    <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div
+                        className="h-full"
+                        style={{
+                          width: "100%",
+                          backgroundColor: COLORS.primary,
+                          backgroundImage: `linear-gradient(to right, ${COLORS.primary}, ${COLORS.secondary})`,
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  {/* Loan Amount Card */}
+                  <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-md">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div
+                        className="w-8 h-8 rounded-md flex items-center justify-center"
+                        style={{ backgroundColor: COLORS.secondary + "20" }}
+                      >
+                        <Icon
+                          icon="mdi:bank-outline"
+                          className="text-sm"
+                          style={{ color: COLORS.secondary }}
+                        />
+                      </div>
+                      <p className="text-sm font-medium text-gray-500 dark:text-gray-300">
+                        Loan Amount
+                      </p>
+                    </div>
+                    <p
+                      className="text-3xl font-bold"
+                      style={{ color: COLORS.secondary }}
+                    >
+                      {formatCurrency(results.loanAmount)}
+                    </p>
+                    <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div
+                        className="h-full"
+                        style={{
+                          width: "100%",
+                          backgroundColor: COLORS.secondary,
+                          backgroundImage: `linear-gradient(to right, ${COLORS.secondary}, ${COLORS.accent})`,
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  {/* Total Interest Card */}
+                  <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-md">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div
+                        className="w-8 h-8 rounded-md flex items-center justify-center"
+                        style={{ backgroundColor: "#F44336" + "20" }}
+                      >
+                        <Icon
+                          icon="mdi:percent"
+                          className="text-sm"
+                          style={{ color: "#F44336" }}
+                        />
+                      </div>
+                      <p className="text-sm font-medium text-gray-500 dark:text-gray-300">
+                        Total Interest
+                      </p>
+                    </div>
+                    <p
+                      className="text-3xl font-bold"
+                      style={{ color: "#F44336" }}
+                    >
+                      {formatCurrency(results.totalInterestPaid)}
+                    </p>
+                    <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div
+                        className="h-full"
+                        style={{
+                          width: "100%",
+                          backgroundColor: "#F44336",
+                          backgroundImage: `linear-gradient(to right, #F44336, #FF9800)`,
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Secondary Metrics - Minimal Style */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="p-5 rounded-xl bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700/70">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-300 mb-1">
+                          Payoff Date
+                        </p>
+                        <p className="text-xl font-semibold text-gray-800 dark:text-white">
+                          {results.payoffDate.format("MMMM YYYY")}
+                        </p>
+                      </div>
+                      <Icon
+                        icon="mdi:calendar-check"
+                        className="text-2xl opacity-70"
+                        style={{ color: COLORS.primary }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="p-5 rounded-xl bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-700/70">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-300 mb-1">
+                          Total Cost
+                        </p>
+                        <p className="text-xl font-semibold text-gray-800 dark:text-white">
+                          {formatCurrency(results.totalCost)}
+                        </p>
+                      </div>
+                      <Icon
+                        icon="mdi:finance"
+                        className="text-2xl opacity-70"
+                        style={{ color: COLORS.secondary }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Interest Type Indicator */}
+                <div className="mt-6 p-4 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500 dark:text-gray-300 mb-1">
+                        Interest Type
+                      </p>
+                      <p className="text-lg font-semibold text-gray-800 dark:text-white capitalize">
+                        {results.interestType} Rate
+                      </p>
+                    </div>
+                    <div
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        results.interestType === "fixed"
+                          ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                          : "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
+                      }`}
+                    >
+                      {results.interestType === "fixed" ? "Fixed" : "Variable"}
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <button
-                onClick={calculateMortgage}
-                disabled={isCalculating}
-                className={`w-full bg-[#2b6777] hover:bg-[#1e4e5d] dark:bg-[#52ab98] dark:hover:bg-[#3d8a7a] text-white font-bold py-3 px-4 rounded-md transition duration-150 ease-in-out ${
-                  isCalculating ? "opacity-70 cursor-not-allowed" : ""
-                }`}
-              >
-                {isCalculating ? (
-                  <span className="flex items-center justify-center">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md transition-colors duration-200">
+                  <h3
+                    className="text-lg font-semibold mb-4 text-gray-800 dark:text-white"
+                    style={{ color: COLORS.primary }}
+                  >
+                    Payment Breakdown (Monthly Equivalent)
+                  </h3>
+                  <div className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={paymentBreakdownData}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          outerRadius={80}
+                          fill="#8884d8"
+                          dataKey="value"
+                        >
+                          {paymentBreakdownData.map((_, index) => (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={
+                                paymentBreakdownColors[
+                                  index % paymentBreakdownColors.length
+                                ]
+                              }
+                            />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          content={<CustomPieTooltip />}
+                          wrapperStyle={{
+                            backgroundColor: "var(--bg-gray-100)",
+                            borderColor: "var(--border-gray-200)",
+                            borderRadius: "0.5rem",
+                            padding: "0.5rem",
+                            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                          }}
+                        />
+                        <Legend
+                          layout="horizontal"
+                          verticalAlign="bottom"
+                          align="center"
+                          wrapperStyle={{
+                            color: "var(--text-gray-800)",
+                            paddingTop: "1rem",
+                          }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md transition-colors duration-200">
+                  <h3
+                    className="text-lg font-semibold mb-4 text-gray-800 dark:text-white"
+                    style={{ color: COLORS.primary }}
+                  >
+                    Equity Timeline
+                  </h3>
+                  <div className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <ComposedChart
+                        data={results.equityData}
+                        margin={{ top: 20, right: 20, left: 50, bottom: 20 }}
+                      >
+                        <CartesianGrid
+                          strokeDasharray="3 3"
+                          stroke="#eee"
+                          strokeOpacity={0.2}
+                        />
+                        <XAxis
+                          dataKey="year"
+                          stroke="#888"
+                          tick={{ fill: "var(--text-gray-600)" }}
+                        />
+                        <YAxis
+                          tickFormatter={(value) => formatCurrency(value)}
+                          stroke="#888"
+                          tick={{ fill: "var(--text-gray-600)" }}
+                        />
+                        <Tooltip
+                          content={<CustomChartTooltip />}
+                          wrapperStyle={{
+                            backgroundColor: "var(--bg-gray-100)",
+                            borderColor: "var(--border-gray-200)",
+                            borderRadius: "0.5rem",
+                            padding: "0.5rem",
+                            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                          }}
+                        />
+                        <Legend
+                          wrapperStyle={{
+                            color: "var(--text-gray-800)",
+                            paddingTop: "1rem",
+                          }}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="equity"
+                          name="Equity"
+                          stackId="1"
+                          stroke={COLORS.secondary}
+                          fill={COLORS.secondary}
+                          fillOpacity={0.2}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="remainingBalance"
+                          name="Remaining Balance"
+                          stackId="2"
+                          stroke={COLORS.primary}
+                          fill={COLORS.primary}
+                          fillOpacity={0.2}
+                        />
+                      </ComposedChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md transition-colors duration-200">
+                <h3
+                  className="text-lg font-semibold mb-4 text-gray-800 dark:text-white"
+                  style={{ color: COLORS.primary }}
+                >
+                  Interest vs Principal
+                </h3>
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={results.equityData}
+                      margin={{ top: 20, right: 20, left: 40, bottom: 20 }}
+                    >
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke="#eee"
+                        strokeOpacity={0.2}
+                      />
+                      <XAxis
+                        dataKey="year"
+                        stroke="#888"
+                        tick={{ fill: "var(--text-gray-600)" }}
+                      />
+                      <YAxis
+                        tickFormatter={(value) => formatCurrency(value)}
+                        stroke="#888"
+                        tick={{ fill: "var(--text-gray-600)" }}
+                      />
+                      <Tooltip
+                        content={<CustomChartTooltip />}
+                        wrapperStyle={{
+                          backgroundColor: "var(--bg-gray-100)",
+                          borderColor: "var(--border-gray-200)",
+                          borderRadius: "0.5rem",
+                          padding: "0.5rem",
+                          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                        }}
+                      />
+                      <Legend
+                        wrapperStyle={{
+                          color: "var(--text-gray-800)",
+                          paddingTop: "1rem",
+                        }}
+                      />
+                      <Bar
+                        dataKey="principal"
+                        name="Principal"
+                        fill={COLORS.secondary}
+                      />
+                      <Bar
+                        dataKey="interest"
+                        name="Interest"
+                        fill={COLORS.primary}
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden transition-colors duration-200 border border-gray-100 dark:border-gray-700">
+                <div className="p-4 border-b dark:border-gray-700 flex justify-between items-center">
+                  <div className="flex items-center space-x-3">
                     <svg
-                      className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 h-5"
+                      style={{ color: COLORS.primary }}
                       fill="none"
+                      stroke="currentColor"
                       viewBox="0 0 24 24"
                     >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
                       <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                      />
                     </svg>
-                    Calculating...
-                  </span>
-                ) : (
-                  "Calculate Mortgage"
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Results Section */}
-          <div className="lg:col-span-2 space-y-8">
-            {results && (
-              <>
-                {/* Summary Card */}
-                <div className="bg-white dark:bg-neutral-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-neutral-700">
-                  <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-semibold text-[#2b6777] dark:text-[#52ab98]">
-                      Mortgage Summary
-                    </h2>
-                    <div className="text-right">
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Payment Frequency:{" "}
-                        <span className="font-medium dark:text-white">
-                          {results.paymentFrequency}
-                        </span>
-                      </p>
-                      <p className="text-lg font-bold text-[#2b6777] dark:text-[#52ab98]">
-                        Payment Amount: {formatCurrency(results.paymentAmount)}
-                      </p>
-                    </div>
+                    <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                      Amortization Schedule
+                    </h3>
                   </div>
+                  <button
+                    className="flex items-center space-x-1 text-sm font-medium transition-colors duration-200 hover:opacity-80"
+                    style={{ color: COLORS.primary }}
+                    onClick={() => setShowAmortization(!showAmortization)}
+                  >
+                    <span>
+                      {showAmortization ? "Hide Details" : "Show Details"}
+                    </span>
+                    <svg
+                      className={`w-4 h-4 transform transition-transform duration-200 ${
+                        showAmortization ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+                </div>
 
-                  <div className="mb-6">
-                    <div className="flex border-b border-gray-200 dark:border-neutral-700">
-                      <button
-                        className={`py-2 px-4 font-medium ${
-                          activeTab === "summary"
-                            ? "text-[#2b6777] dark:text-[#52ab98] border-b-2 border-[#2b6777] dark:border-[#52ab98]"
-                            : "text-gray-500 dark:text-gray-400 hover:text-[#52ab98]"
-                        }`}
-                        onClick={() => setActiveTab("summary")}
-                      >
-                        Summary
-                      </button>
-                      <button
-                        className={`py-2 px-4 font-medium ${
-                          activeTab === "schedule"
-                            ? "text-[#2b6777] dark:text-[#52ab98] border-b-2 border-[#2b6777] dark:border-[#52ab98]"
-                            : "text-gray-500 dark:text-gray-400 hover:text-[#52ab98]"
-                        }`}
-                        onClick={() => setActiveTab("schedule")}
-                      >
-                        Payment Schedule
-                      </button>
-                    </div>
-                  </div>
-
-                  {activeTab === "summary" ? (
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
-                        <thead className="bg-gray-50 dark:bg-neutral-700">
+                {showAmortization && (
+                  <div className="relative">
+                    <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white dark:from-gray-800 to-transparent z-10"></div>
+                    <div className="overflow-x-auto max-h-96 pb-4 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent">
+                      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead className="sticky top-0 bg-gray-50 dark:bg-gray-700 z-20">
                           <tr>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider"
-                            >
-                              Category
-                            </th>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider"
-                            >
-                              Term ({results.term} years)
-                            </th>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider"
-                            >
-                              Amortization Period ({results.amortization} years)
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody className="bg-white dark:bg-neutral-800 divide-y divide-gray-200 dark:divide-neutral-700">
-                          <tr>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                              Number of Payments
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                              {results.numberOfPayments.term}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                              {results.numberOfPayments.actualAmortization}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                              Mortgage Payment
-                            </td>
-                            <td
-                              className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300"
-                              colSpan={2}
-                            >
-                              {formatCurrency(results.paymentAmount)} per{" "}
-                              {results.paymentFrequency}
-                            </td>
-                          </tr>
-                          {results.prepayment.amount > 0 && (
-                            <>
-                              <tr>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                                  Prepayment
-                                </td>
-                                <td
-                                  className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300"
-                                  colSpan={2}
-                                >
-                                  {formatCurrency(results.prepayment.amount)}{" "}
-                                  {results.prepayment.frequency.replace(
-                                    "-",
-                                    " "
-                                  )}{" "}
-                                  ({results.prepayment.count}x)
-                                </td>
-                              </tr>
-                              <tr>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                                  Total Prepayments
-                                </td>
-                                <td
-                                  className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300"
-                                  colSpan={2}
-                                >
-                                  {formatCurrency(
-                                    results.prepayment.totalApplied
-                                  )}
-                                </td>
-                              </tr>
-                            </>
-                          )}
-                          <tr>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                              Principal Payments
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                              {formatCurrency(results.principalPayments.term)}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                              {formatCurrency(
-                                results.principalPayments.amortization
-                              )}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                              Interest Payments
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                              {formatCurrency(results.interestPayments.term)}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                              {formatCurrency(
-                                results.interestPayments.amortization
-                              )}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                              Total Cost
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                              {formatCurrency(results.totalCost.term)}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                              {formatCurrency(results.totalCost.amortization)}
-                            </td>
-                          </tr>
-                          {results.prepayment.amount > 0 && (
-                            <tr>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                                Interest Savings
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-[#28a745]">
-                                {formatCurrency(results.interestSavings.term)}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-[#28a745]">
-                                {formatCurrency(
-                                  results.interestSavings.amortization
-                                )}
-                              </td>
-                            </tr>
-                          )}
-                          {results.prepayment.amount > 0 && (
-                            <tr>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                                Time Saved
-                              </td>
-                              <td
-                                className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300"
-                                colSpan={2}
-                              >
-                                {results.timeSaved.years} years (
-                                {results.timeSaved.payments} payments)
-                              </td>
-                            </tr>
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
-                  ) : (
-                    <div className="overflow-x-auto max-h-96 overflow-y-auto">
-                      <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
-                        <thead className="bg-gray-50 dark:bg-neutral-700 sticky top-0">
-                          <tr>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider"
-                            >
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                               Period
                             </th>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider"
-                            >
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                              Date
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                              Payment
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                               Principal
                             </th>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider"
-                            >
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                               Interest
                             </th>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider"
-                            >
-                              Prepayment
-                            </th>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider"
-                            >
-                              Total Payment
-                            </th>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider"
-                            >
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                               Balance
                             </th>
                           </tr>
                         </thead>
-                        <tbody className="bg-white dark:bg-neutral-800 divide-y divide-gray-200 dark:divide-neutral-700">
-                          {results.paymentSchedule.map((payment, index) => (
+                        <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                          {results.amortizationSchedule.map((entry, index) => (
                             <tr
                               key={index}
-                              className={
-                                payment.isYearlySummary
-                                  ? "bg-gray-50 dark:bg-neutral-700 font-semibold"
-                                  : "hover:bg-gray-50 dark:hover:bg-neutral-700"
-                              }
+                              className={`hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 ${
+                                index % 2 === 0
+                                  ? "bg-white dark:bg-gray-800"
+                                  : "bg-gray-50 dark:bg-gray-700"
+                              }`}
                             >
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                {payment.Period}
+                              <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                                {entry.month}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                                {formatCurrency(payment["Principal Payment"])}
+                              <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                                {entry.date.format("MMM YYYY")}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                                {formatCurrency(payment["Interest Payment"])}
+                              <td className="px-6 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                                {formatCurrency(entry.payment)}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                                {formatCurrency(payment["Prepayment Amount"])}
+                              <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                                {formatCurrency(entry.principal)}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                                {formatCurrency(payment["Total Payment"])}
+                              <td className="px-6 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                                {formatCurrency(entry.interest)}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                                {formatCurrency(payment["Ending Balance"])}
+                              <td className="px-6 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                                {formatCurrency(entry.remainingBalance)}
                               </td>
                             </tr>
                           ))}
                         </tbody>
                       </table>
                     </div>
-                  )}
-                </div>
+                    <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white dark:from-gray-800 to-transparent z-10"></div>
 
-                {/* Charts Section */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-white dark:bg-neutral-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-neutral-700">
-                    <h3 className="text-lg font-medium text-[#2b6777] dark:text-[#52ab98] mb-4">
-                      Mortgage Balance Over Time
-                    </h3>
-                    <div className="h-64">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={balanceOverTimeData}>
-                          <CartesianGrid
-                            strokeDasharray="3 3"
-                            stroke="#eee"
-                            strokeOpacity={0.5}
-                          />
-                          <XAxis
-                            dataKey="name"
-                            tick={{ fontSize: 12 }}
-                            stroke="#888"
-                          />
-                          <YAxis
-                            tickFormatter={(value) =>
-                              `$${(value / 1000).toFixed(0)}k`
-                            }
-                            stroke="#888"
-                          />
-                          <Tooltip
-                            formatter={(value) => formatCurrency(Number(value))}
-                            contentStyle={{
-                              backgroundColor: isDarkMode ? "#1e293b" : "#fff",
-                              border: "1px solid #ddd",
-                              borderRadius: "4px",
-                              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                              color: isDarkMode ? "#fff" : "#333",
-                            }}
-                          />
-                          <Legend />
-                          <Line
-                            type="monotone"
-                            dataKey="balance"
-                            stroke="#2b6777"
-                            strokeWidth={2}
-                            dot={false}
-                            activeDot={{
-                              r: 6,
-                              stroke: "#52ab98",
-                              strokeWidth: 2,
-                            }}
-                            name="Balance"
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </div>
-
-                  <div className="bg-white dark:bg-neutral-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-neutral-700">
-                    <h3 className="text-lg font-medium text-[#2b6777] dark:text-[#52ab98] mb-4">
-                      Yearly Payment Breakdown
-                    </h3>
-                    <div className="h-64">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={yearlySummaryData}>
-                          <CartesianGrid
-                            strokeDasharray="3 3"
-                            stroke="#eee"
-                            strokeOpacity={0.5}
-                          />
-                          <XAxis dataKey="year" stroke="#888" />
-                          <YAxis
-                            tickFormatter={(value) =>
-                              `$${(value / 1000).toFixed(0)}k`
-                            }
-                            stroke="#888"
-                          />
-                          <Tooltip
-                            formatter={(value) => formatCurrency(Number(value))}
-                            contentStyle={{
-                              backgroundColor: isDarkMode ? "#1e293b" : "#fff",
-                              border: "1px solid #ddd",
-                              borderRadius: "4px",
-                              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                              color: isDarkMode ? "#fff" : "#333",
-                            }}
-                          />
-                          <Legend />
-                          <Bar
-                            dataKey="principal"
-                            stackId="a"
-                            fill="#2b6777"
-                            name="Principal"
-                            radius={[4, 4, 0, 0]}
-                          />
-                          <Bar
-                            dataKey="interest"
-                            stackId="a"
-                            fill="#52ab98"
-                            name="Interest"
-                            radius={[4, 4, 0, 0]}
-                          />
-                          {results.prepayment.amount > 0 && (
-                            <Bar
-                              dataKey="prepayment"
-                              stackId="a"
-                              fill="#f3c623"
-                              name="Prepayment"
-                              radius={[4, 4, 0, 0]}
+                    <div className="px-6 py-3 border-t dark:border-gray-700 flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+                      <div>
+                        Showing {results.amortizationSchedule.length} periods
+                      </div>
+                      <div className="flex space-x-4">
+                        <button className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 19l-7-7 7-7"
                             />
-                          )}
-                        </BarChart>
-                      </ResponsiveContainer>
+                          </svg>
+                        </button>
+                        <button className="hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </>
-            )}
-
-            {!results && (
-              <div className="bg-white dark:bg-neutral-800 p-8 rounded-lg shadow-md border border-gray-200 dark:border-neutral-700 text-center">
-                <div className="mx-auto h-24 w-24 text-gray-400 dark:text-gray-500">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1}
-                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="mt-4 text-lg font-medium text-[#2b6777] dark:text-[#52ab98]">
-                  No calculation yet
-                </h3>
-                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                  Enter your mortgage details and click "Calculate Mortgage" to
-                  see your amortization schedule.
-                </p>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* PDF Hidden Content  */}
+      <div
+        ref={targetRef}
+        style={{
+          display: "none",
+          fontFamily: "Arial, sans-serif",
+          fontSize: "12px",
+        }}
+      >
+        <FixedWidthMortgagePDFTemplate inputs={inputs} results={results} />
+      </div>
+    </>
   );
-}
+};

@@ -1,7 +1,5 @@
 import moment from "moment";
 import { assets } from "../../assets/assets";
-import { MortgageInputs, MortgageResults } from "./types";
-import { formatCurrency } from "./PowerfulMortgageCalculator.utils";
 import {
   Area,
   Bar,
@@ -15,6 +13,58 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+
+// Types
+interface MortgageInputs {
+  homePrice: number;
+  downPaymentPercentage: number;
+  downPaymentAmount: number;
+  loanTerm: number;
+  interestRate: number;
+  interestType: "fixed" | "variable";
+  paymentFrequency: "monthly" | "biweekly" | "weekly";
+  propertyTax: number;
+  homeInsurance: number;
+  hoaFees: number;
+  startDate: moment.Moment;
+  extraPayment: number;
+  extraPaymentFrequency: "monthly" | "yearly" | "one-time";
+}
+
+interface MortgageResults {
+  loanAmount: number;
+  periodicPayment: number;
+  monthlyEquivalent: number;
+  monthlyPropertyTax: number;
+  monthlyHomeInsurance: number;
+  monthlyPMI: number;
+  monthlyHOA: number;
+  totalInterestPaid: number;
+  totalCost: number;
+  payoffDate: moment.Moment;
+  amortizationSchedule: AmortizationEntry[];
+  equityData: EquityData[];
+  interestType: "fixed" | "variable";
+}
+
+interface AmortizationEntry {
+  month: number;
+  date: moment.Moment;
+  payment: number;
+  principal: number;
+  interest: number;
+  remainingBalance: number;
+  equity: number;
+}
+
+interface EquityData {
+  year: number;
+  equity: number;
+  interest: number;
+  principal: number;
+  remainingBalance: number;
+}
+
 
 // Color scheme
 const COLORS = {
@@ -33,6 +83,15 @@ const paymentBreakdownColors = [
   "#F44336", // PMI
   "#9E9E9E", // HOA
 ];
+
+const formatCurrency = (value: number): string => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+};
 
 export const FixedWidthMortgagePDFTemplate = ({
   inputs,
