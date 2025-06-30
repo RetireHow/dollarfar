@@ -290,6 +290,22 @@ export const FixedWidthMortgagePDFTemplate = ({
                   {inputs.interestRate}%
                 </td>
               </tr>
+              <tr>
+                <td
+                  style={{ padding: "6px 0", borderBottom: "1px solid #eee" }}
+                >
+                  <strong>Interest Type:</strong>
+                </td>
+                <td
+                  style={{
+                    padding: "6px 0",
+                    borderBottom: "1px solid #eee",
+                    textAlign: "right",
+                  }}
+                >
+                  {inputs.interestType}
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
