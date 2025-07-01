@@ -26,7 +26,7 @@ import { ExportMortgagePDFModal } from "./ExportMortgagePDFModal";
 import { useCustomPDF } from "../../hooks/useCustomPDF";
 import { FixedWidthMortgagePDFTemplate } from "./FixedWidthMortgagePDFTemplate";
 const data = {
-  title: "Mortgage/Loan Calculator",
+  title: "Mortgage/Loan Calculator Canada Style",
   description:
     "Quickly estimate your home loan payments, amortization schedule, and potential savings from prepayments. Compare different payment frequencies, visualize interest costs, and see how extra payments reduce your loan term.",
   image: assets.mortgageIconSvg,
@@ -651,7 +651,7 @@ export const MortgageCalculator: React.FC = () => {
             className="text-3xl font-bold text-gray-800 dark:text-white"
             style={{ color: COLORS.primary }}
           >
-            Mortgage/Loan Calculator
+            Mortgage/Loan Calculator Canada Style
           </h1>
           <p className="text-gray-600 dark:text-gray-300 mt-2">
             Calculate your payment schedule with different payment frequencies
@@ -890,7 +890,8 @@ export const MortgageCalculator: React.FC = () => {
                       </p>
                     )}
                   </div>
-
+                  
+                  
                   {/* Interest Rate Input */}
                   <div className="mb-5">
                     <div className="flex items-center justify-between mb-2">
@@ -938,7 +939,7 @@ export const MortgageCalculator: React.FC = () => {
                   </div>
 
                   {/* Interest Type Select */}
-                  <div className="mb-5">
+                  {/* <div className="mb-5">
                     <div className="flex items-center justify-between mb-2">
                       <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center">
                         Interest Type
@@ -983,7 +984,99 @@ export const MortgageCalculator: React.FC = () => {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
+
+                  {/* Interest Type Tabs - Premium Design */}
+<div className="mb-5">
+  <div className="flex items-center justify-between mb-2">
+    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center">
+      Interest Type
+      <button
+        onClick={() =>
+          showHelpModal(
+            helpContent.interestType.title,
+            helpContent.interestType.content
+          )
+        }
+        className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+      >
+        <Icon icon="mdi:information-outline" width={16} height={16} />
+      </button>
+    </label>
+  </div>
+
+  <div className="relative">
+    <div className="flex rounded-lg bg-gray-100 dark:bg-gray-700 p-1 shadow-inner">
+      {/* Fixed Rate Tab */}
+      <button
+        className={`flex-1 py-3 px-4 rounded-md text-sm font-medium transition-all duration-300 relative overflow-hidden ${
+          inputs.interestType === "fixed"
+            ? "text-white"
+            : "text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+        }`}
+        onClick={() => handleInputChange("interestType", "fixed")}
+      >
+        {inputs.interestType === "fixed" && (
+          <div
+            className="absolute inset-0 z-0"
+            style={{
+              background: "linear-gradient(135deg, #2b6777 0%, #52ab98 100%)",
+            }}
+          />
+        )}
+        <span className="relative z-10 flex items-center justify-center">
+          <Icon
+            icon="mdi:lock-outline"
+            className="mr-2"
+            width={18}
+            height={18}
+          />
+          Fixed Rate
+        </span>
+      </button>
+
+      {/* Variable Rate Tab */}
+      <button
+        className={`flex-1 py-3 px-4 rounded-md text-sm font-medium transition-all duration-300 relative overflow-hidden ${
+          inputs.interestType === "variable"
+            ? "text-white"
+            : "text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+        }`}
+        onClick={() => handleInputChange("interestType", "variable")}
+      >
+        {inputs.interestType === "variable" && (
+          <div
+            className="absolute inset-0 z-0"
+            style={{
+              background: "linear-gradient(135deg, #2b6777 0%, #52ab98 100%)",
+            }}
+          />
+        )}
+        <span className="relative z-10 flex items-center justify-center">
+          <Icon
+            icon="mdi:chart-line"
+            className="mr-2"
+            width={18}
+            height={18}
+          />
+          Variable Rate
+        </span>
+      </button>
+    </div>
+
+    {/* Animated underline indicator */}
+    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+      <div
+        className={`h-full absolute top-0 transition-all duration-300 ease-in-out ${
+          inputs.interestType === "fixed"
+            ? "left-0 right-1/2 bg-gradient-to-r from-[#2b6777] to-[#52ab98]"
+            : "left-1/2 right-0 bg-gradient-to-r from-[#2b6777] to-[#52ab98]"
+        }`}
+      />
+    </div>
+  </div>
+</div>
+
 
                   {/* Payment Frequency Select */}
                   <div className="mb-5">
