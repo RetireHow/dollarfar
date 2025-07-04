@@ -53,6 +53,7 @@ interface MortgageResults {
   loanAmount: number;
   periodicPayment: number;
   monthlyEquivalent: number;
+  totalMonthlyPayment: number;
   monthlyPropertyTax: number;
   monthlyHomeInsurance: number;
   monthlyPMI: number;
@@ -112,69 +113,46 @@ const calculateCanadianMortgagePayment = (
   annualInterestRate: number,
   interestType: "fixed" | "variable"
 ): number => {
-  // Convert annual rate to decimal
-  const annualRateDecimal = annualInterestRate / 100;
-
-  // Calculate payment-specific values
-  let paymentCountPerYear: number;
-  let totalPayments: number;
+  const r = annualInterestRate / 100;
   let periodicRate: number;
+  let totalPayments: number;
 
-  switch (paymentFrequency) {
-    case "monthly":
-      paymentCountPerYear = 12;
-      totalPayments = amortizationYears * paymentCountPerYear;
+  if (paymentFrequency === "monthly") {
+    totalPayments = amortizationYears * 12;
 
-      if (interestType === "fixed") {
-        // Canadian fixed rate mortgages compound semi-annually
-        const semiAnnualRate = annualRateDecimal / 2;
-        const monthlyRate = Math.pow(1 + semiAnnualRate, 1 / 6) - 1;
-        periodicRate = monthlyRate;
-      } else {
-        // Variable rates compound monthly
-        periodicRate = annualRateDecimal / 12;
-      }
-      break;
-
-    case "biweekly":
-      paymentCountPerYear = 26;
-      totalPayments = amortizationYears * paymentCountPerYear;
-
-      if (interestType === "fixed") {
-        // Convert annual rate to biweekly rate with semi-annual compounding
-        const semiAnnualRate = annualRateDecimal / 2;
-        const biweeklyRate = Math.pow(1 + semiAnnualRate, 1 / 13) - 1;
-        periodicRate = biweeklyRate;
-      } else {
-        // Variable rate - simple division
-        periodicRate = annualRateDecimal / 26;
-      }
-      break;
-
-    case "weekly":
-      paymentCountPerYear = 52;
-      totalPayments = amortizationYears * paymentCountPerYear;
-
-      if (interestType === "fixed") {
-        // Convert annual rate to weekly rate with semi-annual compounding
-        const semiAnnualRate = annualRateDecimal / 2;
-        const weeklyRate = Math.pow(1 + semiAnnualRate, 1 / 26) - 1;
-        periodicRate = weeklyRate;
-      } else {
-        // Variable rate - simple division
-        periodicRate = annualRateDecimal / 52;
-      }
-      break;
-
-    default:
-      throw new Error(
-        'Invalid payment frequency. Use "monthly", "biweekly", or "weekly"'
-      );
+    if (interestType === "fixed") {
+      // Step 1: Convert annual nominal rate (semi-annual compounding) to effective annual rate (EAR)
+      const EAR = Math.pow(1 + r / 2, 2) - 1;
+      // Step 2: Convert EAR to monthly rate
+      periodicRate = Math.pow(1 + EAR, 1 / 12) - 1;
+    } else {
+      // Variable rate: Simple monthly rate
+      periodicRate = r / 12;
+    }
+  } else if (paymentFrequency === "biweekly") {
+    totalPayments = amortizationYears * 26;
+    if (interestType === "fixed") {
+      const EAR = Math.pow(1 + r / 2, 2) - 1;
+      periodicRate = Math.pow(1 + EAR, 1 / 26) - 1; // Bi-weekly compounding
+    } else {
+      periodicRate = r / 26;
+    }
+  } else if (paymentFrequency === "weekly") {
+    totalPayments = amortizationYears * 52;
+    if (interestType === "fixed") {
+      const EAR = Math.pow(1 + r / 2, 2) - 1;
+      periodicRate = Math.pow(1 + EAR, 1 / 52) - 1; // Weekly compounding
+    } else {
+      periodicRate = r / 52;
+    }
+  } else {
+    throw new Error('Invalid payment frequency. Use "monthly", "biweekly", or "weekly"');
   }
 
+  // Calculate payment
   const payment =
-    (principal * periodicRate) /
-    (1 - Math.pow(1 + periodicRate, -totalPayments));
+    (principal * periodicRate * Math.pow(1 + periodicRate, totalPayments)) /
+    (Math.pow(1 + periodicRate, totalPayments) - 1);
 
   return Math.round(payment * 100) / 100; // Round to nearest cent
 };
@@ -393,7 +371,7 @@ const defaultInputs: MortgageInputs = {
   extraPaymentFrequency: "monthly",
 };
 
-export const MortgageCalculator: React.FC = () => {
+export const MortgageCalculatorCanada: React.FC = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
@@ -491,6 +469,16 @@ export const MortgageCalculator: React.FC = () => {
     if (inputs.paymentFrequency === "weekly")
       monthlyEquivalent = (periodicPayment * 52) / 12;
 
+    let totalMonthlyPayment = monthlyEquivalent;
+    if (inputs.extraPayment > 0 && inputs.extraPaymentFrequency === "monthly") {
+      totalMonthlyPayment += inputs.extraPayment;
+    } else if (
+      inputs.extraPayment > 0 &&
+      inputs.extraPaymentFrequency === "yearly"
+    ) {
+      totalMonthlyPayment += inputs.extraPayment / 12;
+    }
+
     const monthlyPMI = calculatePMI(loanAmount, inputs.homePrice);
     const monthlyTax = inputs.propertyTax / 12;
     const monthlyInsurance = inputs.homeInsurance / 12;
@@ -520,6 +508,7 @@ export const MortgageCalculator: React.FC = () => {
       loanAmount,
       periodicPayment,
       monthlyEquivalent,
+      totalMonthlyPayment,
       monthlyPropertyTax: monthlyTax,
       monthlyHomeInsurance: monthlyInsurance,
       monthlyPMI,
@@ -871,18 +860,39 @@ export const MortgageCalculator: React.FC = () => {
                           />
                         </button>
                       </label>
+                      <span className="text-xs font-medium text-[#2b6777] dark:text-[#52ab98]">
+                        {inputs.loanTerm} years
+                      </span>
                     </div>
-                    <NumericFormat
-                      className={`w-full px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#52ab98]/50 focus:border-[#2b6777] bg-white dark:bg-gray-700 dark:text-white transition-all duration-300 hover:border-gray-300 dark:hover:border-gray-600 ${
-                        inputs.loanTerm <= 0
-                          ? "border-red-500 focus:border-red-500 focus:ring-red-500"
-                          : "border-gray-200 dark:border-gray-700"
-                      }`}
-                      value={inputs.loanTerm}
-                      onValueChange={(values) =>
-                        handleInputChange("loanTerm", values.floatValue || 0)
-                      }
-                    />
+
+                    <div>
+                      <input
+                        type="range"
+                        min="1"
+                        max="30"
+                        step="1"
+                        value={inputs.loanTerm}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "loanTerm",
+                            parseInt(e.target.value)
+                          )
+                        }
+                        className="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer"
+                        style={{
+                          backgroundImage: `linear-gradient(to right, ${COLORS.primary}, ${COLORS.secondary})`,
+                          backgroundSize: `${
+                            ((inputs.loanTerm - 1) / 29) * 100
+                          }% 100%`,
+                          backgroundRepeat: "no-repeat",
+                        }}
+                      />
+                      <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        <span>1 year</span>
+                        <span>30 years</span>
+                      </div>
+                    </div>
+
                     {inputs.loanTerm <= 0 && (
                       <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center">
                         <Icon icon="mdi:alert-circle" className="mr-1" />
@@ -890,8 +900,7 @@ export const MortgageCalculator: React.FC = () => {
                       </p>
                     )}
                   </div>
-                  
-                  
+
                   {/* Interest Rate Input */}
                   <div className="mb-5">
                     <div className="flex items-center justify-between mb-2">
@@ -987,96 +996,105 @@ export const MortgageCalculator: React.FC = () => {
                   </div> */}
 
                   {/* Interest Type Tabs - Premium Design */}
-<div className="mb-5">
-  <div className="flex items-center justify-between mb-2">
-    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center">
-      Interest Type
-      <button
-        onClick={() =>
-          showHelpModal(
-            helpContent.interestType.title,
-            helpContent.interestType.content
-          )
-        }
-        className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
-      >
-        <Icon icon="mdi:information-outline" width={16} height={16} />
-      </button>
-    </label>
-  </div>
+                  <div className="mb-5">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center">
+                        Interest Type
+                        <button
+                          onClick={() =>
+                            showHelpModal(
+                              helpContent.interestType.title,
+                              helpContent.interestType.content
+                            )
+                          }
+                          className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                        >
+                          <Icon
+                            icon="mdi:information-outline"
+                            width={16}
+                            height={16}
+                          />
+                        </button>
+                      </label>
+                    </div>
 
-  <div className="relative">
-    <div className="flex rounded-lg bg-gray-100 dark:bg-gray-700 p-1 shadow-inner">
-      {/* Fixed Rate Tab */}
-      <button
-        className={`flex-1 py-3 px-4 rounded-md text-sm font-medium transition-all duration-300 relative overflow-hidden ${
-          inputs.interestType === "fixed"
-            ? "text-white"
-            : "text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-        }`}
-        onClick={() => handleInputChange("interestType", "fixed")}
-      >
-        {inputs.interestType === "fixed" && (
-          <div
-            className="absolute inset-0 z-0"
-            style={{
-              background: "linear-gradient(135deg, #2b6777 0%, #52ab98 100%)",
-            }}
-          />
-        )}
-        <span className="relative z-10 flex items-center justify-center">
-          <Icon
-            icon="mdi:lock-outline"
-            className="mr-2"
-            width={18}
-            height={18}
-          />
-          Fixed Rate
-        </span>
-      </button>
+                    <div className="relative">
+                      <div className="flex rounded-lg bg-gray-100 dark:bg-gray-700 p-1 shadow-inner">
+                        {/* Fixed Rate Tab */}
+                        <button
+                          className={`flex-1 py-3 px-4 rounded-md text-sm font-medium transition-all duration-300 relative overflow-hidden ${
+                            inputs.interestType === "fixed"
+                              ? "text-white"
+                              : "text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                          }`}
+                          onClick={() =>
+                            handleInputChange("interestType", "fixed")
+                          }
+                        >
+                          {inputs.interestType === "fixed" && (
+                            <div
+                              className="absolute inset-0 z-0"
+                              style={{
+                                background:
+                                  "linear-gradient(135deg, #2b6777 0%, #52ab98 100%)",
+                              }}
+                            />
+                          )}
+                          <span className="relative z-10 flex items-center justify-center">
+                            <Icon
+                              icon="mdi:lock-outline"
+                              className="mr-2"
+                              width={18}
+                              height={18}
+                            />
+                            Fixed Rate
+                          </span>
+                        </button>
 
-      {/* Variable Rate Tab */}
-      <button
-        className={`flex-1 py-3 px-4 rounded-md text-sm font-medium transition-all duration-300 relative overflow-hidden ${
-          inputs.interestType === "variable"
-            ? "text-white"
-            : "text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-        }`}
-        onClick={() => handleInputChange("interestType", "variable")}
-      >
-        {inputs.interestType === "variable" && (
-          <div
-            className="absolute inset-0 z-0"
-            style={{
-              background: "linear-gradient(135deg, #2b6777 0%, #52ab98 100%)",
-            }}
-          />
-        )}
-        <span className="relative z-10 flex items-center justify-center">
-          <Icon
-            icon="mdi:chart-line"
-            className="mr-2"
-            width={18}
-            height={18}
-          />
-          Variable Rate
-        </span>
-      </button>
-    </div>
+                        {/* Variable Rate Tab */}
+                        <button
+                          className={`flex-1 py-3 px-4 rounded-md text-sm font-medium transition-all duration-300 relative overflow-hidden ${
+                            inputs.interestType === "variable"
+                              ? "text-white"
+                              : "text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                          }`}
+                          onClick={() =>
+                            handleInputChange("interestType", "variable")
+                          }
+                        >
+                          {inputs.interestType === "variable" && (
+                            <div
+                              className="absolute inset-0 z-0"
+                              style={{
+                                background:
+                                  "linear-gradient(135deg, #2b6777 0%, #52ab98 100%)",
+                              }}
+                            />
+                          )}
+                          <span className="relative z-10 flex items-center justify-center">
+                            <Icon
+                              icon="mdi:chart-line"
+                              className="mr-2"
+                              width={18}
+                              height={18}
+                            />
+                            Variable Rate
+                          </span>
+                        </button>
+                      </div>
 
-    {/* Animated underline indicator */}
-    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
-      <div
-        className={`h-full absolute top-0 transition-all duration-300 ease-in-out ${
-          inputs.interestType === "fixed"
-            ? "left-0 right-1/2 bg-gradient-to-r from-[#2b6777] to-[#52ab98]"
-            : "left-1/2 right-0 bg-gradient-to-r from-[#2b6777] to-[#52ab98]"
-        }`}
-      />
-    </div>
-  </div>
-</div>
-
+                      {/* Animated underline indicator */}
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full absolute top-0 transition-all duration-300 ease-in-out ${
+                            inputs.interestType === "fixed"
+                              ? "left-0 right-1/2 bg-gradient-to-r from-[#2b6777] to-[#52ab98]"
+                              : "left-1/2 right-0 bg-gradient-to-r from-[#2b6777] to-[#52ab98]"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
 
                   {/* Payment Frequency Select */}
                   <div className="mb-5">
@@ -1374,7 +1392,7 @@ export const MortgageCalculator: React.FC = () => {
                       className="text-3xl font-bold"
                       style={{ color: COLORS.primary }}
                     >
-                      {formatCurrency(results.periodicPayment)}
+                      {formatCurrency(results.totalMonthlyPayment)}
                     </p>
                     <div className="mt-2 h-1 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
                       <div

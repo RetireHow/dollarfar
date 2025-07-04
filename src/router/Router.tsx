@@ -52,7 +52,10 @@ import ResetPasswordForm from "../pages/Admin/OTPVerification/ResetPasswordForm"
 import { Ebook1 } from "../pages/Ebook/Ebook1";
 import CostOfLivingPersonalizedCalculator from "../pages/COLC/PersonalizedCostOfLivingCalculator/CostOfLivingPersonalizedCalculator";
 import CostOfLivingEstimator from "../pages/AdvanceEstimator";
-import { MortgageCalculator } from "../pages/MortgageCalculator/MortgageCalculator";
+import { MortgageCalculatorCanada } from "../pages/MortgageCalculatorCanada/MortgageCalculatorCanada";
+import { MortgageCalculatorAmerica } from "../pages/MortgageCalculatorAmerica/MortgageCalculatorAmerica";
+
+
 
 export const router = createBrowserRouter([
   {
@@ -275,8 +278,12 @@ export const router = createBrowserRouter([
         element: <CostOfLivingEstimator />,
       },
       {
-        path: "mortgage-calculator",
-        element: <MortgageCalculator />,
+        path: "mortgage-calculator-canada",
+        element: <MortgageCalculatorCanada />,
+      },
+      {
+        path: "mortgage-calculator-america",
+        element: <MortgageCalculatorAmerica />,
       },
     ],
   },

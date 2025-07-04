@@ -1,0 +1,707 @@
+import moment from "moment";
+import { assets } from "../../assets/assets";
+import {
+  Area,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  ComposedChart,
+  Legend,
+  Pie,
+  PieChart,
+  XAxis,
+  YAxis,
+} from "recharts";
+
+// Types
+interface MortgageInputs {
+  homePrice: number;
+  downPaymentPercentage: number;
+  downPaymentAmount: number;
+  loanTerm: number;
+  interestRate: number;
+  interestType: "fixed" | "arm";
+  paymentFrequency: "monthly" | "biweekly" | "weekly";
+  propertyTax: number;
+  homeInsurance: number;
+  hoaFees: number;
+  startDate: moment.Moment;
+  extraPayment: number;
+  extraPaymentFrequency: "monthly" | "yearly" | "one-time";
+  armDetails: {
+    initialPeriod: number;
+    adjustmentPeriod: number;
+    expectedAdjustment: number;
+    rateCap: number;
+  };
+}
+
+interface MortgageResults {
+  loanAmount: number;
+  periodicPayment: number;
+  monthlyEquivalent: number;
+  totalMonthlyPayment: number;
+  monthlyPropertyTax: number;
+  monthlyHomeInsurance: number;
+  monthlyPMI: number;
+  monthlyHOA: number;
+  totalInterestPaid: number;
+  totalCost: number;
+  payoffDate: moment.Moment;
+  amortizationSchedule: AmortizationEntry[];
+  equityData: EquityData[];
+  interestType: "fixed" | "arm";
+  armProjectedRates?: number[];
+}
+
+interface AmortizationEntry {
+  month: number;
+  date: moment.Moment;
+  payment: number;
+  principal: number;
+  interest: number;
+  remainingBalance: number;
+  equity: number;
+  interestRate?: number;
+}
+
+interface EquityData {
+  year: number;
+  equity: number;
+  interest: number;
+  principal: number;
+  remainingBalance: number;
+}
+
+
+// Color scheme
+const COLORS = {
+  primary: "#2b6777",
+  secondary: "#52ab98",
+  accent: "#c8d8e4",
+  background: "#f2f2f2",
+  textDark: "#333333",
+  textLight: "#ffffff",
+};
+
+const paymentBreakdownColors = [
+  COLORS.primary, // Principal & Interest
+  COLORS.secondary, // Property Tax
+  "#FF9800", // Insurance
+  "#F44336", // PMI
+  "#9E9E9E", // HOA
+];
+
+const formatCurrency = (value: number): string => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+};
+
+export const FixedWidthMortgagePDFTemplate = ({
+  inputs,
+  results,
+}: {
+  inputs: MortgageInputs;
+  results: MortgageResults;
+}) => {
+  // Fixed width for PDF (A4 paper size in pixels at 96dpi)
+  const pdfWidth = 794; // ~8.27 inches (A4 width)
+  const pdfMargin = 40;
+  const contentWidth = pdfWidth - pdfMargin * 2;
+
+  // Payment breakdown data for pie chart
+  const paymentBreakdownData = [
+    { name: "Principal & Interest", value: results.monthlyEquivalent },
+    { name: "Property Tax", value: results.monthlyPropertyTax },
+    { name: "Insurance", value: results.monthlyHomeInsurance },
+    { name: "PMI", value: results.monthlyPMI },
+    { name: "HOA", value: results.monthlyHOA },
+  ];
+
+  // Filter equity data to show every 5 years for better PDF display
+  const filteredEquityData = results.equityData.filter(
+    (_, index) => index % 5 === 0 || index === results.equityData.length - 1
+  );
+
+  return (
+    <div
+      className="pdf-template"
+      style={{
+        width: `${pdfWidth}px`,
+        margin: "0 auto",
+        padding: `${pdfMargin}px`,
+        fontFamily: "Arial, sans-serif",
+        fontSize: "12px",
+        color: "#333",
+        backgroundColor: "#fff",
+      }}
+    >
+      {/* Header */}
+      {/* PDF Header with Branding */}
+      <header
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "24px",
+          paddingBottom: "16px",
+          borderBottom: "1px solid #eaeaea",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center" }}>
+          {/* DollarFar Logo - replace with your actual logo */}
+
+          <div
+            style={{
+              width: "40px",
+              height: "40px",
+              backgroundColor: "#2b6777",
+              borderRadius: "8px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginRight: "12px",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "18px",
+            }}
+          >
+            <img src={assets.siteLogoWhite} alt="" />
+          </div>
+          <div>
+            <h1
+              style={{
+                fontSize: "24px",
+                fontWeight: "bold",
+                margin: "0",
+                color: "#2b6777",
+                lineHeight: "1.2",
+              }}
+            >
+              Mortgage Analysis Report
+            </h1>
+            <p
+              style={{
+                margin: "0",
+                color: "#666",
+                fontSize: "14px",
+              }}
+            >
+              Generated by <strong>DollarFar.com</strong>
+            </p>
+          </div>
+        </div>
+        <div
+          style={{
+            textAlign: "right",
+            fontSize: "12px",
+            color: "#666",
+          }}
+        >
+          <p style={{ margin: "0 0 4px 0" }}>
+            {moment().format("MMMM D, YYYY")}
+          </p>
+          <p style={{ margin: "0" }}>{window.location.href}</p>
+        </div>
+      </header>
+
+      {/* Two-column layout for key information */}
+      <div
+        style={{
+          display: "flex",
+          gap: "24px",
+          marginBottom: "24px",
+        }}
+      >
+        {/* Left Column */}
+        <div style={{ flex: 1 }}>
+          <h2
+            style={{
+              fontSize: "16px",
+              fontWeight: "bold",
+              borderBottom: "1px solid #eee",
+              paddingBottom: "8px",
+              marginBottom: "12px",
+            }}
+          >
+            Loan Details
+          </h2>
+
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <tbody>
+              <tr>
+                <td
+                  style={{ padding: "6px 0", borderBottom: "1px solid #eee" }}
+                >
+                  <strong>Property Value:</strong>
+                </td>
+                <td
+                  style={{
+                    padding: "6px 0",
+                    borderBottom: "1px solid #eee",
+                    textAlign: "right",
+                  }}
+                >
+                  {formatCurrency(inputs.homePrice)}
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style={{ padding: "6px 0", borderBottom: "1px solid #eee" }}
+                >
+                  <strong>Down Payment:</strong>
+                </td>
+                <td
+                  style={{
+                    padding: "6px 0",
+                    borderBottom: "1px solid #eee",
+                    textAlign: "right",
+                  }}
+                >
+                  {inputs.downPaymentPercentage}% (
+                  {formatCurrency(inputs.downPaymentAmount)})
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style={{ padding: "6px 0", borderBottom: "1px solid #eee" }}
+                >
+                  <strong>Loan Amount:</strong>
+                </td>
+                <td
+                  style={{
+                    padding: "6px 0",
+                    borderBottom: "1px solid #eee",
+                    textAlign: "right",
+                  }}
+                >
+                  {formatCurrency(results.loanAmount)}
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style={{ padding: "6px 0", borderBottom: "1px solid #eee" }}
+                >
+                  <strong>Interest Rate:</strong>
+                </td>
+                <td
+                  style={{
+                    padding: "6px 0",
+                    borderBottom: "1px solid #eee",
+                    textAlign: "right",
+                  }}
+                >
+                  {inputs.interestRate}%
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style={{ padding: "6px 0", borderBottom: "1px solid #eee" }}
+                >
+                  <strong>Interest Type:</strong>
+                </td>
+                <td
+                  style={{
+                    padding: "6px 0",
+                    borderBottom: "1px solid #eee",
+                    textAlign: "right",
+                  }}
+                >
+                  {inputs.interestType}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Right Column */}
+        <div style={{ flex: 1 }}>
+          <h2
+            style={{
+              fontSize: "16px",
+              fontWeight: "bold",
+              borderBottom: "1px solid #eee",
+              paddingBottom: "8px",
+              marginBottom: "12px",
+            }}
+          >
+            Payment Information
+          </h2>
+
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <tbody>
+              <tr>
+                <td
+                  style={{ padding: "6px 0", borderBottom: "1px solid #eee" }}
+                >
+                  <strong>Payment Amount ({inputs.paymentFrequency}):</strong>
+                </td>
+                <td
+                  style={{
+                    padding: "6px 0",
+                    borderBottom: "1px solid #eee",
+                    textAlign: "right",
+                  }}
+                >
+                  {formatCurrency(results.periodicPayment)}
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style={{ padding: "6px 0", borderBottom: "1px solid #eee" }}
+                >
+                  <strong>Monthly Equivalent:</strong>
+                </td>
+                <td
+                  style={{
+                    padding: "6px 0",
+                    borderBottom: "1px solid #eee",
+                    textAlign: "right",
+                  }}
+                >
+                  {formatCurrency(results.monthlyEquivalent)}
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style={{ padding: "6px 0", borderBottom: "1px solid #eee" }}
+                >
+                  <strong>Total Interest:</strong>
+                </td>
+                <td
+                  style={{
+                    padding: "6px 0",
+                    borderBottom: "1px solid #eee",
+                    textAlign: "right",
+                  }}
+                >
+                  {formatCurrency(results.totalInterestPaid)}
+                </td>
+              </tr>
+              <tr>
+                <td style={{ padding: "6px 0" }}>
+                  <strong>Total Cost:</strong>
+                </td>
+                <td style={{ padding: "6px 0", textAlign: "right" }}>
+                  {formatCurrency(results.totalCost)}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Payment Breakdown Section */}
+      <div style={{ marginBottom: "24px" }}>
+        <h2
+          style={{
+            fontSize: "16px",
+            fontWeight: "bold",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "8px",
+            marginBottom: "12px",
+          }}
+        >
+          Payment Breakdown
+        </h2>
+
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            marginBottom: "16px",
+          }}
+        >
+          <thead>
+            <tr style={{ backgroundColor: "#f5f5f5" }}>
+              <th
+                style={{
+                  padding: "8px",
+                  textAlign: "left",
+                  border: "1px solid #ddd",
+                }}
+              >
+                Component
+              </th>
+              <th
+                style={{
+                  padding: "8px",
+                  textAlign: "right",
+                  border: "1px solid #ddd",
+                }}
+              >
+                Amount
+              </th>
+              <th
+                style={{
+                  padding: "8px",
+                  textAlign: "right",
+                  border: "1px solid #ddd",
+                }}
+              >
+                Percentage
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              { name: "Principal & Interest", value: results.periodicPayment },
+              { name: "Property Tax", value: results.monthlyPropertyTax },
+              { name: "Home Insurance", value: results.monthlyHomeInsurance },
+              { name: "PMI", value: results.monthlyPMI },
+              { name: "HOA Fees", value: results.monthlyHOA },
+            ].map((item, index) => (
+              <tr
+                key={index}
+                style={{
+                  backgroundColor: index % 2 === 0 ? "#fff" : "#f9f9f9",
+                  border: "1px solid #ddd",
+                }}
+              >
+                <td style={{ padding: "8px" }}>{item.name}</td>
+                <td style={{ padding: "8px", textAlign: "right" }}>
+                  {formatCurrency(item.value)}
+                </td>
+                <td style={{ padding: "8px", textAlign: "right" }}>
+                  {((item.value / results.periodicPayment) * 100).toFixed(1)}%
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Charts Section */}
+      <div style={{ marginBottom: "24px" }}>
+        <h2
+          style={{
+            fontSize: "16px",
+            fontWeight: "bold",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "8px",
+            marginBottom: "12px",
+          }}
+        >
+          Payment Visualization
+        </h2>
+
+        {/* Payment Breakdown Pie Chart */}
+        <div style={{ marginBottom: "190px" }}>
+          <h3
+            style={{
+              fontSize: "16px",
+              fontWeight: "bold",
+              marginBottom: "8px",
+              textAlign: "center",
+            }}
+          >
+            Payment Breakdown (Monthly Equivalent)
+          </h3>
+          <div style={{ height: "300px" }}>
+            <PieChart width={contentWidth} height={300}>
+              <Pie
+                data={paymentBreakdownData}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+                label={({ name, percent }) =>
+                  `${name}: ${(percent * 100).toFixed(1)}%`
+                }
+              >
+                {paymentBreakdownData.map((_, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={
+                      paymentBreakdownColors[
+                        index % paymentBreakdownColors.length
+                      ]
+                    }
+                  />
+                ))}
+              </Pie>
+              <Legend
+                layout="horizontal"
+                verticalAlign="bottom"
+                align="center"
+              />
+            </PieChart>
+          </div>
+        </div>
+
+        {/* Equity Timeline Chart */}
+        <div style={{ marginBottom: "24px" }}>
+          <h3
+            style={{
+              fontSize: "16px",
+              fontWeight: "bold",
+              marginBottom: "8px",
+              textAlign: "left",
+            }}
+          >
+            Equity Timeline
+          </h3>
+          <div style={{ height: "300px" }}>
+            <ComposedChart
+              width={contentWidth}
+              height={300}
+              data={filteredEquityData}
+              margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
+              <XAxis dataKey="year" />
+              <YAxis
+                tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+              />
+              <Legend
+                layout="horizontal"
+                verticalAlign="bottom"
+                align="center"
+              />
+              <Area
+                type="monotone"
+                dataKey="equity"
+                name="Equity"
+                stackId="1"
+                stroke={COLORS.secondary}
+                fill={COLORS.secondary}
+                fillOpacity={0.2}
+              />
+              <Area
+                type="monotone"
+                dataKey="remainingBalance"
+                name="Remaining Balance"
+                stackId="2"
+                stroke={COLORS.primary}
+                fill={COLORS.primary}
+                fillOpacity={0.2}
+              />
+            </ComposedChart>
+          </div>
+        </div>
+
+        {/* Interest vs Principal Chart */}
+        <div>
+          <h3
+            style={{
+              fontSize: "16px",
+              fontWeight: "bold",
+              marginBottom: "8px",
+              textAlign: "left",
+            }}
+          >
+            Interest vs Principal Over Time
+          </h3>
+          <div style={{ height: "300px" }}>
+            <BarChart
+              width={contentWidth}
+              height={300}
+              data={filteredEquityData}
+              margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
+              <XAxis dataKey="year" />
+              <YAxis
+                tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+              />
+              <Legend
+                layout="horizontal"
+                verticalAlign="bottom"
+                align="center"
+              />
+              <Bar
+                dataKey="principal"
+                name="Principal"
+                fill={COLORS.secondary}
+              />
+              <Bar dataKey="interest" name="Interest" fill={COLORS.primary} />
+            </BarChart>
+          </div>
+        </div>
+      </div>
+
+      {/* Amortization Schedule Summary */}
+      <div>
+        <h2
+          style={{
+            fontSize: "16px",
+            fontWeight: "bold",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "8px",
+            marginBottom: "12px",
+          }}
+        >
+          Amortization Schedule (Key Years)
+        </h2>
+
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            marginBottom: "16px",
+          }}
+        >
+          <thead>
+            <tr style={{ backgroundColor: "#f5f5f5" }}>
+              <th style={{ padding: "8px", border: "1px solid #ddd" }}>Year</th>
+              <th style={{ padding: "8px", border: "1px solid #ddd" }}>
+                Principal
+              </th>
+              <th style={{ padding: "8px", border: "1px solid #ddd" }}>
+                Interest
+              </th>
+              <th style={{ padding: "8px", border: "1px solid #ddd" }}>
+                Remaining
+              </th>
+              <th style={{ padding: "8px", border: "1px solid #ddd" }}>
+                Equity
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {[5, 10, 15, 20, 25, 30]
+              .filter((y) => y <= inputs.loanTerm)
+              .map((year, index) => {
+                const data =
+                  results.equityData.find((d) => d.year === year) ||
+                  results.equityData[results.equityData.length - 1];
+                return (
+                  <tr
+                    key={year}
+                    style={{
+                      backgroundColor: index % 2 === 0 ? "#fff" : "#f9f9f9",
+                      border: "1px solid #ddd",
+                    }}
+                  >
+                    <td style={{ padding: "8px", textAlign: "center" }}>
+                      {year}
+                    </td>
+                    <td style={{ padding: "8px", textAlign: "center" }}>
+                      {formatCurrency(data?.principal)}
+                    </td>
+                    <td style={{ padding: "8px", textAlign: "center" }}>
+                      {formatCurrency(data?.interest)}
+                    </td>
+                    <td style={{ padding: "8px", textAlign: "center" }}>
+                      {formatCurrency(data?.remainingBalance)}
+                    </td>
+                    <td style={{ padding: "8px", textAlign: "center" }}>
+                      {formatCurrency(data?.equity)} (
+                      {((data?.equity / inputs.homePrice) * 100).toFixed(1)}%)
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};

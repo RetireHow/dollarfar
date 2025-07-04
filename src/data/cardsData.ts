@@ -82,6 +82,16 @@ export const cardsData = [
     arrowIcon: assets.arrowUpIcon,
     calcIcon: assets.mortgageIconSvg,
     btnText: "Calculate",
-    navLink: "mortgage-calculator",
+    navLink: "mortgage-calculator-canada",
+  },
+  {
+    id: 9,
+    title: "Mortgage/Loan Calculator America Style",
+    description:
+      "Estimate payments, compare loan options, and track equity growth with this powerful tool. Works for fixed-rate and adjustable (ARM) mortgages, with extra payment analysis and interactive charts.",
+    arrowIcon: assets.arrowUpIcon,
+    calcIcon: assets.mortgageIconSvg,
+    btnText: "Calculate",
+    navLink: "mortgage-calculator-america",
   },
 ];
