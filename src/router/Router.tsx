@@ -55,8 +55,6 @@ import CostOfLivingEstimator from "../pages/AdvanceEstimator";
 import { MortgageCalculatorCanada } from "../pages/MortgageCalculatorCanada/MortgageCalculatorCanada";
 import { MortgageCalculatorAmerica } from "../pages/MortgageCalculatorAmerica/MortgageCalculatorAmerica";
 
-
-
 export const router = createBrowserRouter([
   {
     path: "/",
