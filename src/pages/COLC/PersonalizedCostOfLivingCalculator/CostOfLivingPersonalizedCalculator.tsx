@@ -600,7 +600,6 @@ export default function CostOfLivingPersonalizedCalculator() {
         prev?.length > 0 ? prev?.filter((c) => newCategories?.includes(c)) : []
       );
     } catch (err) {
-      // console.log("Price data error =======> ", err);
       setError("An unknown error occurred");
       console.error("Error fetching city data:", err);
     } finally {
