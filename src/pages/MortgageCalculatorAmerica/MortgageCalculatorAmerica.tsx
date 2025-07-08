@@ -1723,8 +1723,8 @@ export const MortgageCalculatorAmerica: React.FC = () => {
                               tick={{ fill: "var(--text-gray-600)" }}
                             />
                             <Tooltip
-                              formatter={(value) => {
-                                return [`${value}%`, "Projected Rate"];
+                              formatter={(value, label) => {
+                                return [`${value}%`, label];
                               }}
                               labelFormatter={(label) => `Year ${label}`}
                             />
