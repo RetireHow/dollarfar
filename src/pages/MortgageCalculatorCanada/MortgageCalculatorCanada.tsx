@@ -25,8 +25,9 @@ import { assets } from "../../assets/assets";
 import { ExportMortgagePDFModal } from "./ExportMortgagePDFModal";
 import { useCustomPDF } from "../../hooks/useCustomPDF";
 import { FixedWidthMortgagePDFTemplate } from "./FixedWidthMortgagePDFTemplate";
+import useTitle from "../../hooks/useTitle";
 const data = {
-  title: "Mortgage/Loan Calculator Canada Style",
+  title: "Canadian Mortgage Calculator",
   description:
     "Quickly estimate your home loan payments, amortization schedule, and potential savings from prepayments. Compare different payment frequencies, visualize interest costs, and see how extra payments reduce your loan term.",
   image: assets.mortgageIconSvg,
@@ -146,7 +147,9 @@ const calculateCanadianMortgagePayment = (
       periodicRate = r / 52;
     }
   } else {
-    throw new Error('Invalid payment frequency. Use "monthly", "biweekly", or "weekly"');
+    throw new Error(
+      'Invalid payment frequency. Use "monthly", "biweekly", or "weekly"'
+    );
   }
 
   // Calculate payment
@@ -372,6 +375,8 @@ const defaultInputs: MortgageInputs = {
 };
 
 export const MortgageCalculatorCanada: React.FC = () => {
+  useTitle("Dollarfar | Mortgage - Canada Standard");
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
@@ -636,12 +641,15 @@ export const MortgageCalculatorCanada: React.FC = () => {
           onClose={() => setModalVisible(false)}
         />
         <header className="text-center mb-8">
-          <h1
-            className="text-3xl font-bold text-gray-800 dark:text-white"
-            style={{ color: COLORS.primary }}
-          >
-            Mortgage/Loan Calculator Canada Style
-          </h1>
+          <div className="flex items-center justify-center gap-1">
+          <Icon icon="twemoji:flag-canada" width="36" height="36" />
+            <h1
+              className="text-3xl font-bold bg-gradient-to-r from-[#2b6777] to-[#52ab98] bg-clip-text text-transparent"
+              style={{ color: COLORS.primary }}
+            >
+              Canadian Mortgage Calculator
+            </h1>
+          </div>
           <p className="text-gray-600 dark:text-gray-300 mt-2">
             Calculate your payment schedule with different payment frequencies
           </p>

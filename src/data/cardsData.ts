@@ -76,7 +76,7 @@ export const cardsData = [
   },
   {
     id: 8,
-    title: "Mortgage/Loan Calculator Canada Style",
+    title: "Canadian Mortgage Calculator",
     description:
       "Quickly estimate your home loan payments, amortization schedule, and potential savings from prepayments. Compare different payment frequencies, visualize interest costs, and see how extra payments reduce your loan term.",
     arrowIcon: assets.arrowUpIcon,
@@ -86,7 +86,7 @@ export const cardsData = [
   },
   {
     id: 9,
-    title: "Mortgage/Loan Calculator America Style",
+    title: "U.S Mortgage Calculator",
     description:
       "Estimate payments, compare loan options, and track equity growth with this powerful tool. Works for fixed-rate and adjustable (ARM) mortgages, with extra payment analysis and interactive charts.",
     arrowIcon: assets.arrowUpIcon,

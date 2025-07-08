@@ -26,9 +26,10 @@ import PageHero from "../../components/UI/PageHero";
 import { useCustomPDF } from "../../hooks/useCustomPDF";
 import { ExportMortgagePDFModal } from "./ExportMortgagePDFModal";
 import { FixedWidthMortgagePDFTemplate } from "./FixedWidthMortgagePDFTemplate";
+import useTitle from "../../hooks/useTitle";
 
 const data = {
-  title: "Mortgage/Loan Calculator America Style",
+  title: "U.S Mortgage Calculator",
   description:
     "Estimate payments, compare loan options, and track equity growth with this powerful tool. Works for fixed-rate and adjustable (ARM) mortgages, with extra payment analysis and interactive charts.",
   image: assets.mortgageIconSvg,
@@ -368,6 +369,8 @@ const defaultInputs: MortgageInputs = {
 };
 
 export const MortgageCalculatorAmerica: React.FC = () => {
+  useTitle("Dollarfar | Mortgage - U.S Standard");
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
@@ -681,12 +684,16 @@ export const MortgageCalculatorAmerica: React.FC = () => {
         />
 
         <header className="text-center mb-8">
-          <h1
-            className="text-3xl font-bold text-gray-800 dark:text-white"
-            style={{ color: COLORS.primary }}
-          >
-            American Mortgage Calculator
-          </h1>
+          <div className="flex items-center justify-center gap-1">
+            <Icon icon="la:flag-usa" width="40" height="40" />
+            <h1
+              className="text-3xl font-bold bg-gradient-to-r from-[#2b6777] to-[#52ab98] bg-clip-text text-transparent"
+              style={{ color: COLORS.primary }}
+            >
+              U.S Mortgage Calculator
+            </h1>
+          </div>
+
           <p className="text-gray-600 dark:text-gray-300 mt-2">
             Calculate your mortgage payments with fixed or adjustable rate
             options
