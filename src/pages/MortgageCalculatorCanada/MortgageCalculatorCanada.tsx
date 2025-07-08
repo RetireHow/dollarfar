@@ -360,8 +360,8 @@ const paymentBreakdownColors = [
 
 const defaultInputs: MortgageInputs = {
   homePrice: 300000,
-  downPaymentPercentage: 20,
-  downPaymentAmount: 60000,
+  downPaymentPercentage: 0,
+  downPaymentAmount: 0,
   loanTerm: 30,
   interestRate: 3.5,
   interestType: "fixed",
@@ -798,7 +798,7 @@ export const MortgageCalculatorCanada: React.FC = () => {
                     </div>
 
                     <div className="flex space-x-2 mb-3">
-                      {[20, 10, 5, 3.5].map((percent) => (
+                      {[0, 20, 10, 5, 3.5].map((percent) => (
                         <button
                           key={percent}
                           className={`flex-1 py-2 px-3 text-sm rounded-md transition-all duration-300 ${
