@@ -9,7 +9,7 @@ import { EbookDownloadFormPopup } from "./EbookDownloadForm";
 
 export default function BookLandingPage() {
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
   return (
     <main className="min-h-screen">
@@ -278,7 +278,7 @@ export default function BookLandingPage() {
       <BookFAQ />
       <BookReviews />
 
-      <section className="mx-20 mb-28 md:px-0 px-3">
+      <section className="md:mx-20 mb-28 md:px-0 px-5">
         <h3 className="font-bold text-[1.5rem] text-center mb-8">
           The Author’s upcoming Books
         </h3>
@@ -291,7 +291,7 @@ export default function BookLandingPage() {
           <img
             className="md:w-[400px] w-full"
             src={assets.futureBook3}
-            alt="Book2"
+            alt="Book3"
           />
         </div>
       </section>
@@ -303,7 +303,7 @@ export default function BookLandingPage() {
           alt="Get Copy BG"
         />
 
-        <div className="absolute z-50 top-10 flex flex-col justify-center items-center w-full text-black px-5">
+        <div className="absolute z-50 md:top-10 top-0 flex flex-col justify-center items-center w-full text-black px-5 md:bg-transparent bg-[#56a69dc5] md:h-auto h-full">
           <h3 className="text-[2.5rem] font-bold">Get Your Copy</h3>
           <EbookDownloadFormPopup />
           <div className="mt-3 flex max-w-[700px] text-center">

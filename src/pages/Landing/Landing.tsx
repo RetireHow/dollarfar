@@ -72,17 +72,21 @@ export default function Landing() {
             </p>
           </div>
           <div className="flex md:flex-row flex-col items-center gap-5 my-5">
-            <Link to="book-landing">
-              <button className="bg-black rounded-lg text-white md:px-5 px-2 md:py-3 py-2 md:w-auto w-full flex justify-center items-center gap-3">
-                <span>Get Your Free Copy Now</span>{" "}
+            <Link
+              to="book-landing"
+              className="bg-black rounded-lg text-white md:px-5 px-2 md:py-3 py-2 md:w-auto w-full"
+            >
+              <button className="flex justify-center items-center gap-3 w-full">
+                <p>Get Your Free Copy Now</p>{" "}
                 <Icon icon="f7:arrow-up-right" width="20" height="20" />
               </button>
             </Link>
 
-            <Link to="book-landing">
-              <button className="bg-black rounded-lg text-white md:px-5 px-2 md:py-3 py-2 md:w-auto w-full">
-                Buy Now
-              </button>
+            <Link
+              to="book-landing"
+              className="bg-black rounded-lg text-white md:px-5 px-2 md:py-3 py-2 md:w-auto w-full text-center"
+            >
+              <button>Buy Now</button>
             </Link>
           </div>
           <p>
