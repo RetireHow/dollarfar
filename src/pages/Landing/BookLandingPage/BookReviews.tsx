@@ -67,7 +67,7 @@ const BookReviews: React.FC = () => {
           className="w-full m-3"
         >
           <SwiperSlide>
-            <div className="shadow-md pb-5 bg-[#EAECF0] border-[1px] border-gray-200 p-5 mb-8">
+            <div className="shadow-md pb-5 bg-gray-100 border-[1px] border-gray-200 p-5 mb-8">
               <div className="flex items-center gap-1">
                 <Icon
                   className="text-yellow-500"
@@ -111,7 +111,7 @@ const BookReviews: React.FC = () => {
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="shadow-md pb-5 bg-[#EAECF0] border-[1px] border-gray-200 p-5 mb-8">
+            <div className="shadow-md pb-5 bg-gray-100 border-[1px] border-gray-200 p-5 mb-8">
               <div className="flex items-center gap-1">
                 <Icon
                   className="text-yellow-500"
@@ -155,7 +155,7 @@ const BookReviews: React.FC = () => {
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="shadow-md pb-5 bg-[#EAECF0] border-[1px] border-gray-200 p-5">
+            <div className="shadow-md pb-5 bg-gray-100 border-[1px] border-gray-200 p-5">
               <div className="flex items-center gap-1">
                 <Icon
                   className="text-yellow-500"
@@ -199,7 +199,7 @@ const BookReviews: React.FC = () => {
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="shadow-md pb-5 bg-[#EAECF0] border-[1px] border-gray-200 p-5">
+            <div className="shadow-md pb-5 bg-gray-100 border-[1px] border-gray-200 p-5">
               <div className="flex items-center gap-1">
                 <Icon
                   className="text-yellow-500"
@@ -243,7 +243,7 @@ const BookReviews: React.FC = () => {
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="shadow-md pb-5 bg-[#EAECF0] border-[1px] border-gray-200 p-5">
+            <div className="shadow-md pb-5 bg-gray-100 border-[1px] border-gray-200 p-5">
               <div className="flex items-center gap-1">
                 <Icon
                   className="text-yellow-500"
@@ -287,7 +287,7 @@ const BookReviews: React.FC = () => {
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="shadow-md pb-5 bg-[#EAECF0] border-[1px] border-gray-200 p-5">
+            <div className="shadow-md pb-5 bg-gray-100 border-[1px] border-gray-200 p-5">
               <div className="flex items-center gap-1">
                 <Icon
                   className="text-yellow-500"

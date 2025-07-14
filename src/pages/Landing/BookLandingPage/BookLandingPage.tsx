@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import BookSlider from "./BookSlider";
 import BookReviews from "./BookReviews";
 import BookFAQ from "./BookFAQ";
+import { EbookDownloadFormPopup } from "./EbookDownloadForm";
 
 export default function BookLandingPage() {
   useEffect(() => {
@@ -30,10 +31,7 @@ export default function BookLandingPage() {
 
         <div className="absolute z-50 md:bottom-40 bottom-10 w-full text-black px-5 text-center">
           <div className="flex gap-5 justify-center items-center">
-            <button className="bg-black rounded-lg text-white md:px-5 px-2 md:py-3 py-2 md:w-auto w-full">
-              Download Now
-            </button>
-
+            <EbookDownloadFormPopup />
             <button className="bg-black rounded-lg text-white md:px-5 px-2 md:py-3 py-2 md:w-auto w-full">
               Buy Now
             </button>
@@ -81,27 +79,37 @@ export default function BookLandingPage() {
           <div>
             <p className="mb-2">Follow movva on</p>
             <div className="flex items-center gap-3">
-              <Icon icon="ic:baseline-facebook" width="24" height="24" />
-              <Icon
-                icon="entypo-social:linkedin-with-circle"
-                width="20"
-                height="20"
-              />
-              <Icon
-                icon="entypo-social:instagram-with-circle"
-                width="20"
-                height="20"
-              />
-              <Icon
-                icon="entypo-social:twitter-with-circle"
-                width="20"
-                height="20"
-              />
-              <Icon
-                icon="entypo-social:youtube-with-circle"
-                width="20"
-                height="20"
-              />
+              <Link to="/book-landing">
+                <Icon icon="ic:baseline-facebook" width="24" height="24" />
+              </Link>
+              <Link to="/book-landing">
+                <Icon
+                  icon="entypo-social:linkedin-with-circle"
+                  width="20"
+                  height="20"
+                />
+              </Link>
+              <Link to="/book-landing">
+                <Icon
+                  icon="entypo-social:instagram-with-circle"
+                  width="20"
+                  height="20"
+                />
+              </Link>
+              <Link to="/book-landing">
+                <Icon
+                  icon="entypo-social:twitter-with-circle"
+                  width="20"
+                  height="20"
+                />
+              </Link>
+              <Link to="/book-landing">
+                <Icon
+                  icon="entypo-social:youtube-with-circle"
+                  width="20"
+                  height="20"
+                />
+              </Link>
             </div>
           </div>
         </div>
@@ -297,9 +305,7 @@ export default function BookLandingPage() {
 
         <div className="absolute z-50 top-10 flex flex-col justify-center items-center w-full text-black px-5">
           <h3 className="text-[2.5rem] font-bold">Get Your Copy</h3>
-          <button className="bg-black text-white px-8 py-3 rounded-md my-3">
-            Download Now
-          </button>
+          <EbookDownloadFormPopup />
           <div className="mt-3 flex max-w-[700px] text-center">
             <p className="text-black">
               <span className="font-bold">Special Offer</span>🎁 : Be among the

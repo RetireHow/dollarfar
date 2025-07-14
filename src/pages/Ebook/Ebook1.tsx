@@ -231,7 +231,9 @@ export const Ebook1: React.FC = () => {
             type="submit"
             disabled={loading ? true : false}
             className={`w-full text-white py-2 rounded-md hover:bg-blue-700 dark:hover:bg-neutral-700 transition flex justify-center items-center h-[45px] ${
-              loading ? "bg-blue-300 hover:bg-blue-300 dark:bg-neutral-300 dark:hover:bg-neutral-300" : "bg-blue-600 dark:bg-neutral-800"
+              loading
+                ? "bg-blue-300 hover:bg-blue-300 dark:bg-neutral-300 dark:hover:bg-neutral-300"
+                : "bg-blue-600 dark:bg-neutral-800"
             }`}
           >
             {loading ? (
