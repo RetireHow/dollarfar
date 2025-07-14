@@ -1,0 +1,319 @@
+import { Link } from "react-router-dom";
+import { assets } from "../../../assets/assets";
+import { useEffect } from "react";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import BookSlider from "./BookSlider";
+import BookReviews from "./BookReviews";
+import BookFAQ from "./BookFAQ";
+
+export default function BookLandingPage() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+  return (
+    <main className="min-h-screen">
+      <section className="relative mb-28">
+        <img
+          className="w-full min-h-[650px]"
+          src={assets.bookShadowWithCoverPage}
+          alt="Book Shadow"
+        />
+        <div className="absolute z-50 top-10 flex flex-col justify-center items-center w-full text-black px-5">
+          <h3 className="text-[2.5rem] font-bold">Retire How?</h3>
+          <p className="text-[#696969] text-[1.3rem] text-center mt-2">
+            Master your retirement journey with{" "}
+            <span className="font-bold text-black">Retire How?</span> — a
+            straightforward, expert-backed book designed to simplify
+            understanding retirement benefits.
+          </p>
+        </div>
+
+        <div className="absolute z-50 md:bottom-40 bottom-10 w-full text-black px-5 text-center">
+          <div className="flex gap-5 justify-center items-center">
+            <button className="bg-black rounded-lg text-white md:px-5 px-2 md:py-3 py-2 md:w-auto w-full">
+              Download Now
+            </button>
+
+            <button className="bg-black rounded-lg text-white md:px-5 px-2 md:py-3 py-2 md:w-auto w-full">
+              Buy Now
+            </button>
+          </div>
+
+          <p className="mt-3">
+            <span>Special Offer</span>{" "}
+            <span className="text-[#696969]">
+              🎁 : Be among the first 1,000 users to download the eBook for
+              FREE! After that, it will be available as a paid download.
+            </span>
+          </p>
+
+          <p className="mt-5">Or order from</p>
+          <Link to="">
+            <img className="mt-5" src={assets.amazonLogo} alt="Amazon Link" />
+          </Link>
+        </div>
+      </section>
+
+      <section className="flex md:flex-row flex-col-reverse items-center md:gap-20 gap-5 md:px-20 px-10 mb-28">
+        <div>
+          <h5 className="font-semibold my-2">About The Author</h5>
+          <h3 className="font-bold text-[1.5rem]">
+            Rao Movva, PFP®, CIM®, CIWM, FCSI®
+          </h3>
+          <p className="text-[#696969] my-4">
+            Rao Movva is a seasoned financial professional with over 25 years of
+            experience in Canada’s banking sector. He has held senior
+            roles—including Private Banker, Financial Planner, and Wealth
+            Advisor—at Scotiabank, RBC, and TD. His career began on the stock
+            exchange floor in India, where he gained deep insights into market
+            behavior and economics. Throughout his career, Rao has worked
+            closely with mass affluent to ultra high-net-worth (UHNW)
+            individuals and families, helping them navigate complex financial
+            decisions across retirement, investment, and estate planning needs.
+            He is recognized as one of the Fellows of the Canadian Securities
+            Institute, a distinction that underscores his commitment to
+            financial excellence and professional development. Rao is also the
+            author of{" "}
+            <span className="font-bold text-black">*Retire How?*</span>, a
+            practical guide to understanding retirement benefits and planning
+            strategies in both Canada and the U.S.
+          </p>
+          <div>
+            <p className="mb-2">Follow movva on</p>
+            <div className="flex items-center gap-3">
+              <Icon icon="ic:baseline-facebook" width="24" height="24" />
+              <Icon
+                icon="entypo-social:linkedin-with-circle"
+                width="20"
+                height="20"
+              />
+              <Icon
+                icon="entypo-social:instagram-with-circle"
+                width="20"
+                height="20"
+              />
+              <Icon
+                icon="entypo-social:twitter-with-circle"
+                width="20"
+                height="20"
+              />
+              <Icon
+                icon="entypo-social:youtube-with-circle"
+                width="20"
+                height="20"
+              />
+            </div>
+          </div>
+        </div>
+        <div>
+          <img
+            className="rounded-md"
+            src={assets.authorImgFormal}
+            alt="Author Image"
+          />
+        </div>
+      </section>
+
+      <section className="flex md:flex-row flex-col md:gap-16 gap-8 md:mx-16 mx-8 mb-28">
+        <div className="border-[1px] border-gray-200 rounded-lg p-5">
+          <h3 className="font-bold text-[1.2rem]">
+            Retire with Confidence Across Borders
+          </h3>
+          <p className="text-[#696969] my-3">
+            Retire How? is your step-by-step guide to understanding and
+            maximizing retirement benefits in both Canada and the U.S. Written
+            in plain English with real-life examples, this book helps you make
+            smarter decisions about your retirement income, taxes, and
+            cross-border planning.
+          </p>
+          <ul className="text-[#696969] space-y-3">
+            <li className="flex items-center gap-2">
+              <img
+                className="w-[20px] h-[20px]"
+                src={assets.roundedChecked}
+                alt="check icon"
+              />
+              <span>
+                Compare Canada’s CPP, OAS, and GIS with U.S. Social Security and
+                SSI
+              </span>
+            </li>
+            <li className="flex items-center gap-2">
+              <img
+                className="w-[20px] h-[20px]"
+                src={assets.roundedChecked}
+                alt="check icon"
+              />
+              <span>
+                Learn how retirement ages, taxes, and benefit calculations
+                differ—and what they mean for your bottom line
+              </span>
+            </li>
+            <li className="flex items-center gap-2">
+              <img
+                className="w-[20px] h-[20px]"
+                src={assets.roundedChecked}
+                alt="check icon"
+              />
+              <span>
+                Discover smart claiming strategies to boost income and reduce
+                clawbacks
+              </span>
+            </li>
+            <li className="flex items-center gap-2">
+              <img
+                className="w-[20px] h-[20px]"
+                src={assets.roundedChecked}
+                alt="check icon"
+              />
+              <span>
+                Explore healthcare realities for retirees in both countries
+              </span>
+            </li>
+            <li className="flex items-center gap-2">
+              <img
+                className="w-[20px] h-[20px]"
+                src={assets.roundedChecked}
+                alt="check icon"
+              />
+              <span>
+                Access practical tools and tips to stretch your fixed income and
+                plan with confidence
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div className="border-[1px] border-gray-200 rounded-lg p-5">
+          <h3 className="font-bold text-[1.2rem] mb-3">Who this book is for</h3>
+          <ul className="text-[#696969] space-y-3">
+            <li className="flex items-center gap-2">
+              <img
+                className="w-[20px] h-[20px]"
+                src={assets.roundedChecked}
+                alt="check icon"
+              />
+              <span>
+                Canadians approaching retirement – Learn how to navigate and
+                maximize your CPP, OAS, and GIS benefits.
+              </span>
+            </li>
+            <li className="flex items-center gap-2">
+              <img
+                className="w-[20px] h-[20px]"
+                src={assets.roundedChecked}
+                alt="check icon"
+              />
+              <span>
+                Americans planning with Social Security – Understand eligibility
+                rules, benefit calculations, and claiming strategies to optimize
+                your income.
+              </span>
+            </li>
+            <li className="flex items-center gap-2">
+              <img
+                className="w-[20px] h-[20px]"
+                src={assets.roundedChecked}
+                alt="check icon"
+              />
+              <span>
+                Cross-border retirees – Get clear, expert-backed advice on how
+                to align your benefits when retiring across borders.
+              </span>
+            </li>
+            <li className="flex items-center gap-2">
+              <img
+                className="w-[20px] h-[20px]"
+                src={assets.roundedChecked}
+                alt="check icon"
+              />
+              <span>
+                Financial professionals – While written with individuals in
+                mind, this book also serves as a practical, credible resource
+                for financial planners, investment advisors, portfolio managers,
+                bankers, and consultants. It’s well-suited as a client handout
+                to support retirement conversations and reinforce key planning
+                concepts.
+              </span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section className="w-full bg-gray-100 py-12 px-4 flex flex-col items-center mb-28">
+        <h2 className="text-3xl font-bold text-center mb-6">
+          Watch Our Introduction
+        </h2>
+        <div className="w-full max-w-3xl aspect-video shadow-lg rounded-xl overflow-hidden">
+          <iframe
+            className="w-full h-full"
+            src="https://www.youtube.com/embed/-Gdmc682ges"
+            title="YouTube video"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
+      </section>
+
+      <BookSlider />
+
+      <section className="bg-black text-white md:py-16 py-8 md:px-28 px-5 text-center text-[1.5rem] mb-28">
+        <p className="mb-3">
+          No two retirement plans look the same, but one thing is certain:
+          understanding your benefits ahead of time makes all the difference.
+          Retirement should be a time of freedom, not financial stress.
+        </p>
+        <p>— Author</p>
+      </section>
+
+      <BookFAQ />
+      <BookReviews />
+
+      <section className="mx-20 mb-28 md:px-0 px-3">
+        <h3 className="font-bold text-[1.5rem] text-center mb-8">
+          The Author’s upcoming Books
+        </h3>
+        <div className="flex md:flex-row flex-col items-center justify-center gap-10">
+          <img
+            className="md:w-[400px] w-full"
+            src={assets.futureBook2}
+            alt="Book2"
+          />
+          <img
+            className="md:w-[400px] w-full"
+            src={assets.futureBook3}
+            alt="Book2"
+          />
+        </div>
+      </section>
+
+      <section className="relative">
+        <img
+          className="w-full md:h-auto h-[500px]"
+          src={assets.getCopyBg}
+          alt="Get Copy BG"
+        />
+
+        <div className="absolute z-50 top-10 flex flex-col justify-center items-center w-full text-black px-5">
+          <h3 className="text-[2.5rem] font-bold">Get Your Copy</h3>
+          <button className="bg-black text-white px-8 py-3 rounded-md my-3">
+            Download Now
+          </button>
+          <div className="mt-3 flex max-w-[700px] text-center">
+            <p className="text-black">
+              <span className="font-bold">Special Offer</span>🎁 : Be among the
+              first 1,000 users to download the eBook for FREE! After that, it
+              will be available as a paid download.
+            </p>
+          </div>
+
+          <p className="mt-5">Or order from</p>
+          <Link to="">
+            <img className="mt-5" src={assets.amazonLogo} alt="Amazon Link" />
+          </Link>
+        </div>
+      </section>
+    </main>
+  );
+}

@@ -3,6 +3,8 @@ import { cardsData } from "../../data/cardsData";
 import CalculatorCard from "./CalculatorCard";
 import heroEllipseImage from "../../assets/hero-ellipse.svg";
 import useTitle from "../../hooks/useTitle";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import { Link } from "react-router-dom";
 
 export default function Landing() {
   const handleGetStarted = () => {
@@ -49,6 +51,47 @@ export default function Landing() {
             src={assets.heroImage}
             alt="Hero Image"
           />
+        </div>
+      </section>
+
+      {/* Book Section  */}
+      <section className="bg-[#EDF3F8] flex md:flex-row flex-col items-center justify-center md:px-20 md:py-16 py-5 px-5 md:gap-16 gap-5 mt-20">
+        <img src={assets.bookCoverPageWithBadge} alt="Book Cover Page" />
+
+        <div>
+          <h3 className="text-[2.5rem] font-bold">Retire How?</h3>
+          <div className="my-2">
+            <p className="text-[#696969] text-[1.3rem]">
+              A Practical Guide to Retirement Benefits in Canada and the U.S.
+            </p>
+            <p className="mt-1">
+              <span>by</span>{" "}
+              <span className="font-bold">
+                Rao Movva, PFP®, CIM®, CIWM, FCSI®
+              </span>
+            </p>
+          </div>
+          <div className="flex md:flex-row flex-col items-center gap-5 my-5">
+            <Link to="book-landing">
+              <button className="bg-black rounded-lg text-white md:px-5 px-2 md:py-3 py-2 md:w-auto w-full flex justify-center items-center gap-3">
+                <span>Get Your Free Copy Now</span>{" "}
+                <Icon icon="f7:arrow-up-right" width="20" height="20" />
+              </button>
+            </Link>
+
+            <Link to="book-landing">
+              <button className="bg-black rounded-lg text-white md:px-5 px-2 md:py-3 py-2 md:w-auto w-full">
+                Buy Now
+              </button>
+            </Link>
+          </div>
+          <p>
+            <span>Special Offer</span>{" "}
+            <span className="text-[#696969]">
+              🎁 : Be among the first 1,000 users to download the eBook for
+              FREE! After that, it will be available as a paid download.
+            </span>
+          </p>
         </div>
       </section>
 

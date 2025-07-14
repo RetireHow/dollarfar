@@ -94,4 +94,14 @@ export const cardsData = [
     btnText: "Calculate",
     navLink: "mortgage-calculator-america",
   },
+  {
+    id: 10,
+    title: "Advance Mortgage Calculator",
+    description:
+      "Plan your home loan with this powerful mortgage calculator. Estimate monthly payments, compare fixed and adjustable rates, and see how extra payments reduce interest. Includes taxes, insurance, and amortization charts for both U.S. and Canadian mortgages.",
+    arrowIcon: assets.arrowUpIcon,
+    calcIcon: assets.mortgageIconSvg,
+    btnText: "Calculate",
+    navLink: "mortgage-calculator",
+  },
 ];

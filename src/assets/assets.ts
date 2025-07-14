@@ -24,9 +24,21 @@ import happyImg from "./happy.gif";
 import neutralImg from "./neutral.gif";
 import sadImg from "./sad.gif";
 
-import mortgageIcon1 from "./mortgage-icon.png"
-import mortgageIcon2 from "./mortgage-icon-2.png"
-import mortgageIconSvg from "./mortgage-icon-svg.svg"
+import mortgageIcon1 from "./mortgage-icon.png";
+import mortgageIcon2 from "./mortgage-icon-2.png";
+import mortgageIconSvg from "./mortgage-icon-svg.svg";
+
+import bookCoverPageWithBadge from "./Ebook/Book Cover Page With Badge.png";
+import bookCoverPageWithoutBadge from "./Ebook/Book Cover Page.png";
+import authorImgFormal from "./Ebook/Ebook Author Formal.jpg";
+import bookShadow from "./Ebook/Book Shadow.png";
+import bookShadowWithCoverPage from "./Ebook/Book Shadow with cover page.png";
+import videoThumnail from "./Ebook/Video Thumbnail.png";
+import futureBook2 from "./Ebook/Future Book2.png";
+import futureBook3 from "./Ebook/Future Book3.png";
+import getCopyBg from "./Ebook/Get Your Copy BG.png";
+import amazonLogo from "./Ebook/Amazon Logo.png";
+import roundedChecked from "./Ebook/rounded-checked.png";
 
 export const assets = {
   siteLogo,
@@ -55,5 +67,18 @@ export const assets = {
   landingPic,
   mortgageIcon1,
   mortgageIcon2,
-  mortgageIconSvg
+  mortgageIconSvg,
+
+  bookCoverPageWithBadge,
+  bookCoverPageWithoutBadge,
+  authorImgFormal,
+  bookShadow,
+  bookShadowWithCoverPage,
+  videoThumnail,
+  futureBook2,
+  futureBook3,
+  getCopyBg,
+  amazonLogo,
+
+  roundedChecked,
 };

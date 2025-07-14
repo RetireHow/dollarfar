@@ -54,6 +54,8 @@ import CostOfLivingPersonalizedCalculator from "../pages/COLC/PersonalizedCostOf
 import CostOfLivingEstimator from "../pages/AdvanceEstimator";
 import { MortgageCalculatorCanada } from "../pages/MortgageCalculatorCanada/MortgageCalculatorCanada";
 import { MortgageCalculatorAmerica } from "../pages/MortgageCalculatorAmerica/MortgageCalculatorAmerica";
+import { MortgageCalculator } from "../pages/Mortgage/MortgageCalculator";
+import BookLandingPage from "../pages/Landing/BookLandingPage/BookLandingPage";
 
 export const router = createBrowserRouter([
   {
@@ -282,6 +284,14 @@ export const router = createBrowserRouter([
       {
         path: "mortgage-calculator-america",
         element: <MortgageCalculatorAmerica />,
+      },
+      {
+        path: "mortgage-calculator",
+        element: <MortgageCalculator />,
+      },
+      {
+        path: "book-landing",
+        element: <BookLandingPage />,
       },
     ],
   },
