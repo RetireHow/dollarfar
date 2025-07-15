@@ -55,7 +55,7 @@ export default function Landing() {
       </section>
 
       {/* Book Section  */}
-      <section className="bg-[#EDF3F8] flex md:flex-row flex-col items-center justify-center md:px-20 md:py-16 py-5 px-5 md:gap-16 gap-5 mt-20">
+      <section className="bg-[#EDF3F8] flex md:flex-row flex-col items-center justify-center md:px-20 md:py-16 py-5 px-5 md:gap-16 gap-5 mt-20 hidden">
         <img src={assets.bookCoverPageWithBadge} alt="Book Cover Page" />
 
         <div>

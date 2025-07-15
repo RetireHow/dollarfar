@@ -42,7 +42,6 @@ import PropertyPriceExplanationPage from "../pages/COLC/COLCPages/PropertyPriceE
 import HealthCareExplanationPage from "../pages/COLC/COLCPages/HealthCareExplanationPage";
 import EstimatedCostCalculatorPage from "../pages/COLC/COLCPages/EstimatedCostCalculatorPage";
 import CrimeExplanation from "../pages/COLC/COLCPages/CrimeExplanation";
-import TermsAndConditionPage from "../pages/TermsAndConditionPage";
 import AdminLogin from "../pages/Admin/AdminLogin";
 import PrivateRoute from "./PrivateRoute";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
@@ -56,6 +55,9 @@ import { MortgageCalculatorCanada } from "../pages/MortgageCalculatorCanada/Mort
 import { MortgageCalculatorAmerica } from "../pages/MortgageCalculatorAmerica/MortgageCalculatorAmerica";
 import { MortgageCalculator } from "../pages/Mortgage/MortgageCalculator";
 import BookLandingPage from "../pages/Landing/BookLandingPage/BookLandingPage";
+import PrivacyPolicy from "../pages/Policies/PrivacyPolicy";
+import RefundPolicy from "../pages/Policies/RefundPolicy";
+import TermsAndConditions from "../pages/Policies/TermsAndConditions";
 
 export const router = createBrowserRouter([
   {
@@ -73,10 +75,6 @@ export const router = createBrowserRouter([
       {
         path: "net-worth-calculator",
         element: <NWC />,
-      },
-      {
-        path: "terms-and-condition",
-        element: <TermsAndConditionPage />,
       },
       {
         path: "budget-calculator",
@@ -292,6 +290,18 @@ export const router = createBrowserRouter([
       {
         path: "book-landing",
         element: <BookLandingPage />,
+      },
+      {
+        path: "privacy-policy",
+        element: <PrivacyPolicy />,
+      },
+      {
+        path: "refund-policy",
+        element: <RefundPolicy />,
+      },
+      {
+        path: "terms-and-condition",
+        element: <TermsAndConditions />,
       },
     ],
   },

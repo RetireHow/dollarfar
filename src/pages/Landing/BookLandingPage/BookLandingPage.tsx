@@ -9,7 +9,7 @@ import { EbookDownloadFormPopup } from "./EbookDownloadForm";
 
 export default function BookLandingPage() {
   useEffect(() => {
-    // window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
   return (
     <main className="min-h-screen">
@@ -21,7 +21,7 @@ export default function BookLandingPage() {
         />
         <div className="absolute z-50 top-10 flex flex-col justify-center items-center w-full text-black px-5">
           <h3 className="text-[2.5rem] font-bold">Retire How?</h3>
-          <p className="text-[#696969] text-[1.3rem] text-center mt-2">
+          <p className="md:text-[#696969] text-[1.3rem] text-center mt-2">
             Master your retirement journey with{" "}
             <span className="font-bold text-black">Retire How?</span> — a
             straightforward, expert-backed book designed to simplify
@@ -39,14 +39,14 @@ export default function BookLandingPage() {
 
           <p className="mt-3">
             <span>Special Offer</span>{" "}
-            <span className="text-[#696969]">
+            <span className="md:text-[#696969]">
               🎁 : Be among the first 1,000 users to download the eBook for
               FREE! After that, it will be available as a paid download.
             </span>
           </p>
 
           <p className="mt-5">Or order from</p>
-          <Link to="">
+          <Link to="https://www.amazon.com/dp/B0FB46844J" target="_blank">
             <img className="mt-5" src={assets.amazonLogo} alt="Amazon Link" />
           </Link>
         </div>
@@ -79,31 +79,37 @@ export default function BookLandingPage() {
           <div>
             <p className="mb-2">Follow movva on</p>
             <div className="flex items-center gap-3">
-              <Link to="/book-landing">
+              <Link target="_blank" to="https://www.facebook.com/RetireHowInc/">
                 <Icon icon="ic:baseline-facebook" width="24" height="24" />
               </Link>
-              <Link to="/book-landing">
+              <Link
+                to="https://www.linkedin.com/in/rao-movva-pfp%C2%AE-cim%C2%AE-ciwm-fcsi%C2%AE-1826263/"
+                target="_blank"
+              >
                 <Icon
                   icon="entypo-social:linkedin-with-circle"
                   width="20"
                   height="20"
                 />
               </Link>
-              <Link to="/book-landing">
+              <Link
+                to="https://www.instagram.com/founder_ceo_travelglobal.ca/"
+                target="_blank"
+              >
                 <Icon
                   icon="entypo-social:instagram-with-circle"
                   width="20"
                   height="20"
                 />
               </Link>
-              <Link to="/book-landing">
+              <Link to="https://x.com/FallowRaoMovva?t=TtOXJBp-ztKfOUZNiDYFXQ&s=09">
                 <Icon
                   icon="entypo-social:twitter-with-circle"
                   width="20"
                   height="20"
                 />
               </Link>
-              <Link to="/book-landing">
+              <Link to="https://www.youtube.com/@movvarao1060">
                 <Icon
                   icon="entypo-social:youtube-with-circle"
                   width="20"
@@ -255,7 +261,7 @@ export default function BookLandingPage() {
         <div className="w-full max-w-3xl aspect-video shadow-lg rounded-xl overflow-hidden">
           <iframe
             className="w-full h-full"
-            src="https://www.youtube.com/embed/-Gdmc682ges"
+           src="https://www.youtube.com/embed/8fFjV5beQpU"
             title="YouTube video"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -305,7 +311,9 @@ export default function BookLandingPage() {
 
         <div className="absolute z-50 md:top-10 top-0 flex flex-col justify-center items-center w-full text-black px-5 md:bg-transparent bg-[#56a69dc5] md:h-auto h-full">
           <h3 className="text-[2.5rem] font-bold">Get Your Copy</h3>
-          <EbookDownloadFormPopup />
+          <div className="my-3">
+            <EbookDownloadFormPopup />
+          </div>
           <div className="mt-3 flex max-w-[700px] text-center">
             <p className="text-black">
               <span className="font-bold">Special Offer</span>🎁 : Be among the
@@ -315,7 +323,7 @@ export default function BookLandingPage() {
           </div>
 
           <p className="mt-5">Or order from</p>
-          <Link to="">
+          <Link to="https://www.amazon.com/dp/B0FB46844J" target="_blank">
             <img className="mt-5" src={assets.amazonLogo} alt="Amazon Link" />
           </Link>
         </div>
