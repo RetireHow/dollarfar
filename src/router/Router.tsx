@@ -58,6 +58,7 @@ import BookLandingPage from "../pages/Landing/BookLandingPage/BookLandingPage";
 import PrivacyPolicy from "../pages/Policies/PrivacyPolicy";
 import RefundPolicy from "../pages/Policies/RefundPolicy";
 import TermsAndConditions from "../pages/Policies/TermsAndConditions";
+import FeedbackForm from "../pages/Landing/BookLandingPage/FeedbackForm";
 
 export const router = createBrowserRouter([
   {
@@ -302,6 +303,10 @@ export const router = createBrowserRouter([
       {
         path: "terms-and-condition",
         element: <TermsAndConditions />,
+      },
+      {
+        path: "feedback-form",
+        element: <FeedbackForm />,
       },
     ],
   },

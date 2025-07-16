@@ -55,13 +55,13 @@ export default function Landing() {
       </section>
 
       {/* Book Section  */}
-      <section className="bg-[#EDF3F8] flex md:flex-row flex-col items-center justify-center md:px-20 md:py-16 py-5 px-5 md:gap-16 gap-5 mt-20 hidden">
+      <section className="bg-[#EDF3F8] dark:bg-neutral-800 flex md:flex-row flex-col items-center justify-center md:px-20 md:py-16 py-5 px-5 md:gap-16 gap-5 mt-20">
         <img src={assets.bookCoverPageWithBadge} alt="Book Cover Page" />
 
         <div>
           <h3 className="text-[2.5rem] font-bold">Retire How?</h3>
           <div className="my-2">
-            <p className="text-[#696969] text-[1.3rem]">
+            <p className="text-[#696969] dark:text-gray-300 text-[1.3rem]">
               A Practical Guide to Retirement Benefits in Canada and the U.S.
             </p>
             <p className="mt-1">
@@ -91,7 +91,7 @@ export default function Landing() {
           </div>
           <p>
             <span>Special Offer</span>{" "}
-            <span className="text-[#696969]">
+            <span className="text-[#696969] dark:text-gray-300">
               🎁 : Be among the first 1,000 users to download the eBook for
               FREE! After that, it will be available as a paid download.
             </span>

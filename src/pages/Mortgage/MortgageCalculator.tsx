@@ -29,7 +29,7 @@ import { FixedWidthMortgagePDFTemplate } from "./FixedWidthMortgagePDFTemplate";
 import { ExportMortgagePDFModal } from "./ExportMortgagePDFModal";
 
 const data = {
-  title: "Mortgage Calculator",
+  title: "North America Mortgage Calculator",
   description:
     "Plan your home loan with this powerful mortgage calculator. Estimate monthly payments, compare fixed and adjustable rates, and see how extra payments reduce interest. Includes taxes, insurance, and amortization charts for both U.S. and Canadian mortgages",
   image: assets.mortgageIconSvg,
@@ -761,7 +761,7 @@ export const MortgageCalculator: React.FC = () => {
               className="text-3xl font-bold bg-gradient-to-r from-[#2b6777] to-[#52ab98] bg-clip-text text-transparent"
               style={{ color: COLORS.primary }}
             >
-              Mortgage Calculator
+              North America Mortgage Calculator
             </h1>
           </div>
 

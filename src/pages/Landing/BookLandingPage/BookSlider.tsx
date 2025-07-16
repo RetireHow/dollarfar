@@ -47,7 +47,7 @@ const BookSlider: React.FC = () => {
   };
 
   return (
-    <section className="bg-[#EDF3F8] md:px-10 px-1 md:py-10 py-5 mb-28">
+    <section className="bg-[#EDF3F8] dark:bg-neutral-800 md:px-10 px-1 md:py-10 py-5 mb-28">
       <h3 className="text-[1.5rem] font-bold text-center mb-5">
         Book Content Preview
       </h3>
@@ -71,7 +71,7 @@ const BookSlider: React.FC = () => {
             <div className="shadow-md flex justify-center pb-5">
               <img
                 className="md:w-[500px] w-[300px] md:h-[500px] h-[300px]"
-                src={assets.bookCoverPageWithoutBadge}
+                src={assets.bookContentCover}
                 alt="Book Cover Page"
               />
             </div>
@@ -81,7 +81,25 @@ const BookSlider: React.FC = () => {
             <div className="shadow-md flex justify-center pb-5">
               <img
                 className="md:w-[500px] w-[300px] md:h-[500px] h-[300px]"
-                src={assets.bookCoverPageWithBadge}
+                src={assets.tableOfContent1}
+                alt="Book Cover Page"
+              />
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="shadow-md flex justify-center pb-5">
+              <img
+                className="md:w-[500px] w-[300px] md:h-[500px] h-[300px]"
+                src={assets.tableOfContent2}
+                alt="Book Cover Page"
+              />
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="shadow-md flex justify-center pb-5">
+              <img
+                className="md:w-[500px] w-[300px] md:h-[500px] h-[300px]"
+                src={assets.bookIntroduction}
                 alt="Book Cover Page"
               />
             </div>

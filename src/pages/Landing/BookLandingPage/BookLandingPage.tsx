@@ -6,8 +6,10 @@ import BookSlider from "./BookSlider";
 import BookReviews from "./BookReviews";
 import BookFAQ from "./BookFAQ";
 import { EbookDownloadFormPopup } from "./EbookDownloadForm";
+import useTitle from "../../../hooks/useTitle";
 
 export default function BookLandingPage() {
+  useTitle("Dollarfar | Book Landing")
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
@@ -58,7 +60,7 @@ export default function BookLandingPage() {
           <h3 className="font-bold text-[1.5rem]">
             Rao Movva, PFP®, CIM®, CIWM, FCSI®
           </h3>
-          <p className="text-[#696969] my-4">
+          <p className="dark:text-gray-300 text-[#696969] my-4">
             Rao Movva is a seasoned financial professional with over 25 years of
             experience in Canada’s banking sector. He has held senior
             roles—including Private Banker, Financial Planner, and Wealth
@@ -133,7 +135,7 @@ export default function BookLandingPage() {
           <h3 className="font-bold text-[1.2rem]">
             Retire with Confidence Across Borders
           </h3>
-          <p className="text-[#696969] my-3">
+          <p className="dark:text-gray-300 text-[#696969] my-3">
             Retire How? is your step-by-step guide to understanding and
             maximizing retirement benefits in both Canada and the U.S. Written
             in plain English with real-life examples, this book helps you make
@@ -254,7 +256,7 @@ export default function BookLandingPage() {
         </div>
       </section>
 
-      <section className="w-full bg-gray-100 py-12 px-4 flex flex-col items-center mb-28">
+      <section className="w-full dark:bg-neutral-800 bg-gray-100 py-12 px-4 flex flex-col items-center mb-28">
         <h2 className="text-3xl font-bold text-center mb-6">
           Watch Our Introduction
         </h2>

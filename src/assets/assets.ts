@@ -40,6 +40,11 @@ import getCopyBg from "./Ebook/Get Your Copy BG.png";
 import amazonLogo from "./Ebook/Amazon Logo.png";
 import roundedChecked from "./Ebook/rounded-checked.png";
 
+import tableOfContent1 from "./Ebook/Table of Contents-1.png";
+import tableOfContent2 from "./Ebook/Table of Contents-2.png";
+import bookIntroduction from "./Ebook/Introduction.png";
+import bookContentCover from "./Ebook/Book Cover.png";
+
 export const assets = {
   siteLogo,
   siteLogoWhite,
@@ -81,4 +86,9 @@ export const assets = {
   amazonLogo,
 
   roundedChecked,
+
+  tableOfContent1,
+  tableOfContent2,
+  bookIntroduction,
+  bookContentCover
 };
