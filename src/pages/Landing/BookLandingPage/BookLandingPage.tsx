@@ -263,12 +263,13 @@ export default function BookLandingPage() {
         <div className="w-full max-w-3xl aspect-video shadow-lg rounded-xl overflow-hidden">
           <iframe
             className="w-full h-full"
-           src="https://www.youtube.com/embed/8fFjV5beQpU"
+           src="https://www.youtube.com/embed/ArhUl8TAXB0"
             title="YouTube video"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           ></iframe>
+
         </div>
       </section>
 
