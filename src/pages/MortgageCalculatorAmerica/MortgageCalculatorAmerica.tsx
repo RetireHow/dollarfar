@@ -698,7 +698,7 @@ export const MortgageCalculatorAmerica: React.FC = () => {
             Calculate your mortgage payments with fixed or adjustable rate
             options
           </p>
-          <div className="flex justify-end">
+          <div className="flex justify-end md:mt-0 mt-10">
             <ExportMortgagePDFModal
               setIsGeneratingPDF={setIsGeneratingPDF}
               isGeneratingPDF={isGeneratingPDF}

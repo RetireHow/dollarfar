@@ -653,7 +653,7 @@ export const MortgageCalculatorCanada: React.FC = () => {
           <p className="text-gray-600 dark:text-gray-300 mt-2">
             Calculate your payment schedule with different payment frequencies
           </p>
-          <div className="flex justify-end">
+          <div className="flex justify-end md:mt-0 mt-10">
             <ExportMortgagePDFModal
               setIsGeneratingPDF={setIsGeneratingPDF}
               isGeneratingPDF={isGeneratingPDF}
