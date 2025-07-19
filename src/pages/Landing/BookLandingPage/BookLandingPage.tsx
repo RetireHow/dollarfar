@@ -287,7 +287,7 @@ export default function BookLandingPage() {
       <BookFAQ />
       <BookReviews />
 
-      <section className="md:mx-20 mb-28 md:px-0 px-5">
+      {/* <section className="md:mx-20 mb-28 md:px-0 px-5">
         <h3 className="font-bold text-[1.5rem] text-center mb-8">
           The Author’s upcoming Books
         </h3>
@@ -303,7 +303,7 @@ export default function BookLandingPage() {
             alt="Book3"
           />
         </div>
-      </section>
+      </section> */}
 
       <section className="relative">
         <img
