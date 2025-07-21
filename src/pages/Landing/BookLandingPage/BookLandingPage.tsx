@@ -11,7 +11,7 @@ import useTitle from "../../../hooks/useTitle";
 export default function BookLandingPage() {
   useTitle("Dollarfar | Book Landing");
   useEffect(() => {
-    // window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
   return (
     <main className="min-h-screen">
@@ -130,9 +130,9 @@ export default function BookLandingPage() {
           </p>
           <div>
             <p className="mb-2 text-[20px]">Follow movva on</p>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <Link target="_blank" to="https://www.facebook.com/RetireHowInc/">
-                <Icon icon="ic:baseline-facebook" width="24" height="24" />
+                <Icon icon="ic:baseline-facebook" width="33" height="33" />
               </Link>
               <Link
                 to="https://www.linkedin.com/in/rao-movva-pfp%C2%AE-cim%C2%AE-ciwm-fcsi%C2%AE-1826263/"
@@ -140,8 +140,8 @@ export default function BookLandingPage() {
               >
                 <Icon
                   icon="entypo-social:linkedin-with-circle"
-                  width="20"
-                  height="20"
+                  width="30"
+                  height="30"
                 />
               </Link>
               <Link
@@ -150,8 +150,8 @@ export default function BookLandingPage() {
               >
                 <Icon
                   icon="entypo-social:instagram-with-circle"
-                  width="20"
-                  height="20"
+                  width="30"
+                  height="30"
                 />
               </Link>
               <Link
@@ -160,15 +160,15 @@ export default function BookLandingPage() {
               >
                 <Icon
                   icon="entypo-social:twitter-with-circle"
-                  width="20"
-                  height="20"
+                  width="30"
+                  height="30"
                 />
               </Link>
               <Link to="https://www.youtube.com/@movvarao1060" target="_blank">
                 <Icon
                   icon="entypo-social:youtube-with-circle"
-                  width="20"
-                  height="20"
+                  width="30"
+                  height="30"
                 />
               </Link>
             </div>
