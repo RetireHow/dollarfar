@@ -37,6 +37,7 @@ import videoThumnail from "./Ebook/Video Thumbnail.png";
 import futureBook2 from "./Ebook/Future Book2.png";
 import futureBook3 from "./Ebook/Future Book3.png";
 import getCopyBg from "./Ebook/Get Your Copy BG.png";
+import getCopyBgMobile from "./Ebook/mobile-view.png";
 import amazonLogo from "./Ebook/Amazon Logo.png";
 import roundedChecked from "./Ebook/rounded-checked.png";
 
@@ -83,6 +84,7 @@ export const assets = {
   futureBook2,
   futureBook3,
   getCopyBg,
+  getCopyBgMobile,
   amazonLogo,
 
   roundedChecked,

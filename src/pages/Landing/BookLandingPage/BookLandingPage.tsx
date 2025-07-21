@@ -11,7 +11,7 @@ import useTitle from "../../../hooks/useTitle";
 export default function BookLandingPage() {
   useTitle("Dollarfar | Book Landing");
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
   return (
     <main className="min-h-screen">
@@ -357,29 +357,34 @@ export default function BookLandingPage() {
         </div>
       </section> */}
 
-      <section className="relative">
+      <section className="relative text-center">
         <img
-          className="w-full md:h-auto h-[350px]"
+          className="w-full md:block hidden"
           src={assets.getCopyBg}
           alt="Get Copy BG"
         />
+        <img
+          className="w-full md:hidden block"
+          src={assets.getCopyBgMobile}
+          alt="Get Copy BG"
+        />
 
-        <div className="absolute z-50 md:top-10 top-0 flex flex-col justify-center items-center w-full text-black px-5 md:bg-transparent bg-[#edf3f8d7] md:h-auto h-full">
+        <div className="absolute z-50 md:top-10 top-0 flex flex-col md:justify-center md:items-center w-full text-black px-5 md:h-auto h-full md:mt-0 mt-3">
           <h3 className="md:text-[2rem] text-[1.5rem] font-bold">Get Your Copy</h3>
-          <div className="my-3 md:w-auto w-full">
+          <div className="md:my-3 my-1 md:w-auto w-full">
             <EbookDownloadFormPopup />
           </div>
-          <div className="mt-3 flex max-w-[700px] text-center">
+          <div className="md:mt-3 mt-1 flex max-w-[700px] text-center">
             <p className="text-black">
-              <span className="font-bold leading-7">Special Offer</span>🎁 : Be
+              <span className="font-bold md:text-[1rem] text-[14px] leading-7">Special Offer</span>🎁 : Be
               among the first 1,000 users to download the eBook for FREE! After
               that, it will be available as a paid download.
             </p>
           </div>
 
-          <p className="mt-5">Or order from</p>
+          <p className="md:mt-5 mt-3">Or order from</p>
           <Link to="https://www.amazon.com/dp/B0FB46844J" target="_blank">
-            <img className="mt-5" src={assets.amazonLogo} alt="Amazon Link" />
+            <img className="md:mt-5 mt-3" src={assets.amazonLogo} alt="Amazon Link" />
           </Link>
         </div>
       </section>
