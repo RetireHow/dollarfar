@@ -34,7 +34,7 @@ export default function BookLandingPage() {
         <div className="absolute z-50 md:bottom-40 bottom-10 w-full text-black px-5 text-center">
           <div className="flex md:flex-row flex-col gap-5 justify-center items-center">
             <EbookDownloadFormPopup />
-            <button className="bg-black rounded-lg text-white md:px-5 px-2 md:py-3 py-2 md:w-auto w-full">
+            <button className="bg-black rounded-lg text-white md:px-5 px-2 py-3 md:w-auto w-full">
               Buy Now
             </button>
           </div>
@@ -82,7 +82,7 @@ export default function BookLandingPage() {
         <div className="w-full text-black px-5 text-center">
           <div className="flex md:flex-row flex-col gap-5 justify-center items-center">
             <EbookDownloadFormPopup />
-            <button className="bg-black rounded-lg text-white md:px-5 px-2 md:py-3 py-2 md:w-auto w-full">
+            <button className="bg-black rounded-lg text-white md:px-5 px-2 py-3 md:w-auto w-full">
               Buy Now
             </button>
           </div>
@@ -364,9 +364,9 @@ export default function BookLandingPage() {
           alt="Get Copy BG"
         />
 
-        <div className="absolute z-50 md:top-10 top-0 flex flex-col justify-center items-center w-full text-black px-5 md:bg-transparent bg-[#56a69dea] md:h-auto h-full">
+        <div className="absolute z-50 md:top-10 top-0 flex flex-col justify-center items-center w-full text-black px-5 md:bg-transparent bg-[#edf3f8d7] md:h-auto h-full">
           <h3 className="md:text-[2rem] text-[1.5rem] font-bold">Get Your Copy</h3>
-          <div className="my-3">
+          <div className="my-3 md:w-auto w-full">
             <EbookDownloadFormPopup />
           </div>
           <div className="mt-3 flex max-w-[700px] text-center">

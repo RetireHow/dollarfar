@@ -74,7 +74,7 @@ export default function Landing() {
           <div className="flex md:flex-row flex-col items-center gap-5 my-5">
             <Link
               to="book-landing"
-              className="bg-black rounded-lg text-white md:px-5 px-2 md:py-3 py-2 md:w-auto w-full"
+              className="bg-black rounded-lg text-white md:px-5 px-2 py-3 md:w-auto w-full"
             >
               <button className="flex justify-center items-center gap-3 w-full">
                 <p>Get Your Free Copy Now</p>{" "}
@@ -84,7 +84,7 @@ export default function Landing() {
 
             <Link
               to="book-landing"
-              className="bg-black rounded-lg text-white md:px-5 px-2 md:py-3 py-2 md:w-auto w-full text-center"
+              className="bg-black rounded-lg text-white md:px-5 px-2 py-3 md:w-auto w-full text-center"
             >
               <button>Buy Now</button>
             </Link>

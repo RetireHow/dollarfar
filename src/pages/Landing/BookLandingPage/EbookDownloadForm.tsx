@@ -121,7 +121,7 @@ export const EbookDownloadFormPopup = () => {
       }}
     >
       <button
-        className="bg-black rounded-lg text-white md:px-5 px-2 md:py-3 py-2 md:w-auto w-full"
+        className="bg-black rounded-lg text-white md:px-5 px-2 py-3 md:w-auto w-full"
         type="button"
         onClick={showModal}
         disabled={isLoading}
