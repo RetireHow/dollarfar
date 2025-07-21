@@ -105,7 +105,7 @@ const BookReviews: React.FC = () => {
   };
 
   return (
-    <section className="md:px-10 px-1 mb-28">
+    <section className="md:px-10 px-1 md:mb-28 mb-16">
       <h3 className="text-[1.5rem] font-bold text-center mb-5">
         What Readers Are Saying
       </h3>
@@ -129,7 +129,7 @@ const BookReviews: React.FC = () => {
             const { name, location, rating, review } = feedback;
             return (
               <SwiperSlide key={name}>
-                <div className="shadow-md pb-5 bg-gray-100 border-[1px] border-gray-200 p-5 mb-8 md:h-[230px] h-auto dark:bg-neutral-900 dark:text-white">
+                <div className="shadow-md pb-5 bg-gray-100 border-[1px] border-gray-200 p-5 mb-8 dark:bg-neutral-900 dark:text-white leading-7">
                   <div className="flex items-center gap-1">
                     {Array(rating)
                       ?.fill(0)

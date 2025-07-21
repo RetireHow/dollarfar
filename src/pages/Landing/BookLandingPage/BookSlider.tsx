@@ -47,7 +47,7 @@ const BookSlider: React.FC = () => {
   };
 
   return (
-    <section className="bg-[#EDF3F8] dark:bg-neutral-800 md:px-10 px-1 md:py-10 py-5 mb-28">
+    <section className="bg-[#EDF3F8] dark:bg-neutral-800 md:px-10 px-1 md:py-10 py-5 md:mb-28 mb-16">
       <h3 className="text-[1.5rem] font-bold text-center mb-5">
         Book Content Preview
       </h3>

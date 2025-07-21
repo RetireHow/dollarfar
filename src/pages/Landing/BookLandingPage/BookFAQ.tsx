@@ -47,7 +47,7 @@ export default function BookFAQ() {
   };
 
   return (
-    <section className="mb-28 md:px-0 px-5">
+    <section className="md:px-0 px-5 md:mb-28 mb-16">
       <h2 className="text-2xl font-bold text-center mb-6">Common Questions</h2>
       <div className="max-w-3xl mx-auto space-y-4">
         {faqs.map((faq, index) => (
@@ -64,7 +64,7 @@ export default function BookFAQ() {
               )}
             </button>
             {openIndex === index && (
-              <div className="px-4 pb-4 text-gray-700 dark:text-gray-300">{faq.answer}</div>
+              <div className="px-4 pb-4 text-gray-700 dark:text-gray-300 leading-7">{faq.answer}</div>
             )}
           </div>
         ))}
