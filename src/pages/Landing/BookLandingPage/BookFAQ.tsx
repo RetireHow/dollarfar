@@ -54,7 +54,7 @@ export default function BookFAQ() {
           <div key={index} className="border border-gray-300 rounded-xl">
             <button
               onClick={() => toggleIndex(index)}
-              className="w-full flex justify-between items-center p-4 font-bold text-left"
+              className="w-full flex justify-between items-center p-4 font-bold text-left md:text-[1.1rem]"
             >
               {faq.question}
               {openIndex === index ? (
@@ -64,7 +64,9 @@ export default function BookFAQ() {
               )}
             </button>
             {openIndex === index && (
-              <div className="px-4 pb-4 text-gray-700 dark:text-gray-300 leading-7">{faq.answer}</div>
+              <div className="px-4 pb-4 text-gray-700 dark:text-gray-300 leading-7">
+                {faq.answer}
+              </div>
             )}
           </div>
         ))}

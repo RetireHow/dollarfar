@@ -22,8 +22,8 @@ export default function BookLandingPage() {
           alt="Book Shadow"
         />
         <div className="absolute z-50 top-10 flex flex-col justify-center items-center w-full text-black px-5">
-          <h3 className="text-[2.5rem] font-bold">Retire How?</h3>
-            <p className="md:text-[#696969] text-[1.3rem] text-center mt-2">
+          <h3 className="text-[2rem] font-bold">Retire How?</h3>
+          <p className="md:text-[#696969] text-[1.3rem] text-center mt-2">
             Master your retirement journey with{" "}
             <span className="font-bold text-black">Retire How?</span> — a
             straightforward, expert-backed book designed to simplify
@@ -54,11 +54,20 @@ export default function BookLandingPage() {
         </div>
       </section>
 
-{/* Mobile Layout  */}
-       <section className="md:mb-28 mb-16 bg-[#EDF3F8] py-8 md:hidden block">
+      {/* Mobile Layout  */}
+      <section
+        style={{
+          backgroundImage: `url(${assets.bookShadow})`,
+          backgroundSize: "cover",
+          backgroundRepeat:"no-repeat",
+          WebkitBackgroundSize:"100%",
+          backgroundPosition:"bottom"
+        }}
+        className="md:mb-28 mb-16 bg-[#EDF3F8] py-8 md:hidden block"
+      >
         <div className="flex flex-col justify-center items-center w-full text-black px-5">
-          <h3 className="text-[2.5rem] font-bold">Retire How?</h3>
-            <p className="md:text-[#696969] text-[1.3rem] text-center mt-2">
+          <h3 className="text-[1.5rem] font-bold">Retire How?</h3>
+          <p className="md:text-[#696969] text-[1rem] text-center mt-2">
             Master your retirement journey with{" "}
             <span className="font-bold text-black">Retire How?</span> — a
             straightforward, expert-backed book designed to simplify
@@ -95,13 +104,13 @@ export default function BookLandingPage() {
 
       <section className="flex md:flex-row flex-col-reverse items-center md:gap-20 gap-5 md:px-20 px-10 md:mb-28 mb-16">
         <div>
-          <h5 className="font-semibold my-2 md:text-[1.5rem] text-[1.2rem]">
+          <h5 className="font-semibold my-2 md:text-[1.3rem] text-[1.1rem]">
             About The Author
           </h5>
-          <h3 className="font-bold md:text-[2.5rem] text-[1.5rem]">
+          <h3 className="font-bold md:text-[2rem] text-[1.5rem]">
             Rao Movva, PFP®, CIM®, CIWM, FCSI®
           </h3>
-          <p className="dark:text-gray-300 text-[#696969] my-4 leading-8 text-[20px]">
+          <p className="dark:text-gray-300 text-[#696969] my-4 leading-8 md:text-[20px] text-[1rem]">
             Rao Movva is a seasoned financial professional with over 25 years of
             experience in Canada’s banking sector. He has held senior
             roles—including Private Banker, Financial Planner, and Wealth
@@ -176,17 +185,17 @@ export default function BookLandingPage() {
 
       <section className="flex md:flex-row flex-col md:gap-16 gap-8 md:mx-16 mx-8 md:mb-28 mb-16 leading-8">
         <div className="border-[1px] border-gray-200 rounded-lg p-5">
-          <h3 className="font-bold text-[1.8rem]">
+          <h3 className="font-bold md:text-[1.8rem] text-[1.5rem]">
             Retire with Confidence Across Borders
           </h3>
-          <p className="dark:text-gray-300 text-[#696969] my-3 text-[1.2rem]">
+          <p className="dark:text-gray-300 text-[#696969] my-3 md:text-[1.2rem] text-[1rem]">
             Retire How? is your step-by-step guide to understanding and
             maximizing retirement benefits in both Canada and the U.S. Written
             in plain English with real-life examples, this book helps you make
             smarter decisions about your retirement income, taxes, and
             cross-border planning.
           </p>
-          <ul className="text-[#696969] space-y-3 text-[1.2rem]">
+          <ul className="text-[#696969] space-y-3 md:text-[1.2rem] text-[1rem]">
             <li className="flex items-center gap-2">
               <img
                 className="w-[20px] h-[20px]"
@@ -245,8 +254,8 @@ export default function BookLandingPage() {
         </div>
 
         <div className="border-[1px] border-gray-200 rounded-lg p-5 leading-8">
-          <h3 className="font-bold mb-3 text-[1.8rem]">Who this book is for</h3>
-          <ul className="text-[#696969] space-y-3 text-[1.2rem]">
+          <h3 className="font-bold mb-3 md:text-[1.8rem] text-[1.5rem]">Who this book is for</h3>
+          <ul className="text-[#696969] space-y-3 md:text-[1.2rem] text-[1rem]">
             <li className="flex items-center gap-2">
               <img
                 className="w-[20px] h-[20px]"
@@ -318,8 +327,8 @@ export default function BookLandingPage() {
 
       <BookSlider />
 
-      <section className="bg-black text-white md:py-16 py-8 md:px-28 px-5 text-center text-[1.5rem] md:mb-28 mb-16">
-        <p className="mb-3">
+      <section className="bg-black text-white md:py-16 py-8 md:px-28 px-5 text-center md:text-[1.5rem] text-[1.1rem] md:mb-28 mb-16">
+        <p className="mb-3 md:leading-10 leading-8">
           No two retirement plans look the same, but one thing is certain:
           understanding your benefits ahead of time makes all the difference.
           Retirement should be a time of freedom, not financial stress.
@@ -356,7 +365,7 @@ export default function BookLandingPage() {
         />
 
         <div className="absolute z-50 md:top-10 top-0 flex flex-col justify-center items-center w-full text-black px-5 md:bg-transparent bg-[#56a69dea] md:h-auto h-full">
-          <h3 className="text-[2.5rem] font-bold">Get Your Copy</h3>
+          <h3 className="md:text-[2rem] text-[1.5rem] font-bold">Get Your Copy</h3>
           <div className="my-3">
             <EbookDownloadFormPopup />
           </div>
