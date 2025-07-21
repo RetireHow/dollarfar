@@ -359,7 +359,7 @@ export default function BookLandingPage() {
 
       <section className="relative">
         <img
-          className="w-full md:h-auto h-[500px]"
+          className="w-full md:h-auto h-[350px]"
           src={assets.getCopyBg}
           alt="Get Copy BG"
         />
