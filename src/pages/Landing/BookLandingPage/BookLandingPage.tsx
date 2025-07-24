@@ -102,7 +102,7 @@ export default function BookLandingPage() {
         </div>
       </section>
 
-      <section className="flex md:flex-row flex-col-reverse items-center md:gap-20 gap-5 md:px-20 px-10 md:mb-28 mb-16">
+      <section className="flex md:flex-row flex-col-reverse items-center md:gap-20 gap-5 md:px-20 px-5 md:mb-28 mb-16">
         <div>
           <h5 className="font-semibold my-2 md:text-[1.3rem] text-[1.1rem]">
             About The Author
@@ -183,7 +183,7 @@ export default function BookLandingPage() {
         </div>
       </section>
 
-      <section className="flex md:flex-row flex-col md:gap-16 gap-8 md:mx-16 mx-8 md:mb-28 mb-16 leading-8">
+      <section className="flex md:flex-row flex-col md:gap-16 gap-8 md:mx-16 mx-5 md:mb-28 mb-16 leading-8">
         <div className="border-[1px] border-gray-200 rounded-lg p-5">
           <h3 className="font-bold md:text-[1.8rem] text-[1.5rem]">
             Retire with Confidence Across Borders
@@ -309,7 +309,7 @@ export default function BookLandingPage() {
         </div>
       </section>
 
-      <section className="w-full dark:bg-neutral-800 bg-gray-100 py-12 px-4 flex flex-col items-center md:mb-28 mb-16">
+      <section className="w-full dark:bg-neutral-800 bg-gray-100 py-12 px-5 flex flex-col items-center md:mb-28 mb-16">
         <h2 className="text-3xl font-bold text-center mb-6">
           Watch Our Introduction
         </h2>
