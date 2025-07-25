@@ -25,7 +25,7 @@ export default function BookLandingPage() {
           <h3 className="text-[2rem] font-bold">Retire How?</h3>
           <p className="md:text-[#696969] text-[1.3rem] text-center mt-2">
             Master your retirement journey with{" "}
-            <span className="font-bold text-black">Retire How?</span> — a
+            <span className="font-bold text-black italic">Retire How?</span> — a
             straightforward, expert-backed book designed to simplify
             understanding retirement benefits.
           </p>
@@ -69,7 +69,7 @@ export default function BookLandingPage() {
           <h3 className="text-[1.5rem] font-bold">Retire How?</h3>
           <p className="md:text-[#696969] text-[1rem] text-center mt-2">
             Master your retirement journey with{" "}
-            <span className="font-bold text-black">Retire How?</span> — a
+            <span className="font-bold text-black italic">Retire How?</span> — a
             straightforward, expert-backed book designed to simplify
             understanding retirement benefits.
           </p>
@@ -124,12 +124,12 @@ export default function BookLandingPage() {
             Institute, a distinction that underscores his commitment to
             financial excellence and professional development. Rao is also the
             author of{" "}
-            <span className="font-bold text-black">*Retire How?*</span>, a
+            <span className="font-bold text-black italic">Retire How?</span>, a
             practical guide to understanding retirement benefits and planning
             strategies in both Canada and the U.S.
           </p>
           <div>
-            <p className="mb-2 text-[20px]">Follow movva on</p>
+            <p className="mb-2 text-[20px]">Follow Movva on</p>
             <div className="flex items-center gap-4">
               <Link target="_blank" to="https://www.facebook.com/RetireHowInc/">
                 <Icon icon="ic:baseline-facebook" width="33" height="33" />
@@ -189,16 +189,16 @@ export default function BookLandingPage() {
             Retire with Confidence Across Borders
           </h3>
           <p className="dark:text-gray-300 text-[#696969] my-3 md:text-[1.2rem] text-[1rem]">
-            Retire How? is your step-by-step guide to understanding and
+            <span className="font-bold italic text-black">Retire How?</span> is your step-by-step guide to understanding and
             maximizing retirement benefits in both Canada and the U.S. Written
             in plain English with real-life examples, this book helps you make
             smarter decisions about your retirement income, taxes, and
             cross-border planning.
           </p>
           <ul className="text-[#696969] space-y-3 md:text-[1.2rem] text-[1rem]">
-            <li className="flex items-center gap-2">
+            <li className="flex gap-2">
               <img
-                className="w-[20px] h-[20px]"
+                className="w-[20px] h-[20px] mt-[6px]"
                 src={assets.roundedChecked}
                 alt="check icon"
               />
@@ -207,9 +207,9 @@ export default function BookLandingPage() {
                 SSI
               </span>
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex gap-2">
               <img
-                className="w-[20px] h-[20px]"
+                className="w-[20px] h-[20px] mt-[6px]"
                 src={assets.roundedChecked}
                 alt="check icon"
               />
@@ -218,9 +218,9 @@ export default function BookLandingPage() {
                 differ—and what they mean for your bottom line
               </span>
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex gap-2">
               <img
-                className="w-[20px] h-[20px]"
+                className="w-[20px] h-[20px] mt-[6px]"
                 src={assets.roundedChecked}
                 alt="check icon"
               />
@@ -229,9 +229,9 @@ export default function BookLandingPage() {
                 clawbacks
               </span>
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex gap-2">
               <img
-                className="w-[20px] h-[20px]"
+                className="w-[20px] h-[20px] mt-[6px]"
                 src={assets.roundedChecked}
                 alt="check icon"
               />
@@ -239,9 +239,9 @@ export default function BookLandingPage() {
                 Explore healthcare realities for retirees in both countries
               </span>
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex gap-2">
               <img
-                className="w-[20px] h-[20px]"
+                className="w-[20px] h-[20px] mt-[6px]"
                 src={assets.roundedChecked}
                 alt="check icon"
               />
@@ -256,9 +256,9 @@ export default function BookLandingPage() {
         <div className="border-[1px] border-gray-200 rounded-lg p-5 leading-8">
           <h3 className="font-bold mb-3 md:text-[1.8rem] text-[1.5rem]">Who this book is for</h3>
           <ul className="text-[#696969] space-y-3 md:text-[1.2rem] text-[1rem]">
-            <li className="flex items-center gap-2">
+            <li className="flex gap-2">
               <img
-                className="w-[20px] h-[20px]"
+                className="w-[20px] h-[20px] mt-[6px]"
                 src={assets.roundedChecked}
                 alt="check icon"
               />
@@ -267,9 +267,9 @@ export default function BookLandingPage() {
                 maximize your CPP, OAS, and GIS benefits.
               </span>
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex gap-2">
               <img
-                className="w-[20px] h-[20px]"
+                className="w-[20px] h-[20px] mt-[6px]"
                 src={assets.roundedChecked}
                 alt="check icon"
               />
@@ -279,9 +279,9 @@ export default function BookLandingPage() {
                 your income.
               </span>
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex gap-2">
               <img
-                className="w-[20px] h-[20px]"
+                className="w-[20px] h-[20px] mt-[6px]"
                 src={assets.roundedChecked}
                 alt="check icon"
               />
@@ -290,9 +290,9 @@ export default function BookLandingPage() {
                 to align your benefits when retiring across borders.
               </span>
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex gap-2">
               <img
-                className="w-[20px] h-[20px]"
+                className="w-[20px] h-[20px] mt-[6px]"
                 src={assets.roundedChecked}
                 alt="check icon"
               />
