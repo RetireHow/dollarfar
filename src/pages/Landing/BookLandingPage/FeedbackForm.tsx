@@ -50,7 +50,7 @@ const FeedbackForm: React.FC = () => {
 
   if (submitted) {
     return (
-      <section className="h-[60vh] flex justify-center items-center m-5 md:m-0">
+      <section className="h-[60vh] flex justify-center items-center m-5">
         <div className="max-w-xl mx-auto p-6 rounded-xl bg-black text-white shadow-md">
           <h2 className="text-2xl font-semibold mb-2">
             Thank you for your feedback!
@@ -66,7 +66,7 @@ const FeedbackForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-xl md:mx-auto md:my-16 p-8 bg-white text-black rounded-2xl shadow-xl space-y-6 border border-gray-900"
+      className="max-w-xl md:mx-auto md:m-10 m-5 md:p-8 p-5 bg-white text-black rounded-2xl shadow-xl space-y-6 border border-gray-900"
     >
       <div>
         <h2 className="text-3xl font-bold mb-1">We’d love your feedback</h2>
