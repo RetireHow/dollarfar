@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Star } from "lucide-react";
+import { baseUrl } from "../../../api/apiConstant";
+import { toast } from "react-toastify";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 interface FormData {
   name: string;
@@ -20,6 +23,7 @@ const FeedbackForm: React.FC = () => {
 
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [ratingError, setRatingError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -38,14 +42,37 @@ const FeedbackForm: React.FC = () => {
     setRatingError(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.rating === 0) {
       setRatingError(true);
       return;
     }
     console.log("Feedback submitted:", formData);
-    setSubmitted(true);
+
+    //API Call
+    try {
+      setIsLoading(true);
+      const response = await fetch(`${baseUrl}/feedbacks/create-feedback`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      if (data?.success) {
+        return setSubmitted(true);
+      }else{
+        toast.error("There is something went wrong!");
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+    } catch (error: any) {
+      setIsLoading(false);
+      toast.error("There is something went wrong!");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (submitted) {
@@ -162,12 +189,17 @@ const FeedbackForm: React.FC = () => {
         ></textarea>
       </div>
 
-      <div className="text-right">
+      <div className="flex justify-end">
         <button
           type="submit"
-          className="px-6 py-2 bg-black text-white rounded-md font-semibold hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black transition"
+          className={`px-6 py-2 text-white rounded-md font-semibold focus:outline-none focus:ring-2 focus:ring-black transition w-[180px] h-[45px] flex justify-center items-center ${isLoading ? 'bg-gray-500' : 'bg-black hover:bg-gray-800'}`}
+          disabled={isLoading}
         >
-          Submit Feedback
+          {isLoading ? (
+            <Icon icon="eos-icons:three-dots-loading" width="50" height="50" />
+          ) : (
+            "Submit Feedback"
+          )}
         </button>
       </div>
     </form>

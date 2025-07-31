@@ -124,7 +124,7 @@ export default function BookLandingPage() {
             Institute, a distinction that underscores his commitment to
             financial excellence and professional development. Rao is also the
             author of{" "}
-            <span className="font-bold text-black italic">Retire How?</span>, a
+            <span className="font-bold text-black italic dark:text-white">Retire How?</span>, a
             practical guide to understanding retirement benefits and planning
             strategies in both Canada and the U.S.
           </p>
@@ -189,7 +189,7 @@ export default function BookLandingPage() {
             Retire with Confidence Across Borders
           </h3>
           <p className="dark:text-gray-300 text-[#696969] my-3 md:text-[1.2rem] text-[1rem]">
-            <span className="font-bold italic text-black">Retire How?</span> is your step-by-step guide to understanding and
+            <span className="font-bold italic text-black dark:text-white">Retire How?</span> is your step-by-step guide to understanding and
             maximizing retirement benefits in both Canada and the U.S. Written
             in plain English with real-life examples, this book helps you make
             smarter decisions about your retirement income, taxes, and
