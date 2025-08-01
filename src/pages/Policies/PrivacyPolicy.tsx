@@ -1,23 +1,11 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function PrivacyPolicy() {
-  const navigage = useNavigate();
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8 text-gray-800 dark:text-white dark:bg-gray-900">
-      <button className="bg-black text-white w-[150px] flex justify-between">
-        <Icon
-          onClick={() => navigage(-1)}
-          icon="lets-icons:back"
-          width="24"
-          height="24"
-        />
-        Go Back
-      </button>
       <h1 className="text-4xl font-bold text-center text-gray-900 dark:text-white">
         Privacy Policy
       </h1>

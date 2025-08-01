@@ -29,6 +29,8 @@ const swiperConfig = {
   },
 };
 
+
+
 const BookReviews: React.FC = () => {
   const [swiperInstance, setSwiperInstance] = useState<SwiperClass | null>(
     null
