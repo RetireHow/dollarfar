@@ -9,66 +9,6 @@ import { baseUrl } from "../../../api/apiConstant";
 import { toast } from "react-toastify";
 import { FeedbackSkeleton } from "./FeedbackSkeleton";
 
-
-//  const feedbacksData = [
-//     {
-//       rating: 5,
-//       review:
-//         'This book helped me understand my CPP and OAS better than anything else I’ve read. It’s practical and easy to follow!',
-//       name: 'James C',
-//       location: 'Toronto',
-//     },
-//     {
-//       rating: 5,
-//       review:
-//         'Finally, a clear explanation of how U.S. and Canadian pensions interact. I feel way more confident planning my cross-border retirement now.',
-//       name: 'Susan M',
-//       location: 'Vancouver',
-//     },
-//     {
-//       rating: 4,
-//       review:
-//         'Very informative, especially the sections on RRSP vs 401(k). I would have liked more examples though.',
-//       name: 'Daniel T',
-//       location: 'Ottawa',
-//     },
-//     {
-//       rating: 5,
-//       review:
-//         'This should be required reading for anyone turning 60! The step-by-step breakdowns are gold.',
-//       name: 'Helen B',
-//       location: 'Calgary',
-//     },
-//     {
-//       rating: 5,
-//       review:
-//         'I’ve read a lot on retirement planning, but this book connected all the dots for me—especially across borders. Highly recommend!',
-//       name: 'Michael R',
-//       location: 'Buffalo, NY',
-//     },
-//     {
-//       rating: 4,
-//       review:
-//         'Solid resource for Canadians living in the U.S. Some content could use updates, but overall very helpful.',
-//       name: 'Priya S',
-//       location: 'Montreal',
-//     },
-//     {
-//       rating: 5,
-//       review:
-//         'Simple, clear, and packed with actionable advice. I loved the checklists at the end of each chapter.',
-//       name: 'Greg W',
-//       location: 'Edmonton',
-//     },
-//     {
-//       rating: 5,
-//       review:
-//         'I wish I found this book earlier. It saved me from making a huge CPP deferral mistake.',
-//       name: 'Linda K',
-//       location: 'Halifax',
-//     },
-//   ];
-
 const swiperConfig = {
   modules: [Pagination, Autoplay],
   pagination: {
@@ -152,6 +92,14 @@ const BookReviews: React.FC = () => {
 
         {isLoading ? (
           <FeedbackSkeleton />
+        ) : feedbacks?.length === 0 ? (
+          <div className="text-gray-600 dark:text-gray-300 text-center text-[1.2rem] max-w-xl mx-auto my-6">
+            <p>We haven’t received any reader feedback yet.</p>
+            <p>
+              Be the first to share your thoughts and help others learn from
+              your experience!
+            </p>
+          </div>
         ) : (
           <Swiper
             onSwiper={(swiper: SwiperClass) => setSwiperInstance(swiper)}
