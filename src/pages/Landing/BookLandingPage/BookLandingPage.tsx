@@ -337,6 +337,7 @@ export default function BookLandingPage() {
       </section>
 
       <BookFAQ />
+      
       <BookReviews />
 
       {/* <section className="md:mx-20 mb-28 md:px-0 px-5">

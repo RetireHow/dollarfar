@@ -59,6 +59,8 @@ import PrivacyPolicy from "../pages/Policies/PrivacyPolicy";
 import RefundPolicy from "../pages/Policies/RefundPolicy";
 import TermsAndConditions from "../pages/Policies/TermsAndConditions";
 import FeedbackForm from "../pages/Landing/BookLandingPage/FeedbackForm";
+import PaymentSuccess from "../pages/Landing/BookLandingPage/PaymentSuccess";
+import PaymentCancel from "../pages/Landing/BookLandingPage/PaymentCancel";
 
 export const router = createBrowserRouter([
   {
@@ -307,6 +309,14 @@ export const router = createBrowserRouter([
       {
         path: "feedback-form",
         element: <FeedbackForm />,
+      },
+      {
+        path: "success",
+        element: <PaymentSuccess />,
+      },
+      {
+        path: "cancel",
+        element: <PaymentCancel />,
       },
     ],
   },
