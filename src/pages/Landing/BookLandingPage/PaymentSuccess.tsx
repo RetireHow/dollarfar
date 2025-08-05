@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 // Define the expected shape of the Stripe session object
 interface StripeSession {
@@ -26,12 +26,14 @@ interface StripeSession {
 interface ApiResponse {
   success: boolean;
   session: StripeSession;
+  downloadUrl: string;
 }
 
 export default function PaymentSuccess() {
   const [searchParams] = useSearchParams();
   const [sessionData, setSessionData] = useState<StripeSession | null>(null);
-  const sessionId = searchParams.get('session_id');
+  const [downloadUrl, setDownloadUrl] = useState<string>("");
+  const sessionId = searchParams.get("session_id");
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -42,9 +44,10 @@ export default function PaymentSuccess() {
         const data: ApiResponse = await res.json();
         if (data.success) {
           setSessionData(data.session);
+          setDownloadUrl(data?.downloadUrl);
         }
       } catch (err) {
-        console.error('Failed to fetch session data', err);
+        console.error("Failed to fetch session data", err);
       }
     };
 
@@ -54,7 +57,9 @@ export default function PaymentSuccess() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white p-6">
       <div className="max-w-xl w-full bg-green-50 border border-green-200 shadow rounded-xl p-8 text-center">
-        <h1 className="text-3xl font-bold text-green-600 mb-4">✅ Payment Complete</h1>
+        <h1 className="text-3xl font-bold text-green-600 mb-4">
+          ✅ Payment Complete
+        </h1>
 
         {sessionData ? (
           <>
@@ -62,13 +67,14 @@ export default function PaymentSuccess() {
               Thanks <strong>{sessionData.customer_details?.name}</strong>!
             </p>
             <p className="mb-2">
-              We’ve sent a confirmation to{' '}
+              We’ve sent a confirmation to{" "}
               <strong>{sessionData.customer_details?.email}</strong>
             </p>
             <p className="mb-2">
-              Amount Paid:{' '}
+              Amount Paid:{" "}
               <strong>
-                {(sessionData.amount_total / 100).toFixed(2)} {sessionData.currency.toUpperCase()}
+                {(sessionData.amount_total / 100).toFixed(2)}{" "}
+                {sessionData.currency.toUpperCase()}
               </strong>
             </p>
             <p className="mb-4">
@@ -76,7 +82,7 @@ export default function PaymentSuccess() {
             </p>
 
             <a
-              href="https://yourdomain.com/public/book.pdf"
+              href={downloadUrl}
               download
               className="mt-4 inline-block px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700"
             >
