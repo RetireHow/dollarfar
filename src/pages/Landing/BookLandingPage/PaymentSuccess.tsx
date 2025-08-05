@@ -7,13 +7,13 @@ export default function PaymentSuccess() {
   const [loading, setLoading] = useState(true);
   const sessionId = searchParams.get("session_id");
 
-  console.log("Session ID =============> ", sessionId)
+  console.log("Session ID =============> ", sessionId);
 
   useEffect(() => {
     const fetchSession = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/checkout-session?session_id=${sessionId}`
+          `http://localhost:5000/api/v1/checkout-session?session_id=${sessionId}`
         );
         const data = await res.json();
         if (data.downloadUrl) {
