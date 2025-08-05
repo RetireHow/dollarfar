@@ -16,6 +16,7 @@ export default function PaymentSuccess() {
           `http://localhost:5000/api/v1/ebook-downloaded-users/checkout-session?session_id=${sessionId}`
         );
         const data = await res.json();
+        console.log("Session Data =============> ", data)
         if (data.downloadUrl) {
           setDownloadUrl(data.downloadUrl);
         }
