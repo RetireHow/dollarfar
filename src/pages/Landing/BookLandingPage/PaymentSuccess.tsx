@@ -13,7 +13,7 @@ export default function PaymentSuccess() {
     const fetchSession = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/checkout-session?session_id=${sessionId}`
+          `http://localhost:5000/api/v1/ebook-downloaded-users/checkout-session?session_id=${sessionId}`
         );
         const data = await res.json();
         if (data.downloadUrl) {
