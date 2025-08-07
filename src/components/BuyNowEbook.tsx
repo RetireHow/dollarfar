@@ -2,7 +2,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { baseUrl } from "../api/apiConstant";
 
 const stripePromise = loadStripe(
-  "pk_test_51RppIt4G0lMbEIGhQ3ltvcDSaNOOZaRalURZRSahGnm2EUCDMPU14eTNz9FiTodU9TV3hQhxzM8cMZVQeaMJXR4L00aUu5KTyR"
+  "pk_live_51RplAhBYC7YMMAFC7uODsfkBdTVL0v5Qhq5EOZ0MryrKf9P74f2l2zXjTS9i6kQXMGpPFvGMJD4ttj20WMHZH9CX004Xd966hu"
 ); // Your Stripe public key
 
 export default function BuyNowEbook() {
