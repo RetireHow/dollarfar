@@ -1,8 +1,4 @@
-export let baseUrl = "https://dollarfar-backend-five.vercel.app/api/v1";
-
-if (import.meta.env.MODE === "development") {
-  // baseUrl = "http://localhost:5000";
-  baseUrl = "https://dollarfar-backend-five.vercel.app/api/v1";
-} else {
-  baseUrl = "https://dollarfar-backend-five.vercel.app/api/v1";
-}
+export const baseUrl =
+  import.meta.env.MODE === "development"
+    ? "http://localhost:5000/api/v1"
+    : "https://dollarfar-backend-five.vercel.app/api/v1";
