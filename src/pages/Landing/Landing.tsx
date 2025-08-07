@@ -5,6 +5,7 @@ import heroEllipseImage from "../../assets/hero-ellipse.svg";
 import useTitle from "../../hooks/useTitle";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Link } from "react-router-dom";
+import BuyNowEbook from "../../components/BuyNowEbook";
 
 export default function Landing() {
   const handleGetStarted = () => {
@@ -59,7 +60,9 @@ export default function Landing() {
         <img src={assets.bookCoverPageWithBadge} alt="Book Cover Page" />
 
         <div>
-          <h3 className="md:text-[2.5rem] text-[1.5rem] font-bold">Retire How?</h3>
+          <h3 className="md:text-[2.5rem] text-[1.5rem] font-bold">
+            Retire How?
+          </h3>
           <div className="my-2">
             <p className="text-[#696969] dark:text-gray-300 text-[1.2rem]">
               A Practical Guide to Retirement Benefits in Canada and the U.S.
@@ -82,12 +85,7 @@ export default function Landing() {
               </button>
             </Link>
 
-            <Link
-              to="book-landing"
-              className="bg-black rounded-lg text-white md:px-5 px-2 py-3 md:w-auto w-full text-center"
-            >
-              <button>Buy Now</button>
-            </Link>
+            <BuyNowEbook />
           </div>
           <p>
             <span>Special Offer</span>{" "}

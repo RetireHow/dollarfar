@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { baseUrl } from "../../../api/apiConstant";
 
 // Define the expected shape of the Stripe session object
 interface StripeSession {
@@ -39,7 +40,7 @@ export default function PaymentSuccess() {
     const fetchSession = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/ebook-downloaded-users/checkout-session?session_id=${sessionId}`
+          `${baseUrl}/ebook-downloaded-users/checkout-session?session_id=${sessionId}`
         );
         const data: ApiResponse = await res.json();
         if (data.success) {
@@ -50,7 +51,6 @@ export default function PaymentSuccess() {
         console.error("Failed to fetch session data", err);
       }
     };
-
     if (sessionId) fetchSession();
   }, [sessionId]);
 

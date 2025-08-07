@@ -9,6 +9,7 @@ import {
 } from "../redux/features/CRIC/CRICSlice";
 
 export default function Research() {
+  
   const {
     generalInfo,
     pensionPlan,

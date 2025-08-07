@@ -7,6 +7,7 @@ import BookReviews from "./BookReviews";
 import BookFAQ from "./BookFAQ";
 import { EbookDownloadFormPopup } from "./EbookDownloadForm";
 import useTitle from "../../../hooks/useTitle";
+import BuyNowEbook from "../../../components/BuyNowEbook";
 
 export default function BookLandingPage() {
   useTitle("Dollarfar | Book Landing");
@@ -34,9 +35,7 @@ export default function BookLandingPage() {
         <div className="absolute z-50 md:bottom-40 bottom-10 w-full text-black px-5 text-center">
           <div className="flex md:flex-row flex-col gap-5 justify-center items-center">
             <EbookDownloadFormPopup />
-            <button className="bg-black rounded-lg text-white md:px-5 px-2 py-3 md:w-auto w-full">
-              Buy Now
-            </button>
+            <BuyNowEbook />
           </div>
 
           <p className="mt-3">
@@ -59,9 +58,9 @@ export default function BookLandingPage() {
         style={{
           backgroundImage: `url(${assets.bookShadow})`,
           backgroundSize: "cover",
-          backgroundRepeat:"no-repeat",
-          WebkitBackgroundSize:"100%",
-          backgroundPosition:"bottom"
+          backgroundRepeat: "no-repeat",
+          WebkitBackgroundSize: "100%",
+          backgroundPosition: "bottom",
         }}
         className="md:mb-28 mb-16 bg-[#EDF3F8] py-8 md:hidden block"
       >
@@ -82,9 +81,7 @@ export default function BookLandingPage() {
         <div className="w-full text-black px-5 text-center">
           <div className="flex md:flex-row flex-col gap-5 justify-center items-center">
             <EbookDownloadFormPopup />
-            <button className="bg-black rounded-lg text-white md:px-5 px-2 py-3 md:w-auto w-full">
-              Buy Now
-            </button>
+            <BuyNowEbook />
           </div>
 
           <p className="mt-3">
@@ -124,9 +121,11 @@ export default function BookLandingPage() {
             Institute, a distinction that underscores his commitment to
             financial excellence and professional development. Rao is also the
             author of{" "}
-            <span className="font-bold text-black italic dark:text-white">Retire How?</span>, a
-            practical guide to understanding retirement benefits and planning
-            strategies in both Canada and the U.S.
+            <span className="font-bold text-black italic dark:text-white">
+              Retire How?
+            </span>
+            , a practical guide to understanding retirement benefits and
+            planning strategies in both Canada and the U.S.
           </p>
           <div>
             <p className="mb-2 text-[20px]">Follow Movva on</p>
@@ -189,11 +188,14 @@ export default function BookLandingPage() {
             Retire with Confidence Across Borders
           </h3>
           <p className="dark:text-gray-300 text-[#696969] my-3 md:text-[1.2rem] text-[1rem]">
-            <span className="font-bold italic text-black dark:text-white">Retire How?</span> is your step-by-step guide to understanding and
-            maximizing retirement benefits in both Canada and the U.S. Written
-            in plain English with real-life examples, this book helps you make
-            smarter decisions about your retirement income, taxes, and
-            cross-border planning.
+            <span className="font-bold italic text-black dark:text-white">
+              Retire How?
+            </span>{" "}
+            is your step-by-step guide to understanding and maximizing
+            retirement benefits in both Canada and the U.S. Written in plain
+            English with real-life examples, this book helps you make smarter
+            decisions about your retirement income, taxes, and cross-border
+            planning.
           </p>
           <ul className="text-[#696969] space-y-3 md:text-[1.2rem] text-[1rem]">
             <li className="flex gap-2">
@@ -254,7 +256,9 @@ export default function BookLandingPage() {
         </div>
 
         <div className="border-[1px] border-gray-200 rounded-lg p-5 leading-8">
-          <h3 className="font-bold mb-3 md:text-[1.8rem] text-[1.5rem]">Who this book is for</h3>
+          <h3 className="font-bold mb-3 md:text-[1.8rem] text-[1.5rem]">
+            Who this book is for
+          </h3>
           <ul className="text-[#696969] space-y-3 md:text-[1.2rem] text-[1rem]">
             <li className="flex gap-2">
               <img
@@ -337,7 +341,7 @@ export default function BookLandingPage() {
       </section>
 
       <BookFAQ />
-      
+
       <BookReviews />
 
       {/* <section className="md:mx-20 mb-28 md:px-0 px-5">
@@ -371,21 +375,29 @@ export default function BookLandingPage() {
         />
 
         <div className="absolute z-50 md:top-10 top-0 flex flex-col md:justify-center md:items-center w-full text-black px-5 md:h-auto h-full md:mt-0 mt-3">
-          <h3 className="md:text-[2rem] text-[1.5rem] font-bold">Get Your Copy</h3>
+          <h3 className="md:text-[2rem] text-[1.5rem] font-bold">
+            Get Your Copy
+          </h3>
           <div className="md:my-3 my-1 md:w-auto w-full">
             <EbookDownloadFormPopup />
           </div>
           <div className="md:mt-3 mt-1 flex max-w-[700px] text-center">
             <p className="text-black">
-              <span className="font-bold md:text-[1rem] text-[14px] leading-7">Special Offer</span>🎁 : Be
-              among the first 1,000 users to download the eBook for FREE! After
-              that, it will be available as a paid download.
+              <span className="font-bold md:text-[1rem] text-[14px] leading-7">
+                Special Offer
+              </span>
+              🎁 : Be among the first 1,000 users to download the eBook for
+              FREE! After that, it will be available as a paid download.
             </p>
           </div>
 
           <p className="md:mt-5 mt-3">Or order from</p>
           <Link to="https://www.amazon.com/dp/B0FB46844J" target="_blank">
-            <img className="md:mt-5 mt-3" src={assets.amazonLogo} alt="Amazon Link" />
+            <img
+              className="md:mt-5 mt-3"
+              src={assets.amazonLogo}
+              alt="Amazon Link"
+            />
           </Link>
         </div>
       </section>
