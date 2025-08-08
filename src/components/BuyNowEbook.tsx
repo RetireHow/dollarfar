@@ -24,8 +24,8 @@ export default function BuyNowEbook() {
 
       const session = await response.json();
       const stripe = await stripePromise;
-      await stripe?.redirectToCheckout({ sessionId: session.id });
       setIsLoading(false);
+      await stripe?.redirectToCheckout({ sessionId: session.id });
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred";
