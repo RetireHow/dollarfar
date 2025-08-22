@@ -15,14 +15,14 @@ export default function SectionHeader({
 }) {
   const {
     annualInterestRate,
-    years,
+    // years,
     initialInvestment,
     compoundingFrequency,
     yearByYearBreakdown,
   } = useAppSelector((state) => state.compoundInterest);
   const calculatorData = {
     annualInterestRate,
-    years,
+    // years,
     initialInvestment,
     compoundingFrequency,
     yearByYearBreakdown,

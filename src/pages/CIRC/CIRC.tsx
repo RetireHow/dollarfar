@@ -48,7 +48,7 @@ export default function CIRC() {
     contribution,
     contributionFrequency,
     initialInvestment,
-    years,
+    // years,
   } = useAppSelector((state) => state.compoundInterest);
   const calculatorData = {
     totalFutureValue,
@@ -60,7 +60,7 @@ export default function CIRC() {
     contribution,
     contributionFrequency,
     initialInvestment,
-    years,
+    // years,
   };
 
   useEffect(() => {

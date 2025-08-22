@@ -96,11 +96,13 @@ export default function CRICForm({
   const dispatch = useAppDispatch();
   const {
     annualInterestRate,
-    years,
+    // years,
     compoundingFrequency,
     contribution,
     contributionFrequency,
     initialInvestment,
+    startYear,
+    endYear,
   } = useAppSelector((state) => state.compoundInterest);
   const isDarkMode = document.documentElement.classList.contains("dark");
 
@@ -112,8 +114,11 @@ export default function CRICForm({
 
     if (
       !Number(initialInvestment) ||
-      !Number(years) ||
-      !Number(annualInterestRate)
+      // !Number(years) ||
+      !Number(annualInterestRate) ||
+      !Number(startYear) ||
+      !Number(endYear) ||
+      Number(endYear) <= Number(startYear)
     ) {
       return setShowError(true);
     }
@@ -121,11 +126,13 @@ export default function CRICForm({
     //Save inputs into local storage
     const inputs = {
       annualInterestRate,
-      years,
+      // years,
       compoundingFrequency,
       contribution,
       contributionFrequency,
       initialInvestment,
+      startYear,
+      endYear,
     };
     const inputsString = JSON.stringify(inputs);
     localStorage.setItem("CIRCInputs", inputsString);
@@ -163,6 +170,80 @@ export default function CRICForm({
       }}
     >
       <form className="space-y-[2rem] border-[1px] border-gray-300 dark:border-darkModeBorderColor md:p-5 p-3 rounded-lg md:w-[70%] w-full m-auto shadow-md">
+        <div className="grid md:grid-cols-2 gap-3">
+          <div>
+            <div className="flex items-center mb-[0.5rem] dark:text-darkModeHeadingTextColor">
+              <label
+                className="block font-semibold md:text-[1rem] text-[14px]"
+                htmlFor="Initial-investment"
+              >
+                Start Year
+                <CIRCRedStar />
+              </label>
+              <CIRCTooltip title="The year you plan to begin your investment. This helps calculate the timeline of your investment growth." />
+            </div>
+            <input
+              className={`outline-none border-[1px] border-[#d1d5db] dark:border-darkModeBorderColor dark:bg-darkModeBgColor dark:text-darkModeHeadingTextColor px-[12px] py-[9px] duration-300 rounded-[8px] w-full`}
+              type="number"
+              id="Initial-investment"
+              placeholder={`0`}
+              value={startYear}
+              onWheel={(e) => e.currentTarget.blur()}
+              onChange={(e) => {
+                dispatch(
+                  updateCRICField({
+                    key: "startYear",
+                    value: e.target.value,
+                  })
+                );
+              }}
+            />
+            {showError && !Number(startYear) && (
+              <Error message="This field is required" />
+            )}
+            <ShowNegativeMessage input={startYear} />
+          </div>
+
+          <div>
+            <div className="flex items-center mb-[0.5rem] dark:text-darkModeHeadingTextColor">
+              <label
+                className="block font-semibold md:text-[1rem] text-[14px]"
+                htmlFor="Initial-investment"
+              >
+                End Year
+                <CIRCRedStar />
+              </label>
+              <CIRCTooltip title="The year you plan to end your investment or withdraw funds. This determines the total duration of your investment." />
+            </div>
+            <input
+              className={`outline-none border-[1px] border-[#d1d5db] dark:border-darkModeBorderColor dark:bg-darkModeBgColor dark:text-darkModeHeadingTextColor px-[12px] py-[9px] w-full duration-300 rounded-[8px] `}
+              type="number"
+              id="Initial-investment"
+              placeholder={`0`}
+              value={endYear}
+              onWheel={(e) => e.currentTarget.blur()}
+              onChange={(e) => {
+                dispatch(
+                  updateCRICField({
+                    key: "endYear",
+                    value: e.target.value,
+                  })
+                );
+              }}
+            />
+            {showError && !Number(endYear) && (
+              <Error message="This field is required" />
+            )}
+            {showError &&
+              startYear &&
+              endYear &&
+              Number(endYear) <= Number(startYear) && (
+                <Error message="End year must be greater than start year!" />
+              )}
+            <ShowNegativeMessage input={endYear} />
+          </div>
+        </div>
+
         <div>
           <div className="flex items-center mb-[0.5rem] dark:text-darkModeHeadingTextColor">
             <label
@@ -175,7 +256,7 @@ export default function CRICForm({
             <CIRCTooltip title="The starting amount you invest or deposit. This is the base amount on which interest will be calculated." />
           </div>
           <input
-            className={`outline-none border-[1px] border-[#d1d5db] dark:border-darkModeBorderColor dark:bg-darkModeBgColor dark:text-darkModeHeadingTextColor px-[12px] py-[9px] w-full duration-300 rounded-[8px] `}
+            className={`outline-none border-[1px] border-[#d1d5db] dark:border-darkModeBorderColor dark:bg-darkModeBgColor dark:text-darkModeHeadingTextColor px-[12px] py-[9px] duration-300 rounded-[8px] w-full`}
             type="number"
             id="Initial-investment"
             placeholder={`0.00`}
@@ -353,7 +434,7 @@ export default function CRICForm({
           ></Select>
         </div>
 
-        <div>
+        {/* <div>
           <div className="flex items-center mb-[0.5rem] dark:text-darkModeHeadingTextColor">
             <label
               className="block font-semibold md:text-[1rem] text-[14px]"
@@ -408,7 +489,7 @@ export default function CRICForm({
               />
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="flex md:flex-row flex-col md:items-center gap-5">
           <PopConfirm />

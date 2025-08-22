@@ -9,12 +9,14 @@ type TYearByYearBreakdownItem = {
 };
 
 type TCompoundInterestState = {
+  startYear: string;
+  endYear: string;
   initialInvestment: string;
   contribution: string;
   contributionFrequency: string;
   annualInterestRate: string;
   compoundingFrequency: string;
-  years: string;
+  // years: string;
 
   totalFutureValue: string;
   totalInterestEarned: string;
@@ -28,17 +30,21 @@ export type TPayloadKey = {
   contributionFrequency: string;
   annualInterestRate: string;
   compoundingFrequency: string;
-  years: string;
+  // years: string;
+  startYear: string;
+  endYear: string;
 };
 
 // Initial state
 export const initialState: TCompoundInterestState = {
+  startYear: "",
+  endYear: "",
   initialInvestment: "",
   contribution: "",
   contributionFrequency: "1",
   annualInterestRate: "",
   compoundingFrequency: "1",
-  years: "",
+  // years: "",
 
   totalFutureValue: "",
   totalInterestEarned: "",
@@ -69,7 +75,9 @@ const compoundInterestSlice = createSlice({
         contributionFrequency,
         annualInterestRate,
         compoundingFrequency,
-        years,
+        // years,
+        startYear,
+        endYear
       } = state;
 
       const result = calculateCRIInvestment(
@@ -78,7 +86,9 @@ const compoundInterestSlice = createSlice({
         Number(contributionFrequency),
         Number(annualInterestRate),
         Number(compoundingFrequency),
-        Number(years)
+        // Number(years),
+        Number(startYear),
+        Number(endYear),
       );
 
       const {
@@ -100,7 +110,9 @@ const compoundInterestSlice = createSlice({
       state.contributionFrequency = "1";
       state.annualInterestRate = "";
       state.compoundingFrequency = "1";
-      state.years = "";
+      // state.years = "";
+      state.startYear = "";
+      state.endYear = "";
 
       state.totalFutureValue = "";
       state.totalInterestEarned = "";

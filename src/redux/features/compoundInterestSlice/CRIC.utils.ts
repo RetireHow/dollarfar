@@ -4,7 +4,9 @@ export function calculateCRIInvestment(
   contributionFrequency: number, // e.g., 52 for weekly
   annualInterestRate: number,
   compoundingFrequency: number, // e.g., 4 for quarterly
-  years: number
+  // years: number,
+  startYear: number,
+  endYear: number,
 ) {
   // Convert input values to proper format
   const interestRateDecimal = annualInterestRate / 100;
@@ -19,7 +21,7 @@ export function calculateCRIInvestment(
   const yearByYearBreakdown = [];
 
   // Yearly breakdown calculation
-  for (let year = 1; year <= years; year++) {
+  for (let year = startYear; year <= endYear; year++) {
     for (let period = 1; period <= compoundingFrequency; period++) {
       // Apply interest to the existing balance
       totalFutureValue *= 1 + periodicRate;
