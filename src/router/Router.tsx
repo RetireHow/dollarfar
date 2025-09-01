@@ -61,6 +61,8 @@ import TermsAndConditions from "../pages/Policies/TermsAndConditions";
 import FeedbackForm from "../pages/Landing/BookLandingPage/FeedbackForm";
 import PaymentSuccess from "../pages/Landing/BookLandingPage/PaymentSuccess";
 import PaymentCancel from "../pages/Landing/BookLandingPage/PaymentCancel";
+import CompoundInterestComparisonCalculator from "../pages/CompoundInterestComparisonCalculator/CompoundInterestComparisonCalculator";
+import NetIncomeYieldCalculator from "../pages/NetIncomeYieldCalculator/NetIncomeYieldCalculator";
 
 export const router = createBrowserRouter([
   {
@@ -74,6 +76,10 @@ export const router = createBrowserRouter([
       {
         path: "compound-interest-rate-calculator",
         element: <CIRC />,
+      },
+      {
+        path: "compound-interest-comparison-calculator",
+        element: <CompoundInterestComparisonCalculator />,
       },
       {
         path: "net-worth-calculator",
@@ -289,6 +295,10 @@ export const router = createBrowserRouter([
       {
         path: "mortgage-calculator",
         element: <MortgageCalculator />,
+      },
+      {
+        path: "net-income-yield-calculator",
+        element: <NetIncomeYieldCalculator />,
       },
       {
         path: "book-landing",

@@ -70,7 +70,7 @@ const BookSlider: React.FC = () => {
           <SwiperSlide>
             <div className="shadow-md flex justify-center pb-5">
               <img
-                className="md:w-[500px] w-[300px] md:h-[500px] h-[300px]"
+                className="w-full md:h-[800px] h-[300px]"
                 src={assets.bookContentCover}
                 alt="Book Cover Page"
               />
@@ -80,7 +80,7 @@ const BookSlider: React.FC = () => {
           <SwiperSlide>
             <div className="shadow-md flex justify-center pb-5">
               <img
-                className="md:w-[500px] w-[300px] md:h-[500px] h-[300px]"
+                className="w-full md:h-[800px] h-[300px]"
                 src={assets.tableOfContent1}
                 alt="Book Cover Page"
               />
@@ -89,7 +89,7 @@ const BookSlider: React.FC = () => {
           <SwiperSlide>
             <div className="shadow-md flex justify-center pb-5">
               <img
-                className="md:w-[500px] w-[300px] md:h-[500px] h-[300px]"
+                className="w-full md:h-[800px] h-[300px]"
                 src={assets.tableOfContent2}
                 alt="Book Cover Page"
               />
@@ -98,7 +98,7 @@ const BookSlider: React.FC = () => {
           <SwiperSlide>
             <div className="shadow-md flex justify-center pb-5">
               <img
-                className="md:w-[500px] w-[300px] md:h-[500px] h-[300px]"
+                className="w-full md:h-[800px] h-[300px]"
                 src={assets.bookIntroduction}
                 alt="Book Cover Page"
               />

@@ -21,9 +21,19 @@ export const cardsData = [
     btnText: "Calculate",
     navLink: "compound-interest-rate-calculator",
   },
-
   {
     id: 3,
+    title: "Compound Interest Scenario/Comparison Calculator",
+    description:
+      "Compare investment timelines with this calculator. Visualize how starting ages affect compound interest growth through interactive charts and tables. Perfect for retirement planning scenarios.",
+    arrowIcon: assets.arrowUpIcon,
+    calcIcon: assets.compoundInterestCalcIcon,
+    btnText: "Calculate",
+    navLink: "compound-interest-comparison-calculator",
+  },
+
+  {
+    id: 4,
     title: "Net Worth Calculator",
     description:
       "This tool calculates your net worth by subtracting your total liabilities from your total assets. It gives you a snapshot of your financial health and helps you understand your financial standing.....",
@@ -34,7 +44,7 @@ export const cardsData = [
   },
 
   {
-    id: 4,
+    id: 5,
     title: "Budget Calculator",
     description:
       "This calculator aids in managing personal finances by tracking income and expenses. It helps you allocate your funds wisely and ensure you’re living within your means while saving for future goals.....",
@@ -45,7 +55,7 @@ export const cardsData = [
   },
 
   {
-    id: 5,
+    id: 6,
     title: "Registered Retirement Savings Plan (RRSP) Calculator",
     description:
       "This calculator is a financial tool that helps users estimate how much money they can accumulate in their RRSP account over time.",
@@ -55,7 +65,7 @@ export const cardsData = [
     navLink: "registered-retirement-savings-plan-calculator",
   },
   {
-    id: 6,
+    id: 7,
     title: "Registered Retirement Income Fund (RRIF) Calculator",
     description:
       "This calculator is a tool that helps individuals in Canada estimate their withdrawals from an RRIF after converting their RRSP (Registered Retirement Savings Plan) into an RRIF.....",
@@ -65,7 +75,7 @@ export const cardsData = [
     navLink: "registered-retirement-income-fund-calculator",
   },
   {
-    id: 7,
+    id: 8,
     title: "Comprehensive Retirement Income Calculator",
     description:
       "This calculator helps users roughly estimate their retirement income from all sources including, pensions, government benefits and other incomes from investments based on input data  (Ball park estimate)",
@@ -75,7 +85,7 @@ export const cardsData = [
     navLink: "CRIC",
   },
   {
-    id: 8,
+    id: 9,
     title: "Canadian Mortgage Calculator",
     description:
       "Quickly estimate your home loan payments, amortization schedule, and potential savings from prepayments. Compare different payment frequencies, visualize interest costs, and see how extra payments reduce your loan term.",
@@ -85,7 +95,7 @@ export const cardsData = [
     navLink: "mortgage-calculator-canada",
   },
   {
-    id: 9,
+    id: 10,
     title: "U.S Mortgage Calculator",
     description:
       "Estimate payments, compare loan options, and track equity growth with this powerful tool. Works for fixed-rate and adjustable (ARM) mortgages, with extra payment analysis and interactive charts.",
@@ -95,7 +105,7 @@ export const cardsData = [
     navLink: "mortgage-calculator-america",
   },
   {
-    id: 10,
+    id: 11,
     title: "North America Mortgage Calculator",
     description:
       "Plan your home loan with this powerful mortgage calculator. Estimate monthly payments, compare fixed and adjustable rates, and see how extra payments reduce interest. Includes taxes, insurance, and amortization charts for both U.S. and Canadian mortgages.",

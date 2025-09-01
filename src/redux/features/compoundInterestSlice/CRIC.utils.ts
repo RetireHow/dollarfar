@@ -21,7 +21,7 @@ export function calculateCRIInvestment(
   const yearByYearBreakdown = [];
 
   // Yearly breakdown calculation
-  for (let year = startYear; year <= endYear; year++) {
+  for (let year = startYear+1; year <= endYear; year++) {
     for (let period = 1; period <= compoundingFrequency; period++) {
       // Apply interest to the existing balance
       totalFutureValue *= 1 + periodicRate;
