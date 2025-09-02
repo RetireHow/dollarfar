@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { assets } from "../../assets/assets";
 import PageHero from "../../components/UI/PageHero";
+import { toast } from "react-toastify";
 
 interface Investor {
   name: string;
@@ -157,16 +158,24 @@ export default function CompoundInterestComparisonCalculator() {
     setIsCalculating(true);
     // Simulate calculation time for loading state
     setTimeout(() => {
-      const allResults = investors.map((investor) =>
-        calculateResults(investor)
-      );
+      const allResults = investors.map((investor) => {
+        console.log(parseInt(investor?.startAge));
+        const isStartAgeGreater =
+          parseInt(investor?.startAge) >= parseInt(investor?.stopAge);
+        if (isStartAgeGreater) {
+          toast.error(
+            "Start age should not be greater than or equal to stop age!"
+          );
+        }
+        return calculateResults(investor);
+      });
+
       setResults(allResults);
       setIsCalculating(false);
       // Scroll to results section with 100px offset from top
       if (resultsRef.current) {
         const elementPosition = resultsRef.current.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - 102;
-
         window.scrollTo({
           top: offsetPosition,
           behavior: "smooth",
