@@ -1,1081 +1,755 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
-import { useState, FormEvent, ChangeEvent, useEffect } from "react";
-import { ConfigProvider, Select, theme as antdTheme } from "antd";
-import CIRCTooltip from "../CIRC/CIRCTooltip";
-import { Icon } from "@iconify/react/dist/iconify.js";
-import { CIRCFrequencyOptions } from "../CIRC/CRICForm";
-import ReactSlider from "react-slider";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
-import PageHero from "../../components/UI/PageHero";
+import React, { useEffect, useRef, useState } from "react";
 import { assets } from "../../assets/assets";
-import useTitle from "../../hooks/useTitle";
+import PageHero from "../../components/UI/PageHero";
 
 interface Investor {
   name: string;
   startAge: string;
-  endAge: string;
+  stopAge: string;
+  color: string;
 }
 
-interface SharedData {
+interface Settings {
   initialInvestment: string;
-  contribution: string;
+  annualContribution: string;
+  annualReturn: string;
+  retirementAge: string;
+  compounding: string;
   contributionFrequency: string;
-  annualInterestRate: string;
-  compoundingFrequency: string;
 }
 
-interface CalculationResult {
+interface ResultRow {
   age: number;
-  year: number;
-  investment: number;
+  invest: number;
   value: number;
-}
-
-interface InvestorResults {
-  investor: Investor;
-  results: CalculationResult[];
-  totalInvested: number;
-  finalValue: number;
 }
 
 const data = {
   title: "Compound Interest Scenario/Comparison Calculator",
   description:
-    "Compare investment timelines with this calculator. Visualize how starting ages affect compound interest growth through interactive charts and tables. Perfect for retirement planning scenarios.",
+    "This calculator compares investment growth for multiple investors, showing how starting ages and contributions affect returns up to retirement. Adjust settings like compounding frequency to visualize results in interactive tables. See your financial future clearly.",
   image: assets.compoundInterestCalcIcon,
 };
 
 export default function CompoundInterestComparisonCalculator() {
-  useTitle("Dollarfar | CIRC");
-
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-
+  // Default inputs with no initial values
   const [investors, setInvestors] = useState<Investor[]>([
-    {
-      name: "Billy",
-      startAge: "20",
-      endAge: "65",
-    },
-    {
-      name: "Susan",
-      startAge: "30",
-      endAge: "65",
-    },
-    {
-      name: "Kim",
-      startAge: "35",
-      endAge: "65",
-    },
+    { name: "", startAge: "", stopAge: "", color: "bg-emerald-100" },
+    { name: "", startAge: "", stopAge: "", color: "bg-amber-100" },
+    { name: "", startAge: "", stopAge: "", color: "bg-teal-100" },
   ]);
 
-  const [sharedData, setSharedData] = useState<SharedData>({
-    initialInvestment: "1000",
-    contribution: "100",
-    contributionFrequency: "12",
-    annualInterestRate: "7",
-    compoundingFrequency: "12",
+  const [settings, setSettings] = useState<Settings>({
+    initialInvestment: "",
+    annualContribution: "",
+    annualReturn: "",
+    retirementAge: "65",
+    compounding: "yearly",
+    contributionFrequency: "yearly",
   });
 
-  const [results, setResults] = useState<InvestorResults[] | null>(null);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [results, setResults] = useState<ResultRow[][]>([]);
   const [isCalculating, setIsCalculating] = useState<boolean>(false);
 
-  const isDarkMode = document.documentElement.classList.contains("dark");
-
-  // Pre-calculate on component mount with default values
-  useEffect(() => {
-    const defaultResults = investors.map((investor) =>
-      calculateCompoundInterest(investor)
-    );
-    setResults(defaultResults);
-  }, []);
-
-  const validateInputs = () => {
-    const newErrors: { [key: string]: string } = {};
-
-    // Validate shared inputs
-    if (
-      !sharedData.initialInvestment ||
-      parseFloat(sharedData.initialInvestment) < 0
-    ) {
-      newErrors.initialInvestment =
-        "Initial investment must be a positive number";
-    }
-
-    if (sharedData.contribution && parseFloat(sharedData.contribution) < 0) {
-      newErrors.contribution = "Contribution must be a positive number";
-    }
-
-    if (
-      !sharedData.annualInterestRate ||
-      parseFloat(sharedData.annualInterestRate) <= 0
-    ) {
-      newErrors.annualInterestRate = "Interest rate must be greater than 0";
-    }
-
-    // Validate investor inputs
-    investors.forEach((investor, index) => {
-      const startAge = parseInt(investor.startAge);
-      const endAge = parseInt(investor.endAge);
-
-      if (
-        !investor.startAge ||
-        isNaN(startAge) ||
-        startAge < 18 ||
-        startAge > 100
-      ) {
-        newErrors[`investor-${index}-startAge`] =
-          "Start age must be between 18 and 100";
-      }
-
-      if (!investor.endAge || isNaN(endAge) || endAge < 18 || endAge > 100) {
-        newErrors[`investor-${index}-endAge`] =
-          "End age must be between 18 and 100";
-      }
-
-      if (!isNaN(startAge) && !isNaN(endAge) && startAge >= endAge) {
-        newErrors[`investor-${index}-ageRange`] =
-          "End age must be greater than start age";
-      }
-    });
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  // Prevent input value change on scroll
+  const preventScrollChange = (e: React.WheelEvent<HTMLInputElement>) => {
+    e.currentTarget.blur();
   };
 
   const handleInvestorChange = (
     index: number,
     field: keyof Investor,
     value: string
-  ): void => {
-    const updatedInvestors = [...investors];
-    updatedInvestors[index] = {
-      ...updatedInvestors[index],
-      [field]: value,
-    };
-    setInvestors(updatedInvestors);
-
-    // Clear relevant errors when user corrects the input
-    if (errors[`investor-${index}-${field}`]) {
-      const newErrors = { ...errors };
-      delete newErrors[`investor-${index}-${field}`];
-      setErrors(newErrors);
-    }
+  ) => {
+    const updated = [...investors];
+    updated[index][field] = value;
+    setInvestors(updated);
   };
 
-  const handleSharedChange = (field: keyof SharedData, value: string): void => {
-    setSharedData((prev) => ({
-      ...prev,
+  const handleSettingChange = (field: keyof Settings, value: string) => {
+    setSettings({
+      ...settings,
       [field]: value,
-    }));
-
-    // Clear relevant errors when user corrects the input
-    if (errors[field]) {
-      const newErrors = { ...errors };
-      delete newErrors[field];
-      setErrors(newErrors);
-    }
+    });
   };
 
-  const handleClear = (): void => {
+  // Reset all input fields
+  const resetAllFields = () => {
     setInvestors([
-      {
-        name: "Early Starter",
-        startAge: "20",
-        endAge: "65",
-      },
-      {
-        name: "Late Bloomer",
-        startAge: "30",
-        endAge: "65",
-      },
-      {
-        name: "Custom Investor",
-        startAge: "35",
-        endAge: "65",
-      },
+      { name: "", startAge: "", stopAge: "", color: "bg-emerald-100" },
+      { name: "", startAge: "", stopAge: "", color: "bg-amber-100" },
+      { name: "", startAge: "", stopAge: "", color: "bg-teal-100" },
     ]);
-    setSharedData({
-      initialInvestment: "1000",
-      contribution: "100",
-      contributionFrequency: "12",
-      annualInterestRate: "7",
-      compoundingFrequency: "12",
+
+    setSettings({
+      initialInvestment: "",
+      annualContribution: "",
+      annualReturn: "",
+      retirementAge: "",
+      compounding: "yearly",
+      contributionFrequency: "yearly",
     });
-    setResults(null);
-    setErrors({});
+
+    setResults([]);
   };
 
-  const calculateCompoundInterest = (investor: Investor): InvestorResults => {
-    const initialInvestment = parseFloat(sharedData.initialInvestment) || 0;
-    const contribution = parseFloat(sharedData.contribution) || 0;
-    const annualInterestRate =
-      parseFloat(sharedData.annualInterestRate) / 100 || 0;
-    const startAge = parseInt(investor.startAge) || 0;
-    const endAge = parseInt(investor.endAge) || 0;
+  const calculateResults = (investor: Investor): ResultRow[] => {
+    // Use 0 if field is empty string
+    const initialInvestment =
+      settings.initialInvestment === ""
+        ? 0
+        : parseFloat(settings.initialInvestment);
+    const annualContribution =
+      settings.annualContribution === ""
+        ? 0
+        : parseFloat(settings.annualContribution);
+    const annualReturn =
+      settings.annualReturn === "" ? 0 : parseFloat(settings.annualReturn);
+    const retirementAge =
+      settings.retirementAge === "" ? 65 : parseFloat(settings.retirementAge);
+    const contributionFrequency = settings.contributionFrequency;
 
-    // Convert frequencies to numbers
-    const contributionFrequency =
-      parseInt(sharedData.contributionFrequency) || 1;
-    const compoundingFrequency = parseInt(sharedData.compoundingFrequency) || 1;
+    let freq = 1; // yearly by default
+    if (contributionFrequency === "monthly") freq = 12;
+    if (contributionFrequency === "quarterly") freq = 4;
 
-    // Calculate periodic values
-    const periodicRate = annualInterestRate / compoundingFrequency;
-    const contributionPerCompoundingPeriod =
-      contribution * (contributionFrequency / compoundingFrequency);
+    const r = annualReturn / 100;
+    const periodRate = r / freq;
+    const contributionPerPeriod = annualContribution / freq;
 
-    let totalContribution = initialInvestment;
-    let totalFutureValue = initialInvestment;
-    const results: CalculationResult[] = [];
+    const rows: ResultRow[] = [];
+    let value = initialInvestment;
 
-    // Add initial state
-    results.push({
-      age: startAge,
-      year: 0,
-      investment: totalContribution,
-      value: totalFutureValue,
-    });
+    // Use 0 if investor age fields are empty
+    const startAge =
+      investor.startAge === "" ? 0 : parseFloat(investor.startAge);
+    const stopAge = investor.stopAge === "" ? 0 : parseFloat(investor.stopAge);
 
-    // Calculate for each year
-    for (let age = startAge + 1, year = 1; age <= endAge; age++, year++) {
-      // Calculate for each compounding period in the year
-      for (let period = 1; period <= compoundingFrequency; period++) {
-        // Apply interest to the existing balance
-        totalFutureValue *= 1 + periodicRate;
-
-        // Add contributions at the appropriate times
-        totalFutureValue += contributionPerCompoundingPeriod;
+    for (let age = startAge; age <= retirementAge; age++) {
+      let invest = 0;
+      for (let p = 1; p <= freq; p++) {
+        if (age <= stopAge) {
+          invest += contributionPerPeriod;
+          value =
+            value * (1 + periodRate) + contributionPerPeriod * (1 + periodRate);
+        } else {
+          value = value * (1 + periodRate);
+        }
       }
 
-      // Update total contribution
-      totalContribution += contribution * contributionFrequency;
-
-      results.push({
+      rows.push({
         age,
-        year,
-        investment: totalContribution,
-        value: totalFutureValue,
+        invest: invest,
+        value: value,
       });
     }
 
-    return {
-      investor,
-      results,
-      totalInvested: totalContribution,
-      finalValue: totalFutureValue,
-    };
+    return rows;
   };
 
-  const handleCalculate = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
+  // Add a ref to your results section
+  const resultsRef = useRef<HTMLDivElement>(null);
+
+  const calculateAllResults = () => {
     setIsCalculating(true);
-
-    if (!validateInputs()) {
-      setIsCalculating(false);
-      return;
-    }
-
-    // Small delay to show the loading state
+    // Simulate calculation time for loading state
     setTimeout(() => {
-      // Calculate results for each investor
-      const investorResults = investors.map((investor) =>
-        calculateCompoundInterest(investor)
+      const allResults = investors.map((investor) =>
+        calculateResults(investor)
       );
-      setResults(investorResults);
+      setResults(allResults);
       setIsCalculating(false);
-    }, 500);
-  };
+      // Scroll to results section with 100px offset from top
+      if (resultsRef.current) {
+        const elementPosition = resultsRef.current.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - 102;
 
-  const handleWheel = (e: React.WheelEvent<HTMLInputElement>): void => {
-    e.currentTarget.blur();
-  };
-
-  // Find the maximum age range to display in the table
-  const getMaxAgeRange = () => {
-    if (!results) return { minAge: 0, maxAge: 0 };
-
-    let minAge = Infinity;
-    let maxAge = -Infinity;
-
-    results.forEach((investorResult) => {
-      if (investorResult.results.length > 0) {
-        minAge = Math.min(minAge, investorResult.results[0].age);
-        maxAge = Math.max(
-          maxAge,
-          investorResult.results[investorResult.results.length - 1].age
-        );
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
       }
-    });
-
-    return { minAge, maxAge };
+    }, 800);
   };
 
-  const { minAge, maxAge } = getMaxAgeRange();
-
-  // Format currency values
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("en-US", {
+  const formatCurrency = (amount: number): string => {
+    return amount.toLocaleString("en-US", {
       style: "currency",
       currency: "USD",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
-
-  // Prepare data for charts
-  const getChartData = () => {
-    if (!results) return [];
-
-    // Find the min and max age across all investors
-    let minAge = Infinity;
-    let maxAge = -Infinity;
-
-    results.forEach((investorResult) => {
-      if (investorResult.results.length > 0) {
-        minAge = Math.min(minAge, investorResult.results[0].age);
-        maxAge = Math.max(
-          maxAge,
-          investorResult.results[investorResult.results.length - 1].age
-        );
-      }
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
     });
-
-    const data: any[] = [];
-
-    // Create data points for each age in the range
-    for (let age = minAge; age <= maxAge; age++) {
-      const dataPoint: any = { age };
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      results.forEach((investorResult, _) => {
-        // Find the result for this age, if it exists for this investor
-        const resultForAge = investorResult.results.find((r) => r.age === age);
-
-        if (resultForAge) {
-          dataPoint[`${investorResult.investor.name} Value`] = Math.round(
-            resultForAge.value
-          );
-        } else {
-          // For ages outside this investor's range, set to null
-          dataPoint[`${investorResult.investor.name} Value`] = null;
-        }
-      });
-
-      data.push(dataPoint);
-    }
-
-    return data;
   };
 
-  const chartData = getChartData();
-  const colors = ["#0d9488", "#d97706", "#7c3aed", "#dc2626", "#0891b2"];
+  const getMaxAge = (): number => {
+    const retirementAge =
+      settings.retirementAge === "" ? 65 : parseFloat(settings.retirementAge);
+    const investorAges = investors.map((i) =>
+      i.startAge === "" ? 0 : parseFloat(i.startAge)
+    );
+    return Math.max(...investorAges, retirementAge);
+  };
+
+  const getMinAge = (): number => {
+    const investorAges = investors.map((i) =>
+      i.startAge === "" ? 0 : parseFloat(i.startAge)
+    );
+    return Math.min(...investorAges);
+  };
+
+  // Helper function to determine if a cell should have background color
+  const shouldHighlightCell = (investorIndex: number, age: number): boolean => {
+    const investor = investors[investorIndex];
+    const startAge =
+      investor.startAge === "" ? 0 : parseFloat(investor.startAge);
+    const stopAge = investor.stopAge === "" ? 0 : parseFloat(investor.stopAge);
+    return age >= startAge && age <= stopAge;
+  };
 
   return (
     <>
       <PageHero data={data} />
-      <main className="p-2 sm:p-4">
-        <ConfigProvider
-          theme={{
-            algorithm: isDarkMode
-              ? antdTheme.darkAlgorithm
-              : antdTheme.defaultAlgorithm,
-          }}
-        >
-          <div className="bg-gradient-to-br from-white to-teal-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-xl p-4 sm:p-6 max-w-7xl mx-auto border border-gray-100 dark:border-gray-700">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl sm:text-4xl font-bold bg-clip-text  mb-3">
-                Compound Interest Scenario/Comparison Calculator
-              </h2>
-              <p className="text-base text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                See how starting early vs. starting late impacts your financial
-                future.
-              </p>
+      <main className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 p-4 md:p-8">
+        <div className="max-w-7xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+          {/* Header */}
+          <div className="p-6 md:p-8">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl md:text-3xl font-bold mb-2">
+                  {/* Investment Growth Calculator */}
+                  Compound Interest Scenario/Comparison Calculator
+                </h1>
+                <p className="opacity-90">
+                  See how starting early vs. starting late impacts your
+                  financial future.
+                </p>
+              </div>
+              <div className="hidden md:block bg-white/10 p-3 rounded-full">
+                <i className="fas fa-chart-line text-2xl"></i>
+              </div>
             </div>
-            <form className="md:mx-52" onSubmit={handleCalculate}>
-              {/* Investor-specific section */}
-              <section className="grid md:grid-cols-3 grid-cols-1 gap-5 border-[1px] border-gray-300 rounded-md p-5">
-                {investors.map((investor, index) => (
-                  <div
-                    key={index}
-                    className="space-y-5 border-[1px] border-gray-300 p-5 rounded-md"
-                  >
-                    {/* Investor Name */}
-                    <div className="sm:col-span-2 md:col-span-1">
-                      <div className="flex items-center mb-2">
-                        <label
-                          className="block text-sm font-bold text-gray-700 dark:text-gray-200"
-                          htmlFor={`investor-name-${index}`}
-                        >
-                          Investor {index + 1}
-                        </label>
-                      </div>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <Icon
-                            icon="mdi:account-outline"
-                            className="text-gray-400"
-                          />
-                        </div>
-                        <input
-                          className={`w-full pl-10 pr-4 py-3 text-sm border rounded-xl dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
-                            errors[`investor-${index}-name`]
-                              ? "border-red-500"
-                              : "border-gray-300 dark:border-gray-600"
-                          }`}
-                          type="text"
-                          id={`investor-name-${index}`}
-                          placeholder="e.g., John Doe"
-                          value={investor.name}
-                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                            handleInvestorChange(index, "name", e.target.value)
-                          }
-                        />
-                      </div>
-                      {errors[`investor-${index}-name`] && (
-                        <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                          {errors[`investor-${index}-name`]}
-                        </p>
-                      )}
+          </div>
+
+          <div className="p-6 md:p-8 space-y-8">
+            {/* Investor Inputs */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {investors.map((inv, idx) => (
+                <div
+                  key={idx}
+                  className={`p-5 rounded-xl shadow-md border-t-4 ${inv.color} border-emerald-400 transition-all hover:shadow-lg`}
+                >
+                  <h2 className="font-bold text-lg mb-4 flex items-center">
+                    <i className="fas fa-user-circle mr-2 text-emerald-600"></i>
+                    Investor {idx + 1}
+                  </h2>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-1">
+                        Name
+                      </label>
+                      <input
+                        type="text"
+                        value={inv.name}
+                        onChange={(e) =>
+                          handleInvestorChange(idx, "name", e.target.value)
+                        }
+                        className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                        placeholder="Enter name"
+                      />
                     </div>
 
-                    {/* Start Age */}
-                    <div>
-                      <div className="flex items-center mb-2">
-                        <label
-                          className="block text-sm font-bold text-gray-700 dark:text-gray-200"
-                          htmlFor={`start-age-${index}`}
-                        >
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-1">
                           Start Age
-                          <span className="text-red-500 ml-1">*</span>
                         </label>
-                      </div>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <Icon
-                            icon="mdi:calendar-start"
-                            className="text-gray-400"
-                          />
-                        </div>
                         <input
-                          className={`w-full pl-10 pr-4 py-3 text-sm border rounded-xl dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
-                            errors[`investor-${index}-startAge`]
-                              ? "border-red-500"
-                              : "border-gray-300 dark:border-gray-600"
-                          }`}
                           type="number"
-                          id={`start-age-${index}`}
-                          min="18"
-                          max="100"
-                          placeholder="25"
-                          value={investor.startAge}
-                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                          value={inv.startAge}
+                          onChange={(e) =>
                             handleInvestorChange(
-                              index,
+                              idx,
                               "startAge",
                               e.target.value
                             )
                           }
-                          onWheel={handleWheel}
+                          onWheel={preventScrollChange}
+                          className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                          placeholder="Start age"
                         />
                       </div>
-                      {errors[`investor-${index}-startAge`] && (
-                        <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                          {errors[`investor-${index}-startAge`]}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* End Age */}
-                    <div>
-                      <div className="flex items-center mb-2">
-                        <label
-                          className="block text-sm font-bold text-gray-700 dark:text-gray-200"
-                          htmlFor={`end-age-${index}`}
-                        >
-                          End Age
-                          <span className="text-red-500 ml-1">*</span>
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-1">
+                          Stop Age
                         </label>
-                      </div>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <Icon
-                            icon="mdi:calendar-end"
-                            className="text-gray-400"
-                          />
-                        </div>
                         <input
-                          className={`w-full pl-10 pr-4 py-3 text-sm border rounded-xl dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
-                            errors[`investor-${index}-endAge`]
-                              ? "border-red-500"
-                              : "border-gray-300 dark:border-gray-600"
-                          }`}
                           type="number"
-                          id={`end-age-${index}`}
-                          min="18"
-                          max="100"
-                          placeholder="65"
-                          value={investor.endAge}
-                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                            handleInvestorChange(
-                              index,
-                              "endAge",
-                              e.target.value
-                            )
+                          value={inv.stopAge}
+                          onChange={(e) =>
+                            handleInvestorChange(idx, "stopAge", e.target.value)
                           }
-                          onWheel={handleWheel}
+                          onWheel={preventScrollChange}
+                          className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                          placeholder="Stop age"
                         />
                       </div>
-                      {errors[`investor-${index}-endAge`] && (
-                        <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                          {errors[`investor-${index}-endAge`]}
-                        </p>
-                      )}
-                      {errors[`investor-${index}-ageRange`] && (
-                        <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                          {errors[`investor-${index}-ageRange`]}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </section>
-
-              {/* Shared investment parameters section */}
-              <section className="p-5 space-y-6 border-[1px] border-gray-300 rounded-md overflow-hidden">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {/* Initial Investment */}
-                  <div>
-                    <div className="flex items-center mb-2">
-                      <label
-                        className="block text-sm font-bold text-gray-700 dark:text-gray-200"
-                        htmlFor="initial-investment"
-                      >
-                        Initial Investment
-                        <span className="text-red-500 ml-1">*</span>
-                      </label>
-                      <CIRCTooltip title="The starting amount you invest or deposit. This is the base amount on which interest will be calculated." />
-                    </div>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400">
-                        <Icon icon="mdi:cash" />
-                      </span>
-                      <input
-                        className={`w-full pl-10 pr-4 py-3 text-sm border rounded-xl dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
-                          errors.initialInvestment
-                            ? "border-red-500"
-                            : "border-gray-300 dark:border-gray-600"
-                        }`}
-                        type="number"
-                        id="initial-investment"
-                        min="0"
-                        step="100"
-                        placeholder="0.00"
-                        value={sharedData.initialInvestment}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                          handleSharedChange(
-                            "initialInvestment",
-                            e.target.value
-                          )
-                        }
-                        onWheel={handleWheel}
-                      />
-                    </div>
-                    {errors.initialInvestment && (
-                      <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                        {errors.initialInvestment}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Ongoing Contribution */}
-                  <div>
-                    <div className="flex items-center mb-2">
-                      <label
-                        className="block text-sm font-bold text-gray-700 dark:text-gray-200"
-                        htmlFor="contribution-amount"
-                      >
-                        Regular Contribution
-                      </label>
-                      <CIRCTooltip title="The additional amount you plan to add to your investment periodically. This can help grow your savings over time." />
-                    </div>
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400">
-                        <Icon icon="mdi:currency-usd" />
-                      </span>
-                      <input
-                        className={`w-full pl-10 pr-4 py-3 text-sm border rounded-xl dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
-                          errors.contribution
-                            ? "border-red-500"
-                            : "border-gray-300 dark:border-gray-600"
-                        }`}
-                        type="number"
-                        id="contribution-amount"
-                        min="0"
-                        step="10"
-                        placeholder="0.00"
-                        value={sharedData.contribution}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                          handleSharedChange("contribution", e.target.value)
-                        }
-                        onWheel={handleWheel}
-                      />
-                    </div>
-                    {errors.contribution && (
-                      <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                        {errors.contribution}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Compounding Frequency */}
-                  <div>
-                    <div className="flex items-center mb-2">
-                      <label className="block text-sm font-bold text-gray-700 dark:text-gray-200">
-                        Compounding Frequency
-                      </label>
-                      <CIRCTooltip title="The frequency at which interest is applied to your total balance (e.e., daily, monthly, quarterly, annually). More frequent compounding leads to faster growth." />
-                    </div>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                        <Icon icon="mdi:chart-arc" className="text-gray-400" />
-                      </div>
-                      <Select
-                        style={{
-                          height: 44,
-                          border: errors.compoundingFrequency
-                            ? "1px solid #ef4444"
-                            : "1px solid #d1d5db",
-                          borderRadius: "12px",
-                          paddingLeft: "40px",
-                        }}
-                        className="w-full"
-                        variant="borderless"
-                        options={CIRCFrequencyOptions}
-                        value={sharedData.compoundingFrequency}
-                        onChange={(value: string) =>
-                          handleSharedChange("compoundingFrequency", value)
-                        }
-                        suffixIcon={
-                          <Icon
-                            className="text-[1rem] text-gray-600 dark:text-gray-400"
-                            icon="iconamoon:arrow-down-2"
-                          />
-                        }
-                      />
-                    </div>
-                  </div>
-
-                  {/* Contribution Frequency */}
-                  <div>
-                    <div className="flex items-center mb-2">
-                      <label className="block text-sm font-bold text-gray-700 dark:text-gray-200">
-                        Contribution Frequency
-                      </label>
-                      <CIRCTooltip title="How often you will add the ongoing contribution to your investment (e.g., monthly, quarterly, annually)." />
-                    </div>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                        <Icon
-                          icon="mdi:calendar-repeat"
-                          className="text-gray-400"
-                        />
-                      </div>
-                      <Select
-                        style={{
-                          height: 44,
-                          border: errors.contributionFrequency
-                            ? "1px solid #ef4444"
-                            : "1px solid #d1d5db",
-                          borderRadius: "12px",
-                          paddingLeft: "40px",
-                        }}
-                        className="w-full"
-                        variant="borderless"
-                        options={CIRCFrequencyOptions}
-                        value={sharedData.contributionFrequency}
-                        onChange={(value: string) =>
-                          handleSharedChange("contributionFrequency", value)
-                        }
-                        suffixIcon={
-                          <Icon
-                            className="text-[1rem] text-gray-600 dark:text-gray-400"
-                            icon="iconamoon:arrow-down-2"
-                          />
-                        }
-                      />
                     </div>
                   </div>
                 </div>
+              ))}
+            </div>
 
-                {/* Interest Rate */}
-                <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
-                  <div>
-                    <div className="flex items-center mb-2">
-                      <label
-                        className="block text-sm font-bold text-gray-700 dark:text-gray-200"
-                        htmlFor="interest-rate"
-                      >
-                        Annual Interest Rate
-                        <span className="text-red-500 ml-1">*</span>
-                      </label>
-                      <CIRCTooltip title="The percentage at which your investment grows annually. This is the return provided by your investment or savings account." />
-                    </div>
-                    <div className="w-full relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Icon icon="mdi:percent" className="text-gray-400" />
-                      </div>
-                      <input
-                        className={`w-full pl-10 pr-4 py-3 text-sm border rounded-xl dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
-                          errors.annualInterestRate
-                            ? "border-red-500"
-                            : "border-gray-300 dark:border-gray-600"
-                        }`}
-                        type="number"
-                        id="interest-rate"
-                        min="0"
-                        max="50"
-                        step="0.1"
-                        placeholder="0%"
-                        value={sharedData.annualInterestRate}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                          handleSharedChange(
-                            "annualInterestRate",
-                            e.target.value
-                          )
-                        }
-                        onWheel={handleWheel}
-                      />
-                    </div>
-                  </div>
+            {/* Shared Settings */}
+            <div className="bg-gray-50 p-6 rounded-xl shadow border border-gray-200">
+              {/* <h2 className="font-bold text-xl mb-6 flex items-center">
+              <i className="fas fa-cog mr-2 text-emerald-600"></i>
+              Investment Settings
+            </h2> */}
 
-                  <div>
-                    <p className="md:mb-2 opacity-0 md:block hidden">dfasfd</p>
-                    <div className="w-full border border-gray-300 dark:border-gray-600 pt-5 pb-4 px-4 rounded-xl bg-white h-[45px] dark:bg-gray-700">
-                      <ReactSlider
-                        className="horizontal-slider"
-                        thumbClassName="example-thumb"
-                        trackClassName="example-track"
-                        thumbActiveClassName="active-thumb"
-                        min={0}
-                        max={20}
-                        value={Number(sharedData.annualInterestRate) || 0}
-                        onChange={(value: number) =>
-                          handleSharedChange(
-                            "annualInterestRate",
-                            value.toString()
-                          )
-                        }
-                      />
-                    </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
+                    Initial Investment
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
+                      $
+                    </span>
+                    <input
+                      type="number"
+                      value={settings.initialInvestment}
+                      onChange={(e) =>
+                        handleSettingChange("initialInvestment", e.target.value)
+                      }
+                      onWheel={preventScrollChange}
+                      className="w-full pl-8 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                      placeholder="0.00"
+                    />
                   </div>
-                  {/* {errors.annualInterestRate && (
-                    <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                      {errors.annualInterestRate}
-                    </p>
-                  )} */}
                 </div>
-              </section>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
+                    Annual Contribution
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
+                      $
+                    </span>
+                    <input
+                      type="number"
+                      value={settings.annualContribution}
+                      onChange={(e) =>
+                        handleSettingChange(
+                          "annualContribution",
+                          e.target.value
+                        )
+                      }
+                      onWheel={preventScrollChange}
+                      className="w-full pl-8 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                      placeholder="0.00"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
+                    Annual Return (%)
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500">
+                      %
+                    </span>
+                    <input
+                      type="number"
+                      value={settings.annualReturn}
+                      onChange={(e) =>
+                        handleSettingChange("annualReturn", e.target.value)
+                      }
+                      onWheel={preventScrollChange}
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                      placeholder="0.00"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
+                    Retirement Age
+                  </label>
+                  <input
+                    type="number"
+                    value={settings.retirementAge}
+                    onChange={(e) =>
+                      handleSettingChange("retirementAge", e.target.value)
+                    }
+                    onWheel={preventScrollChange}
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                    placeholder="65"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
+                    Compounding Frequency
+                  </label>
+                  <select
+                    value={settings.compounding}
+                    onChange={(e) =>
+                      handleSettingChange("compounding", e.target.value)
+                    }
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                  >
+                    <option value="yearly">Yearly</option>
+                    <option value="quarterly">Quarterly</option>
+                    <option value="monthly">Monthly</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
+                    Contribution Frequency
+                  </label>
+                  <select
+                    value={settings.contributionFrequency}
+                    onChange={(e) =>
+                      handleSettingChange(
+                        "contributionFrequency",
+                        e.target.value
+                      )
+                    }
+                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                  >
+                    <option value="yearly">Yearly</option>
+                    <option value="quarterly">Quarterly</option>
+                    <option value="monthly">Monthly</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="mt-6 flex justify-end space-x-4">
                 <button
-                  type="button"
-                  onClick={handleClear}
-                  className="px-6 py-3 text-sm bg-gray-200 text-gray-800 rounded-xl hover:bg-gray-300 transition-all font-bold flex items-center justify-center dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 shadow-md"
+                  onClick={resetAllFields}
+                  className="px-4 py-2 rounded-lg flex items-center transition bg-gray-500 hover:bg-gray-600 text-white"
                 >
-                  <Icon icon="mdi:refresh" className="mr-2 text-lg" />
-                  Reset All
+                  <i className="fas fa-redo mr-2"></i>
+                  Reset
                 </button>
-
                 <button
-                  type="submit"
+                  onClick={calculateAllResults}
                   disabled={isCalculating}
-                  className="px-6 py-3 text-sm bg-black text-white rounded-xl transition-all font-bold flex items-center justify-center flex-1 disabled:opacity-70 disabled:cursor-not-allowed shadow-md transform hover:scale-105 duration-300"
+                  className={`px-4 py-2 rounded-lg flex items-center transition ${
+                    isCalculating
+                      ? "bg-emerald-400 cursor-not-allowed"
+                      : "bg-emerald-600 hover:bg-emerald-700"
+                  } text-white`}
                 >
                   {isCalculating ? (
                     <>
-                      <Icon
-                        icon="mdi:loading"
-                        className="animate-spin mr-2 text-lg"
-                      />
+                      <svg
+                        className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
                       Calculating...
                     </>
                   ) : (
                     <>
-                      <Icon icon="mdi:calculator" className="mr-2 text-lg" />
-                      Compare Investments
+                      <i className="fas fa-calculator mr-2"></i>
+                      Calculate
                     </>
                   )}
                 </button>
               </div>
-            </form>
+            </div>
 
-            {/* Results Section */}
-            {results && (
-              <>
-                {/* Table */}
-                <div className="mt-10">
-                  <h3 className="text-2xl font-bold text-center mb-6 text-teal-700 dark:text-teal-300 flex items-center justify-center">
-                    <Icon icon="mdi:table" className="mr-2 text-2xl" />
-                    Investment Growth Over Time
-                  </h3>
+            {/* Results Table */}
+            <div
+              ref={resultsRef}
+              className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden"
+            >
+              <div className="p-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-b">
+                <h2 className="font-bold text-xl flex items-center">
+                  <i className="fas fa-table mr-2 text-emerald-600"></i>
+                  Investment Growth Projection
+                  {isCalculating && (
+                    <span className="ml-2 text-sm font-normal text-emerald-600 flex items-center">
+                      <svg
+                        className="animate-spin -ml-1 mr-1 h-4 w-4 text-emerald-600"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Updating...
+                    </span>
+                  )}
+                </h2>
+              </div>
 
-                  <div className="overflow-x-auto rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
-                    <table className="min-w-full bg-white dark:bg-gray-800">
-                      <thead>
-                        <tr className="bg-gradient-to-r from-teal-600 to-teal-700 dark:from-gray-800 dark:to-gray-900 text-white">
-                          {results.map((investorResult, index) => (
-                            <th
-                              key={index}
-                              colSpan={3}
-                              className="px-6 py-4 text-center font-bold text-sm tracking-wider"
-                              style={{
-                                backgroundColor: `${colors[index]}22`,
-                                borderLeft: `2px solid ${colors[index]}`,
-                                borderRight: `2px solid ${colors[index]}`,
-                              }}
-                            >
-                              <div className="flex items-center justify-center">
+              {isCalculating ? (
+                <div className="p-12 flex justify-center items-center">
+                  <div className="text-center">
+                    <svg
+                      className="animate-spin mx-auto h-8 w-8 text-emerald-600"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    <p className="mt-2 text-gray-600">Calculating results...</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr>
+                        {investors.map((inv, idx) => (
+                          <th
+                            key={idx}
+                            colSpan={3}
+                            className={`p-4 text-center font-bold text-gray-700 border-r last:border-r-0 border-l-4 first:border-l-0 border-l-gray-300 ${inv.color}`}
+                          >
+                            <div className="flex items-center justify-center">
+                              {inv.name ? (
                                 <div>
                                   <p>
-                                    {investorResult.investor.name} is investing
-                                    at Age {investorResult?.investor?.startAge}
+                                    <span className="font-extrabold text-[17px]">
+                                      {inv.name}
+                                    </span>{" "}
+                                    is Investing at Age {inv.startAge}
                                   </p>
                                   <p>
-                                    ( {sharedData?.annualInterestRate}% Annual
-                                    Return )
+                                    ( {settings.annualReturn}% Annual Return )
                                   </p>
                                 </div>
-                              </div>
+                              ) : (
+                                `Investor ${idx + 1} 's Investment`
+                              )}
+                            </div>
+                          </th>
+                        ))}
+                      </tr>
+                      <tr className="bg-gray-50">
+                        {investors.map((_, idx) => (
+                          <React.Fragment key={idx}>
+                            <th className="p-2 border-r font-bold text-gray-600 border-l-4 first:border-l-0 border-l-gray-300">
+                              Age
                             </th>
-                          ))}
-                        </tr>
-                        <tr className="bg-gray-100 dark:bg-gray-700">
-                          {results.map((_, index) => (
-                            <React.Fragment key={index}>
-                              <th
-                                className="px-6 py-3 text-center text-xs font-bold text-gray-700 dark:text-gray-200 tracking-wider"
-                                style={{
-                                  backgroundColor: `${colors[index]}11`,
-                                  borderLeft: `2px solid ${colors[index]}`,
-                                }}
-                              >
-                                Age
-                              </th>
-                              <th
-                                className="px-6 py-3 text-center text-xs font-bold text-gray-700 dark:text-gray-200 tracking-wider"
-                                style={{
-                                  backgroundColor: `${colors[index]}11`,
-                                }}
-                              >
-                                Invest
-                              </th>
-                              <th
-                                className="px-6 py-3 text-center text-xs font-bold text-gray-700 dark:text-gray-200 tracking-wider"
-                                style={{
-                                  backgroundColor: `${colors[index]}11`,
-                                  borderRight: `2px solid ${colors[index]}`,
-                                }}
-                              >
-                                Value
-                              </th>
-                            </React.Fragment>
-                          ))}
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        {Array.from(
-                          { length: maxAge - minAge + 1 },
-                          (_, i) => minAge + i
-                        ).map((age, rowIndex) => (
+                            <th className="p-2 border-r font-bold text-gray-600">
+                              Invested
+                            </th>
+                            <th className="p-2 border-r font-bold text-gray-600 last:border-r-0">
+                              Value
+                            </th>
+                          </React.Fragment>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {results.length > 0 ? (
+                        Array.from(
+                          { length: getMaxAge() - getMinAge() + 1 },
+                          (_, i) => i + getMinAge()
+                        ).map((age) => (
                           <tr
                             key={age}
-                            className={
-                              rowIndex % 2 === 0
-                                ? "bg-gray-50 dark:bg-gray-700"
-                                : "bg-white dark:bg-gray-800"
-                            }
+                            className="hover:bg-gray-100 transition"
                           >
-                            {results.map((investorResult, investorIndex) => {
-                              const yearData = investorResult.results.find(
+                            {investors.map((inv, idx) => {
+                              const row = results[idx]?.find(
                                 (r) => r.age === age
                               );
-
-                              return (
-                                <React.Fragment key={investorIndex}>
-                                  {/* Age */}
-                                  <td
-                                    className="px-6 py-3 text-center text-sm font-medium"
-                                    style={{
-                                      backgroundColor: `${colors[investorIndex]}08`,
-                                      borderLeft: `2px solid ${colors[investorIndex]}`,
-                                    }}
-                                  >
-                                    {age}
+                              const isInvestmentPeriod = shouldHighlightCell(
+                                idx,
+                                age
+                              );
+                              return row ? (
+                                <React.Fragment key={idx}>
+                                  <td className="p-3 border-r font-medium border-l-4 first:border-l-0 border-l-gray-300 text-center">
+                                    {row.age}
                                   </td>
-
-                                  {/* Invest */}
                                   <td
-                                    className="px-6 py-3 text-center text-sm"
-                                    style={{
-                                      backgroundColor: `${colors[investorIndex]}08`,
-                                    }}
+                                    className={`p-3 border-r text-center ${
+                                      isInvestmentPeriod
+                                        ? `${inv.color} font-medium`
+                                        : ""
+                                    }`}
                                   >
-                                    {yearData
-                                      ? formatCurrency(yearData.investment)
+                                    {row.invest > 0
+                                      ? formatCurrency(row.invest)
                                       : "-"}
                                   </td>
-
-                                  {/* Value */}
+                                  <td className="p-3 border-r last:border-r-0 font-medium text-black text-center">
+                                    {formatCurrency(row.value)}
+                                  </td>
+                                </React.Fragment>
+                              ) : (
+                                <React.Fragment key={idx}>
+                                  <td className="p-3 border-r border-l-4 first:border-l-0 border-l-gray-300 text-center">
+                                    {age}
+                                  </td>
                                   <td
-                                    className="px-6 py-3 text-center text-sm"
-                                    style={{
-                                      backgroundColor: `${colors[investorIndex]}08`,
-                                      borderRight: `2px solid ${colors[investorIndex]}`,
-                                    }}
+                                    className={`p-3 border-r text-center ${
+                                      shouldHighlightCell(idx, age)
+                                        ? `${inv.color}`
+                                        : ""
+                                    }`}
                                   >
-                                    <div className="font-bold text-green-600 dark:text-green-400">
-                                      {yearData
-                                        ? formatCurrency(yearData.value)
-                                        : "-"}
-                                    </div>
+                                    -
+                                  </td>
+                                  <td className="p-3 border-r last:border-r-0 text-center">
+                                    -
                                   </td>
                                 </React.Fragment>
                               );
                             })}
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan={investors.length * 3}
+                            className="p-8 text-center text-gray-500"
+                          >
+                            <i className="fas fa-calculator text-3xl mb-3 text-emerald-400"></i>
+                            <p>
+                              Click "Calculate" to see your investment
+                              projections
+                            </p>
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
+              )}
+            </div>
 
-                {/* Chart */}
-                <div className="mt-10">
-                  <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 mb-8">
-                    <div className="h-80">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart
-                          data={chartData}
-                          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                        >
-                          <CartesianGrid
-                            strokeDasharray="3 3"
-                            stroke={isDarkMode ? "#4B5563" : "#E5E7EB"}
-                          />
-                          <XAxis
-                            dataKey="age"
-                            stroke={isDarkMode ? "#D1D5DB" : "#4B5563"}
-                            label={{
-                              value: "Age",
-                              position: "insideBottom",
-                              offset: -5,
-                              style: {
-                                fill: isDarkMode ? "#D1D5DB" : "#4B5563",
-                              },
-                            }}
-                          />
-                          <YAxis
-                            stroke={isDarkMode ? "#D1D5DB" : "#4B5563"}
-                            tickFormatter={(value) => {
-                              if (value >= 1000000)
-                                return `$${(value / 1000000).toFixed(1)}M`;
-                              if (value >= 1000)
-                                return `$${(value / 1000).toFixed(0)}K`;
-                              return `$${value}`;
-                            }}
-                            label={{
-                              value: "Value",
-                              angle: -90,
-                              position: "insideLeft",
-                              style: {
-                                fill: isDarkMode ? "#D1D5DB" : "#4B5563",
-                              },
-                            }}
-                          />
-                          <Tooltip
-                            formatter={(value, name) => {
-                              const investorName = name
-                                .toString()
-                                .replace(" Value", "");
-                              return [
-                                `$${Number(value).toLocaleString()}`,
-                                investorName,
-                              ];
-                            }}
-                            labelFormatter={(value) => `Age: ${value}`}
-                            contentStyle={{
-                              backgroundColor: isDarkMode ? "#374151" : "#fff",
-                              borderColor: isDarkMode ? "#4B5563" : "#E5E7EB",
-                              borderRadius: "0.5rem",
-                            }}
-                          />
-                          <Legend
-                            verticalAlign="top"
-                            height={36}
-                            formatter={(value) => (
-                              <span
-                                style={{
-                                  color: isDarkMode ? "#D1D5DB" : "#4B5563",
-                                }}
-                              >
-                                {value}
-                              </span>
-                            )}
-                          />
-                          {results.map((investorResult, index) => (
-                            <Line
-                              key={index}
-                              type="monotone"
-                              dataKey={`${investorResult.investor.name} Value`}
-                              name={investorResult.investor.name}
-                              stroke={colors[index % colors.length]}
-                              strokeWidth={3}
-                              dot={{ r: 4 }}
-                              activeDot={{ r: 8 }}
-                              connectNulls
-                            />
-                          ))}
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
+            {/* Summary Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {investors.map((inv, idx) => {
+                const finalResult = results[idx]?.find(
+                  (r) =>
+                    r.age ===
+                    (settings.retirementAge === ""
+                      ? 65
+                      : parseFloat(settings.retirementAge))
+                );
+                const totalInvested =
+                  results[idx]?.reduce((sum, row) => sum + row.invest, 0) || 0;
 
-                    {/* Chart explanation */}
-                    <div className="mt-4 p-3 bg-teal-50 dark:bg-teal-900/20 rounded-lg text-sm text-teal-700 dark:text-teal-300">
-                      <div className="flex items-start">
-                        <Icon
-                          icon="mdi:information-outline"
-                          className="mr-2 mt-0.5 flex-shrink-0"
-                        />
-                        <div>
-                          This chart compares how each investor's portfolio
-                          grows over their lifetime. The X-axis shows the
-                          investor's age, making it easy to see how starting at
-                          different ages affects the final outcome. Each line
-                          represents a different investor's journey from their
-                          start age to end age.
+                return (
+                  <div
+                    key={idx}
+                    className={`p-5 rounded-xl shadow-md border-t-4 ${inv.color} border-emerald-400`}
+                  >
+                    <h3 className="font-bold text-lg mb-4 flex items-center">
+                      <span
+                        className={`w-3 h-3 rounded-full ${inv.color.replace(
+                          "bg-",
+                          "bg-"
+                        )} mr-2`}
+                      ></span>
+                      {inv.name || `Investor ${idx + 1}`}'s Summary
+                    </h3>
+
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Total Invested:</span>
+                        <span className="font-medium">
+                          {results.length > 0
+                            ? formatCurrency(totalInvested)
+                            : "-"}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Final Value:</span>
+                        <span className="font-medium text-emerald-600">
+                          {finalResult
+                            ? formatCurrency(finalResult.value)
+                            : "-"}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">
+                          Investment Period:
+                        </span>
+                        <span className="font-medium">
+                          {inv.startAge === "" ? "-" : inv.startAge} -{" "}
+                          {inv.stopAge === "" ? "-" : inv.stopAge}
+                        </span>
+                      </div>
+
+                      <div className="pt-3 border-t">
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Growth:</span>
+                          <span className="font-medium text-emerald-600">
+                            {finalResult && totalInvested > 0
+                              ? `${Math.round(
+                                  ((finalResult.value - totalInvested) /
+                                    totalInvested) *
+                                    100
+                                )}%`
+                              : "-"}
+                          </span>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </>
-            )}
+                );
+              })}
+            </div>
           </div>
-        </ConfigProvider>
+        </div>
       </main>
     </>
   );

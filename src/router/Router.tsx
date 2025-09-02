@@ -63,6 +63,7 @@ import PaymentSuccess from "../pages/Landing/BookLandingPage/PaymentSuccess";
 import PaymentCancel from "../pages/Landing/BookLandingPage/PaymentCancel";
 import CompoundInterestComparisonCalculator from "../pages/CompoundInterestComparisonCalculator/CompoundInterestComparisonCalculator";
 import NetIncomeYieldCalculator from "../pages/NetIncomeYieldCalculator/NetIncomeYieldCalculator";
+import InvestmentCalculator from "../pages/Investor/InvestmentCalculator";
 
 export const router = createBrowserRouter([
   {
@@ -327,6 +328,10 @@ export const router = createBrowserRouter([
       {
         path: "cancel",
         element: <PaymentCancel />,
+      },
+      {
+        path: "investment-calcualtor",
+        element: <InvestmentCalculator />,
       },
     ],
   },

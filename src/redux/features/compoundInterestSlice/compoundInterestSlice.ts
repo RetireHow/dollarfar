@@ -16,7 +16,7 @@ type TCompoundInterestState = {
   contributionFrequency: string;
   annualInterestRate: string;
   compoundingFrequency: string;
-  // years: string;
+  years: string;
 
   totalFutureValue: string;
   totalInterestEarned: string;
@@ -30,7 +30,7 @@ export type TPayloadKey = {
   contributionFrequency: string;
   annualInterestRate: string;
   compoundingFrequency: string;
-  // years: string;
+  years: string;
   startYear: string;
   endYear: string;
 };
@@ -44,7 +44,7 @@ export const initialState: TCompoundInterestState = {
   contributionFrequency: "1",
   annualInterestRate: "",
   compoundingFrequency: "1",
-  // years: "",
+  years: "",
 
   totalFutureValue: "",
   totalInterestEarned: "",
@@ -75,9 +75,7 @@ const compoundInterestSlice = createSlice({
         contributionFrequency,
         annualInterestRate,
         compoundingFrequency,
-        // years,
-        startYear,
-        endYear
+        years
       } = state;
 
       const result = calculateCRIInvestment(
@@ -86,9 +84,7 @@ const compoundInterestSlice = createSlice({
         Number(contributionFrequency),
         Number(annualInterestRate),
         Number(compoundingFrequency),
-        // Number(years),
-        Number(startYear),
-        Number(endYear),
+        Number(years),
       );
 
       const {

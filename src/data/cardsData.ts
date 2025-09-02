@@ -25,7 +25,7 @@ export const cardsData = [
     id: 3,
     title: "Compound Interest Scenario/Comparison Calculator",
     description:
-      "Compare investment timelines with this calculator. Visualize how starting ages affect compound interest growth through interactive charts and tables. Perfect for retirement planning scenarios.",
+      "Compare investment timelines with this calculator. Visualize how starting ages affect compound interest growth through interactive tables.",
     arrowIcon: assets.arrowUpIcon,
     calcIcon: assets.compoundInterestCalcIcon,
     btnText: "Calculate",
