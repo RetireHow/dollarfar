@@ -187,8 +187,6 @@ const ExportMortgagePDFModal = ({
       setShowError(false);
       setIsGeneratingPDF(false);
     }
-
-
   };
 
   return (
@@ -558,7 +556,7 @@ export const FixedWidthInvestmentGrowthPDFTemplate = ({
 }) => {
   // Fixed width for PDF (A4 paper size in pixels at 96dpi)
   const pdfWidth = 794; // ~8.27 inches (A4 width)
-  const pdfMargin = 20; // Increased margin for better spacing
+  const pdfMargin = 10; // Increased margin for better spacing
 
   // Calculate summary data for each investor
   const investorSummaries = investors.map((investor, idx) => {
@@ -1364,7 +1362,7 @@ export default function CompoundInterestComparisonCalculator() {
 
   // PDF
   const { toPDF, targetRef } = useCustomPDF({
-    filename: "mortgage-calculator-report.pdf",
+    filename: "investment-comparison-calculator-report.pdf",
     page: { margin: 10, format: "a4" },
     onBeforeGetContent: () => {
       setIsGeneratingPDF(true);
