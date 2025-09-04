@@ -91,7 +91,6 @@ body {
   }
 }
 
-
 /* Hide number input spinners */
 .no-spinner::-webkit-inner-spin-button,
 .no-spinner::-webkit-outer-spin-button {
@@ -103,11 +102,9 @@ body {
   -moz-appearance: textfield; /* Firefox */
 }
 
-
-.ant-collapse-content>.ant-collapse-content-box {
-  background-color: #F8F8F8 !important;
+.ant-collapse-content > .ant-collapse-content-box {
+  background-color: #f8f8f8 !important;
 }
-
 
 /* Animation for the arrow icon  */
 @keyframes rotateWithPause {
@@ -124,36 +121,34 @@ body {
   animation-delay: 2s; /* No initial delay */
 }
 
-
 /* Dark Mode Styles  */
-.dark{
-  color:white !important;
+.dark {
+  color: white !important;
 }
-
 
 /* RRIF  */
-.dark .RRIFResultCard{
+.dark .RRIFResultCard {
   background-color: #000;
-  border:1px solid #413f3f;
+  border: 1px solid #413f3f;
 }
 
-.dark .RRIFBarChart{
-  background-color: #000;
-}
-
-.dark .RRIFTable{
+.dark .RRIFBarChart {
   background-color: #000;
 }
 
-.dark .RRIFTable table tr td{
-  border:1px solid #413f3f;
+.dark .RRIFTable {
+  background-color: #000;
+}
+
+.dark .RRIFTable table tr td {
+  border: 1px solid #413f3f;
 }
 
 /* RRSP  */
-.dark .RRSPAreaChart{
+.dark .RRSPAreaChart {
   background-color: #000;
 }
-.dark .RRSPResultCard{
+.dark .RRSPResultCard {
   background-color: #000;
-  border:1px solid #413f3f;
+  border: 1px solid #413f3f;
 }

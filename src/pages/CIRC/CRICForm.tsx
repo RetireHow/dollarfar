@@ -111,8 +111,8 @@ export default function CRICForm({
     setIsCalculationCompleted(false);
 
     if (
-      !Number(initialInvestment) ||
-      // !Number(years) ||
+      // !Number(initialInvestment) ||
+      !Number(years) ||
       !Number(annualInterestRate)
     ) {
       return setShowError(true);
@@ -121,7 +121,7 @@ export default function CRICForm({
     //Save inputs into local storage
     const inputs = {
       annualInterestRate,
-      // years,
+      years,
       compoundingFrequency,
       contribution,
       contributionFrequency,
@@ -170,7 +170,6 @@ export default function CRICForm({
               htmlFor="Initial-investment"
             >
               Initial principal amount
-              <CIRCRedStar />
             </label>
             <CIRCTooltip title="The starting amount you invest or deposit. This is the base amount on which interest will be calculated." />
           </div>
@@ -190,9 +189,6 @@ export default function CRICForm({
               );
             }}
           />
-          {showError && !Number(initialInvestment) && (
-            <Error message="This field is required" />
-          )}
           <ShowNegativeMessage input={initialInvestment} />
         </div>
 
