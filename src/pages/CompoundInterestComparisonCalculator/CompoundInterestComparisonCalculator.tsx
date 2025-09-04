@@ -58,7 +58,7 @@ type ExportMortgagePDFModalProps = {
   toPDF: () => Promise<void>;
 };
 
-const ExportMortgagePDFModal = ({
+const ExportInvestmentComparisonPDFModal = ({
   targetRef,
   setIsGeneratingPDF,
   isGeneratingPDF,
@@ -543,8 +543,6 @@ const formatCurrency = (value: number): string => {
   }).format(value);
 };
 
-
-
 export const FixedWidthInvestmentGrowthPDFTemplate = ({
   investors,
   settings,
@@ -561,14 +559,20 @@ export const FixedWidthInvestmentGrowthPDFTemplate = ({
   // Calculate summary data for each investor
   const investorSummaries = investors.map((investor, idx) => {
     const finalResult = results[idx]?.find(
-      (r) => r.age === (settings.retirementAge === "" ? 65 : parseFloat(settings.retirementAge))
+      (r) =>
+        r.age ===
+        (settings.retirementAge === ""
+          ? 65
+          : parseFloat(settings.retirementAge))
     );
-    
-    const totalInvested = results[idx]?.reduce((sum, row) => sum + row.invest, 0) || 0;
+
+    const totalInvested =
+      results[idx]?.reduce((sum, row) => sum + row.invest, 0) || 0;
     const growthAmount = finalResult ? finalResult.value - totalInvested : 0;
-    const growthPercentage = finalResult && totalInvested > 0 
-      ? ((finalResult.value - totalInvested) / totalInvested) * 100 
-      : 0;
+    const growthPercentage =
+      finalResult && totalInvested > 0
+        ? ((finalResult.value - totalInvested) / totalInvested) * 100
+        : 0;
 
     return {
       name: investor.name || `Investor ${idx + 1}`,
@@ -584,13 +588,18 @@ export const FixedWidthInvestmentGrowthPDFTemplate = ({
 
   // Get min and max age for the table
   const getMaxAge = (): number => {
-    const retirementAge = settings.retirementAge === "" ? 65 : parseFloat(settings.retirementAge);
-    const investorAges = investors.map((i) => i.startAge === "" ? 0 : parseFloat(i.startAge));
+    const retirementAge =
+      settings.retirementAge === "" ? 65 : parseFloat(settings.retirementAge);
+    const investorAges = investors.map((i) =>
+      i.startAge === "" ? 0 : parseFloat(i.startAge)
+    );
     return Math.max(...investorAges, retirementAge);
   };
 
   const getMinAge = (): number => {
-    const investorAges = investors.map((i) => i.startAge === "" ? 0 : parseFloat(i.startAge));
+    const investorAges = investors.map((i) =>
+      i.startAge === "" ? 0 : parseFloat(i.startAge)
+    );
     return Math.min(...investorAges);
   };
 
@@ -602,13 +611,16 @@ export const FixedWidthInvestmentGrowthPDFTemplate = ({
   // Helper function to determine if a cell should have background color
   const shouldHighlightCell = (investorIndex: number, age: number): boolean => {
     const investor = investors[investorIndex];
-    const startAge = investor.startAge === "" ? 0 : parseFloat(investor.startAge);
+    const startAge =
+      investor.startAge === "" ? 0 : parseFloat(investor.startAge);
     const stopAge = investor.stopAge === "" ? 0 : parseFloat(investor.stopAge);
     return age >= startAge && age <= stopAge;
   };
 
   // Key milestones to highlight
-  const milestoneAges = [25, 30, 35, 40, 45, 50, 55, 60, 65].filter(age => age <= maxAge);
+  const milestoneAges = [25, 30, 35, 40, 45, 50, 55, 60, 65].filter(
+    (age) => age <= maxAge
+  );
 
   return (
     <div
@@ -649,7 +661,12 @@ export const FixedWidthInvestmentGrowthPDFTemplate = ({
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)", // Enhanced shadow
             }}
           >
-            <div style={{color: "white", fontWeight: "bold", fontSize: "24px"}}>DF</div> {/* Increased font size */}
+            <div
+              style={{ color: "white", fontWeight: "bold", fontSize: "24px" }}
+            >
+              DF
+            </div>{" "}
+            {/* Increased font size */}
           </div>
           <div>
             <h1
@@ -686,139 +703,282 @@ export const FixedWidthInvestmentGrowthPDFTemplate = ({
           <p style={{ margin: "0 0 8px 0", fontWeight: "600" }}>
             Generated on {moment().format("MMMM D, YYYY")}
           </p>
-          <p style={{ margin: "0", fontSize: "14px" }}> {/* Increased from 11px */}
+          <p style={{ margin: "0", fontSize: "14px" }}>
+            {" "}
+            {/* Increased from 11px */}
             dollarfar.com/investment-calculator
           </p>
         </div>
       </header>
 
       {/* Executive Summary */}
-      <div style={{
-        backgroundColor: "#f7fafc",
-        padding: "25px", // Increased padding
-        borderRadius: "12px",
-        marginBottom: "40px", // Increased margin
-        borderLeft: "5px solid #2b6777", // Thicker border
-      }}>
-        <h2 style={{
-          fontSize: "22px", // Increased from 18px
-          fontWeight: "700",
-          margin: "0 0 20px 0", // Increased margin
-          color: "#2d3748",
-          display: "flex",
-          alignItems: "center",
-        }}>
-          <span style={{
-            display: "inline-flex",
+      <div
+        style={{
+          backgroundColor: "#f7fafc",
+          padding: "25px", // Increased padding
+          borderRadius: "12px",
+          marginBottom: "40px", // Increased margin
+          borderLeft: "5px solid #2b6777", // Thicker border
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "22px", // Increased from 18px
+            fontWeight: "700",
+            margin: "0 0 20px 0", // Increased margin
+            color: "#2d3748",
+            display: "flex",
             alignItems: "center",
-            justifyContent: "center",
-            width: "32px", // Increased size
-            height: "32px", // Increased size
-            backgroundColor: "#2b6777",
-            color: "white",
-            borderRadius: "8px", // Increased radius
-            marginRight: "12px", // Increased margin
-            fontSize: "18px", // Increased font size
-          }}>📊</span>
+          }}
+        >
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "32px", // Increased size
+              height: "32px", // Increased size
+              backgroundColor: "#2b6777",
+              color: "white",
+              borderRadius: "8px", // Increased radius
+              marginRight: "12px", // Increased margin
+              fontSize: "18px", // Increased font size
+            }}
+          >
+            📊
+          </span>
           Executive Summary
         </h2>
-        
-        <div style={{display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "20px"}}> {/* Increased gap */}
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "20px",
+          }}
+        >
+          {" "}
+          {/* Increased gap */}
           <div>
-            <p style={{margin: "0 0 15px 0", fontWeight: "600", fontSize: "18px"}}>Investment Parameters:</p> {/* Increased font size */}
-            <ul style={{margin: "0", paddingLeft: "20px", fontSize: "16px", lineHeight: 1.8}}> {/* Increased font size and line height */}
-              <li>Annual Return: <strong>{settings.annualReturn || "0"}%</strong></li>
-              <li>Initial Investment: <strong>{formatCurrency(settings.initialInvestment === "" ? 0 : parseFloat(settings.initialInvestment))}</strong></li>
-              <li>Annual Contribution: <strong>{formatCurrency(settings.annualContribution === "" ? 0 : parseFloat(settings.annualContribution))}</strong></li>
+            <p
+              style={{
+                margin: "0 0 15px 0",
+                fontWeight: "600",
+                fontSize: "18px",
+              }}
+            >
+              Investment Parameters:
+            </p>{" "}
+            {/* Increased font size */}
+            <ul
+              style={{
+                margin: "0",
+                paddingLeft: "20px",
+                fontSize: "16px",
+                lineHeight: 1.8,
+              }}
+            >
+              {" "}
+              {/* Increased font size and line height */}
+              <li>
+                Annual Return: <strong>{settings.annualReturn || "0"}%</strong>
+              </li>
+              <li>
+                Initial Investment:{" "}
+                <strong>
+                  {formatCurrency(
+                    settings.initialInvestment === ""
+                      ? 0
+                      : parseFloat(settings.initialInvestment)
+                  )}
+                </strong>
+              </li>
+              <li>
+                Annual Contribution:{" "}
+                <strong>
+                  {formatCurrency(
+                    settings.annualContribution === ""
+                      ? 0
+                      : parseFloat(settings.annualContribution)
+                  )}
+                </strong>
+              </li>
             </ul>
           </div>
           <div>
-            <p style={{margin: "0 0 15px 0", fontWeight: "600", fontSize: "18px"}}>Analysis Period:</p> {/* Increased font size */}
-            <ul style={{margin: "0", paddingLeft: "20px", fontSize: "16px", lineHeight: 1.8}}> {/* Increased font size and line height */}
-              <li>Retirement Age: <strong>{settings.retirementAge || "65"}</strong></li>
-              <li>Compounding: <strong>{settings.compounding}</strong></li>
-              <li>Contribution Frequency: <strong>{settings.contributionFrequency}</strong></li>
+            <p
+              style={{
+                margin: "0 0 15px 0",
+                fontWeight: "600",
+                fontSize: "18px",
+              }}
+            >
+              Analysis Period:
+            </p>{" "}
+            {/* Increased font size */}
+            <ul
+              style={{
+                margin: "0",
+                paddingLeft: "20px",
+                fontSize: "16px",
+                lineHeight: 1.8,
+              }}
+            >
+              {" "}
+              {/* Increased font size and line height */}
+              <li>
+                Retirement Age:{" "}
+                <strong>{settings.retirementAge || "65"}</strong>
+              </li>
+              <li>
+                Compounding: <strong>{settings.compounding}</strong>
+              </li>
+              <li>
+                Contribution Frequency:{" "}
+                <strong>{settings.contributionFrequency}</strong>
+              </li>
             </ul>
           </div>
         </div>
       </div>
 
       {/* Investor Comparison Cards */}
-      <div style={{marginBottom: "40px"}}> {/* Increased margin */}
-        <h2 style={{
-          fontSize: "22px", // Increased from 18px
-          fontWeight: "700",
-          margin: "0 0 25px 0", // Increased margin
-          color: "#2d3748",
-          paddingBottom: "15px", // Increased padding
-          borderBottom: "3px solid #e2e8f0", // Thicker border
-          display: "flex",
-          alignItems: "center",
-        }}>
-          <span style={{
-            display: "inline-flex",
+      <div style={{ marginBottom: "40px" }}>
+        {" "}
+        {/* Increased margin */}
+        <h2
+          style={{
+            fontSize: "22px", // Increased from 18px
+            fontWeight: "700",
+            margin: "0 0 25px 0", // Increased margin
+            color: "#2d3748",
+            paddingBottom: "15px", // Increased padding
+            borderBottom: "3px solid #e2e8f0", // Thicker border
+            display: "flex",
             alignItems: "center",
-            justifyContent: "center",
-            width: "32px", // Increased size
-            height: "32px", // Increased size
-            backgroundColor: "#2b6777",
-            color: "white",
-            borderRadius: "8px", // Increased radius
-            marginRight: "12px", // Increased margin
-            fontSize: "18px", // Increased font size
-          }}>👥</span>
+          }}
+        >
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "32px", // Increased size
+              height: "32px", // Increased size
+              backgroundColor: "#2b6777",
+              color: "white",
+              borderRadius: "8px", // Increased radius
+              marginRight: "12px", // Increased margin
+              fontSize: "18px", // Increased font size
+            }}
+          >
+            👥
+          </span>
           Investor Comparison
         </h2>
-
-        <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px"}}> {/* Increased gap */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "20px",
+          }}
+        >
+          {" "}
+          {/* Increased gap */}
           {investorSummaries.map((investor, index) => (
-            <div key={index} style={{
-              padding: "20px", // Increased padding
-              borderRadius: "12px",
-              backgroundColor: "#f8f9fa",
-              border: "2px solid #e2e8f0", // Thicker border
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.08)", // Enhanced shadow
-            }}>
-              <h3 style={{
-                fontSize: "18px", // Increased from 15px
-                fontWeight: "700",
-                margin: "0 0 15px 0", // Increased margin
-                color: "#2b6777",
-                paddingBottom: "12px", // Increased padding
-                borderBottom: "2px solid #e2e8f0", // Thicker border
-              }}>
+            <div
+              key={index}
+              style={{
+                padding: "20px", // Increased padding
+                borderRadius: "12px",
+                backgroundColor: "#f8f9fa",
+                border: "2px solid #e2e8f0", // Thicker border
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.08)", // Enhanced shadow
+              }}
+            >
+              <h3
+                style={{
+                  fontSize: "18px", // Increased from 15px
+                  fontWeight: "700",
+                  margin: "0 0 15px 0", // Increased margin
+                  color: "#2b6777",
+                  paddingBottom: "12px", // Increased padding
+                  borderBottom: "2px solid #e2e8f0", // Thicker border
+                }}
+              >
                 {investor.name}
               </h3>
-              
-              <div style={{marginBottom: "15px", fontSize: "16px"}}> {/* Increased font size */}
-                <div style={{display: "flex", justifyContent: "space-between", marginBottom: "8px"}}> {/* Increased margin */}
-                  <span style={{color: "#718096"}}>Investment Period:</span>
-                  <span style={{fontWeight: "600"}}>{investor.startAge} - {investor.stopAge}</span>
+
+              <div style={{ marginBottom: "15px", fontSize: "16px" }}>
+                {" "}
+                {/* Increased font size */}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "8px",
+                  }}
+                >
+                  {" "}
+                  {/* Increased margin */}
+                  <span style={{ color: "#718096" }}>Investment Period:</span>
+                  <span style={{ fontWeight: "600" }}>
+                    {investor.startAge} - {investor.stopAge}
+                  </span>
                 </div>
-                <div style={{display: "flex", justifyContent: "space-between", marginBottom: "8px"}}> {/* Increased margin */}
-                  <span style={{color: "#718096"}}>Total Invested:</span>
-                  <span style={{fontWeight: "600"}}>{formatCurrency(investor.totalInvested)}</span>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "8px",
+                  }}
+                >
+                  {" "}
+                  {/* Increased margin */}
+                  <span style={{ color: "#718096" }}>Total Invested:</span>
+                  <span style={{ fontWeight: "600" }}>
+                    {formatCurrency(investor.totalInvested)}
+                  </span>
                 </div>
-                <div style={{display: "flex", justifyContent: "space-between", marginBottom: "8px"}}> {/* Increased margin */}
-                  <span style={{color: "#718096"}}>Final Value:</span>
-                  <span style={{fontWeight: "700", color: "#2b6777"}}>{formatCurrency(investor.finalValue)}</span>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "8px",
+                  }}
+                >
+                  {" "}
+                  {/* Increased margin */}
+                  <span style={{ color: "#718096" }}>Final Value:</span>
+                  <span style={{ fontWeight: "700", color: "#2b6777" }}>
+                    {formatCurrency(investor.finalValue)}
+                  </span>
                 </div>
               </div>
-              
-              <div style={{
-                backgroundColor: "#edf2f7",
-                padding: "12px", // Increased padding
-                borderRadius: "8px",
-                textAlign: "center",
-                fontSize: "16px", // Increased from 12px
-              }}>
-                <div style={{color: "#718096", marginBottom: "5px"}}>Total Growth</div> {/* Increased margin */}
-                <div style={{
-                  fontWeight: "800",
-                  fontSize: "18px", // Added explicit font size
-                  color: investor.growthPercentage >= 0 ? "#38a169" : "#e53e3e"
-                }}>
-                  {formatCurrency(investor.growthAmount)} ({investor.growthPercentage.toFixed(1)}%)
+
+              <div
+                style={{
+                  backgroundColor: "#edf2f7",
+                  padding: "12px", // Increased padding
+                  borderRadius: "8px",
+                  textAlign: "center",
+                  fontSize: "16px", // Increased from 12px
+                }}
+              >
+                <div style={{ color: "#718096", marginBottom: "5px" }}>
+                  Total Growth
+                </div>{" "}
+                {/* Increased margin */}
+                <div
+                  style={{
+                    fontWeight: "800",
+                    fontSize: "18px", // Added explicit font size
+                    color:
+                      investor.growthPercentage >= 0 ? "#38a169" : "#e53e3e",
+                  }}
+                >
+                  {formatCurrency(investor.growthAmount)} (
+                  {investor.growthPercentage.toFixed(1)}%)
                 </div>
               </div>
             </div>
@@ -827,52 +987,74 @@ export const FixedWidthInvestmentGrowthPDFTemplate = ({
       </div>
 
       {/* Key Milestones */}
-      <div style={{marginBottom: "40px", pageBreakInside: "avoid"}}> {/* Increased margin */}
-        <h2 style={{
-          fontSize: "22px", // Increased from 18px
-          fontWeight: "700",
-          margin: "0 0 25px 0", // Increased margin
-          color: "#2d3748",
-          paddingBottom: "15px", // Increased padding
-          borderBottom: "3px solid #e2e8f0", // Thicker border
-          display: "flex",
-          alignItems: "center",
-        }}>
-          <span style={{
-            display: "inline-flex",
+      <div style={{ marginBottom: "40px", pageBreakInside: "avoid" }}>
+        {" "}
+        {/* Increased margin */}
+        <h2
+          style={{
+            fontSize: "22px", // Increased from 18px
+            fontWeight: "700",
+            margin: "0 0 25px 0", // Increased margin
+            color: "#2d3748",
+            paddingBottom: "15px", // Increased padding
+            borderBottom: "3px solid #e2e8f0", // Thicker border
+            display: "flex",
             alignItems: "center",
-            justifyContent: "center",
-            width: "32px", // Increased size
-            height: "32px", // Increased size
-            backgroundColor: "#2b6777",
-            color: "white",
-            borderRadius: "8px", // Increased radius
-            marginRight: "12px", // Increased margin
-            fontSize: "18px", // Increased font size
-          }}>🎯</span>
+          }}
+        >
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "32px", // Increased size
+              height: "32px", // Increased size
+              backgroundColor: "#2b6777",
+              color: "white",
+              borderRadius: "8px", // Increased radius
+              marginRight: "12px", // Increased margin
+              fontSize: "18px", // Increased font size
+            }}
+          >
+            🎯
+          </span>
           Key Investment Milestones
         </h2>
-
-        <table style={{width: "100%", borderCollapse: "collapse", fontSize: "16px"}}> {/* Increased font size */}
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            fontSize: "16px",
+          }}
+        >
+          {" "}
+          {/* Increased font size */}
           <thead>
             <tr>
-              <th style={{
-                padding: "15px", // Increased padding
-                textAlign: "left",
-                backgroundColor: "#2b6777",
-                color: "white",
-                border: "2px solid #2b6777", // Thicker border
-                fontSize: "18px", // Increased from 13px
-              }}>Age</th>
-              {investors.map((investor, idx) => (
-                <th key={idx} style={{
+              <th
+                style={{
                   padding: "15px", // Increased padding
-                  textAlign: "right",
+                  textAlign: "left",
                   backgroundColor: "#2b6777",
                   color: "white",
                   border: "2px solid #2b6777", // Thicker border
                   fontSize: "18px", // Increased from 13px
-                }}>
+                }}
+              >
+                Age
+              </th>
+              {investors.map((investor, idx) => (
+                <th
+                  key={idx}
+                  style={{
+                    padding: "15px", // Increased padding
+                    textAlign: "right",
+                    backgroundColor: "#2b6777",
+                    color: "white",
+                    border: "2px solid #2b6777", // Thicker border
+                    fontSize: "18px", // Increased from 13px
+                  }}
+                >
                   {investor.name || `Investor ${idx + 1}`}
                 </th>
               ))}
@@ -881,26 +1063,36 @@ export const FixedWidthInvestmentGrowthPDFTemplate = ({
           <tbody>
             {milestoneAges.map((age, ageIndex) => {
               return (
-                <tr key={age} style={{ backgroundColor: ageIndex % 2 === 0 ? "#f7fafc" : "white" }}>
-                  <td style={{
-                    padding: "12px 15px", // Increased padding
-                    fontWeight: "700",
-                    border: "2px solid #e2e8f0", // Thicker border
-                    textAlign: "center",
-                    fontSize: "16px", // Increased font size
-                  }}>
+                <tr
+                  key={age}
+                  style={{
+                    backgroundColor: ageIndex % 2 === 0 ? "#f7fafc" : "white",
+                  }}
+                >
+                  <td
+                    style={{
+                      padding: "12px 15px", // Increased padding
+                      fontWeight: "700",
+                      border: "2px solid #e2e8f0", // Thicker border
+                      textAlign: "center",
+                      fontSize: "16px", // Increased font size
+                    }}
+                  >
                     {age}
                   </td>
                   {investors.map((_, idx) => {
                     const result = results[idx]?.find((r) => r.age === age);
                     return (
-                      <td key={idx} style={{
-                        padding: "12px 15px", // Increased padding
-                        border: "2px solid #e2e8f0", // Thicker border
-                        textAlign: "right",
-                        fontWeight: "600",
-                        fontSize: "16px", // Increased font size
-                      }}>
+                      <td
+                        key={idx}
+                        style={{
+                          padding: "12px 15px", // Increased padding
+                          border: "2px solid #e2e8f0", // Thicker border
+                          textAlign: "right",
+                          fontWeight: "600",
+                          fontSize: "16px", // Increased font size
+                        }}
+                      >
                         {result ? formatCurrency(result.value) : "-"}
                       </td>
                     );
@@ -913,34 +1105,49 @@ export const FixedWidthInvestmentGrowthPDFTemplate = ({
       </div>
 
       {/* Detailed Projection Table */}
-      <div style={{marginBottom: "40px", pageBreakInside: "avoid"}}> {/* Increased margin */}
-        <h2 style={{
-          fontSize: "22px", // Increased from 18px
-          fontWeight: "700",
-          margin: "0 0 25px 0", // Increased margin
-          color: "#2d3748",
-          paddingBottom: "15px", // Increased padding
-          borderBottom: "3px solid #e2e8f0", // Thicker border
-          display: "flex",
-          alignItems: "center",
-        }}>
-          <span style={{
-            display: "inline-flex",
+      <div style={{ marginBottom: "40px", pageBreakInside: "avoid" }}>
+        {" "}
+        {/* Increased margin */}
+        <h2
+          style={{
+            fontSize: "22px", // Increased from 18px
+            fontWeight: "700",
+            margin: "0 0 25px 0", // Increased margin
+            color: "#2d3748",
+            paddingBottom: "15px", // Increased padding
+            borderBottom: "3px solid #e2e8f0", // Thicker border
+            display: "flex",
             alignItems: "center",
-            justifyContent: "center",
-            width: "32px", // Increased size
-            height: "32px", // Increased size
-            backgroundColor: "#2b6777",
-            color: "white",
-            borderRadius: "8px", // Increased radius
-            marginRight: "12px", // Increased margin
-            fontSize: "18px", // Increased font size
-          }}>📋</span>
+          }}
+        >
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "32px", // Increased size
+              height: "32px", // Increased size
+              backgroundColor: "#2b6777",
+              color: "white",
+              borderRadius: "8px", // Increased radius
+              marginRight: "12px", // Increased margin
+              fontSize: "18px", // Increased font size
+            }}
+          >
+            📋
+          </span>
           Detailed Year-by-Year Projection
         </h2>
-
-        <div style={{overflow: "auto"}}>
-          <table style={{width: "100%", borderCollapse: "collapse", fontSize: "14px"}}> {/* Increased from 11px */}
+        <div style={{ overflow: "auto" }}>
+          <table
+            style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              fontSize: "14px",
+            }}
+          >
+            {" "}
+            {/* Increased from 11px */}
             <thead>
               <tr>
                 {investors.map((inv, idx) => (
@@ -964,13 +1171,40 @@ export const FixedWidthInvestmentGrowthPDFTemplate = ({
               <tr style={{ backgroundColor: "#edf2f7" }}>
                 {investors.map((_, idx) => (
                   <React.Fragment key={idx}>
-                    <th style={{ padding: "10px 8px", border: "2px solid #e2e8f0", fontWeight: "600", fontSize: "14px" }}> {/* Increased padding and font size */}
+                    <th
+                      style={{
+                        padding: "10px 8px",
+                        border: "2px solid #e2e8f0",
+                        fontWeight: "600",
+                        fontSize: "14px",
+                      }}
+                    >
+                      {" "}
+                      {/* Increased padding and font size */}
                       Age
                     </th>
-                    <th style={{ padding: "10px 8px", border: "2px solid #e2e8f0", fontWeight: "600", fontSize: "14px" }}> {/* Increased padding and font size */}
+                    <th
+                      style={{
+                        padding: "10px 8px",
+                        border: "2px solid #e2e8f0",
+                        fontWeight: "600",
+                        fontSize: "14px",
+                      }}
+                    >
+                      {" "}
+                      {/* Increased padding and font size */}
                       Invested
                     </th>
-                    <th style={{ padding: "10px 8px", border: "2px solid #e2e8f0", fontWeight: "600", fontSize: "14px" }}> {/* Increased padding and font size */}
+                    <th
+                      style={{
+                        padding: "10px 8px",
+                        border: "2px solid #e2e8f0",
+                        fontWeight: "600",
+                        fontSize: "14px",
+                      }}
+                    >
+                      {" "}
+                      {/* Increased padding and font size */}
                       Value
                     </th>
                   </React.Fragment>
@@ -978,56 +1212,93 @@ export const FixedWidthInvestmentGrowthPDFTemplate = ({
               </tr>
             </thead>
             <tbody>
-              {Array.from({ length: maxAge - minAge + 1 }, (_, i) => i + minAge).map((age) => (
-                <tr key={age} style={{ borderBottom: "2px solid #e2e8f0" }}> {/* Thicker border */}
+              {Array.from(
+                { length: maxAge - minAge + 1 },
+                (_, i) => i + minAge
+              ).map((age) => (
+                <tr key={age} style={{ borderBottom: "2px solid #e2e8f0" }}>
+                  {" "}
+                  {/* Thicker border */}
                   {investors.map((_, idx) => {
                     const row = results[idx]?.find((r) => r.age === age);
                     const isInvestmentPeriod = shouldHighlightCell(idx, age);
-                    const bgColor = isInvestmentPeriod ? 
-                      `${chartColors[idx]}20` : "transparent"; // 20 is for 12% opacity
-                    
+                    const bgColor = isInvestmentPeriod
+                      ? `${chartColors[idx]}20`
+                      : "transparent"; // 20 is for 12% opacity
+
                     return row ? (
                       <React.Fragment key={idx}>
-                        <td style={{ 
-                          padding: "8px", // Increased padding
-                          border: "2px solid #e2e8f0", // Thicker border
-                          textAlign: "center",
-                          backgroundColor: bgColor,
-                          fontWeight: isInvestmentPeriod ? "600" : "normal",
-                          fontSize: "14px", // Increased font size
-                        }}>
+                        <td
+                          style={{
+                            padding: "8px", // Increased padding
+                            border: "2px solid #e2e8f0", // Thicker border
+                            textAlign: "center",
+                            backgroundColor: bgColor,
+                            fontWeight: isInvestmentPeriod ? "600" : "normal",
+                            fontSize: "14px", // Increased font size
+                          }}
+                        >
                           {row.age}
                         </td>
-                        <td style={{ 
-                          padding: "8px", // Increased padding
-                          border: "2px solid #e2e8f0", // Thicker border
-                          textAlign: "right",
-                          backgroundColor: bgColor,
-                          fontSize: "14px", // Increased font size
-                        }}>
+                        <td
+                          style={{
+                            padding: "8px", // Increased padding
+                            border: "2px solid #e2e8f0", // Thicker border
+                            textAlign: "right",
+                            backgroundColor: bgColor,
+                            fontSize: "14px", // Increased font size
+                          }}
+                        >
                           {row.invest > 0 ? formatCurrency(row.invest) : "-"}
                         </td>
-                        <td style={{ 
-                          padding: "8px", // Increased padding
-                          border: "2px solid #e2e8f0", // Thicker border
-                          textAlign: "right",
-                          fontWeight: "600",
-                          backgroundColor: bgColor,
-                          fontSize: "14px", // Increased font size
-                        }}>
+                        <td
+                          style={{
+                            padding: "8px", // Increased padding
+                            border: "2px solid #e2e8f0", // Thicker border
+                            textAlign: "right",
+                            fontWeight: "600",
+                            backgroundColor: bgColor,
+                            fontSize: "14px", // Increased font size
+                          }}
+                        >
                           {formatCurrency(row.value)}
                         </td>
                       </React.Fragment>
                     ) : (
                       <React.Fragment key={idx}>
-                        <td style={{ padding: "8px", border: "2px solid #e2e8f0", textAlign: "center", fontSize: "14px" }}> {/* Increased padding and font size */}
+                        <td
+                          style={{
+                            padding: "8px",
+                            border: "2px solid #e2e8f0",
+                            textAlign: "center",
+                            fontSize: "14px",
+                          }}
+                        >
+                          {" "}
+                          {/* Increased padding and font size */}
                           {age}
                         </td>
-                        <td style={{ padding: "8px", border: "2px solid #e2e8f0", textAlign: "center", fontSize: "14px" }}> {/* Increased padding and font size */}
-                          -
+                        <td
+                          style={{
+                            padding: "8px",
+                            border: "2px solid #e2e8f0",
+                            textAlign: "center",
+                            fontSize: "14px",
+                          }}
+                        >
+                          {" "}
+                          {/* Increased padding and font size */}-
                         </td>
-                        <td style={{ padding: "8px", border: "2px solid #e2e8f0", textAlign: "center", fontSize: "14px" }}> {/* Increased padding and font size */}
-                          -
+                        <td
+                          style={{
+                            padding: "8px",
+                            border: "2px solid #e2e8f0",
+                            textAlign: "center",
+                            fontSize: "14px",
+                          }}
+                        >
+                          {" "}
+                          {/* Increased padding and font size */}-
                         </td>
                       </React.Fragment>
                     );
@@ -1040,58 +1311,131 @@ export const FixedWidthInvestmentGrowthPDFTemplate = ({
       </div>
 
       {/* Insights & Recommendations */}
-      <div style={{
-        backgroundColor: "#f0fff4",
-        padding: "25px", // Increased padding
-        borderRadius: "12px",
-        marginBottom: "40px", // Increased margin
-        borderLeft: "5px solid #38a169", // Thicker border
-      }}>
-        <h2 style={{
-          fontSize: "22px", // Increased from 18px
-          fontWeight: "700",
-          margin: "0 0 20px 0", // Increased margin
-          color: "#2d3748",
-          display: "flex",
-          alignItems: "center",
-        }}>
-          <span style={{
-            display: "inline-flex",
+      <div
+        style={{
+          backgroundColor: "#f0fff4",
+          padding: "25px", // Increased padding
+          borderRadius: "12px",
+          marginBottom: "40px", // Increased margin
+          borderLeft: "5px solid #38a169", // Thicker border
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "22px", // Increased from 18px
+            fontWeight: "700",
+            margin: "0 0 20px 0", // Increased margin
+            color: "#2d3748",
+            display: "flex",
             alignItems: "center",
-            justifyContent: "center",
-            width: "32px", // Increased size
-            height: "32px", // Increased size
-            backgroundColor: "#38a169",
-            color: "white",
-            borderRadius: "8px", // Increased radius
-            marginRight: "12px", // Increased margin
-            fontSize: "18px", // Increased font size
-          }}>💡</span>
+          }}
+        >
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "32px", // Increased size
+              height: "32px", // Increased size
+              backgroundColor: "#38a169",
+              color: "white",
+              borderRadius: "8px", // Increased radius
+              marginRight: "12px", // Increased margin
+              fontSize: "18px", // Increased font size
+            }}
+          >
+            💡
+          </span>
           Key Insights & Recommendations
         </h2>
-        
-        <div style={{display: "grid", gridTemplateColumns: "1fr", gap: "15px"}}> {/* Increased gap */}
-          <div style={{padding: "15px", backgroundColor: "white", borderRadius: "8px"}}> {/* Increased padding */}
-            <h3 style={{fontSize: "18px", fontWeight: "700", margin: "0 0 10px 0", color: "#2b6777"}}>Starting Early Matters</h3> {/* Increased font size */}
-            <p style={{margin: "0", fontSize: "16px", lineHeight: 1.6}}> {/* Increased font size and line height */}
-              The investor who starts earliest typically achieves the highest final portfolio value, 
-              demonstrating the power of compound interest over time.
+
+        <div
+          style={{ display: "grid", gridTemplateColumns: "1fr", gap: "15px" }}
+        >
+          {" "}
+          {/* Increased gap */}
+          <div
+            style={{
+              padding: "15px",
+              backgroundColor: "white",
+              borderRadius: "8px",
+            }}
+          >
+            {" "}
+            {/* Increased padding */}
+            <h3
+              style={{
+                fontSize: "18px",
+                fontWeight: "700",
+                margin: "0 0 10px 0",
+                color: "#2b6777",
+              }}
+            >
+              Starting Early Matters
+            </h3>{" "}
+            {/* Increased font size */}
+            <p style={{ margin: "0", fontSize: "16px", lineHeight: 1.6 }}>
+              {" "}
+              {/* Increased font size and line height */}
+              The investor who starts earliest typically achieves the highest
+              final portfolio value, demonstrating the power of compound
+              interest over time.
             </p>
           </div>
-          
-          <div style={{padding: "15px", backgroundColor: "white", borderRadius: "8px"}}> {/* Increased padding */}
-            <h3 style={{fontSize: "18px", fontWeight: "700", margin: "0 0 10px 0", color: "#2b6777"}}>Consistent Contributions</h3> {/* Increased font size */}
-            <p style={{margin: "0", fontSize: "16px", lineHeight: 1.6}}> {/* Increased font size and line height */}
-              Regular contributions significantly impact long-term growth. Even small amounts invested 
-              consistently can lead to substantial wealth accumulation over time.
+          <div
+            style={{
+              padding: "15px",
+              backgroundColor: "white",
+              borderRadius: "8px",
+            }}
+          >
+            {" "}
+            {/* Increased padding */}
+            <h3
+              style={{
+                fontSize: "18px",
+                fontWeight: "700",
+                margin: "0 0 10px 0",
+                color: "#2b6777",
+              }}
+            >
+              Consistent Contributions
+            </h3>{" "}
+            {/* Increased font size */}
+            <p style={{ margin: "0", fontSize: "16px", lineHeight: 1.6 }}>
+              {" "}
+              {/* Increased font size and line height */}
+              Regular contributions significantly impact long-term growth. Even
+              small amounts invested consistently can lead to substantial wealth
+              accumulation over time.
             </p>
           </div>
-          
-          <div style={{padding: "15px", backgroundColor: "white", borderRadius: "8px"}}> {/* Increased padding */}
-            <h3 style={{fontSize: "18px", fontWeight: "700", margin: "0 0 10px 0", color: "#2b6777"}}>Next Steps</h3> {/* Increased font size */}
-            <p style={{margin: "0", fontSize: "16px", lineHeight: 1.6}}> {/* Increased font size and line height */}
-              Consider increasing contributions when possible, reviewing your investment strategy annually, 
-              and diversifying across different asset classes to manage risk.
+          <div
+            style={{
+              padding: "15px",
+              backgroundColor: "white",
+              borderRadius: "8px",
+            }}
+          >
+            {" "}
+            {/* Increased padding */}
+            <h3
+              style={{
+                fontSize: "18px",
+                fontWeight: "700",
+                margin: "0 0 10px 0",
+                color: "#2b6777",
+              }}
+            >
+              Next Steps
+            </h3>{" "}
+            {/* Increased font size */}
+            <p style={{ margin: "0", fontSize: "16px", lineHeight: 1.6 }}>
+              {" "}
+              {/* Increased font size and line height */}
+              Consider increasing contributions when possible, reviewing your
+              investment strategy annually, and diversifying across different
+              asset classes to manage risk.
             </p>
           </div>
         </div>
@@ -1108,27 +1452,35 @@ export const FixedWidthInvestmentGrowthPDFTemplate = ({
           textAlign: "center",
         }}
       >
-        <div style={{marginBottom: "20px"}}> {/* Increased margin */}
+        <div style={{ marginBottom: "20px" }}>
+          {" "}
+          {/* Increased margin */}
           <p style={{ margin: "0 0 8px 0", fontWeight: "600" }}>
-            For more financial tools and calculators, visit <strong>dollarfar.com</strong>
+            For more financial tools and calculators, visit{" "}
+            <strong>dollarfar.com</strong>
           </p>
           <p style={{ margin: "0", fontStyle: "italic" }}>
-            This report was generated on {moment().format("MMMM D, YYYY [at] h:mm A")}
+            This report was generated on{" "}
+            {moment().format("MMMM D, YYYY [at] h:mm A")}
           </p>
         </div>
-        
-        <div style={{
-          backgroundColor: "#f7fafc",
-          padding: "15px", // Increased padding
-          borderRadius: "8px",
-          fontSize: "16px", // Increased from 10px
-        }}>
-          <p style={{ margin: "0 0 8px 0", fontWeight: "600" }}>Disclaimer:</p> {/* Increased margin */}
+
+        <div
+          style={{
+            backgroundColor: "#f7fafc",
+            padding: "15px", // Increased padding
+            borderRadius: "8px",
+            fontSize: "16px", // Increased from 10px
+          }}
+        >
+          <p style={{ margin: "0 0 8px 0", fontWeight: "600" }}>Disclaimer:</p>{" "}
+          {/* Increased margin */}
           <p style={{ margin: "0", fontStyle: "italic" }}>
-            This document was generated by DollarFar's Investment Comparison Calculator. The information 
-            provided is for educational purposes only and should not be considered financial advice. 
-            Past performance is not indicative of future results. Please consult with a qualified financial 
-            advisor before making investment decisions.
+            This document was generated by DollarFar's Investment Comparison
+            Calculator. The information provided is for educational purposes
+            only and should not be considered financial advice. Past performance
+            is not indicative of future results. Please consult with a qualified
+            financial advisor before making investment decisions.
           </p>
         </div>
       </footer>
@@ -1400,7 +1752,7 @@ export default function CompoundInterestComparisonCalculator() {
                   financial future.
                 </p>
               </div>
-              <ExportMortgagePDFModal
+              <ExportInvestmentComparisonPDFModal
                 setIsGeneratingPDF={setIsGeneratingPDF}
                 isGeneratingPDF={isGeneratingPDF}
                 setPdfError={setPdfError}
@@ -2005,7 +2357,7 @@ export default function CompoundInterestComparisonCalculator() {
           </div>
         </div>
       </main>
-     
+
       {/* PDF Hidden Content  */}
       <div
         ref={targetRef}
