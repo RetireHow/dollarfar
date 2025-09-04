@@ -304,7 +304,7 @@ export default function CompoundInterestComparisonCalculator() {
         <div className="max-w-7xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
           {/* Header */}
           <div className="p-6 md:p-8">
-            <div className="flex items-center justify-between">
+            <div className="flex md:flex-row flex-col md:gap-0 gap-5 items-center justify-between">
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold mb-2">
                   {/* Investment Growth Calculator */}
