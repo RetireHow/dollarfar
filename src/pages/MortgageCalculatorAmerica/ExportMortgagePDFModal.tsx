@@ -178,7 +178,7 @@ export const ExportMortgagePDFModal = ({
         aria-label="Export as PDF"
       >
         <Icon icon="mdi:file-pdf-box" className="text-xl" />
-        Export as PDF
+        Download PDF
       </button>
 
       <Modal

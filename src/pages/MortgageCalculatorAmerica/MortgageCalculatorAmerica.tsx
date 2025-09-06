@@ -675,7 +675,7 @@ export const MortgageCalculatorAmerica: React.FC = () => {
   return (
     <>
       <PageHero data={data} />
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200 py-8 px-4">
+      <main className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 p-0 md:p-8">
         <HelpModal
           title={modalContent.title}
           content={modalContent.content}
@@ -683,22 +683,18 @@ export const MortgageCalculatorAmerica: React.FC = () => {
           onClose={() => setModalVisible(false)}
         />
 
-        <header className="text-center mb-8">
-          <div className="flex items-center justify-center gap-1">
-            <Icon icon="la:flag-usa" width="40" height="40" />
-            <h1
-              className="text-3xl font-bold bg-gradient-to-r from-[#2b6777] to-[#52ab98] bg-clip-text text-transparent"
-              style={{ color: COLORS.primary }}
-            >
-              U.S Mortgage Calculator
-            </h1>
-          </div>
+       
 
-          <p className="text-gray-600 dark:text-gray-300 mt-2">
-            Calculate your mortgage payments with fixed or adjustable rate
-            options
-          </p>
-          <div className="flex justify-end md:mt-0 mt-10">
+        <div className="max-w-7xl mx-auto shadow-xl bg-gray-50 dark:bg-gray-900 rounded-2xl p-5 md:p-8">
+           <header className="text-center mb-8 flex md:flex-row flex-col items-center justify-between">
+          <h1
+            className="text-3xl font-bold bg-gradient-to-r from-[#2b6777] to-[#52ab98] bg-clip-text text-transparent"
+            style={{ color: COLORS.primary }}
+          >
+            U.S Mortgage Calculator
+          </h1>
+         <div>
+           <div className="flex justify-end md:mt-0 mt-10">
             <ExportMortgagePDFModal
               setIsGeneratingPDF={setIsGeneratingPDF}
               isGeneratingPDF={isGeneratingPDF}
@@ -712,9 +708,8 @@ export const MortgageCalculatorAmerica: React.FC = () => {
               Error: PDF could not be downloaded!
             </p>
           )}
+         </div>
         </header>
-
-        <div className="max-w-7xl mx-auto">
           <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:shadow-xl">
               <div className="flex border-b dark:border-gray-700 mb-6 relative">
@@ -2101,7 +2096,7 @@ export const MortgageCalculatorAmerica: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </main>
 
       {/* PDF Hidden Content  */}
       <div

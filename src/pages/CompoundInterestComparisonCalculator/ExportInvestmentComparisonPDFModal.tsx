@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-
 type ExportMortgagePDFModalProps = {
   targetRef: React.RefObject<HTMLDivElement>;
   setIsGeneratingPDF: React.Dispatch<React.SetStateAction<boolean>>;
@@ -166,7 +165,7 @@ export const ExportInvestmentComparisonPDFModal = ({
         },
       }}
     >
-      <button
+       <button
         type="button"
         className={`px-5 py-2.5 bg-gradient-to-r ${
           isDarkMode
@@ -180,7 +179,7 @@ export const ExportInvestmentComparisonPDFModal = ({
         aria-label="Export as PDF"
       >
         <Icon icon="mdi:file-pdf-box" className="text-xl" />
-        Export as PDF
+        Download PDF
       </button>
 
       <Modal
