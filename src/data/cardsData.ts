@@ -114,4 +114,14 @@ export const cardsData = [
     btnText: "Calculate",
     navLink: "mortgage-calculator",
   },
+  {
+    id: 12,
+    title: "Net Income Yield Calculator",
+    description:
+      "This yield calculator determines your true net returns by accounting for advisor fees, taxes, and inflation. It provides clear visualizations of how these costs impact both nominal and real yields, helping investors understand their actual earnings after all expenses and economic factors.",
+    arrowIcon: assets.arrowUpIcon,
+    calcIcon: assets.whiteBarChart,
+    btnText: "Calculate",
+    navLink: "net-income-yield-calculator",
+  },
 ];

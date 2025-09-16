@@ -688,8 +688,7 @@ export const MortgageCalculatorAmerica: React.FC = () => {
         <div className="max-w-7xl mx-auto shadow-xl bg-gray-50 dark:bg-gray-900 rounded-2xl p-5 md:p-8">
            <header className="text-center mb-8 flex md:flex-row flex-col items-center justify-between">
           <h1
-            className="text-3xl font-bold bg-gradient-to-r from-[#2b6777] to-[#52ab98] bg-clip-text text-transparent"
-            style={{ color: COLORS.primary }}
+            className="text-3xl font-bold text-black"
           >
             U.S Mortgage Calculator
           </h1>
