@@ -445,10 +445,11 @@ export const MortgageCalculator: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"basic" | "advanced">("basic");
   const [showAmortization, setShowAmortization] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalContent, setModalContent] = useState({ title: "", content: "" });
-
+  
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [pdfError, setPdfError] = useState<string | null>(null);
+  
+  const [modalContent, setModalContent] = useState({ title: "", content: "" });
 
   const showHelpModal = (title: string, content: string) => {
     setModalContent({ title, content });

@@ -64,6 +64,7 @@ import PaymentCancel from "../pages/Landing/BookLandingPage/PaymentCancel";
 import CompoundInterestComparisonCalculator from "../pages/CompoundInterestComparisonCalculator/CompoundInterestComparisonCalculator";
 import NetIncomeYieldCalculator from "../pages/NetIncomeYieldCalculator/NetIncomeYieldCalculator";
 import InvestmentCalculator from "../pages/Investor/InvestmentCalculator";
+import MyNetIncomeYieldCalculator from "../pages/Explore Net Yield/MyNetIncomeYieldCalculator";
 
 export const router = createBrowserRouter([
   {
@@ -300,6 +301,10 @@ export const router = createBrowserRouter([
       {
         path: "net-income-yield-calculator",
         element: <NetIncomeYieldCalculator />,
+      },
+      {
+        path: "my-net-income-yield-calculator",
+        element: <MyNetIncomeYieldCalculator />,
       },
       {
         path: "book-landing",

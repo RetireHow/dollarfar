@@ -14,18 +14,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Icon } from "@iconify/react";
-import { assets } from "../../assets/assets";
-import PageHero from "../../components/UI/PageHero";
-import { NetIncomeYieldCalculatorPDFModal } from "./NetIncomeYieldCalculatorPDFModal";
-import { useCustomPDF } from "../../hooks/useCustomPDF";
-import { FixedWidthNetIncomeYieldCalculatorPDFTemplate } from "./FixedWidthNetIncomeYieldCalculatorPDFTemplate";
-
-const data = {
-  title: "Net Income Yield Calculator",
-  description:
-    "This yield calculator determines your true net returns by accounting for advisor fees, taxes, and inflation. It provides clear visualizations of how these costs impact both nominal and real yields, helping investors understand their actual earnings after all expenses and economic factors.",
-  image: assets.compoundInterestCalcIcon,
-};
 
 // Define TypeScript interfaces
 interface CalculatorInputs {
@@ -122,7 +110,7 @@ const chartTooltipFormatter = (value: number, name: string) => {
 };
 
 // Main component
-const NetIncomeYieldCalculator: React.FC = () => {
+const MyNetIncomeYieldCalculator: React.FC = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
@@ -451,34 +439,8 @@ const NetIncomeYieldCalculator: React.FC = () => {
     },
   ];
 
-  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const [pdfError, setPdfError] = useState<string | null>(null);
-
-  // PDF
-  const { toPDF, targetRef } = useCustomPDF({
-    filename: "investment-comparison-calculator-report.pdf",
-    page: { margin: 10, format: "a4" },
-    onBeforeGetContent: () => {
-      setIsGeneratingPDF(true);
-      setPdfError(null);
-      return Promise.resolve();
-    },
-    onBeforeSave: () => {
-      // Optional: Perform any final checks before saving
-    },
-    onAfterSave: () => {
-      setIsGeneratingPDF(false);
-    },
-    onError: (error) => {
-      setIsGeneratingPDF(false);
-      setPdfError("Failed to generate PDF. Please try again.");
-      console.error("PDF generation error:", error);
-    },
-  });
-
   return (
     <>
-      <PageHero data={data} />
       {modalVisible && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6">
@@ -510,24 +472,14 @@ const NetIncomeYieldCalculator: React.FC = () => {
 
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800 py-8 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10 flex items-center justify-between">
+          <div className="text-center mb-10">
             <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-3">
               Net Income Yield Calculator
             </h1>
-            <div>
-              <NetIncomeYieldCalculatorPDFModal
-                setIsGeneratingPDF={setIsGeneratingPDF}
-                isGeneratingPDF={isGeneratingPDF}
-                setPdfError={setPdfError}
-                targetRef={targetRef}
-                toPDF={toPDF}
-              />
-              {pdfError && (
-                <p className="text-red-500 font-semibold text-right my-2">
-                  Error: PDF could not be downloaded!
-                </p>
-              )}
-            </div>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Calculate your true investment returns after accounting for fees,
+              taxes, and inflation. Compare using an advisor vs DIY approach.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -638,7 +590,7 @@ const NetIncomeYieldCalculator: React.FC = () => {
                       />
                     </button>
                   </h3>
-                  <div className="flex md:flex-row flex-col md:space-x-6">
+                  <div className="flex space-x-6">
                     <label className="flex items-center cursor-pointer">
                       <input
                         type="radio"
@@ -1212,22 +1164,6 @@ const NetIncomeYieldCalculator: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* PDF Hidden Content  */}
-      <div
-        ref={targetRef}
-        style={{
-          display: "none",
-          fontFamily: "Arial, sans-serif",
-          fontSize: "16px",
-        }}
-      >
-        <FixedWidthNetIncomeYieldCalculatorPDFTemplate
-          inputs={inputs}
-          inputDisplayValues={inputDisplayValues}
-          results={results}
-        />
-      </div>
     </>
   );
 };
@@ -1288,4 +1224,4 @@ function calculateNetIncomeYield(
   };
 }
 
-export default NetIncomeYieldCalculator;
+export default MyNetIncomeYieldCalculator;
