@@ -94,7 +94,7 @@ export const NetIncomeYieldCalculatorPDFModal = ({
             name: formData.name,
             email: formData.email,
             phone: formData.phone,
-            downloadedFileName: "Investment Comparison Calculator",
+            downloadedFileName: "Net Income Yield Calculator Report",
           }),
         }
       );
@@ -165,7 +165,7 @@ export const NetIncomeYieldCalculatorPDFModal = ({
         },
       }}
     >
-       <button
+      <button
         type="button"
         className={`px-5 py-2.5 bg-gradient-to-r ${
           isDarkMode
