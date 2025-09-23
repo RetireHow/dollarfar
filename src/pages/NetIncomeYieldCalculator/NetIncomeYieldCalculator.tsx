@@ -510,7 +510,7 @@ const NetIncomeYieldCalculator: React.FC = () => {
 
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800 py-8 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10 flex items-center justify-between">
+          <div className="text-center mb-10 flex md:flex-row flex-col items-center justify-between">
             <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-3">
               Net Income Yield Calculator
             </h1>
@@ -925,7 +925,7 @@ const NetIncomeYieldCalculator: React.FC = () => {
                 <p className="text-sm text-teal-600 dark:text-teal-100 mt-2">
                   {inputs.useAdvisor
                     ? "Even small differences in advisor fees can have a huge impact on long-term wealth accumulation. Always consider the net return after all costs."
-                    : "DIY investing can save you money on fees, but ensure your percentage-based costs account for trading fees, research tools, and time spent managing investments."}
+                    : "Pro Tip: DIY investing cuts advisor fees, but research warns hidden costs—poor rebalancing, missed tax optimization, trading fees, research tools and your time—can erode returns."}
                 </p>
               </div>
             </div>

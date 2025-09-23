@@ -65,6 +65,7 @@ import CompoundInterestComparisonCalculator from "../pages/CompoundInterestCompa
 import NetIncomeYieldCalculator from "../pages/NetIncomeYieldCalculator/NetIncomeYieldCalculator";
 import InvestmentCalculator from "../pages/Investor/InvestmentCalculator";
 import MyNetIncomeYieldCalculator from "../pages/Explore Net Yield/MyNetIncomeYieldCalculator";
+import RetirementCalculator from "../pages/RetirementCalculator/RetirementCalculator";
 
 export const router = createBrowserRouter([
   {
@@ -337,6 +338,10 @@ export const router = createBrowserRouter([
       {
         path: "investment-calcualtor",
         element: <InvestmentCalculator />,
+      },
+      {
+        path: "retirement",
+        element: <RetirementCalculator />,
       },
     ],
   },
