@@ -12,7 +12,6 @@ import {
   Dispatch,
   MouseEvent,
   SetStateAction,
-  useEffect,
   useState,
 } from "react";
 import ReactSlider from "react-slider";
@@ -21,7 +20,6 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   calculateCRIInvestmentReducer,
   clearCIRCFields,
-  TPayloadKey,
   updateCRICField,
 } from "../../redux/features/compoundInterestSlice/compoundInterestSlice";
 import Error from "../../components/UI/Error";
@@ -118,18 +116,6 @@ export default function CRICForm({
       return setShowError(true);
     }
 
-    //Save inputs into local storage
-    const inputs = {
-      annualInterestRate,
-      years,
-      compoundingFrequency,
-      contribution,
-      contributionFrequency,
-      initialInvestment
-    };
-    const inputsString = JSON.stringify(inputs);
-    localStorage.setItem("CIRCInputs", inputsString);
-
     setIsLoading(true);
     await delay(1000);
     setIsLoading(false);
@@ -137,22 +123,6 @@ export default function CRICForm({
     dispatch(calculateCRIInvestmentReducer());
     toast.success("Your investment calculation is complete!");
   };
-
-  useEffect(() => {
-    const inputsString = localStorage.getItem("CIRCInputs");
-    if (!inputsString) {
-      return;
-    }
-    const inputs = JSON.parse(inputsString as string);
-    Object.entries(inputs)?.forEach((input) => {
-      dispatch(
-        updateCRICField({
-          key: input[0] as keyof TPayloadKey,
-          value: input[1] as string,
-        })
-      );
-    });
-  }, []);
 
   return (
     <ConfigProvider

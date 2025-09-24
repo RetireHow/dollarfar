@@ -9,6 +9,9 @@ import {
   ResponsiveContainer,
   AreaChart,
   Area,
+  Legend,
+  Bar,
+  BarChart,
 } from "recharts";
 
 // Types (unchanged)
@@ -347,6 +350,9 @@ const RetirementCalculator: React.FC = () => {
   const chartData = results.map((year) => ({
     age: year.age,
     savings: year.endingBalance,
+    withdrawal: year.withdrawal,
+    pension: year.pension,
+    desiredIncome: year.desiredIncome,
   }));
 
   return (
@@ -356,7 +362,7 @@ const RetirementCalculator: React.FC = () => {
         <div className="bg-gradient-to-r from-teal-600 to-blue-700 p-4 text-white">
           <h1 className="text-2xl font-bold flex items-center gap-2">
             <Icon icon="mdi:finance" className="text-3xl" />
-            Retirement Nest Egg Calculator
+            Retirement Simulation Calculator
           </h1>
         </div>
 
@@ -375,7 +381,7 @@ const RetirementCalculator: React.FC = () => {
                 <div>
                   <div className="space-y-5">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-md font-medium text-gray-700 mb-1">
                         Current Age
                       </label>
                       <input
@@ -392,7 +398,7 @@ const RetirementCalculator: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-md font-medium text-gray-700 mb-1">
                         Current Annual Income
                       </label>
                       <div className="relative">
@@ -412,7 +418,7 @@ const RetirementCalculator: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-md font-medium text-gray-700 mb-1">
                         Current Retirement Savings
                       </label>
                       <div className="relative">
@@ -432,7 +438,7 @@ const RetirementCalculator: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-md font-medium text-gray-700 mb-1">
                         Annual Savings Amount
                       </label>
                       <div className="relative">
@@ -452,7 +458,7 @@ const RetirementCalculator: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-md font-medium text-gray-700 mb-1">
                         Annual Savings Increases (%)
                       </label>
                       <div className="relative">
@@ -472,7 +478,7 @@ const RetirementCalculator: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-md font-medium text-gray-700 mb-1">
                         Expected Annual Investment Return (%)
                       </label>
                       <div className="relative">
@@ -497,7 +503,7 @@ const RetirementCalculator: React.FC = () => {
                 <div>
                   <div className="space-y-5">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-md font-medium text-gray-700 mb-1">
                         Desired Retirement Age
                       </label>
                       <input
@@ -514,7 +520,7 @@ const RetirementCalculator: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-md font-medium text-gray-700 mb-1">
                         Expected Life Expectancy
                       </label>
                       <input
@@ -531,7 +537,7 @@ const RetirementCalculator: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-md font-medium text-gray-700 mb-1">
                         Annual Inflation and Income Increases (%)
                       </label>
                       <div className="relative">
@@ -551,7 +557,7 @@ const RetirementCalculator: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-md font-medium text-gray-700 mb-1">
                         Desired Income in Retirement (% of final salary)
                       </label>
                       <div className="relative">
@@ -571,7 +577,7 @@ const RetirementCalculator: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-md font-medium text-gray-700 mb-1">
                         Expected Annual Pension at Retirement Age
                       </label>
                       <div className="relative">
@@ -591,7 +597,7 @@ const RetirementCalculator: React.FC = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-md font-medium text-gray-700 mb-1">
                         Annual Pension Increase (%)
                       </label>
                       <div className="relative">
@@ -708,7 +714,7 @@ const RetirementCalculator: React.FC = () => {
 
                         {/* Actionable Advice - Shortened */}
                         <p
-                          className={`text-sm ${
+                          className={`text-md ${
                             retirementSummary.isOnTrack
                               ? "text-green-700"
                               : "text-amber-700"
@@ -729,7 +735,7 @@ const RetirementCalculator: React.FC = () => {
 
                   {/* Single Progress Bar */}
                   <div className="mb-4">
-                    <h4 className="font-semibold mb-2 text-gray-800 text-sm">
+                    <h4 className="font-semibold mb-2 text-gray-800 text-md">
                       Progress Toward Goal
                     </h4>
                     <div className="w-full bg-gray-200 rounded-full h-2 mb-1">
@@ -762,7 +768,7 @@ const RetirementCalculator: React.FC = () => {
                   {/* Essential Metrics - Reduced to 2 */}
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-white p-3 rounded-lg shadow-sm border text-center">
-                      <div className="text-teal-600 text-sm font-bold mb-1">
+                      <div className="text-teal-600 text-md font-bold mb-1">
                         Required Additional Yearly Savings
                       </div>
                       <div className="text-lg font-bold text-gray-900">
@@ -771,7 +777,7 @@ const RetirementCalculator: React.FC = () => {
                     </div>
 
                     <div className="bg-white p-3 rounded-lg shadow-sm border text-center">
-                      <div className="text-teal-600 text-sm font-bold mb-1">
+                      <div className="text-teal-600 text-md font-bold mb-1">
                         Projected Annual Retirement Income
                       </div>
                       <div className="text-lg font-bold text-gray-900">
@@ -782,7 +788,7 @@ const RetirementCalculator: React.FC = () => {
                     </div>
 
                     <div className="bg-white p-3 rounded-lg shadow-sm border text-center">
-                      <div className="text-teal-600 text-sm font-bold mb-1">
+                      <div className="text-teal-600 text-md font-bold mb-1">
                         Years Until Retirement
                       </div>
                       <div className="text-lg font-bold text-gray-900">
@@ -791,7 +797,7 @@ const RetirementCalculator: React.FC = () => {
                     </div>
 
                     <div className="bg-white p-3 rounded-lg shadow-sm border text-center">
-                      <div className="text-teal-600 text-sm font-bold mb-1">
+                      <div className="text-teal-600 text-md font-bold mb-1">
                         Years of Retirement Fund
                       </div>
                       <div className="text-lg font-bold text-gray-900">
@@ -819,31 +825,31 @@ const RetirementCalculator: React.FC = () => {
                   <table className="w-full">
                     <thead>
                       <tr className="bg-gradient-to-r from-teal-600 to-teal-700 text-white">
-                        <th className="px-4 py-3 text-left font-semibold text-sm">
+                        <th className="px-4 py-3 text-left font-semibold text-md">
                           Age
                         </th>
-                        <th className="px-4 py-3 text-left font-semibold text-sm">
+                        <th className="px-4 py-3 text-left font-semibold text-md">
                           Salary
                         </th>
-                        <th className="px-4 py-3 text-left font-semibold text-sm">
+                        <th className="px-4 py-3 text-left font-semibold text-md">
                           Beginning <br /> Balance
                         </th>
-                        <th className="px-4 py-3 text-left font-semibold text-sm">
+                        <th className="px-4 py-3 text-left font-semibold text-md">
                           Interest
                         </th>
-                        <th className="px-4 py-3 text-left font-semibold text-sm">
+                        <th className="px-4 py-3 text-left font-semibold text-md">
                           Yearly <br /> Savings
                         </th>
-                        <th className="px-4 py-3 text-left font-semibold text-sm">
+                        <th className="px-4 py-3 text-left font-semibold text-md">
                           Retirement <br /> Income
                         </th>
-                        <th className="px-4 py-3 text-left font-semibold text-sm">
+                        <th className="px-4 py-3 text-left font-semibold text-md">
                           Pension <br /> Income
                         </th>
-                        <th className="px-4 py-3 text-left font-semibold text-sm">
+                        <th className="px-4 py-3 text-left font-semibold text-md">
                           Withdrawal
                         </th>
-                        <th className="px-4 py-3 text-left font-semibold text-sm">
+                        <th className="px-4 py-3 text-left font-semibold text-md">
                           Ending <br /> Balance
                         </th>
                       </tr>
@@ -960,7 +966,11 @@ const RetirementCalculator: React.FC = () => {
 
                           <td className="px-4 py-3">
                             <span
-                              className={`font-medium text-indigo-700 ${
+                              className={`font-medium ${
+                                year.endingBalance < 0
+                                  ? "text-red-600 font-bold"
+                                  : "text-indigo-700"
+                              } ${
                                 year.age === params.retirementAge
                                   ? "font-semibold"
                                   : ""
@@ -980,7 +990,7 @@ const RetirementCalculator: React.FC = () => {
               <div className="bg-white rounded-xl shadow-md overflow-hidden">
                 <div className="flex justify-between items-center p-4 border-b bg-gray-50">
                   <h3 className="text-lg font-semibold text-gray-800">
-                    Savings Growth Projection
+                    Retirement Savings Growth Projection
                   </h3>
                 </div>
 
@@ -989,7 +999,7 @@ const RetirementCalculator: React.FC = () => {
                     <ResponsiveContainer width="100%" height="100%">
                       <AreaChart
                         data={chartData}
-                        margin={{ top: 10, right: 30, left: 5, bottom: 8 }}
+                        margin={{ top: 10, right: 30, left: 25, bottom: 15 }}
                       >
                         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                         <XAxis
@@ -997,7 +1007,7 @@ const RetirementCalculator: React.FC = () => {
                           label={{
                             value: "Age",
                             position: "insideBottom",
-                            offset: -5,
+                            offset: -10,
                           }}
                         />
                         <YAxis
@@ -1006,6 +1016,7 @@ const RetirementCalculator: React.FC = () => {
                             value: "Savings",
                             angle: -90,
                             position: "insideLeft",
+                            offset: -15,
                           }}
                         />
                         <Tooltip content={<CustomTooltip />} />
@@ -1020,6 +1031,180 @@ const RetirementCalculator: React.FC = () => {
                       </AreaChart>
                     </ResponsiveContainer>
                   </div>
+                </div>
+              </div>
+
+              {/* Retirement Income Sustainability Chart */}
+              <div className="bg-white rounded-xl shadow-md overflow-hidden mt-6">
+                <div className="flex justify-between items-center p-4 border-b bg-gray-50">
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    Retirement Income Sustainability Analysis
+                  </h3>
+                  <Icon
+                    icon="mdi:alert-circle"
+                    className="text-amber-500 text-xl"
+                  />
+                </div>
+
+                <div className="p-4">
+                  <div className="h-80">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={chartData.filter(
+                          (d) => d.age >= params.retirementAge
+                        )}
+                        margin={{ top: 10, right: 30, left: 25, bottom: 8 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                        <XAxis
+                          dataKey="age"
+                          label={{
+                            value: "Age in Retirement",
+                            position: "insideBottom",
+                            offset: -10,
+                          }}
+                        />
+                        <YAxis
+                          tickFormatter={(value) => `$${value / 1000}k`}
+                          label={{
+                            value: "Annual Amount",
+                            angle: -90,
+                            position: "insideLeft",
+                            offset: -15,
+                          }}
+                        />
+                        <Tooltip content={<CustomTooltip />} />
+                        <Legend
+                          wrapperStyle={{
+                            color: "var(--text-gray-800)",
+                            paddingTop: "1.5rem",
+                          }}
+                        />
+                        <Bar
+                          dataKey="withdrawal"
+                          stackId="a"
+                          fill="#dc2626"
+                          name="Portfolio Withdrawals"
+                        />
+                        <Bar
+                          dataKey="savings"
+                          stackId="a"
+                          fill="#0d9488"
+                          name="Portfolio Balance"
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  {/* Key Sustainability Metrics */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 p-4 bg-amber-50 rounded-lg border border-amber-200">
+                    <div className="text-center">
+                      <div className="text-md font-semibold text-amber-700">
+                        Safe Withdrawal Rate
+                      </div>
+                      <div className="text-lg font-bold text-amber-800">
+                        {retirementSummary
+                          ? (
+                              ((results.find(
+                                (r) => r.age === params.retirementAge
+                              )?.withdrawal || 0) /
+                                (results.find(
+                                  (r) => r.age === params.retirementAge
+                                )?.endingBalance || 1)) *
+                              100
+                            ).toFixed(1) + "%"
+                          : "N/A"}
+                      </div>
+                      <div className="text-xs text-amber-600">
+                        (Target: 3-4%)
+                      </div>
+                    </div>
+
+                    <div className="text-center">
+                      <div className="text-md font-semibold text-amber-700">
+                        Portfolio Longevity
+                      </div>
+                      <div className="text-lg font-bold text-amber-800">
+                        {retirementSummary
+                          ? results.filter(
+                              (r) =>
+                                r.endingBalance > 0 &&
+                                r.age >= params.retirementAge
+                            ).length + " years"
+                          : "N/A"}
+                      </div>
+                      <div className="text-xs text-amber-600">
+                        Funds last until age{" "}
+                        {results.find((r) => r.endingBalance <= 0)?.age ||
+                          params.lifeExpectancy}
+                      </div>
+                    </div>
+
+                    <div className="text-center">
+                      <div className="text-md font-semibold text-amber-700">
+                        Pension Coverage
+                      </div>
+                      <div className="text-lg font-bold text-amber-800">
+                        {retirementSummary
+                          ? (
+                              ((results.find(
+                                (r) => r.age === params.retirementAge
+                              )?.pension || 0) /
+                                (results.find(
+                                  (r) => r.age === params.retirementAge
+                                )?.desiredIncome || 1)) *
+                              100
+                            ).toFixed(0) + "%"
+                          : "N/A"}
+                      </div>
+                      <div className="text-xs text-amber-600">
+                        of retirement income
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sustainability Alert System */}
+                  {retirementSummary &&
+                    results.find((r) => r.endingBalance <= 0)?.age &&
+                    results.find((r) => r.endingBalance <= 0)!.age <
+                      params.lifeExpectancy && (
+                      <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <div className="flex items-center gap-2 text-red-700">
+                          <Icon icon="mdi:alert" className="text-xl" />
+                          <span className="font-semibold">
+                            Sustainability Warning
+                          </span>
+                        </div>
+                        <p className="text-red-600 text-md mt-1">
+                          Your funds may run out at age{" "}
+                          {results.find((r) => r.endingBalance <= 0)?.age},
+                          which is{" "}
+                          {params.lifeExpectancy -
+                            (results.find((r) => r.endingBalance <= 0)?.age ||
+                              0)}{" "}
+                          years before your life expectancy. Consider reducing
+                          withdrawals or working longer.
+                        </p>
+                      </div>
+                    )}
+
+                  {retirementSummary &&
+                    (!results.find((r) => r.endingBalance <= 0) ||
+                      results.find((r) => r.endingBalance <= 0)!.age >=
+                        params.lifeExpectancy) && (
+                      <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <div className="flex items-center gap-2 text-green-700">
+                          <Icon icon="mdi:check-circle" className="text-xl" />
+                          <span className="font-semibold">
+                            Sustainable Plan
+                          </span>
+                        </div>
+                        <p className="text-green-600 text-md mt-1">
+                          Your retirement income plan appears sustainable
+                          through your life expectancy.
+                        </p>
+                      </div>
+                    )}
                 </div>
               </div>
             </div>

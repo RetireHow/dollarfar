@@ -12,9 +12,7 @@ export default function CalculationCard() {
     annualInterestRate,
     compoundingFrequency,
     contributionFrequency,
-    // years,
-    startYear,
-    endYear
+    years,
   } = useAppSelector((state) => state.compoundInterest);
   return (
     <section className="w-full dark:text-darkModeNormalTextColor">
@@ -75,7 +73,7 @@ export default function CalculationCard() {
         <span className="font-semibold">
           {numberWithCommas(Number(totalFutureValue))}
         </span>{" "}
-        after <span className="font-semibold">{Number(endYear)-Number(startYear)}</span> years when
+        after <span className="font-semibold">{years}</span> years when
         compounded{" "}
         <span className="font-semibold lowercase">
           {getFrequencyTitle(compoundingFrequency)}
