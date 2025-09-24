@@ -11,12 +11,11 @@ import {
   calculateRRIF,
   updateRRIFState,
 } from "../../redux/features/RRIF/RRIFSlice";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import { handleKeyDown } from "../../utils/handleKeyDown";
 import { isNegative } from "../../utils/isNegative";
 import { toast } from "react-toastify";
-import { TRRIFState } from "../../redux/features/RRIF/RRIF.types";
 
 export default function RRIFForm() {
   const dispatch = useAppDispatch();
@@ -62,35 +61,7 @@ export default function RRIFForm() {
       setMinWithdrawalAbmount(Math.round(result));
     }
     dispatch(calculateRRIF());
-
-    //Save inputs into local storage
-    const inputs = {
-      rateOfReturn,
-      withdrawType,
-      withdrawalStartYear,
-      withdrawalEndYear,
-      annualWithdrawalAmount,
-      RRIFInitalBalance,
-    };
-    const inputsString = JSON.stringify(inputs);
-    localStorage.setItem("RRIFInputs", inputsString);
   };
-
-  useEffect(() => {
-    const inputsString = localStorage.getItem("RRIFInputs");
-    if (!inputsString) {
-      return;
-    }
-    const inputs = JSON.parse(inputsString as string);
-    Object.entries(inputs)?.forEach((input) => {
-      dispatch(
-        updateRRIFState({
-          key: input[0] as keyof TRRIFState,
-          value: input[1] as string,
-        })
-      );
-    });
-  }, []);
 
   return (
     <section className="space-y-[2rem] md:text-[1rem] text-[14px]">
