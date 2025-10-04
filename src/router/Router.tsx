@@ -64,7 +64,8 @@ import PaymentCancel from "../pages/Landing/BookLandingPage/PaymentCancel";
 import CompoundInterestComparisonCalculator from "../pages/CompoundInterestComparisonCalculator/CompoundInterestComparisonCalculator";
 import NetIncomeYieldCalculator from "../pages/NetIncomeYieldCalculator/NetIncomeYieldCalculator";
 import InvestmentCalculator from "../pages/Investor/InvestmentCalculator";
-import RetirementCalculator from "../pages/RetirementCalculator/RetirementCalculator";
+import RetirementSimulator from "../pages/RetirementCalculator/RetirementSimulator";
+
 
 export const router = createBrowserRouter([
   {
@@ -336,7 +337,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "retirement",
-        element: <RetirementCalculator />,
+        element: <RetirementSimulator />,
       }
     ],
   },

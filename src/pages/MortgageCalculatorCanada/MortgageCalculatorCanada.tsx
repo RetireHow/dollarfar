@@ -644,7 +644,7 @@ export const MortgageCalculatorCanada: React.FC = () => {
         <div className="max-w-7xl mx-auto shadow-xl bg-gray-50 dark:bg-gray-900 rounded-2xl p-5 md:p-8">
           <header className="text-center mb-8 flex md:flex-row flex-col items-center justify-between">
             <h1
-              className="text-3xl font-bold text-black"
+              className="text-3xl font-bold text-black dark:text-white"
             >
               Canadian Mortgage Calculator
             </h1>
