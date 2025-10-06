@@ -124,4 +124,14 @@ export const cardsData = [
     btnText: "Calculate",
     navLink: "net-income-yield-calculator",
   },
+  {
+    id: 12,
+    title: "Retirement Simulator",
+    description:
+      "Project your retirement future. This powerful simulator forecasts savings growth, identifies financial gaps, and provides actionable insights to secure your golden years with confidence.",
+    arrowIcon: assets.arrowUpIcon,
+    calcIcon: assets.whiteBarChart,
+    btnText: "Calculate",
+    navLink: "retirement-simulator",
+  },
 ];

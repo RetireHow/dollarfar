@@ -336,7 +336,7 @@ export const router = createBrowserRouter([
         element: <InvestmentCalculator />,
       },
       {
-        path: "retirement",
+        path: "retirement-simulator",
         element: <RetirementSimulator />,
       }
     ],

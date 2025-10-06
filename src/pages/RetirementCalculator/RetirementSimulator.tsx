@@ -393,7 +393,7 @@ const RetirementSimulator: React.FC = () => {
               <Icon icon="mdi:finance" className="text-3xl" />
               Retirement Simulator
             </h1>
-            <div className="flex flex-col">
+            <div className="flex flex-col hidden">
               <RetirementSimulatorPDFModal
               setIsGeneratingPDF={setIsGeneratingPDF}
               isGeneratingPDF={isGeneratingPDF}
