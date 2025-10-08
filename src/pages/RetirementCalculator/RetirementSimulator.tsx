@@ -601,7 +601,7 @@ const RetirementSimulator: React.FC = () => {
 
                       <div>
                         <label className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          Yearly Income Needed in Retirement (% of final salary)
+                          Yearly Retirement Income (% of Final Salary)
                         </label>
                         <div className="relative">
                           <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">
@@ -621,7 +621,7 @@ const RetirementSimulator: React.FC = () => {
 
                       <div>
                         <label className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          Yearly Pension/Social Security at Retirement
+                          Yearly Pension at Retirement
                         </label>
                         <div className="relative">
                           <span className="absolute left-3 top-3 text-gray-500 dark:text-gray-400">
