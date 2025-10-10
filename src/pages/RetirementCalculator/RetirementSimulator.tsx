@@ -16,6 +16,17 @@ import {
 import { RetirementSimulatorPDFModal } from "./RetirementSimulatorPDFModal";
 import { useCustomPDF } from "../../hooks/useCustomPDF";
 import { FixedRetirementSimulatorPDFTemplate } from "./FixedRetirementSimulatorPDFTemplate";
+import { Modal } from "antd";
+import { Link } from "react-router-dom";
+import PageHero from "../../components/UI/PageHero";
+import { assets } from "../../assets/assets";
+
+const data = {
+  title: "Retirement Simulator",
+  description:
+    "Project your retirement future. This powerful simulator forecasts savings growth, identifies financial gaps, and provides actionable insights to secure your golden years with confidence.",
+  image: assets.compoundInterestCalcIcon,
+};
 
 // Types (unchanged)
 interface RetirementParams {
@@ -55,7 +66,37 @@ const formatCurrency = (value: number): string => {
   }).format(value);
 };
 
-// Calculation function (unchanged)
+type HelpModalProps = {
+  title: string;
+  content: string;
+  visible: boolean;
+  onClose: () => void;
+};
+
+const HelpModal = ({ title, content, visible, onClose }: HelpModalProps) => {
+  return (
+    <Modal
+      title={title}
+      visible={visible}
+      onOk={onClose}
+      onCancel={onClose}
+      footer={[
+        <button
+          key="submit"
+          className="px-4 py-2 rounded-md text-white"
+          style={{ backgroundColor: "#2b6777" }}
+          onClick={onClose}
+        >
+          Got it!
+        </button>,
+      ]}
+    >
+      <div className="text-gray-700 dark:text-gray-300">{content}</div>
+    </Modal>
+  );
+};
+
+// Calculation function (updated to include life expectancy age)
 const calculateRetirementPlan = (params: RetirementParams): YearlyResult[] => {
   const {
     currentAge,
@@ -73,7 +114,7 @@ const calculateRetirementPlan = (params: RetirementParams): YearlyResult[] => {
   } = params;
 
   const yearsToRetirement = retirementAge - currentAge;
-  const totalYears = lifeExpectancy - currentAge;
+  const totalYears = lifeExpectancy - currentAge + 1;
 
   const results: YearlyResult[] = [];
 
@@ -168,7 +209,7 @@ const RetirementSimulator: React.FC = () => {
     annualIncome: 50000,
     inflationRate: 0.03,
     currentSavings: 60000,
-    annualSavings: 15000,
+    annualSavings: 16000,
     savingsIncreaseRate: 0,
     investmentReturn: 0.0625,
     retirementAge: 65,
@@ -184,7 +225,7 @@ const RetirementSimulator: React.FC = () => {
     annualIncome: "50,000",
     inflationRate: "3.00",
     currentSavings: "60,000",
-    annualSavings: "15,000",
+    annualSavings: "16,000",
     savingsIncreaseRate: "0.00",
     investmentReturn: "6.25",
     retirementAge: "65",
@@ -256,14 +297,14 @@ const RetirementSimulator: React.FC = () => {
     target.blur();
   };
 
-  // Get retirement summary (updated with annual-based savings calculation)
+  // Get retirement summary (updated with +1 for retirement duration)
   const getRetirementSummary = () => {
     const retirementYear = results.findIndex(
       (item) => item.age === params.retirementAge
     );
     if (retirementYear === -1) return null;
 
-    const retirementDuration = params.lifeExpectancy - params.retirementAge;
+    const retirementDuration = params.lifeExpectancy - params.retirementAge + 1;
 
     const finalSalary =
       params.annualIncome *
@@ -383,9 +424,89 @@ const RetirementSimulator: React.FC = () => {
     },
   });
 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const [modalContent, setModalContent] = useState({ title: "", content: "" });
+
+  const showHelpModal = (title: string, content: string) => {
+    setModalContent({ title, content });
+    setModalVisible(true);
+  };
+
+  // Updated help content for retirement planning fields
+  const helpContent = {
+    currentAge: {
+      title: "Current Age",
+      content:
+        "Your current age in years. This is the starting point for your retirement planning timeline.",
+    },
+    annualIncome: {
+      title: "Current Yearly Income",
+      content:
+        "Your current annual gross income before taxes. This forms the basis for calculating your retirement savings needs and income replacement.",
+    },
+    currentSavings: {
+      title: "Current Retirement Savings",
+      content:
+        "The total amount you have already saved for retirement across all accounts (401k, IRA, brokerage, etc.).",
+    },
+    annualSavings: {
+      title: "Yearly Savings Amount",
+      content:
+        "How much you currently contribute to retirement savings each year. Include employer matches if applicable.",
+    },
+    savingsIncreaseRate: {
+      title: "Yearly Savings Increase",
+      content:
+        "The expected annual percentage increase in your retirement contributions. This accounts for raises, bonuses, or planned increases in savings rate.",
+    },
+    investmentReturn: {
+      title: "Expected Yearly Investment Growth",
+      content:
+        "The average annual return you expect from your investments. Historical stock market returns are typically 7-10%, but conservative estimates around 6-7% are often used for planning.",
+    },
+    retirementAge: {
+      title: "Planned Retirement Age",
+      content:
+        "The age at which you plan to stop working and begin drawing from your retirement savings.",
+    },
+    lifeExpectancy: {
+      title: "Life Expectancy",
+      content:
+        "How long you expect to live. Plan conservatively - consider family history and add a few years as life expectancies continue to increase. This determines how long your retirement savings need to last.",
+    },
+    inflationRate: {
+      title: "Yearly Inflation and Raise Rate",
+      content:
+        "The expected average annual inflation rate. This affects both your future salary increases and the rising cost of living during retirement. Typical long-term inflation is around 2-3%.",
+    },
+    incomeReplacementRate: {
+      title: "Required Yearly Retirement Income",
+      content:
+        "The percentage of your final working years' income that you'll need annually in retirement. Most people need 70-80% of their pre-retirement income to maintain their lifestyle.",
+    },
+    annualPension: {
+      title: "Yearly Pension at Retirement",
+      content:
+        "Expected annual pension or Social Security income at the start of retirement. If unsure, you can check your Social Security statement for estimates.",
+    },
+    pensionIncreaseRate: {
+      title: "Yearly Pension Increase",
+      content:
+        "The expected annual increase in your pension payments. Social Security typically has cost-of-living adjustments (COLA) around 2-3% annually.",
+    },
+  };
+
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-gray-800 py-8 px-4">
+      <PageHero data={data} />
+      <main className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-gray-800 py-8 px-4">
+        <HelpModal
+          title={modalContent.title}
+          content={modalContent.content}
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+        />
         <div className="max-w-7xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
           {/* Simplified Header */}
           <div className="p-4 bg-white dark:bg-neutral-800 dark:text-white flex md:flex-row flex-col md:gap-0 gap-3 justify-between items-center">
@@ -395,17 +516,17 @@ const RetirementSimulator: React.FC = () => {
             </h1>
             <div className="flex flex-col hidden">
               <RetirementSimulatorPDFModal
-              setIsGeneratingPDF={setIsGeneratingPDF}
-              isGeneratingPDF={isGeneratingPDF}
-              setPdfError={setPdfError}
-              targetRef={targetRef}
-              toPDF={toPDF}
-            />
-            {pdfError && (
-              <p className="text-red-500 font-semibold text-right my-2">
-                Error: PDF could not be downloaded!
-              </p>
-            )}
+                setIsGeneratingPDF={setIsGeneratingPDF}
+                isGeneratingPDF={isGeneratingPDF}
+                setPdfError={setPdfError}
+                targetRef={targetRef}
+                toPDF={toPDF}
+              />
+              {pdfError && (
+                <p className="text-red-500 font-semibold text-right my-2">
+                  Error: PDF could not be downloaded!
+                </p>
+              )}
             </div>
           </div>
 
@@ -424,8 +545,23 @@ const RetirementSimulator: React.FC = () => {
                   <div>
                     <div className="space-y-5">
                       <div>
-                        <label className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
                           Current Age
+                          <button
+                            onClick={() =>
+                              showHelpModal(
+                                helpContent.currentAge.title,
+                                helpContent.currentAge.content
+                              )
+                            }
+                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                          >
+                            <Icon
+                              icon="mdi:information-outline"
+                              width={16}
+                              height={16}
+                            />
+                          </button>
                         </label>
                         <input
                           type="text"
@@ -441,8 +577,23 @@ const RetirementSimulator: React.FC = () => {
                       </div>
 
                       <div>
-                        <label className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
                           Current Yearly Income
+                          <button
+                            onClick={() =>
+                              showHelpModal(
+                                helpContent.annualIncome.title,
+                                helpContent.annualIncome.content
+                              )
+                            }
+                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                          >
+                            <Icon
+                              icon="mdi:information-outline"
+                              width={16}
+                              height={16}
+                            />
+                          </button>
                         </label>
                         <div className="relative">
                           <span className="absolute left-3 top-3 text-gray-500 dark:text-gray-400">
@@ -461,8 +612,23 @@ const RetirementSimulator: React.FC = () => {
                       </div>
 
                       <div>
-                        <label className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
                           Current Retirement Savings
+                          <button
+                            onClick={() =>
+                              showHelpModal(
+                                helpContent.currentSavings.title,
+                                helpContent.currentSavings.content
+                              )
+                            }
+                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                          >
+                            <Icon
+                              icon="mdi:information-outline"
+                              width={16}
+                              height={16}
+                            />
+                          </button>
                         </label>
                         <div className="relative">
                           <span className="absolute left-3 top-3 text-gray-500 dark:text-gray-400">
@@ -481,8 +647,23 @@ const RetirementSimulator: React.FC = () => {
                       </div>
 
                       <div>
-                        <label className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
                           Yearly Savings Amount
+                          <button
+                            onClick={() =>
+                              showHelpModal(
+                                helpContent.annualSavings.title,
+                                helpContent.annualSavings.content
+                              )
+                            }
+                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                          >
+                            <Icon
+                              icon="mdi:information-outline"
+                              width={16}
+                              height={16}
+                            />
+                          </button>
                         </label>
                         <div className="relative">
                           <span className="absolute left-3 top-3 text-gray-500 dark:text-gray-400">
@@ -501,8 +682,23 @@ const RetirementSimulator: React.FC = () => {
                       </div>
 
                       <div>
-                        <label className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
                           Yearly Savings Increase (%)
+                          <button
+                            onClick={() =>
+                              showHelpModal(
+                                helpContent.savingsIncreaseRate.title,
+                                helpContent.savingsIncreaseRate.content
+                              )
+                            }
+                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                          >
+                            <Icon
+                              icon="mdi:information-outline"
+                              width={16}
+                              height={16}
+                            />
+                          </button>
                         </label>
                         <div className="relative">
                           <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">
@@ -521,8 +717,23 @@ const RetirementSimulator: React.FC = () => {
                       </div>
 
                       <div>
-                        <label className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
                           Expected Yearly Investment Growth (%)
+                          <button
+                            onClick={() =>
+                              showHelpModal(
+                                helpContent.investmentReturn.title,
+                                helpContent.investmentReturn.content
+                              )
+                            }
+                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                          >
+                            <Icon
+                              icon="mdi:information-outline"
+                              width={16}
+                              height={16}
+                            />
+                          </button>
                         </label>
                         <div className="relative">
                           <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">
@@ -546,8 +757,23 @@ const RetirementSimulator: React.FC = () => {
                   <div>
                     <div className="space-y-5">
                       <div>
-                        <label className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
                           Planned Retirement Age
+                          <button
+                            onClick={() =>
+                              showHelpModal(
+                                helpContent.retirementAge.title,
+                                helpContent.retirementAge.content
+                              )
+                            }
+                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                          >
+                            <Icon
+                              icon="mdi:information-outline"
+                              width={16}
+                              height={16}
+                            />
+                          </button>
                         </label>
                         <input
                           type="text"
@@ -563,8 +789,23 @@ const RetirementSimulator: React.FC = () => {
                       </div>
 
                       <div>
-                        <label className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          Expected Life Expectancy
+                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
+                          Life Expectancy
+                          <button
+                            onClick={() =>
+                              showHelpModal(
+                                helpContent.lifeExpectancy.title,
+                                helpContent.lifeExpectancy.content
+                              )
+                            }
+                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                          >
+                            <Icon
+                              icon="mdi:information-outline"
+                              width={16}
+                              height={16}
+                            />
+                          </button>
                         </label>
                         <input
                           type="text"
@@ -580,8 +821,23 @@ const RetirementSimulator: React.FC = () => {
                       </div>
 
                       <div>
-                        <label className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
                           Yearly Inflation and Raise Rate (%)
+                          <button
+                            onClick={() =>
+                              showHelpModal(
+                                helpContent.inflationRate.title,
+                                helpContent.inflationRate.content
+                              )
+                            }
+                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                          >
+                            <Icon
+                              icon="mdi:information-outline"
+                              width={16}
+                              height={16}
+                            />
+                          </button>
                         </label>
                         <div className="relative">
                           <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">
@@ -600,8 +856,23 @@ const RetirementSimulator: React.FC = () => {
                       </div>
 
                       <div>
-                        <label className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          Yearly Retirement Income (% of Final Salary)
+                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
+                          Required Yearly Retirement Income (% of Final Salary)
+                          <button
+                            onClick={() =>
+                              showHelpModal(
+                                helpContent.incomeReplacementRate.title,
+                                helpContent.incomeReplacementRate.content
+                              )
+                            }
+                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                          >
+                            <Icon
+                              icon="mdi:information-outline"
+                              width={16}
+                              height={16}
+                            />
+                          </button>
                         </label>
                         <div className="relative">
                           <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">
@@ -620,8 +891,23 @@ const RetirementSimulator: React.FC = () => {
                       </div>
 
                       <div>
-                        <label className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
                           Yearly Pension at Retirement
+                          <button
+                            onClick={() =>
+                              showHelpModal(
+                                helpContent.annualPension.title,
+                                helpContent.annualPension.content
+                              )
+                            }
+                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                          >
+                            <Icon
+                              icon="mdi:information-outline"
+                              width={16}
+                              height={16}
+                            />
+                          </button>
                         </label>
                         <div className="relative">
                           <span className="absolute left-3 top-3 text-gray-500 dark:text-gray-400">
@@ -640,8 +926,23 @@ const RetirementSimulator: React.FC = () => {
                       </div>
 
                       <div>
-                        <label className="block text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
                           Yearly Pension Increase (%)
+                          <button
+                            onClick={() =>
+                              showHelpModal(
+                                helpContent.pensionIncreaseRate.title,
+                                helpContent.pensionIncreaseRate.content
+                              )
+                            }
+                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                          >
+                            <Icon
+                              icon="mdi:information-outline"
+                              width={16}
+                              height={16}
+                            />
+                          </button>
                         </label>
                         <div className="relative">
                           <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">
@@ -671,7 +972,7 @@ const RetirementSimulator: React.FC = () => {
                     Your Retirement Readiness
                   </h3>
 
-                  <div className="bg-gradient-to-r from-blue-50 to-teal-50 dark:from-gray-700 dark:to-gray-600 p-6 rounded-lg border border-teal-200 dark:border-teal-800 shadow-sm">
+                  <div className="bg-gradient-to-r from-blue-50 to-teal-50 dark:from-gray-700 dark:to-gray-600 md:p-6 p-3 rounded-lg border border-teal-200 dark:border-teal-800 shadow-sm">
                     {/* Consolidated Status Indicator */}
                     <div
                       className={`p-4 rounded-lg mb-6 ${
@@ -766,14 +1067,25 @@ const RetirementSimulator: React.FC = () => {
                                 : "text-amber-700 dark:text-amber-300"
                             }`}
                           >
-                            {retirementSummary.isOnTrack
-                              ? retirementSummary.totalProjectedSavings >=
-                                retirementSummary.nestEggRequired * 1.2
-                                ? "You're right on track — and even ahead. Keep building momentum to stay future-ready!"
-                                : "Aim for at least 20% more savings. Think of it as your cushion — a shock absorber if life's assumptions change."
-                              : `Increase savings by ${formatCurrency(
-                                  retirementSummary.monthlySavingsNeeded
-                                )}/month to reach your goal.`}
+                            {retirementSummary.isOnTrack ? (
+                              retirementSummary.totalProjectedSavings >=
+                              retirementSummary.nestEggRequired * 1.2 ? (
+                                "You're right on track — and even ahead. Keep building momentum to stay future-ready!"
+                              ) : (
+                                "Aim for at least 20% more savings. Think of it as your cushion — a shock absorber if life's assumptions change."
+                              )
+                            ) : (
+                              <p>
+                                Increase savings by{" "}
+                                <span className="font-bold text-lg">
+                                  {formatCurrency(
+                                    retirementSummary.monthlySavingsNeeded
+                                  )}
+                                  /month
+                                </span>{" "}
+                                to reach your goal.
+                              </p>
+                            )}
                           </p>
                         </div>
                       </div>
@@ -812,7 +1124,7 @@ const RetirementSimulator: React.FC = () => {
                     </div>
 
                     {/* Essential Metrics - Reduced to 2 */}
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid md:grid-cols-2 gap-3">
                       <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border dark:border-gray-700 text-center">
                         <div className="text-teal-600 dark:text-teal-400 text-md font-bold mb-1">
                           Extra Yearly Savings Needed
@@ -846,10 +1158,10 @@ const RetirementSimulator: React.FC = () => {
 
                       <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border dark:border-gray-700 text-center">
                         <div className="text-teal-600 dark:text-teal-400 text-md font-bold mb-1">
-                          Years of Retirement
+                          Years in Retirement
                         </div>
                         <div className="text-lg font-bold text-gray-900 dark:text-white">
-                          {params.lifeExpectancy - params.retirementAge}
+                          {params.lifeExpectancy - params.retirementAge + 1}
                         </div>
                       </div>
                     </div>
@@ -915,7 +1227,7 @@ const RetirementSimulator: React.FC = () => {
                             key={year.age}
                             className={`hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
                               year.age === params.retirementAge
-                                ? "bg-gradient-to-r from-teal-100 to-blue-100 dark:from-teal-900 dark:to-blue-900 border-l-4 border-teal-500 font-semibold"
+                                ? "bg-gradient-to-r from-teal-200 to-blue-200 dark:from-teal-900 dark:to-blue-900 border-l-4 border-teal-500 font-semibold"
                                 : index % 2 === 0
                                 ? "bg-white dark:bg-gray-800"
                                 : "bg-gray-50 dark:bg-gray-700"
@@ -923,7 +1235,7 @@ const RetirementSimulator: React.FC = () => {
                           >
                             <td className="px-4 py-3">
                               <span
-                                className={`font-medium ${
+                                className={`${
                                   year.age === params.retirementAge
                                     ? "text-teal-800 dark:text-teal-200"
                                     : "text-gray-900 dark:text-white"
@@ -935,7 +1247,7 @@ const RetirementSimulator: React.FC = () => {
 
                             <td className="px-4 py-3">
                               <span
-                                className={`font-medium ${
+                                className={`${
                                   year.age === params.retirementAge
                                     ? "text-teal-800 dark:text-teal-200"
                                     : "text-gray-900 dark:text-white"
@@ -947,7 +1259,7 @@ const RetirementSimulator: React.FC = () => {
 
                             <td className="px-4 py-3">
                               <span
-                                className={`font-medium ${
+                                className={`${
                                   year.age === params.retirementAge
                                     ? "text-teal-800 dark:text-teal-200"
                                     : "text-gray-900 dark:text-white"
@@ -959,7 +1271,7 @@ const RetirementSimulator: React.FC = () => {
 
                             <td className="px-4 py-3">
                               <span
-                                className={`font-medium text-green-600 dark:text-green-400 ${
+                                className={`text-green-600 dark:text-green-400 ${
                                   year.age === params.retirementAge
                                     ? "font-semibold"
                                     : ""
@@ -971,7 +1283,7 @@ const RetirementSimulator: React.FC = () => {
 
                             <td className="px-4 py-3">
                               <span
-                                className={`font-medium ${
+                                className={`${
                                   year.age === params.retirementAge
                                     ? "text-teal-800 dark:text-teal-200"
                                     : "text-gray-900 dark:text-white"
@@ -983,7 +1295,7 @@ const RetirementSimulator: React.FC = () => {
 
                             <td className="px-4 py-3">
                               <span
-                                className={`font-medium ${
+                                className={`${
                                   year.age === params.retirementAge
                                     ? "text-teal-800 dark:text-teal-200"
                                     : "text-gray-900 dark:text-white"
@@ -995,7 +1307,7 @@ const RetirementSimulator: React.FC = () => {
 
                             <td className="px-4 py-3">
                               <span
-                                className={`font-medium text-purple-600 dark:text-purple-400 ${
+                                className={`text-purple-600 dark:text-purple-400 ${
                                   year.age === params.retirementAge
                                     ? "font-semibold"
                                     : ""
@@ -1007,7 +1319,7 @@ const RetirementSimulator: React.FC = () => {
 
                             <td className="px-4 py-3">
                               <span
-                                className={`font-medium ${
+                                className={`${
                                   year.endingBalance < 0
                                     ? "text-red-600 dark:text-red-400 font-bold"
                                     : "text-indigo-700 dark:text-indigo-400"
@@ -1027,7 +1339,7 @@ const RetirementSimulator: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Single Savings Growth Chart */}
+                {/* Single Savings Growth Chart - Updated */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
                   <div className="flex justify-between items-center p-4 border-b bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
                     <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
@@ -1064,12 +1376,32 @@ const RetirementSimulator: React.FC = () => {
                             }}
                           />
                           <Tooltip content={<CustomTooltip />} />
+                          <Legend
+                            wrapperStyle={{
+                              color: "var(--text-gray-800)",
+                              paddingTop: "1.5rem",
+                            }}
+                          />
                           <Area
                             type="monotone"
-                            dataKey="savings"
+                            dataKey={(data) =>
+                              data.age < params.retirementAge ? data.savings : 0
+                            }
                             stroke="#0d9488"
                             fill="#0d9488"
                             fillOpacity={0.2}
+                            name="Pre-Retirement Savings"
+                          />
+                          <Area
+                            type="monotone"
+                            dataKey={(data) =>
+                              data.age >= params.retirementAge
+                                ? data.savings
+                                : 0
+                            }
+                            stroke="#2563eb"
+                            fill="#2563eb"
+                            fillOpacity={0.3}
                             name="Retirement Savings"
                           />
                         </AreaChart>
@@ -1213,34 +1545,70 @@ const RetirementSimulator: React.FC = () => {
                     {/* Sustainability Alert System */}
                     {retirementSummary &&
                       results.find((r) => r.endingBalance <= 0)?.age &&
-                      results.find((r) => r.endingBalance <= 0)!.age <
+                      results.find((r) => r.endingBalance <= 0)!.age <=
                         params.lifeExpectancy && (
                         <div className="mt-4 p-4 bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-lg">
                           <div className="flex items-center gap-2 text-red-700 dark:text-red-300">
-                            <Icon icon="mdi:alert" className="text-xl" />
-                            <span className="font-semibold">
+                            <Icon icon="mdi:alert" className="text-2xl" />
+                            <span className="font-semibold text-xl">
                               Warning: Money May Run Out
                             </span>
                           </div>
-                          <p className="text-red-600 dark:text-red-400 text-md mt-1">
-                            Your funds may run out at age{" "}
-                            {results.find((r) => r.endingBalance <= 0)?.age},
-                            which is{" "}
-                            {params.lifeExpectancy -
-                              (results.find((r) => r.endingBalance <= 0)?.age ||
-                                0)}{" "}
-                            years before your life expectancy. Consider reducing
-                            spending or working longer. Or explore how RetireHow
-                            Inc. can help you stretch your dollars through
-                            part-time living abroad without downsizing your
-                            lifestyle.
-                          </p>
+                          <div className="text-red-600 dark:text-red-400 text-lg mt-1 space-y-2">
+                            <p>
+                              Your funds may run out at age{" "}
+                              {results.find((r) => r.endingBalance <= 0)?.age},
+                              which is{" "}
+                              {params.lifeExpectancy -
+                                (results.find((r) => r.endingBalance <= 0)
+                                  ?.age || 0)}{" "}
+                              years before your life expectancy.{" "}
+                              <span className="hidden">
+                                Consider reducing spending or working longer. Or
+                                explore how RetireHow Inc. can help you stretch
+                                your dollars through part-time living abroad
+                                without downsizing your lifestyle.
+                              </span>
+                            </p>
+
+                            <div className="text-green-600 dark:text-green-300 text-md mt-1 space-y-2">
+                              <p>
+                                But don’t worry — there are smart, simple ways
+                                to make your retirement savings last longer
+                                without giving up your happiness or lifestyle.
+                              </p>
+
+                              <p>
+                                Explore how adjusting your location could
+                                transform your finances. Many retirees are
+                                finding that living part-time abroad or in
+                                lower-cost cities lets them enjoy the same — or
+                                even better — quality of life for much less.
+                              </p>
+
+                              <p>
+                                👉 Use our{" "}
+                                <Link
+                                  className="text-blue-500 hover:text-blue-700 underline"
+                                  target="_blank"
+                                  to="/cost-of-living-calculator"
+                                >
+                                  Cost of Living Comparison Calculator
+                                </Link>{" "}
+                                to see how far your money can go in different
+                                destinations. It only takes a few minutes and
+                                can help you find places where your current
+                                retirement income could comfortably support your
+                                retirement dreams.
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       )}
 
                     {retirementSummary &&
                       (!results.find((r) => r.endingBalance <= 0) ||
-                        results.find((r) => r.endingBalance <= 0)!.age >=
+                        results.find((r) => r.endingBalance <= 0)!.age >
                           params.lifeExpectancy) && (
                         <div className="mt-4 p-4 bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg">
                           <div className="flex items-center gap-2 text-green-700 dark:text-green-300">
@@ -1261,7 +1629,7 @@ const RetirementSimulator: React.FC = () => {
             )}
           </div>
         </div>
-      </div>
+      </main>
       {/* PDF Hidden Content  */}
       <div
         ref={targetRef}
