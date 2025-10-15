@@ -183,7 +183,7 @@ const DownloadModal = ({
             <div>
               <div className="flex items-center justify-between">
                 <h3 className="md:text-[1.5rem] text-[18px] font-bold">
-                  Enter your details to reflect on pdf
+                  Enter your details
                 </h3>
                 <Icon
                   onClick={handleCancel}

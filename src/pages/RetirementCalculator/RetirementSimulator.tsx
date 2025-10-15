@@ -514,7 +514,7 @@ const RetirementSimulator: React.FC = () => {
               <Icon icon="mdi:finance" className="text-3xl" />
               Retirement Simulator
             </h1>
-            <div className="flex flex-col hidden">
+            <div className="flex flex-col">
               <RetirementSimulatorPDFModal
                 setIsGeneratingPDF={setIsGeneratingPDF}
                 isGeneratingPDF={isGeneratingPDF}
@@ -1410,6 +1410,13 @@ const RetirementSimulator: React.FC = () => {
                   </div>
                 </div>
 
+
+
+
+
+
+                
+
                 {/* Retirement Income Sustainability Chart */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mt-6">
                   <div className="flex justify-between items-center p-4 border-b bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
@@ -1563,31 +1570,18 @@ const RetirementSimulator: React.FC = () => {
                                 (results.find((r) => r.endingBalance <= 0)
                                   ?.age || 0)}{" "}
                               years before your life expectancy.{" "}
-                              <span className="hidden">
-                                Consider reducing spending or working longer. Or
-                                explore how RetireHow Inc. can help you stretch
-                                your dollars through part-time living abroad
-                                without downsizing your lifestyle.
-                              </span>
                             </p>
 
                             <div className="text-green-600 dark:text-green-300 text-md mt-1 space-y-2">
                               <p>
-                                But don’t worry — there are smart, simple ways
-                                to make your retirement savings last longer
-                                without giving up your happiness or lifestyle.
+                                💡 Not enough to retire yet? Explore how living
+                                part-time abroad can help you stretch your
+                                dollars, lower costs, and sustain your lifestyle
+                                — without downsizing your dreams.
                               </p>
 
                               <p>
-                                Explore how adjusting your location could
-                                transform your finances. Many retirees are
-                                finding that living part-time abroad or in
-                                lower-cost cities lets them enjoy the same — or
-                                even better — quality of life for much less.
-                              </p>
-
-                              <p>
-                                👉 Use our{" "}
+                                🌍 Use our Retirement Simulator and {" "}
                                 <Link
                                   className="text-blue-500 hover:text-blue-700 underline"
                                   target="_blank"
@@ -1595,11 +1589,16 @@ const RetirementSimulator: React.FC = () => {
                                 >
                                   Cost of Living Comparison Calculator
                                 </Link>{" "}
-                                to see how far your money can go in different
-                                destinations. It only takes a few minutes and
-                                can help you find places where your current
-                                retirement income could comfortably support your
-                                retirement dreams.
+                                 at DollarFar.com to plan smarter and
+                                see where your money goes furthest.
+                              </p>
+
+                              <p>
+                                💙 RetireHow.com’s mission is to empower the
+                                middle class with financial know-how and
+                                immersive global living opportunities — helping
+                                you retire better and live comfortably
+                                wherever life takes you. 👉 Use our{" "}
                               </p>
                             </div>
                           </div>

@@ -41,8 +41,8 @@ export const RetirementSimulatorPDFModal = ({
   };
 
   const handleCancel = () => {
-    // setIsGeneratingPDF(false);
-    // setPdfError(null);
+    setIsGeneratingPDF(false);
+    setPdfError(null);
     setIsModalOpen(false);
     setShowError(false);
     setFormData({
