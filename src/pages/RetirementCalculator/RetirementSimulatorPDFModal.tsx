@@ -100,6 +100,7 @@ export const RetirementSimulatorPDFModal = ({
       );
 
       if (!res.ok) {
+        console.log(res);
         return toast.error("Failed to submit details");
       }
 
