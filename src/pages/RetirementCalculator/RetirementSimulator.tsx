@@ -96,7 +96,7 @@ const HelpModal = ({ title, content, visible, onClose }: HelpModalProps) => {
   );
 };
 
-// Calculation function (updated to include life expectancy age)
+// Calculation function
 const calculateRetirementPlan = (params: RetirementParams): YearlyResult[] => {
   const {
     currentAge,
