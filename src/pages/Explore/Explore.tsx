@@ -1,10 +1,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Input, Select, Checkbox, Button, Typography } from "antd";
+import { useState } from "react";
+import {
+  Form,
+  Input,
+  Select,
+  Checkbox,
+  Button,
+  Typography,
+  message,
+} from "antd";
 
 const { Title, Paragraph } = Typography;
 const { Option } = Select;
 
 export default function RetirementInquiryPreview() {
+  const [form] = Form.useForm();
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (values: any) => {
+    setSubmitting(true);
+    console.log("Form Submitted:", values);
+    // simulate async submit
+    await new Promise((r) => setTimeout(r, 800));
+    message.success("✅ Form submitted successfully (preview mode).");
+    setSubmitting(false);
+  };
+
   return (
     <div className="min-h-screen w-full bg-gray-50 text-gray-900">
       <div className="mx-auto max-w-3xl px-4 py-8">
@@ -60,22 +81,41 @@ export default function RetirementInquiryPreview() {
           </div>
         </section>
 
-        {/* Form */}
-        <Form layout="vertical" className="space-y-8">
+        {/* FORM */}
+        <Form
+          form={form}
+          layout="vertical"
+          className="space-y-8"
+          onFinish={handleSubmit}
+          scrollToFirstError
+        >
           {/* Section A */}
           <FormSection title="A. Personal Information">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Form.Item label="Full Name" required>
-                <Input placeholder="Jane Doe" disabled />
+              <Form.Item
+                label="Full Name"
+                name="fullName"
+                rules={[
+                  { required: true, message: "Please enter your full name" },
+                ]}
+              >
+                <Input placeholder="Jane Doe" />
               </Form.Item>
-              <Form.Item label="Email" required>
-                <Input type="email" placeholder="jane@email.com" disabled />
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[
+                  { required: true, message: "Please enter your email" },
+                  { type: "email", message: "Enter a valid email address" },
+                ]}
+              >
+                <Input placeholder="jane@email.com" />
               </Form.Item>
-              <Form.Item label="Phone (optional)">
-                <Input type="tel" placeholder="+1 (555) 123-4567" disabled />
+              <Form.Item label="Phone (optional)" name="phone">
+                <Input type="tel" placeholder="+1 (555) 123-4567" />
               </Form.Item>
-              <Form.Item label="Province/State of Residence">
-                <Input placeholder="Ontario" disabled />
+              <Form.Item label="Province/State of Residence" name="province">
+                <Input placeholder="Ontario" />
               </Form.Item>
             </div>
           </FormSection>
@@ -83,28 +123,40 @@ export default function RetirementInquiryPreview() {
           {/* Section B */}
           <FormSection title="B. Retirement Details">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Form.Item label="Target Retirement Age">
-                <Input type="number" placeholder="62" disabled />
+              <Form.Item
+                label="Target Retirement Age"
+                name="retirementAge"
+                rules={[
+                  { required: true, message: "Please enter your target age" },
+                ]}
+              >
+                <Input type="number" placeholder="62" />
               </Form.Item>
-              <Form.Item label="Desired Annual Retirement Income (local currency)">
-                <Input type="number" placeholder="60,000" disabled />
+              <Form.Item
+                label="Desired Annual Retirement Income (local currency)"
+                name="desiredIncome"
+                rules={[
+                  { required: true, message: "Please enter desired income" },
+                ]}
+              >
+                <Input type="number" placeholder="60,000" />
               </Form.Item>
             </div>
             <Form.Item
               label="Estimated Total Savings (RRSP/TFSA/401k/etc.)"
-              className="mt-4"
+              name="totalSavings"
             >
-              <Input type="number" placeholder="450,000" disabled />
+              <Input type="number" placeholder="450,000" />
             </Form.Item>
             <Form.Item
               label="Open to lower-cost destinations abroad?"
-              className="mt-4"
+              name="openAbroad"
+              rules={[{ required: true, message: "Please select an option" }]}
             >
-              <Select defaultValue="Select…">
-                <Option>Select…</Option>
-                <Option>Yes</Option>
-                <Option>No</Option>
-                <Option>Maybe</Option>
+              <Select placeholder="Select…">
+                <Option value="Yes">Yes</Option>
+                <Option value="No">No</Option>
+                <Option value="Maybe">Maybe</Option>
               </Select>
             </Form.Item>
           </FormSection>
@@ -113,59 +165,68 @@ export default function RetirementInquiryPreview() {
           <FormSection title="C. Part-Time Abroad Preferences">
             <Form.Item
               label="Ideal Destination(s) for Winter/Part-Time Living (cities/countries)"
-              required
+              name="destinations"
+              rules={[
+                { required: true, message: "Please enter destination(s)" },
+              ]}
             >
-              <Input
-                placeholder="Lisbon, Puerto Vallarta, Goa, Chiang Mai"
-                disabled
-              />
+              <Input placeholder="Lisbon, Puerto Vallarta, Goa, Chiang Mai" />
             </Form.Item>
             <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Form.Item label="Months Abroad Per Year">
-                <Select defaultValue="Select…">
-                  <Option>Select…</Option>
-                  <Option>2–3 months</Option>
-                  <Option>4–5 months</Option>
-                  <Option>6+ months</Option>
-                  <Option>Undecided</Option>
+              <Form.Item label="Months Abroad Per Year" name="monthsAbroad">
+                <Select placeholder="Select…">
+                  <Option value="2–3 months">2–3 months</Option>
+                  <Option value="4–5 months">4–5 months</Option>
+                  <Option value="6+ months">6+ months</Option>
+                  <Option value="Undecided">Undecided</Option>
                 </Select>
               </Form.Item>
-              <Form.Item label="Earliest Start (season/year)">
-                <Input placeholder="Winter 2026" disabled />
+              <Form.Item
+                label="Earliest Start (season/year)"
+                name="earliestStart"
+              >
+                <Input placeholder="Winter 2026" />
               </Form.Item>
             </div>
             <Form.Item
               label="Estimated Total Budget for Part-Time Living (per season)"
-              required
-              className="mt-4"
+              name="budget"
+              rules={[
+                { required: true, message: "Please enter an estimated budget" },
+              ]}
               extra="Include housing, food, transport, flights, insurance, and extras."
             >
-              <Input type="number" placeholder="12,000" disabled />
+              <Input type="number" placeholder="12,000" />
             </Form.Item>
           </FormSection>
 
           {/* Section D */}
           <FormSection title="D. Interest Areas">
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-              {[
-                "Cost-of-Living Comparison",
-                "Cross-Border / Expat Living Options",
-                "Comprehensive Retirement Planning",
-                "RRSP / TFSA / Pension Optimization",
-                "Real Estate / Relocation Strategies",
-              ].map((label, i) => (
-                <Checkbox key={i}>{label}</Checkbox>
-              ))}
-            </div>
+            <Form.Item name="interests" className="!mb-0">
+              <Checkbox.Group className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                {[
+                  "Cost-of-Living Comparison",
+                  "Cross-Border / Expat Living Options",
+                  "Comprehensive Retirement Planning",
+                  "RRSP / TFSA / Pension Optimization",
+                  "Real Estate / Relocation Strategies",
+                ].map((label, i) => (
+                  <Checkbox key={i} value={label}>
+                    {label}
+                  </Checkbox>
+                ))}
+              </Checkbox.Group>
+            </Form.Item>
           </FormSection>
 
           {/* Section E */}
           <FormSection title="E. Notes (optional)">
-            <Input.TextArea
-              rows={4}
-              placeholder="Anything else we should know? Medical needs, school calendars, visa considerations, pets, etc."
-              disabled
-            />
+            <Form.Item name="notes">
+              <Input.TextArea
+                rows={4}
+                placeholder="Anything else we should know? Medical needs, school calendars, visa considerations, pets, etc."
+              />
+            </Form.Item>
           </FormSection>
 
           {/* Section F */}
@@ -178,35 +239,63 @@ export default function RetirementInquiryPreview() {
               <strong>10% service delivery fee</strong> on the total project
               costs. No hidden fees. This is not financial advice.
             </Paragraph>
-            <div className="space-y-2">
-              <Checkbox>
-                I acknowledge the pricing model (actuals + 10% service delivery
-                fee) and would like to be contacted.
-              </Checkbox>
-              <Checkbox>
-                I consent to be contacted by DollarFar.com for educational and
-                informational purposes.
-              </Checkbox>
-              <Checkbox>
-                I agree to receive occasional updates about tools and resources
-                (optional).
-              </Checkbox>
-            </div>
+
+            <Form.Item
+              name="consents"
+              rules={[
+                {
+                  validator: (_, value) =>
+                    value && value.includes("pricing")
+                      ? Promise.resolve()
+                      : Promise.reject(
+                          new Error(
+                            "You must acknowledge the pricing model before submitting"
+                          )
+                        ),
+                },
+              ]}
+              className="!mb-0"
+            >
+              <Checkbox.Group className="space-y-2 flex flex-col">
+                <Checkbox value="pricing">
+                  I acknowledge the pricing model (actuals + 10% service
+                  delivery fee) and would like to be contacted.
+                </Checkbox>
+                <Checkbox value="contact">
+                  I consent to be contacted by DollarFar.com for educational and
+                  informational purposes.
+                </Checkbox>
+                <Checkbox value="updates">
+                  I agree to receive occasional updates about tools and
+                  resources (optional).
+                </Checkbox>
+              </Checkbox.Group>
+            </Form.Item>
+
             <Form.Item
               label="Type your full name as signature"
+              name="signature"
               required
+              rules={[
+                { required: true, message: "Please type your full name" },
+              ]}
               className="mt-4"
             >
               <Input placeholder="Full legal name" />
             </Form.Item>
             <div className="mt-6">
-              <Button type="primary" block>
-                Submit & Request My Plan (Preview Button)
+              <Button
+                type="primary"
+                htmlType="submit"
+                block
+                loading={submitting}
+              >
+                Submit & Request My Plan
               </Button>
             </div>
           </FormSection>
 
-          {/* Hidden fields */}
+          {/* Hidden/internal fields (not editable, shown for reference) */}
           <section className="rounded-2xl border border-gray-100 bg-gray-50 p-4 text-xs text-gray-600">
             <p className="mb-1 font-medium">
               Internal Context (example fields captured from simulator):
@@ -228,9 +317,9 @@ export default function RetirementInquiryPreview() {
           </section>
         </Form>
 
-        {/* Footer */}
         <p className="mt-8 text-center text-xs text-gray-500">
-          UI preview only • Tailwind + Ant Design • Ready for developer handoff
+          UI preview only • Tailwind + Ant Design • Fully functional form
+          version
         </p>
       </div>
     </div>
@@ -238,7 +327,6 @@ export default function RetirementInquiryPreview() {
 }
 
 /* Helper Components */
-
 function FormSection({ title, children }: { title: any; children: any }) {
   return (
     <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">

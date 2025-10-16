@@ -1589,7 +1589,11 @@ const RetirementSimulator: React.FC = () => {
                                 >
                                   Cost of Living Comparison Calculator
                                 </Link>{" "}
-                                 at DollarFar.com to plan smarter and
+                                 at  <span
+                                  className="font-bold"
+                                >
+                                  DollarFar.com
+                                </span>{" "} to plan smarter and
                                 see where your money goes furthest.
                               </p>
 
@@ -1598,7 +1602,7 @@ const RetirementSimulator: React.FC = () => {
                                 middle class with financial know-how and
                                 immersive global living opportunities — helping
                                 you retire better and live comfortably
-                                wherever life takes you. 👉 Use our{" "}
+                                wherever life takes you.
                               </p>
                             </div>
                           </div>
