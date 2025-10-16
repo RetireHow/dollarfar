@@ -25,21 +25,13 @@ const AdminDashboardGreeting = () => {
   const [isLoadingEbook, setIsLoadingEbook] = useState<boolean>(false);
   const [loggedInUserName, setLoggedInUserName] = useState("");
 
-  const totalDownloadedReports = reportUsers?.reduce((total, curr) => {
-    return total + curr?.downloadedFiles?.length;
-  }, 0);
-
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Start of today
 
-  const reportDownloadedToday = reportUsers?.reduce((total, curr) => {
-    const filesDownloadedToday =
-      curr?.downloadedFiles?.filter((item) => {
-        const createdAt = new Date(item.createdAt);
-        return createdAt >= today;
-      }) || [];
-    return total + filesDownloadedToday.length;
-  }, 0);
+  const reportDownloadedToday = reportUsers?.filter((item) => {
+    const createdAt = new Date(item.createdAt);
+    return createdAt >= today;
+  })?.length;
 
   const ebookDownloadedToday = ebookUsers?.reduce((total, curr) => {
     const createdAt = new Date(curr.createdAt);
@@ -152,7 +144,7 @@ const AdminDashboardGreeting = () => {
                     Report Downloaded:
                   </p>
                   <p className="text-gray-600 dark:text-white">
-                    <span>{totalDownloadedReports}</span>
+                    <span>{reportUsers?.length}</span>
                   </p>
                 </div>
 

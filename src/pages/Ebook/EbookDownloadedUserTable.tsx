@@ -48,7 +48,7 @@ const EbookDownloadedUserTable = () => {
     fetchUsers();
   }, []);
   return (
-    <div className="container mx-auto px-4 py-6 mb-10">
+    <div className="container mx-auto py-6 mb-10 md:px-20 px-3">
       <h1 className="text-[1.5rem] font-semibold mb-2">
         Ebook Downloaded Users List
       </h1>

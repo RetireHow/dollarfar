@@ -65,6 +65,7 @@ import CompoundInterestComparisonCalculator from "../pages/CompoundInterestCompa
 import NetIncomeYieldCalculator from "../pages/NetIncomeYieldCalculator/NetIncomeYieldCalculator";
 import InvestmentCalculator from "../pages/Investor/InvestmentCalculator";
 import RetirementSimulator from "../pages/RetirementCalculator/RetirementSimulator";
+import RetirementInquiryPreview from "../pages/Explore/Explore";
 
 
 export const router = createBrowserRouter([
@@ -338,7 +339,11 @@ export const router = createBrowserRouter([
       {
         path: "retirement-simulator",
         element: <RetirementSimulator />,
-      }
+      },
+      {
+        path: "retirement-inquery",
+        element: <RetirementInquiryPreview />,
+      },
     ],
   },
 ]);

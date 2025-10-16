@@ -2,20 +2,12 @@ import { useEffect, useState } from "react";
 import { baseUrl } from "../../api/apiConstant";
 import { toast } from "react-toastify";
 import moment from "moment";
-import PdfDownloadUserTableSkeletonLoader from "./PdfDownloadUserTableSkeletonLoader";
-import PdfDownloadUserCardSkeletonLoader from "./PdfDownloadUserCardSkeletonLoader";
-
-type DownloadedFile = {
-  downloadedFileName: string;
-  createdAt: string;
-  updatedAt: string;
-};
 
 type TUser = {
   name: string;
   phone: string;
   email: string;
-  downloadedFiles: DownloadedFile[];
+  downloadedFileName: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -53,7 +45,7 @@ const PdfDownloadedUserTable = () => {
     fetchUsers();
   }, []);
   return (
-    <div className="container mx-auto px-4 py-6 mt-5">
+    <div className="container mx-auto py-6 mt-5 md:px-20 px-3">
       <h1 className="text-[1.5rem] font-semibold mb-2">
         PDF Report Downloaded Users List
       </h1>
@@ -74,107 +66,44 @@ const PdfDownloadedUserTable = () => {
                 Email
               </th>
               <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300">
-                Downloaded Reports
+                Downloaded Report
               </th>
               <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300">
                 User Created At
               </th>
             </tr>
           </thead>
-          {isLoading ? (
-            <PdfDownloadUserTableSkeletonLoader />
-          ) : (
-            <tbody className="divide-y divide-gray-300">
-              {users.map((user, index) => (
-                <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300">
-                    {index + 1}
-                  </td>
-                  <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300">
-                    {user.name}
-                  </td>
-                  <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300">
-                    {user.phone}
-                  </td>
-                  <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300">
-                    {user.email}
-                  </td>
-                  <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300">
-                    <tr>
-                      <th className="pl-2 text-left border border-gray-300">
-                        Name
-                      </th>
-                      <th className="pl-2 text-left border border-gray-300">
-                        Downloaded At
-                      </th>
-                    </tr>
 
-                    {user.downloadedFiles?.map((file, index) => (
-                      <tr key={index}>
-                        <td className=" pl-2 text-left w-[250px] border border-gray-300">
-                          {file?.downloadedFileName}
-                        </td>
-                        <td className="pl-2  text-left border border-gray-300">
-                          {moment(file.createdAt).format(
-                            "MMMM Do YYYY, h:mm:ss a"
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </td>
-                  <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300">
-                    {moment(user.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+          {isLoading && (
+            <p className="font-bold text-center text-2xl py-5">Loading...</p>
           )}
+
+          <tbody className="divide-y divide-gray-300">
+            {users.map((user, index) => (
+              <tr key={index} className="hover:bg-gray-50">
+                <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300">
+                  {index + 1}
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300">
+                  {user.name}
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300">
+                  {user.phone}
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300">
+                  {user.email}
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300">
+                  {user.downloadedFileName}
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300">
+                  {moment(user.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
-
-      {/* Mobile view */}
-      {isLoading ? (
-        <PdfDownloadUserCardSkeletonLoader />
-      ) : (
-        <div className="md:hidden space-y-4">
-          {users.map((user, index) => (
-            <div
-              key={index}
-              className="border rounded-lg p-4 shadow-sm space-y-2"
-            >
-              <p className="text-sm">
-                <span className="font-semibold">Name:</span> {user.name}
-              </p>
-              <p className="text-sm">
-                <span className="font-semibold">Phone:</span> {user.phone}
-              </p>
-              <p className="text-sm">
-                <span className="font-semibold">Email:</span> {user.email}
-              </p>
-              <p className="text-sm">
-                <span className="font-semibold">User Created At:</span>{" "}
-                {moment(user.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
-              </p>
-              <div className="text-sm">
-                <span className="font-semibold">Downloaded Reports:</span>{" "}
-                <ul className="list-disc list-inside space-y-1 mt-1">
-                  {user.downloadedFiles?.map((file, index) => (
-                    <li key={index}>
-                      <span>{file?.downloadedFileName}</span> (
-                      <span>
-                        {moment(file.createdAt).format(
-                          "MMMM Do YYYY, h:mm:ss a"
-                        )}
-                      </span>
-                      )
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
