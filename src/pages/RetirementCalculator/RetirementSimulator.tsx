@@ -1410,13 +1410,6 @@ const RetirementSimulator: React.FC = () => {
                   </div>
                 </div>
 
-
-
-
-
-
-                
-
                 {/* Retirement Income Sustainability Chart */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mt-6">
                   <div className="flex justify-between items-center p-4 border-b bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
@@ -1561,7 +1554,7 @@ const RetirementSimulator: React.FC = () => {
                               Warning: Money May Run Out
                             </span>
                           </div>
-                          <div className="text-red-600 dark:text-red-400 text-lg mt-1 space-y-2">
+                          <div className="text-red-600 dark:text-red-400 text-lg mt-1 space-y-3">
                             <p>
                               Your funds may run out at age{" "}
                               {results.find((r) => r.endingBalance <= 0)?.age},
@@ -1572,37 +1565,26 @@ const RetirementSimulator: React.FC = () => {
                               years before your life expectancy.{" "}
                             </p>
 
-                            <div className="text-green-600 dark:text-green-300 text-md mt-1 space-y-2">
+                            <div className="text-green-600 dark:text-green-300 text-lg mt-1 space-y-3">
                               <p>
-                                💡 Not enough to retire yet? Explore how living
-                                part-time abroad can help you stretch your
-                                dollars, lower costs, and sustain your lifestyle
-                                — without downsizing your dreams.
-                              </p>
-
-                              <p>
-                                🌍 Use our Retirement Simulator and {" "}
+                                💡 Not there yet? Discover how far your income
+                                can really go. Compare 9,000+ cities worldwide
+                                and see where your dollars stretch further —
+                                only at DollarFar.com with{" "}
                                 <Link
                                   className="text-blue-500 hover:text-blue-700 underline"
                                   target="_blank"
                                   to="/cost-of-living-calculator"
                                 >
                                   Cost of Living Comparison Calculator
-                                </Link>{" "}
-                                 at  <span
-                                  className="font-bold"
-                                >
-                                  DollarFar.com
-                                </span>{" "} to plan smarter and
-                                see where your money goes furthest.
+                                </Link>
                               </p>
 
                               <p>
-                                💙 RetireHow.com’s mission is to empower the
-                                middle class with financial know-how and
-                                immersive global living opportunities — helping
-                                you retire better and live comfortably
-                                wherever life takes you.
+                                🌴 Keep your lifestyle — and spend less doing
+                                it. Living abroad part-time can cut costs and
+                                open doors to rich cultural experiences. Curious
+                                how it works? <span className="font-bold">Ask us today.</span>
                               </p>
                             </div>
                           </div>
