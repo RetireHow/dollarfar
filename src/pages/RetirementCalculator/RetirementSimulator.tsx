@@ -20,6 +20,16 @@ import { Modal } from "antd";
 import { Link } from "react-router-dom";
 import PageHero from "../../components/UI/PageHero";
 import { assets } from "../../assets/assets";
+import RetirementNextStepModal from "./RetirementNextStepModal";
+
+function MessageBlock({ title, content }: { title: any; content: any }) {
+  return (
+    <div className="rounded-2xl border border-gray-300 dark:border-gray-500 bg-white dark:bg-neutral-800 dark:text-white p-5 shadow-sm">
+      <h2 className="text-lg font-semibold">{title}</h2>
+      <p className="mt-2 text-lg leading-8">{content}</p>
+    </div>
+  );
+}
 
 const data = {
   title: "Retirement Simulator",
@@ -448,12 +458,12 @@ const RetirementSimulator: React.FC = () => {
     currentSavings: {
       title: "Current Retirement Savings",
       content:
-        "The total amount you have already saved for retirement across all accounts (401k, IRA, brokerage, etc.).",
+        "Total saved so far across all accounts — RRSP, TFSA, 401(k), IRA, brokerage, cash, or home equity. Fact: Near-retirees in both Canada and the U.S. typically hold $400 000–$500 000 in retirement assets across all sources.",
     },
     annualSavings: {
       title: "Yearly Savings Amount",
       content:
-        "How much you currently contribute to retirement savings each year. Include employer matches if applicable.",
+        "How much you add to retirement savings each year, including employer contributions. Fact: Most planners recommend saving 10 – 15 % of income annually to maintain your lifestyle in retirement.",
     },
     savingsIncreaseRate: {
       title: "Yearly Savings Increase",
@@ -468,32 +478,32 @@ const RetirementSimulator: React.FC = () => {
     retirementAge: {
       title: "Planned Retirement Age",
       content:
-        "The age at which you plan to stop working and begin drawing from your retirement savings.",
+        "Enter the age you expect to retire and begin drawing income. Fact: Across North America, the average retirement age is around 64, though personal goals and health often shift that timeline.",
     },
     lifeExpectancy: {
       title: "Life Expectancy",
       content:
-        "How long you expect to live. Plan conservatively - consider family history and add a few years as life expectancies continue to increase. This determines how long your retirement savings need to last.",
+        "Years you expect to live — plan conservatively. Fact: At 65, the average North American can expect about 22 more years of life; planning to age 90 or beyond provides a safety margin.",
     },
     inflationRate: {
       title: "Yearly Inflation and Raise Rate",
       content:
-        "The expected average annual inflation rate. This affects both your future salary increases and the rising cost of living during retirement. Typical long-term inflation is around 2-3%.",
+        "Expected long-term inflation rate — plan with a cushion. Fact: Central banks target ≈ 2 %, but using 3 % as a baseline builds protection against rising living costs and underestimation risk.",
     },
     incomeReplacementRate: {
       title: "Required Yearly Retirement Income",
       content:
-        "The percentage of your final working years' income that you'll need annually in retirement. Most people need 70-80% of their pre-retirement income to maintain their lifestyle.",
+        "Percent of final income you’ll need each year in retirement (typically 70 – 80 %). Fact: Retirees usually spend about three-quarters of pre-retirement income, with higher travel costs early and rising healthcare needs later.",
     },
     annualPension: {
       title: "Yearly Pension at Retirement",
       content:
-        "Expected annual pension or Social Security income at the start of retirement. If unsure, you can check your Social Security statement for estimates.",
+        "Estimated annual pension or government benefits (CPP, OAS, Social Security, or employer pensions). Fact: Public pensions usually replace only 25 – 40 % of income, so personal and workplace savings remain key.",
     },
     pensionIncreaseRate: {
       title: "Yearly Pension Increase",
       content:
-        "The expected annual increase in your pension payments. Social Security typically has cost-of-living adjustments (COLA) around 2-3% annually.",
+        "Average yearly increase in pension payments — usually around 2 – 3 %. Fact: CPP, OAS, and U.S. Social Security adjust annually for inflation, averaging about 2.5 % over time.",
     },
   };
 
@@ -1547,48 +1557,68 @@ const RetirementSimulator: React.FC = () => {
                       results.find((r) => r.endingBalance <= 0)?.age &&
                       results.find((r) => r.endingBalance <= 0)!.age <=
                         params.lifeExpectancy && (
-                        <div className="mt-4 p-4 bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-lg">
-                          <div className="flex items-center gap-2 text-red-700 dark:text-red-300">
-                            <Icon icon="mdi:alert" className="text-2xl" />
-                            <span className="font-semibold text-xl">
-                              Warning: Money May Run Out
-                            </span>
-                          </div>
-                          <div className="text-red-600 dark:text-red-400 text-lg mt-1 space-y-3">
-                            <p>
-                              Your funds may run out at age{" "}
-                              {results.find((r) => r.endingBalance <= 0)?.age},
-                              which is{" "}
-                              {params.lifeExpectancy -
-                                (results.find((r) => r.endingBalance <= 0)
-                                  ?.age || 0)}{" "}
-                              years before your life expectancy.{" "}
-                            </p>
-
-                            <div className="text-green-600 dark:text-green-300 text-lg mt-1 space-y-3">
+                        <>
+                          {" "}
+                          <div className="mt-4 p-4 bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-2xl">
+                            <div className="flex items-center gap-2 text-red-700 dark:text-red-300">
+                              <Icon icon="mdi:alert" className="text-2xl" />
+                              <span className="font-semibold text-xl">
+                                Warning: Money May Run Out
+                              </span>
+                            </div>
+                            <div className="text-red-600 dark:text-red-400 text-lg mt-1 space-y-3">
                               <p>
-                                💡 Not there yet? Discover how far your income
-                                can really go. Compare 9,000+ cities worldwide
-                                and see where your dollars stretch further —
-                                only at DollarFar.com with{" "}
-                                <Link
-                                  className="text-blue-500 hover:text-blue-700 underline"
-                                  target="_blank"
-                                  to="/cost-of-living-calculator"
-                                >
-                                  Cost of Living Comparison Calculator
-                                </Link>
-                              </p>
-
-                              <p>
-                                🌴 Keep your lifestyle — and spend less doing
-                                it. Living abroad part-time can cut costs and
-                                open doors to rich cultural experiences. Curious
-                                how it works? <span className="font-bold">Ask us today.</span>
+                                Your funds may run out at age{" "}
+                                {results.find((r) => r.endingBalance <= 0)?.age}
+                                , which is{" "}
+                                {params.lifeExpectancy -
+                                  (results.find((r) => r.endingBalance <= 0)
+                                    ?.age || 0)}{" "}
+                                years before your life expectancy.{" "}
                               </p>
                             </div>
                           </div>
-                        </div>
+                          <section className="mt-5 space-y-4">
+                            <MessageBlock
+                              title="Stretch Your Dollars Further"
+                              content={
+                                <>
+                                  💡{" "}
+                                  <em>
+                                    Not there yet? Discover how far your income
+                                    can really go.
+                                  </em>{" "}
+                                  Compare 9,000+ cities worldwide and see where
+                                  your dollars stretch further — only at{" "}
+                                  <strong>DollarFar.com</strong> with{" "}
+                                  <Link
+                                    className="text-blue-500 hover:text-blue-700 underline"
+                                    to="/cost-of-living-calculator"
+                                    target="_blank"
+                                  >
+                                    Cost of Living Comparison Calculator
+                                  </Link>
+                                </>
+                              }
+                            />
+                            <MessageBlock
+                              title="Live Well for Less"
+                              content={
+                                <>
+                                  🌴{" "}
+                                  <em>
+                                    Keep your lifestyle — and spend less doing
+                                    it.
+                                  </em>{" "}
+                                  Living abroad part-time can lower costs
+                                  without lowering comfort. Enjoy warmer winters
+                                  and rich cultural experiences. Curious how it
+                                  works? <strong>Ask us today.</strong>
+                                </>
+                              }
+                            />
+                          </section>
+                        </>
                       )}
 
                     {retirementSummary &&
@@ -1615,6 +1645,7 @@ const RetirementSimulator: React.FC = () => {
           </div>
         </div>
       </main>
+      <RetirementNextStepModal/>
       {/* PDF Hidden Content  */}
       <div
         ref={targetRef}
