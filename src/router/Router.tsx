@@ -65,6 +65,12 @@ import CompoundInterestComparisonCalculator from "../pages/CompoundInterestCompa
 import NetIncomeYieldCalculator from "../pages/NetIncomeYieldCalculator/NetIncomeYieldCalculator";
 import InvestmentCalculator from "../pages/Investor/InvestmentCalculator";
 import RetirementSimulator from "../pages/RetirementCalculator/RetirementSimulator";
+import AdminLayout from "../pages/Admin/AdminLayout";
+import PdfDownloadedUserTable from "../pages/Admin/PdfDownloadedUserTable";
+import EbookDownloadedUserTable from "../pages/Ebook/EbookDownloadedUserTable";
+import RetireeRequestedPlans from "../pages/Admin/RetireeRequestedPlans";
+import EbookReaderFeedbacks from "../pages/Admin/EbookReaderFeedbacks";
+import DashboardOverview from "../pages/Admin/DashboardOverview";
 
 export const router = createBrowserRouter([
   {
@@ -337,6 +343,36 @@ export const router = createBrowserRouter([
       {
         path: "retirement-simulator",
         element: <RetirementSimulator />,
+      },
+      {
+        path: "admin",
+        element: (
+          <PrivateRoute>
+            <AdminLayout />
+          </PrivateRoute>
+        ),
+        children: [
+          {
+            index: true,
+            element: <DashboardOverview />,
+          },
+          {
+            path: "pdf-reports",
+            element: <PdfDownloadedUserTable />,
+          },
+          {
+            path: "ebook-downloads",
+            element: <EbookDownloadedUserTable />,
+          },
+          {
+            path: "ebook-feedbacks",
+            element: <EbookReaderFeedbacks />,
+          },
+          {
+            path: "retiree-requests",
+            element: <RetireeRequestedPlans />,
+          },
+        ],
       },
     ],
   },

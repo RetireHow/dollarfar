@@ -1,4 +1,4 @@
-const EbookDownloadUserTableSkeletonLoader = () => {
+const DashboardDownloadSkeleton = () => {
   const skeletonRows = Array.from({ length: 5 });
 
   return (
@@ -19,4 +19,4 @@ const EbookDownloadUserTableSkeletonLoader = () => {
   );
 };
 
-export default EbookDownloadUserTableSkeletonLoader;
+export default DashboardDownloadSkeleton;

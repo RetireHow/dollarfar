@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import Error from "../../components/UI/Error";
 import { toast } from "react-toastify";
+import { baseUrl } from "../../api/apiConstant";
+import { ThreeDots } from "react-loader-spinner";
 
 interface FormData {
   // Contact Information
@@ -79,6 +81,7 @@ const RetirementNextStepForm = ({
     consent_marketing: false,
   });
   const [showError, setShowError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -116,7 +119,12 @@ const RetirementNextStepForm = ({
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Prevent input value change on scroll
+  const preventScrollChange = (e: React.WheelEvent<HTMLInputElement>) => {
+    e.currentTarget.blur();
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const {
       full_name,
@@ -138,10 +146,35 @@ const RetirementNextStepForm = ({
     }
     console.log("Form submitted:", formData);
     // Handle form submission here
-    toast.success(
-      "Thank you for submitting your plan. We shall contact you later."
-    );
-    setIsModalVisible(false);
+
+    try {
+      setIsLoading(true);
+      const res = await fetch(`${baseUrl}/retirement-next-step/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) {
+        return toast.error("There is something wrong!");
+      }
+
+      // Parse JSON response
+      await res.json();
+
+      // Assuming responseData contains info about the success or failure of the operation
+      toast.success(
+        "Submission confirmed! A RetireHow specialist will contact you to begin crafting your personalized retirement transition strategy.",
+        { autoClose: 15000 }
+      );
+      setIsModalVisible(false);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error("There is something wrong!");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -192,7 +225,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="full_name"
-                      className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:account-outline"
@@ -228,7 +261,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="phone"
-                      className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:phone-outline"
@@ -264,7 +297,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:email-outline"
@@ -297,7 +330,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="region"
-                      className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:map-marker-outline"
@@ -349,7 +382,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="target_age"
-                      className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:calendar-outline"
@@ -361,10 +394,9 @@ const RetirementNextStepForm = ({
                       type="number"
                       id="target_age"
                       name="target_age"
-                      min="35"
-                      max="95"
                       value={formData.target_age}
                       onChange={handleInputChange}
+                      onWheel={preventScrollChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-gray-50"
                       placeholder="e.g., 65"
                     />
@@ -381,7 +413,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="desired_income"
-                      className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:cash-usd-outline"
@@ -393,10 +425,9 @@ const RetirementNextStepForm = ({
                       type="number"
                       id="desired_income"
                       name="desired_income"
-                      min="0"
-                      step="1000"
                       value={formData.desired_income}
                       onChange={handleInputChange}
+                      onWheel={preventScrollChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-gray-50"
                       placeholder="Annual income amount"
                     />
@@ -414,7 +445,7 @@ const RetirementNextStepForm = ({
                 <div>
                   <label
                     htmlFor="estimated_savings"
-                    className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                    className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                   >
                     <Icon
                       icon="mdi:piggy-bank-outline"
@@ -426,10 +457,9 @@ const RetirementNextStepForm = ({
                     type="number"
                     id="estimated_savings"
                     name="estimated_savings"
-                    min="0"
-                    step="1000"
                     value={formData.estimated_savings}
                     onChange={handleInputChange}
+                    onWheel={preventScrollChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-gray-50"
                     placeholder="Your total savings"
                   />
@@ -464,7 +494,7 @@ const RetirementNextStepForm = ({
                 <div>
                   <label
                     htmlFor="estimated_home_equity"
-                    className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                    className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                   >
                     <Icon icon="mdi:home-outline" className="text-amber-500" />
                     Estimated home equity (net value of real estate)
@@ -473,10 +503,9 @@ const RetirementNextStepForm = ({
                     type="number"
                     id="estimated_home_equity"
                     name="estimated_home_equity"
-                    min="0"
-                    step="1000"
                     value={formData.estimated_home_equity}
                     onChange={handleInputChange}
+                    onWheel={preventScrollChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 bg-gray-50"
                     placeholder="Home equity amount"
                   />
@@ -494,7 +523,7 @@ const RetirementNextStepForm = ({
                 <div>
                   <label
                     htmlFor="equity_comfort"
-                    className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                    className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                   >
                     <Icon
                       icon="mdi:handshake-outline"
@@ -548,7 +577,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="country_region"
-                      className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                     >
                       <Icon icon="mdi:earth" className="text-purple-500" />
                       Preferred country/region
@@ -579,7 +608,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="ideal_locations"
-                      className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:city-variant-outline"
@@ -613,7 +642,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="months_abroad"
-                      className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:calendar-month-outline"
@@ -647,7 +676,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="start_timeline"
-                      className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:clock-outline"
@@ -680,7 +709,7 @@ const RetirementNextStepForm = ({
                 <div>
                   <label
                     htmlFor="travel_style"
-                    className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                    className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                   >
                     <Icon icon="mdi:luggage" className="text-purple-500" />
                     Travel style
@@ -717,7 +746,7 @@ const RetirementNextStepForm = ({
                       onChange={handleInputChange}
                       className="mt-1 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
                     />
-                    <span className="text-sm font-medium text-gray-700">
+                    <span className="text-sm font-bold text-gray-700">
                       I can travel independently without mobility assistance. I
                       understand some destinations abroad may be less accessible
                       than in Canada/USA.
@@ -755,7 +784,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="home_spend_monthly"
-                      className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:home-currency-usd"
@@ -767,11 +796,11 @@ const RetirementNextStepForm = ({
                       type="number"
                       id="home_spend_monthly"
                       name="home_spend_monthly"
-                      min="0"
-                      step="100"
+                      placeholder="Enter home country monthly spend."
                       value={formData.home_spend_monthly}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 bg-gray-50"
+                      onWheel={preventScrollChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50"
                     />
                     <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
                       <Icon
@@ -785,7 +814,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="abroad_budget_season"
-                      className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                     >
                       <Icon icon="mdi:airplane" className="text-indigo-500" />
                       Abroad seasonal budget (per winter season, estimate)
@@ -794,11 +823,11 @@ const RetirementNextStepForm = ({
                       type="number"
                       id="abroad_budget_season"
                       name="abroad_budget_season"
-                      min="0"
-                      step="500"
+                      placeholder="Enter abroad seasonal budget"
                       value={formData.abroad_budget_season}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 bg-gray-50"
+                      onWheel={preventScrollChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50"
                     />
                     <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
                       <Icon
@@ -814,7 +843,7 @@ const RetirementNextStepForm = ({
                 <div>
                   <label
                     htmlFor="flights_insurance_budget"
-                    className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                    className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                   >
                     <Icon
                       icon="mdi:wallet-travel"
@@ -829,7 +858,7 @@ const RetirementNextStepForm = ({
                     placeholder="e.g., $1,500 economy / $4,000 premium economy / $7,000 business (round trip)"
                     value={formData.flights_insurance_budget}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 bg-gray-50"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50"
                   />
                   <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
                     <Icon
@@ -844,7 +873,7 @@ const RetirementNextStepForm = ({
                 <div>
                   <label
                     htmlFor="flight_class"
-                    className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2"
+                    className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
                   >
                     <Icon
                       icon="mdi:seat-passenger"
@@ -857,7 +886,7 @@ const RetirementNextStepForm = ({
                     name="flight_class"
                     value={formData.flight_class}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 bg-gray-50"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50"
                   >
                     <option value="">Select…</option>
                     <option>Economy</option>
@@ -895,37 +924,37 @@ const RetirementNextStepForm = ({
               <div className="space-y-3">
                 {[
                   {
-                    value: "escape_winter",
+                    value: "Escape winter",
                     label: "Escape winter",
                     icon: "mdi:snowflake",
                   },
                   {
-                    value: "culture_immersion",
+                    value: "Explore other cultures and immersive global living",
                     label: "Explore other cultures and immersive global living",
                     icon: "mdi:earth",
                   },
                   {
-                    value: "reduce_cost",
+                    value: "Reduce cost of living",
                     label: "Reduce cost of living",
                     icon: "mdi:cash-remove",
                   },
                   {
-                    value: "budget_travel",
+                    value: "Travel on budget",
                     label: "Travel on budget",
                     icon: "mdi:wallet-outline",
                   },
                   {
-                    value: "stretch_dollars",
+                    value: "Stretch my dollars further",
                     label: "Stretch my dollars further",
                     icon: "mdi:chart-line",
                   },
                   {
-                    value: "leisure",
+                    value: "Leisure travel",
                     label: "Leisure travel",
                     icon: "mdi:umbrella-beach",
                   },
                   {
-                    value: "medical_tourism",
+                    value: "Medical tourism",
                     label: "Medical tourism",
                     icon: "mdi:medical-bag",
                   },
@@ -945,14 +974,14 @@ const RetirementNextStepForm = ({
                       value={option.value}
                       checked={formData.travel_purpose.includes(option.value)}
                       onChange={handleCheckboxGroupChange}
-                      className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                      className="mt-1 w-4 h-4 text-teal-600 border-teal-300 rounded focus:ring-teal-500"
                     />
                     <div className="flex md:flex-row flex-col md:items-center gap-2">
                       <Icon
                         icon={option.icon}
                         className="text-teal-700 text-lg"
                       />
-                      <span className="text-sm font-medium text-gray-700">
+                      <span className="text-sm font-bold text-gray-700 select-none">
                         {option.label}
                       </span>
                     </div>
@@ -979,42 +1008,42 @@ const RetirementNextStepForm = ({
               <div className="space-y-3">
                 {[
                   {
-                    value: "col",
-                    label: "Cost‑of‑Living Comparison",
+                    value: "Cost of Living Comparison",
+                    label: "Cost of Living Comparison",
                     icon: "mdi:scale-balance",
                   },
                   {
-                    value: "warm",
+                    value: "Part‑Time Abroad (Warm Destinations)",
                     label: "Part‑Time Abroad (Warm Destinations)",
                     icon: "mdi:sun-thermometer",
                   },
                   {
-                    value: "comprehensive",
+                    value: "Comprehensive Wealth Plan",
                     label: "Comprehensive Wealth Plan",
                     icon: "mdi:finance",
                   },
                   {
-                    value: "tax",
+                    value: "RRSP/TFSA/Pension Optimization",
                     label: "RRSP/TFSA/Pension Optimization",
                     icon: "mdi:calculator",
                   },
                   {
-                    value: "realestate",
+                    value: "Real Estate/Relocation Strateg",
                     label: "Real Estate/Relocation Strategy",
                     icon: "mdi:home-group",
                   },
                   {
-                    value: "drawdown",
+                    value: "Tax‑Efficient Drawdown",
                     label: "Tax‑Efficient Drawdown",
                     icon: "mdi:chart-arc",
                   },
                   {
-                    value: "health",
+                    value: "Healthcare/Insurance Guidance",
                     label: "Healthcare/Insurance Guidance",
                     icon: "mdi:heart-pulse",
                   },
                   {
-                    value: "visa",
+                    value: "Visa/Residency Pathways",
                     label: "Visa/Residency Pathways",
                     icon: "mdi:passport",
                   },
@@ -1036,7 +1065,7 @@ const RetirementNextStepForm = ({
                         icon={option.icon}
                         className="text-lime-700 text-lg"
                       />
-                      <span className="text-sm font-medium text-gray-700">
+                      <span className="text-sm font-bold text-gray-700 select-none">
                         {option.label}
                       </span>
                     </div>
@@ -1106,7 +1135,7 @@ const RetirementNextStepForm = ({
                       onChange={handleInputChange}
                       className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                     />
-                    <span className="text-sm font-medium text-gray-700">
+                    <span className="text-sm font-bold text-gray-700 select-none">
                       I acknowledge the pricing model (actuals + 10% service
                       delivery fee; any third‑party commissions credited back to
                       me) and would like to be contacted.
@@ -1121,7 +1150,7 @@ const RetirementNextStepForm = ({
                       onChange={handleInputChange}
                       className="mt-1 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
                     />
-                    <span className="text-sm font-medium text-gray-700">
+                    <span className="text-sm font-bold text-gray-700 select-none">
                       I consent to be contacted by RetireHow Inc. for
                       educational and informational purposes regarding my
                       inquiry.
@@ -1136,7 +1165,7 @@ const RetirementNextStepForm = ({
                       onChange={handleInputChange}
                       className="mt-1 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
                     />
-                    <span className="text-sm font-medium text-gray-700">
+                    <span className="text-sm font-bold text-gray-700 select-none">
                       I agree to receive occasional updates from RetireHow Inc.
                       about tools and resources (unsubscribe anytime).
                     </span>
@@ -1154,15 +1183,21 @@ const RetirementNextStepForm = ({
             {/* Submit Section */}
             <div className="mt-12 text-center">
               <div className="flex md:flex-row flex-col justify-center gap-5">
-                <button
-                  type="submit"
-                  className="bg-gradient-to-r from-emerald-600 to-purple-600 hover:from-emerald-700 hover:to-purple-700 text-white font-bold py-5 px-12 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl text-lg"
-                >
-                  <div className="flex md:flex-row flex-col items-center justify-center gap-3">
-                    <Icon icon="mdi:rocket-launch" className="text-xl" />
-                    <span>Submit & Request My Personalized Plan</span>
+                {isLoading ? (
+                  <div className="flex justify-center">
+                    <ThreeDots color="purple" height="60" width="60" />
                   </div>
-                </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="bg-gradient-to-r from-emerald-600 to-purple-600 hover:from-emerald-700 hover:to-purple-700 text-white font-bold py-5 px-12 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl text-lg"
+                  >
+                    <div className="flex md:flex-row flex-col items-center justify-center gap-3">
+                      <Icon icon="mdi:rocket-launch" className="text-xl" />
+                      <span>Submit & Request My Personalized Plan</span>
+                    </div>
+                  </button>
+                )}
                 <button
                   className="bg-gradient-to-r from-emerald-600 to-purple-600 hover:from-emerald-700 hover:to-purple-700 text-white font-bold py-5 px-12 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl text-lg"
                   onClick={() => setIsModalVisible(false)}

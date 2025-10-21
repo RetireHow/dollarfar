@@ -44,7 +44,7 @@ const AdminLogin: React.FC = () => {
       localStorage.setItem("email", result?.data?.email);
       localStorage.setItem("name", result?.data?.name);
       toast.success("Login success!");
-      navigate("/admin-dashboard");
+      navigate("/admin");
     } else {
       setLoading(false);
       toast.error("Login failed : You are not an authenticated user.");
