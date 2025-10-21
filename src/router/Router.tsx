@@ -44,7 +44,6 @@ import EstimatedCostCalculatorPage from "../pages/COLC/COLCPages/EstimatedCostCa
 import CrimeExplanation from "../pages/COLC/COLCPages/CrimeExplanation";
 import AdminLogin from "../pages/Admin/AdminLogin";
 import PrivateRoute from "./PrivateRoute";
-import AdminDashboard from "../pages/Admin/AdminDashboard";
 import SendOtpForm from "../pages/Admin/OTPVerification/SendOtpForm";
 import VerifyOtpForm from "../pages/Admin/OTPVerification/VerifyOtpForm";
 import ResetPasswordForm from "../pages/Admin/OTPVerification/ResetPasswordForm";
@@ -252,14 +251,6 @@ export const router = createBrowserRouter([
       {
         path: "admin-login",
         element: <AdminLogin />,
-      },
-      {
-        path: "admin-dashboard",
-        element: (
-          <PrivateRoute>
-            <AdminDashboard />
-          </PrivateRoute>
-        ),
       },
 
       {
