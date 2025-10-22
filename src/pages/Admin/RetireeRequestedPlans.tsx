@@ -112,8 +112,8 @@ export default function RetireeRequestedPlans() {
     record: RetirementData;
     onClose: () => void;
   }) => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 z-50 top-16">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[70vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 z-[999] top-16">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[88vh] overflow-y-auto">
         <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-6 rounded-t-2xl">
           <div className="flex justify-between items-center">
             <div>
@@ -126,9 +126,9 @@ export default function RetireeRequestedPlans() {
             </div>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+              className="p-2 bg-red-100 hover:bg-red-200 dark:hover:bg-gray-700 rounded-full transition-colors"
             >
-              <Icon icon="mdi:close" className="text-2xl text-gray-500 dark:text-gray-400" />
+              <Icon icon="mdi:close" className="text-4xl text-red-500 dark:text-gray-400" />
             </button>
           </div>
         </div>
