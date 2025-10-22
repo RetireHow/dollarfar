@@ -115,23 +115,36 @@ export default function DashboardOverview() {
   ];
 
   const getColorClasses = (color: string) => {
-    const colors: { [key: string]: string } = {
-      blue: "bg-blue-100 text-blue-600",
-      green: "bg-green-100 text-green-600",
-      purple: "bg-purple-100 text-purple-600",
-      orange: "bg-orange-100 text-orange-600",
+    const colors: { [key: string]: { light: string; dark: string } } = {
+      blue: {
+        light: "bg-blue-100 text-blue-600",
+        dark: "bg-blue-900/20 text-blue-400"
+      },
+      green: {
+        light: "bg-green-100 text-green-600",
+        dark: "bg-green-900/20 text-green-400"
+      },
+      purple: {
+        light: "bg-purple-100 text-purple-600",
+        dark: "bg-purple-900/20 text-purple-400"
+      },
+      orange: {
+        light: "bg-orange-100 text-orange-600",
+        dark: "bg-orange-900/20 text-orange-400"
+      },
     };
-    return colors[color] || "bg-gray-100 text-gray-600";
+    const colorSet = colors[color] || { light: "bg-gray-100 text-gray-600", dark: "bg-gray-700 text-gray-400" };
+    return `${colorSet.light} dark:${colorSet.dark}`;
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 dark:bg-gray-900 dark:text-gray-100 min-h-screen p-6">
       {/* Header */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h1 className="text-2xl font-bold text-gray-900">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
           Welcome to Dashboard
         </h1>
-        <p className="text-gray-600 mt-2">
+        <p className="text-gray-600 dark:text-gray-300 mt-2">
           Select an option from the sidebar to view detailed analytics and
           manage your content.
         </p>
@@ -145,23 +158,23 @@ export default function DashboardOverview() {
           {statCards.map((card, index) => (
             <div
               key={index}
-              className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                     {card.title}
                   </p>
-                  <p className="text-2xl font-bold text-gray-900 mt-1">
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
                     {card.value}
                   </p>
                   <div className="flex items-center mt-2">
-                    <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
-                    <span className="text-sm text-green-600">
+                    <TrendingUp className="w-4 h-4 text-green-500 dark:text-green-400 mr-1" />
+                    <span className="text-sm text-green-600 dark:text-green-400">
                       +{card.recent} this week
                     </span>
                   </div>
-                  <p className="text-xs text-gray-500 mt-2">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
                     {card.description}
                   </p>
                 </div>
@@ -179,51 +192,51 @@ export default function DashboardOverview() {
       {/* Quick Actions & Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Quick Actions */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             Quick Actions
           </h2>
           <div className="space-y-3">
             <Link to="retiree-requests">
-              <button className="w-full text-left p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+              <button className="w-full text-left p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <div className="flex items-center justify-between">
-                  <span className="font-medium text-gray-700">
+                  <span className="font-medium text-gray-700 dark:text-gray-300">
                     View Retirement Plans
                   </span>
-                  <Users className="w-5 h-5 text-gray-400" />
+                  <Users className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                 </div>
               </button>
             </Link>
 
             <Link to="pdf-reports">
-              <button className="w-full text-left p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+              <button className="w-full text-left p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <div className="flex items-center justify-between">
-                  <span className="font-medium text-gray-700">
+                  <span className="font-medium text-gray-700 dark:text-gray-300">
                     Check PDF Downloads
                   </span>
-                  <Download className="w-5 h-5 text-gray-400" />
+                  <Download className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                 </div>
               </button>
             </Link>
 
             <Link to="ebook-downloads">
-              <button className="w-full text-left p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+              <button className="w-full text-left p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <div className="flex items-center justify-between">
-                  <span className="font-medium text-gray-700">
+                  <span className="font-medium text-gray-700 dark:text-gray-300">
                     Check Ebook Downloads
                   </span>
-                  <Download className="w-5 h-5 text-gray-400" />
+                  <Download className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                 </div>
               </button>
             </Link>
 
             <Link to="ebook-feedbacks">
-              <button className="w-full text-left p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+              <button className="w-full text-left p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <div className="flex items-center justify-between">
-                  <span className="font-medium text-gray-700">
+                  <span className="font-medium text-gray-700 dark:text-gray-300">
                     Review Feedbacks
                   </span>
-                  <MessageSquareText className="w-5 h-5 text-gray-400" />
+                  <MessageSquareText className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                 </div>
               </button>
             </Link>
@@ -231,30 +244,30 @@ export default function DashboardOverview() {
         </div>
 
         {/* Recent Activity Summary */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             Recent Activity
           </h2>
           <div className="space-y-4">
             <div className="flex items-center justify-between py-2">
               <div className="flex items-center">
-                <Calendar className="w-4 h-4 text-gray-400 mr-3" />
-                <span className="text-sm text-gray-700">
+                <Calendar className="w-4 h-4 text-gray-400 dark:text-gray-500 mr-3" />
+                <span className="text-sm text-gray-700 dark:text-gray-300">
                   New retirement plans today
                 </span>
               </div>
-              <span className="font-semibold text-gray-900">
+              <span className="font-semibold text-gray-900 dark:text-white">
                 {stats?.recentRetirementPlans || 0}
               </span>
             </div>
             <div className="flex items-center justify-between py-2">
               <div className="flex items-center">
-                <Download className="w-4 h-4 text-gray-400 mr-3" />
-                <span className="text-sm text-gray-700">
+                <Download className="w-4 h-4 text-gray-400 dark:text-gray-500 mr-3" />
+                <span className="text-sm text-gray-700 dark:text-gray-300">
                   PDF downloads this week
                 </span>
               </div>
-              <span className="font-semibold text-gray-900">
+              <span className="font-semibold text-gray-900 dark:text-white">
                 {stats?.recentPdfDownloads || 0}
               </span>
             </div>

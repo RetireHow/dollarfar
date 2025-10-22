@@ -117,11 +117,14 @@ const AdminLogin: React.FC = () => {
                 />
               )}
             </div>
-            <Link to="/send-otp">
-              <p className="text-right mt-1 hover:underline cursor-pointer">
-                Forgot password? Reset
-              </p>
+            <div className="flex justify-end">
+              <Link
+              to="/send-otp"
+              className="mt-1 hover:underline cursor-pointer"
+            >
+              Forgot password? Reset
             </Link>
+            </div>
           </div>
           <button
             type="submit"

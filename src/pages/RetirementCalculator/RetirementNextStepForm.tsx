@@ -4,6 +4,16 @@ import Error from "../../components/UI/Error";
 import { toast } from "react-toastify";
 import { baseUrl } from "../../api/apiConstant";
 import { ThreeDots } from "react-loader-spinner";
+import { 
+  User, 
+  Target, 
+  Home, 
+  Plane, 
+  Wallet, 
+  MapPin, 
+  Heart, 
+  Shield 
+} from "lucide-react";
 
 interface FormData {
   // Contact Information
@@ -178,10 +188,10 @@ const RetirementNextStepForm = ({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8 px-2 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-8 px-2 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Header Card */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 md:p-8 p-3 mb-8 transform hover:shadow-2xl transition-all duration-300">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 md:p-8 p-3 mb-8 transform hover:shadow-2xl transition-all duration-300">
           {/* Enhanced Banner */}
           <div className="bg-gradient-to-r from-emerald-500 to-purple-600 rounded-2xl md:p-6 p-3 text-white">
             <div className="flex md:flex-row flex-col items-start gap-4">
@@ -202,18 +212,18 @@ const RetirementNextStepForm = ({
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
           <form onSubmit={handleSubmit} className="md:p-8 p-3">
             {/* A. Contact Information */}
-            <div className="border-l-4 border-blue-500 mb-8 bg-blue-100 p-4 rounded-2xl">
+            <div className="border-l-4 border-blue-500 mb-8 bg-blue-100 dark:bg-blue-900/20 p-4 rounded-2xl">
               {/* Header Section  */}
               <div className="mb-6">
                 <div className="flex md:flex-row flex-col md:items-center gap-4">
-                  <div className="flex items-center justify-center w-10 h-10 bg-blue-500 text-white rounded-lg font-bold text-lg">
-                    A
+                  <div className="flex items-center justify-center w-10 h-10 bg-blue-500 text-white rounded-lg font-bold">
+                    <User className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-blue-900">
+                    <h3 className="text-xl font-bold text-blue-900 dark:text-blue-100">
                       Contact Information
                     </h3>
                   </div>
@@ -225,7 +235,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="full_name"
-                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:account-outline"
@@ -242,10 +252,10 @@ const RetirementNextStepForm = ({
                       autoComplete="name"
                       value={formData.full_name}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                       placeholder="Enter your full name"
                     />
-                    <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                    <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
                         icon="mdi:information-outline"
                         className="text-blue-400"
@@ -261,7 +271,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="phone"
-                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:phone-outline"
@@ -276,10 +286,10 @@ const RetirementNextStepForm = ({
                       autoComplete="tel"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                       placeholder="Your phone number"
                     />
-                    <small className="text-gray-500 text-sm mt-2 flex items-center gap-1">
+                    <small className="text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
                         icon="mdi:information-outline"
                         className="text-blue-400"
@@ -297,7 +307,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:email-outline"
@@ -312,10 +322,10 @@ const RetirementNextStepForm = ({
                       autoComplete="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                       placeholder="your.email@example.com"
                     />
-                    <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                    <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
                         icon="mdi:information-outline"
                         className="text-blue-400"
@@ -330,7 +340,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="region"
-                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:map-marker-outline"
@@ -346,10 +356,10 @@ const RetirementNextStepForm = ({
                       maxLength={60}
                       value={formData.region}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                       placeholder="Your region"
                     />
-                    <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                    <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
                         icon="mdi:information-outline"
                         className="text-blue-400"
@@ -363,16 +373,16 @@ const RetirementNextStepForm = ({
             </div>
 
             {/* B. Retirement Snapshot */}
-            <div className="border-l-4 border-green-500 mb-8 bg-green-100 p-4 rounded-2xl">
+            <div className="border-l-4 border-green-500 mb-8 bg-green-100 dark:bg-green-900/20 p-4 rounded-2xl">
               {/* Header Section  */}
               <div className="mb-6">
                 <div className="flex md:flex-row flex-col md:items-center gap-4">
-                  <div className="flex items-center justify-center w-10 h-10 bg-green-500 text-white rounded-lg font-bold text-lg">
-                    B
+                  <div className="flex items-center justify-center w-10 h-10 bg-green-500 text-white rounded-lg font-bold">
+                    <Target className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-green-900">
-                      Retierment Snapshot
+                    <h3 className="text-xl font-bold text-green-900 dark:text-green-100">
+                      Retirement Snapshot
                     </h3>
                   </div>
                 </div>
@@ -382,7 +392,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="target_age"
-                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:calendar-outline"
@@ -397,10 +407,10 @@ const RetirementNextStepForm = ({
                       value={formData.target_age}
                       onChange={handleInputChange}
                       onWheel={preventScrollChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-gray-50"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                       placeholder="e.g., 65"
                     />
-                    <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                    <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
                         icon="mdi:information-outline"
                         className="text-green-400"
@@ -413,7 +423,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="desired_income"
-                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:cash-usd-outline"
@@ -428,10 +438,10 @@ const RetirementNextStepForm = ({
                       value={formData.desired_income}
                       onChange={handleInputChange}
                       onWheel={preventScrollChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-gray-50"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                       placeholder="Annual income amount"
                     />
-                    <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                    <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
                         icon="mdi:information-outline"
                         className="text-green-400"
@@ -445,7 +455,7 @@ const RetirementNextStepForm = ({
                 <div>
                   <label
                     htmlFor="estimated_savings"
-                    className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                    className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                   >
                     <Icon
                       icon="mdi:piggy-bank-outline"
@@ -460,10 +470,10 @@ const RetirementNextStepForm = ({
                     value={formData.estimated_savings}
                     onChange={handleInputChange}
                     onWheel={preventScrollChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-gray-50"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     placeholder="Your total savings"
                   />
-                  <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                  <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                     <Icon
                       icon="mdi:information-outline"
                       className="text-green-400"
@@ -476,15 +486,15 @@ const RetirementNextStepForm = ({
             </div>
 
             {/* C. Housing & Real Estate Equity */}
-            <div className="border-l-4 border-amber-500 mb-8 bg-amber-100 p-4 rounded-2xl">
+            <div className="border-l-4 border-amber-500 mb-8 bg-amber-100 dark:bg-amber-900/20 p-4 rounded-2xl">
               {/* Header Section  */}
               <div className="mb-6">
                 <div className="flex md:flex-row flex-col md:items-center gap-4">
-                  <div className="flex items-center justify-center w-10 h-10 bg-amber-500 text-white rounded-lg font-bold text-lg">
-                    C
+                  <div className="flex items-center justify-center w-10 h-10 bg-amber-500 text-white rounded-lg font-bold">
+                    <Home className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-amber-900">
+                    <h3 className="text-xl font-bold text-amber-900 dark:text-amber-100">
                       Housing & Real Estate Equity
                     </h3>
                   </div>
@@ -494,7 +504,7 @@ const RetirementNextStepForm = ({
                 <div>
                   <label
                     htmlFor="estimated_home_equity"
-                    className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                    className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                   >
                     <Icon icon="mdi:home-outline" className="text-amber-500" />
                     Estimated home equity (net value of real estate)
@@ -506,10 +516,10 @@ const RetirementNextStepForm = ({
                     value={formData.estimated_home_equity}
                     onChange={handleInputChange}
                     onWheel={preventScrollChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 bg-gray-50"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     placeholder="Home equity amount"
                   />
-                  <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                  <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                     <Icon
                       icon="mdi:information-outline"
                       className="text-amber-400"
@@ -523,7 +533,7 @@ const RetirementNextStepForm = ({
                 <div>
                   <label
                     htmlFor="equity_comfort"
-                    className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                    className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                   >
                     <Icon
                       icon="mdi:handshake-outline"
@@ -536,7 +546,7 @@ const RetirementNextStepForm = ({
                     name="equity_comfort"
                     value={formData.equity_comfort}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 bg-gray-50"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                   >
                     <option value="none">Not comfortable</option>
                     <option value="open">Open to discuss</option>
@@ -544,7 +554,7 @@ const RetirementNextStepForm = ({
                       Comfortable within limits
                     </option>
                   </select>
-                  <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                  <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                     <Icon
                       icon="mdi:information-outline"
                       className="text-amber-400"
@@ -558,15 +568,15 @@ const RetirementNextStepForm = ({
             </div>
 
             {/* D. Part-Time Abroad Preferences */}
-            <div className="border-l-4 border-purple-500 mb-8 bg-purple-100 p-4 rounded-2xl">
+            <div className="border-l-4 border-purple-500 mb-8 bg-purple-100 dark:bg-purple-900/20 p-4 rounded-2xl">
               {/* Header Section  */}
               <div className="mb-6">
                 <div className="flex md:flex-row flex-col md:items-center gap-4">
-                  <div className="flex items-center justify-center w-10 h-10 bg-purple-500 text-white rounded-lg font-bold text-lg">
-                    D
+                  <div className="flex items-center justify-center w-10 h-10 bg-purple-500 text-white rounded-lg font-bold">
+                    <Plane className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-purple-900">
+                    <h3 className="text-xl font-bold text-purple-900 dark:text-purple-100">
                       Part-Time Abroad Preferences
                     </h3>
                   </div>
@@ -577,7 +587,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="country_region"
-                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                     >
                       <Icon icon="mdi:earth" className="text-purple-500" />
                       Preferred country/region
@@ -587,7 +597,7 @@ const RetirementNextStepForm = ({
                       name="country_region"
                       value={formData.country_region}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-gray-50"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     >
                       <option value="">Select…</option>
                       <option value="south_india">South India</option>
@@ -595,7 +605,7 @@ const RetirementNextStepForm = ({
                       <option value="mexico">Mexico</option>
                       <option value="other">Other</option>
                     </select>
-                    <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                    <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
                         icon="mdi:information-outline"
                         className="text-purple-400"
@@ -608,7 +618,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="ideal_locations"
-                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:city-variant-outline"
@@ -625,9 +635,9 @@ const RetirementNextStepForm = ({
                       maxLength={120}
                       value={formData.ideal_locations}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-gray-50"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     />
-                    <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                    <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
                         icon="mdi:information-outline"
                         className="text-purple-400"
@@ -642,7 +652,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="months_abroad"
-                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:calendar-month-outline"
@@ -655,7 +665,7 @@ const RetirementNextStepForm = ({
                       name="months_abroad"
                       value={formData.months_abroad}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-gray-50"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     >
                       <option value="">Select…</option>
                       <option>2–3</option>
@@ -663,7 +673,7 @@ const RetirementNextStepForm = ({
                       <option>6+</option>
                       <option>Undecided</option>
                     </select>
-                    <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                    <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
                         icon="mdi:information-outline"
                         className="text-purple-400"
@@ -676,7 +686,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="start_timeline"
-                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:clock-outline"
@@ -693,9 +703,9 @@ const RetirementNextStepForm = ({
                       maxLength={40}
                       value={formData.start_timeline}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-gray-50"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     />
-                    <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                    <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
                         icon="mdi:information-outline"
                         className="text-purple-400"
@@ -709,7 +719,7 @@ const RetirementNextStepForm = ({
                 <div>
                   <label
                     htmlFor="travel_style"
-                    className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                    className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                   >
                     <Icon icon="mdi:luggage" className="text-purple-500" />
                     Travel style
@@ -719,7 +729,7 @@ const RetirementNextStepForm = ({
                     name="travel_style"
                     value={formData.travel_style}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-gray-50"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                   >
                     <option value="">Select…</option>
                     <option value="apartment">Apartment/Condo</option>
@@ -728,7 +738,7 @@ const RetirementNextStepForm = ({
                     <option value="extended_stay">Extended‑stay</option>
                     <option value="snowbird">Snowbird community</option>
                   </select>
-                  <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                  <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                     <Icon
                       icon="mdi:information-outline"
                       className="text-purple-400"
@@ -737,22 +747,22 @@ const RetirementNextStepForm = ({
                   </small>
                 </div>
 
-                <div className="p-4 bg-purple-50 rounded-xl border border-purple-200">
+                <div className="p-4 bg-purple-50 dark:bg-purple-900/30 rounded-xl border border-purple-200 dark:border-purple-700">
                   <label className="flex items-start gap-3">
                     <input
                       type="checkbox"
                       name="independent_travel_ack"
                       checked={formData.independent_travel_ack}
                       onChange={handleInputChange}
-                      className="mt-1 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                      className="mt-1 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 dark:border-gray-600"
                     />
-                    <span className="text-sm font-bold text-gray-700">
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
                       I can travel independently without mobility assistance. I
                       understand some destinations abroad may be less accessible
                       than in Canada/USA.
                     </span>
                   </label>
-                  <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                  <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                     <Icon
                       icon="mdi:information-outline"
                       className="text-purple-400"
@@ -765,15 +775,15 @@ const RetirementNextStepForm = ({
             </div>
 
             {/* E. Budget Estimates */}
-            <div className="border-l-4 border-indigo-500 mb-8 bg-indigo-100 p-4 rounded-2xl">
+            <div className="border-l-4 border-indigo-500 mb-8 bg-indigo-100 dark:bg-indigo-900/20 p-4 rounded-2xl">
               {/* Header Section  */}
               <div className="mb-6">
                 <div className="flex md:flex-row flex-col md:items-center gap-4">
-                  <div className="flex items-center justify-center w-10 h-10 bg-indigo-500 text-white rounded-lg font-bold text-lg">
-                    E
+                  <div className="flex items-center justify-center w-10 h-10 bg-indigo-500 text-white rounded-lg font-bold">
+                    <Wallet className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-indigo-900">
+                    <h3 className="text-xl font-bold text-indigo-900 dark:text-indigo-100">
                       Budget Estimates
                     </h3>
                   </div>
@@ -784,7 +794,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="home_spend_monthly"
-                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                     >
                       <Icon
                         icon="mdi:home-currency-usd"
@@ -800,9 +810,9 @@ const RetirementNextStepForm = ({
                       value={formData.home_spend_monthly}
                       onChange={handleInputChange}
                       onWheel={preventScrollChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     />
-                    <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                    <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
                         icon="mdi:information-outline"
                         className="text-indigo-400"
@@ -814,7 +824,7 @@ const RetirementNextStepForm = ({
                   <div>
                     <label
                       htmlFor="abroad_budget_season"
-                      className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                      className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                     >
                       <Icon icon="mdi:airplane" className="text-indigo-500" />
                       Abroad seasonal budget (per winter season, estimate)
@@ -827,9 +837,9 @@ const RetirementNextStepForm = ({
                       value={formData.abroad_budget_season}
                       onChange={handleInputChange}
                       onWheel={preventScrollChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     />
-                    <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                    <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
                         icon="mdi:information-outline"
                         className="text-indigo-400"
@@ -843,7 +853,7 @@ const RetirementNextStepForm = ({
                 <div>
                   <label
                     htmlFor="flights_insurance_budget"
-                    className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                    className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                   >
                     <Icon
                       icon="mdi:wallet-travel"
@@ -858,9 +868,9 @@ const RetirementNextStepForm = ({
                     placeholder="e.g., $1,500 economy / $4,000 premium economy / $7,000 business (round trip)"
                     value={formData.flights_insurance_budget}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                   />
-                  <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                  <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                     <Icon
                       icon="mdi:information-outline"
                       className="text-indigo-400"
@@ -873,7 +883,7 @@ const RetirementNextStepForm = ({
                 <div>
                   <label
                     htmlFor="flight_class"
-                    className="block text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"
+                    className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                   >
                     <Icon
                       icon="mdi:seat-passenger"
@@ -886,7 +896,7 @@ const RetirementNextStepForm = ({
                     name="flight_class"
                     value={formData.flight_class}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                   >
                     <option value="">Select…</option>
                     <option>Economy</option>
@@ -894,7 +904,7 @@ const RetirementNextStepForm = ({
                     <option>Business</option>
                     <option>First</option>
                   </select>
-                  <small className="block text-gray-500 text-sm mt-2 flex items-center gap-1">
+                  <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                     <Icon
                       icon="mdi:information-outline"
                       className="text-indigo-400"
@@ -907,15 +917,15 @@ const RetirementNextStepForm = ({
             </div>
 
             {/* F. Purpose of Travel */}
-            <div className="border-l-4 border-teal-500 mb-8 bg-teal-100 p-4 rounded-2xl">
+            <div className="border-l-4 border-teal-500 mb-8 bg-teal-100 dark:bg-teal-900/20 p-4 rounded-2xl">
               {/* Header Section  */}
               <div className="mb-6">
                 <div className="flex md:flex-row flex-col md:items-center gap-4">
-                  <div className="flex items-center justify-center w-10 h-10 bg-teal-500 text-white rounded-lg font-bold text-lg">
-                    F
+                  <div className="flex items-center justify-center w-10 h-10 bg-teal-500 text-white rounded-lg font-bold">
+                    <MapPin className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-teal-900">
+                    <h3 className="text-xl font-bold text-teal-900 dark:text-teal-100">
                       Purpose of Travel
                     </h3>
                   </div>
@@ -966,7 +976,7 @@ const RetirementNextStepForm = ({
                 ].map((option) => (
                   <label
                     key={option.value}
-                    className="flex items-start gap-3 p-3 hover:bg-teal-200 rounded-lg transition-colors duration-200 border-[1px] border-teal-400"
+                    className="flex items-start gap-3 p-3 hover:bg-teal-200 dark:hover:bg-teal-800 rounded-lg transition-colors duration-200 border-[1px] border-teal-400 dark:border-teal-600"
                   >
                     <input
                       type="checkbox"
@@ -974,14 +984,14 @@ const RetirementNextStepForm = ({
                       value={option.value}
                       checked={formData.travel_purpose.includes(option.value)}
                       onChange={handleCheckboxGroupChange}
-                      className="mt-1 w-4 h-4 text-teal-600 border-teal-300 rounded focus:ring-teal-500"
+                      className="mt-1 w-4 h-4 text-teal-600 border-teal-300 rounded focus:ring-teal-500 dark:border-gray-600"
                     />
                     <div className="flex md:flex-row flex-col md:items-center gap-2">
                       <Icon
                         icon={option.icon}
-                        className="text-teal-700 text-lg"
+                        className="text-teal-700 dark:text-teal-400 text-lg"
                       />
-                      <span className="text-sm font-bold text-gray-700 select-none">
+                      <span className="text-sm font-bold text-gray-700 dark:text-gray-300 select-none">
                         {option.label}
                       </span>
                     </div>
@@ -991,15 +1001,15 @@ const RetirementNextStepForm = ({
             </div>
 
             {/* G. Interests & Services */}
-            <div className="border-l-4 border-lime-500 mb-8 bg-lime-100 text- p-4 rounded-2xl">
+            <div className="border-l-4 border-lime-500 mb-8 bg-lime-100 dark:bg-lime-900/20 text- p-4 rounded-2xl">
               {/* Header Section  */}
               <div className="mb-6">
                 <div className="flex md:flex-row flex-col md:items-center gap-4">
-                  <div className="flex items-center justify-center w-10 h-10 bg-lime-500 text-white rounded-lg font-bold text-lg">
-                    G
+                  <div className="flex items-center justify-center w-10 h-10 bg-lime-500 text-white rounded-lg font-bold">
+                    <Heart className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-lime-900">
+                    <h3 className="text-xl font-bold text-lime-900 dark:text-lime-100">
                       Interests & Services
                     </h3>
                   </div>
@@ -1050,7 +1060,7 @@ const RetirementNextStepForm = ({
                 ].map((option) => (
                   <label
                     key={option.value}
-                    className="flex items-start gap-3 p-3 hover:bg-lime-200 rounded-lg transition-colors duration-200 border-[1px] border-lime-400"
+                    className="flex items-start gap-3 p-3 hover:bg-lime-200 dark:hover:bg-lime-800 rounded-lg transition-colors duration-200 border-[1px] border-lime-400 dark:border-lime-600"
                   >
                     <input
                       type="checkbox"
@@ -1058,14 +1068,14 @@ const RetirementNextStepForm = ({
                       value={option.value}
                       checked={formData.interests.includes(option.value)}
                       onChange={handleCheckboxGroupChange}
-                      className="mt-1 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                      className="mt-1 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500 dark:border-gray-600"
                     />
                     <div className="flex md:flex-row flex-col md:items-center gap-2">
                       <Icon
                         icon={option.icon}
-                        className="text-lime-700 text-lg"
+                        className="text-lime-700 dark:text-lime-400 text-lg"
                       />
-                      <span className="text-sm font-bold text-gray-700 select-none">
+                      <span className="text-sm font-bold text-gray-700 dark:text-gray-300 select-none">
                         {option.label}
                       </span>
                     </div>
@@ -1075,32 +1085,32 @@ const RetirementNextStepForm = ({
             </div>
 
             {/* H. Privacy & Pricing */}
-            <div className="border-l-4 border-cyan-500 mb-8 bg-cyan-100 p-4 rounded-2xl text-">
+            <div className="border-l-4 border-cyan-500 mb-8 bg-cyan-100 dark:bg-cyan-900/20 p-4 rounded-2xl text-">
               {/* Header Section  */}
               <div className="mb-6">
                 <div className="flex md:flex-row flex-col md:items-center gap-4">
-                  <div className="flex items-center justify-center w-10 h-10 bg-cyan-500 text-white rounded-lg font-bold text-lg">
-                    H
+                  <div className="flex items-center justify-center w-10 h-10 bg-cyan-500 text-white rounded-lg font-bold">
+                    <Shield className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-cyan-900">
+                    <h3 className="text-xl font-bold text-cyan-900 dark:text-cyan-100">
                       Privacy & Pricing
                     </h3>
                   </div>
                 </div>
               </div>
               <div className="space-y-6">
-                <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl md:p-6 p-2 border border-gray-200">
+                <div className="bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20 rounded-2xl md:p-6 p-2 border border-gray-200 dark:border-gray-700">
                   <div className="flex md:flex-row flex-col items-start gap-3 mb-4">
                     <Icon
                       icon="mdi:shield-check-outline"
                       className="text-blue-500 text-2xl"
                     />
                     <div>
-                      <h4 className="font-bold text-gray-900 text-lg">
+                      <h4 className="font-bold text-gray-900 dark:text-white text-lg">
                         Transparency First
                       </h4>
-                      <p className="text-gray-700 text-sm leading-relaxed mt-2">
+                      <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mt-2">
                         We collect <strong>estimates only</strong> — no account
                         statements. When you ask us to coordinate, we work with
                         vetted experts (e.g., travel, lodging, drivers,
@@ -1113,7 +1123,7 @@ const RetirementNextStepForm = ({
                         <strong>flat 10% service delivery fee</strong> on total
                         project costs.
                       </p>
-                      <p className="text-gray-700 text-sm leading-relaxed mt-3">
+                      <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mt-3">
                         This is not financial advice. If you choose a{" "}
                         <strong>Comprehensive Wealth Plan</strong>, RetireHow
                         collaborates with{" "}
@@ -1127,45 +1137,45 @@ const RetirementNextStepForm = ({
                 </div>
 
                 <div className="space-y-4">
-                  <label className="flex items-start gap-3 p-4 bg-blue-50 rounded-xl border border-blue-200 transition-all duration-200 hover:bg-blue-100">
+                  <label className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-xl border border-blue-200 dark:border-blue-700 transition-all duration-200 hover:bg-blue-100 dark:hover:bg-blue-800">
                     <input
                       type="checkbox"
                       name="fee_ack"
                       checked={formData.fee_ack}
                       onChange={handleInputChange}
-                      className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                      className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:border-gray-600"
                     />
-                    <span className="text-sm font-bold text-gray-700 select-none">
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300 select-none">
                       I acknowledge the pricing model (actuals + 10% service
                       delivery fee; any third‑party commissions credited back to
                       me) and would like to be contacted.
                     </span>
                   </label>
 
-                  <label className="flex items-start gap-3 p-4 bg-green-50 rounded-xl border border-green-200 transition-all duration-200 hover:bg-green-100">
+                  <label className="flex items-start gap-3 p-4 bg-green-50 dark:bg-green-900/30 rounded-xl border border-green-200 dark:border-green-700 transition-all duration-200 hover:bg-green-100 dark:hover:bg-green-800">
                     <input
                       type="checkbox"
                       name="consent_contact"
                       checked={formData.consent_contact}
                       onChange={handleInputChange}
-                      className="mt-1 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                      className="mt-1 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500 dark:border-gray-600"
                     />
-                    <span className="text-sm font-bold text-gray-700 select-none">
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300 select-none">
                       I consent to be contacted by RetireHow Inc. for
                       educational and informational purposes regarding my
                       inquiry.
                     </span>
                   </label>
 
-                  <label className="flex items-start gap-3 p-4 bg-purple-50 rounded-xl border border-purple-200 transition-all duration-200 hover:bg-purple-100">
+                  <label className="flex items-start gap-3 p-4 bg-purple-50 dark:bg-purple-900/30 rounded-xl border border-purple-200 dark:border-purple-700 transition-all duration-200 hover:bg-purple-100 dark:hover:bg-purple-800">
                     <input
                       type="checkbox"
                       name="consent_marketing"
                       checked={formData.consent_marketing}
                       onChange={handleInputChange}
-                      className="mt-1 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                      className="mt-1 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 dark:border-gray-600"
                     />
-                    <span className="text-sm font-bold text-gray-700 select-none">
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300 select-none">
                       I agree to receive occasional updates from RetireHow Inc.
                       about tools and resources (unsubscribe anytime).
                     </span>
@@ -1209,21 +1219,21 @@ const RetirementNextStepForm = ({
                 </button>
               </div>
 
-              <p className="text-gray-600 text-sm mt-6 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-400 text-sm mt-6 max-w-2xl mx-auto leading-relaxed">
                 We protect your data, never sell it, and only charge actual
                 costs plus a 10% delivery fee if you engage us. Your retirement
                 journey starts with this single step.
               </p>
 
-              <div className="border-t border-gray-200 my-8 max-w-2xl mx-auto"></div>
+              <div className="border-t border-gray-200 dark:border-gray-700 my-8 max-w-2xl mx-auto"></div>
 
-              <div className="bg-gradient-to-r from-slate-50 to-blue-50 rounded-2xl p-6 max-w-2xl mx-auto">
-                <p className="text-gray-500 text-sm">
+              <div className="bg-gradient-to-r from-slate-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20 rounded-2xl p-6 max-w-2xl mx-auto">
+                <p className="text-gray-500 dark:text-gray-400 text-sm">
                   DollarFar.com is provided by{" "}
-                  <strong className="text-emerald-600">RetireHow Inc.</strong>{" "}
+                  <strong className="text-emerald-600 dark:text-emerald-400">RetireHow Inc.</strong>{" "}
                   as part of our commitment to bring financial know‑how to
                   everyone. A member of the{" "}
-                  <strong className="text-emerald-600">RetireHow</strong> team
+                  <strong className="text-emerald-600 dark:text-emerald-400">RetireHow</strong> team
                   will contact you directly after submission.
                 </p>
                 <div className="flex items-center justify-center gap-6 mt-4">

@@ -57,13 +57,13 @@ const RetirementNextStepModal: React.FC = () => {
             <div className="md:w-1/3 text-center md:text-right">
               <button
                 onClick={showModal}
-                className="bg-white text-emerald-600 hover:bg-gray-50 font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl text-lg w-full md:w-auto"
+                className="bg-white text-emerald-600 hover:bg-gray-50 dark:bg-gray-800 dark:text-emerald-400 dark:hover:bg-gray-700 font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl text-lg w-full md:w-auto"
               >
                 <div className="flex md:flex-row flex-col items-center justify-center gap-2">
                   <Icon icon="mdi:chart-line" className="text-xl" />
                   Get Personalized Plan
                 </div>
-                <div className="text-sm text-gray-600 mt-1 font-normal">
+                <div className="text-sm text-gray-600 dark:text-gray-400 mt-1 font-normal">
                   Free consultation • No obligation
                 </div>
               </button>
@@ -73,26 +73,26 @@ const RetirementNextStepModal: React.FC = () => {
 
         {/* Trust Indicators */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 text-center">
-          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
             <Icon
               icon="mdi:shield-check"
               className="text-green-500 text-2xl mx-auto mb-2"
             />
-            <div className="text-sm text-gray-600">Data Protected & Secure</div>
+            <div className="text-sm text-gray-600 dark:text-gray-400">Data Protected & Secure</div>
           </div>
-          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
             <Icon
               icon="mdi:clock-outline"
               className="text-blue-500 text-2xl mx-auto mb-2"
             />
-            <div className="text-sm text-gray-600">Takes 5-10 Minutes</div>
+            <div className="text-sm text-gray-600 dark:text-gray-400">Takes 5-10 Minutes</div>
           </div>
-          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
             <Icon
               icon="mdi:email-fast"
               className="text-purple-500 text-2xl mx-auto mb-2"
             />
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-600 dark:text-gray-400">
               Personalized Response in 24h
             </div>
           </div>
@@ -108,7 +108,7 @@ const RetirementNextStepModal: React.FC = () => {
         width="90%"
         style={{ maxWidth: "1200px" }}
         bodyStyle={{ padding: 0 }}
-        className="retirement-next-step-modal"
+        className="retirement-nextstep-modal dark:[&_.ant-modal-content]:bg-gray-900 dark:[&_.ant-modal-content]:text-gray-100"
         destroyOnClose
         closeIcon={false}
       >
