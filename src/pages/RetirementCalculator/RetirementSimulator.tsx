@@ -213,6 +213,9 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 // Main component
 const RetirementSimulator: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   // Default parameters
   const defaultParams: RetirementParams = {
     currentAge: 40,
@@ -1645,7 +1648,7 @@ const RetirementSimulator: React.FC = () => {
           </div>
         </div>
       </main>
-      <RetirementNextStepModal/>
+      <RetirementNextStepModal />
       {/* PDF Hidden Content  */}
       <div
         ref={targetRef}
