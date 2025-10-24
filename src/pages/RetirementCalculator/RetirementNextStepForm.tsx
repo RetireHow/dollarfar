@@ -4,16 +4,18 @@ import Error from "../../components/UI/Error";
 import { toast } from "react-toastify";
 import { baseUrl } from "../../api/apiConstant";
 import { ThreeDots } from "react-loader-spinner";
-import { 
-  User, 
-  Target, 
-  Home, 
-  Plane, 
-  Wallet, 
-  MapPin, 
-  Heart, 
-  Shield 
+import {
+  User,
+  Target,
+  Home,
+  Plane,
+  Wallet,
+  MapPin,
+  Heart,
+  Shield,
 } from "lucide-react";
+import { Checkbox, ConfigProvider } from "antd";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 
 interface FormData {
   // Contact Information
@@ -94,9 +96,11 @@ const RetirementNextStepForm = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    e:
+      | React.ChangeEvent<
+          HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+        >
+      | CheckboxChangeEvent
   ) => {
     const { name, value, type } = e.target;
 
@@ -104,24 +108,22 @@ const RetirementNextStepForm = ({
       const checked = (e.target as HTMLInputElement).checked;
       setFormData((prev) => ({
         ...prev,
-        [name]: checked,
+        [name as string]: checked,
       }));
     } else {
       setFormData((prev) => ({
         ...prev,
-        [name]: value,
+        [name as string]: value,
       }));
     }
   };
 
-  const handleCheckboxGroupChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleCheckboxGroupChange = (e: CheckboxChangeEvent) => {
     const { name, value, checked } = e.target;
 
     setFormData((prev) => ({
       ...prev,
-      [name]: checked
+      [name as string]: checked
         ? [...(prev[name as keyof FormData] as string[]), value]
         : (prev[name as keyof FormData] as string[]).filter(
             (item) => item !== value
@@ -252,7 +254,7 @@ const RetirementNextStepForm = ({
                       autoComplete="name"
                       value={formData.full_name}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 outline-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                       placeholder="Enter your full name"
                     />
                     <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
@@ -286,7 +288,7 @@ const RetirementNextStepForm = ({
                       autoComplete="tel"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-blue-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                       placeholder="Your phone number"
                     />
                     <small className="text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
@@ -322,7 +324,7 @@ const RetirementNextStepForm = ({
                       autoComplete="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-blue-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                       placeholder="your.email@example.com"
                     />
                     <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
@@ -356,7 +358,7 @@ const RetirementNextStepForm = ({
                       maxLength={60}
                       value={formData.region}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-blue-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                       placeholder="Your region"
                     />
                     <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
@@ -407,7 +409,7 @@ const RetirementNextStepForm = ({
                       value={formData.target_age}
                       onChange={handleInputChange}
                       onWheel={preventScrollChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-green-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                       placeholder="e.g., 65"
                     />
                     <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
@@ -438,7 +440,7 @@ const RetirementNextStepForm = ({
                       value={formData.desired_income}
                       onChange={handleInputChange}
                       onWheel={preventScrollChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-green-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                       placeholder="Annual income amount"
                     />
                     <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
@@ -470,7 +472,7 @@ const RetirementNextStepForm = ({
                     value={formData.estimated_savings}
                     onChange={handleInputChange}
                     onWheel={preventScrollChange}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-green-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     placeholder="Your total savings"
                   />
                   <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
@@ -516,7 +518,7 @@ const RetirementNextStepForm = ({
                     value={formData.estimated_home_equity}
                     onChange={handleInputChange}
                     onWheel={preventScrollChange}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-amber-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     placeholder="Home equity amount"
                   />
                   <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
@@ -546,7 +548,7 @@ const RetirementNextStepForm = ({
                     name="equity_comfort"
                     value={formData.equity_comfort}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-amber-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                   >
                     <option value="none">Not comfortable</option>
                     <option value="open">Open to discuss</option>
@@ -597,7 +599,7 @@ const RetirementNextStepForm = ({
                       name="country_region"
                       value={formData.country_region}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     >
                       <option value="">Select…</option>
                       <option value="south_india">South India</option>
@@ -635,7 +637,7 @@ const RetirementNextStepForm = ({
                       maxLength={120}
                       value={formData.ideal_locations}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     />
                     <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
@@ -665,7 +667,7 @@ const RetirementNextStepForm = ({
                       name="months_abroad"
                       value={formData.months_abroad}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     >
                       <option value="">Select…</option>
                       <option>2–3</option>
@@ -703,7 +705,7 @@ const RetirementNextStepForm = ({
                       maxLength={40}
                       value={formData.start_timeline}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     />
                     <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
@@ -729,7 +731,7 @@ const RetirementNextStepForm = ({
                     name="travel_style"
                     value={formData.travel_style}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                   >
                     <option value="">Select…</option>
                     <option value="apartment">Apartment/Condo</option>
@@ -749,13 +751,19 @@ const RetirementNextStepForm = ({
 
                 <div className="p-4 bg-purple-50 dark:bg-purple-900/30 rounded-xl border border-purple-200 dark:border-purple-700">
                   <label className="flex items-start gap-3">
-                    <input
-                      type="checkbox"
-                      name="independent_travel_ack"
-                      checked={formData.independent_travel_ack}
-                      onChange={handleInputChange}
-                      className="mt-1 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 dark:border-gray-600"
-                    />
+                    <ConfigProvider
+                      theme={{
+                        token: {
+                          colorPrimary: "#581c87",
+                          colorBorder: "#581c87",
+                        },
+                      }}
+                    >
+                      <Checkbox
+                        name="independent_travel_ack"
+                        onChange={handleInputChange}
+                      />
+                    </ConfigProvider>
                     <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
                       I can travel independently without mobility assistance. I
                       understand some destinations abroad may be less accessible
@@ -800,7 +808,7 @@ const RetirementNextStepForm = ({
                         icon="mdi:home-currency-usd"
                         className="text-indigo-500"
                       />
-                      Home‑country monthly spend (estimate)
+                      Home-country monthly spend (estimate)
                     </label>
                     <input
                       type="number"
@@ -810,7 +818,7 @@ const RetirementNextStepForm = ({
                       value={formData.home_spend_monthly}
                       onChange={handleInputChange}
                       onWheel={preventScrollChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-indigo-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     />
                     <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
@@ -837,7 +845,7 @@ const RetirementNextStepForm = ({
                       value={formData.abroad_budget_season}
                       onChange={handleInputChange}
                       onWheel={preventScrollChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-indigo-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     />
                     <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
@@ -868,7 +876,7 @@ const RetirementNextStepForm = ({
                     placeholder="e.g., $1,500 economy / $4,000 premium economy / $7,000 business (round trip)"
                     value={formData.flights_insurance_budget}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-indigo-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                   />
                   <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                     <Icon
@@ -896,7 +904,7 @@ const RetirementNextStepForm = ({
                     name="flight_class"
                     value={formData.flight_class}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-indigo-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                   >
                     <option value="">Select…</option>
                     <option>Economy</option>
@@ -978,14 +986,20 @@ const RetirementNextStepForm = ({
                     key={option.value}
                     className="flex items-start gap-3 p-3 hover:bg-teal-200 dark:hover:bg-teal-800 rounded-lg transition-colors duration-200 border-[1px] border-teal-400 dark:border-teal-600"
                   >
-                    <input
-                      type="checkbox"
-                      name="travel_purpose"
-                      value={option.value}
-                      checked={formData.travel_purpose.includes(option.value)}
-                      onChange={handleCheckboxGroupChange}
-                      className="mt-1 w-4 h-4 text-teal-600 border-teal-300 rounded focus:ring-teal-500 dark:border-gray-600"
-                    />
+                    <ConfigProvider
+                      theme={{
+                        token: {
+                          colorPrimary: "#2dd4bf",
+                          colorBorder: "#2dd4bf",
+                        },
+                      }}
+                    >
+                      <Checkbox
+                        name="travel_purpose"
+                        value={option.value}
+                        onChange={handleCheckboxGroupChange}
+                      />
+                    </ConfigProvider>
                     <div className="flex md:flex-row flex-col md:items-center gap-2">
                       <Icon
                         icon={option.icon}
@@ -1062,14 +1076,20 @@ const RetirementNextStepForm = ({
                     key={option.value}
                     className="flex items-start gap-3 p-3 hover:bg-lime-200 dark:hover:bg-lime-800 rounded-lg transition-colors duration-200 border-[1px] border-lime-400 dark:border-lime-600"
                   >
-                    <input
-                      type="checkbox"
-                      name="interests"
-                      value={option.value}
-                      checked={formData.interests.includes(option.value)}
-                      onChange={handleCheckboxGroupChange}
-                      className="mt-1 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500 dark:border-gray-600"
-                    />
+                    <ConfigProvider
+                      theme={{
+                        token: {
+                          colorPrimary: "#a3e635",
+                          colorBorder: "#a3e635",
+                        },
+                      }}
+                    >
+                      <Checkbox
+                        name="interests"
+                        value={option.value}
+                        onChange={handleCheckboxGroupChange}
+                      />
+                    </ConfigProvider>
                     <div className="flex md:flex-row flex-col md:items-center gap-2">
                       <Icon
                         icon={option.icon}
@@ -1138,13 +1158,16 @@ const RetirementNextStepForm = ({
 
                 <div className="space-y-4">
                   <label className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-xl border border-blue-200 dark:border-blue-700 transition-all duration-200 hover:bg-blue-100 dark:hover:bg-blue-800">
-                    <input
-                      type="checkbox"
-                      name="fee_ack"
-                      checked={formData.fee_ack}
-                      onChange={handleInputChange}
-                      className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:border-gray-600"
-                    />
+                    <ConfigProvider
+                      theme={{
+                        token: {
+                          colorPrimary: "#1e40af",
+                          colorBorder: "#1e40af",
+                        },
+                      }}
+                    >
+                      <Checkbox name="fee_ack" onChange={handleInputChange} />
+                    </ConfigProvider>
                     <span className="text-sm font-bold text-gray-700 dark:text-gray-300 select-none">
                       I acknowledge the pricing model (actuals + 10% service
                       delivery fee; any third‑party commissions credited back to
@@ -1153,13 +1176,19 @@ const RetirementNextStepForm = ({
                   </label>
 
                   <label className="flex items-start gap-3 p-4 bg-green-50 dark:bg-green-900/30 rounded-xl border border-green-200 dark:border-green-700 transition-all duration-200 hover:bg-green-100 dark:hover:bg-green-800">
-                    <input
-                      type="checkbox"
-                      name="consent_contact"
-                      checked={formData.consent_contact}
-                      onChange={handleInputChange}
-                      className="mt-1 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500 dark:border-gray-600"
-                    />
+                    <ConfigProvider
+                      theme={{
+                        token: {
+                          colorPrimary: "#15803d",
+                          colorBorder: "#15803d",
+                        },
+                      }}
+                    >
+                      <Checkbox
+                        name="consent_contact"
+                        onChange={handleInputChange}
+                      />
+                    </ConfigProvider>
                     <span className="text-sm font-bold text-gray-700 dark:text-gray-300 select-none">
                       I consent to be contacted by RetireHow Inc. for
                       educational and informational purposes regarding my
@@ -1168,13 +1197,19 @@ const RetirementNextStepForm = ({
                   </label>
 
                   <label className="flex items-start gap-3 p-4 bg-purple-50 dark:bg-purple-900/30 rounded-xl border border-purple-200 dark:border-purple-700 transition-all duration-200 hover:bg-purple-100 dark:hover:bg-purple-800">
-                    <input
-                      type="checkbox"
-                      name="consent_marketing"
-                      checked={formData.consent_marketing}
-                      onChange={handleInputChange}
-                      className="mt-1 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 dark:border-gray-600"
-                    />
+                    <ConfigProvider
+                      theme={{
+                        token: {
+                          colorPrimary: "#7e22ce",
+                          colorBorder: "#7e22ce",
+                        },
+                      }}
+                    >
+                      <Checkbox
+                        name="consent_marketing"
+                        onChange={handleInputChange}
+                      />
+                    </ConfigProvider>
                     <span className="text-sm font-bold text-gray-700 dark:text-gray-300 select-none">
                       I agree to receive occasional updates from RetireHow Inc.
                       about tools and resources (unsubscribe anytime).
@@ -1230,11 +1265,15 @@ const RetirementNextStepForm = ({
               <div className="bg-gradient-to-r from-slate-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20 rounded-2xl p-6 max-w-2xl mx-auto">
                 <p className="text-gray-500 dark:text-gray-400 text-sm">
                   DollarFar.com is provided by{" "}
-                  <strong className="text-emerald-600 dark:text-emerald-400">RetireHow Inc.</strong>{" "}
+                  <strong className="text-emerald-600 dark:text-emerald-400">
+                    RetireHow Inc.
+                  </strong>{" "}
                   as part of our commitment to bring financial know‑how to
                   everyone. A member of the{" "}
-                  <strong className="text-emerald-600 dark:text-emerald-400">RetireHow</strong> team
-                  will contact you directly after submission.
+                  <strong className="text-emerald-600 dark:text-emerald-400">
+                    RetireHow
+                  </strong>{" "}
+                  team will contact you directly after submission.
                 </p>
                 <div className="flex items-center justify-center gap-6 mt-4">
                   <Icon
