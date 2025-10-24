@@ -750,7 +750,7 @@ const RetirementNextStepForm = ({
                 </div>
 
                 <div className="p-4 bg-purple-50 dark:bg-purple-900/30 rounded-xl border border-purple-200 dark:border-purple-700">
-                  <label className="flex items-start gap-3">
+                  <label className="flex items-start gap-3 cursor-pointer">
                     <ConfigProvider
                       theme={{
                         token: {
@@ -984,7 +984,7 @@ const RetirementNextStepForm = ({
                 ].map((option) => (
                   <label
                     key={option.value}
-                    className="flex items-start gap-3 p-3 hover:bg-teal-200 dark:hover:bg-teal-800 rounded-lg transition-colors duration-200 border-[1px] border-teal-400 dark:border-teal-600"
+                    className="flex items-start gap-3 p-3 hover:bg-teal-200 dark:hover:bg-teal-800 rounded-lg transition-colors duration-200 border-[1px] border-teal-400 dark:border-teal-600 cursor-pointer"
                   >
                     <ConfigProvider
                       theme={{
@@ -1074,7 +1074,7 @@ const RetirementNextStepForm = ({
                 ].map((option) => (
                   <label
                     key={option.value}
-                    className="flex items-start gap-3 p-3 hover:bg-lime-200 dark:hover:bg-lime-800 rounded-lg transition-colors duration-200 border-[1px] border-lime-400 dark:border-lime-600"
+                    className="flex items-start gap-3 p-3 hover:bg-lime-200 dark:hover:bg-lime-800 rounded-lg transition-colors duration-200 border-[1px] border-lime-400 dark:border-lime-600 cursor-pointer"
                   >
                     <ConfigProvider
                       theme={{
@@ -1157,7 +1157,7 @@ const RetirementNextStepForm = ({
                 </div>
 
                 <div className="space-y-4">
-                  <label className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-xl border border-blue-200 dark:border-blue-700 transition-all duration-200 hover:bg-blue-100 dark:hover:bg-blue-800">
+                  <label className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-xl border border-blue-200 dark:border-blue-700 transition-all duration-200 hover:bg-blue-100 dark:hover:bg-blue-800 cursor-pointer">
                     <ConfigProvider
                       theme={{
                         token: {
@@ -1175,7 +1175,7 @@ const RetirementNextStepForm = ({
                     </span>
                   </label>
 
-                  <label className="flex items-start gap-3 p-4 bg-green-50 dark:bg-green-900/30 rounded-xl border border-green-200 dark:border-green-700 transition-all duration-200 hover:bg-green-100 dark:hover:bg-green-800">
+                  <label className="flex items-start gap-3 p-4 bg-green-50 dark:bg-green-900/30 rounded-xl border border-green-200 dark:border-green-700 transition-all duration-200 hover:bg-green-100 dark:hover:bg-green-800 cursor-pointer">
                     <ConfigProvider
                       theme={{
                         token: {
@@ -1190,13 +1190,14 @@ const RetirementNextStepForm = ({
                       />
                     </ConfigProvider>
                     <span className="text-sm font-bold text-gray-700 dark:text-gray-300 select-none">
-                      I consent to be contacted by RetireHow Inc. for
-                      educational and informational purposes regarding my
+                      I consent to be contacted by{" "}
+                      <span className="text-orange-400">RetireHow Inc.</span>{" "}
+                      for educational and informational purposes regarding my
                       inquiry.
                     </span>
                   </label>
 
-                  <label className="flex items-start gap-3 p-4 bg-purple-50 dark:bg-purple-900/30 rounded-xl border border-purple-200 dark:border-purple-700 transition-all duration-200 hover:bg-purple-100 dark:hover:bg-purple-800">
+                  <label className="flex items-start gap-3 p-4 bg-purple-50 dark:bg-purple-900/30 rounded-xl border border-purple-200 dark:border-purple-700 transition-all duration-200 hover:bg-purple-100 dark:hover:bg-purple-800 cursor-pointer">
                     <ConfigProvider
                       theme={{
                         token: {
@@ -1265,15 +1266,11 @@ const RetirementNextStepForm = ({
               <div className="bg-gradient-to-r from-slate-50 to-blue-50 dark:from-gray-800 dark:to-blue-900/20 rounded-2xl p-6 max-w-2xl mx-auto">
                 <p className="text-gray-500 dark:text-gray-400 text-sm">
                   DollarFar.com is provided by{" "}
-                  <strong className="text-emerald-600 dark:text-emerald-400">
-                    RetireHow Inc.
-                  </strong>{" "}
-                  as part of our commitment to bring financial know‑how to
+                  <strong className="text-orange-400">RetireHow Inc.</strong> as
+                  part of our commitment to bring financial know‑how to
                   everyone. A member of the{" "}
-                  <strong className="text-emerald-600 dark:text-emerald-400">
-                    RetireHow
-                  </strong>{" "}
-                  team will contact you directly after submission.
+                  <strong className="text-orange-400">RetireHow</strong> team
+                  will contact you directly after submission.
                 </p>
                 <div className="flex items-center justify-center gap-6 mt-4">
                   <Icon
