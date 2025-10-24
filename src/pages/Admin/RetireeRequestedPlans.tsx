@@ -52,8 +52,6 @@ export default function RetireeRequestedPlans() {
         // Parse JSON response
         const data = await res.json();
         // Sort by createdAt descending
-        console.log("Loaded Requested Data===================> ", data?.data);
-
         setRequestedPlans(data?.data);
       } catch (error) {
         const message =
@@ -201,7 +199,7 @@ export default function RetireeRequestedPlans() {
               </div>
               Retirement Snapshot
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="text-center p-4 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
                 <Icon
                   icon="mdi:calendar-clock"
@@ -236,18 +234,6 @@ export default function RetireeRequestedPlans() {
                 </label>
                 <p className="text-green-900 dark:text-green-100 text-xl font-bold">
                   {formatCurrency(record.estimated_savings)}
-                </p>
-              </div>
-              <div className="text-center p-4 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                <Icon
-                  icon="mdi:home"
-                  className="text-3xl text-green-600 dark:text-green-400 mb-2"
-                />
-                <label className="text-sm font-medium text-green-700 dark:text-green-300 block mb-1">
-                  Home Equity
-                </label>
-                <p className="text-green-900 dark:text-green-100 text-xl font-bold">
-                  {formatCurrency(record.estimated_home_equity)}
                 </p>
               </div>
             </div>

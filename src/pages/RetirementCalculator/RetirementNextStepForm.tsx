@@ -550,9 +550,9 @@ const RetirementNextStepForm = ({
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-amber-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                   >
-                    <option value="none">Not comfortable</option>
-                    <option value="open">Open to discuss</option>
-                    <option value="comfortable">
+                    <option value="Not comfortable">Not comfortable</option>
+                    <option value="Open to discuss">Open to discuss</option>
+                    <option value="Comfortable within limits">
                       Comfortable within limits
                     </option>
                   </select>
@@ -602,10 +602,10 @@ const RetirementNextStepForm = ({
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     >
                       <option value="">Select…</option>
-                      <option value="south_india">South India</option>
-                      <option value="portugal">Portugal</option>
-                      <option value="mexico">Mexico</option>
-                      <option value="other">Other</option>
+                      <option value="South India">South India</option>
+                      <option value="Portugal">Portugal</option>
+                      <option value="Mexico">Mexico</option>
+                      <option value="Other">Other</option>
                     </select>
                     <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
@@ -734,11 +734,13 @@ const RetirementNextStepForm = ({
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                   >
                     <option value="">Select…</option>
-                    <option value="apartment">Apartment/Condo</option>
-                    <option value="house_sit">House sit</option>
-                    <option value="hotel">Hotel</option>
-                    <option value="extended_stay">Extended‑stay</option>
-                    <option value="snowbird">Snowbird community</option>
+                    <option value="Apartment/Condo">Apartment/Condo</option>
+                    <option value="House sit">House sit</option>
+                    <option value="Hotel">Hotel</option>
+                    <option value="Extended‑stay">Extended‑stay</option>
+                    <option value="Snowbird community">
+                      Snowbird community
+                    </option>
                   </select>
                   <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                     <Icon
