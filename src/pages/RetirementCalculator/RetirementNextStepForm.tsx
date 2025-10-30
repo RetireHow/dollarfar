@@ -599,7 +599,7 @@ const RetirementNextStepForm = ({
                       name="country_region"
                       value={formData.country_region}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white cursor-pointer"
                     >
                       <option value="">Select…</option>
                       <option value="South India">South India</option>
@@ -667,9 +667,10 @@ const RetirementNextStepForm = ({
                       name="months_abroad"
                       value={formData.months_abroad}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white cursor-pointer"
                     >
                       <option value="">Select…</option>
+                      <option>30 Days Minimum</option>
                       <option>2–3</option>
                       <option>4–5</option>
                       <option>6+</option>
@@ -696,24 +697,46 @@ const RetirementNextStepForm = ({
                       />
                       Earliest start (season/year)
                     </label>
-                    <input
-                      type="text"
+                    <select
                       id="start_timeline"
                       name="start_timeline"
-                      placeholder="e.g., Winter 2026"
-                      minLength={2}
-                      maxLength={40}
                       value={formData.start_timeline}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
-                    />
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white cursor-pointer"
+                    >
+                      <option value="November 2025">November 2025</option>
+                      <option value="December 2025">December 2025</option>
+                      <option value="January 2026">January 2026</option>
+                      <option value="February 2026">February 2026</option>
+                      <option value="March 2026">March 2026</option>
+                      <option value="April 2026">April 2026</option>
+                      <option value="May 2026">May 2026</option>
+                      <option value="June 2026">June 2026</option>
+                      <option value="July 2026">July 2026</option>
+                      <option value="August 2026">August 2026</option>
+                      <option value="September 2026">September 2026</option>
+                      <option value="October 2026">October 2026</option>
+                      <option value="November 2026">November 2026</option>
+                      <option value="December 2026">December 2026</option>
+                      <option value="January 2027">January 2027</option>
+                      <option value="February 2027">February 2027</option>
+                      <option value="March 2027">March 2027</option>
+                      <option value="April 2027">April 2027</option>
+                      <option value="May 2027">May 2027</option>
+                      <option value="June 2027">June 2027</option>
+                      <option value="July 2027">July 2027</option>
+                      <option value="August 2027">August 2027</option>
+                      <option value="September 2027">September 2027</option>
+                      <option value="October 2027">October 2027</option>
+                    </select>
                     <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
                         icon="mdi:information-outline"
-                        className="text-purple-400"
+                        className="text-amber-400"
                       />
-                      Why we ask: We tailor timelines, bookings, and seasonal
-                      pricing.
+                      Why we ask: Some clients prefer to preserve home equity;
+                      others use a limited portion to fund experiences or cover
+                      gaps.
                     </small>
                   </div>
                 </div>
@@ -724,23 +747,26 @@ const RetirementNextStepForm = ({
                     className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                   >
                     <Icon icon="mdi:luggage" className="text-purple-500" />
-                    Travel style
+                    Travel style for immersive living
                   </label>
                   <select
                     id="travel_style"
                     name="travel_style"
                     value={formData.travel_style}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white cursor-pointer"
                   >
                     <option value="">Select…</option>
-                    <option value="Apartment/Condo">Apartment/Condo</option>
-                    <option value="House sit">House sit</option>
-                    <option value="Hotel">Hotel</option>
-                    <option value="Extended‑stay">Extended‑stay</option>
-                    <option value="Snowbird community">
-                      Snowbird community
+                    <option value="Apartment/Condo (2 bedrooms)">
+                      Apartment/Condo (2 bedrooms)
                     </option>
+                    <option value="Apartment/Condo (3 bedrooms)">
+                      Apartment/Condo (3 bedrooms)
+                    </option>
+                    <option value="Villa/Bungalow (4 bedrooms)">
+                      Villa/Bungalow (4 bedrooms)
+                    </option>
+                    <option value="Extended‑stay">Extended‑stay</option>
                   </select>
                   <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                     <Icon
@@ -837,7 +863,8 @@ const RetirementNextStepForm = ({
                       className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2"
                     >
                       <Icon icon="mdi:airplane" className="text-indigo-500" />
-                      Abroad seasonal budget (per winter season, estimate)
+                      Abroad seasonal budget for your duration of stay (per
+                      winter season, estimate)
                     </label>
                     <input
                       type="number"
@@ -906,7 +933,7 @@ const RetirementNextStepForm = ({
                     name="flight_class"
                     value={formData.flight_class}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-indigo-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-indigo-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white cursor-pointer"
                   >
                     <option value="">Select…</option>
                     <option>Economy</option>
@@ -977,12 +1004,7 @@ const RetirementNextStepForm = ({
                     value: "Medical tourism",
                     label: "Medical tourism",
                     icon: "mdi:medical-bag",
-                  },
-                  {
-                    value: "all",
-                    label: "All of the above",
-                    icon: "mdi:check-all",
-                  },
+                  }
                 ].map((option) => (
                   <label
                     key={option.value}
@@ -1137,7 +1159,7 @@ const RetirementNextStepForm = ({
                         statements. When you ask us to coordinate, we work with
                         vetted experts (e.g., travel, lodging, drivers,
                         hospitals, insurance, visas, tour operators, destination
-                        managers). We show you the{" "}
+                        managers etc.). We show you the{" "}
                         <strong>actual third‑party invoices</strong> and{" "}
                         <strong>credit back any commissions</strong> we receive.
                         To cover our planning, booking, and coordination work,

@@ -69,6 +69,17 @@ export default function RetireeRequestedPlans() {
     new Set(requestedPlans.map((record) => record.region).filter(Boolean))
   );
 
+  // Filter travel ready plans (those who are capable of independent travel)
+  const travelReadyPlans = requestedPlans.filter(
+    (plan) => plan.independent_travel_ack
+  );
+
+  // Filter comprehensive wealth plans (those with higher estimated savings)
+  const comprehensiveWealthPlans = requestedPlans.filter((plan) => {
+    const savings = parseFloat(plan.estimated_savings) || 0;
+    return savings > 500000; // Example threshold for comprehensive wealth plans
+  });
+
   const formatCurrency = (amount: string) => {
     if (!amount) return "Not specified";
     const num = parseFloat(amount);
@@ -662,7 +673,7 @@ export default function RetireeRequestedPlans() {
         )}
 
         {/* Data Table */}
-        <section>
+        <section className="mb-12">
           <h1 className="text-[1.5rem] font-semibold mb-2 dark:text-white">
             Retiree Requested Plans
           </h1>
@@ -765,14 +776,272 @@ export default function RetireeRequestedPlans() {
                         </p>
                       </td>
                       <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <button
-                          onClick={() =>
-                            setSelectedRecord(record as RetirementData)
-                          }
-                          className="inline-flex items-center px-4 py-2 bg-neutral-600 dark:bg-neutral-700 text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors font-medium"
-                        >
-                          Details
-                        </button>
+                        <div className="flex flex-col gap-2">
+                          <button
+                            onClick={() =>
+                              setSelectedRecord(record as RetirementData)
+                            }
+                            className="inline-flex items-center px-4 py-2 bg-neutral-600 dark:bg-neutral-700 text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors font-medium"
+                          >
+                            Details
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
+            </table>
+          </div>
+        </section>
+
+        {/* Travel Ready Plans Table */}
+        <section className="mb-12">
+          <h1 className="text-[1.5rem] font-semibold mb-2 dark:text-white">
+            Travel Ready Plans
+          </h1>
+          <div className="overflow-x-auto border border-gray-300 dark:border-gray-700 rounded-lg">
+            <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead className="bg-green-50 dark:bg-green-900/30">
+                <tr>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Client
+                  </th>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Contact
+                  </th>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Travel Readiness
+                  </th>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Destination
+                  </th>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Timeline
+                  </th>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              {isLoading ? (
+                <DashboardDownloadSkeleton />
+              ) : (
+                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-300 dark:divide-gray-700">
+                  {travelReadyPlans?.map((record) => (
+                    <tr
+                      key={record._id}
+                      className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                        <div>
+                          <p className="font-semibold text-gray-900 dark:text-white">
+                            {record.full_name}
+                          </p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {record.region || "No region"}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                        <div>
+                          <p className="text-gray-900 dark:text-white">
+                            {record.email}
+                          </p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {record.phone}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                        <div className="space-y-1">
+                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-200">
+                            <Icon icon="mdi:check-circle" className="mr-1" />
+                            Independent Travel
+                          </span>
+                          <p className="text-sm">
+                            <span className="font-medium dark:text-white">
+                              Style:
+                            </span>{" "}
+                            <span className="dark:text-gray-300">
+                              {record.travel_style || "Not set"}
+                            </span>
+                          </p>
+                        </div>
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                        <div className="space-y-1">
+                          <p className="text-sm">
+                            <span className="font-medium dark:text-white">
+                              Region:
+                            </span>{" "}
+                            <span className="dark:text-gray-300">
+                              {record.country_region || "Not set"}
+                            </span>
+                          </p>
+                          <p className="text-sm">
+                            <span className="font-medium dark:text-white">
+                              Locations:
+                            </span>{" "}
+                            <span className="dark:text-gray-300">
+                              {record.ideal_locations || "Not set"}
+                            </span>
+                          </p>
+                        </div>
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                        <div className="space-y-1">
+                          <p className="text-sm">
+                            <span className="font-medium dark:text-white">
+                              Start:
+                            </span>{" "}
+                            <span className="dark:text-gray-300">
+                              {record.start_timeline || "Not set"}
+                            </span>
+                          </p>
+                          <p className="text-sm">
+                            <span className="font-medium dark:text-white">
+                              Duration:
+                            </span>{" "}
+                            <span className="dark:text-gray-300">
+                              {record.months_abroad || "Not set"} months
+                            </span>
+                          </p>
+                        </div>
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                        <div className="flex flex-col gap-2">
+                          <button
+                            onClick={() =>
+                              setSelectedRecord(record as RetirementData)
+                            }
+                            className="inline-flex items-center px-4 py-2 bg-neutral-600 dark:bg-neutral-700 text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors font-medium"
+                          >
+                            Details
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
+            </table>
+          </div>
+        </section>
+
+        {/* Comprehensive Wealth Plan Requests Table */}
+        <section>
+          <h1 className="text-[1.5rem] font-semibold mb-2 dark:text-white">
+            Comprehensive Wealth Plan Requests
+          </h1>
+          <div className="overflow-x-auto border border-gray-300 dark:border-gray-700 rounded-lg">
+            <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead className="bg-blue-50 dark:bg-blue-900/30">
+                <tr>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Client
+                  </th>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Contact
+                  </th>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Financial Overview
+                  </th>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Real Estate Equity
+                  </th>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Submitted
+                  </th>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              {isLoading ? (
+                <DashboardDownloadSkeleton />
+              ) : (
+                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-300 dark:divide-gray-700">
+                  {comprehensiveWealthPlans?.map((record) => (
+                    <tr
+                      key={record._id}
+                      className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                        <div>
+                          <p className="font-semibold text-gray-900 dark:text-white">
+                            {record.full_name}
+                          </p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {record.region || "No region"}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                        <div>
+                          <p className="text-gray-900 dark:text-white">
+                            {record.email}
+                          </p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {record.phone}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                        <div className="space-y-1">
+                          <p className="text-sm">
+                            <span className="font-medium dark:text-white">
+                              Savings:
+                            </span>{" "}
+                            <span className="dark:text-gray-300">
+                              {formatCurrency(record.estimated_savings)}
+                            </span>
+                          </p>
+                          <p className="text-sm">
+                            <span className="font-medium dark:text-white">
+                              Desired Income:
+                            </span>{" "}
+                            <span className="dark:text-gray-300">
+                              {formatCurrency(record.desired_income)}
+                            </span>
+                          </p>
+                        </div>
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                        <div className="space-y-1">
+                          <p className="text-sm">
+                            <span className="font-medium dark:text-white">
+                              Home Equity:
+                            </span>{" "}
+                            <span className="dark:text-gray-300">
+                              {formatCurrency(record.estimated_home_equity)}
+                            </span>
+                          </p>
+                          <span
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getComfortLevelColor(
+                              record.equity_comfort
+                            )}`}
+                          >
+                            {record.equity_comfort || "Not specified"}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                          {formatDate(record.createdAt)}
+                        </p>
+                      </td>
+                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                        <div className="flex flex-col gap-2">
+                          <button
+                            onClick={() =>
+                              setSelectedRecord(record as RetirementData)
+                            }
+                            className="inline-flex items-center px-4 py-2 bg-neutral-600 dark:bg-neutral-700 text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors font-medium"
+                          >
+                            Details
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

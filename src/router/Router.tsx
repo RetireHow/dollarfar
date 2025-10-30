@@ -70,6 +70,7 @@ import EbookDownloadedUserTable from "../pages/Ebook/EbookDownloadedUserTable";
 import RetireeRequestedPlans from "../pages/Admin/RetireeRequestedPlans";
 import EbookReaderFeedbacks from "../pages/Admin/EbookReaderFeedbacks";
 import DashboardOverview from "../pages/Admin/DashboardOverview";
+import LeveragedInvestingCalculator from "../pages/LeveragedInvestingCalculator/LeveragedInvestingCalculator";
 
 export const router = createBrowserRouter([
   {
@@ -335,6 +336,11 @@ export const router = createBrowserRouter([
         path: "retirement-simulator",
         element: <RetirementSimulator />,
       },
+      {
+        path: "LeveragedInvestingCalculator",
+        element: <LeveragedInvestingCalculator />,
+      },
+
       {
         path: "admin",
         element: (
