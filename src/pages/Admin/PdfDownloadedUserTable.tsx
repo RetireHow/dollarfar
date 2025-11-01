@@ -58,7 +58,7 @@ const PdfDownloadedUserTable = () => {
   ).length;
 
   return (
-    <div className="dark:bg-gray-900 dark:text-gray-100 min-h-screen p-6">
+    <div className="dark:bg-gray-900 dark:text-gray-100 min-h-screen">
       {/* Summary Statistics Section */}
       {isLoading ? (
         <DashboardStatsSkeleton numOfCards={3}/>

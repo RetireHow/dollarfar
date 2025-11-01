@@ -704,18 +704,6 @@ const RetirementNextStepForm = ({
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white cursor-pointer"
                     >
-                      <option value="November 2025">November 2025</option>
-                      <option value="December 2025">December 2025</option>
-                      <option value="January 2026">January 2026</option>
-                      <option value="February 2026">February 2026</option>
-                      <option value="March 2026">March 2026</option>
-                      <option value="April 2026">April 2026</option>
-                      <option value="May 2026">May 2026</option>
-                      <option value="June 2026">June 2026</option>
-                      <option value="July 2026">July 2026</option>
-                      <option value="August 2026">August 2026</option>
-                      <option value="September 2026">September 2026</option>
-                      <option value="October 2026">October 2026</option>
                       <option value="November 2026">November 2026</option>
                       <option value="December 2026">December 2026</option>
                       <option value="January 2027">January 2027</option>
@@ -728,6 +716,18 @@ const RetirementNextStepForm = ({
                       <option value="August 2027">August 2027</option>
                       <option value="September 2027">September 2027</option>
                       <option value="October 2027">October 2027</option>
+                      <option value="November 2027">November 2027</option>
+                      <option value="December 2027">December 2027</option>
+                      <option value="January 2028">January 2028</option>
+                      <option value="February 2028">February 2028</option>
+                      <option value="March 2028">March 2028</option>
+                      <option value="April 2028">April 2028</option>
+                      <option value="May 2028">May 2028</option>
+                      <option value="June 2028">June 2028</option>
+                      <option value="July 2028">July 2028</option>
+                      <option value="August 2028">August 2028</option>
+                      <option value="September 2028">September 2028</option>
+                      <option value="October 2028">October 2028</option>
                     </select>
                     <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
@@ -1004,7 +1004,7 @@ const RetirementNextStepForm = ({
                     value: "Medical tourism",
                     label: "Medical tourism",
                     icon: "mdi:medical-bag",
-                  }
+                  },
                 ].map((option) => (
                   <label
                     key={option.value}

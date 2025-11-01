@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { baseUrl } from "../../api/apiConstant";
@@ -35,51 +36,338 @@ interface RetirementData {
   updatedAt: string;
 }
 
-export default function RetireeRequestedPlans() {
-  const [selectedRecord, setSelectedRecord] = useState<RetirementData | null>(
-    null
+interface Note {
+  id: string;
+  content: string;
+  createdAt: string;
+  createdBy: string;
+}
+
+interface EmailTemplate {
+  id: string;
+  name: string;
+  subject: string;
+  body: string;
+}
+
+// Notes Modal Component
+const NotesModal = ({
+  onClose,
+  selectedRecordForAction,
+  notes,
+  setNotes,
+  newNote,
+  setNewNote,
+}: {
+  onClose: () => void;
+  selectedRecordForAction: RetirementData;
+  notes: Note[];
+  setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
+  newNote: string;
+  setNewNote: React.Dispatch<React.SetStateAction<string>>;
+}) => {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  const handleSaveNote = async () => {
+    if (!newNote.trim() || !selectedRecordForAction) return;
+
+    try {
+      // In a real app, you would save to your API
+      const newNoteObj: Note = {
+        id: Date.now().toString(),
+        content: newNote,
+        createdAt: new Date().toISOString(),
+        createdBy: "Current User", // This would come from auth context
+      };
+
+      setNotes((prev) => [newNoteObj, ...prev]);
+      setNewNote("");
+      toast.success("Note added successfully!");
+    } catch (error: any) {
+      toast.error("Failed to save note", error?.message);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 z-[1000] top-0">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[88vh] overflow-y-auto">
+        <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-6 rounded-t-2xl z-10">
+          <div className="flex justify-between items-start">
+            <div className="flex-1">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                Notes for {selectedRecordForAction?.full_name}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300">
+                Add and manage notes for this client
+              </p>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-2 bg-red-100 hover:bg-red-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-full transition-colors flex-shrink-0"
+            >
+              <Icon
+                icon="mdi:close"
+                className="text-2xl text-red-500 dark:text-gray-400"
+              />
+            </button>
+          </div>
+        </div>
+
+        <div className="p-6 space-y-6">
+          {/* Add New Note */}
+          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4">
+            <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-3">
+              Add New Note
+            </h3>
+            <textarea
+              value={newNote}
+              onChange={(e) => {
+                setNewNote(e.target.value);
+              }}
+              placeholder="Enter your notes here..."
+              className="w-full h-32 p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+            <div className="flex justify-end mt-3">
+              <button
+                onClick={handleSaveNote}
+                disabled={!newNote.trim()}
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+              >
+                Save Note
+              </button>
+            </div>
+          </div>
+
+          {/* Existing Notes */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              Previous Notes ({notes.length})
+            </h3>
+            <div className="space-y-4 max-h-96 overflow-y-auto">
+              {notes.length > 0 ? (
+                notes.map((note) => (
+                  <div
+                    key={note.id}
+                    className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600"
+                  >
+                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                      {note.content}
+                    </p>
+                    <div className="flex justify-between items-center mt-2 text-sm text-gray-500 dark:text-gray-400">
+                      <span>By: {note.createdBy}</span>
+                      <span>{formatDate(note.createdAt)}</span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500 dark:text-gray-400 text-center py-8">
+                  No notes yet. Add your first note above.
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
+};
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [requestedPlans, setRequestedPlans] = useState<RetirementData[]>([]);
-
+// Email Modal Component
+const EmailModal = ({
+  onClose,
+  selectedRecordForAction,
+  setEmailModalOpen,
+}: {
+  onClose: () => void;
+  selectedRecordForAction: RetirementData;
+  setEmailModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  const [emailTemplates, setEmailTemplates] = useState<EmailTemplate[]>([]);
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<EmailTemplate | null>(null);
+  const [emailSubject, setEmailSubject] = useState("");
+  const [emailBody, setEmailBody] = useState("");
+  // Initialize email templates
   useEffect(() => {
-    const fetchRequestedPlans = async () => {
-      try {
-        setIsLoading(true);
-        const res = await fetch(`${baseUrl}/retirement-next-step/get`);
-        if (!res.ok) throw new Error("Failed to fetch users");
-        // Parse JSON response
-        const data = await res.json();
-        // Sort by createdAt descending
-        setRequestedPlans(data?.data);
-      } catch (error) {
-        const message =
-          error instanceof Error ? error.message : "Unknown error";
-        toast.error(`There was a problem fetching users: ${message}`);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchRequestedPlans();
+    const templates: EmailTemplate[] = [
+      {
+        id: "1",
+        name: "Welcome & Next Steps",
+        subject: "Welcome to Our Retirement Planning Service",
+        body: `Dear {name},\n\nThank you for your interest in our retirement planning services. We've received your information and would like to discuss the next steps in creating your personalized retirement plan.\n\nBest regards,\nThe Retirement Planning Team`,
+      },
+      {
+        id: "2",
+        name: "Travel Consultation",
+        subject: "Discussing Your Travel Retirement Plans",
+        body: `Hello {name},\n\nWe noticed you're interested in retiring abroad and would love to discuss your travel preferences and how we can help you achieve your dream retirement lifestyle.\n\nPlease let us know when would be a good time for a consultation.\n\nBest regards,\nTravel Retirement Specialist`,
+      },
+      {
+        id: "3",
+        name: "Wealth Plan Discussion",
+        subject: "Comprehensive Wealth Plan Consultation",
+        body: `Dear {name},\n\nThank you for your interest in our Comprehensive Wealth Plan. We'd like to schedule a meeting to discuss your financial goals and create a customized strategy for your retirement.\n\nLooking forward to speaking with you.\n\nSincerely,\nWealth Management Team`,
+      },
+    ];
+    setEmailTemplates(templates);
   }, []);
 
-  // Get unique regions for filter
-  const regions = Array.from(
-    new Set(requestedPlans.map((record) => record.region).filter(Boolean))
+  const handleTemplateSelect = (template: EmailTemplate) => {
+    setSelectedTemplate(template);
+    setEmailSubject(template.subject);
+    setEmailBody(
+      template.body.replace(
+        /{name}/g,
+        selectedRecordForAction?.full_name || "Client"
+      )
+    );
+  };
+
+  const handleSendEmailSubmit = async () => {
+    if (!emailSubject.trim() || !emailBody.trim() || !selectedRecordForAction) {
+      toast.error("Please fill in both subject and body");
+      return;
+    }
+
+    try {
+      // In a real app, you would integrate with your email service
+      console.log("Sending email to:", selectedRecordForAction.email);
+      console.log("Subject:", emailSubject);
+      console.log("Body:", emailBody);
+
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      toast.success(`Email sent to ${selectedRecordForAction.full_name}!`);
+      setEmailModalOpen(false);
+    } catch (error: any) {
+      toast.error("Failed to send email", error.message);
+    }
+  };
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 z-[1000] top-0">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[88vh] overflow-y-auto">
+        <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-6 rounded-t-2xl z-10">
+          <div className="flex justify-between items-start">
+            <div className="flex-1">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                Send Email to {selectedRecordForAction?.full_name}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300">
+                {selectedRecordForAction?.email}
+              </p>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-2 bg-red-100 hover:bg-red-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-full transition-colors flex-shrink-0"
+            >
+              <Icon
+                icon="mdi:close"
+                className="text-2xl text-red-500 dark:text-gray-400"
+              />
+            </button>
+          </div>
+        </div>
+
+        <div className="p-6 space-y-6">
+          {/* Email Templates */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+              Email Templates
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {emailTemplates.map((template) => (
+                <button
+                  key={template.id}
+                  onClick={() => handleTemplateSelect(template)}
+                  className={`p-4 border rounded-lg text-left transition-colors ${
+                    selectedTemplate?.id === template.id
+                      ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                      : "border-gray-300 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-700"
+                  }`}
+                >
+                  <h4 className="font-semibold text-gray-900 dark:text-white">
+                    {template.name}
+                  </h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-2">
+                    {template.subject}
+                  </p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Email Form */}
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Subject
+              </label>
+              <input
+                type="text"
+                value={emailSubject}
+                onChange={(e) => setEmailSubject(e.target.value)}
+                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Email subject..."
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Email Body
+              </label>
+              <textarea
+                value={emailBody}
+                onChange={(e) => setEmailBody(e.target.value)}
+                rows={12}
+                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
+                placeholder="Write your email content here..."
+              />
+            </div>
+
+            <div className="flex justify-between items-center pt-4">
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                <p>Recipient: {selectedRecordForAction?.email}</p>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={onClose}
+                  className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSendEmailSubmit}
+                  disabled={!emailSubject.trim() || !emailBody.trim()}
+                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                >
+                  Send Email
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
+};
 
-  // Filter travel ready plans (those who are capable of independent travel)
-  const travelReadyPlans = requestedPlans.filter(
-    (plan) => plan.independent_travel_ack
-  );
-
-  // Filter comprehensive wealth plans (those with higher estimated savings)
-  const comprehensiveWealthPlans = requestedPlans.filter((plan) => {
-    const savings = parseFloat(plan.estimated_savings) || 0;
-    return savings > 500000; // Example threshold for comprehensive wealth plans
-  });
-
+// Detail Modal Component
+const DetailModal = ({
+  record,
+  onClose,
+}: {
+  record: RetirementData;
+  onClose: () => void;
+}) => {
   const formatCurrency = (amount: string) => {
     if (!amount) return "Not specified";
     const num = parseFloat(amount);
@@ -114,15 +402,9 @@ export default function RetireeRequestedPlans() {
     }
   };
 
-  const DetailModal = ({
-    record,
-    onClose,
-  }: {
-    record: RetirementData;
-    onClose: () => void;
-  }) => (
+  return (
     <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 z-[999] top-16">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-6xl w-full max-h-[88vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-6xl w-full max-h-[85vh] overflow-y-auto">
         <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-6 rounded-t-2xl z-10">
           <div className="flex justify-between items-start">
             <div className="flex-1">
@@ -584,10 +866,118 @@ export default function RetireeRequestedPlans() {
       </div>
     </div>
   );
+};
+
+export default function RetireeRequestedPlans() {
+  const [selectedRecord, setSelectedRecord] = useState<RetirementData | null>(
+    null
+  );
+  const [isLoading, setIsLoading] = useState(true);
+  const [requestedPlans, setRequestedPlans] = useState<RetirementData[]>([]);
+  const [notesModalOpen, setNotesModalOpen] = useState(false);
+  const [emailModalOpen, setEmailModalOpen] = useState(false);
+  const [selectedRecordForAction, setSelectedRecordForAction] =
+    useState<RetirementData | null>(null);
+
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [newNote, setNewNote] = useState("");
+
+  useEffect(() => {
+    const fetchRequestedPlans = async () => {
+      try {
+        setIsLoading(true);
+        const res = await fetch(`${baseUrl}/retirement-next-step/get`);
+        if (!res.ok) throw new Error("Failed to fetch users");
+        const data = await res.json();
+        setRequestedPlans(data?.data);
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "Unknown error";
+        toast.error(`There was a problem fetching users: ${message}`);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchRequestedPlans();
+  }, []);
+
+  // Initialize notes
+  useEffect(() => {
+    const existingNotes: Note[] = [
+      {
+        id: "1",
+        content:
+          "Initial contact made. Client seems very interested in Mediterranean retirement options.",
+        createdAt: new Date().toISOString(),
+        createdBy: "Admin User",
+      },
+    ];
+    setNotes(existingNotes);
+  }, []);
+
+  // Get unique regions for filter
+  const regions = Array.from(
+    new Set(requestedPlans.map((record) => record.region).filter(Boolean))
+  );
+
+  // Filter travel ready plans (those who are capable of independent travel)
+  const travelReadyPlans = requestedPlans.filter(
+    (plan) => plan.independent_travel_ack
+  );
+
+  // Filter comprehensive wealth plans (those who selected "Comprehensive Wealth Plan" in interests)
+  const comprehensiveWealthPlans = requestedPlans.filter((plan) =>
+    plan.interests.includes("Comprehensive Wealth Plan")
+  );
+
+  const formatCurrency = (amount: string) => {
+    if (!amount) return "Not specified";
+    const num = parseFloat(amount);
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(num);
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  const getComfortLevelColor = (comfort: string) => {
+    switch (comfort) {
+      case "comfortable":
+        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
+      case "open":
+        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
+      case "none":
+        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
+      default:
+        return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200";
+    }
+  };
+
+  const handleAddNote = async (record: RetirementData) => {
+    setSelectedRecordForAction(record);
+    setNotesModalOpen(true);
+    // In a real app, you would fetch existing notes from your API
+  };
+
+  const handleSendEmail = (record: RetirementData) => {
+    setSelectedRecordForAction(record);
+    setEmailModalOpen(true);
+  };
 
   return (
     <div className="dark:bg-gray-900 dark:text-gray-100 min-h-screen">
-      <div className="p-6">
+      <div>
         {/* Stats Cards */}
         {isLoading ? (
           <DashboardStatsSkeleton numOfCards={4} />
@@ -678,7 +1068,7 @@ export default function RetireeRequestedPlans() {
             Retiree Requested Plans
           </h1>
           <div className="overflow-x-auto border border-gray-300 dark:border-gray-700 rounded-lg">
-            <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <table className="divide-y divide-gray-200 dark:divide-gray-700 w-full">
               <thead className="bg-gray-100 dark:bg-gray-800">
                 <tr>
                   <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
@@ -778,12 +1168,22 @@ export default function RetireeRequestedPlans() {
                       <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
                         <div className="flex flex-col gap-2">
                           <button
-                            onClick={() =>
-                              setSelectedRecord(record as RetirementData)
-                            }
+                            onClick={() => setSelectedRecord(record)}
                             className="inline-flex items-center px-4 py-2 bg-neutral-600 dark:bg-neutral-700 text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors font-medium"
                           >
-                            Details
+                            View Details
+                          </button>
+                          <button
+                            onClick={() => handleAddNote(record)}
+                            className="inline-flex items-center px-4 py-2 bg-emerald-600 dark:bg-emerald-700 text-white rounded-lg hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors font-medium"
+                          >
+                            Add Notes
+                          </button>
+                          <button
+                            onClick={() => handleSendEmail(record)}
+                            className="inline-flex items-center px-4 py-2 bg-violet-600 dark:bg-violet-700 text-white rounded-lg hover:bg-violet-700 dark:hover:bg-violet-600 transition-colors font-medium"
+                          >
+                            Send Email
                           </button>
                         </div>
                       </td>
@@ -912,12 +1312,22 @@ export default function RetireeRequestedPlans() {
                       <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
                         <div className="flex flex-col gap-2">
                           <button
-                            onClick={() =>
-                              setSelectedRecord(record as RetirementData)
-                            }
+                            onClick={() => setSelectedRecord(record)}
                             className="inline-flex items-center px-4 py-2 bg-neutral-600 dark:bg-neutral-700 text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors font-medium"
                           >
                             Details
+                          </button>
+                          <button
+                            onClick={() => handleAddNote(record)}
+                            className="inline-flex items-center px-4 py-2 bg-emerald-600 dark:bg-emerald-700 text-white rounded-lg hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors font-medium"
+                          >
+                            Add Notes
+                          </button>
+                          <button
+                            onClick={() => handleSendEmail(record)}
+                            className="inline-flex items-center px-4 py-2 bg-violet-600 dark:bg-violet-700 text-white rounded-lg hover:bg-violet-700 dark:hover:bg-violet-600 transition-colors font-medium"
+                          >
+                            Send Email
                           </button>
                         </div>
                       </td>
@@ -1034,12 +1444,22 @@ export default function RetireeRequestedPlans() {
                       <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
                         <div className="flex flex-col gap-2">
                           <button
-                            onClick={() =>
-                              setSelectedRecord(record as RetirementData)
-                            }
+                            onClick={() => setSelectedRecord(record)}
                             className="inline-flex items-center px-4 py-2 bg-neutral-600 dark:bg-neutral-700 text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors font-medium"
                           >
                             Details
+                          </button>
+                          <button
+                            onClick={() => handleAddNote(record)}
+                            className="inline-flex items-center px-4 py-2 bg-emerald-600 dark:bg-emerald-700 text-white rounded-lg hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors font-medium"
+                          >
+                            Add Notes
+                          </button>
+                          <button
+                            onClick={() => handleSendEmail(record)}
+                            className="inline-flex items-center px-4 py-2 bg-violet-600 dark:bg-violet-700 text-white rounded-lg hover:bg-violet-700 dark:hover:bg-violet-600 transition-colors font-medium"
+                          >
+                            Send Email
                           </button>
                         </div>
                       </td>
@@ -1057,6 +1477,27 @@ export default function RetireeRequestedPlans() {
         <DetailModal
           record={selectedRecord}
           onClose={() => setSelectedRecord(null)}
+        />
+      )}
+
+      {/* Notes Modal */}
+      {notesModalOpen && (
+        <NotesModal
+          onClose={() => setNotesModalOpen(false)}
+          selectedRecordForAction={selectedRecordForAction as RetirementData}
+          notes={notes}
+          setNotes={setNotes}
+          newNote={newNote}
+          setNewNote={setNewNote}
+        />
+      )}
+
+      {/* Email Modal */}
+      {emailModalOpen && (
+        <EmailModal
+          onClose={() => setEmailModalOpen(false)}
+          selectedRecordForAction={selectedRecordForAction as RetirementData}
+          setEmailModalOpen={setEmailModalOpen}
         />
       )}
     </div>

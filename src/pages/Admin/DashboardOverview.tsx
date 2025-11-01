@@ -118,27 +118,30 @@ export default function DashboardOverview() {
     const colors: { [key: string]: { light: string; dark: string } } = {
       blue: {
         light: "bg-blue-100 text-blue-600",
-        dark: "bg-blue-900/20 text-blue-400"
+        dark: "bg-blue-900/20 text-blue-400",
       },
       green: {
         light: "bg-green-100 text-green-600",
-        dark: "bg-green-900/20 text-green-400"
+        dark: "bg-green-900/20 text-green-400",
       },
       purple: {
         light: "bg-purple-100 text-purple-600",
-        dark: "bg-purple-900/20 text-purple-400"
+        dark: "bg-purple-900/20 text-purple-400",
       },
       orange: {
         light: "bg-orange-100 text-orange-600",
-        dark: "bg-orange-900/20 text-orange-400"
+        dark: "bg-orange-900/20 text-orange-400",
       },
     };
-    const colorSet = colors[color] || { light: "bg-gray-100 text-gray-600", dark: "bg-gray-700 text-gray-400" };
+    const colorSet = colors[color] || {
+      light: "bg-gray-100 text-gray-600",
+      dark: "bg-gray-700 text-gray-400",
+    };
     return `${colorSet.light} dark:${colorSet.dark}`;
   };
 
   return (
-    <div className="space-y-6 dark:bg-gray-900 dark:text-gray-100 min-h-screen p-6">
+    <div className="space-y-6 dark:bg-gray-900 dark:text-gray-100 min-h-screen">
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
