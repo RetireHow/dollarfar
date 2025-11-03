@@ -4,7 +4,6 @@ import { Icon } from "@iconify/react";
 import { baseUrl } from "../../api/apiConstant";
 import { toast } from "react-toastify";
 import DashboardDownloadSkeleton from "../../components/UI/LoadingSkeletons/DashboardDownloadSkeleton";
-import DashboardStatsSkeleton from "../../components/UI/LoadingSkeletons/DashboardStatsSkeleton";
 
 interface RetirementData {
   _id: string;
@@ -52,6 +51,7 @@ interface EmailTemplate {
   body: string;
 }
 
+//Note Loading Skeleton
 const NoteLoadingSkeleton = () => {
   return (
     <section className="space-y-5">
@@ -155,7 +155,7 @@ const NotesModal = ({
   const [isFetchingNotes, setIsFetchingNotes] = useState(false);
   const [isAddingNewNote, setIsAddingNewNote] = useState(false);
   const [isUpdatingNote, setIsUpdatingNote] = useState(false);
-  const [isDeletingNote, setIsDeletingNote] = useState(false);
+  const [deletingNoteId, setDeletingNoteId] = useState<string | null>(null);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -244,7 +244,7 @@ const NotesModal = ({
   const handleDeleteNote = async (noteId: string) => {
     const isConfirmed = window.confirm("Are you sure to delete this note?");
     if (!isConfirmed) return;
-    setIsDeletingNote(true);
+    setDeletingNoteId(noteId);
 
     try {
       const res = await fetch(
@@ -264,7 +264,7 @@ const NotesModal = ({
     } catch (error) {
       toast.error("Failed to delete this note");
     } finally {
-      setIsDeletingNote(false);
+      setDeletingNoteId(null);
     }
   };
 
@@ -395,9 +395,9 @@ const NotesModal = ({
                             title="Delete this note."
                             className="border-[1px] border-gray-300 px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 duration-300 text-white font-bold"
                             onClick={() => handleDeleteNote(note._id)}
-                            disabled={isDeletingNote}
+                            disabled={deletingNoteId === note._id}
                           >
-                            {isDeletingNote ? (
+                            {deletingNoteId === note._id ? (
                               <Icon
                                 icon="line-md:loading-loop"
                                 width="24"
@@ -1121,6 +1121,57 @@ const DetailModal = ({
   );
 };
 
+// Retirement Plan Stats Loading Skeleton
+const RetirementPlanStatsSkeleton = () => {
+  return (
+    <section className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      {/* Total Submissions Skeleton */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700 animate-pulse">
+        <div className="flex items-center justify-between">
+          <div className="flex-1">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-3"></div>
+            <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+          </div>
+          <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-full ml-4"></div>
+        </div>
+      </div>
+
+      {/* Active Regions Skeleton */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700 animate-pulse">
+        <div className="flex items-center justify-between">
+          <div className="flex-1">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-3"></div>
+            <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+          </div>
+          <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-full ml-4"></div>
+        </div>
+      </div>
+
+      {/* Ready to Travel Skeleton */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700 animate-pulse">
+        <div className="flex items-center justify-between">
+          <div className="flex-1">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-3"></div>
+            <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+          </div>
+          <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-full ml-4"></div>
+        </div>
+      </div>
+
+      {/* This Month Skeleton */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700 animate-pulse">
+        <div className="flex items-center justify-between">
+          <div className="flex-1">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-3"></div>
+            <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+          </div>
+          <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-full ml-4"></div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 export default function RetireeRequestedPlans() {
   const [selectedRecord, setSelectedRecord] = useState<RetirementData | null>(
     null
@@ -1211,7 +1262,7 @@ export default function RetireeRequestedPlans() {
       <div>
         {/* Stats Cards */}
         {isLoading ? (
-          <DashboardStatsSkeleton numOfCards={4} />
+          <RetirementPlanStatsSkeleton />
         ) : (
           <section className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700">

@@ -11,7 +11,6 @@ import {
   TrendingUp,
   Calendar,
 } from "lucide-react";
-import DashboardStatsSkeleton from "../../components/UI/LoadingSkeletons/DashboardStatsSkeleton";
 import { Link } from "react-router-dom";
 
 interface DashboardStats {
@@ -22,6 +21,44 @@ interface DashboardStats {
   recentRetirementPlans: number; // Last 7 days
   recentPdfDownloads: number; // Last 7 days
 }
+
+const DashboardOverviewSkeleton = () => {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {[...Array(4)].map((_, index) => (
+        <div
+          key={index}
+          className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 animate-pulse"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              {/* Title skeleton */}
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
+              
+              {/* Value skeleton */}
+              <div className="h-7 bg-gray-300 dark:bg-gray-600 rounded w-1/2 mt-3 mb-4"></div>
+              
+              {/* Trend skeleton */}
+              <div className="flex items-center mt-2">
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4 mr-2"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
+              </div>
+              
+              {/* Description skeleton */}
+              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full mt-4"></div>
+              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3 mt-2"></div>
+            </div>
+            
+            {/* Icon skeleton */}
+            <div className="p-3 rounded-full bg-gray-200 dark:bg-gray-700 ml-4">
+              <div className="w-6 h-6 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 export default function DashboardOverview() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -155,7 +192,7 @@ export default function DashboardOverview() {
 
       {/* Stats Grid */}
       {isLoading ? (
-        <DashboardStatsSkeleton numOfCards={4} />
+        <DashboardOverviewSkeleton />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {statCards.map((card, index) => (
