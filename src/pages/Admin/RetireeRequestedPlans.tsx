@@ -52,6 +52,94 @@ interface EmailTemplate {
   body: string;
 }
 
+const NoteLoadingSkeleton = () => {
+  return (
+    <section className="space-y-5">
+      {/* Note 1 */}
+      <div className="bg-gray-50 dark:bg-gray-700 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-600 animate-pulse">
+        <div className="md:flex justify-between items-center md:space-x-3">
+          {/* Note content skeleton */}
+          <div className="md:mb-0 mb-2 w-full">
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2 w-3/4"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+          </div>
+
+          {/* Action buttons skeleton */}
+          <div className="flex items-center gap-3">
+            <div className="border-[1px] md:mr-0 mr-3 border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
+              <div className="w-6 h-5"></div>
+            </div>
+            <div className="border-[1px] border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
+              <div className="w-6 h-5"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer skeleton */}
+        <div className="flex justify-between items-center mt-2 text-sm">
+          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-20"></div>
+          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-24"></div>
+        </div>
+      </div>
+      {/* Note 2 */}
+      <div className="bg-gray-50 dark:bg-gray-700 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-600 animate-pulse">
+        <div className="md:flex justify-between items-center md:space-x-3">
+          {/* Note content skeleton */}
+          <div className="md:mb-0 mb-2 w-full">
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2 w-3/4"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+          </div>
+
+          {/* Action buttons skeleton */}
+          <div className="flex items-center gap-3">
+            <div className="border-[1px] md:mr-0 mr-3 border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
+              <div className="w-6 h-5"></div>
+            </div>
+            <div className="border-[1px] border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
+              <div className="w-6 h-5"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer skeleton */}
+        <div className="flex justify-between items-center mt-2 text-sm">
+          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-20"></div>
+          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-24"></div>
+        </div>
+      </div>
+      {/* Note 3 */}
+      <div className="bg-gray-50 dark:bg-gray-700 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-600 animate-pulse">
+        <div className="md:flex justify-between items-center md:space-x-3">
+          {/* Note content skeleton */}
+          <div className="md:mb-0 mb-2 w-full">
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2 w-3/4"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+          </div>
+
+          {/* Action buttons skeleton */}
+          <div className="flex items-center gap-3">
+            <div className="border-[1px] md:mr-0 mr-3 border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
+              <div className="w-6 h-5"></div>
+            </div>
+            <div className="border-[1px] border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
+              <div className="w-6 h-5"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer skeleton */}
+        <div className="flex justify-between items-center mt-2 text-sm">
+          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-20"></div>
+          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-24"></div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 // Notes Modal Component
 const NotesModal = ({
   onClose,
@@ -63,7 +151,11 @@ const NotesModal = ({
   const [notes, setNotes] = useState<Note[]>([]);
   const [newNote, setNewNote] = useState<string>("");
   const [editingNote, setEditingNote] = useState<Note | null>();
-  console.log(selectedRecordForAction);
+
+  const [isFetchingNotes, setIsFetchingNotes] = useState(false);
+  const [isAddingNewNote, setIsAddingNewNote] = useState(false);
+  const [isUpdatingNote, setIsUpdatingNote] = useState(false);
+  const [isDeletingNote, setIsDeletingNote] = useState(false);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -77,7 +169,7 @@ const NotesModal = ({
 
   const handleSaveNote = async () => {
     if (!newNote.trim() || !selectedRecordForAction) return;
-
+    setIsAddingNewNote(true);
     try {
       // save notes to API
       const currentUser = localStorage.getItem("name");
@@ -95,20 +187,14 @@ const NotesModal = ({
       if (!res.ok) {
         return toast.error("Failed to create this new notes.");
       }
-      await res.json();
-
-      const newNoteObj: Note = {
-        _id: Date.now().toString(),
-        content: newNote,
-        retirementPlan: selectedRecordForAction._id,
-        createdAt: new Date().toISOString(),
-        createdBy: currentUser as string, // This would come from auth context
-      };
-      setNotes((prev) => [newNoteObj, ...prev]);
+      const savedNote = await res.json();
+      setNotes((prev) => [savedNote?.data, ...prev]);
       setNewNote("");
       toast.success("Note added successfully!");
     } catch (error: any) {
       toast.error("Failed to save this new note", error?.message);
+    } finally {
+      setIsAddingNewNote(false);
     }
   };
 
@@ -122,6 +208,7 @@ const NotesModal = ({
   };
 
   const handleUpdateNote = async () => {
+    setIsUpdatingNote(true);
     try {
       const res = await fetch(`${baseUrl}/retirement-plan-notes/update`, {
         method: "PATCH",
@@ -149,12 +236,15 @@ const NotesModal = ({
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Failed to update this note.");
+    } finally {
+      setIsUpdatingNote(false);
     }
   };
 
   const handleDeleteNote = async (noteId: string) => {
     const isConfirmed = window.confirm("Are you sure to delete this note?");
     if (!isConfirmed) return;
+    setIsDeletingNote(true);
 
     try {
       const res = await fetch(
@@ -173,6 +263,8 @@ const NotesModal = ({
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Failed to delete this note");
+    } finally {
+      setIsDeletingNote(false);
     }
   };
 
@@ -181,6 +273,7 @@ const NotesModal = ({
   );
 
   const loadNotes = async () => {
+    setIsFetchingNotes(true);
     try {
       const res = await fetch(
         `${baseUrl}/retirement-plan-notes/get/${selectedRecordForAction._id}`
@@ -193,6 +286,8 @@ const NotesModal = ({
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Failed to fetch notes.");
+    } finally {
+      setIsFetchingNotes(false);
     }
   };
 
@@ -244,18 +339,26 @@ const NotesModal = ({
               {editingNote ? (
                 <button
                   onClick={handleUpdateNote}
-                  disabled={!newNote.trim()}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                  disabled={!newNote.trim() && !isUpdatingNote}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium w-[9rem] flex justify-center items-center"
                 >
-                  Update Note
+                  {isUpdatingNote ? (
+                    <Icon icon="line-md:loading-loop" width="24" height="24" />
+                  ) : (
+                    "Update Note"
+                  )}
                 </button>
               ) : (
                 <button
                   onClick={handleSaveNote}
-                  disabled={!newNote.trim()}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                  disabled={!newNote.trim() && !isAddingNewNote}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium w-[9rem] flex justify-center items-center"
                 >
-                  Save Note
+                  {isAddingNewNote ? (
+                    <Icon icon="line-md:loading-loop" width="24" height="24" />
+                  ) : (
+                    "Save Note"
+                  )}
                 </button>
               )}
             </div>
@@ -266,50 +369,63 @@ const NotesModal = ({
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
               Previous Notes ({filteredNotes.length})
             </h3>
-            <div className="space-y-4 max-h-96 overflow-y-auto">
-              {filteredNotes.length > 0 ? (
-                filteredNotes.map((note) => (
-                  <div
-                    key={note._id}
-                    className="bg-gray-50 dark:bg-gray-700 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-600"
-                  >
-                    <div className="md:flex justify-between items-center md:space-x-3">
-                      <p className="text-gray-700 md:mb-0 mb-2 dark:text-gray-300 whitespace-pre-wrap">
-                        {note.content}
-                      </p>
-                      <div className="flex items-center gap-3">
-                        <button
-                          title="Edit this note."
-                          className="border-[1px] md:mr-0 mr-3 border-gray-300 px-4 py-2 rounded-md bg-green-600 hover:bg-green-700 duration-300 text-white font-bold"
-                          onClick={() => handleEditNote(note)}
-                        >
-                          <Icon icon="uil:edit" width="24" height="24" />
-                        </button>
-                        <button
-                          title="Delete this note."
-                          className="border-[1px] border-gray-300 px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 duration-300 text-white font-bold"
-                          onClick={() => handleDeleteNote(note._id)}
-                        >
-                          <Icon
-                            icon="material-symbols:delete-outline"
-                            width="24"
-                            height="24"
-                          />
-                        </button>
+            {isFetchingNotes ? (
+              <NoteLoadingSkeleton />
+            ) : (
+              <div className="space-y-4 max-h-96 overflow-y-auto">
+                {filteredNotes.length > 0 ? (
+                  filteredNotes.map((note) => (
+                    <div
+                      key={note._id}
+                      className="bg-gray-50 dark:bg-gray-700 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-600"
+                    >
+                      <div className="md:flex justify-between items-center md:space-x-3">
+                        <p className="text-gray-700 md:mb-0 mb-2 dark:text-gray-300 whitespace-pre-wrap">
+                          {note.content}
+                        </p>
+                        <div className="flex items-center gap-3">
+                          <button
+                            title="Edit this note."
+                            className="border-[1px] md:mr-0 mr-3 border-gray-300 px-4 py-2 rounded-md bg-green-600 hover:bg-green-700 duration-300 text-white font-bold"
+                            onClick={() => handleEditNote(note)}
+                          >
+                            <Icon icon="uil:edit" width="24" height="24" />
+                          </button>
+                          <button
+                            title="Delete this note."
+                            className="border-[1px] border-gray-300 px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 duration-300 text-white font-bold"
+                            onClick={() => handleDeleteNote(note._id)}
+                            disabled={isDeletingNote}
+                          >
+                            {isDeletingNote ? (
+                              <Icon
+                                icon="line-md:loading-loop"
+                                width="24"
+                                height="24"
+                              />
+                            ) : (
+                              <Icon
+                                icon="material-symbols:delete-outline"
+                                width="24"
+                                height="24"
+                              />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center mt-2 text-sm text-gray-500 dark:text-gray-400">
+                        <span>By: {note.createdBy}</span>
+                        <span>{formatDate(note.createdAt)}</span>
                       </div>
                     </div>
-                    <div className="flex justify-between items-center mt-2 text-sm text-gray-500 dark:text-gray-400">
-                      <span>By: {note.createdBy}</span>
-                      <span>{formatDate(note.createdAt)}</span>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-gray-500 dark:text-gray-400 text-center py-8">
-                  No notes yet. Add your first note above.
-                </p>
-              )}
-            </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500 dark:text-gray-400 text-center py-8">
+                    No notes yet. Add your first note above.
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
