@@ -44,7 +44,7 @@ export default function AdminLayout() {
 
       {/* ===== Sidebar ===== */}
       <aside
-        className={`min-h-screen p-5 min-w-60 shadow-2xl fixed duration-300 z-50 ${
+        className={`min-h-screen p-5 min-w-60 shadow-lg shadow-right fixed duration-300 z-50 ${
           isVisible
             ? "left-[-0px] bg-gray-100 dark:bg-gray-800"
             : "left-[-210px] bg-transparent"
@@ -52,13 +52,13 @@ export default function AdminLayout() {
       >
         {!isVisible ? (
           <ChevronRight
-            className="absolute rounded-full z-50 right-[-10px] top-0 bg-gray-700 hover:bg-gray-900 dark:bg-gray-600 dark:hover:bg-gray-800 duration-300 text-white cursor-pointer p-1"
+            className="absolute rounded-full z-50 right-[-15px] top-3 bg-gray-700 hover:bg-gray-900 dark:bg-gray-600 dark:hover:bg-gray-800 duration-300 text-white cursor-pointer p-1"
             size={40}
             onClick={() => setIsVisible(!isVisible)}
           />
         ) : (
           <ChevronLeft
-            className="absolute rounded-full z-50 right-[-10px] top-0 bg-gray-700 hover:bg-gray-900 dark:bg-gray-600 dark:hover:bg-gray-800 duration-300 text-white cursor-pointer p-1"
+            className="absolute rounded-full z-50 right-[-15px] top-3 bg-gray-700 hover:bg-gray-900 dark:bg-gray-600 dark:hover:bg-gray-800 duration-300 text-white cursor-pointer p-1"
             size={40}
             onClick={() => setIsVisible(!isVisible)}
           />

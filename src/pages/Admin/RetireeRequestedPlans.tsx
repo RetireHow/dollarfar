@@ -635,484 +635,346 @@ const DetailModal = ({
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
-      month: "short",
+      month: "long",
       day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
     });
   };
 
   const getComfortLevelColor = (comfort: string) => {
     switch (comfort) {
       case "comfortable":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
+        return "bg-green-100 text-green-800 border-green-300 dark:bg-green-900 dark:text-green-200 dark:border-green-700";
       case "open":
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
+        return "bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900 dark:text-yellow-200 dark:border-yellow-700";
       case "none":
-        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
+        return "bg-red-100 text-red-800 border-red-300 dark:bg-red-900 dark:text-red-200 dark:border-red-700";
       default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200";
+        return "bg-gray-100 text-gray-800 border-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600";
     }
   };
 
+  const getStatusBadge = (status: boolean, label: string) => {
+    return (
+      <div className={`flex items-center justify-center p-3 rounded-xl border-2 ${
+        status 
+          ? "bg-green-50 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-200 dark:border-green-700" 
+          : "bg-red-50 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-200 dark:border-red-700"
+      }`}>
+        <Icon 
+          icon={status ? "mdi:check-circle" : "mdi:close-circle"} 
+          className="text-2xl mr-2" 
+        />
+        <div className="text-left">
+          <div className="font-semibold text-base">{label}</div>
+          <div className="text-sm">{status ? "Yes" : "No"}</div>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 z-[999] top-16">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-6xl w-full max-h-[85vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-6 rounded-t-2xl z-10">
+    <div className="fixed inset-0 bg-black bg-opacity-60 dark:bg-opacity-80 flex items-center justify-center p-4 z-[999] top-0">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-6xl w-full max-h-[95vh] overflow-y-auto">
+        {/* Header with High Contrast */}
+        <div className="sticky top-0 bg-white dark:bg-gray-900 border-b-2 border-gray-300 dark:border-gray-600 p-6 rounded-t-2xl z-10">
           <div className="flex justify-between items-start">
             <div className="flex-1">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
                 {record.full_name}'s Retirement Plan
-              </h2>
-              <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-300">
-                <div className="flex items-center gap-1">
-                  <Icon icon="mdi:calendar" className="text-lg" />
-                  <span>Submitted: {formatDate(record.createdAt)}</span>
+              </h1>
+              <div className="flex flex-wrap gap-6 text-lg">
+                <div className="flex items-center gap-3 bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-xl">
+                  <Icon icon="mdi:calendar" className="text-2xl text-blue-600 dark:text-blue-400" />
+                  <div>
+                    <div className="text-sm text-blue-700 dark:text-blue-300 font-medium">Submitted</div>
+                    <div className="text-blue-900 dark:text-blue-100 font-semibold">{formatDate(record.createdAt)}</div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-1">
-                  <Icon icon="mdi:update" className="text-lg" />
-                  <span>Updated: {formatDate(record.updatedAt)}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Icon icon="mdi:map-marker" className="text-lg" />
-                  <span>Region: {record.region || "Not specified"}</span>
+                <div className="flex items-center gap-3 bg-green-50 dark:bg-green-900/30 px-4 py-2 rounded-xl">
+                  <Icon icon="mdi:map-marker" className="text-2xl text-green-600 dark:text-green-400" />
+                  <div>
+                    <div className="text-sm text-green-700 dark:text-green-300 font-medium">Region</div>
+                    <div className="text-green-900 dark:text-green-100 font-semibold">{record.region || "Not specified"}</div>
+                  </div>
                 </div>
               </div>
             </div>
             <button
               onClick={onClose}
-              className="p-2 bg-red-100 hover:bg-red-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-full transition-colors flex-shrink-0"
+              className="p-3 bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-800/50 rounded-xl transition-colors flex-shrink-0"
+              aria-label="Close modal"
             >
               <Icon
                 icon="mdi:close"
-                className="text-2xl text-red-500 dark:text-gray-400"
+                className="text-2xl text-red-600 dark:text-red-400"
               />
             </button>
           </div>
         </div>
 
         <div className="p-6 space-y-6">
-          {/* Contact Information */}
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-6 border border-blue-100 dark:border-blue-800">
-            <h3 className="text-xl font-semibold text-blue-900 dark:text-blue-100 mb-4 flex items-center gap-3">
-              <div className="p-2 bg-blue-100 dark:bg-blue-800 rounded-lg">
+          {/* Contact Information - Large Clear Text */}
+          <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-2xl p-6 border-2 border-blue-200 dark:border-blue-700">
+            <h2 className="text-2xl font-bold text-blue-900 dark:text-blue-100 mb-4 flex items-center gap-3">
+              <div className="p-3 bg-blue-100 dark:bg-blue-800 rounded-xl">
                 <Icon
-                  icon="mdi:account-outline"
-                  className="text-2xl text-blue-600 dark:text-blue-400"
+                  icon="mdi:account-box"
+                  className="text-3xl text-blue-600 dark:text-blue-400"
                 />
               </div>
               Contact Information
-            </h3>
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-blue-700 dark:text-blue-300 flex items-center gap-2">
-                  <Icon icon="mdi:email" className="text-lg" />
-                  Email Address
-                </label>
-                <p className="text-blue-900 dark:text-blue-100 text-lg font-medium">
-                  {record.email}
-                </p>
+              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-blue-100 dark:border-blue-600">
+                <div className="flex items-center gap-3 mb-2">
+                  <Icon icon="mdi:email" className="text-2xl text-blue-600 dark:text-blue-400" />
+                  <div>
+                    <div className="text-lg font-semibold text-blue-800 dark:text-blue-200">Email Address</div>
+                    <div className="text-xl text-blue-900 dark:text-blue-100 font-medium break-all">{record.email}</div>
+                  </div>
+                </div>
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-blue-700 dark:text-blue-300 flex items-center gap-2">
-                  <Icon icon="mdi:phone" className="text-lg" />
-                  Phone Number
-                </label>
-                <p className="text-blue-900 dark:text-blue-100 text-lg font-medium">
-                  {record.phone}
-                </p>
+              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-blue-100 dark:border-blue-600">
+                <div className="flex items-center gap-3 mb-2">
+                  <Icon icon="mdi:phone" className="text-2xl text-blue-600 dark:text-blue-400" />
+                  <div>
+                    <div className="text-lg font-semibold text-blue-800 dark:text-blue-200">Phone Number</div>
+                    <div className="text-xl text-blue-900 dark:text-blue-100 font-medium">{record.phone}</div>
+                  </div>
+                </div>
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-blue-700 dark:text-blue-300 flex items-center gap-2">
-                  <Icon icon="mdi:earth" className="text-lg" />
-                  Country Region
-                </label>
-                <p className="text-blue-900 dark:text-blue-100 text-lg font-medium">
-                  {record.country_region || "Not specified"}
-                </p>
+              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-blue-100 dark:border-blue-600">
+                <div className="flex items-center gap-3 mb-2">
+                  <Icon icon="mdi:earth" className="text-2xl text-blue-600 dark:text-blue-400" />
+                  <div>
+                    <div className="text-lg font-semibold text-blue-800 dark:text-blue-200">Country Region</div>
+                    <div className="text-xl text-blue-900 dark:text-blue-100 font-medium">{record.country_region || "Not specified"}</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Retirement Goals */}
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl p-6 border border-green-100 dark:border-green-800">
-            <h3 className="text-xl font-semibold text-green-900 dark:text-green-100 mb-4 flex items-center gap-3">
-              <div className="p-2 bg-green-100 dark:bg-green-800 rounded-lg">
+          {/* Retirement Goals - Clear Financial Information */}
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl p-6 border-2 border-green-200 dark:border-green-700">
+            <h2 className="text-2xl font-bold text-green-900 dark:text-green-100 mb-4 flex items-center gap-3">
+              <div className="p-3 bg-green-100 dark:bg-green-800 rounded-xl">
                 <Icon
                   icon="mdi:finance"
-                  className="text-2xl text-green-600 dark:text-green-400"
+                  className="text-3xl text-green-600 dark:text-green-400"
                 />
               </div>
-              Retirement Snapshot
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="text-center p-4 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                <Icon
-                  icon="mdi:calendar-clock"
-                  className="text-3xl text-green-600 dark:text-green-400 mb-2"
-                />
-                <label className="text-sm font-medium text-green-700 dark:text-green-300 block mb-1">
-                  Target Age
-                </label>
-                <p className="text-green-900 dark:text-green-100 text-xl font-bold">
-                  {record.target_age || "Not set"}
-                </p>
+              Retirement Goals & Financial Snapshot
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-green-100 dark:border-green-600 text-center">
+                <Icon icon="mdi:calendar-clock" className="text-4xl text-green-600 dark:text-green-400 mb-3" />
+                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">Target Age</div>
+                <div className="text-2xl font-bold text-green-900 dark:text-green-100">{record.target_age || "Not set"}</div>
               </div>
-              <div className="text-center p-4 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                <Icon
-                  icon="mdi:cash"
-                  className="text-3xl text-green-600 dark:text-green-400 mb-2"
-                />
-                <label className="text-sm font-medium text-green-700 dark:text-green-300 block mb-1">
-                  Desired Income
-                </label>
-                <p className="text-green-900 dark:text-green-100 text-xl font-bold">
-                  {formatCurrency(record.desired_income)}
-                </p>
+              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-green-100 dark:border-green-600 text-center">
+                <Icon icon="mdi:cash" className="text-4xl text-green-600 dark:text-green-400 mb-3" />
+                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">Desired Income</div>
+                <div className="text-xl font-bold text-green-900 dark:text-green-100">{formatCurrency(record.desired_income)}</div>
               </div>
-              <div className="text-center p-4 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                <Icon
-                  icon="mdi:bank"
-                  className="text-3xl text-green-600 dark:text-green-400 mb-2"
-                />
-                <label className="text-sm font-medium text-green-700 dark:text-green-300 block mb-1">
-                  Estimated Savings
-                </label>
-                <p className="text-green-900 dark:text-green-100 text-xl font-bold">
-                  {formatCurrency(record.estimated_savings)}
-                </p>
+              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-green-100 dark:border-green-600 text-center">
+                <Icon icon="mdi:bank" className="text-4xl text-green-600 dark:text-green-400 mb-3" />
+                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">Estimated Savings</div>
+                <div className="text-xl font-bold text-green-900 dark:text-green-100">{formatCurrency(record.estimated_savings)}</div>
+              </div>
+              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-green-100 dark:border-green-600 text-center">
+                <Icon icon="mdi:home-analytics" className="text-4xl text-green-600 dark:text-green-400 mb-3" />
+                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">Home Equity</div>
+                <div className="text-xl font-bold text-green-900 dark:text-green-100">{formatCurrency(record.estimated_home_equity)}</div>
               </div>
             </div>
           </div>
 
-          {/* Housing & Real Estate */}
-          <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl p-6 border border-amber-100 dark:border-amber-800">
-            <h3 className="text-xl font-semibold text-amber-900 dark:text-amber-100 mb-4 flex items-center gap-3">
-              <div className="p-2 bg-amber-100 dark:bg-amber-800 rounded-lg">
-                <Icon
-                  icon="mdi:home-outline"
-                  className="text-2xl text-amber-600 dark:text-amber-400"
-                />
-              </div>
-              Housing & Real Estate Equity
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="text-center p-6 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                <Icon
-                  icon="mdi:home-analytics"
-                  className="text-4xl text-amber-600 dark:text-amber-400 mb-3"
-                />
-                <label className="text-sm font-medium text-amber-700 dark:text-amber-300 block mb-2">
-                  Home Equity
-                </label>
-                <p className="text-amber-900 dark:text-amber-100 text-2xl font-bold mb-3">
-                  {formatCurrency(record.estimated_home_equity)}
-                </p>
-              </div>
-              <div className="text-center p-6 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                <Icon
-                  icon="mdi:heart-outline"
-                  className="text-4xl text-amber-600 dark:text-amber-400 mb-3"
-                />
-                <label className="text-sm font-medium text-amber-700 dark:text-amber-300 block mb-2">
-                  Equity Comfort Level
-                </label>
-                <span
-                  className={`inline-flex items-center px-4 py-2 rounded-full text-lg font-semibold ${getComfortLevelColor(
-                    record.equity_comfort
-                  )}`}
-                >
-                  <Icon
-                    icon={
-                      record.equity_comfort === "comfortable"
-                        ? "mdi:check-circle"
-                        : record.equity_comfort === "open"
-                        ? "mdi:help-circle"
-                        : record.equity_comfort === "none"
-                        ? "mdi:close-circle"
-                        : "mdi:information"
-                    }
-                    className="mr-2 text-xl"
-                  />
-                  {record.equity_comfort || "Not specified"}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Travel Preferences */}
-          <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl p-6 border border-purple-100 dark:border-purple-800">
-            <h3 className="text-xl font-semibold text-purple-900 dark:text-purple-100 mb-4 flex items-center gap-3">
-              <div className="p-2 bg-purple-100 dark:bg-purple-800 rounded-lg">
+          {/* Travel & Lifestyle Preferences */}
+          <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl p-6 border-2 border-purple-200 dark:border-purple-700">
+            <h2 className="text-2xl font-bold text-purple-900 dark:text-purple-100 mb-4 flex items-center gap-3">
+              <div className="p-3 bg-purple-100 dark:bg-purple-800 rounded-xl">
                 <Icon
                   icon="mdi:airplane"
-                  className="text-2xl text-purple-600 dark:text-purple-400"
+                  className="text-3xl text-purple-600 dark:text-purple-400"
                 />
               </div>
-              Part-Time Abroad Preferences
-            </h3>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                    <label className="text-sm font-medium text-purple-700 dark:text-purple-300 flex items-center gap-2 mb-2">
-                      <Icon icon="mdi:map-marker-radius" />
-                      Destination Region
-                    </label>
-                    <p className="text-purple-900 dark:text-purple-100 font-medium">
-                      {record.country_region || "Not specified"}
-                    </p>
+              Travel & Lifestyle Preferences
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Icon icon="mdi:walk" className="text-2xl text-purple-600 dark:text-purple-400" />
+                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">Travel Style</div>
                   </div>
-                  <div className="p-4 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                    <label className="text-sm font-medium text-purple-700 dark:text-purple-300 flex items-center gap-2 mb-2">
-                      <Icon icon="mdi:clock-outline" />
-                      Start Timeline
-                    </label>
-                    <p className="text-purple-900 dark:text-purple-100 font-medium">
-                      {record.start_timeline || "Not specified"}
-                    </p>
+                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">{record.travel_style || "Not specified"}</div>
+                </div>
+                
+                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Icon icon="mdi:clock-outline" className="text-2xl text-purple-600 dark:text-purple-400" />
+                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">Start Timeline</div>
                   </div>
+                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">{record.start_timeline || "Not specified"}</div>
                 </div>
 
-                <div className="p-4 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                  <label className="text-sm font-medium text-purple-700 dark:text-purple-300 flex items-center gap-2 mb-2">
-                    <Icon icon="mdi:map-search" />
-                    Ideal Locations
-                  </label>
-                  <p className="text-purple-900 dark:text-purple-100 font-medium text-lg">
-                    {record.ideal_locations || "Not specified"}
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                    <label className="text-sm font-medium text-purple-700 dark:text-purple-300 flex items-center gap-2 mb-2">
-                      <Icon icon="mdi:calendar-month" />
-                      Months Abroad
-                    </label>
-                    <p className="text-purple-900 dark:text-purple-100 font-medium">
-                      {record.months_abroad || "Not specified"}
-                    </p>
+                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Icon icon="mdi:calendar-month" className="text-2xl text-purple-600 dark:text-purple-400" />
+                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">Months Abroad</div>
                   </div>
-                  <div className="p-4 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                    <label className="text-sm font-medium text-purple-700 dark:text-purple-300 flex items-center gap-2 mb-2">
-                      <Icon icon="mdi:airplane-seat" />
-                      Flight Class
-                    </label>
-                    <p className="text-purple-900 dark:text-purple-100 font-medium">
-                      {record.flight_class || "Not specified"}
-                    </p>
-                  </div>
+                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">{record.months_abroad || "Not specified"}</div>
                 </div>
               </div>
 
-              <div className="space-y-6">
-                <div className="p-4 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                  <label className="text-sm font-medium text-purple-700 dark:text-purple-300 flex items-center gap-2 mb-2">
-                    <Icon icon="mdi:walk" />
-                    Travel Style
-                  </label>
-                  <p className="text-purple-900 dark:text-purple-100 font-medium text-lg">
-                    {record.travel_style || "Not specified"}
-                  </p>
-                </div>
-
-                <div className="p-4 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                  <label className="text-sm font-medium text-purple-700 dark:text-purple-300 flex items-center gap-2 mb-3">
-                    <Icon icon="mdi:target" />
-                    Travel Purpose
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {record.travel_purpose.map((purpose, index) => (
-                      <span
-                        key={index}
-                        className="inline-flex items-center px-3 py-2 rounded-full text-sm bg-purple-100 text-purple-800 dark:bg-purple-800 dark:text-purple-200 font-medium"
-                      >
-                        <Icon
-                          icon="mdi:check-circle"
-                          className="mr-1 text-lg"
-                        />
-                        {purpose}
-                      </span>
-                    ))}
-                    {record.travel_purpose.length === 0 && (
-                      <span className="text-purple-700 dark:text-purple-300 italic">
-                        No purposes specified
-                      </span>
-                    )}
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Icon icon="mdi:airplane-seat" className="text-2xl text-purple-600 dark:text-purple-400" />
+                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">Flight Class</div>
                   </div>
+                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">{record.flight_class || "Not specified"}</div>
                 </div>
 
-                <div className="p-4 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                  <label className="text-sm font-medium text-purple-700 dark:text-purple-300 flex items-center gap-2 mb-3">
-                    <Icon icon="mdi:heart-multiple" />
-                    Interests & Services
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {record.interests.map((interest, index) => (
-                      <span
-                        key={index}
-                        className="inline-flex items-center px-3 py-2 rounded-full text-sm bg-pink-100 text-pink-800 dark:bg-pink-800 dark:text-pink-200 font-medium"
-                      >
-                        <Icon icon="mdi:star" className="mr-1 text-lg" />
-                        {interest}
-                      </span>
-                    ))}
-                    {record.interests.length === 0 && (
-                      <span className="text-pink-700 dark:text-pink-300 italic">
-                        No interests specified
-                      </span>
-                    )}
+                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Icon icon="mdi:map-marker-radius" className="text-2xl text-purple-600 dark:text-purple-400" />
+                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">Ideal Locations</div>
+                  </div>
+                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">{record.ideal_locations || "Not specified"}</div>
+                </div>
+
+                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Icon icon="mdi:heart-outline" className="text-2xl text-purple-600 dark:text-purple-400" />
+                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">Equity Comfort</div>
+                  </div>
+                  <div className={`inline-flex items-center px-4 py-2 rounded-xl text-lg font-semibold border-2 ${getComfortLevelColor(record.equity_comfort)}`}>
+                    <Icon
+                      icon={
+                        record.equity_comfort === "comfortable"
+                          ? "mdi:check-circle"
+                          : record.equity_comfort === "open"
+                          ? "mdi:help-circle"
+                          : record.equity_comfort === "none"
+                          ? "mdi:close-circle"
+                          : "mdi:information"
+                      }
+                      className="mr-2 text-xl"
+                    />
+                    {record.equity_comfort || "Not specified"}
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Budget Estimates */}
-          <div className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20 rounded-2xl p-6 border border-indigo-100 dark:border-indigo-800">
-            <h3 className="text-xl font-semibold text-indigo-900 dark:text-indigo-100 mb-4 flex items-center gap-3">
-              <div className="p-2 bg-indigo-100 dark:bg-indigo-800 rounded-lg">
+          {/* Budget & Financial Details */}
+          <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl p-6 border-2 border-amber-200 dark:border-amber-700">
+            <h2 className="text-2xl font-bold text-amber-900 dark:text-amber-100 mb-4 flex items-center gap-3">
+              <div className="p-3 bg-amber-100 dark:bg-amber-800 rounded-xl">
                 <Icon
                   icon="mdi:wallet-outline"
-                  className="text-2xl text-indigo-600 dark:text-indigo-400"
+                  className="text-3xl text-amber-600 dark:text-amber-400"
                 />
               </div>
-              Budget Estimates
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center p-6 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                <Icon
-                  icon="mdi:home-currency-usd"
-                  className="text-4xl text-indigo-600 dark:text-indigo-400 mb-3"
-                />
-                <label className="text-sm font-medium text-indigo-700 dark:text-indigo-300 block mb-2">
-                  Monthly Home Spend
-                </label>
-                <p className="text-indigo-900 dark:text-indigo-100 text-2xl font-bold">
-                  {formatCurrency(record.home_spend_monthly)}
-                </p>
+              Budget & Financial Details
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-amber-100 dark:border-amber-600 text-center">
+                <Icon icon="mdi:home-currency-usd" className="text-4xl text-amber-600 dark:text-amber-400 mb-3" />
+                <div className="text-lg font-semibold text-amber-800 dark:text-amber-200 mb-1">Monthly Home Spend</div>
+                <div className="text-xl font-bold text-amber-900 dark:text-amber-100">{formatCurrency(record.home_spend_monthly)}</div>
               </div>
-              <div className="text-center p-6 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                <Icon
-                  icon="mdi:passport"
-                  className="text-4xl text-indigo-600 dark:text-indigo-400 mb-3"
-                />
-                <label className="text-sm font-medium text-indigo-700 dark:text-indigo-300 block mb-2">
-                  Seasonal Abroad Budget
-                </label>
-                <p className="text-indigo-900 dark:text-indigo-100 text-2xl font-bold">
-                  {formatCurrency(record.abroad_budget_season)}
-                </p>
+              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-amber-100 dark:border-amber-600 text-center">
+                <Icon icon="mdi:passport" className="text-4xl text-amber-600 dark:text-amber-400 mb-3" />
+                <div className="text-lg font-semibold text-amber-800 dark:text-amber-200 mb-1">Seasonal Abroad Budget</div>
+                <div className="text-xl font-bold text-amber-900 dark:text-amber-100">{formatCurrency(record.abroad_budget_season)}</div>
               </div>
-              <div className="text-center p-6 bg-white dark:bg-gray-700 rounded-xl shadow-sm">
-                <Icon
-                  icon="mdi:airplane-ticket"
-                  className="text-4xl text-indigo-600 dark:text-indigo-400 mb-3"
-                />
-                <label className="text-sm font-medium text-indigo-700 dark:text-indigo-300 block mb-2">
-                  Flights & Insurance
-                </label>
-                <p className="text-indigo-900 dark:text-indigo-100 text-xl font-bold">
-                  {record.flights_insurance_budget || "Not specified"}
-                </p>
+              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-amber-100 dark:border-amber-600 text-center">
+                <Icon icon="mdi:airplane-ticket" className="text-4xl text-amber-600 dark:text-amber-400 mb-3" />
+                <div className="text-lg font-semibold text-amber-800 dark:text-amber-200 mb-1">Flights & Insurance</div>
+                <div className="text-lg font-bold text-amber-900 dark:text-amber-100">{record.flights_insurance_budget || "Not specified"}</div>
               </div>
             </div>
           </div>
 
-          {/* Additional Information & Consents */}
-          <div className="bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-700 dark:to-slate-700 rounded-2xl p-6 border border-gray-200 dark:border-gray-600">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-3">
-              <div className="p-2 bg-gray-100 dark:bg-gray-600 rounded-lg">
+          {/* Interests & Services */}
+          <div className="bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-900/20 dark:to-violet-900/20 rounded-2xl p-6 border-2 border-indigo-200 dark:border-indigo-700">
+            <h2 className="text-2xl font-bold text-indigo-900 dark:text-indigo-100 mb-4 flex items-center gap-3">
+              <div className="p-3 bg-indigo-100 dark:bg-indigo-800 rounded-xl">
                 <Icon
-                  icon="mdi:information-outline"
-                  className="text-2xl text-gray-600 dark:text-gray-400"
+                  icon="mdi:heart-multiple"
+                  className="text-3xl text-indigo-600 dark:text-indigo-400"
                 />
               </div>
-              Additional Information & Consents
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div
-                className={`p-4 rounded-xl text-center ${
-                  record.independent_travel_ack
-                    ? "bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200"
-                    : "bg-red-100 dark:bg-red-800 text-red-800 dark:text-red-200"
-                }`}
-              >
-                <Icon
-                  icon={
-                    record.independent_travel_ack
-                      ? "mdi:check-circle"
-                      : "mdi:close-circle"
-                  }
-                  className="text-3xl mb-2"
-                />
-                <p className="font-semibold">Independent Travel</p>
-                <p className="text-sm">
-                  {record.independent_travel_ack ? "Capable" : "Not Capable"}
-                </p>
+              Interests & Services Requested
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-indigo-100 dark:border-indigo-600">
+                <h3 className="text-xl font-semibold text-indigo-800 dark:text-indigo-200 mb-3 flex items-center gap-2">
+                  <Icon icon="mdi:target" />
+                  Travel Purposes
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {record.travel_purpose.map((purpose, index) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center px-4 py-2 rounded-xl text-base bg-indigo-100 text-indigo-800 dark:bg-indigo-800 dark:text-indigo-200 font-semibold border-2 border-indigo-200 dark:border-indigo-700"
+                    >
+                      <Icon icon="mdi:check-circle" className="mr-2 text-lg" />
+                      {purpose}
+                    </span>
+                  ))}
+                  {record.travel_purpose.length === 0 && (
+                    <span className="text-indigo-700 dark:text-indigo-300 italic text-lg">
+                      No travel purposes specified
+                    </span>
+                  )}
+                </div>
               </div>
+              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-indigo-100 dark:border-indigo-600">
+                <h3 className="text-xl font-semibold text-indigo-800 dark:text-indigo-200 mb-3 flex items-center gap-2">
+                  <Icon icon="mdi:star" />
+                  Services & Interests
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {record.interests.map((interest, index) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center px-4 py-2 rounded-xl text-base bg-violet-100 text-violet-800 dark:bg-violet-800 dark:text-violet-200 font-semibold border-2 border-violet-200 dark:border-violet-700"
+                    >
+                      <Icon icon="mdi:star" className="mr-2 text-lg" />
+                      {interest}
+                    </span>
+                  ))}
+                  {record.interests.length === 0 && (
+                    <span className="text-violet-700 dark:text-violet-300 italic text-lg">
+                      No interests specified
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
 
-              <div
-                className={`p-4 rounded-xl text-center ${
-                  record.fee_ack
-                    ? "bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200"
-                    : "bg-red-100 dark:bg-red-800 text-red-800 dark:text-red-200"
-                }`}
-              >
+          {/* Consents & Acknowledgments */}
+          <div className="bg-gradient-to-r from-gray-50 to-slate-100 dark:from-gray-700 dark:to-slate-800 rounded-2xl p-6 border-2 border-gray-300 dark:border-gray-600">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-3">
+              <div className="p-3 bg-gray-200 dark:bg-gray-600 rounded-xl">
                 <Icon
-                  icon={
-                    record.fee_ack ? "mdi:check-circle" : "mdi:close-circle"
-                  }
-                  className="text-3xl mb-2"
+                  icon="mdi:shield-check"
+                  className="text-3xl text-gray-600 dark:text-gray-400"
                 />
-                <p className="font-semibold">Fee Acknowledgment</p>
-                <p className="text-sm">
-                  {record.fee_ack ? "Accepted" : "Not Accepted"}
-                </p>
               </div>
-
-              <div
-                className={`p-4 rounded-xl text-center ${
-                  record.consent_contact
-                    ? "bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200"
-                    : "bg-red-100 dark:bg-red-800 text-red-800 dark:text-red-200"
-                }`}
-              >
-                <Icon
-                  icon={
-                    record.consent_contact
-                      ? "mdi:check-circle"
-                      : "mdi:close-circle"
-                  }
-                  className="text-3xl mb-2"
-                />
-                <p className="font-semibold">Contact Consent</p>
-                <p className="text-sm">
-                  {record.consent_contact ? "Granted" : "Not Granted"}
-                </p>
-              </div>
-
-              <div
-                className={`p-4 rounded-xl text-center ${
-                  record.consent_marketing
-                    ? "bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200"
-                    : "bg-red-100 dark:bg-red-800 text-red-800 dark:text-red-200"
-                }`}
-              >
-                <Icon
-                  icon={
-                    record.consent_marketing
-                      ? "mdi:check-circle"
-                      : "mdi:close-circle"
-                  }
-                  className="text-3xl mb-2"
-                />
-                <p className="font-semibold">Marketing Consent</p>
-                <p className="text-sm">
-                  {record.consent_marketing ? "Granted" : "Not Granted"}
-                </p>
-              </div>
+              Consents & Acknowledgments
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {getStatusBadge(record.independent_travel_ack, "Independent Travel")}
+              {getStatusBadge(record.fee_ack, "Fee Acknowledgment")}
+              {getStatusBadge(record.consent_contact, "Contact Consent")}
+              {getStatusBadge(record.consent_marketing, "Marketing Consent")}
             </div>
           </div>
         </div>

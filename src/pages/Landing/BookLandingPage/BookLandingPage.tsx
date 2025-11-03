@@ -144,7 +144,7 @@ export default function BookLandingPage() {
                 />
               </Link>
               <Link
-                to="https://www.instagram.com/founder_ceo_travelglobal.ca/"
+                to="https://www.instagram.com/your_retirement_decision_lab?igsh=MXd3NWFidTF5YzR4Ng%3D%3D&utm_source=qr"
                 target="_blank"
               >
                 <Icon
@@ -153,10 +153,7 @@ export default function BookLandingPage() {
                   height="30"
                 />
               </Link>
-              <Link
-                to="https://x.com/FallowRaoMovva?t=TtOXJBp-ztKfOUZNiDYFXQ&s=09"
-                target="_blank"
-              >
+              <Link to="https://x.com/retiremenlab?s=21" target="_blank">
                 <Icon
                   icon="entypo-social:twitter-with-circle"
                   width="30"

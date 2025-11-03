@@ -152,3 +152,14 @@ body {
   background-color: #000;
   border: 1px solid #413f3f;
 }
+
+/* Right Shadow Dashboard Aside */
+.shadow-right {
+  box-shadow: 8px 0 15px -3px rgba(0, 0, 0, 0.1),
+    4px 0 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.dark .shadow-right {
+  box-shadow: 8px 0 15px -3px rgba(0, 0, 0, 0.3),
+    4px 0 6px -2px rgba(0, 0, 0, 0.2);
+}
