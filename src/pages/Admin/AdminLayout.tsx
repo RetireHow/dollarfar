@@ -18,7 +18,6 @@ export default function AdminLayout() {
   const [isVisible, setIsVisible] = useState(true);
 
   const isMobile = useIsMobile(768); // breakpoint: md
-  console.log("Mobile view:", isMobile);
 
   const handleMobileViewNavClick = () => {
     if (isMobile && isVisible) {
@@ -45,7 +44,7 @@ export default function AdminLayout() {
 
       {/* ===== Sidebar ===== */}
       <aside
-        className={`min-h-screen p-5 min-w-60 shadow-lg fixed duration-300 z-50 ${
+        className={`min-h-screen p-5 min-w-60 shadow-2xl fixed duration-300 z-50 ${
           isVisible
             ? "left-[-0px] bg-gray-100 dark:bg-gray-800"
             : "left-[-210px] bg-transparent"

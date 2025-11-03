@@ -37,10 +37,12 @@ interface RetirementData {
 }
 
 interface Note {
-  id: string;
+  _id: string;
   content: string;
-  createdAt: string;
+  retirementPlan: string;
   createdBy: string;
+  createdAt: string;
+  updatedAt?: string;
 }
 
 interface EmailTemplate {
@@ -54,18 +56,15 @@ interface EmailTemplate {
 const NotesModal = ({
   onClose,
   selectedRecordForAction,
-  notes,
-  setNotes,
-  newNote,
-  setNewNote,
 }: {
   onClose: () => void;
   selectedRecordForAction: RetirementData;
-  notes: Note[];
-  setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
-  newNote: string;
-  setNewNote: React.Dispatch<React.SetStateAction<string>>;
 }) => {
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [newNote, setNewNote] = useState<string>("");
+  const [editingNote, setEditingNote] = useState<Note | null>();
+  console.log(selectedRecordForAction);
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -80,25 +79,131 @@ const NotesModal = ({
     if (!newNote.trim() || !selectedRecordForAction) return;
 
     try {
-      // In a real app, you would save to your API
-      const newNoteObj: Note = {
-        id: Date.now().toString(),
-        content: newNote,
-        createdAt: new Date().toISOString(),
-        createdBy: "Current User", // This would come from auth context
-      };
+      // save notes to API
+      const currentUser = localStorage.getItem("name");
+      const res = await fetch(`${baseUrl}/retirement-plan-notes/create`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          retirementPlan: selectedRecordForAction._id,
+          content: newNote,
+          createdBy: currentUser,
+        }),
+      });
+      if (!res.ok) {
+        return toast.error("Failed to create this new notes.");
+      }
+      await res.json();
 
+      const newNoteObj: Note = {
+        _id: Date.now().toString(),
+        content: newNote,
+        retirementPlan: selectedRecordForAction._id,
+        createdAt: new Date().toISOString(),
+        createdBy: currentUser as string, // This would come from auth context
+      };
       setNotes((prev) => [newNoteObj, ...prev]);
       setNewNote("");
       toast.success("Note added successfully!");
     } catch (error: any) {
-      toast.error("Failed to save note", error?.message);
+      toast.error("Failed to save this new note", error?.message);
     }
   };
 
+  const handleEditNote = async (note: Note) => {
+    setEditingNote(note);
+    setNewNote(note.content);
+    const modalContent = document.querySelector(".modal-content-scrollable");
+    if (modalContent) {
+      modalContent.scrollTo({ behavior: "smooth", top: 0 });
+    }
+  };
+
+  const handleUpdateNote = async () => {
+    try {
+      const res = await fetch(`${baseUrl}/retirement-plan-notes/update`, {
+        method: "PATCH",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ noteId: editingNote?._id, content: newNote }),
+      });
+      if (!res.ok) {
+        return toast.error("Failed to update this note.");
+      }
+      await res.json();
+
+      const updateNoteIndex = notes?.findIndex(
+        (note) => note._id == editingNote?._id
+      );
+      if (updateNoteIndex >= 0) {
+        const updatedNotes = [...notes];
+        updatedNotes[updateNoteIndex].content = newNote;
+        setNotes(updatedNotes);
+      }
+      setEditingNote(null);
+      setNewNote("");
+      toast.success("Note updated successfully!");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error("Failed to update this note.");
+    }
+  };
+
+  const handleDeleteNote = async (noteId: string) => {
+    const isConfirmed = window.confirm("Are you sure to delete this note?");
+    if (!isConfirmed) return;
+
+    try {
+      const res = await fetch(
+        `${baseUrl}/retirement-plan-notes/remove/${noteId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!res.ok) {
+        return toast.error("Failed to delete this note.");
+      }
+      await res.json();
+      const filteredNotes = notes.filter((note) => note._id !== noteId);
+      setNotes(filteredNotes);
+      toast.success("Note deleted successfully!");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error("Failed to delete this note");
+    }
+  };
+
+  const filteredNotes = notes.filter(
+    (note) => note.retirementPlan === selectedRecordForAction._id
+  );
+
+  const loadNotes = async () => {
+    try {
+      const res = await fetch(
+        `${baseUrl}/retirement-plan-notes/get/${selectedRecordForAction._id}`
+      );
+      if (!res.ok) {
+        return toast.error("Failed to fetch notes.");
+      }
+      const data = await res.json();
+      setNotes(data?.data);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error("Failed to fetch notes.");
+    }
+  };
+
+  // Initialize notes
+  useEffect(() => {
+    loadNotes();
+  }, []);
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 z-[1000] top-0">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[88vh] overflow-y-auto">
+      <div className="modal-content-scrollable bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[88vh] overflow-y-auto">
         <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-6 rounded-t-2xl z-10">
           <div className="flex justify-between items-start">
             <div className="flex-1">
@@ -136,31 +241,63 @@ const NotesModal = ({
               className="w-full h-32 p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
             <div className="flex justify-end mt-3">
-              <button
-                onClick={handleSaveNote}
-                disabled={!newNote.trim()}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
-              >
-                Save Note
-              </button>
+              {editingNote ? (
+                <button
+                  onClick={handleUpdateNote}
+                  disabled={!newNote.trim()}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                >
+                  Update Note
+                </button>
+              ) : (
+                <button
+                  onClick={handleSaveNote}
+                  disabled={!newNote.trim()}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                >
+                  Save Note
+                </button>
+              )}
             </div>
           </div>
 
           {/* Existing Notes */}
           <div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-              Previous Notes ({notes.length})
+              Previous Notes ({filteredNotes.length})
             </h3>
             <div className="space-y-4 max-h-96 overflow-y-auto">
-              {notes.length > 0 ? (
-                notes.map((note) => (
+              {filteredNotes.length > 0 ? (
+                filteredNotes.map((note) => (
                   <div
-                    key={note.id}
-                    className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600"
+                    key={note._id}
+                    className="bg-gray-50 dark:bg-gray-700 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-600"
                   >
-                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
-                      {note.content}
-                    </p>
+                    <div className="md:flex justify-between items-center md:space-x-3">
+                      <p className="text-gray-700 md:mb-0 mb-2 dark:text-gray-300 whitespace-pre-wrap">
+                        {note.content}
+                      </p>
+                      <div className="flex items-center gap-3">
+                        <button
+                          title="Edit this note."
+                          className="border-[1px] md:mr-0 mr-3 border-gray-300 px-4 py-2 rounded-md bg-green-600 hover:bg-green-700 duration-300 text-white font-bold"
+                          onClick={() => handleEditNote(note)}
+                        >
+                          <Icon icon="uil:edit" width="24" height="24" />
+                        </button>
+                        <button
+                          title="Delete this note."
+                          className="border-[1px] border-gray-300 px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 duration-300 text-white font-bold"
+                          onClick={() => handleDeleteNote(note._id)}
+                        >
+                          <Icon
+                            icon="material-symbols:delete-outline"
+                            width="24"
+                            height="24"
+                          />
+                        </button>
+                      </div>
+                    </div>
                     <div className="flex justify-between items-center mt-2 text-sm text-gray-500 dark:text-gray-400">
                       <span>By: {note.createdBy}</span>
                       <span>{formatDate(note.createdAt)}</span>
@@ -879,9 +1016,6 @@ export default function RetireeRequestedPlans() {
   const [selectedRecordForAction, setSelectedRecordForAction] =
     useState<RetirementData | null>(null);
 
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [newNote, setNewNote] = useState("");
-
   useEffect(() => {
     const fetchRequestedPlans = async () => {
       try {
@@ -899,20 +1033,6 @@ export default function RetireeRequestedPlans() {
       }
     };
     fetchRequestedPlans();
-  }, []);
-
-  // Initialize notes
-  useEffect(() => {
-    const existingNotes: Note[] = [
-      {
-        id: "1",
-        content:
-          "Initial contact made. Client seems very interested in Mediterranean retirement options.",
-        createdAt: new Date().toISOString(),
-        createdBy: "Admin User",
-      },
-    ];
-    setNotes(existingNotes);
   }, []);
 
   // Get unique regions for filter
@@ -1485,10 +1605,6 @@ export default function RetireeRequestedPlans() {
         <NotesModal
           onClose={() => setNotesModalOpen(false)}
           selectedRecordForAction={selectedRecordForAction as RetirementData}
-          notes={notes}
-          setNotes={setNotes}
-          newNote={newNote}
-          setNewNote={setNewNote}
         />
       )}
 
