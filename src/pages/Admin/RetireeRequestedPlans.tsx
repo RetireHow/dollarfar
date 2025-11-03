@@ -372,7 +372,7 @@ const NotesModal = ({
             {isFetchingNotes ? (
               <NoteLoadingSkeleton />
             ) : (
-              <div className="space-y-4 max-h-96 overflow-y-auto">
+              <div className="space-y-4 max-h-96 overflow-y-auto pb-10">
                 {filteredNotes.length > 0 ? (
                   filteredNotes.map((note) => (
                     <div
@@ -1206,11 +1206,6 @@ export default function RetireeRequestedPlans() {
     // In a real app, you would fetch existing notes from your API
   };
 
-  const handleSendEmail = (record: RetirementData) => {
-    setSelectedRecordForAction(record);
-    setEmailModalOpen(true);
-  };
-
   return (
     <div className="dark:bg-gray-900 dark:text-gray-100 min-h-screen">
       <div>
@@ -1407,19 +1402,13 @@ export default function RetireeRequestedPlans() {
                             onClick={() => setSelectedRecord(record)}
                             className="inline-flex items-center px-4 py-2 bg-neutral-600 dark:bg-neutral-700 text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors font-medium"
                           >
-                            View Details
+                            Details
                           </button>
                           <button
                             onClick={() => handleAddNote(record)}
                             className="inline-flex items-center px-4 py-2 bg-emerald-600 dark:bg-emerald-700 text-white rounded-lg hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors font-medium"
                           >
-                            Add Notes
-                          </button>
-                          <button
-                            onClick={() => handleSendEmail(record)}
-                            className="inline-flex items-center px-4 py-2 bg-violet-600 dark:bg-violet-700 text-white rounded-lg hover:bg-violet-700 dark:hover:bg-violet-600 transition-colors font-medium"
-                          >
-                            Send Email
+                            Notes
                           </button>
                         </div>
                       </td>
@@ -1557,13 +1546,7 @@ export default function RetireeRequestedPlans() {
                             onClick={() => handleAddNote(record)}
                             className="inline-flex items-center px-4 py-2 bg-emerald-600 dark:bg-emerald-700 text-white rounded-lg hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors font-medium"
                           >
-                            Add Notes
-                          </button>
-                          <button
-                            onClick={() => handleSendEmail(record)}
-                            className="inline-flex items-center px-4 py-2 bg-violet-600 dark:bg-violet-700 text-white rounded-lg hover:bg-violet-700 dark:hover:bg-violet-600 transition-colors font-medium"
-                          >
-                            Send Email
+                            Notes
                           </button>
                         </div>
                       </td>
@@ -1689,13 +1672,7 @@ export default function RetireeRequestedPlans() {
                             onClick={() => handleAddNote(record)}
                             className="inline-flex items-center px-4 py-2 bg-emerald-600 dark:bg-emerald-700 text-white rounded-lg hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors font-medium"
                           >
-                            Add Notes
-                          </button>
-                          <button
-                            onClick={() => handleSendEmail(record)}
-                            className="inline-flex items-center px-4 py-2 bg-violet-600 dark:bg-violet-700 text-white rounded-lg hover:bg-violet-700 dark:hover:bg-violet-600 transition-colors font-medium"
-                          >
-                            Send Email
+                            Notes
                           </button>
                         </div>
                       </td>
