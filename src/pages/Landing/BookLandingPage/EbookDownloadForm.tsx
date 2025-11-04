@@ -79,18 +79,20 @@ export const EbookDownloadFormPopup = () => {
         }),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        return toast.error("Failed to submit details");
+        const message = data?.message || "Something went wrong!";
+        return toast.error(message, { position: "top-center" });
       }
 
-      await res.json();
       toast.success("A confirmation email has been sent.", {
         position: "top-center",
       });
     } catch (error: unknown) {
-      console.error("Email sending failed:", error);
-      const errorMessage = "Unexpected error occurred";
-      toast.error(`Failed to send report: ${errorMessage}`, {
+      const errorMessage =
+        error instanceof Error ? error.message : "Unexpected error occurred";
+      toast.error(`Failed to download the book: ${errorMessage}`, {
         position: "top-center",
       });
     } finally {
