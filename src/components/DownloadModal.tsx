@@ -93,15 +93,15 @@ const DownloadModal = ({
           }),
         }
       );
+      const data = await res.json();
+
       if (!res.ok) {
-        return toast.error("There is something went wrong!");
+        const message = data?.message || "Something went wrong!";
+        return toast.error(message, { position: "top-center" });
       }
-
-      // Parse JSON response
-      await res.json();
-
-      // Assuming responseData contains info about the success or failure of the operation
-      toast.success("An email sent to your mail.", { position: "top-center" });
+      toast.success("PDF Report is Downloaded successfully.", {
+        position: "top-center",
+      });
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("There is something wrong!");

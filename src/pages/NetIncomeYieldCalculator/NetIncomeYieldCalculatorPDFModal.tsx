@@ -99,14 +99,12 @@ export const NetIncomeYieldCalculatorPDFModal = ({
         }
       );
 
-      if (!res.ok) {
-        return toast.error("Failed to submit details");
-      }
+      const data = await res.json();
 
-      await res.json();
-      toast.success("A confirmation email has been sent.", {
-        position: "top-center",
-      });
+      if (!res.ok) {
+        const message = data?.message || "Something went wrong!";
+        return toast.error(message, { position: "top-center" });
+      }
 
       // Show the PDF content temporarily with fixed width
       if (targetRef.current) {
@@ -122,6 +120,9 @@ export const NetIncomeYieldCalculatorPDFModal = ({
       // Add small delay to ensure proper rendering
       await new Promise((resolve) => setTimeout(resolve, 500));
       await toPDF();
+      toast.success("PDF Report is Downloaded successfully.", {
+        position: "top-center",
+      });
     } catch (error: unknown) {
       console.error("Email sending failed:", error);
       setPdfError("Failed to generate PDF. Please try again.");
