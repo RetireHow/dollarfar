@@ -621,6 +621,9 @@ const DetailModal = ({
   record: RetirementData;
   onClose: () => void;
 }) => {
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [isLoadingNotes, setIsLoadingNotes] = useState(false);
+
   const formatCurrency = (amount: string) => {
     if (!amount) return "Not specified";
     const num = parseFloat(amount);
@@ -637,6 +640,8 @@ const DetailModal = ({
       year: "numeric",
       month: "long",
       day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -655,14 +660,16 @@ const DetailModal = ({
 
   const getStatusBadge = (status: boolean, label: string) => {
     return (
-      <div className={`flex items-center justify-center p-3 rounded-xl border-2 ${
-        status 
-          ? "bg-green-50 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-200 dark:border-green-700" 
-          : "bg-red-50 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-200 dark:border-red-700"
-      }`}>
-        <Icon 
-          icon={status ? "mdi:check-circle" : "mdi:close-circle"} 
-          className="text-2xl mr-2" 
+      <div
+        className={`flex items-center justify-center p-3 rounded-xl border-2 ${
+          status
+            ? "bg-green-50 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-200 dark:border-green-700"
+            : "bg-red-50 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-200 dark:border-red-700"
+        }`}
+      >
+        <Icon
+          icon={status ? "mdi:check-circle" : "mdi:close-circle"}
+          className="text-2xl mr-2"
         />
         <div className="text-left">
           <div className="font-semibold text-base">{label}</div>
@@ -671,6 +678,30 @@ const DetailModal = ({
       </div>
     );
   };
+
+  // Fetch notes for this record
+  useEffect(() => {
+    const loadNotes = async () => {
+      setIsLoadingNotes(true);
+      try {
+        const res = await fetch(
+          `${baseUrl}/retirement-plan-notes/get/${record._id}`
+        );
+        if (!res.ok) {
+          return toast.error("Failed to fetch notes.");
+        }
+        const data = await res.json();
+        setNotes(data?.data || []);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        toast.error("Failed to fetch notes.");
+      } finally {
+        setIsLoadingNotes(false);
+      }
+    };
+
+    loadNotes();
+  }, [record._id]);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 dark:bg-opacity-80 flex items-center justify-center p-4 z-[999] top-0">
@@ -684,17 +715,31 @@ const DetailModal = ({
               </h1>
               <div className="flex flex-wrap gap-6 text-lg">
                 <div className="flex items-center gap-3 bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-xl">
-                  <Icon icon="mdi:calendar" className="text-2xl text-blue-600 dark:text-blue-400" />
+                  <Icon
+                    icon="mdi:calendar"
+                    className="text-2xl text-blue-600 dark:text-blue-400"
+                  />
                   <div>
-                    <div className="text-sm text-blue-700 dark:text-blue-300 font-medium">Submitted</div>
-                    <div className="text-blue-900 dark:text-blue-100 font-semibold">{formatDate(record.createdAt)}</div>
+                    <div className="text-sm text-blue-700 dark:text-blue-300 font-medium">
+                      Submitted
+                    </div>
+                    <div className="text-blue-900 dark:text-blue-100 font-semibold">
+                      {formatDate(record.createdAt)}
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 bg-green-50 dark:bg-green-900/30 px-4 py-2 rounded-xl">
-                  <Icon icon="mdi:map-marker" className="text-2xl text-green-600 dark:text-green-400" />
+                  <Icon
+                    icon="mdi:map-marker"
+                    className="text-2xl text-green-600 dark:text-green-400"
+                  />
                   <div>
-                    <div className="text-sm text-green-700 dark:text-green-300 font-medium">Region</div>
-                    <div className="text-green-900 dark:text-green-100 font-semibold">{record.region || "Not specified"}</div>
+                    <div className="text-sm text-green-700 dark:text-green-300 font-medium">
+                      Region
+                    </div>
+                    <div className="text-green-900 dark:text-green-100 font-semibold">
+                      {record.region || "Not specified"}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -727,28 +772,49 @@ const DetailModal = ({
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-blue-100 dark:border-blue-600">
                 <div className="flex items-center gap-3 mb-2">
-                  <Icon icon="mdi:email" className="text-2xl text-blue-600 dark:text-blue-400" />
+                  <Icon
+                    icon="mdi:email"
+                    className="text-2xl text-blue-600 dark:text-blue-400"
+                  />
                   <div>
-                    <div className="text-lg font-semibold text-blue-800 dark:text-blue-200">Email Address</div>
-                    <div className="text-xl text-blue-900 dark:text-blue-100 font-medium break-all">{record.email}</div>
+                    <div className="text-lg font-semibold text-blue-800 dark:text-blue-200">
+                      Email Address
+                    </div>
+                    <div className="text-xl text-blue-900 dark:text-blue-100 font-medium break-all">
+                      {record.email}
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-blue-100 dark:border-blue-600">
                 <div className="flex items-center gap-3 mb-2">
-                  <Icon icon="mdi:phone" className="text-2xl text-blue-600 dark:text-blue-400" />
+                  <Icon
+                    icon="mdi:phone"
+                    className="text-2xl text-blue-600 dark:text-blue-400"
+                  />
                   <div>
-                    <div className="text-lg font-semibold text-blue-800 dark:text-blue-200">Phone Number</div>
-                    <div className="text-xl text-blue-900 dark:text-blue-100 font-medium">{record.phone}</div>
+                    <div className="text-lg font-semibold text-blue-800 dark:text-blue-200">
+                      Phone Number
+                    </div>
+                    <div className="text-xl text-blue-900 dark:text-blue-100 font-medium">
+                      {record.phone}
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-blue-100 dark:border-blue-600">
                 <div className="flex items-center gap-3 mb-2">
-                  <Icon icon="mdi:earth" className="text-2xl text-blue-600 dark:text-blue-400" />
+                  <Icon
+                    icon="mdi:earth"
+                    className="text-2xl text-blue-600 dark:text-blue-400"
+                  />
                   <div>
-                    <div className="text-lg font-semibold text-blue-800 dark:text-blue-200">Country Region</div>
-                    <div className="text-xl text-blue-900 dark:text-blue-100 font-medium">{record.country_region || "Not specified"}</div>
+                    <div className="text-lg font-semibold text-blue-800 dark:text-blue-200">
+                      Country Region
+                    </div>
+                    <div className="text-xl text-blue-900 dark:text-blue-100 font-medium">
+                      {record.country_region || "Not specified"}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -768,24 +834,52 @@ const DetailModal = ({
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-green-100 dark:border-green-600 text-center">
-                <Icon icon="mdi:calendar-clock" className="text-4xl text-green-600 dark:text-green-400 mb-3" />
-                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">Target Age</div>
-                <div className="text-2xl font-bold text-green-900 dark:text-green-100">{record.target_age || "Not set"}</div>
+                <Icon
+                  icon="mdi:calendar-clock"
+                  className="text-4xl text-green-600 dark:text-green-400 mb-3"
+                />
+                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">
+                  Target Age
+                </div>
+                <div className="text-2xl font-bold text-green-900 dark:text-green-100">
+                  {record.target_age || "Not set"}
+                </div>
               </div>
               <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-green-100 dark:border-green-600 text-center">
-                <Icon icon="mdi:cash" className="text-4xl text-green-600 dark:text-green-400 mb-3" />
-                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">Desired Income</div>
-                <div className="text-xl font-bold text-green-900 dark:text-green-100">{formatCurrency(record.desired_income)}</div>
+                <Icon
+                  icon="mdi:cash"
+                  className="text-4xl text-green-600 dark:text-green-400 mb-3"
+                />
+                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">
+                  Desired Income
+                </div>
+                <div className="text-xl font-bold text-green-900 dark:text-green-100">
+                  {formatCurrency(record.desired_income)}
+                </div>
               </div>
               <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-green-100 dark:border-green-600 text-center">
-                <Icon icon="mdi:bank" className="text-4xl text-green-600 dark:text-green-400 mb-3" />
-                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">Estimated Savings</div>
-                <div className="text-xl font-bold text-green-900 dark:text-green-100">{formatCurrency(record.estimated_savings)}</div>
+                <Icon
+                  icon="mdi:bank"
+                  className="text-4xl text-green-600 dark:text-green-400 mb-3"
+                />
+                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">
+                  Estimated Savings
+                </div>
+                <div className="text-xl font-bold text-green-900 dark:text-green-100">
+                  {formatCurrency(record.estimated_savings)}
+                </div>
               </div>
               <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-green-100 dark:border-green-600 text-center">
-                <Icon icon="mdi:home-analytics" className="text-4xl text-green-600 dark:text-green-400 mb-3" />
-                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">Home Equity</div>
-                <div className="text-xl font-bold text-green-900 dark:text-green-100">{formatCurrency(record.estimated_home_equity)}</div>
+                <Icon
+                  icon="mdi:home-analytics"
+                  className="text-4xl text-green-600 dark:text-green-400 mb-3"
+                />
+                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">
+                  Home Equity
+                </div>
+                <div className="text-xl font-bold text-green-900 dark:text-green-100">
+                  {formatCurrency(record.estimated_home_equity)}
+                </div>
               </div>
             </div>
           </div>
@@ -805,52 +899,96 @@ const DetailModal = ({
               <div className="space-y-4">
                 <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
                   <div className="flex items-center gap-3 mb-3">
-                    <Icon icon="mdi:walk" className="text-2xl text-purple-600 dark:text-purple-400" />
-                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">Travel Style</div>
+                    <Icon
+                      icon="mdi:walk"
+                      className="text-2xl text-purple-600 dark:text-purple-400"
+                    />
+                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">
+                      Travel Style
+                    </div>
                   </div>
-                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">{record.travel_style || "Not specified"}</div>
-                </div>
-                
-                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Icon icon="mdi:clock-outline" className="text-2xl text-purple-600 dark:text-purple-400" />
-                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">Start Timeline</div>
+                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">
+                    {record.travel_style || "Not specified"}
                   </div>
-                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">{record.start_timeline || "Not specified"}</div>
                 </div>
 
                 <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
                   <div className="flex items-center gap-3 mb-3">
-                    <Icon icon="mdi:calendar-month" className="text-2xl text-purple-600 dark:text-purple-400" />
-                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">Months Abroad</div>
+                    <Icon
+                      icon="mdi:clock-outline"
+                      className="text-2xl text-purple-600 dark:text-purple-400"
+                    />
+                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">
+                      Start Timeline
+                    </div>
                   </div>
-                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">{record.months_abroad || "Not specified"}</div>
+                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">
+                    {record.start_timeline || "Not specified"}
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Icon
+                      icon="mdi:calendar-month"
+                      className="text-2xl text-purple-600 dark:text-purple-400"
+                    />
+                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">
+                      Months Abroad
+                    </div>
+                  </div>
+                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">
+                    {record.months_abroad || "Not specified"}
+                  </div>
                 </div>
               </div>
 
               <div className="space-y-4">
                 <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
                   <div className="flex items-center gap-3 mb-3">
-                    <Icon icon="mdi:airplane-seat" className="text-2xl text-purple-600 dark:text-purple-400" />
-                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">Flight Class</div>
+                    <Icon
+                      icon="mdi:airplane-seat"
+                      className="text-2xl text-purple-600 dark:text-purple-400"
+                    />
+                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">
+                      Flight Class
+                    </div>
                   </div>
-                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">{record.flight_class || "Not specified"}</div>
+                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">
+                    {record.flight_class || "Not specified"}
+                  </div>
                 </div>
 
                 <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
                   <div className="flex items-center gap-3 mb-3">
-                    <Icon icon="mdi:map-marker-radius" className="text-2xl text-purple-600 dark:text-purple-400" />
-                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">Ideal Locations</div>
+                    <Icon
+                      icon="mdi:map-marker-radius"
+                      className="text-2xl text-purple-600 dark:text-purple-400"
+                    />
+                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">
+                      Ideal Locations
+                    </div>
                   </div>
-                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">{record.ideal_locations || "Not specified"}</div>
+                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">
+                    {record.ideal_locations || "Not specified"}
+                  </div>
                 </div>
 
                 <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
                   <div className="flex items-center gap-3 mb-3">
-                    <Icon icon="mdi:heart-outline" className="text-2xl text-purple-600 dark:text-purple-400" />
-                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">Equity Comfort</div>
+                    <Icon
+                      icon="mdi:heart-outline"
+                      className="text-2xl text-purple-600 dark:text-purple-400"
+                    />
+                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">
+                      Equity Comfort
+                    </div>
                   </div>
-                  <div className={`inline-flex items-center px-4 py-2 rounded-xl text-lg font-semibold border-2 ${getComfortLevelColor(record.equity_comfort)}`}>
+                  <div
+                    className={`inline-flex items-center px-4 py-2 rounded-xl text-lg font-semibold border-2 ${getComfortLevelColor(
+                      record.equity_comfort
+                    )}`}
+                  >
                     <Icon
                       icon={
                         record.equity_comfort === "comfortable"
@@ -883,19 +1021,40 @@ const DetailModal = ({
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-amber-100 dark:border-amber-600 text-center">
-                <Icon icon="mdi:home-currency-usd" className="text-4xl text-amber-600 dark:text-amber-400 mb-3" />
-                <div className="text-lg font-semibold text-amber-800 dark:text-amber-200 mb-1">Monthly Home Spend</div>
-                <div className="text-xl font-bold text-amber-900 dark:text-amber-100">{formatCurrency(record.home_spend_monthly)}</div>
+                <Icon
+                  icon="mdi:home-currency-usd"
+                  className="text-4xl text-amber-600 dark:text-amber-400 mb-3"
+                />
+                <div className="text-lg font-semibold text-amber-800 dark:text-amber-200 mb-1">
+                  Monthly Home Spend
+                </div>
+                <div className="text-xl font-bold text-amber-900 dark:text-amber-100">
+                  {formatCurrency(record.home_spend_monthly)}
+                </div>
               </div>
               <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-amber-100 dark:border-amber-600 text-center">
-                <Icon icon="mdi:passport" className="text-4xl text-amber-600 dark:text-amber-400 mb-3" />
-                <div className="text-lg font-semibold text-amber-800 dark:text-amber-200 mb-1">Seasonal Abroad Budget</div>
-                <div className="text-xl font-bold text-amber-900 dark:text-amber-100">{formatCurrency(record.abroad_budget_season)}</div>
+                <Icon
+                  icon="mdi:passport"
+                  className="text-4xl text-amber-600 dark:text-amber-400 mb-3"
+                />
+                <div className="text-lg font-semibold text-amber-800 dark:text-amber-200 mb-1">
+                  Seasonal Abroad Budget
+                </div>
+                <div className="text-xl font-bold text-amber-900 dark:text-amber-100">
+                  {formatCurrency(record.abroad_budget_season)}
+                </div>
               </div>
               <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-amber-100 dark:border-amber-600 text-center">
-                <Icon icon="mdi:airplane-ticket" className="text-4xl text-amber-600 dark:text-amber-400 mb-3" />
-                <div className="text-lg font-semibold text-amber-800 dark:text-amber-200 mb-1">Flights & Insurance</div>
-                <div className="text-lg font-bold text-amber-900 dark:text-amber-100">{record.flights_insurance_budget || "Not specified"}</div>
+                <Icon
+                  icon="mdi:airplane-ticket"
+                  className="text-4xl text-amber-600 dark:text-amber-400 mb-3"
+                />
+                <div className="text-lg font-semibold text-amber-800 dark:text-amber-200 mb-1">
+                  Flights & Insurance
+                </div>
+                <div className="text-lg font-bold text-amber-900 dark:text-amber-100">
+                  {record.flights_insurance_budget || "Not specified"}
+                </div>
               </div>
             </div>
           </div>
@@ -971,11 +1130,77 @@ const DetailModal = ({
               Consents & Acknowledgments
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {getStatusBadge(record.independent_travel_ack, "Independent Travel")}
+              {getStatusBadge(
+                record.independent_travel_ack,
+                "Independent Travel"
+              )}
               {getStatusBadge(record.fee_ack, "Fee Acknowledgment")}
               {getStatusBadge(record.consent_contact, "Contact Consent")}
               {getStatusBadge(record.consent_marketing, "Marketing Consent")}
             </div>
+          </div>
+
+          {/* Client Notes Section */}
+          <div className="bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-900/20 dark:to-gray-900/20 rounded-2xl p-6 border-2 border-slate-200 dark:border-slate-700">
+            <div className="mb-4">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+                Client Notes
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300">
+                Track all conversations, meetings, and important details with
+                this client
+              </p>
+            </div>
+
+            {isLoadingNotes ? (
+              <NoteLoadingSkeleton />
+            ) : notes.length > 0 ? (
+              <div className="space-y-4 max-h-96 overflow-y-auto">
+                {notes.map((note) => (
+                  <div
+                    key={note._id}
+                    className="bg-white dark:bg-gray-700 rounded-xl p-4 border-2 border-gray-200 dark:border-gray-600"
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-blue-100 dark:bg-blue-800 rounded-lg">
+                          <Icon
+                            icon="mdi:account"
+                            className="text-blue-600 dark:text-blue-400 text-xl"
+                          />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-900 dark:text-white">
+                            {note.createdBy}
+                          </p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {formatDate(note.createdAt)}
+                          </p>
+                        </div>
+                      </div>
+                      {note.updatedAt && note.updatedAt !== note.createdAt && (
+                        <div className="text-xs text-gray-400 dark:text-gray-500">
+                          Edited {formatDate(note.updatedAt)}
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                      {note.content}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <Icon
+                  icon="mdi:note-off"
+                  className="text-4xl text-gray-400 dark:text-gray-500 mx-auto mb-3"
+                />
+                <p className="text-gray-500 dark:text-gray-400 text-lg">
+                  No notes have been added for this client yet.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
