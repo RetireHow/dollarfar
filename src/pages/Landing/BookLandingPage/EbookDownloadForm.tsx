@@ -89,15 +89,22 @@ export const EbookDownloadFormPopup = () => {
       toast.success("A confirmation email has been sent.", {
         position: "top-center",
       });
+      setIsModalOpen(false);
     } catch (error: unknown) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Unexpected error occurred";
-      toast.error(`Failed to download the book: ${errorMessage}`, {
-        position: "top-center",
-      });
+      // ✅ Detect network-related errors
+      if (error instanceof TypeError && error.message.includes("fetch")) {
+        toast.error("Network error. Please check your internet connection.", {
+          position: "top-center",
+        });
+      } else {
+        const errorMessage =
+          error instanceof Error ? error.message : "Unexpected error occurred";
+        toast.error(`Failed to download the book: ${errorMessage}`, {
+          position: "top-center",
+        });
+      }
     } finally {
       setIsLoading(false);
-      setIsModalOpen(false);
       setShowError(false);
     }
   };
