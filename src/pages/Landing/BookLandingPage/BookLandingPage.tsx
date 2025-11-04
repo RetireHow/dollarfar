@@ -160,7 +160,7 @@ export default function BookLandingPage() {
                   height="30"
                 />
               </Link>
-              <Link to="https://www.youtube.com/@movvarao1060" target="_blank">
+              <Link to="https://www.youtube.com/@RetireHowWithRao" target="_blank">
                 <Icon
                   icon="entypo-social:youtube-with-circle"
                   width="30"
