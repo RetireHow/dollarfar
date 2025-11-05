@@ -34,9 +34,20 @@ const EbookReaderFeedbacks = () => {
         // Sort by createdAt descending
         setFeedbacks(data?.data);
       } catch (error) {
-        const message =
-          error instanceof Error ? error.message : "Unknown error";
-        toast.error(`There was a problem fetching feedbacks: ${message}`);
+        // ✅ Detect network-related errors
+        if (error instanceof TypeError && error.message.includes("fetch")) {
+          toast.error("Network error. Please check your internet connection.", {
+            position: "top-center",
+          });
+        } else {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "Unexpected error occurred";
+          toast.error(`Failed to fetch feedbacks: ${errorMessage}`, {
+            position: "top-center",
+          });
+        }
       } finally {
         setIsLoading(false);
       }
