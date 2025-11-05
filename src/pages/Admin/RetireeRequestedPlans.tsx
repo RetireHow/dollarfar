@@ -296,6 +296,11 @@ const NotesModal = ({
     loadNotes();
   }, []);
 
+  const handleCancelNote = () => {
+    setEditingNote(null);
+    setNewNote("");
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 z-[1000] top-0">
       <div className="modal-content-scrollable bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[88vh] overflow-y-auto">
@@ -361,6 +366,12 @@ const NotesModal = ({
                   )}
                 </button>
               )}
+              <button
+                onClick={handleCancelNote}
+                className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium w-[9rem] flex justify-center items-center ml-3"
+              >
+                Cancel
+              </button>
             </div>
           </div>
 
@@ -1414,11 +1425,12 @@ export default function RetireeRequestedPlans() {
                   </p>
                   <p className="text-3xl font-bold text-gray-900 dark:text-white">
                     {
-                      requestedPlans.filter(
-                        (d) =>
+                      requestedPlans.filter((d) => {
+                        return (
                           new Date(d.createdAt).getMonth() ===
                           new Date().getMonth()
-                      ).length
+                        );
+                      }).length
                     }
                   </p>
                 </div>
