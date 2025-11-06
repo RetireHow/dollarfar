@@ -1448,7 +1448,7 @@ export default function RetireeRequestedPlans() {
         {/* Data Table */}
         <section className="mb-12">
           <h1 className="text-[1.5rem] font-semibold mb-2 dark:text-white">
-            Retiree Requested Plans
+            All Requested Plans
           </h1>
           <div className="overflow-x-auto border border-gray-300 dark:border-gray-700 rounded-lg">
             <table className="divide-y divide-gray-200 dark:divide-gray-700 w-full">
@@ -1575,7 +1575,7 @@ export default function RetireeRequestedPlans() {
         {/* Travel Ready Plans Table */}
         <section className="mb-12">
           <h1 className="text-[1.5rem] font-semibold mb-2 dark:text-white">
-            Travel Ready Plans
+            Requested Plans (Travel Ready)
           </h1>
           <div className="overflow-x-auto border border-gray-300 dark:border-gray-700 rounded-lg">
             <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -1713,7 +1713,7 @@ export default function RetireeRequestedPlans() {
         {/* Comprehensive Wealth Plan Requests Table */}
         <section>
           <h1 className="text-[1.5rem] font-semibold mb-2 dark:text-white">
-            Comprehensive Wealth Plan Requests
+            Requested Plans (Comprehensive Wealth Plan)
           </h1>
           <div className="overflow-x-auto border border-gray-300 dark:border-gray-700 rounded-lg">
             <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
