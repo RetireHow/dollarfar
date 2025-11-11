@@ -1,14 +1,20 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Icon } from "@iconify/react";
 import { Swiper as SwiperClass } from "swiper/types"; // Import Swiper class type
 import { Autoplay, Pagination } from "swiper/modules";
-import { baseUrl } from "../../../api/apiConstant";
-import { toast } from "react-toastify";
 import { FeedbackSkeleton } from "./FeedbackSkeleton";
-
+import { useGetAllEbookFeedbacksQuery } from "../../../redux/features/APIEndpoints/ebookFeedbacksApi/ebookFeedbackApis";
+type TFeedback = {
+  name: string;
+  email: string;
+  city: string;
+  rating: number;
+  comments: string;
+  createdAt: string;
+};
 const swiperConfig = {
   modules: [Pagination, Autoplay],
   pagination: {
@@ -29,16 +35,12 @@ const swiperConfig = {
   },
 };
 
-
-
 const BookReviews: React.FC = () => {
   const [swiperInstance, setSwiperInstance] = useState<SwiperClass | null>(
     null
   );
   const [isEnd, setIsEnd] = useState<boolean | null>(null);
   const [isBeginning, setIsBeginning] = useState<boolean | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [feedbacks, setFeedbacks] = useState([]);
 
   const handleNext = () => {
     swiperInstance?.slideNext();
@@ -52,29 +54,8 @@ const BookReviews: React.FC = () => {
     setIsEnd(swiperInstance?.isEnd ?? false);
   };
 
-  const loadFeedbacks = async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch(`${baseUrl}/feedbacks/get-feedbacks`);
-      const data = await response.json();
-      if (data?.success) {
-        console.log({ data });
-        setFeedbacks(data?.data);
-      } else {
-        toast.error("There is something went wrong!");
-      }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-    } catch (error: any) {
-      setIsLoading(false);
-      toast.error("There is something went wrong!");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadFeedbacks();
-  }, []);
+  const { data: feedbacks, isLoading } =
+    useGetAllEbookFeedbacksQuery(undefined);
 
   return (
     <section className="md:px-10 px-1 md:mb-28 mb-16">
@@ -94,7 +75,7 @@ const BookReviews: React.FC = () => {
 
         {isLoading ? (
           <FeedbackSkeleton />
-        ) : feedbacks?.length === 0 ? (
+        ) : feedbacks?.data?.length === 0 ? (
           <div className="text-gray-600 dark:text-gray-300 text-center text-[1.2rem] max-w-xl mx-auto my-6">
             <p>We haven’t received any reader feedback yet.</p>
             <p>
@@ -108,7 +89,7 @@ const BookReviews: React.FC = () => {
             {...swiperConfig}
             className="w-full m-3"
           >
-            {feedbacks?.map((feedback) => {
+            {feedbacks?.data?.map((feedback: TFeedback) => {
               const { name, city, rating, comments } = feedback;
               return (
                 <SwiperSlide key={name}>

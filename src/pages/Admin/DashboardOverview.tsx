@@ -1,7 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
-import { baseUrl } from "../../api/apiConstant";
-import { toast } from "react-toastify";
 import {
   Users,
   Download,
@@ -12,6 +9,10 @@ import {
   Calendar,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useGetAllRetirementPlansQuery } from "../../redux/features/APIEndpoints/retirementPlansApi/retirementPlansApi";
+import { useGetAllReportUsersQuery } from "../../redux/features/APIEndpoints/reportUsersApi/reportUsersApi";
+import { useGetAllEbookUsersQuery } from "../../redux/features/APIEndpoints/ebookUsersApi/ebookUsersApi";
+import { useGetAllEbookFeedbacksQuery } from "../../redux/features/APIEndpoints/ebookFeedbacksApi/ebookFeedbackApis";
 
 interface DashboardStats {
   totalRetirementPlans: number;
@@ -34,21 +35,21 @@ const DashboardOverviewSkeleton = () => {
             <div className="flex-1">
               {/* Title skeleton */}
               <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
-              
+
               {/* Value skeleton */}
               <div className="h-7 bg-gray-300 dark:bg-gray-600 rounded w-1/2 mt-3 mb-4"></div>
-              
+
               {/* Trend skeleton */}
               <div className="flex items-center mt-2">
                 <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4 mr-2"></div>
                 <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
               </div>
-              
+
               {/* Description skeleton */}
               <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full mt-4"></div>
               <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3 mt-2"></div>
             </div>
-            
+
             {/* Icon skeleton */}
             <div className="p-3 rounded-full bg-gray-200 dark:bg-gray-700 ml-4">
               <div className="w-6 h-6 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
@@ -61,60 +62,29 @@ const DashboardOverviewSkeleton = () => {
 };
 
 export default function DashboardOverview() {
-  const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: plansData, isLoading } =
+    useGetAllRetirementPlansQuery(undefined);
+  const { data: pdfData } = useGetAllReportUsersQuery(undefined);
+  const { data: ebookData } = useGetAllEbookUsersQuery(undefined);
+  const { data: feedbackData } = useGetAllEbookFeedbacksQuery(undefined);
 
-  useEffect(() => {
-    const fetchDashboardStats = async () => {
-      try {
-        setIsLoading(true);
-        // You might want to create a dedicated endpoint for dashboard stats
-        const [plansRes, pdfRes, ebookRes, feedbackRes] = await Promise.all([
-          fetch(`${baseUrl}/retirement-next-step/get`),
-          fetch(`${baseUrl}/report-downloaded-users/all-users`),
-          fetch(`${baseUrl}/ebook-downloaded-users/all-users`),
-          fetch(`${baseUrl}/feedbacks/get-feedbacks`),
-        ]);
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-        if (!plansRes.ok || !pdfRes.ok || !ebookRes.ok || !feedbackRes.ok) {
-          throw new Error("Failed to fetch dashboard data");
-        }
-
-        const plansData = await plansRes.json();
-        const pdfData = await pdfRes.json();
-        const ebookData = await ebookRes.json();
-        const feedbackData = await feedbackRes.json();
-
-        const oneWeekAgo = new Date();
-        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-
-        const dashboardStats: DashboardStats = {
-          totalRetirementPlans: plansData?.data?.length || 0,
-          totalPdfDownloads: pdfData?.data?.length || 0,
-          totalEbookDownloads: ebookData?.data?.length || 0,
-          totalFeedbacks: feedbackData?.data?.length || 0,
-          recentRetirementPlans:
-            plansData?.data?.filter(
-              (plan: any) => new Date(plan.createdAt) > oneWeekAgo
-            ).length || 0,
-          recentPdfDownloads:
-            pdfData?.data?.filter(
-              (user: any) => new Date(user.createdAt) > oneWeekAgo
-            ).length || 0,
-        };
-
-        setStats(dashboardStats);
-      } catch (error) {
-        const message =
-          error instanceof Error ? error.message : "Unknown error";
-        toast.error(`There was a problem loading dashboard: ${message}`);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchDashboardStats();
-  }, []);
+  const stats: DashboardStats = {
+    totalRetirementPlans: plansData?.data?.length || 0,
+    totalPdfDownloads: pdfData?.data?.length || 0,
+    totalEbookDownloads: ebookData?.data?.length || 0,
+    totalFeedbacks: feedbackData?.data?.length || 0,
+    recentRetirementPlans:
+      plansData?.data?.filter(
+        (plan: any) => new Date(plan.createdAt) > oneWeekAgo
+      ).length || 0,
+    recentPdfDownloads:
+      pdfData?.data?.filter(
+        (user: any) => new Date(user.createdAt) > oneWeekAgo
+      ).length || 0,
+  };
 
   const statCards = [
     {

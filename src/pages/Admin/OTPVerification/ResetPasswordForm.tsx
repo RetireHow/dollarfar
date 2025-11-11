@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import {
-  resetOTPFields,
-  updateOTPField,
-} from "../../../redux/features/OTP/OTP";
+import { updateOTPField } from "../../../redux/features/OTP/OTP";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { toast } from "react-toastify";
-import { baseUrl } from "../../../api/apiConstant";
+import { useResetPasswordMutation } from "../../../redux/features/APIEndpoints/authApi/authApi";
+import { showApiErrorToast } from "../../../utils/showApiErrorToast";
 
 const ResetPasswordForm: React.FC = () => {
   const navigate = useNavigate();
@@ -18,10 +16,11 @@ const ResetPasswordForm: React.FC = () => {
   );
 
   const [showError, setShowError] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [isVisibleConfirmPassword, setIsVisibleConfirmPassword] =
     useState<boolean>(false);
+  const [resetPassword, { isLoading, isError, error }] =
+    useResetPasswordMutation();
 
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,35 +35,17 @@ const ResetPasswordForm: React.FC = () => {
     }
 
     // Implement your password reset logic here
-    try {
-      setIsLoading(true);
-      const response = await fetch(`${baseUrl}/otp/reset-password`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          otp,
-          newPassword,
-        }),
-      });
-      const data = await response.json();
-      if (!data?.success) {
-        return toast.error(data?.message);
-      } else {
-        dispatch(resetOTPFields());
-        toast.success(data?.message);
-        navigate("/admin-login");
-      }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error: any) {
-      setIsLoading(false);
-      toast.error("There is something went wrong!");
-    } finally {
-      setIsLoading(false);
-    }
+    const res = await resetPassword({ email, otp, newPassword });
+    if (res?.error) return;
+    toast.success("Password is reset successfully.");
+    navigate("/admin-login");
   };
+
+  useEffect(() => {
+    if (!isLoading && isError && error) {
+      showApiErrorToast(error);
+    }
+  }, [isLoading, isError, error]);
 
   return (
     <div className="min-h-screen flex items-start justify-center py-[2rem] bg-gray-100 dark:bg-gray-900 px-4">

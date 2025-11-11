@@ -13,6 +13,9 @@ import { setActiveStyle } from "../../utils/setActiveStyle";
 import { useState } from "react";
 import { useIsMobile } from "../../hooks/useIsMobile";
 import { toast } from "react-toastify";
+import { useAppDispatch } from "../../redux/hooks";
+import { logout } from "../../redux/features/APIEndpoints/authApi/authSlice";
+import { useLogoutUserMutation } from "../../redux/features/APIEndpoints/authApi/authApi";
 
 export default function AdminLayout() {
   const [isVisible, setIsVisible] = useState(true);
@@ -26,14 +29,17 @@ export default function AdminLayout() {
   };
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [logoutUser] = useLogoutUserMutation();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     const isConfirmed = window.confirm("Are you sure to logout?");
     if (!isConfirmed) {
       return;
     }
-    localStorage.setItem("name", "");
-    localStorage.setItem("email", "");
+    dispatch(logout());
+    const res = await logoutUser(undefined);
+    if (res?.error) return;
     navigate("/admin-login");
     toast.success("You are successfully logged out.");
   };

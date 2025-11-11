@@ -1,11 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
-import { baseUrl } from "../../api/apiConstant";
 import { toast } from "react-toastify";
 import DashboardDownloadSkeleton from "../../components/UI/LoadingSkeletons/DashboardDownloadSkeleton";
+import {
+  useAddRetirementPlanNoteMutation,
+  useGetAllRetirementPlanNotesQuery,
+  useRemoveRetirementPlanNoteMutation,
+  useUpdateRetirementPlanNoteMutation,
+} from "../../redux/features/APIEndpoints/retirementPlanNoteApi/retirementPlanNote";
+import { showApiErrorToast } from "../../utils/showApiErrorToast";
+import { useGetAllRetirementPlansQuery } from "../../redux/features/APIEndpoints/retirementPlansApi/retirementPlansApi";
+export interface RetirementDataResponse {
+  success: boolean;
+  message: string;
+  data: RetirementData[];
+}
 
-interface RetirementData {
+export interface RetirementData {
   _id: string;
   full_name: string;
   phone: string;
@@ -148,14 +160,42 @@ const NotesModal = ({
   onClose: () => void;
   selectedRecordForAction: RetirementData;
 }) => {
-  const [notes, setNotes] = useState<Note[]>([]);
   const [newNote, setNewNote] = useState<string>("");
   const [editingNote, setEditingNote] = useState<Note | null>();
-
-  const [isFetchingNotes, setIsFetchingNotes] = useState(false);
-  const [isAddingNewNote, setIsAddingNewNote] = useState(false);
-  const [isUpdatingNote, setIsUpdatingNote] = useState(false);
   const [deletingNoteId, setDeletingNoteId] = useState<string | null>(null);
+
+  const {
+    data,
+    isLoading: isLoadingNotes,
+    isError: isErrorFetchingNote,
+  } = useGetAllRetirementPlanNotesQuery(selectedRecordForAction._id);
+
+  const [
+    addRetirementPlanNote,
+    {
+      isLoading: isAddingNewNote,
+      isError: isErrorAddingNewNote,
+      error: noteAddError,
+    },
+  ] = useAddRetirementPlanNoteMutation();
+
+  const [
+    updateRetirementPlanNote,
+    {
+      isLoading: isUpdatingNote,
+      isError: isErrorUpdatingNote,
+      error: noteUpdateError,
+    },
+  ] = useUpdateRetirementPlanNoteMutation();
+
+  const [
+    removeRetirementPlanNote,
+    {
+      isLoading: isRemovingNote,
+      isError: isErrorRemovingNote,
+      error: noteRemoveError,
+    },
+  ] = useRemoveRetirementPlanNoteMutation();
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -169,33 +209,15 @@ const NotesModal = ({
 
   const handleSaveNote = async () => {
     if (!newNote.trim() || !selectedRecordForAction) return;
-    setIsAddingNewNote(true);
-    try {
-      // save notes to API
-      const currentUser = localStorage.getItem("name");
-      const res = await fetch(`${baseUrl}/retirement-plan-notes/create`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          retirementPlan: selectedRecordForAction._id,
-          content: newNote,
-          createdBy: currentUser,
-        }),
-      });
-      if (!res.ok) {
-        return toast.error("Failed to create this new notes.");
-      }
-      const savedNote = await res.json();
-      setNotes((prev) => [savedNote?.data, ...prev]);
-      setNewNote("");
-      toast.success("Note added successfully!");
-    } catch (error: any) {
-      toast.error("Failed to save this new note", error?.message);
-    } finally {
-      setIsAddingNewNote(false);
-    }
+    const newNoteData = {
+      retirementPlan: selectedRecordForAction._id,
+      content: newNote,
+      createdBy: localStorage.getItem("name"),
+    };
+    const res = await addRetirementPlanNote(newNoteData);
+    if (res?.error) return;
+    setNewNote("");
+    toast.success("A new note is added successfully.");
   };
 
   const handleEditNote = async (note: Note) => {
@@ -208,98 +230,52 @@ const NotesModal = ({
   };
 
   const handleUpdateNote = async () => {
-    setIsUpdatingNote(true);
-    try {
-      const res = await fetch(`${baseUrl}/retirement-plan-notes/update`, {
-        method: "PATCH",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ noteId: editingNote?._id, content: newNote }),
-      });
-      if (!res.ok) {
-        return toast.error("Failed to update this note.");
-      }
-      await res.json();
-
-      const updateNoteIndex = notes?.findIndex(
-        (note) => note._id == editingNote?._id
-      );
-      if (updateNoteIndex >= 0) {
-        const updatedNotes = [...notes];
-        updatedNotes[updateNoteIndex].content = newNote;
-        setNotes(updatedNotes);
-      }
-      setEditingNote(null);
-      setNewNote("");
-      toast.success("Note updated successfully!");
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      toast.error("Failed to update this note.");
-    } finally {
-      setIsUpdatingNote(false);
-    }
+    const updateNoteData = { noteId: editingNote?._id, content: newNote };
+    const res = await updateRetirementPlanNote(updateNoteData);
+    if (res?.error) return;
+    setNewNote("");
+    setEditingNote(null);
+    toast.success("The note is updated successfully.");
   };
 
   const handleDeleteNote = async (noteId: string) => {
     const isConfirmed = window.confirm("Are you sure to delete this note?");
     if (!isConfirmed) return;
     setDeletingNoteId(noteId);
-
-    try {
-      const res = await fetch(
-        `${baseUrl}/retirement-plan-notes/remove/${noteId}`,
-        {
-          method: "DELETE",
-        }
-      );
-      if (!res.ok) {
-        return toast.error("Failed to delete this note.");
-      }
-      await res.json();
-      const filteredNotes = notes.filter((note) => note._id !== noteId);
-      setNotes(filteredNotes);
-      toast.success("Note deleted successfully!");
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      toast.error("Failed to delete this note");
-    } finally {
-      setDeletingNoteId(null);
-    }
+    const res = await removeRetirementPlanNote(noteId);
+    setDeletingNoteId("");
+    if (res?.error) return;
+    toast.success("The note is deleted successfully.");
   };
 
-  const filteredNotes = notes.filter(
-    (note) => note.retirementPlan === selectedRecordForAction._id
+  const filteredNotes = data?.data?.filter(
+    (note: Note) => note.retirementPlan === selectedRecordForAction._id
   );
-
-  const loadNotes = async () => {
-    setIsFetchingNotes(true);
-    try {
-      const res = await fetch(
-        `${baseUrl}/retirement-plan-notes/get/${selectedRecordForAction._id}`
-      );
-      if (!res.ok) {
-        return toast.error("Failed to fetch notes.");
-      }
-      const data = await res.json();
-      setNotes(data?.data);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      toast.error("Failed to fetch notes.");
-    } finally {
-      setIsFetchingNotes(false);
-    }
-  };
-
-  // Initialize notes
-  useEffect(() => {
-    loadNotes();
-  }, []);
 
   const handleCancelNote = () => {
     setEditingNote(null);
     setNewNote("");
   };
+
+  useEffect(() => {
+    if (!isAddingNewNote && isErrorAddingNewNote && noteAddError) {
+      showApiErrorToast(noteAddError);
+    } else if (!isUpdatingNote && isErrorUpdatingNote && noteUpdateError) {
+      showApiErrorToast(noteUpdateError);
+    } else if (!isRemovingNote && isErrorRemovingNote && noteRemoveError) {
+      showApiErrorToast(noteRemoveError);
+    }
+  }, [
+    isAddingNewNote,
+    isErrorAddingNewNote,
+    noteAddError,
+    isUpdatingNote,
+    isErrorUpdatingNote,
+    noteUpdateError,
+    isRemovingNote,
+    isErrorRemovingNote,
+    noteRemoveError,
+  ]);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 z-[1000] top-0">
@@ -380,14 +356,18 @@ const NotesModal = ({
           {/* Existing Notes */}
           <div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-              Previous Notes ({filteredNotes.length})
+              Previous Notes ({filteredNotes?.length})
             </h3>
-            {isFetchingNotes ? (
+            {isLoadingNotes ? (
               <NoteLoadingSkeleton />
+            ) : isErrorFetchingNote ? (
+              <div className="flex justify-center items-center p-5">
+                <p className="text-red-500">Error: Notes could not be loaded</p>
+              </div>
             ) : (
               <div className="space-y-4 max-h-96 overflow-y-auto pb-10">
-                {filteredNotes.length > 0 ? (
-                  filteredNotes.map((note) => (
+                {filteredNotes?.length > 0 ? (
+                  filteredNotes?.map((note: Note) => (
                     <div
                       key={note._id}
                       className="bg-gray-50 dark:bg-gray-700 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-600"
@@ -634,9 +614,6 @@ const DetailModal = ({
   record: RetirementData;
   onClose: () => void;
 }) => {
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [isLoadingNotes, setIsLoadingNotes] = useState(false);
-
   const formatCurrency = (amount: string) => {
     if (!amount) return "Not specified";
     const num = parseFloat(amount);
@@ -692,29 +669,11 @@ const DetailModal = ({
     );
   };
 
-  // Fetch notes for this record
-  useEffect(() => {
-    const loadNotes = async () => {
-      setIsLoadingNotes(true);
-      try {
-        const res = await fetch(
-          `${baseUrl}/retirement-plan-notes/get/${record._id}`
-        );
-        if (!res.ok) {
-          return toast.error("Failed to fetch notes.");
-        }
-        const data = await res.json();
-        setNotes(data?.data || []);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (error) {
-        toast.error("Failed to fetch notes.");
-      } finally {
-        setIsLoadingNotes(false);
-      }
-    };
-
-    loadNotes();
-  }, [record._id]);
+  const { data, isLoading: isLoadingNotes } = useGetAllRetirementPlanNotesQuery(
+    record._id
+  );
+  const notes: Note[] = data?.data || [];
+  console.log("All Notes in detial==> ", notes);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 dark:bg-opacity-80 flex items-center justify-center p-4 z-[999] top-0">
@@ -1276,44 +1235,27 @@ export default function RetireeRequestedPlans() {
   const [selectedRecord, setSelectedRecord] = useState<RetirementData | null>(
     null
   );
-  const [isLoading, setIsLoading] = useState(true);
-  const [requestedPlans, setRequestedPlans] = useState<RetirementData[]>([]);
+
   const [notesModalOpen, setNotesModalOpen] = useState(false);
   const [emailModalOpen, setEmailModalOpen] = useState(false);
   const [selectedRecordForAction, setSelectedRecordForAction] =
     useState<RetirementData | null>(null);
 
-  useEffect(() => {
-    const fetchRequestedPlans = async () => {
-      try {
-        setIsLoading(true);
-        const res = await fetch(`${baseUrl}/retirement-next-step/get`);
-        if (!res.ok) throw new Error("Failed to fetch users");
-        const data = await res.json();
-        setRequestedPlans(data?.data);
-      } catch (error) {
-        const message =
-          error instanceof Error ? error.message : "Unknown error";
-        toast.error(`There was a problem fetching users: ${message}`);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchRequestedPlans();
-  }, []);
+  const { data, isLoading } = useGetAllRetirementPlansQuery(undefined);
+  const retirementPlans: RetirementData[] = data?.data || [];
 
   // Get unique regions for filter
   const regions = Array.from(
-    new Set(requestedPlans.map((record) => record.region).filter(Boolean))
+    new Set(retirementPlans?.map((record) => record.region).filter(Boolean))
   );
 
   // Filter travel ready plans (those who are capable of independent travel)
-  const travelReadyPlans = requestedPlans.filter(
+  const travelReadyPlans = retirementPlans?.filter(
     (plan) => plan.independent_travel_ack
   );
 
   // Filter comprehensive wealth plans (those who selected "Comprehensive Wealth Plan" in interests)
-  const comprehensiveWealthPlans = requestedPlans.filter((plan) =>
+  const comprehensiveWealthPlans = retirementPlans?.filter((plan) =>
     plan.interests.includes("Comprehensive Wealth Plan")
   );
 
@@ -1372,7 +1314,7 @@ export default function RetireeRequestedPlans() {
                     Total Submissions
                   </p>
                   <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                    {requestedPlans.length}
+                    {retirementPlans?.length}
                   </p>
                 </div>
                 <Icon
@@ -1407,7 +1349,7 @@ export default function RetireeRequestedPlans() {
                   </p>
                   <p className="text-3xl font-bold text-gray-900 dark:text-white">
                     {
-                      requestedPlans.filter((d) => d.independent_travel_ack)
+                      retirementPlans?.filter((d) => d.independent_travel_ack)
                         .length
                     }
                   </p>
@@ -1427,7 +1369,7 @@ export default function RetireeRequestedPlans() {
                   </p>
                   <p className="text-3xl font-bold text-gray-900 dark:text-white">
                     {
-                      requestedPlans.filter((d) => {
+                      retirementPlans?.filter((d) => {
                         return (
                           new Date(d.createdAt).getMonth() ===
                           new Date().getMonth()
@@ -1478,7 +1420,7 @@ export default function RetireeRequestedPlans() {
                 <DashboardDownloadSkeleton />
               ) : (
                 <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-300 dark:divide-gray-700">
-                  {requestedPlans?.map((record) => (
+                  {retirementPlans?.map((record) => (
                     <tr
                       key={record._id}
                       className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"

@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
-import { baseUrl } from "../../api/apiConstant";
-import { toast } from "react-toastify";
+import { useEffect } from "react";
 import moment from "moment";
 import { Calendar, Download, Users } from "lucide-react";
 import DashboardDownloadSkeleton from "../../components/UI/LoadingSkeletons/DashboardDownloadSkeleton";
 import DashboardStatsSkeleton from "../../components/UI/LoadingSkeletons/DashboardStatsSkeleton";
+import { useGetAllEbookUsersQuery } from "../../redux/features/APIEndpoints/ebookUsersApi/ebookUsersApi";
 
 type TUser = {
   fullName: string;
@@ -17,46 +16,27 @@ type TUser = {
 };
 
 const EbookDownloadedUserTable = () => {
-  const [users, setUsers] = useState<TUser[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { data, isLoading } = useGetAllEbookUsersQuery(undefined);
+
+  const users: TUser[] = data?.data
+    ? [...data.data].sort(
+        (a: TUser, b: TUser) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+    : [];
+
+  // Calculate statistics
+  const totalDownloads = users?.length;
+  const todayDownloads = users?.filter((user) =>
+    moment(user.createdAt).isSame(moment(), "day")
+  ).length;
+  const thisWeekDownloads = users?.filter((user) =>
+    moment(user.createdAt).isSame(moment(), "week")
+  ).length;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        setIsLoading(true);
-        const res = await fetch(`${baseUrl}/ebook-downloaded-users/all-users`);
-        if (!res.ok) throw new Error("Failed to fetch users");
-        // Parse JSON response
-        const data = await res.json();
-        // Sort by createdAt descending
-        const sortedUsers = data?.data?.sort(
-          (a: TUser, b: TUser) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-        setUsers(sortedUsers);
-      } catch (error) {
-        const message =
-          error instanceof Error ? error.message : "Unknown error";
-        toast.error(`There was a problem fetching users: ${message}`);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchUsers();
-  }, []);
-
-  // Calculate statistics
-  const totalDownloads = users.length;
-  const todayDownloads = users.filter((user) =>
-    moment(user.createdAt).isSame(moment(), "day")
-  ).length;
-  const thisWeekDownloads = users.filter((user) =>
-    moment(user.createdAt).isSame(moment(), "week")
-  ).length;
 
   return (
     <div className="dark:bg-gray-900 dark:text-gray-100 min-h-screen">

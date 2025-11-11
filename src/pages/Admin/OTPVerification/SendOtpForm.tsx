@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { updateOTPField } from "../../../redux/features/OTP/OTP";
 import RedStar from "../../../components/UI/RedStar";
 import { toast } from "react-toastify";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { baseUrl } from "../../../api/apiConstant";
+import { useSendOTPMutation } from "../../../redux/features/APIEndpoints/authApi/authApi";
+import { showApiErrorToast } from "../../../utils/showApiErrorToast";
 
 const SendOtpForm: React.FC = () => {
   const navigate = useNavigate();
@@ -14,9 +15,9 @@ const SendOtpForm: React.FC = () => {
   const { email } = useAppSelector((state) => state.OTP);
 
   const [showError, setShowError] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const [sendOTP, { isLoading, isError, error }] = useSendOTPMutation();
 
   const handleSendOtp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,30 +29,17 @@ const SendOtpForm: React.FC = () => {
     }
 
     // Implement your OTP sending logic here
-    try {
-      setIsLoading(true);
-      const response = await fetch(`${baseUrl}/otp/send-otp`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-      const data = await response.json();
-      if (!data?.success) {
-        return toast.error(data?.message);
-      } else {
-        toast.success(data?.message);
-        navigate("/verify-otp-form");
-      }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error: any) {
-      setIsLoading(false);
-      toast.error("There is something went wrong!");
-    } finally {
-      setIsLoading(false);
-    }
+    const res = await sendOTP({ email });
+    if (res?.error) return;
+    toast.success("OTP is sent successfully.");
+    navigate("/verify-otp-form");
   };
+
+  useEffect(() => {
+    if (!isLoading && isError && error) {
+      showApiErrorToast(error);
+    }
+  }, [isLoading, isError, error]);
 
   return (
     <div className="min-h-screen flex items-start justify-center py-[2rem] bg-gray-100 dark:bg-gray-900 px-4">

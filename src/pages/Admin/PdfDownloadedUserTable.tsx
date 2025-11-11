@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import { baseUrl } from "../../api/apiConstant";
-import { toast } from "react-toastify";
+import { useEffect } from "react";
 import moment from "moment";
 import { Calendar, Download, Users } from "lucide-react";
 import DashboardDownloadSkeleton from "../../components/UI/LoadingSkeletons/DashboardDownloadSkeleton";
 import DashboardStatsSkeleton from "../../components/UI/LoadingSkeletons/DashboardStatsSkeleton";
+import { useGetAllReportUsersQuery } from "../../redux/features/APIEndpoints/reportUsersApi/reportUsersApi";
 
 type TUser = {
+  _id: string;
   name: string;
   phone: string;
   email: string;
@@ -16,52 +16,33 @@ type TUser = {
 };
 
 const PdfDownloadedUserTable = () => {
-  const [users, setUsers] = useState<TUser[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { data, isLoading } = useGetAllReportUsersQuery(undefined);
+
+  const sortedUsers: TUser[] = data?.data
+    ? [...data.data].sort(
+        (a: TUser, b: TUser) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+    : [];
+
+  // Calculate statistics
+  const totalDownloads = sortedUsers?.length;
+  const todayDownloads = sortedUsers?.filter((user: TUser) =>
+    moment(user.createdAt).isSame(moment(), "day")
+  ).length;
+  const thisWeekDownloads = sortedUsers?.filter((user: TUser) =>
+    moment(user.createdAt).isSame(moment(), "week")
+  ).length;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        setIsLoading(true);
-        const res = await fetch(`${baseUrl}/report-downloaded-users/all-users`);
-        if (!res.ok) throw new Error("Failed to fetch users");
-        // Parse JSON response
-        const data = await res.json();
-        // Sort by createdAt descending
-        const sortedUsers = data?.data?.sort(
-          (a: TUser, b: TUser) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-        setUsers(sortedUsers);
-      } catch (error) {
-        const message =
-          error instanceof Error ? error.message : "Unknown error";
-        toast.error(`There was a problem fetching users: ${message}`);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchUsers();
-  }, []);
-
-  // Calculate statistics
-  const totalDownloads = users.length;
-  const todayDownloads = users.filter((user) =>
-    moment(user.createdAt).isSame(moment(), "day")
-  ).length;
-  const thisWeekDownloads = users.filter((user) =>
-    moment(user.createdAt).isSame(moment(), "week")
-  ).length;
-
   return (
     <div className="dark:bg-gray-900 dark:text-gray-100 min-h-screen">
       {/* Summary Statistics Section */}
       {isLoading ? (
-        <DashboardStatsSkeleton numOfCards={3}/>
+        <DashboardStatsSkeleton numOfCards={3} />
       ) : (
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700">
@@ -99,7 +80,9 @@ const PdfDownloadedUserTable = () => {
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">This Week</p>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  This Week
+                </p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
                   {thisWeekDownloads}
                 </p>
@@ -145,8 +128,11 @@ const PdfDownloadedUserTable = () => {
               <DashboardDownloadSkeleton />
             ) : (
               <tbody className="divide-y divide-gray-300 dark:divide-gray-700 bg-white dark:bg-gray-800">
-                {users.map((user, index) => (
-                  <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                {sortedUsers?.map((user, index) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                  >
                     <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
                       {index + 1}
                     </td>

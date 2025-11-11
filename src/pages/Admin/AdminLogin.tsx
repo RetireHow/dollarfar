@@ -2,53 +2,35 @@
 
 import { Icon } from "@iconify/react/dist/iconify.js";
 import React, { useState, FormEvent, ChangeEvent } from "react";
-import { baseUrl } from "../../api/apiConstant";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-
-const fetchAdmin = async (email: string, password: string) => {
-  const res = await fetch(`${baseUrl}/admin/login-admin`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  });
-  const data = await res.json();
-  return data;
-};
+import { useLoginMutation } from "../../redux/features/APIEndpoints/authApi/authApi";
+import { setUser, TUser } from "../../redux/features/APIEndpoints/authApi/authSlice";
+import { verifyToken } from "../../utils/verifyToken";
+import { useAppDispatch } from "../../redux/hooks";
 
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+
+  const [login, { isLoading }] = useLoginMutation();
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (!email || !password) {
       setError("Please enter both email and password.");
       return;
     }
-
-    setError("");
-    // Simulate login or call actual API
-    setLoading(true);
-    const result = await fetchAdmin(email, password);
-    setLoading(false);
-    if (result?.success) {
-      localStorage.setItem("email", result?.data?.email);
-      localStorage.setItem("name", result?.data?.name);
-      toast.success("Login success!");
-      navigate("/admin");
-    } else {
-      setLoading(false);
-      toast.error("Login failed : You are not an authenticated user.");
-    }
+    const res = await login({ email, password }).unwrap();
+    const user = verifyToken(res.data.accessToken) as TUser;
+    dispatch(setUser({ user: user, token: res.data.accessToken }));
+    toast.success("Login success!");
+    navigate("/admin");
   };
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -119,23 +101,23 @@ const AdminLogin: React.FC = () => {
             </div>
             <div className="flex justify-end">
               <Link
-              to="/send-otp"
-              className="mt-1 hover:underline cursor-pointer"
-            >
-              Forgot password? Reset
-            </Link>
+                to="/send-otp"
+                className="mt-1 hover:underline cursor-pointer"
+              >
+                Forgot password? Reset
+              </Link>
             </div>
           </div>
           <button
             type="submit"
-            disabled={loading ? true : false}
+            disabled={isLoading ? true : false}
             className={`w-full text-white py-2 rounded-md hover:bg-blue-700 dark:hover:bg-neutral-700 transition flex justify-center items-center h-[45px] ${
-              loading
+              isLoading
                 ? "bg-blue-300 hover:bg-blue-300 dark:bg-neutral-600 dark:hover:bg-neutral-600"
                 : "bg-blue-600 dark:bg-neutral-700"
             }`}
           >
-            {loading ? (
+            {isLoading ? (
               <Icon
                 icon="eos-icons:three-dots-loading"
                 width="30"

@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
-import { baseUrl } from "../../api/apiConstant";
-import { toast } from "react-toastify";
+import { useEffect } from "react";
 import moment from "moment";
 import { BarChart2, Calendar, MessageSquareText } from "lucide-react";
 import DashboardDownloadSkeleton from "../../components/UI/LoadingSkeletons/DashboardDownloadSkeleton";
 import DashboardStatsSkeleton from "../../components/UI/LoadingSkeletons/DashboardStatsSkeleton";
+import { useGetAllEbookFeedbacksQuery } from "../../redux/features/APIEndpoints/ebookFeedbacksApi/ebookFeedbackApis";
 
 type TFeedback = {
   name: string;
@@ -16,51 +15,25 @@ type TFeedback = {
 };
 
 const EbookReaderFeedbacks = () => {
-  const [feedbacks, setFeedbacks] = useState<TFeedback[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { data, isLoading } = useGetAllEbookFeedbacksQuery(undefined);
+
+  const feedbacks: TFeedback[] = data?.data
+    ? [...data.data].sort(
+        (a: TFeedback, b: TFeedback) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+    : [];
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  useEffect(() => {
-    const fetchFeedbacks = async () => {
-      try {
-        setIsLoading(true);
-        const res = await fetch(`${baseUrl}/feedbacks/get-feedbacks`);
-        if (!res.ok) throw new Error("Failed to fetch feedbacks");
-        // Parse JSON response
-        const data = await res.json();
-        // Sort by createdAt descending
-        setFeedbacks(data?.data);
-      } catch (error) {
-        // ✅ Detect network-related errors
-        if (error instanceof TypeError && error.message.includes("fetch")) {
-          toast.error("Network error. Please check your internet connection.", {
-            position: "top-center",
-          });
-        } else {
-          const errorMessage =
-            error instanceof Error
-              ? error.message
-              : "Unexpected error occurred";
-          toast.error(`Failed to fetch feedbacks: ${errorMessage}`, {
-            position: "top-center",
-          });
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchFeedbacks();
-  }, []);
-
   // Calculate statistics
-  const totalFeedbacks = feedbacks.length;
-  const todayFeedbacks = feedbacks.filter((feedback) =>
+  const totalFeedbacks = feedbacks?.length;
+  const todayFeedbacks = feedbacks?.filter((feedback) =>
     moment(feedback.createdAt).isSame(moment(), "day")
   ).length;
-  const thisWeekFeedbacks = feedbacks.filter((feedback) =>
+  const thisWeekFeedbacks = feedbacks?.filter((feedback) =>
     moment(feedback.createdAt).isSame(moment(), "week")
   ).length;
 

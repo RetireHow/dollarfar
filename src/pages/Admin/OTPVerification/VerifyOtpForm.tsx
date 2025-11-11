@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import OtpInput from "react-otp-input";
 import "./OTPStyles.css";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,8 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { updateOTPField } from "../../../redux/features/OTP/OTP";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { toast } from "react-toastify";
-import { baseUrl } from "../../../api/apiConstant";
+import { useVerifyOTPMutation } from "../../../redux/features/APIEndpoints/authApi/authApi";
+import { showApiErrorToast } from "../../../utils/showApiErrorToast";
 
 const VerifyOtpForm: React.FC = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const VerifyOtpForm: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const [showError, setShowError] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [verifyOTP, { isLoading, isError, error }] = useVerifyOTPMutation();
 
   const handleResend = () => {
     // Implement your resend OTP logic here
@@ -31,30 +32,17 @@ const VerifyOtpForm: React.FC = () => {
       return setShowError(true);
     }
     // Implement your OTP verification logic here
-    try {
-      setIsLoading(true);
-      const response = await fetch(`${baseUrl}/otp/verify-otp`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ email, otp }),
-      });
-      const data = await response.json();
-      if (!data?.success) {
-        return toast.error(data?.message);
-      } else {
-        toast.success(data?.message);
-        navigate("/reset-password-form");
-      }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error: any) {
-      setIsLoading(false);
-      toast.error("There is something went wrong!");
-    } finally {
-      setIsLoading(false);
-    }
+    const res = await verifyOTP({ email, otp });
+    if (res?.error) return;
+    toast.success("OTP is Veirfied successfully.");
+    navigate("/reset-password-form");
   };
+
+  useEffect(() => {
+    if (!isLoading && isError && error) {
+      showApiErrorToast(error);
+    }
+  }, [isLoading, isError, error]);
 
   return (
     <div className="min-h-screen flex items-start justify-center py-[2rem] bg-gray-100 dark:bg-gray-900 px-4">
