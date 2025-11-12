@@ -177,7 +177,6 @@ const NotesModal = ({
       isLoading: isAddingNewNote,
       isError: isErrorAddingNewNote,
       error: noteAddError,
-      isSuccess: isAddNoteSuccess,
     },
   ] = useAddRetirementPlanNoteMutation();
 
@@ -187,7 +186,6 @@ const NotesModal = ({
       isLoading: isUpdatingNote,
       isError: isErrorUpdatingNote,
       error: noteUpdateError,
-      isSuccess: isUpdateNoteSuccess,
     },
   ] = useUpdateRetirementPlanNoteMutation();
 
@@ -197,7 +195,6 @@ const NotesModal = ({
       isLoading: isRemovingNote,
       isError: isErrorRemovingNote,
       error: noteRemoveError,
-      isSuccess: isRemoveNoteSuccess,
     },
   ] = useRemoveRetirementPlanNoteMutation();
 
@@ -221,6 +218,7 @@ const NotesModal = ({
     const res = await addRetirementPlanNote(newNoteData);
     if (res?.error) return;
     setNewNote("");
+    toast.success("A new note is added successfully.");
   };
 
   const handleEditNote = async (note: Note) => {
@@ -238,14 +236,17 @@ const NotesModal = ({
     if (res?.error) return;
     setNewNote("");
     setEditingNote(null);
+    toast.success("The note is updated successfully.");
   };
 
   const handleDeleteNote = async (noteId: string) => {
     const isConfirmed = window.confirm("Are you sure to delete this note?");
     if (!isConfirmed) return;
     setDeletingNoteId(noteId);
-    await removeRetirementPlanNote(noteId);
+    const res = await removeRetirementPlanNote(noteId);
     setDeletingNoteId("");
+    if (res?.error) return;
+    toast.success("The note is deleted successfully.");
   };
 
   const filteredNotes = data?.data?.filter(
@@ -276,16 +277,6 @@ const NotesModal = ({
     isErrorRemovingNote,
     noteRemoveError,
   ]);
-
-  useEffect(() => {
-    if (!isAddingNewNote && isAddNoteSuccess) {
-      toast.success("A new note is added successfully.");
-    } else if (!isUpdatingNote && isUpdateNoteSuccess) {
-      toast.success("The note is updated successfully.");
-    } else if (!isRemovingNote && isRemoveNoteSuccess) {
-      toast.success("The note is deleted successfully.");
-    }
-  });
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 z-[1000] top-0">

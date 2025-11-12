@@ -174,7 +174,7 @@ const RetirementNextStepForm = ({
     e.currentTarget.blur();
   };
 
-  const [addRetirementPlan, { isLoading, isError, error, isSuccess }] =
+  const [addRetirementPlan, { isLoading, isError, error }] =
     useAddRetirementPlanMutation();
 
   useEffect(() => {
@@ -182,15 +182,6 @@ const RetirementNextStepForm = ({
       showApiErrorToast(error);
     }
   }, [isLoading, isError, error]);
-
-  useEffect(() => {
-    if (!isLoading && isSuccess) {
-      toast.success(
-        "Submission confirmed! A RetireHow specialist will contact you to begin crafting your personalized retirement transition strategy.",
-        { autoClose: 15000 }
-      );
-    }
-  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -225,7 +216,12 @@ const RetirementNextStepForm = ({
 
     console.log("Form submitted:", submissionData);
 
-    await addRetirementPlan(submissionData);
+    const res = await addRetirementPlan(submissionData);
+    if (res?.error) return;
+    toast.success(
+      "Submission confirmed! A RetireHow specialist will contact you to begin crafting your personalized retirement transition strategy.",
+      { autoClose: 15000 }
+    );
   };
 
   return (
