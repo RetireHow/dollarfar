@@ -215,6 +215,7 @@ const RetirementNextStepForm = ({
     };
 
     console.log("Form submitted:", submissionData);
+    return;
 
     const res = await addRetirementPlan(submissionData);
     if (res?.error) return;
@@ -580,8 +581,9 @@ const RetirementNextStepForm = ({
                     name="equity_comfort"
                     value={formData.equity_comfort}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-amber-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-3 cursor-pointer border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-amber-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                   >
+                    <option value="">Select...</option>
                     <option value="Not comfortable">Not comfortable</option>
                     <option value="Open to discuss">Open to discuss</option>
                     <option value="Comfortable within limits">
@@ -736,6 +738,7 @@ const RetirementNextStepForm = ({
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-purple-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white cursor-pointer"
                     >
+                      <option value="">Select...</option>
                       <option value="November 2026">November 2026</option>
                       <option value="December 2026">December 2026</option>
                       <option value="January 2027">January 2027</option>
