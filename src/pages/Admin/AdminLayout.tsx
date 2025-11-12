@@ -15,7 +15,6 @@ import { useIsMobile } from "../../hooks/useIsMobile";
 import { toast } from "react-toastify";
 import { useAppDispatch } from "../../redux/hooks";
 import { logout } from "../../redux/features/APIEndpoints/authApi/authSlice";
-import { useLogoutUserMutation } from "../../redux/features/APIEndpoints/authApi/authApi";
 
 export default function AdminLayout() {
   const [isVisible, setIsVisible] = useState(true);
@@ -30,7 +29,6 @@ export default function AdminLayout() {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [logoutUser] = useLogoutUserMutation();
 
   const handleLogout = async () => {
     const isConfirmed = window.confirm("Are you sure to logout?");
@@ -38,8 +36,6 @@ export default function AdminLayout() {
       return;
     }
     dispatch(logout());
-    const res = await logoutUser(undefined);
-    if (res?.error) return;
     navigate("/admin-login");
     toast.success("You are successfully logged out.");
   };
