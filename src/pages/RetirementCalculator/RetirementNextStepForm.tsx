@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import Error from "../../components/UI/Error";
 import { toast } from "react-toastify";
-import { baseUrl } from "../../api/apiConstant";
 import { ThreeDots } from "react-loader-spinner";
 import {
   User,
@@ -16,6 +15,8 @@ import {
 } from "lucide-react";
 import { Checkbox, ConfigProvider } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
+import { useAddRetirementPlanMutation } from "../../redux/features/APIEndpoints/retirementPlansApi/retirementPlansApi";
+import { showApiErrorToast } from "../../utils/showApiErrorToast";
 
 interface FormData {
   // Contact Information
@@ -93,7 +94,29 @@ const RetirementNextStepForm = ({
     consent_marketing: false,
   });
   const [showError, setShowError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+
+  // Helper function to format numbers with commas
+  const formatNumberWithCommas = (value: string): string => {
+    // Remove all non-digit characters except decimal point
+    const numericValue = value.replace(/[^\d.]/g, "");
+
+    if (numericValue === "") return "";
+
+    // Split into whole and decimal parts
+    const parts = numericValue.split(".");
+    let wholePart = parts[0];
+    const decimalPart = parts.length > 1 ? `.${parts[1]}` : "";
+
+    // Add commas to whole number part
+    wholePart = wholePart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    return wholePart + decimalPart;
+  };
+
+  // Helper function to remove commas for storage
+  const removeCommas = (value: string): string => {
+    return value.replace(/,/g, "");
+  };
 
   const handleInputChange = (
     e:
@@ -111,10 +134,25 @@ const RetirementNextStepForm = ({
         [name as string]: checked,
       }));
     } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name as string]: value,
-      }));
+      // Handle numeric fields with comma formatting
+      if (
+        name === "desired_income" ||
+        name === "estimated_savings" ||
+        name === "estimated_home_equity" ||
+        name === "home_spend_monthly" ||
+        name === "abroad_budget_season"
+      ) {
+        const formattedValue = formatNumberWithCommas(value);
+        setFormData((prev) => ({
+          ...prev,
+          [name as string]: formattedValue,
+        }));
+      } else {
+        setFormData((prev) => ({
+          ...prev,
+          [name as string]: value,
+        }));
+      }
     }
   };
 
@@ -136,6 +174,24 @@ const RetirementNextStepForm = ({
     e.currentTarget.blur();
   };
 
+  const [addRetirementPlan, { isLoading, isError, error, isSuccess }] =
+    useAddRetirementPlanMutation();
+
+  useEffect(() => {
+    if (isError && !isLoading && error) {
+      showApiErrorToast(error);
+    }
+  }, [isLoading, isError, error]);
+
+  useEffect(() => {
+    if (!isLoading && isSuccess) {
+      toast.success(
+        "Submission confirmed! A RetireHow specialist will contact you to begin crafting your personalized retirement transition strategy.",
+        { autoClose: 15000 }
+      );
+    }
+  });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const {
@@ -156,37 +212,20 @@ const RetirementNextStepForm = ({
     ) {
       return setShowError(true);
     }
-    console.log("Form submitted:", formData);
-    // Handle form submission here
 
-    try {
-      setIsLoading(true);
-      const res = await fetch(`${baseUrl}/retirement-next-step/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      if (!res.ok) {
-        return toast.error("There is something wrong!");
-      }
+    // Prepare data for submission - remove commas from numeric fields
+    const submissionData = {
+      ...formData,
+      desired_income: removeCommas(formData.desired_income),
+      estimated_savings: removeCommas(formData.estimated_savings),
+      estimated_home_equity: removeCommas(formData.estimated_home_equity),
+      home_spend_monthly: removeCommas(formData.home_spend_monthly),
+      abroad_budget_season: removeCommas(formData.abroad_budget_season),
+    };
 
-      // Parse JSON response
-      await res.json();
+    console.log("Form submitted:", submissionData);
 
-      // Assuming responseData contains info about the success or failure of the operation
-      toast.success(
-        "Submission confirmed! A RetireHow specialist will contact you to begin crafting your personalized retirement transition strategy.",
-        { autoClose: 15000 }
-      );
-      setIsModalVisible(false);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      toast.error("There is something wrong!");
-    } finally {
-      setIsLoading(false);
-    }
+    await addRetirementPlan(submissionData);
   };
 
   return (
@@ -434,14 +473,13 @@ const RetirementNextStepForm = ({
                       Desired annual retirement income (local currency)
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       id="desired_income"
                       name="desired_income"
                       value={formData.desired_income}
                       onChange={handleInputChange}
-                      onWheel={preventScrollChange}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-green-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
-                      placeholder="Annual income amount"
+                      placeholder="e.g., 75,000"
                     />
                     <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                       <Icon
@@ -466,14 +504,13 @@ const RetirementNextStepForm = ({
                     Estimated total savings (RRSP/TFSA/401k/etc.)
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     id="estimated_savings"
                     name="estimated_savings"
                     value={formData.estimated_savings}
                     onChange={handleInputChange}
-                    onWheel={preventScrollChange}
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-green-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
-                    placeholder="Your total savings"
+                    placeholder="e.g., 500,000"
                   />
                   <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                     <Icon
@@ -512,14 +549,13 @@ const RetirementNextStepForm = ({
                     Estimated home equity (net value of real estate)
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     id="estimated_home_equity"
                     name="estimated_home_equity"
                     value={formData.estimated_home_equity}
                     onChange={handleInputChange}
-                    onWheel={preventScrollChange}
                     className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-amber-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
-                    placeholder="Home equity amount"
+                    placeholder="e.g., 350,000"
                   />
                   <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
                     <Icon
@@ -839,13 +875,12 @@ const RetirementNextStepForm = ({
                       Home-country monthly spend (estimate)
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       id="home_spend_monthly"
                       name="home_spend_monthly"
-                      placeholder="Enter home country monthly spend."
+                      placeholder="e.g., 3,500"
                       value={formData.home_spend_monthly}
                       onChange={handleInputChange}
-                      onWheel={preventScrollChange}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-indigo-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     />
                     <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
@@ -867,13 +902,12 @@ const RetirementNextStepForm = ({
                       winter season, estimate)
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       id="abroad_budget_season"
                       name="abroad_budget_season"
-                      placeholder="Enter abroad seasonal budget"
+                      placeholder="e.g., 12,000"
                       value={formData.abroad_budget_season}
                       onChange={handleInputChange}
-                      onWheel={preventScrollChange}
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-indigo-500 transition-all duration-200 bg-gray-50 dark:bg-gray-700 dark:text-white"
                     />
                     <small className="block text-gray-500 dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
