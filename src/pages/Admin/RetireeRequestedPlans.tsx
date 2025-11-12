@@ -11,6 +11,7 @@ import {
 } from "../../redux/features/APIEndpoints/retirementPlanNoteApi/retirementPlanNote";
 import { showApiErrorToast } from "../../utils/showApiErrorToast";
 import { useGetAllRetirementPlansQuery } from "../../redux/features/APIEndpoints/retirementPlansApi/retirementPlansApi";
+import { useGetMeQuery } from "../../redux/features/APIEndpoints/userApi/userApi";
 
 export interface RetirementDataResponse {
   success: boolean;
@@ -170,6 +171,7 @@ const NotesModal = ({
     isLoading: isLoadingNotes,
     isError: isErrorFetchingNote,
   } = useGetAllRetirementPlanNotesQuery(selectedRecordForAction._id);
+  const { data: user } = useGetMeQuery(undefined);
 
   const [
     addRetirementPlanNote,
@@ -210,10 +212,11 @@ const NotesModal = ({
 
   const handleSaveNote = async () => {
     if (!newNote.trim() || !selectedRecordForAction) return;
+    const currentUserName = user?.data?.name;
     const newNoteData = {
       retirementPlan: selectedRecordForAction._id,
       content: newNote,
-      createdBy: localStorage.getItem("name"),
+      createdBy: currentUserName,
     };
     const res = await addRetirementPlanNote(newNoteData);
     if (res?.error) return;
