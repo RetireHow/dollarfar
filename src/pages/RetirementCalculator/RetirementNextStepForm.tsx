@@ -214,9 +214,6 @@ const RetirementNextStepForm = ({
       abroad_budget_season: removeCommas(formData.abroad_budget_season),
     };
 
-    console.log("Form submitted:", submissionData);
-    return;
-
     const res = await addRetirementPlan(submissionData);
     if (res?.error) return;
     toast.success(
