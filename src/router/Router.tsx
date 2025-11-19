@@ -15,7 +15,6 @@ import BC from "../pages/BC/BC";
 import COLC from "../pages/COLC/COLC";
 import RRSP from "../pages/RRSP/RRSP";
 import RRIF from "../pages/RRIF/RRIF";
-// import PendingCRI from "../pages/PendingCRI";
 
 import CRIC from "../pages/CRIC/CRIC";
 import GeneralInformation from "../pages/CRIC/Forms/GeneralInformation";
