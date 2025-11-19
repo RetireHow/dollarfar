@@ -1,12 +1,11 @@
-import { loadStripe } from "@stripe/stripe-js";
 import { baseUrl } from "../api/apiConstant";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
-const stripePromise = loadStripe(
-  "pk_live_51RplAhBYC7YMMAFC7uODsfkBdTVL0v5Qhq5EOZ0MryrKf9P74f2l2zXjTS9i6kQXMGpPFvGMJD4ttj20WMHZH9CX004Xd966hu"
-); // Your Stripe public key
+// const stripePromise = loadStripe(
+//   "pk_live_51RplAhBYC7YMMAFC7uODsfkBdTVL0v5Qhq5EOZ0MryrKf9P74f2l2zXjTS9i6kQXMGpPFvGMJD4ttj20WMHZH9CX004Xd966hu"
+// ); // Your Stripe public key
 
 export default function BuyNowEbook() {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,9 +22,15 @@ export default function BuyNowEbook() {
       );
 
       const session = await response.json();
-      const stripe = await stripePromise;
+      // const stripe = await stripePromise;
       setIsLoading(false);
-      await stripe?.redirectToCheckout({ sessionId: session.id });
+      // await stripe?.redirectToCheckout({ sessionId: session.id });
+        // Redirect directly to the Checkout URL
+    if (session.url) {
+      window.location.href = session.url;
+    } else {
+      throw new Error("No checkout URL received from server");
+    }
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred";
