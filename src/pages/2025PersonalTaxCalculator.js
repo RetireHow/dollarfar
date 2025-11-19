@@ -3,7 +3,6 @@
 // Input: taxableIncome (number) - assumed to be ordinary taxable income.
 // Output: Object with 'results' array containing objects for each province/territory.
 // Assumptions: Only basic personal credit included; no other credits, premiums, or levies.
-// Calculations use combined federal-provincial marginal brackets for tax payable computation.
 
 function calculate2025PersonalTax(taxableIncome) {
   if (taxableIncome < 0) return { error: "Income must be non-negative." };
