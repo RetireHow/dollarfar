@@ -17,7 +17,7 @@ import RedStar from "../../components/UI/RedStar";
 import { useAddRetirementPlanMutation } from "../../redux/features/APIEndpoints/retirementPlansApi/retirementPlansApi";
 import { showApiErrorToast } from "../../utils/showApiErrorToast";
 
-// const STRIPE_PK = import.meta.env.VITE_STRIPE_PK!;
+// const STRIPE_PK = import.meta.env.VITE_STRIPE_PK_TEST!;
 const STRIPE_PK =
   "pk_test_51RppIt4G0lMbEIGhQ3ltvcDSaNOOZaRalURZRSahGnm2EUCDMPU14eTNz9FiTodU9TV3hQhxzM8cMZVQeaMJXR4L00aUu5KTyR";
 const stripePromise = loadStripe(STRIPE_PK);
