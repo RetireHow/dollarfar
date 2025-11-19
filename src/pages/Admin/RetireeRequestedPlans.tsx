@@ -13,41 +13,89 @@ import { showApiErrorToast } from "../../utils/showApiErrorToast";
 import { useGetAllRetirementPlansQuery } from "../../redux/features/APIEndpoints/retirementPlansApi/retirementPlansApi";
 import { useGetMeQuery } from "../../redux/features/APIEndpoints/userApi/userApi";
 
-export interface RetirementDataResponse {
-  success: boolean;
-  message: string;
-  data: RetirementData[];
-}
-
-export interface RetirementData {
-  _id: string;
+/**
+ * Updated Type Definitions to match form structure
+ */
+type ContactInfo = {
   full_name: string;
   phone: string;
   email: string;
-  region: string;
-  target_age: string;
-  desired_income: string;
-  estimated_savings: string;
-  estimated_home_equity: string;
-  equity_comfort: string;
-  country_region: string;
-  ideal_locations: string;
-  months_abroad: string;
-  start_timeline: string;
-  travel_style: string;
-  independent_travel_ack: boolean;
-  home_spend_monthly: string;
-  abroad_budget_season: string;
-  flights_insurance_budget: string;
-  flight_class: string;
-  travel_purpose: string[];
-  interests: string[];
-  fee_ack: boolean;
-  consent_contact: boolean;
-  consent_marketing: boolean;
+  region?: string;
+};
+
+type RetirementSnapshot = {
+  target_age?: string;
+  desired_income?: string;
+  estimated_savings?: string;
+};
+
+type HousingEquity = {
+  estimated_home_equity?: string;
+  equity_comfort?: string;
+};
+
+type DollarFarPlanning = {
+  calculators?: string[];
+  interpretation_toggle?: boolean;
+  name_pre?: string;
+  email_pre?: string;
+  phone_pre?: string;
+  time_pre?: string;
+  subscription_status?: "" | "have" | "start" | "paid";
+  subscription_payment_intent?: string;
+};
+
+type TravelPlanning = {
+  months_abroad?: string;
+  start_timeline?: string;
+  travel_style?: string;
+  independent_travel_ack?: boolean;
+  country_region_interest?: string;
+  ideal_locations_interest?: string;
+};
+
+type BudgetEstimates = {
+  home_spend_monthly?: string;
+  abroad_budget_season?: string;
+  flights_insurance_budget?: string;
+  flight_class?: string;
+};
+
+type PrivacyAcknowledgements = {
+  ack_poc?: boolean;
+  consent_contact?: boolean;
+  ack_scope?: boolean;
+};
+
+// Main Retirement Data Type matching form structure
+type RetirementData = {
+  _id: string;
   createdAt: string;
-  updatedAt: string;
-}
+  updatedAt?: string;
+  contact: ContactInfo;
+  retirement_snapshot: RetirementSnapshot;
+  housing_equity: HousingEquity;
+  dollarfar_planning: DollarFarPlanning;
+  travel_planning: TravelPlanning;
+  budget_estimates: BudgetEstimates;
+  travel_purpose: string[];
+  privacy_acknowledgements: PrivacyAcknowledgements;
+};
+
+// Helper functions to safely access nested data
+const getContactInfo = (record: RetirementData) => record.contact || {};
+const getRetirementSnapshot = (record: RetirementData) =>
+  record.retirement_snapshot || {};
+const getHousingEquity = (record: RetirementData) =>
+  record.housing_equity || {};
+const getDollarFarPlanning = (record: RetirementData) =>
+  record.dollarfar_planning || {};
+const getTravelPlanning = (record: RetirementData) =>
+  record.travel_planning || {};
+const getBudgetEstimates = (record: RetirementData) =>
+  record.budget_estimates || {};
+const getPrivacyAcknowledgements = (record: RetirementData) =>
+  record.privacy_acknowledgements || {};
 
 interface Note {
   _id: string;
@@ -281,6 +329,8 @@ const NotesModal = ({
     noteRemoveError,
   ]);
 
+  const contactInfo = getContactInfo(selectedRecordForAction);
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 z-[1000] top-0">
       <div className="modal-content-scrollable bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[88vh] overflow-y-auto">
@@ -288,7 +338,7 @@ const NotesModal = ({
           <div className="flex justify-between items-start">
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                Notes for {selectedRecordForAction?.full_name}
+                Notes for {contactInfo?.full_name}
               </h2>
               <p className="text-gray-600 dark:text-gray-300">
                 Add and manage notes for this client
@@ -430,7 +480,7 @@ const NotesModal = ({
   );
 };
 
-// Email Modal Component
+// Email Modal Component (updated)
 const EmailModal = ({
   onClose,
   selectedRecordForAction,
@@ -445,7 +495,7 @@ const EmailModal = ({
     useState<EmailTemplate | null>(null);
   const [emailSubject, setEmailSubject] = useState("");
   const [emailBody, setEmailBody] = useState("");
-  // Initialize email templates
+
   useEffect(() => {
     const templates: EmailTemplate[] = [
       {
@@ -473,11 +523,9 @@ const EmailModal = ({
   const handleTemplateSelect = (template: EmailTemplate) => {
     setSelectedTemplate(template);
     setEmailSubject(template.subject);
+    const contactInfo = getContactInfo(selectedRecordForAction);
     setEmailBody(
-      template.body.replace(
-        /{name}/g,
-        selectedRecordForAction?.full_name || "Client"
-      )
+      template.body.replace(/{name}/g, contactInfo?.full_name || "Client")
     );
   };
 
@@ -488,20 +536,22 @@ const EmailModal = ({
     }
 
     try {
-      // In a real app, you would integrate with your email service
-      console.log("Sending email to:", selectedRecordForAction.email);
+      const contactInfo = getContactInfo(selectedRecordForAction);
+      console.log("Sending email to:", contactInfo.email);
       console.log("Subject:", emailSubject);
       console.log("Body:", emailBody);
 
-      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      toast.success(`Email sent to ${selectedRecordForAction.full_name}!`);
+      toast.success(`Email sent to ${contactInfo.full_name}!`);
       setEmailModalOpen(false);
     } catch (error: any) {
       toast.error("Failed to send email", error.message);
     }
   };
+
+  const contactInfo = getContactInfo(selectedRecordForAction);
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center p-4 z-[1000] top-0">
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[88vh] overflow-y-auto">
@@ -509,10 +559,10 @@ const EmailModal = ({
           <div className="flex justify-between items-start">
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                Send Email to {selectedRecordForAction?.full_name}
+                Send Email to {contactInfo?.full_name}
               </h2>
               <p className="text-gray-600 dark:text-gray-300">
-                {selectedRecordForAction?.email}
+                {contactInfo?.email}
               </p>
             </div>
             <button
@@ -585,7 +635,7 @@ const EmailModal = ({
 
             <div className="flex justify-between items-center pt-4">
               <div className="text-sm text-gray-500 dark:text-gray-400">
-                <p>Recipient: {selectedRecordForAction?.email}</p>
+                <p>Recipient: {contactInfo?.email}</p>
               </div>
               <div className="flex gap-3">
                 <button
@@ -620,7 +670,7 @@ const DetailModal = ({
 }) => {
   const formatCurrency = (amount: string) => {
     if (!amount) return "Not specified";
-    const num = parseFloat(amount);
+    const num = parseFloat(amount.replace(/,/g, ""));
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
@@ -642,13 +692,13 @@ const DetailModal = ({
   const getComfortLevelColor = (comfort: string) => {
     switch (comfort) {
       case "comfortable":
-        return "bg-green-100 text-green-800 border-green-300 dark:bg-green-900 dark:text-green-200 dark:border-green-700";
+        return "bg-black text-white border-black";
       case "open":
-        return "bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900 dark:text-yellow-200 dark:border-yellow-700";
+        return "bg-gray-800 text-white border-gray-800";
       case "none":
-        return "bg-red-100 text-red-800 border-red-300 dark:bg-red-900 dark:text-red-200 dark:border-red-700";
+        return "bg-gray-600 text-white border-gray-600";
       default:
-        return "bg-gray-100 text-gray-800 border-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600";
+        return "bg-gray-400 text-black border-gray-400";
     }
   };
 
@@ -657,64 +707,85 @@ const DetailModal = ({
       <div
         className={`flex items-center justify-center p-3 rounded-xl border-2 ${
           status
-            ? "bg-green-50 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-200 dark:border-green-700"
-            : "bg-red-50 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-200 dark:border-red-700"
+            ? "bg-black text-white border-black"
+            : "bg-gray-400 text-black border-gray-400"
         }`}
       >
         <Icon
           icon={status ? "mdi:check-circle" : "mdi:close-circle"}
-          className="text-2xl mr-2"
+          className="text-xl lg:text-2xl mr-2"
         />
         <div className="text-left">
-          <div className="font-semibold text-base">{label}</div>
-          <div className="text-sm">{status ? "Yes" : "No"}</div>
+          <div className="font-semibold text-sm lg:text-base">{label}</div>
+          <div className="text-xs lg:text-sm">{status ? "Yes" : "No"}</div>
         </div>
       </div>
     );
+  };
+
+  const getSubscriptionStatus = (status: string) => {
+    switch (status) {
+      case "have":
+        return "Has Subscription";
+      case "start":
+        return "Starting Subscription";
+      case "paid":
+        return "Subscription Paid";
+      default:
+        return "No Subscription";
+    }
   };
 
   const { data, isLoading: isLoadingNotes } = useGetAllRetirementPlanNotesQuery(
     record._id
   );
   const notes: Note[] = data?.data || [];
-  console.log("All Notes in detial==> ", notes);
+
+  // Extract data using helper functions
+  const contactInfo = getContactInfo(record);
+  const retirementSnapshot = getRetirementSnapshot(record);
+  const housingEquity = getHousingEquity(record);
+  const dollarfarPlanning = getDollarFarPlanning(record);
+  const travelPlanning = getTravelPlanning(record);
+  const budgetEstimates = getBudgetEstimates(record);
+  const privacyAcknowledgements = getPrivacyAcknowledgements(record);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 dark:bg-opacity-80 flex items-center justify-center p-4 z-[999] top-0">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-6xl w-full max-h-[95vh] overflow-y-auto">
-        {/* Header with High Contrast */}
-        <div className="sticky top-0 bg-white dark:bg-gray-900 border-b-2 border-gray-300 dark:border-gray-600 p-6 rounded-t-2xl z-10">
+    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-2 sm:p-4 z-[999] top-0">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-7xl w-full max-h-[95vh] overflow-y-auto">
+        {/* Header */}
+        <div className="sticky top-0 bg-white dark:bg-black border-b-2 border-gray-300 dark:border-gray-700 p-4 sm:p-6 rounded-t-2xl z-10">
           <div className="flex justify-between items-start">
             <div className="flex-1">
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
-                {record.full_name}'s Retirement Plan
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-black dark:text-white mb-2 sm:mb-3">
+                {contactInfo.full_name}'s Retirement Plan
               </h1>
-              <div className="flex flex-wrap gap-6 text-lg">
-                <div className="flex items-center gap-3 bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-xl">
+              <div className="md:flex hidden flex-wrap gap-3 sm:gap-6 text-base sm:text-lg">
+                <div className="flex items-center gap-2 sm:gap-3 bg-gray-100 dark:bg-gray-800 px-3 sm:px-4 py-2 rounded-xl">
                   <Icon
                     icon="mdi:calendar"
-                    className="text-2xl text-blue-600 dark:text-blue-400"
+                    className="text-xl sm:text-2xl text-black dark:text-gray-300"
                   />
                   <div>
-                    <div className="text-sm text-blue-700 dark:text-blue-300 font-medium">
+                    <div className="text-xs sm:text-sm text-black dark:text-gray-400 font-medium">
                       Submitted
                     </div>
-                    <div className="text-blue-900 dark:text-blue-100 font-semibold">
+                    <div className="text-sm sm:text-base lg:text-lg text-black dark:text-white font-semibold">
                       {formatDate(record.createdAt)}
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 bg-green-50 dark:bg-green-900/30 px-4 py-2 rounded-xl">
+                <div className="flex items-center gap-2 sm:gap-3 bg-gray-100 dark:bg-gray-800 px-3 sm:px-4 py-2 rounded-xl">
                   <Icon
                     icon="mdi:map-marker"
-                    className="text-2xl text-green-600 dark:text-green-400"
+                    className="text-xl sm:text-2xl text-black dark:text-gray-300"
                   />
                   <div>
-                    <div className="text-sm text-green-700 dark:text-green-300 font-medium">
+                    <div className="text-xs sm:text-sm text-black dark:text-gray-400 font-medium">
                       Region
                     </div>
-                    <div className="text-green-900 dark:text-green-100 font-semibold">
-                      {record.region || "Not specified"}
+                    <div className="text-sm sm:text-base lg:text-lg text-black dark:text-white font-semibold">
+                      {contactInfo.region || "Not specified"}
                     </div>
                   </div>
                 </div>
@@ -722,74 +793,90 @@ const DetailModal = ({
             </div>
             <button
               onClick={onClose}
-              className="p-3 bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-800/50 rounded-xl transition-colors flex-shrink-0"
+              className="p-2 sm:p-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-xl transition-colors flex-shrink-0 ml-2"
               aria-label="Close modal"
             >
               <Icon
                 icon="mdi:close"
-                className="text-2xl text-red-600 dark:text-red-400"
+                className="text-xl sm:text-2xl text-black dark:text-gray-300"
               />
             </button>
           </div>
         </div>
 
-        <div className="p-6 space-y-6">
-          {/* Contact Information - Large Clear Text */}
-          <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-2xl p-6 border-2 border-blue-200 dark:border-blue-700">
-            <h2 className="text-2xl font-bold text-blue-900 dark:text-blue-100 mb-4 flex items-center gap-3">
-              <div className="p-3 bg-blue-100 dark:bg-blue-800 rounded-xl">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+          {/* SECTION A: Contact Information */}
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border-2 border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-black dark:text-white mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+              <div className="p-2 sm:p-3 bg-black dark:bg-gray-700 rounded-xl">
                 <Icon
                   icon="mdi:account-box"
-                  className="text-3xl text-blue-600 dark:text-blue-400"
+                  className="text-2xl sm:text-3xl text-white dark:text-gray-300"
                 />
               </div>
-              Contact Information
+              A. Contact Information
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-blue-100 dark:border-blue-600">
-                <div className="flex items-center gap-3 mb-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                  <Icon
+                    icon="mdi:account"
+                    className="text-xl sm:text-2xl text-black dark:text-gray-300"
+                  />
+                  <div>
+                    <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
+                      Full Name
+                    </div>
+                    <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
+                      {contactInfo.full_name}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-2 sm:gap-3 mb-2">
                   <Icon
                     icon="mdi:email"
-                    className="text-2xl text-blue-600 dark:text-blue-400"
+                    className="text-xl sm:text-2xl text-black dark:text-gray-300"
                   />
                   <div>
-                    <div className="text-lg font-semibold text-blue-800 dark:text-blue-200">
+                    <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
                       Email Address
                     </div>
-                    <div className="text-xl text-blue-900 dark:text-blue-100 font-medium break-all">
-                      {record.email}
+                    <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium break-all">
+                      {contactInfo.email}
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-blue-100 dark:border-blue-600">
-                <div className="flex items-center gap-3 mb-2">
+              <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-2 sm:gap-3 mb-2">
                   <Icon
                     icon="mdi:phone"
-                    className="text-2xl text-blue-600 dark:text-blue-400"
+                    className="text-xl sm:text-2xl text-black dark:text-gray-300"
                   />
                   <div>
-                    <div className="text-lg font-semibold text-blue-800 dark:text-blue-200">
+                    <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
                       Phone Number
                     </div>
-                    <div className="text-xl text-blue-900 dark:text-blue-100 font-medium">
-                      {record.phone}
+                    <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
+                      {contactInfo.phone}
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-blue-100 dark:border-blue-600">
-                <div className="flex items-center gap-3 mb-2">
+              <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-2 sm:gap-3 mb-2">
                   <Icon
                     icon="mdi:earth"
-                    className="text-2xl text-blue-600 dark:text-blue-400"
+                    className="text-xl sm:text-2xl text-black dark:text-gray-300"
                   />
                   <div>
-                    <div className="text-lg font-semibold text-blue-800 dark:text-blue-200">
-                      Country Region
+                    <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
+                      Province/State
                     </div>
-                    <div className="text-xl text-blue-900 dark:text-blue-100 font-medium">
-                      {record.country_region || "Not specified"}
+                    <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
+                      {contactInfo.region || "Not specified"}
                     </div>
                   </div>
                 </div>
@@ -797,332 +884,508 @@ const DetailModal = ({
             </div>
           </div>
 
-          {/* Retirement Goals - Clear Financial Information */}
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl p-6 border-2 border-green-200 dark:border-green-700">
-            <h2 className="text-2xl font-bold text-green-900 dark:text-green-100 mb-4 flex items-center gap-3">
-              <div className="p-3 bg-green-100 dark:bg-green-800 rounded-xl">
+          {/* SECTION B: Retirement Snapshot */}
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border-2 border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-black dark:text-white mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+              <div className="p-2 sm:p-3 bg-black dark:bg-gray-700 rounded-xl">
                 <Icon
                   icon="mdi:finance"
-                  className="text-3xl text-green-600 dark:text-green-400"
+                  className="text-2xl sm:text-3xl text-white dark:text-gray-300"
                 />
               </div>
-              Retirement Goals & Financial Snapshot
+              B. Retirement Snapshot
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-green-100 dark:border-green-600 text-center">
-                <Icon
-                  icon="mdi:calendar-clock"
-                  className="text-4xl text-green-600 dark:text-green-400 mb-3"
-                />
-                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">
-                  Target Age
-                </div>
-                <div className="text-2xl font-bold text-green-900 dark:text-green-100">
-                  {record.target_age || "Not set"}
-                </div>
-              </div>
-              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-green-100 dark:border-green-600 text-center">
-                <Icon
-                  icon="mdi:cash"
-                  className="text-4xl text-green-600 dark:text-green-400 mb-3"
-                />
-                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">
-                  Desired Income
-                </div>
-                <div className="text-xl font-bold text-green-900 dark:text-green-100">
-                  {formatCurrency(record.desired_income)}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                  <Icon
+                    icon="mdi:calendar-clock"
+                    className="text-xl sm:text-2xl text-black dark:text-gray-300"
+                  />
+                  <div>
+                    <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
+                      Target Retirement Age
+                    </div>
+                    <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
+                      {retirementSnapshot.target_age || "Not specified"}
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-green-100 dark:border-green-600 text-center">
-                <Icon
-                  icon="mdi:bank"
-                  className="text-4xl text-green-600 dark:text-green-400 mb-3"
-                />
-                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">
-                  Estimated Savings
-                </div>
-                <div className="text-xl font-bold text-green-900 dark:text-green-100">
-                  {formatCurrency(record.estimated_savings)}
+              <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                  <Icon
+                    icon="mdi:cash"
+                    className="text-xl sm:text-2xl text-black dark:text-gray-300"
+                  />
+                  <div>
+                    <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
+                      Desired Annual Income
+                    </div>
+                    <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
+                      {formatCurrency(
+                        retirementSnapshot.desired_income as string
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-green-100 dark:border-green-600 text-center">
+              <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                  <Icon
+                    icon="mdi:bank"
+                    className="text-xl sm:text-2xl text-black dark:text-gray-300"
+                  />
+                  <div>
+                    <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
+                      Estimated Total Savings
+                    </div>
+                    <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
+                      {formatCurrency(
+                        retirementSnapshot?.estimated_savings as string
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* SECTION C: Housing & Real Estate Equity */}
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border-2 border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-black dark:text-white mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+              <div className="p-2 sm:p-3 bg-black dark:bg-gray-700 rounded-xl">
                 <Icon
                   icon="mdi:home-analytics"
-                  className="text-4xl text-green-600 dark:text-green-400 mb-3"
+                  className="text-2xl sm:text-3xl text-white dark:text-gray-300"
                 />
-                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">
-                  Home Equity
+              </div>
+              C. Housing & Real Estate Equity
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+              <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                  <Icon
+                    icon="mdi:home"
+                    className="text-xl sm:text-2xl text-black dark:text-gray-300"
+                  />
+                  <div>
+                    <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
+                      Estimated Home Equity
+                    </div>
+                    <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
+                      {formatCurrency(
+                        housingEquity.estimated_home_equity as string
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div className="text-xl font-bold text-green-900 dark:text-green-100">
-                  {formatCurrency(record.estimated_home_equity)}
+              </div>
+              <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                  <Icon
+                    icon="mdi:heart-outline"
+                    className="text-xl sm:text-2xl text-black dark:text-gray-300"
+                  />
+                  <div>
+                    <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
+                      Comfort with Tapping Home Equity
+                    </div>
+                    <div
+                      className={`inline-flex items-center px-3 sm:px-4 py-1 sm:py-2 rounded-xl text-sm sm:text-base lg:text-lg font-semibold border-2 mt-2 ${getComfortLevelColor(
+                        housingEquity.equity_comfort as string
+                      )}`}
+                    >
+                      <Icon
+                        icon={
+                          housingEquity.equity_comfort === "comfortable"
+                            ? "mdi:check-circle"
+                            : housingEquity.equity_comfort === "open"
+                            ? "mdi:help-circle"
+                            : housingEquity.equity_comfort === "none"
+                            ? "mdi:close-circle"
+                            : "mdi:information"
+                        }
+                        className="mr-1 sm:mr-2 text-lg sm:text-xl"
+                      />
+                      {housingEquity.equity_comfort || "Not specified"}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Travel & Lifestyle Preferences */}
-          <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-2xl p-6 border-2 border-purple-200 dark:border-purple-700">
-            <h2 className="text-2xl font-bold text-purple-900 dark:text-purple-100 mb-4 flex items-center gap-3">
-              <div className="p-3 bg-purple-100 dark:bg-purple-800 rounded-xl">
+          {/* SECTION D: DollarFar — Pre-Retirement Planning */}
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border-2 border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-black dark:text-white mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+              <div className="p-2 sm:p-3 bg-black dark:bg-gray-700 rounded-xl">
                 <Icon
-                  icon="mdi:airplane"
-                  className="text-3xl text-purple-600 dark:text-purple-400"
+                  icon="mdi:calculator"
+                  className="text-2xl sm:text-3xl text-white dark:text-gray-300"
                 />
               </div>
-              Travel & Lifestyle Preferences
+              D. DollarFar — Pre-Retirement Planning
             </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Icon
-                      icon="mdi:walk"
-                      className="text-2xl text-purple-600 dark:text-purple-400"
-                    />
-                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">
-                      Travel Style
-                    </div>
-                  </div>
-                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">
-                    {record.travel_style || "Not specified"}
-                  </div>
-                </div>
 
-                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Icon
-                      icon="mdi:clock-outline"
-                      className="text-2xl text-purple-600 dark:text-purple-400"
-                    />
-                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">
-                      Start Timeline
-                    </div>
-                  </div>
-                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">
-                    {record.start_timeline || "Not specified"}
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Icon
-                      icon="mdi:calendar-month"
-                      className="text-2xl text-purple-600 dark:text-purple-400"
-                    />
-                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">
-                      Months Abroad
-                    </div>
-                  </div>
-                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">
-                    {record.months_abroad || "Not specified"}
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Icon
-                      icon="mdi:airplane-seat"
-                      className="text-2xl text-purple-600 dark:text-purple-400"
-                    />
-                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">
-                      Flight Class
-                    </div>
-                  </div>
-                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">
-                    {record.flight_class || "Not specified"}
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Icon
-                      icon="mdi:map-marker-radius"
-                      className="text-2xl text-purple-600 dark:text-purple-400"
-                    />
-                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">
-                      Ideal Locations
-                    </div>
-                  </div>
-                  <div className="text-lg text-purple-900 dark:text-purple-100 font-medium">
-                    {record.ideal_locations || "Not specified"}
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-purple-100 dark:border-purple-600">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Icon
-                      icon="mdi:heart-outline"
-                      className="text-2xl text-purple-600 dark:text-purple-400"
-                    />
-                    <div className="text-xl font-semibold text-purple-800 dark:text-purple-200">
-                      Equity Comfort
-                    </div>
-                  </div>
-                  <div
-                    className={`inline-flex items-center px-4 py-2 rounded-xl text-lg font-semibold border-2 ${getComfortLevelColor(
-                      record.equity_comfort
-                    )}`}
+            {/* Selected Calculators */}
+            <div className="mb-4 sm:mb-6">
+              <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-black dark:text-gray-300 mb-2 sm:mb-3">
+                Selected Calculators
+              </h3>
+              <div className="flex flex-wrap gap-1 sm:gap-2">
+                {dollarfarPlanning.calculators?.map((calculator, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center px-2 sm:px-4 py-1 sm:py-2 rounded-xl text-xs sm:text-sm lg:text-base bg-gray-200 text-black dark:bg-gray-700 dark:text-white font-semibold border-2 border-gray-300 dark:border-gray-600"
                   >
                     <Icon
-                      icon={
-                        record.equity_comfort === "comfortable"
-                          ? "mdi:check-circle"
-                          : record.equity_comfort === "open"
-                          ? "mdi:help-circle"
-                          : record.equity_comfort === "none"
-                          ? "mdi:close-circle"
-                          : "mdi:information"
-                      }
-                      className="mr-2 text-xl"
+                      icon="mdi:check-circle"
+                      className="mr-1 sm:mr-2 text-sm sm:text-lg"
                     />
-                    {record.equity_comfort || "Not specified"}
+                    {calculator}
+                  </span>
+                ))}
+                {(!dollarfarPlanning.calculators ||
+                  dollarfarPlanning.calculators.length === 0) && (
+                  <span className="text-black dark:text-gray-400 italic text-sm sm:text-base lg:text-lg">
+                    No calculators selected
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Interpretation Services */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+              <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                  <Icon
+                    icon="mdi:account-voice"
+                    className="text-xl sm:text-2xl text-black dark:text-gray-300"
+                  />
+                  <div>
+                    <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
+                      Interpretation Services
+                    </div>
+                    <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
+                      {dollarfarPlanning.interpretation_toggle
+                        ? "Enabled"
+                        : "Disabled"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                  <Icon
+                    icon="mdi:card-account-details"
+                    className="text-xl sm:text-2xl text-black dark:text-gray-300"
+                  />
+                  <div>
+                    <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
+                      Subscription Status
+                    </div>
+                    <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
+                      {getSubscriptionStatus(
+                        dollarfarPlanning.subscription_status || ""
+                      )}
+                    </div>
+                    {dollarfarPlanning.subscription_payment_intent && (
+                      <div className="text-xs sm:text-sm text-black dark:text-gray-400 mt-1">
+                        Payment Intent:{" "}
+                        {dollarfarPlanning.subscription_payment_intent}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Preferred Consultation Time */}
+            {dollarfarPlanning.interpretation_toggle &&
+              dollarfarPlanning.time_pre && (
+                <div className="mt-3 sm:mt-4 bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                    <Icon
+                      icon="mdi:clock-outline"
+                      className="text-xl sm:text-2xl text-black dark:text-gray-300"
+                    />
+                    <div>
+                      <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
+                        Preferred Consultation Time
+                      </div>
+                      <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
+                        {dollarfarPlanning.time_pre}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+          </div>
+
+          {/* SECTION E: Travel Planning */}
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border-2 border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-black dark:text-white mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+              <div className="p-2 sm:p-3 bg-black dark:bg-gray-700 rounded-xl">
+                <Icon
+                  icon="mdi:airplane"
+                  className="text-2xl sm:text-3xl text-white dark:text-gray-300"
+                />
+              </div>
+              E. Travel Planning — Book Now vs Future Interest
+            </h2>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+              {/* Travel Details */}
+              <div className="space-y-3 sm:space-y-4">
+                <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                    <Icon
+                      icon="mdi:calendar-month"
+                      className="text-xl sm:text-2xl text-black dark:text-gray-300"
+                    />
+                    <div>
+                      <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
+                        Months Abroad Per Year
+                      </div>
+                      <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
+                        {travelPlanning.months_abroad || "Not specified"}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                    <Icon
+                      icon="mdi:clock-outline"
+                      className="text-xl sm:text-2xl text-black dark:text-gray-300"
+                    />
+                    <div>
+                      <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
+                        Earliest Start Timeline
+                      </div>
+                      <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
+                        {travelPlanning.start_timeline || "Not specified"}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                    <Icon
+                      icon="mdi:bed"
+                      className="text-xl sm:text-2xl text-black dark:text-gray-300"
+                    />
+                    <div>
+                      <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
+                        Accommodation Style
+                      </div>
+                      <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
+                        {travelPlanning.travel_style || "Not specified"}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Location & Travel Readiness */}
+              <div className="space-y-3 sm:space-y-4">
+                <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                    <Icon
+                      icon="mdi:map-marker-radius"
+                      className="text-xl sm:text-2xl text-black dark:text-gray-300"
+                    />
+                    <div>
+                      <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
+                        Country/Region Interest
+                      </div>
+                      <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
+                        {travelPlanning.country_region_interest ||
+                          "Not specified"}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                    <Icon
+                      icon="mdi:map-search"
+                      className="text-xl sm:text-2xl text-black dark:text-gray-300"
+                    />
+                    <div>
+                      <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
+                        Ideal Locations Interest
+                      </div>
+                      <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
+                        {travelPlanning.ideal_locations_interest ||
+                          "Not specified"}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                    <Icon
+                      icon="mdi:walk"
+                      className="text-xl sm:text-2xl text-black dark:text-gray-300"
+                    />
+                    <div>
+                      <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300">
+                        Independent Travel Acknowledgement
+                      </div>
+                      <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
+                        {travelPlanning.independent_travel_ack ? "Yes" : "No"}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Budget & Financial Details */}
-          <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl p-6 border-2 border-amber-200 dark:border-amber-700">
-            <h2 className="text-2xl font-bold text-amber-900 dark:text-amber-100 mb-4 flex items-center gap-3">
-              <div className="p-3 bg-amber-100 dark:bg-amber-800 rounded-xl">
+          {/* SECTION F: Budget Estimates */}
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border-2 border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-black dark:text-white mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+              <div className="p-2 sm:p-3 bg-black dark:bg-gray-700 rounded-xl">
                 <Icon
                   icon="mdi:wallet-outline"
-                  className="text-3xl text-amber-600 dark:text-amber-400"
+                  className="text-2xl sm:text-3xl text-white dark:text-gray-300"
                 />
               </div>
-              Budget & Financial Details
+              F. Budget Estimates
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-amber-100 dark:border-amber-600 text-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-center">
                 <Icon
                   icon="mdi:home-currency-usd"
-                  className="text-4xl text-amber-600 dark:text-amber-400 mb-3"
+                  className="text-3xl sm:text-4xl text-black dark:text-gray-300 mb-2 sm:mb-3"
                 />
-                <div className="text-lg font-semibold text-amber-800 dark:text-amber-200 mb-1">
-                  Monthly Home Spend
+                <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300 mb-1">
+                  Monthly Home Budget
                 </div>
-                <div className="text-xl font-bold text-amber-900 dark:text-amber-100">
-                  {formatCurrency(record.home_spend_monthly)}
+                <div className="text-base sm:text-lg lg:text-xl font-bold text-black dark:text-white">
+                  {formatCurrency(budgetEstimates.home_spend_monthly as string)}
                 </div>
               </div>
-              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-amber-100 dark:border-amber-600 text-center">
+              <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-center">
                 <Icon
                   icon="mdi:passport"
-                  className="text-4xl text-amber-600 dark:text-amber-400 mb-3"
+                  className="text-3xl sm:text-4xl text-black dark:text-gray-300 mb-2 sm:mb-3"
                 />
-                <div className="text-lg font-semibold text-amber-800 dark:text-amber-200 mb-1">
-                  Seasonal Abroad Budget
+                <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300 mb-1">
+                  Monthly Abroad Budget
                 </div>
-                <div className="text-xl font-bold text-amber-900 dark:text-amber-100">
-                  {formatCurrency(record.abroad_budget_season)}
+                <div className="text-base sm:text-lg lg:text-xl font-bold text-black dark:text-white">
+                  {formatCurrency(
+                    budgetEstimates?.abroad_budget_season as string
+                  )}
                 </div>
               </div>
-              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-amber-100 dark:border-amber-600 text-center">
+              <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-center">
                 <Icon
                   icon="mdi:airplane-ticket"
-                  className="text-4xl text-amber-600 dark:text-amber-400 mb-3"
+                  className="text-3xl sm:text-4xl text-black dark:text-gray-300 mb-2 sm:mb-3"
                 />
-                <div className="text-lg font-semibold text-amber-800 dark:text-amber-200 mb-1">
-                  Flights & Insurance
+                <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300 mb-1">
+                  Flight & Insurance Budget
                 </div>
-                <div className="text-lg font-bold text-amber-900 dark:text-amber-100">
-                  {record.flights_insurance_budget || "Not specified"}
+                <div className="text-sm sm:text-base lg:text-lg font-bold text-black dark:text-white">
+                  {budgetEstimates.flights_insurance_budget || "Not specified"}
+                </div>
+              </div>
+              <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-center">
+                <Icon
+                  icon="mdi:airplane-seat"
+                  className="text-3xl sm:text-4xl text-black dark:text-gray-300 mb-2 sm:mb-3"
+                />
+                <div className="text-sm sm:text-base lg:text-lg font-semibold text-black dark:text-gray-300 mb-1">
+                  Preferred Flight Class
+                </div>
+                <div className="text-base sm:text-lg lg:text-xl font-bold text-black dark:text-white">
+                  {budgetEstimates.flight_class || "Not specified"}
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Interests & Services */}
-          <div className="bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-900/20 dark:to-violet-900/20 rounded-2xl p-6 border-2 border-indigo-200 dark:border-indigo-700">
-            <h2 className="text-2xl font-bold text-indigo-900 dark:text-indigo-100 mb-4 flex items-center gap-3">
-              <div className="p-3 bg-indigo-100 dark:bg-indigo-800 rounded-xl">
+          {/* SECTION G: Purpose of Travel */}
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border-2 border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-black dark:text-white mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+              <div className="p-2 sm:p-3 bg-black dark:bg-gray-700 rounded-xl">
                 <Icon
                   icon="mdi:heart-multiple"
-                  className="text-3xl text-indigo-600 dark:text-indigo-400"
+                  className="text-2xl sm:text-3xl text-white dark:text-gray-300"
                 />
               </div>
-              Interests & Services Requested
+              G. Purpose of Travel
             </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-indigo-100 dark:border-indigo-600">
-                <h3 className="text-xl font-semibold text-indigo-800 dark:text-indigo-200 mb-3 flex items-center gap-2">
-                  <Icon icon="mdi:target" />
-                  Travel Purposes
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {record.travel_purpose.map((purpose, index) => (
-                    <span
-                      key={index}
-                      className="inline-flex items-center px-4 py-2 rounded-xl text-base bg-indigo-100 text-indigo-800 dark:bg-indigo-800 dark:text-indigo-200 font-semibold border-2 border-indigo-200 dark:border-indigo-700"
-                    >
-                      <Icon icon="mdi:check-circle" className="mr-2 text-lg" />
-                      {purpose}
-                    </span>
-                  ))}
-                  {record.travel_purpose.length === 0 && (
-                    <span className="text-indigo-700 dark:text-indigo-300 italic text-lg">
-                      No travel purposes specified
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="bg-white dark:bg-gray-700 p-4 rounded-xl border-2 border-indigo-100 dark:border-indigo-600">
-                <h3 className="text-xl font-semibold text-indigo-800 dark:text-indigo-200 mb-3 flex items-center gap-2">
-                  <Icon icon="mdi:star" />
-                  Services & Interests
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {record.interests.map((interest, index) => (
-                    <span
-                      key={index}
-                      className="inline-flex items-center px-4 py-2 rounded-xl text-base bg-violet-100 text-violet-800 dark:bg-violet-800 dark:text-violet-200 font-semibold border-2 border-violet-200 dark:border-violet-700"
-                    >
-                      <Icon icon="mdi:star" className="mr-2 text-lg" />
-                      {interest}
-                    </span>
-                  ))}
-                  {record.interests.length === 0 && (
-                    <span className="text-violet-700 dark:text-violet-300 italic text-lg">
-                      No interests specified
-                    </span>
-                  )}
-                </div>
+            <div className="bg-white dark:bg-gray-900 p-3 sm:p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700">
+              <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-black dark:text-gray-300 mb-2 sm:mb-3 flex items-center gap-2">
+                <Icon icon="mdi:target" />
+                Selected Travel Purposes
+              </h3>
+              <div className="flex flex-wrap gap-1 sm:gap-2">
+                {record.travel_purpose.map((purpose, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center px-2 sm:px-4 py-1 sm:py-2 rounded-xl text-xs sm:text-sm lg:text-base bg-gray-200 text-black dark:bg-gray-700 dark:text-white font-semibold border-2 border-gray-300 dark:border-gray-600"
+                  >
+                    <Icon
+                      icon="mdi:check-circle"
+                      className="mr-1 sm:mr-2 text-sm sm:text-lg"
+                    />
+                    {purpose}
+                  </span>
+                ))}
+                {record.travel_purpose.length === 0 && (
+                  <span className="text-black dark:text-gray-400 italic text-sm sm:text-base lg:text-lg">
+                    No travel purposes specified
+                  </span>
+                )}
               </div>
             </div>
           </div>
 
-          {/* Consents & Acknowledgments */}
-          <div className="bg-gradient-to-r from-gray-50 to-slate-100 dark:from-gray-700 dark:to-slate-800 rounded-2xl p-6 border-2 border-gray-300 dark:border-gray-600">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-3">
-              <div className="p-3 bg-gray-200 dark:bg-gray-600 rounded-xl">
+          {/* SECTION H: Privacy & Pricing */}
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border-2 border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-black dark:text-white mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+              <div className="p-2 sm:p-3 bg-black dark:bg-gray-700 rounded-xl">
                 <Icon
                   icon="mdi:shield-check"
-                  className="text-3xl text-gray-600 dark:text-gray-400"
+                  className="text-2xl sm:text-3xl text-white dark:text-gray-300"
                 />
               </div>
-              Consents & Acknowledgments
+              H. Privacy & Pricing
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {getStatusBadge(
-                record.independent_travel_ack,
-                "Independent Travel"
+                privacyAcknowledgements.ack_poc || false,
+                "Proof of Concept Acknowledgement"
               )}
-              {getStatusBadge(record.fee_ack, "Fee Acknowledgment")}
-              {getStatusBadge(record.consent_contact, "Contact Consent")}
-              {getStatusBadge(record.consent_marketing, "Marketing Consent")}
+              {getStatusBadge(
+                privacyAcknowledgements.consent_contact || false,
+                "Contact Consent"
+              )}
+              {getStatusBadge(
+                privacyAcknowledgements.ack_scope || false,
+                "Scope Acknowledgment"
+              )}
             </div>
           </div>
 
           {/* Client Notes Section */}
-          <div className="bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-900/20 dark:to-gray-900/20 rounded-2xl p-6 border-2 border-slate-200 dark:border-slate-700">
-            <div className="mb-4">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border-2 border-gray-200 dark:border-gray-700">
+            <div className="mb-3 sm:mb-4">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-black dark:text-white mb-1">
                 Client Notes
               </h2>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-black dark:text-gray-400 text-sm sm:text-base">
                 Track all conversations, meetings, and important details with
                 this client
               </p>
@@ -1131,48 +1394,48 @@ const DetailModal = ({
             {isLoadingNotes ? (
               <NoteLoadingSkeleton />
             ) : notes.length > 0 ? (
-              <div className="space-y-4 max-h-96 overflow-y-auto">
+              <div className="space-y-3 sm:space-y-4 max-h-96 overflow-y-auto">
                 {notes.map((note) => (
                   <div
                     key={note._id}
-                    className="bg-white dark:bg-gray-700 rounded-xl p-4 border-2 border-gray-200 dark:border-gray-600"
+                    className="bg-white dark:bg-gray-900 rounded-xl p-3 sm:p-4 border-2 border-gray-200 dark:border-gray-700"
                   >
-                    <div className="flex justify-between items-start mb-3">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-blue-100 dark:bg-blue-800 rounded-lg">
+                    <div className="flex justify-between items-start mb-2 sm:mb-3">
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="p-1 sm:p-2 bg-gray-200 dark:bg-gray-700 rounded-lg">
                           <Icon
                             icon="mdi:account"
-                            className="text-blue-600 dark:text-blue-400 text-xl"
+                            className="text-black dark:text-gray-300 text-lg sm:text-xl"
                           />
                         </div>
                         <div>
-                          <p className="font-semibold text-gray-900 dark:text-white">
+                          <p className="font-semibold text-black dark:text-white text-sm sm:text-base">
                             {note.createdBy}
                           </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                          <p className="text-xs sm:text-sm text-black dark:text-gray-400">
                             {formatDate(note.createdAt)}
                           </p>
                         </div>
                       </div>
                       {note.updatedAt && note.updatedAt !== note.createdAt && (
-                        <div className="text-xs text-gray-400 dark:text-gray-500">
+                        <div className="text-xs text-black dark:text-gray-500">
                           Edited {formatDate(note.updatedAt)}
                         </div>
                       )}
                     </div>
-                    <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                    <p className="text-black dark:text-gray-300 whitespace-pre-wrap text-sm sm:text-base">
                       {note.content}
                     </p>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8">
+              <div className="text-center py-6 sm:py-8">
                 <Icon
                   icon="mdi:note-off"
-                  className="text-4xl text-gray-400 dark:text-gray-500 mx-auto mb-3"
+                  className="text-3xl sm:text-4xl text-black dark:text-gray-500 mx-auto mb-2 sm:mb-3"
                 />
-                <p className="text-gray-500 dark:text-gray-400 text-lg">
+                <p className="text-black dark:text-gray-400 text-sm sm:text-base lg:text-lg">
                   No notes have been added for this client yet.
                 </p>
               </div>
@@ -1235,6 +1498,7 @@ const RetirementPlanStatsSkeleton = () => {
   );
 };
 
+// Main Component
 export default function RetireeRequestedPlans() {
   const [selectedRecord, setSelectedRecord] = useState<RetirementData | null>(
     null
@@ -1250,22 +1514,21 @@ export default function RetireeRequestedPlans() {
 
   // Get unique regions for filter
   const regions = Array.from(
-    new Set(retirementPlans?.map((record) => record.region).filter(Boolean))
+    new Set(
+      retirementPlans
+        ?.map((record) => getContactInfo(record).region)
+        .filter(Boolean)
+    )
   );
 
-  // Filter travel ready plans (those who are capable of independent travel)
+  // Filter travel ready plans
   const travelReadyPlans = retirementPlans?.filter(
-    (plan) => plan.independent_travel_ack
-  );
-
-  // Filter comprehensive wealth plans (those who selected "Comprehensive Wealth Plan" in interests)
-  const comprehensiveWealthPlans = retirementPlans?.filter((plan) =>
-    plan.interests.includes("Comprehensive Wealth Plan")
+    (plan) => getTravelPlanning(plan).independent_travel_ack
   );
 
   const formatCurrency = (amount: string) => {
     if (!amount) return "Not specified";
-    const num = parseFloat(amount);
+    const num = parseFloat(amount.replace(/,/g, ""));
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
@@ -1284,23 +1547,9 @@ export default function RetireeRequestedPlans() {
     });
   };
 
-  const getComfortLevelColor = (comfort: string) => {
-    switch (comfort) {
-      case "comfortable":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
-      case "open":
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
-      case "none":
-        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
-      default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200";
-    }
-  };
-
   const handleAddNote = async (record: RetirementData) => {
     setSelectedRecordForAction(record);
     setNotesModalOpen(true);
-    // In a real app, you would fetch existing notes from your API
   };
 
   return (
@@ -1352,10 +1601,7 @@ export default function RetireeRequestedPlans() {
                     Ready to Travel
                   </p>
                   <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                    {
-                      retirementPlans?.filter((d) => d.independent_travel_ack)
-                        .length
-                    }
+                    {travelReadyPlans.length}
                   </p>
                 </div>
                 <Icon
@@ -1424,94 +1670,103 @@ export default function RetireeRequestedPlans() {
                 <DashboardDownloadSkeleton />
               ) : (
                 <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-300 dark:divide-gray-700">
-                  {retirementPlans?.map((record) => (
-                    <tr
-                      key={record._id}
-                      className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                    >
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div>
-                          <p className="font-semibold text-gray-900 dark:text-white">
-                            {record.full_name}
-                          </p>
+                  {retirementPlans?.map((record) => {
+                    const contactInfo = getContactInfo(record);
+                    const retirementSnapshot = getRetirementSnapshot(record);
+                    const travelPlanning = getTravelPlanning(record);
+
+                    return (
+                      <tr
+                        key={record._id}
+                        className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div>
+                            <p className="font-semibold text-gray-900 dark:text-white">
+                              {contactInfo.full_name}
+                            </p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              {contactInfo.region || "No region"}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div>
+                            <p className="text-gray-900 dark:text-white">
+                              {contactInfo.email}
+                            </p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              {contactInfo.phone}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div className="space-y-1">
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Age:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {retirementSnapshot.target_age || "Not set"}
+                              </span>
+                            </p>
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Income:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {formatCurrency(
+                                  retirementSnapshot.desired_income as string
+                                )}
+                              </span>
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div className="space-y-1">
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Destination:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {travelPlanning.country_region_interest ||
+                                  "Not set"}
+                              </span>
+                            </p>
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Timeline:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {travelPlanning.start_timeline || "Not set"}
+                              </span>
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
                           <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {record.region || "No region"}
+                            {formatDate(record.createdAt)}
                           </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div>
-                          <p className="text-gray-900 dark:text-white">
-                            {record.email}
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {record.phone}
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div className="space-y-1">
-                          <p className="text-sm">
-                            <span className="font-medium dark:text-white">
-                              Age:
-                            </span>{" "}
-                            <span className="dark:text-gray-300">
-                              {record.target_age || "Not set"}
-                            </span>
-                          </p>
-                          <p className="text-sm">
-                            <span className="font-medium dark:text-white">
-                              Income:
-                            </span>{" "}
-                            <span className="dark:text-gray-300">
-                              {formatCurrency(record.desired_income)}
-                            </span>
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div className="space-y-1">
-                          <p className="text-sm">
-                            <span className="font-medium dark:text-white">
-                              Destination:
-                            </span>{" "}
-                            <span className="dark:text-gray-300">
-                              {record.country_region || "Not set"}
-                            </span>
-                          </p>
-                          <p className="text-sm">
-                            <span className="font-medium dark:text-white">
-                              Timeline:
-                            </span>{" "}
-                            <span className="dark:text-gray-300">
-                              {record.start_timeline || "Not set"}
-                            </span>
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          {formatDate(record.createdAt)}
-                        </p>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div className="flex flex-col gap-2">
-                          <button
-                            onClick={() => setSelectedRecord(record)}
-                            className="inline-flex items-center px-4 py-2 bg-neutral-600 dark:bg-neutral-700 text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors font-medium"
-                          >
-                            Details
-                          </button>
-                          <button
-                            onClick={() => handleAddNote(record)}
-                            className="inline-flex items-center px-4 py-2 bg-emerald-600 dark:bg-emerald-700 text-white rounded-lg hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors font-medium"
-                          >
-                            Notes
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div className="flex flex-col gap-2">
+                            <button
+                              onClick={() => setSelectedRecord(record)}
+                              className="inline-flex items-center px-4 py-2 bg-neutral-600 dark:bg-neutral-700 text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors font-medium"
+                            >
+                              Details
+                            </button>
+                            <button
+                              onClick={() => handleAddNote(record)}
+                              className="inline-flex items-center px-4 py-2 bg-emerald-600 dark:bg-emerald-700 text-white rounded-lg hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors font-medium"
+                            >
+                              Notes
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               )}
             </table>
@@ -1551,231 +1806,113 @@ export default function RetireeRequestedPlans() {
                 <DashboardDownloadSkeleton />
               ) : (
                 <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-300 dark:divide-gray-700">
-                  {travelReadyPlans?.map((record) => (
-                    <tr
-                      key={record._id}
-                      className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                    >
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div>
-                          <p className="font-semibold text-gray-900 dark:text-white">
-                            {record.full_name}
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {record.region || "No region"}
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div>
-                          <p className="text-gray-900 dark:text-white">
-                            {record.email}
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {record.phone}
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div className="space-y-1">
-                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-200">
-                            <Icon icon="mdi:check-circle" className="mr-1" />
-                            Independent Travel
-                          </span>
-                          <p className="text-sm">
-                            <span className="font-medium dark:text-white">
-                              Style:
-                            </span>{" "}
-                            <span className="dark:text-gray-300">
-                              {record.travel_style || "Not set"}
-                            </span>
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div className="space-y-1">
-                          <p className="text-sm">
-                            <span className="font-medium dark:text-white">
-                              Region:
-                            </span>{" "}
-                            <span className="dark:text-gray-300">
-                              {record.country_region || "Not set"}
-                            </span>
-                          </p>
-                          <p className="text-sm">
-                            <span className="font-medium dark:text-white">
-                              Locations:
-                            </span>{" "}
-                            <span className="dark:text-gray-300">
-                              {record.ideal_locations || "Not set"}
-                            </span>
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div className="space-y-1">
-                          <p className="text-sm">
-                            <span className="font-medium dark:text-white">
-                              Start:
-                            </span>{" "}
-                            <span className="dark:text-gray-300">
-                              {record.start_timeline || "Not set"}
-                            </span>
-                          </p>
-                          <p className="text-sm">
-                            <span className="font-medium dark:text-white">
-                              Duration:
-                            </span>{" "}
-                            <span className="dark:text-gray-300">
-                              {record.months_abroad || "Not set"} months
-                            </span>
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div className="flex flex-col gap-2">
-                          <button
-                            onClick={() => setSelectedRecord(record)}
-                            className="inline-flex items-center px-4 py-2 bg-neutral-600 dark:bg-neutral-700 text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors font-medium"
-                          >
-                            Details
-                          </button>
-                          <button
-                            onClick={() => handleAddNote(record)}
-                            className="inline-flex items-center px-4 py-2 bg-emerald-600 dark:bg-emerald-700 text-white rounded-lg hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors font-medium"
-                          >
-                            Notes
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              )}
-            </table>
-          </div>
-        </section>
+                  {travelReadyPlans?.map((record) => {
+                    const contactInfo = getContactInfo(record);
+                    const travelPlanning = getTravelPlanning(record);
 
-        {/* Comprehensive Wealth Plan Requests Table */}
-        <section>
-          <h1 className="text-[1.5rem] font-semibold mb-2 dark:text-white">
-            Requested Plans (Comprehensive Wealth Plan)
-          </h1>
-          <div className="overflow-x-auto border border-gray-300 dark:border-gray-700 rounded-lg">
-            <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead className="bg-blue-50 dark:bg-blue-900/30">
-                <tr>
-                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
-                    Client
-                  </th>
-                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
-                    Contact
-                  </th>
-                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
-                    Financial Overview
-                  </th>
-                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
-                    Real Estate Equity
-                  </th>
-                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
-                    Submitted
-                  </th>
-                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              {isLoading ? (
-                <DashboardDownloadSkeleton />
-              ) : (
-                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-300 dark:divide-gray-700">
-                  {comprehensiveWealthPlans?.map((record) => (
-                    <tr
-                      key={record._id}
-                      className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                    >
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div>
-                          <p className="font-semibold text-gray-900 dark:text-white">
-                            {record.full_name}
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {record.region || "No region"}
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div>
-                          <p className="text-gray-900 dark:text-white">
-                            {record.email}
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {record.phone}
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div className="space-y-1">
-                          <p className="text-sm">
-                            <span className="font-medium dark:text-white">
-                              Savings:
-                            </span>{" "}
-                            <span className="dark:text-gray-300">
-                              {formatCurrency(record.estimated_savings)}
+                    return (
+                      <tr
+                        key={record._id}
+                        className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div>
+                            <p className="font-semibold text-gray-900 dark:text-white">
+                              {contactInfo.full_name}
+                            </p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              {contactInfo.region || "No region"}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div>
+                            <p className="text-gray-900 dark:text-white">
+                              {contactInfo.email}
+                            </p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              {contactInfo.phone}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div className="space-y-1">
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-200">
+                              <Icon icon="mdi:check-circle" className="mr-1" />
+                              Independent Travel
                             </span>
-                          </p>
-                          <p className="text-sm">
-                            <span className="font-medium dark:text-white">
-                              Desired Income:
-                            </span>{" "}
-                            <span className="dark:text-gray-300">
-                              {formatCurrency(record.desired_income)}
-                            </span>
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div className="space-y-1">
-                          <p className="text-sm">
-                            <span className="font-medium dark:text-white">
-                              Home Equity:
-                            </span>{" "}
-                            <span className="dark:text-gray-300">
-                              {formatCurrency(record.estimated_home_equity)}
-                            </span>
-                          </p>
-                          <span
-                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getComfortLevelColor(
-                              record.equity_comfort
-                            )}`}
-                          >
-                            {record.equity_comfort || "Not specified"}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          {formatDate(record.createdAt)}
-                        </p>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div className="flex flex-col gap-2">
-                          <button
-                            onClick={() => setSelectedRecord(record)}
-                            className="inline-flex items-center px-4 py-2 bg-neutral-600 dark:bg-neutral-700 text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors font-medium"
-                          >
-                            Details
-                          </button>
-                          <button
-                            onClick={() => handleAddNote(record)}
-                            className="inline-flex items-center px-4 py-2 bg-emerald-600 dark:bg-emerald-700 text-white rounded-lg hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors font-medium"
-                          >
-                            Notes
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Style:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {travelPlanning.travel_style || "Not set"}
+                              </span>
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div className="space-y-1">
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Region:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {travelPlanning.country_region_interest ||
+                                  "Not set"}
+                              </span>
+                            </p>
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Locations:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {travelPlanning.ideal_locations_interest ||
+                                  "Not set"}
+                              </span>
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div className="space-y-1">
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Start:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {travelPlanning.start_timeline || "Not set"}
+                              </span>
+                            </p>
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Duration:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {travelPlanning.months_abroad || "Not set"}{" "}
+                                months
+                              </span>
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div className="flex flex-col gap-2">
+                            <button
+                              onClick={() => setSelectedRecord(record)}
+                              className="inline-flex items-center px-4 py-2 bg-neutral-600 dark:bg-neutral-700 text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors font-medium"
+                            >
+                              Details
+                            </button>
+                            <button
+                              onClick={() => handleAddNote(record)}
+                              className="inline-flex items-center px-4 py-2 bg-emerald-600 dark:bg-emerald-700 text-white rounded-lg hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors font-medium"
+                            >
+                              Notes
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               )}
             </table>

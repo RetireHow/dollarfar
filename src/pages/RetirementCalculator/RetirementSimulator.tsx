@@ -20,7 +20,6 @@ import { Modal } from "antd";
 import { Link } from "react-router-dom";
 import PageHero from "../../components/UI/PageHero";
 import { assets } from "../../assets/assets";
-import RetirementNextStepModal from "./RetirementNextStepModal";
 
 function MessageBlock({ title, content }: { title: any; content: any }) {
   return (
@@ -1648,7 +1647,102 @@ const RetirementSimulator: React.FC = () => {
           </div>
         </div>
       </main>
-      <RetirementNextStepModal />
+
+      {/* Call-to-Action Section */}
+      <div className="max-w-7xl mx-auto mt-8 mb-12 px-4">
+        <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl shadow-2xl overflow-hidden">
+          <div className="md:flex items-center justify-between p-4 md:p-10">
+            {/* Text Content */}
+            <div className="md:w-2/3 mb-6 md:mb-0 md:pr-8">
+              <div className="flex md:flex-row flex-col items-center gap-3 mb-4">
+                <Icon
+                  icon="mdi:rocket-launch"
+                  className="text-white text-2xl"
+                />
+                <h3 className="text-2xl md:text-3xl font-bold text-white">
+                  Ready to Take the Next Step?
+                </h3>
+              </div>
+
+              <p className="text-gray-300 text-lg mb-4 leading-relaxed">
+                Your retirement simulation is just the beginning. Let us help
+                you turn these projections into a personalized action plan.
+              </p>
+
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 text-gray-300">
+                  <Icon
+                    icon="mdi:check-circle"
+                    className="text-lg text-gray-400"
+                  />
+                  <span>Get personalized retirement strategy</span>
+                </div>
+                <div className="flex items-center gap-3 text-gray-300">
+                  <Icon
+                    icon="mdi:check-circle"
+                    className="text-lg text-gray-400"
+                  />
+                  <span>Explore part-time abroad opportunities</span>
+                </div>
+                <div className="flex items-center gap-3 text-gray-300">
+                  <Icon
+                    icon="mdi:check-circle"
+                    className="text-lg text-gray-400"
+                  />
+                  <span>Optimize your savings and investments</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Button */}
+            <div className="md:w-1/3 text-center md:text-right">
+              <Link to="/retirement-simulator/retire-how-form">
+                <button className="bg-white text-gray-900 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700 font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl text-lg w-full md:w-auto border border-gray-300 dark:border-gray-600">
+                  <div className="flex md:flex-row flex-col items-center justify-center gap-2">
+                    <Icon icon="mdi:chart-line" className="text-xl" />
+                    Get Personalized Plan
+                  </div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 mt-1 font-normal">
+                    Free consultation • No obligation
+                  </div>
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Trust Indicators */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 text-center">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-300 dark:border-gray-700">
+            <Icon
+              icon="mdi:shield-check"
+              className="text-gray-700 dark:text-gray-300 text-2xl mx-auto mb-2"
+            />
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              Data Protected & Secure
+            </div>
+          </div>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-300 dark:border-gray-700">
+            <Icon
+              icon="mdi:clock-outline"
+              className="text-gray-700 dark:text-gray-300 text-2xl mx-auto mb-2"
+            />
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              Takes 5-10 Minutes
+            </div>
+          </div>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-300 dark:border-gray-700">
+            <Icon
+              icon="mdi:email-fast"
+              className="text-gray-700 dark:text-gray-300 text-2xl mx-auto mb-2"
+            />
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              Personalized Response in 24h
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* PDF Hidden Content  */}
       <div
         ref={targetRef}

@@ -27,8 +27,19 @@ const retirementPlansApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["retirementPlans"],
     }),
+
+    createRetirementPayment: builder.mutation({
+      query: (data) => ({
+        url: "/retirement-next-step-plans",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllRetirementPlansQuery, useAddRetirementPlanMutation } =
-  retirementPlansApi;
+export const {
+  useGetAllRetirementPlansQuery,
+  useAddRetirementPlanMutation,
+  useCreateRetirementPaymentMutation,
+} = retirementPlansApi;

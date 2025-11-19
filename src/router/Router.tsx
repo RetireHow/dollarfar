@@ -72,6 +72,8 @@ import EbookReaderFeedbacks from "../pages/Admin/EbookReaderFeedbacks";
 import DashboardOverview from "../pages/Admin/DashboardOverview";
 import LeveragedInvestingCalculator from "../pages/LeveragedInvestingCalculator/LeveragedInvestingCalculator";
 
+import RetireHowForm from "../pages/RetirementCalculator/RetireHowForm";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -337,10 +339,15 @@ export const router = createBrowserRouter([
         element: <RetirementSimulator />,
       },
       {
+        path: "retirement-simulator/retire-how-form",
+        element: <RetireHowForm />,
+      },
+      {
         path: "LeveragedInvestingCalculator",
         element: <LeveragedInvestingCalculator />,
       },
 
+      // Admin Routes
       {
         path: "admin",
         element: (
