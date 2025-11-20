@@ -29,7 +29,7 @@ const stripePromise = loadStripe(STRIPE_PK);
  * Organized Form State Types by Category
  */
 type ContactInfo = {
-  full_name: string;
+  name: string;
   phone: string;
   email: string;
   region?: string;
@@ -135,7 +135,7 @@ function PaymentModalComponent({
   const elements = useElements();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  if (!contactInfo.email || !contactInfo.phone || !contactInfo.full_name) {
+  if (!contactInfo.email || !contactInfo.phone || !contactInfo.name) {
     setIsSubscribeClicked(true);
     return null;
   }
@@ -158,6 +158,7 @@ function PaymentModalComponent({
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(contactInfo),
         }
       );
 
@@ -275,7 +276,7 @@ const PaymentModal = (props: {
 export default function RetireHowForm(): JSX.Element {
   const [form, setForm] = useState<FormState>({
     contact: {
-      full_name: "",
+      name: "",
       phone: "",
       email: "",
     },
@@ -508,7 +509,7 @@ export default function RetireHowForm(): JSX.Element {
     e.preventDefault();
 
     // Validate required contact fields
-    if (!form.contact.full_name || !form.contact.phone || !form.contact.email) {
+    if (!form.contact.name || !form.contact.phone || !form.contact.email) {
       setShowError(true);
       toast.error("Please provide all the required informations.");
       return;
@@ -581,7 +582,7 @@ export default function RetireHowForm(): JSX.Element {
     // Reset form - FIXED: Proper type matching
     // setForm({
     //   contact: {
-    //     full_name: "",
+    //     name: "",
     //     phone: "",
     //     email: "",
     //   },
@@ -658,7 +659,7 @@ export default function RetireHowForm(): JSX.Element {
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
                   <label
-                    htmlFor="contact.full_name"
+                    htmlFor="contact.name"
                     className="block font-semibold mb-2 text-gray-800"
                   >
                     <div className="flex justify-between items-center">
@@ -666,7 +667,7 @@ export default function RetireHowForm(): JSX.Element {
                         Full Name
                         <RedStar />
                       </p>
-                      {showError && !form.contact.full_name && (
+                      {showError && !form.contact.name && (
                         <p className="text-red-500 font-bold md:text-[1rem] text-sm">
                           Required*
                         </p>
@@ -674,12 +675,12 @@ export default function RetireHowForm(): JSX.Element {
                     </div>
                   </label>
                   <input
-                    id="contact.full_name"
-                    name="contact.full_name"
+                    id="contact.name"
+                    name="contact.name"
                     type="text"
                     minLength={2}
                     maxLength={80}
-                    value={getFieldValue("contact", "full_name")}
+                    value={getFieldValue("contact", "name")}
                     onChange={handleChange}
                     autoComplete="name"
                     placeholder="Enter your full name"
@@ -1117,7 +1118,7 @@ export default function RetireHowForm(): JSX.Element {
                       </p>
                       <div className="mt-2 text-sm text-gray-700 space-y-2">
                         <p>
-                          <strong>Name:</strong> {form.contact.full_name}
+                          <strong>Name:</strong> {form.contact.name}
                         </p>
                         <p>
                           <strong>Email:</strong> {form.contact.email}
@@ -1210,7 +1211,7 @@ export default function RetireHowForm(): JSX.Element {
                       isSubscribeClicked &&
                       (!form.contact.email ||
                         !form.contact.phone ||
-                        !form.contact.full_name) && (
+                        !form.contact.name) && (
                         <p className="text-red-500">
                           Please fill in the contact info input fields first
                           before starting subscription.

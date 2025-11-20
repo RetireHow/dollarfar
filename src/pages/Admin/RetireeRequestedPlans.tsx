@@ -13,27 +13,22 @@ import { showApiErrorToast } from "../../utils/showApiErrorToast";
 import { useGetAllRetirementPlansQuery } from "../../redux/features/APIEndpoints/retirementPlansApi/retirementPlansApi";
 import { useGetMeQuery } from "../../redux/features/APIEndpoints/userApi/userApi";
 
-/**
- * Updated Type Definitions to match form structure
- */
+/*=====================| Requested Plan Types |=================*/
 type ContactInfo = {
-  full_name: string;
+  name: string;
   phone: string;
   email: string;
   region?: string;
 };
-
 type RetirementSnapshot = {
   target_age?: string;
   desired_income?: string;
   estimated_savings?: string;
 };
-
 type HousingEquity = {
   estimated_home_equity?: string;
   equity_comfort?: string;
 };
-
 type DollarFarPlanning = {
   calculators?: string[];
   interpretation_toggle?: boolean;
@@ -44,7 +39,6 @@ type DollarFarPlanning = {
   subscription_status?: "" | "have" | "start" | "paid";
   subscription_payment_intent?: string;
 };
-
 type TravelPlanning = {
   months_abroad?: string;
   start_timeline?: string;
@@ -53,21 +47,17 @@ type TravelPlanning = {
   country_region_interest?: string;
   ideal_locations_interest?: string;
 };
-
 type BudgetEstimates = {
   home_spend_monthly?: string;
   abroad_budget_season?: string;
   flights_insurance_budget?: string;
   flight_class?: string;
 };
-
 type PrivacyAcknowledgements = {
   ack_poc?: boolean;
   consent_contact?: boolean;
   ack_scope?: boolean;
 };
-
-// Main Retirement Data Type matching form structure
 type RetirementData = {
   _id: string;
   createdAt: string;
@@ -82,7 +72,23 @@ type RetirementData = {
   privacy_acknowledgements: PrivacyAcknowledgements;
 };
 
-// Helper functions to safely access nested data
+/*=====================| Note Types |=================*/
+interface Note {
+  _id: string;
+  content: string;
+  retirementPlan: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+interface EmailTemplate {
+  id: string;
+  name: string;
+  subject: string;
+  body: string;
+}
+
+/*=====================| Helper functions to safely access nested data |=================*/
 const getContactInfo = (record: RetirementData) => record.contact || {};
 const getRetirementSnapshot = (record: RetirementData) =>
   record.retirement_snapshot || {};
@@ -97,112 +103,7 @@ const getBudgetEstimates = (record: RetirementData) =>
 const getPrivacyAcknowledgements = (record: RetirementData) =>
   record.privacy_acknowledgements || {};
 
-interface Note {
-  _id: string;
-  content: string;
-  retirementPlan: string;
-  createdBy: string;
-  createdAt: string;
-  updatedAt?: string;
-}
-
-interface EmailTemplate {
-  id: string;
-  name: string;
-  subject: string;
-  body: string;
-}
-
-//Note Loading Skeleton
-const NoteLoadingSkeleton = () => {
-  return (
-    <section className="space-y-5">
-      {/* Note 1 */}
-      <div className="bg-gray-50 dark:bg-gray-700 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-600 animate-pulse">
-        <div className="md:flex justify-between items-center md:space-x-3">
-          {/* Note content skeleton */}
-          <div className="md:mb-0 mb-2 w-full">
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2 w-3/4"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
-          </div>
-
-          {/* Action buttons skeleton */}
-          <div className="flex items-center gap-3">
-            <div className="border-[1px] md:mr-0 mr-3 border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
-              <div className="w-6 h-5"></div>
-            </div>
-            <div className="border-[1px] border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
-              <div className="w-6 h-5"></div>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer skeleton */}
-        <div className="flex justify-between items-center mt-2 text-sm">
-          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-20"></div>
-          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-24"></div>
-        </div>
-      </div>
-      {/* Note 2 */}
-      <div className="bg-gray-50 dark:bg-gray-700 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-600 animate-pulse">
-        <div className="md:flex justify-between items-center md:space-x-3">
-          {/* Note content skeleton */}
-          <div className="md:mb-0 mb-2 w-full">
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2 w-3/4"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
-          </div>
-
-          {/* Action buttons skeleton */}
-          <div className="flex items-center gap-3">
-            <div className="border-[1px] md:mr-0 mr-3 border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
-              <div className="w-6 h-5"></div>
-            </div>
-            <div className="border-[1px] border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
-              <div className="w-6 h-5"></div>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer skeleton */}
-        <div className="flex justify-between items-center mt-2 text-sm">
-          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-20"></div>
-          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-24"></div>
-        </div>
-      </div>
-      {/* Note 3 */}
-      <div className="bg-gray-50 dark:bg-gray-700 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-600 animate-pulse">
-        <div className="md:flex justify-between items-center md:space-x-3">
-          {/* Note content skeleton */}
-          <div className="md:mb-0 mb-2 w-full">
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2 w-3/4"></div>
-            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
-          </div>
-
-          {/* Action buttons skeleton */}
-          <div className="flex items-center gap-3">
-            <div className="border-[1px] md:mr-0 mr-3 border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
-              <div className="w-6 h-5"></div>
-            </div>
-            <div className="border-[1px] border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
-              <div className="w-6 h-5"></div>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer skeleton */}
-        <div className="flex justify-between items-center mt-2 text-sm">
-          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-20"></div>
-          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-24"></div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// Notes Modal Component
+/*=====================| Popup Modals |=================*/
 const NotesModal = ({
   onClose,
   selectedRecordForAction,
@@ -338,7 +239,7 @@ const NotesModal = ({
           <div className="flex justify-between items-start">
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                Notes for {contactInfo?.full_name}
+                Notes for {contactInfo?.name}
               </h2>
               <p className="text-gray-600 dark:text-gray-300">
                 Add and manage notes for this client
@@ -480,7 +381,6 @@ const NotesModal = ({
   );
 };
 
-// Email Modal Component (updated)
 const EmailModal = ({
   onClose,
   selectedRecordForAction,
@@ -525,7 +425,7 @@ const EmailModal = ({
     setEmailSubject(template.subject);
     const contactInfo = getContactInfo(selectedRecordForAction);
     setEmailBody(
-      template.body.replace(/{name}/g, contactInfo?.full_name || "Client")
+      template.body.replace(/{name}/g, contactInfo?.name || "Client")
     );
   };
 
@@ -543,7 +443,7 @@ const EmailModal = ({
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      toast.success(`Email sent to ${contactInfo.full_name}!`);
+      toast.success(`Email sent to ${contactInfo.name}!`);
       setEmailModalOpen(false);
     } catch (error: any) {
       toast.error("Failed to send email", error.message);
@@ -559,7 +459,7 @@ const EmailModal = ({
           <div className="flex justify-between items-start">
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                Send Email to {contactInfo?.full_name}
+                Send Email to {contactInfo?.name}
               </h2>
               <p className="text-gray-600 dark:text-gray-300">
                 {contactInfo?.email}
@@ -660,7 +560,6 @@ const EmailModal = ({
   );
 };
 
-// Detail Modal Component
 const DetailModal = ({
   record,
   onClose,
@@ -758,7 +657,7 @@ const DetailModal = ({
           <div className="flex justify-between items-start">
             <div className="flex-1">
               <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-black dark:text-white mb-2 sm:mb-3">
-                {contactInfo.full_name}'s Retirement Plan
+                {contactInfo.name}'s Retirement Plan
               </h1>
               <div className="md:flex hidden flex-wrap gap-3 sm:gap-6 text-base sm:text-lg">
                 <div className="flex items-center gap-2 sm:gap-3 bg-gray-100 dark:bg-gray-800 px-3 sm:px-4 py-2 rounded-xl">
@@ -828,7 +727,7 @@ const DetailModal = ({
                       Full Name
                     </div>
                     <div className="text-base sm:text-lg lg:text-xl text-black dark:text-white font-medium">
-                      {contactInfo.full_name}
+                      {contactInfo.name}
                     </div>
                   </div>
                 </div>
@@ -1447,7 +1346,95 @@ const DetailModal = ({
   );
 };
 
-// Retirement Plan Stats Loading Skeleton
+/*=====================| Loading Skeleton |=================*/
+const NoteLoadingSkeleton = () => {
+  return (
+    <section className="space-y-5">
+      {/* Note 1 */}
+      <div className="bg-gray-50 dark:bg-gray-700 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-600 animate-pulse">
+        <div className="md:flex justify-between items-center md:space-x-3">
+          {/* Note content skeleton */}
+          <div className="md:mb-0 mb-2 w-full">
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2 w-3/4"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+          </div>
+
+          {/* Action buttons skeleton */}
+          <div className="flex items-center gap-3">
+            <div className="border-[1px] md:mr-0 mr-3 border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
+              <div className="w-6 h-5"></div>
+            </div>
+            <div className="border-[1px] border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
+              <div className="w-6 h-5"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer skeleton */}
+        <div className="flex justify-between items-center mt-2 text-sm">
+          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-20"></div>
+          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-24"></div>
+        </div>
+      </div>
+      {/* Note 2 */}
+      <div className="bg-gray-50 dark:bg-gray-700 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-600 animate-pulse">
+        <div className="md:flex justify-between items-center md:space-x-3">
+          {/* Note content skeleton */}
+          <div className="md:mb-0 mb-2 w-full">
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2 w-3/4"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+          </div>
+
+          {/* Action buttons skeleton */}
+          <div className="flex items-center gap-3">
+            <div className="border-[1px] md:mr-0 mr-3 border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
+              <div className="w-6 h-5"></div>
+            </div>
+            <div className="border-[1px] border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
+              <div className="w-6 h-5"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer skeleton */}
+        <div className="flex justify-between items-center mt-2 text-sm">
+          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-20"></div>
+          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-24"></div>
+        </div>
+      </div>
+      {/* Note 3 */}
+      <div className="bg-gray-50 dark:bg-gray-700 shadow-md rounded-lg p-4 border border-gray-200 dark:border-gray-600 animate-pulse">
+        <div className="md:flex justify-between items-center md:space-x-3">
+          {/* Note content skeleton */}
+          <div className="md:mb-0 mb-2 w-full">
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-2 w-3/4"></div>
+            <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/2"></div>
+          </div>
+
+          {/* Action buttons skeleton */}
+          <div className="flex items-center gap-3">
+            <div className="border-[1px] md:mr-0 mr-3 border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
+              <div className="w-6 h-5"></div>
+            </div>
+            <div className="border-[1px] border-gray-300 px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600">
+              <div className="w-6 h-5"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer skeleton */}
+        <div className="flex justify-between items-center mt-2 text-sm">
+          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-20"></div>
+          <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-24"></div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const RetirementPlanStatsSkeleton = () => {
   return (
     <section className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
@@ -1498,7 +1485,7 @@ const RetirementPlanStatsSkeleton = () => {
   );
 };
 
-// Main Component
+/*=====================| Main Component |=================*/
 export default function RetireeRequestedPlans() {
   const [selectedRecord, setSelectedRecord] = useState<RetirementData | null>(
     null
@@ -1525,6 +1512,11 @@ export default function RetireeRequestedPlans() {
   const travelReadyPlans = retirementPlans?.filter(
     (plan) => getTravelPlanning(plan).independent_travel_ack
   );
+
+  // Filter paid subscription plans
+  const paidSubscriptionPlans = retirementPlans?.filter((plan) => {
+    return plan?.dollarfar_planning?.subscription_status === "paid";
+  });
 
   const formatCurrency = (amount: string) => {
     if (!amount) return "Not specified";
@@ -1637,7 +1629,7 @@ export default function RetireeRequestedPlans() {
           </section>
         )}
 
-        {/* Data Table */}
+        {/* All Plans */}
         <section className="mb-12">
           <h1 className="text-[1.5rem] font-semibold mb-2 dark:text-white">
             All Requested Plans
@@ -1683,7 +1675,7 @@ export default function RetireeRequestedPlans() {
                         <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
                           <div>
                             <p className="font-semibold text-gray-900 dark:text-white">
-                              {contactInfo.full_name}
+                              {contactInfo.name}
                             </p>
                             <p className="text-sm text-gray-500 dark:text-gray-400">
                               {contactInfo.region || "No region"}
@@ -1773,6 +1765,152 @@ export default function RetireeRequestedPlans() {
           </div>
         </section>
 
+        {/* Paid Subscriptions */}
+        <section className="mb-12">
+          <h1 className="text-[1.5rem] font-semibold mb-2 dark:text-white">
+            Requested Plans (Paid Subscriptions)
+          </h1>
+          <div className="overflow-x-auto border border-gray-300 dark:border-gray-700 rounded-lg">
+            <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead className="bg-green-50 dark:bg-green-900/30">
+                <tr>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Client
+                  </th>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Contact
+                  </th>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Travel Readiness
+                  </th>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Destination
+                  </th>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Timeline
+                  </th>
+                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              {isLoading ? (
+                <DashboardDownloadSkeleton />
+              ) : (
+                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-300 dark:divide-gray-700">
+                  {paidSubscriptionPlans?.map((record) => {
+                    const contactInfo = getContactInfo(record);
+                    const travelPlanning = getTravelPlanning(record);
+
+                    return (
+                      <tr
+                        key={record._id}
+                        className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div>
+                            <p className="font-semibold text-gray-900 dark:text-white">
+                              {contactInfo.name}
+                            </p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              {contactInfo.region || "No region"}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div>
+                            <p className="text-gray-900 dark:text-white">
+                              {contactInfo.email}
+                            </p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              {contactInfo.phone}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div className="space-y-1">
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-200">
+                              <Icon icon="mdi:check-circle" className="mr-1" />
+                              Independent Travel
+                            </span>
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Style:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {travelPlanning.travel_style || "Not set"}
+                              </span>
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div className="space-y-1">
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Region:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {travelPlanning.country_region_interest ||
+                                  "Not set"}
+                              </span>
+                            </p>
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Locations:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {travelPlanning.ideal_locations_interest ||
+                                  "Not set"}
+                              </span>
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div className="space-y-1">
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Start:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {travelPlanning.start_timeline || "Not set"}
+                              </span>
+                            </p>
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Duration:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {travelPlanning.months_abroad || "Not set"}{" "}
+                                months
+                              </span>
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div className="flex flex-col gap-2">
+                            <button
+                              onClick={() => setSelectedRecord(record)}
+                              className="inline-flex items-center px-4 py-2 bg-neutral-600 dark:bg-neutral-700 text-white rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors font-medium"
+                            >
+                              Details
+                            </button>
+                            <button
+                              onClick={() => handleAddNote(record)}
+                              className="inline-flex items-center px-4 py-2 bg-emerald-600 dark:bg-emerald-700 text-white rounded-lg hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors font-medium"
+                            >
+                              Notes
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              )}
+            </table>
+          </div>
+        </section>
+
         {/* Travel Ready Plans Table */}
         <section className="mb-12">
           <h1 className="text-[1.5rem] font-semibold mb-2 dark:text-white">
@@ -1818,7 +1956,7 @@ export default function RetireeRequestedPlans() {
                         <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
                           <div>
                             <p className="font-semibold text-gray-900 dark:text-white">
-                              {contactInfo.full_name}
+                              {contactInfo.name}
                             </p>
                             <p className="text-sm text-gray-500 dark:text-gray-400">
                               {contactInfo.region || "No region"}
