@@ -187,6 +187,7 @@ function PaymentModalComponent({
       }
 
       if (result.paymentIntent?.status === "succeeded") {
+        console.log("Payment Status =============> ", result)
         onPaid(result.paymentIntent.id);
         setLoading(false);
       } else {
@@ -274,6 +275,9 @@ const PaymentModal = (props: {
  * Main form component
  */
 export default function RetireHowForm(): JSX.Element {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   const [form, setForm] = useState<FormState>({
     contact: {
       name: "",
@@ -512,12 +516,15 @@ export default function RetireHowForm(): JSX.Element {
     if (!form.contact.name || !form.contact.phone || !form.contact.email) {
       setShowError(true);
       toast.error("Please provide all the required informations.");
+      window.scrollTo({ top: 340, behavior: "smooth" });
       return;
     }
 
     if (!emailReg.test(form.contact.email)) {
       setShowError(true);
-      toast.error("Please provide a valid email address!");
+      toast.error("Please provide a valid email address!", {
+        autoClose: 10000,
+      });
       return;
     }
     if (!phoneReg.test(form.contact.phone)) {
@@ -597,6 +604,34 @@ export default function RetireHowForm(): JSX.Element {
     //   travel_purpose: [], // FIXED: Changed from {} to []
     //   privacy_acknowledgements: {},
     // });
+  };
+
+  const toggleErrorBorderColor = (value: string | boolean, field: string) => {
+    if (field === "name") {
+      return showError && !value
+        ? "border-red-500 border-[2px] outline-red-500 focus:ring-red-500"
+        : "border-gray-400";
+    } else if (field === "phone") {
+      return showError && (!value || !phoneReg.test(value as string))
+        ? "border-red-500 border-[2px] outline-red-500 focus:ring-red-500"
+        : "border-gray-400";
+    } else if (field === "email") {
+      return showError && (!value || !emailReg.test(value as string))
+        ? "border-red-500 border-[2px] outline-red-500 focus:ring-red-500"
+        : "border-gray-400";
+    } else if (field === "ack_scope") {
+      return showError && !value
+        ? "border-red-500 border-[2px] outline-red-500 focus:ring-red-500"
+        : "border-gray-400 border-gray-400 hover:border-gray-600";
+    } else if (field === "consent_contact") {
+      return showError && !value
+        ? "border-red-500 border-[2px] outline-red-500 focus:ring-red-500"
+        : "border-gray-400 border-gray-400 hover:border-gray-600";
+    } else if (field === "ack_poc") {
+      return showError && !value
+        ? "border-red-500 border-[2px] outline-red-500 focus:ring-red-500"
+        : "border-gray-400 border-gray-400 hover:border-gray-600";
+    }
   };
 
   return (
@@ -684,7 +719,10 @@ export default function RetireHowForm(): JSX.Element {
                     onChange={handleChange}
                     autoComplete="name"
                     placeholder="Enter your full name"
-                    className="w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors"
+                    className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors ${toggleErrorBorderColor(
+                      form.contact.name,
+                      "name"
+                    )}`}
                   />
                   <small className="block text-gray-600 mt-1">
                     Why we ask: So we can address you properly in your
@@ -725,7 +763,10 @@ export default function RetireHowForm(): JSX.Element {
                     onChange={handleChange}
                     autoComplete="tel"
                     placeholder="e.g., +15551234567"
-                    className="w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors"
+                    className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors ${toggleErrorBorderColor(
+                      form.contact.phone,
+                      "phone"
+                    )}`}
                   />
                   <small className="block text-gray-600 mt-1">
                     Why we ask: We'll need a reliable number to coordinate
@@ -767,7 +808,10 @@ export default function RetireHowForm(): JSX.Element {
                     value={getFieldValue("contact", "email")}
                     onChange={handleChange}
                     placeholder="Enter your email address"
-                    className="w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors"
+                    className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors ${toggleErrorBorderColor(
+                      form.contact.email,
+                      "email"
+                    )}`}
                   />
                   <small className="block text-gray-600 mt-1">
                     Why we ask: To deliver your summary and follow ups.
@@ -1687,7 +1731,12 @@ export default function RetireHowForm(): JSX.Element {
               </div>
 
               <div className="grid gap-3">
-                <label className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-400 hover:border-gray-600 transition-colors select-none cursor-pointer">
+                <label
+                  className={`flex items-start gap-3 p-3 bg-white rounded-lg border transition-colors select-none cursor-pointer ${toggleErrorBorderColor(
+                    form.privacy_acknowledgements.ack_poc as boolean,
+                    "ack_poc"
+                  )}`}
+                >
                   <ConfigProvider
                     theme={{
                       token: {
@@ -1712,7 +1761,12 @@ export default function RetireHowForm(): JSX.Element {
                   </span>
                 </label>
 
-                <label className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-400 hover:border-gray-600 transition-colors select-none cursor-pointer">
+                <label
+                  className={`flex items-start gap-3 p-3 bg-white rounded-lg border transition-colors select-none cursor-pointer ${toggleErrorBorderColor(
+                    form.privacy_acknowledgements.consent_contact as boolean,
+                    "consent_contact"
+                  )}`}
+                >
                   <ConfigProvider
                     theme={{
                       token: {
@@ -1738,7 +1792,12 @@ export default function RetireHowForm(): JSX.Element {
                   </span>
                 </label>
 
-                <label className="flex items-start gap-3 p-3 bg-white rounded-lg border border-gray-400 hover:border-gray-600 transition-colors select-none cursor-pointer">
+                <label
+                  className={`flex items-start gap-3 p-3 bg-white rounded-lg border transition-colors select-none cursor-pointer ${toggleErrorBorderColor(
+                    form.privacy_acknowledgements.ack_scope as boolean,
+                    "ack_scope"
+                  )}`}
+                >
                   <ConfigProvider
                     theme={{
                       token: {
