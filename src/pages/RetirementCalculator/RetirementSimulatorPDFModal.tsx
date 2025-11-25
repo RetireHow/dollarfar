@@ -168,13 +168,7 @@ export const RetirementSimulatorPDFModal = ({
     >
       <button
         type="button"
-        className={`px-5 py-2.5 bg-gradient-to-r ${
-          isDarkMode
-            ? "from-[#52ab98] to-[#3d8a7a] hover:from-[#3d8a7a] hover:to-[#2b6777]"
-            : "from-[#2b6777] to-[#1a4d5a] hover:from-[#1a4d5a] hover:to-[#0d3a4a]"
-        } text-white rounded-xl font-medium transition-all disabled:opacity-50 flex items-center gap-2 shadow-lg ${
-          isDarkMode ? "hover:shadow-[#52ab98]/30" : "hover:shadow-[#2b6777]/30"
-        }`}
+        className="px-5 py-2.5 bg-black text-white rounded-xl font-medium transition-all disabled:opacity-50 flex items-center gap-2 shadow-lg"
         onClick={showModal}
         disabled={isLoading || isGeneratingPDF}
         aria-label="Export as PDF"

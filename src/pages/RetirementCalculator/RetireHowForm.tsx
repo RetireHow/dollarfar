@@ -25,6 +25,34 @@ console.log("Development Mode==>", import.meta.env.DEV, STRIPE_PK);
 
 const stripePromise = loadStripe(STRIPE_PK);
 
+// Add this polling function
+const pollForPaymentData = async (
+  paymentIntentId: string,
+  maxAttempts = 10
+): Promise<any> => {
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      const res = await fetch(
+        `${baseUrl}/subscription/get-subscription-payment/${paymentIntentId}`
+      );
+
+      if (res.status === 200) {
+        const data = await res.json();
+        if (data?.data) {
+          return data.data;
+        }
+      }
+
+      // Wait 2 seconds before next attempt
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    } catch (error) {
+      console.error(`Polling attempt ${attempt + 1} failed:`, error);
+    }
+  }
+
+  throw new Error("Payment data not found in database after multiple attempts");
+};
+
 /**
  * Organized Form State Types by Category
  */
@@ -154,7 +182,7 @@ function PaymentModalComponent({
     setLoading(true);
     try {
       const res = await fetch(
-        `${baseUrl}/retirement-next-step-plans/create-retirehow-payment`,
+        `${baseUrl}/subscription/create-subscription-payment-intent`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -187,7 +215,9 @@ function PaymentModalComponent({
       }
 
       if (result.paymentIntent?.status === "succeeded") {
-        console.log("Payment Status =============> ", result)
+        // Wait for webhook to store payment in DB
+        const paymentData = await pollForPaymentData(result.paymentIntent.id);
+        console.log("🎉 Payment fully processed:", paymentData);
         onPaid(result.paymentIntent.id);
         setLoading(false);
       } else {
@@ -202,16 +232,16 @@ function PaymentModalComponent({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl border border-gray-300">
-        <h3 className="mb-2 text-xl font-bold text-gray-900">
+      <div className="w-full max-w-lg rounded-2xl bg-white dark:bg-gray-800 p-6 shadow-2xl border border-gray-300 dark:border-gray-600">
+        <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
           Complete Subscription
         </h3>
-        <p className="mb-4 text-sm text-gray-700">
+        <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
           Your plan includes two 30-minute consultations within 12 months.
         </p>
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-4 rounded-lg border border-gray-400 p-3 hover:border-gray-600 transition-colors">
+          <div className="mb-4 rounded-lg border border-gray-400 dark:border-gray-500 p-3 hover:border-gray-600 dark:hover:border-gray-400 transition-colors bg-white dark:bg-gray-700">
             <CardElement
               options={{
                 hidePostalCode: true,
@@ -229,14 +259,14 @@ function PaymentModalComponent({
           </div>
 
           {error && (
-            <div className="mb-3 text-center text-sm text-red-600 bg-red-50 py-2 px-3 rounded-lg border border-red-200">
+            <div className="mb-3 text-center text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 py-2 px-3 rounded-lg border border-red-200 dark:border-red-800">
               {error}
             </div>
           )}
 
           <div className="flex flex-col gap-3">
             <button
-              className="rounded-xl bg-gray-900 hover:bg-black px-4 py-3 text-white font-semibold disabled:opacity-60 transition-colors shadow-md"
+              className="rounded-xl bg-gray-900 dark:bg-gray-700 hover:bg-black dark:hover:bg-gray-600 px-4 py-3 text-white font-semibold disabled:opacity-60 transition-colors shadow-md"
               type="submit"
               disabled={loading || !stripe}
             >
@@ -247,7 +277,7 @@ function PaymentModalComponent({
               type="button"
               onClick={onClose}
               disabled={loading}
-              className="rounded-xl border border-gray-400 hover:border-gray-600 px-4 py-3 font-semibold text-gray-800 disabled:opacity-60 transition-colors"
+              className="rounded-xl border border-gray-400 dark:border-gray-500 hover:border-gray-600 dark:hover:border-gray-400 px-4 py-3 font-semibold text-gray-800 dark:text-gray-200 disabled:opacity-60 transition-colors bg-white dark:bg-gray-700"
             >
               Cancel
             </button>
@@ -464,19 +494,26 @@ export default function RetireHowForm(): JSX.Element {
   };
 
   // Called by PaymentModal when payment success
-  const onPaymentSuccess = (paymentIntentId: string) => {
-    setForm((prev) => ({
-      ...prev,
-      dollarfar_planning: {
-        ...prev.dollarfar_planning,
-        subscription_status: "paid",
-        subscription_payment_intent: paymentIntentId,
-      },
-    }));
-    setPaymentOpen(false);
-    toast.success("Payment successful. You can now submit the main form.", {
-      autoClose: 15000,
-    });
+  const onPaymentSuccess = async (paymentIntentId: string) => {
+    try {
+      setForm((prev) => ({
+        ...prev,
+        dollarfar_planning: {
+          ...prev.dollarfar_planning,
+          subscription_status: "paid",
+          subscription_payment_intent: paymentIntentId,
+        },
+      }));
+      setPaymentOpen(false);
+      toast.success("Payment successful. You can now submit the main form.", {
+        autoClose: 15000,
+      });
+    } catch (error) {
+      console.error("❌ Failed to verify payment storage:", error);
+      toast.error(
+        "Payment processed but verification failed. Please contact support."
+      );
+    }
   };
 
   // Helper function to get field value from nested structure
@@ -609,28 +646,28 @@ export default function RetireHowForm(): JSX.Element {
   const toggleErrorBorderColor = (value: string | boolean, field: string) => {
     if (field === "name") {
       return showError && !value
-        ? "border-red-500 border-[2px] outline-red-500 focus:ring-red-500"
-        : "border-gray-400";
+        ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
+        : "border-gray-400 dark:border-gray-500";
     } else if (field === "phone") {
       return showError && (!value || !phoneReg.test(value as string))
-        ? "border-red-500 border-[2px] outline-red-500 focus:ring-red-500"
-        : "border-gray-400";
+        ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
+        : "border-gray-400 dark:border-gray-500";
     } else if (field === "email") {
       return showError && (!value || !emailReg.test(value as string))
-        ? "border-red-500 border-[2px] outline-red-500 focus:ring-red-500"
-        : "border-gray-400";
+        ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
+        : "border-gray-400 dark:border-gray-500";
     } else if (field === "ack_scope") {
       return showError && !value
-        ? "border-red-500 border-[2px] outline-red-500 focus:ring-red-500"
-        : "border-gray-400 border-gray-400 hover:border-gray-600";
+        ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
+        : "border-gray-400 dark:border-gray-500 hover:border-gray-600 dark:hover:border-gray-400";
     } else if (field === "consent_contact") {
       return showError && !value
-        ? "border-red-500 border-[2px] outline-red-500 focus:ring-red-500"
-        : "border-gray-400 border-gray-400 hover:border-gray-600";
+        ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
+        : "border-gray-400 dark:border-gray-500 hover:border-gray-600 dark:hover:border-gray-400";
     } else if (field === "ack_poc") {
       return showError && !value
-        ? "border-red-500 border-[2px] outline-red-500 focus:ring-red-500"
-        : "border-gray-400 border-gray-400 hover:border-gray-600";
+        ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
+        : "border-gray-400 dark:border-gray-500 hover:border-gray-600 dark:hover:border-gray-400";
     }
   };
 
@@ -648,19 +685,19 @@ export default function RetireHowForm(): JSX.Element {
 
       {/* Page Hero Section  */}
       <section
-        className="bg-black text-white md:px-[5rem] px-[2rem] py-[2.5rem] space-y-[1.5rem] relative"
+        className="bg-black dark:bg-gray-900 text-white md:px-[5rem] px-[2rem] py-[2.5rem] space-y-[1.5rem] relative"
         data-html2canvas-ignore
       >
         <Link to="/retirement-simulator">
-          <button className="flex items-center gap-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] px-[1.5rem] py-[0.5rem] md:text-[18px] text-[14px] font-bold">
+          <button className="flex items-center gap-[1rem] border-[1px] border-[#EAECF0] dark:border-gray-600 rounded-[10px] px-[1.5rem] py-[0.5rem] md:text-[18px] text-[14px] font-bold text-white dark:text-gray-200 hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors">
             <img className="md:w-auto w-[20px]" src={assets.leftArrow} alt="" />
             <span>Back</span>
           </button>
         </Link>
-        <h3 className="md:text-[28px] text-[23px] font-extrabold dark:text-darkModeHeadingTextColor">
+        <h3 className="md:text-[28px] text-[23px] font-extrabold text-white dark:text-white">
           Ready to explore your next step?
         </h3>
-        <p className="md:text-[20px] text-[#DADADA] dark:text-darkModeNormalTextColor md:leading-[35px] leading-[27px] md:mr-[8rem]">
+        <p className="md:text-[20px] text-gray-300 dark:text-gray-300 md:leading-[35px] leading-[27px] md:mr-[8rem]">
           Complete the short form below to share your retirement vision, and
           we'll create a personalized roadmap to optimize your finances, explore
           global living opportunities, and achieve your ideal lifestyle —
@@ -676,18 +713,18 @@ export default function RetireHowForm(): JSX.Element {
       </section>
 
       <main className="mx-auto max-w-4xl md:p-6 p-3">
-        <section className="rounded-2xl bg-white md:p-6 p-3 shadow-lg border border-gray-300">
+        <section className="rounded-2xl bg-white dark:bg-gray-800 md:p-6 p-3 shadow-lg border border-gray-300 dark:border-gray-700">
           <form
             id="df-retire-form"
             onSubmit={handleSubmit}
             className="md:space-y-12 space-y-10"
           >
             {/* SECTION A: Contact Information */}
-            <div className="border-l-4 border-gray-800 pl-4">
-              <h2 className="mb-4 text-xl font-bold text-gray-900">
+            <div className="border-l-4 border-gray-800 dark:border-gray-300 pl-4">
+              <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 A. Contact Information
               </h2>
-              <p className="mb-4 text-sm text-gray-700">
+              <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
                 Basic details so we can reach you with your personalized plan
               </p>
 
@@ -695,7 +732,7 @@ export default function RetireHowForm(): JSX.Element {
                 <div>
                   <label
                     htmlFor="contact.name"
-                    className="block font-semibold mb-2 text-gray-800"
+                    className="block font-semibold mb-2 text-gray-800 dark:text-gray-200"
                   >
                     <div className="flex justify-between items-center">
                       <p>
@@ -703,7 +740,7 @@ export default function RetireHowForm(): JSX.Element {
                         <RedStar />
                       </p>
                       {showError && !form.contact.name && (
-                        <p className="text-red-500 font-bold md:text-[1rem] text-sm">
+                        <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-sm">
                           Required*
                         </p>
                       )}
@@ -719,12 +756,12 @@ export default function RetireHowForm(): JSX.Element {
                     onChange={handleChange}
                     autoComplete="name"
                     placeholder="Enter your full name"
-                    className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors ${toggleErrorBorderColor(
+                    className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${toggleErrorBorderColor(
                       form.contact.name,
                       "name"
                     )}`}
                   />
-                  <small className="block text-gray-600 mt-1">
+                  <small className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: So we can address you properly in your
                     personalized plan.
                   </small>
@@ -733,7 +770,7 @@ export default function RetireHowForm(): JSX.Element {
                 <div>
                   <label
                     htmlFor="contact.phone"
-                    className="block font-semibold mb-2 text-gray-800"
+                    className="block font-semibold mb-2 text-gray-800 dark:text-gray-200"
                   >
                     <div className="flex justify-between items-center">
                       <p>
@@ -741,14 +778,14 @@ export default function RetireHowForm(): JSX.Element {
                         <RedStar />
                       </p>
                       {showError && !form.contact.phone && (
-                        <p className="text-red-500 font-bold md:text-[1rem] text-sm">
+                        <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-sm">
                           Required*
                         </p>
                       )}
                       {showError &&
                         form.contact.phone &&
                         !phoneReg.test(form.contact.phone) && (
-                          <p className="text-red-500 font-bold md:text-[1rem] text-sm">
+                          <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-sm">
                             Required a valid phone number!
                           </p>
                         )}
@@ -763,12 +800,12 @@ export default function RetireHowForm(): JSX.Element {
                     onChange={handleChange}
                     autoComplete="tel"
                     placeholder="e.g., +15551234567"
-                    className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors ${toggleErrorBorderColor(
+                    className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${toggleErrorBorderColor(
                       form.contact.phone,
                       "phone"
                     )}`}
                   />
-                  <small className="block text-gray-600 mt-1">
+                  <small className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: We'll need a reliable number to coordinate
                     details and confirm preferences quickly.
                   </small>
@@ -779,7 +816,7 @@ export default function RetireHowForm(): JSX.Element {
                 <div>
                   <label
                     htmlFor="contact.email"
-                    className="block font-semibold mb-2 text-gray-800"
+                    className="block font-semibold mb-2 text-gray-800 dark:text-gray-200"
                   >
                     <div className="flex justify-between items-center">
                       <p>
@@ -787,14 +824,14 @@ export default function RetireHowForm(): JSX.Element {
                         <RedStar />
                       </p>
                       {showError && !form.contact.email && (
-                        <p className="text-red-500 font-bold md:text-[1rem] text-sm">
+                        <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-sm">
                           Required*
                         </p>
                       )}
                       {showError &&
                         form.contact.email &&
                         !emailReg.test(form.contact.email) && (
-                          <p className="text-red-500 font-bold md:text-[1rem] text-sm">
+                          <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-sm">
                             Required a valid email!
                           </p>
                         )}
@@ -808,12 +845,12 @@ export default function RetireHowForm(): JSX.Element {
                     value={getFieldValue("contact", "email")}
                     onChange={handleChange}
                     placeholder="Enter your email address"
-                    className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors ${toggleErrorBorderColor(
+                    className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${toggleErrorBorderColor(
                       form.contact.email,
                       "email"
                     )}`}
                   />
-                  <small className="block text-gray-600 mt-1">
+                  <small className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: To deliver your summary and follow ups.
                   </small>
                 </div>
@@ -821,7 +858,7 @@ export default function RetireHowForm(): JSX.Element {
                 <div>
                   <label
                     htmlFor="contact.region"
-                    className="block font-semibold mb-2 text-gray-800"
+                    className="block font-semibold mb-2 text-gray-800 dark:text-gray-200"
                   >
                     Province/State of residence
                   </label>
@@ -834,9 +871,9 @@ export default function RetireHowForm(): JSX.Element {
                     value={getFieldValue("contact", "region")}
                     onChange={handleChange}
                     placeholder="Enter your province or state"
-                    className="w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors"
+                    className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   />
-                  <small className="block text-gray-600 mt-1">
+                  <small className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: Benefits/taxes and travel rules may vary by
                     region.
                   </small>
@@ -845,11 +882,11 @@ export default function RetireHowForm(): JSX.Element {
             </div>
 
             {/* SECTION B: Retirement Snapshot */}
-            <div className="border-l-4 border-gray-700 pl-4">
-              <h2 className="mb-4 text-xl font-bold text-gray-900">
+            <div className="border-l-4 border-gray-700 dark:border-gray-400 pl-4">
+              <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 B. Retirement Snapshot
               </h2>
-              <p className="mb-4 text-sm text-gray-700">
+              <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
                 Help us understand your retirement goals and current financial
                 picture
               </p>
@@ -858,7 +895,7 @@ export default function RetireHowForm(): JSX.Element {
                 <div>
                   <label
                     htmlFor="retirement_snapshot.target_age"
-                    className="block font-semibold mb-2 text-gray-800"
+                    className="block font-semibold mb-2 text-gray-800 dark:text-gray-200"
                   >
                     Target retirement age
                   </label>
@@ -871,9 +908,9 @@ export default function RetireHowForm(): JSX.Element {
                     value={getFieldValue("retirement_snapshot", "target_age")}
                     onChange={handleChange}
                     placeholder="Enter target retirement age, e.g., 65"
-                    className="w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors"
+                    className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   />
-                  <small className="block text-gray-600 mt-1">
+                  <small className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: Timing affects benefits, drawdown order, and
                     travel windows.
                   </small>
@@ -882,7 +919,7 @@ export default function RetireHowForm(): JSX.Element {
                 <div>
                   <label
                     htmlFor="retirement_snapshot.desired_income"
-                    className="block font-semibold mb-2 text-gray-800"
+                    className="block font-semibold mb-2 text-gray-800 dark:text-gray-200"
                   >
                     Desired annual retirement income (local currency)
                   </label>
@@ -896,9 +933,9 @@ export default function RetireHowForm(): JSX.Element {
                     )}
                     onChange={handleChange}
                     placeholder="Enter desired annual income, e.g., 60,000"
-                    className="w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors"
+                    className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   />
-                  <small className="block text-gray-600 mt-1">
+                  <small className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: Sets your lifestyle target so we can compare
                     home vs. abroad.
                   </small>
@@ -908,11 +945,11 @@ export default function RetireHowForm(): JSX.Element {
               <div className="mt-4">
                 <label
                   htmlFor="retirement_snapshot.estimated_savings"
-                  className="block font-semibold mb-2 text-gray-800"
+                  className="block font-semibold mb-2 text-gray-800 dark:text-gray-200"
                 >
                   Estimated total savings and investments
                 </label>
-                <small className="block text-gray-600 mb-2">
+                <small className="block text-gray-600 dark:text-gray-400 mb-2">
                   💬 Include everything you've set aside for retirement —
                   investments, savings, or deposits, whether registered,
                   non-registered, or held abroad.
@@ -927,9 +964,9 @@ export default function RetireHowForm(): JSX.Element {
                   )}
                   onChange={handleChange}
                   placeholder="Enter total savings amount, e.g., 500,000"
-                  className="w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors"
+                  className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                 />
-                <small className="block text-gray-600 mt-1">
+                <small className="block text-gray-600 dark:text-gray-400 mt-1">
                   Why we ask: A rough picture helps us size safe withdrawal
                   rates and gaps.
                 </small>
@@ -937,11 +974,11 @@ export default function RetireHowForm(): JSX.Element {
             </div>
 
             {/* SECTION C: Housing & Real Estate Equity */}
-            <div className="border-l-4 border-gray-600 pl-4">
-              <h2 className="mb-4 text-xl font-bold text-gray-900">
+            <div className="border-l-4 border-gray-600 dark:border-gray-500 pl-4">
+              <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 C. Housing & Real Estate Equity
               </h2>
-              <p className="mb-4 text-sm text-gray-700">
+              <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
                 Understanding your housing situation helps us explore all
                 financial options
               </p>
@@ -949,7 +986,7 @@ export default function RetireHowForm(): JSX.Element {
               <div>
                 <label
                   htmlFor="housing_equity.estimated_home_equity"
-                  className="block font-semibold mb-2 text-gray-800"
+                  className="block font-semibold mb-2 text-gray-800 dark:text-gray-200"
                 >
                   Estimated home equity (net value of real estate)
                 </label>
@@ -963,9 +1000,9 @@ export default function RetireHowForm(): JSX.Element {
                   )}
                   onChange={handleChange}
                   placeholder="Enter home equity amount, e.g., 300,000"
-                  className="w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors"
+                  className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                 />
-                <small className="block text-gray-600 mt-1">
+                <small className="block text-gray-600 dark:text-gray-400 mt-1">
                   Why we ask: Renters can leave this blank; for homeowners, an
                   estimate of net equity (value minus debt) helps us understand
                   flexibility and retirement optionality.
@@ -975,7 +1012,7 @@ export default function RetireHowForm(): JSX.Element {
               <div className="mt-4">
                 <label
                   htmlFor="housing_equity.equity_comfort"
-                  className="block font-semibold mb-2 text-gray-800"
+                  className="block font-semibold mb-2 text-gray-800 dark:text-gray-200"
                 >
                   Comfort with tapping home equity as a last resort (or to
                   enhance travel in active years)?
@@ -987,7 +1024,7 @@ export default function RetireHowForm(): JSX.Element {
                     getFieldValue("housing_equity", "equity_comfort") ?? "open"
                   }
                   onChange={handleChange}
-                  className="w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors cursor-pointer"
+                  className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white cursor-pointer"
                 >
                   <option value="">Select...</option>
                   <option value="Open to discuss">Open to discuss</option>
@@ -996,7 +1033,7 @@ export default function RetireHowForm(): JSX.Element {
                   </option>
                   <option value="Not comfortable">Not comfortable</option>
                 </select>
-                <small className="block text-gray-600 mt-1">
+                <small className="block text-gray-600 dark:text-gray-400 mt-1">
                   Why we ask: Some clients prefer to preserve home equity;
                   others use a limited portion to fund experiences or cover
                   gaps.
@@ -1005,19 +1042,19 @@ export default function RetireHowForm(): JSX.Element {
             </div>
 
             {/* SECTION D: DollarFar — Pre-Retirement Planning */}
-            <div className="border-l-4 border-gray-500 pl-4">
-              <h2 className="mb-4 text-xl font-bold text-gray-900">
+            <div className="border-l-4 border-gray-500 dark:border-gray-600 pl-4">
+              <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 D. DollarFar — Pre-Retirement Planning
               </h2>
-              <p className="mb-4 text-sm text-gray-700">
+              <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
                 Explore our free calculators and optional guided interpretation
                 services
               </p>
 
-              <div className="mb-3 flex items-center justify-between rounded-lg border border-gray-400 bg-gray-50 p-3">
+              <div className="mb-3 flex items-center justify-between rounded-lg border border-gray-400 dark:border-gray-500 bg-gray-50 dark:bg-gray-700 p-3">
                 <div className="flex items-center gap-3">
-                  <span className="inline-block h-3 w-3 rounded-full bg-gray-700" />
-                  <span className="font-bold text-gray-900">
+                  <span className="inline-block h-3 w-3 rounded-full bg-gray-700 dark:bg-gray-300" />
+                  <span className="font-bold text-gray-900 dark:text-white">
                     DollarFar — Pre-Retirement Planning
                   </span>
                 </div>
@@ -1025,13 +1062,13 @@ export default function RetireHowForm(): JSX.Element {
                   href="https://DollarFar.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-md border border-gray-500 px-3 py-1 text-sm font-semibold text-gray-800 hover:bg-gray-100 transition-colors"
+                  className="rounded-md border border-gray-500 dark:border-gray-400 px-3 py-1 text-sm font-semibold text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                 >
                   Visit DollarFar
                 </a>
               </div>
 
-              <p className="mb-3 text-sm text-gray-700">
+              <p className="mb-3 text-sm text-gray-700 dark:text-gray-300">
                 Together, DollarFar's six free calculators turn scattered
                 numbers into clarity — revealing how long savings last, where
                 money goes further, and how lifestyle choices shape retirement.
@@ -1039,7 +1076,7 @@ export default function RetireHowForm(): JSX.Element {
                 connects the dots and turns data into confident decisions.
               </p>
 
-              <label className="mb-2 block font-bold text-gray-900">
+              <label className="mb-2 block font-bold text-gray-900 dark:text-white">
                 Choose Calculators (optional)
               </label>
 
@@ -1084,7 +1121,7 @@ export default function RetireHowForm(): JSX.Element {
                 ].map((option) => (
                   <label
                     key={option.value}
-                    className="flex items-start gap-3 rounded-xl border border-gray-300 bg-white p-3 hover:border-gray-500 transition-colors select-none cursor-pointer"
+                    className="flex items-start gap-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 p-3 hover:border-gray-500 dark:hover:border-gray-400 transition-colors select-none cursor-pointer"
                   >
                     <ConfigProvider
                       theme={{
@@ -1106,26 +1143,28 @@ export default function RetireHowForm(): JSX.Element {
                       />
                     </ConfigProvider>
                     <div>
-                      <div className="font-semibold text-gray-800">
+                      <div className="font-semibold text-gray-800 dark:text-gray-200">
                         {option.value}
                       </div>
-                      <div className="text-sm text-gray-600">{option.tip}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                        {option.tip}
+                      </div>
                     </div>
                   </label>
                 ))}
               </div>
 
               {/* Guided Sessions / Subscription (Optional) */}
-              <div className="mt-6 rounded-xl border border-gray-400 bg-white p-4">
-                <div className="mb-2 text-xl font-bold text-gray-900">
+              <div className="mt-6 rounded-xl border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-700 p-4">
+                <div className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Request Human Interpretation
                 </div>
-                <p className="mb-3 text-sm text-gray-700">
+                <p className="mb-3 text-sm text-gray-700 dark:text-gray-300">
                   Have a specialist walk through results with you.
                 </p>
 
-                <label className="mb-3 flex items-center justify-between rounded-xl border border-gray-400 hover:border-gray-600 duration-300 p-3 font-bold select-none cursor-pointer">
-                  <span className="text-gray-700">
+                <label className="mb-3 flex items-center justify-between rounded-xl border border-gray-400 dark:border-gray-500 hover:border-gray-600 dark:hover:border-gray-400 duration-300 p-3 font-bold select-none cursor-pointer bg-white dark:bg-gray-700">
+                  <span className="text-gray-700 dark:text-gray-300">
                     Enable Interpretation Services
                   </span>
                   <ConfigProvider
@@ -1155,12 +1194,12 @@ export default function RetireHowForm(): JSX.Element {
                   "interpretation_toggle"
                 ) && (
                   <div className="mb-3">
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
-                      <p className="text-gray-800 text-sm font-bold">
+                    <div className="bg-gray-50 dark:bg-gray-600 border border-gray-200 dark:border-gray-500 rounded-lg p-4 mb-4">
+                      <p className="text-gray-800 dark:text-gray-200 text-sm font-bold">
                         📞 We'll contact you using the information provided in
                         Section A
                       </p>
-                      <div className="mt-2 text-sm text-gray-700 space-y-2">
+                      <div className="mt-2 text-sm text-gray-700 dark:text-gray-300 space-y-2">
                         <p>
                           <strong>Name:</strong> {form.contact.name}
                         </p>
@@ -1175,7 +1214,7 @@ export default function RetireHowForm(): JSX.Element {
 
                     {/* Only show preferred time field */}
                     <div>
-                      <label className="mb-2 block font-semibold text-gray-800">
+                      <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
                         Preferred Consultation Time
                       </label>
                       <input
@@ -1184,9 +1223,9 @@ export default function RetireHowForm(): JSX.Element {
                         value={getFieldValue("dollarfar_planning", "time_pre")}
                         onChange={handleChange}
                         placeholder="e.g., Weekday mornings, Tuesday afternoons"
-                        className="w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors"
+                        className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                       />
-                      <small className="block text-gray-600 mt-1">
+                      <small className="block text-gray-600 dark:text-gray-400 mt-1">
                         Let us know your preferred days/times for the
                         consultation
                       </small>
@@ -1217,7 +1256,7 @@ export default function RetireHowForm(): JSX.Element {
                             "subscription_status"
                           ) === "have"
                             ? "border-green-600 bg-green-500 text-white"
-                            : "border-gray-400 text-gray-700 hover:bg-gray-50"
+                            : "border-gray-400 dark:border-gray-500 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600"
                         }`}
                       >
                         I have a subscription
@@ -1238,7 +1277,7 @@ export default function RetireHowForm(): JSX.Element {
                             "subscription_status"
                           ) === "paid"
                             ? "border-green-600 bg-green-500 text-white"
-                            : "border-gray-400 text-gray-700 hover:bg-gray-50"
+                            : "border-gray-400 dark:border-gray-500 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600"
                         }`}
                       >
                         {getFieldValue(
@@ -1256,7 +1295,7 @@ export default function RetireHowForm(): JSX.Element {
                       (!form.contact.email ||
                         !form.contact.phone ||
                         !form.contact.name) && (
-                        <p className="text-red-500">
+                        <p className="text-red-500 dark:text-red-400">
                           Please fill in the contact info input fields first
                           before starting subscription.
                         </p>
@@ -1268,12 +1307,12 @@ export default function RetireHowForm(): JSX.Element {
                       "subscription_status"
                     ) === "paid" && (
                       <div className="w-full mt-4">
-                        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 shadow-sm">
+                        <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 shadow-sm">
                           <div className="flex items-start gap-3">
                             <div className="flex-shrink-0 mt-0.5">
-                              <div className="w-5 h-5 bg-amber-100 rounded-full flex items-center justify-center">
+                              <div className="w-5 h-5 bg-amber-100 dark:bg-amber-800 rounded-full flex items-center justify-center">
                                 <svg
-                                  className="w-5 h-w-5 text-amber-600"
+                                  className="w-5 h-w-5 text-amber-600 dark:text-amber-400"
                                   fill="currentColor"
                                   viewBox="0 0 20 20"
                                 >
@@ -1286,10 +1325,10 @@ export default function RetireHowForm(): JSX.Element {
                               </div>
                             </div>
                             <div className="flex-1">
-                              <h4 className="text-sm font-semibold text-amber-800 mb-1">
+                              <h4 className="text-sm font-semibold text-amber-800 dark:text-amber-300 mb-1">
                                 Important: Complete Your Form Submission
                               </h4>
-                              <p className="text-sm text-amber-700 leading-relaxed">
+                              <p className="text-sm text-amber-700 dark:text-amber-400 leading-relaxed">
                                 Your subscription is active, but{" "}
                                 <strong>
                                   your consultation request is not yet submitted
@@ -1312,16 +1351,16 @@ export default function RetireHowForm(): JSX.Element {
                           "have" &&
                         form.dollarfar_planning.subscription_status !==
                           "paid" && (
-                          <p className="text-red-500">
+                          <p className="text-red-500 dark:text-red-400">
                             Please select either have an existing subscription
                             or start a new one for interpretation services.
                           </p>
                         )}
                     </div>
 
-                    <div className="ml-2 rounded-md border border-gray-400 px-3 py-2 font-bold text-gray-800 inline-block">
+                    <div className="ml-2 rounded-md border border-gray-400 dark:border-gray-500 px-3 py-2 font-bold text-gray-800 dark:text-gray-200 inline-block bg-white dark:bg-gray-700">
                       Support Subscription — $199 CAD{" "}
-                      <span className="block text-xs font-normal text-gray-600">
+                      <span className="block text-xs font-normal text-gray-600 dark:text-gray-400">
                         (applicable tax is implied)
                       </span>
                     </div>
@@ -1332,7 +1371,7 @@ export default function RetireHowForm(): JSX.Element {
                   "dollarfar_planning",
                   "interpretation_toggle"
                 ) && (
-                  <ul className="ml-4 list-disc text-sm text-gray-600">
+                  <ul className="ml-4 list-disc text-sm text-gray-600 dark:text-gray-400">
                     <li>
                       Pay-as-you-go: covers <strong>2 × 30-minute</strong>{" "}
                       online consultations.
@@ -1351,32 +1390,32 @@ export default function RetireHowForm(): JSX.Element {
             </div>
 
             {/* SECTION E: Travel Planning — Book Now vs Future Interest */}
-            <div className="border-l-4 border-gray-400 pl-4">
-              <h2 className="mb-4 text-xl font-bold text-gray-900">
+            <div className="border-l-4 border-gray-400 dark:border-gray-700 pl-4">
+              <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 E. Travel Planning — Book Now vs Future Interest
               </h2>
-              <p className="mb-4 text-sm text-gray-700">
+              <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
                 Explore available destinations and express interest for future
                 locations
               </p>
 
-              <div className="rounded-xl border border-gray-400 bg-white p-4 mb-3">
-                <div className="mb-2 text-xl font-bold text-gray-900">
+              <div className="rounded-xl border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-700 p-4 mb-3">
+                <div className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Book Now — Vijayawada (Pilot 2026–2027)
                 </div>
-                <div className="mb-3 rounded-md bg-gray-50 p-3 font-semibold text-gray-800 border border-gray-300">
+                <div className="mb-3 rounded-md bg-gray-50 dark:bg-gray-600 p-3 font-semibold text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-500">
                   Available: On-ground concierge support in Vijayawada only
                   during the pilot.
                 </div>
 
-                <label className="mb-2 block font-semibold text-gray-800">
+                <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
                   Months abroad per year
                 </label>
                 <select
                   name="travel_planning.months_abroad"
                   value={getFieldValue("travel_planning", "months_abroad")}
                   onChange={handleChange}
-                  className="mb-2 w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors cursor-pointer"
+                  className="mb-2 w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white cursor-pointer"
                 >
                   <option value="">Select duration...</option>
                   <option value="1 month">1 month</option>
@@ -1386,7 +1425,7 @@ export default function RetireHowForm(): JSX.Element {
                   <option value="4–5 months">4–5 months</option>
                 </select>
 
-                <label className="mb-2 block font-semibold text-gray-800">
+                <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
                   Earliest start (season / year / month)
                 </label>
                 <input
@@ -1397,21 +1436,21 @@ export default function RetireHowForm(): JSX.Element {
                   maxLength={40}
                   value={getFieldValue("travel_planning", "start_timeline")}
                   onChange={handleChange}
-                  className="mb-2 w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors"
+                  className="mb-2 w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                 />
-                <small className="block text-gray-600 mb-2">
+                <small className="block text-gray-600 dark:text-gray-400 mb-2">
                   <strong>Bookings open January 2026</strong> for stays
                   beginning <strong>November 2026</strong> onward.
                 </small>
 
-                <label className="mb-2 block font-semibold text-gray-800">
+                <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
                   Accommodation style
                 </label>
                 <select
                   name="travel_planning.travel_style"
                   value={getFieldValue("travel_planning", "travel_style")}
                   onChange={handleChange}
-                  className="mb-2 w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors cursor-pointer"
+                  className="mb-2 w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white cursor-pointer"
                 >
                   <option value="">Select accommodation type...</option>
                   <option value="2-Bedroom Condo">2-Bedroom Condo</option>
@@ -1425,7 +1464,7 @@ export default function RetireHowForm(): JSX.Element {
                   </option>
                 </select>
 
-                <label className="mb-2 block font-semibold text-gray-800">
+                <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
                   Independent travel acknowledgement
                 </label>
                 <label className="flex items-start gap-3 select-none cursor-pointer">
@@ -1448,23 +1487,23 @@ export default function RetireHowForm(): JSX.Element {
                       onChange={handleCheckboxChange}
                     />
                   </ConfigProvider>
-                  <span className="text-gray-700">
+                  <span className="text-gray-700 dark:text-gray-300">
                     I can travel independently without mobility assistance. I
                     understand some destinations abroad may be less accessible
                     than in Canada, the USA, the UK, or Europe.
                   </span>
                 </label>
-                <small className="block text-gray-600 mt-1">
+                <small className="block text-gray-600 dark:text-gray-400 mt-1">
                   Ensures practical, safe options for you.
                 </small>
               </div>
 
-              <div className="rounded-xl border border-gray-400 bg-white p-4">
-                <div className="mb-2 text-xl font-bold text-gray-900">
+              <div className="rounded-xl border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-700 p-4">
+                <div className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Future Hubs — Express Interest (Not Bookable Yet)
                 </div>
 
-                <label className="mb-2 block font-semibold text-gray-800">
+                <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
                   Select location
                 </label>
                 <select
@@ -1474,7 +1513,7 @@ export default function RetireHowForm(): JSX.Element {
                     "country_region_interest"
                   )}
                   onChange={handleChange}
-                  className="mb-2 w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors cursor-pointer"
+                  className="mb-2 w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white cursor-pointer"
                 >
                   <optgroup label="Book Now (Pilot 2026–2027)">
                     <option value="">Select a location...</option>
@@ -1492,12 +1531,12 @@ export default function RetireHowForm(): JSX.Element {
                     <option value="Other">Other</option>
                   </optgroup>
                 </select>
-                <small className="block text-gray-600 mb-2">
+                <small className="block text-gray-600 dark:text-gray-400 mb-2">
                   Choose Vijayawada to book now, or other locations to express
                   interest for future Cost Escape™ hubs.
                 </small>
 
-                <label className="mb-2 block font-semibold text-gray-800">
+                <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
                   City / area (interest)
                 </label>
                 <input
@@ -1511,9 +1550,9 @@ export default function RetireHowForm(): JSX.Element {
                     "ideal_locations_interest"
                   )}
                   onChange={handleChange}
-                  className="w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors"
+                  className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                 />
-                <small className="block text-gray-600 mt-1">
+                <small className="block text-gray-600 dark:text-gray-400 mt-1">
                   Your interest helps us prioritize next hubs and early-access
                   invites.
                 </small>
@@ -1521,17 +1560,17 @@ export default function RetireHowForm(): JSX.Element {
             </div>
 
             {/* SECTION F: Budget Estimates */}
-            <div className="border-l-4 border-gray-300 pl-4">
-              <h2 className="mb-4 text-xl font-bold text-gray-900">
+            <div className="border-l-4 border-gray-300 dark:border-gray-600 pl-4">
+              <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 F. Budget Estimates
               </h2>
-              <p className="mb-4 text-sm text-gray-700">
+              <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
                 Help us understand your spending preferences and travel style
               </p>
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                  <label className="mb-2 block font-semibold text-gray-800">
+                  <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
                     Home-country monthly budget (estimate)
                   </label>
                   <input
@@ -1543,15 +1582,15 @@ export default function RetireHowForm(): JSX.Element {
                     )}
                     onChange={handleChange}
                     placeholder="Enter monthly home budget, e.g., 3,000"
-                    className="w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors"
+                    className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   />
-                  <small className="block text-gray-600 mt-1">
+                  <small className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: Baseline to compare vs. abroad.
                   </small>
                 </div>
 
                 <div>
-                  <label className="mb-2 block font-semibold text-gray-800">
+                  <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
                     Abroad monthly budget (estimate)
                   </label>
                   <input
@@ -1563,9 +1602,9 @@ export default function RetireHowForm(): JSX.Element {
                     )}
                     onChange={handleChange}
                     placeholder="Enter monthly abroad budget, e.g., 2,000"
-                    className="w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors"
+                    className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   />
-                  <small className="block text-gray-600 mt-1">
+                  <small className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: Helps right-size destinations and accommodation
                     type.
                   </small>
@@ -1573,7 +1612,7 @@ export default function RetireHowForm(): JSX.Element {
               </div>
 
               <div className="mt-4">
-                <label className="mb-2 block font-semibold text-gray-800">
+                <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
                   Typical flight & insurance budget (open input)
                 </label>
                 <input
@@ -1585,23 +1624,23 @@ export default function RetireHowForm(): JSX.Element {
                     "flights_insurance_budget"
                   )}
                   onChange={handleChange}
-                  className="w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors"
+                  className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                 />
-                <small className="block text-gray-600 mt-1">
+                <small className="block text-gray-600 dark:text-gray-400 mt-1">
                   Why we ask: Costs vary widely; free-form lets you enter ranges
                   or notes.
                 </small>
               </div>
 
               <div className="mt-4">
-                <label className="mb-2 block font-semibold text-gray-800">
+                <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
                   Preferred flight class
                 </label>
                 <select
                   name="budget_estimates.flight_class"
                   value={getFieldValue("budget_estimates", "flight_class")}
                   onChange={handleChange}
-                  className="w-full rounded-2xl border border-gray-400 px-4 py-3 focus:border-gray-700 focus:ring-2 focus:ring-gray-200 transition-colors cursor-pointer"
+                  className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white cursor-pointer"
                 >
                   <option value="">Select flight class...</option>
                   <option value="Economy">Economy</option>
@@ -1609,7 +1648,7 @@ export default function RetireHowForm(): JSX.Element {
                   <option value="Business">Business</option>
                   <option value="First">First</option>
                 </select>
-                <small className="block text-gray-600 mt-1">
+                <small className="block text-gray-600 dark:text-gray-400 mt-1">
                   Why we ask: Class of travel affects airfare budgets
                   substantially.
                 </small>
@@ -1617,11 +1656,11 @@ export default function RetireHowForm(): JSX.Element {
             </div>
 
             {/* SECTION G: Purpose of Travel */}
-            <div className="border-l-4 border-gray-200 pl-4">
-              <h2 className="mb-4 text-xl font-bold text-gray-900">
+            <div className="border-l-4 border-gray-200 dark:border-gray-700 pl-4">
+              <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 G. Purpose of Travel
               </h2>
-              <p className="mb-4 text-sm text-gray-700">
+              <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
                 Select all that apply to help us understand your travel
                 motivations
               </p>
@@ -1666,7 +1705,7 @@ export default function RetireHowForm(): JSX.Element {
                 ].map((option) => (
                   <label
                     key={option.value}
-                    className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg border border-transparent hover:border-gray-300 transition-colors select-none cursor-pointer"
+                    className="flex items-center gap-3 p-2 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-lg border border-transparent hover:border-gray-300 dark:hover:border-gray-500 transition-colors select-none cursor-pointer"
                   >
                     <ConfigProvider
                       theme={{
@@ -1683,23 +1722,25 @@ export default function RetireHowForm(): JSX.Element {
                         onChange={handleCheckboxChange}
                       />
                     </ConfigProvider>
-                    <span className="text-gray-700">{option.t}</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      {option.t}
+                    </span>
                   </label>
                 ))}
               </div>
             </div>
 
             {/* SECTION H: Privacy & Pricing */}
-            <div className="border-l-4 border-gray-100 pl-4">
-              <h2 className="mb-4 text-xl font-bold text-gray-900">
+            <div className="border-l-4 border-gray-100 dark:border-gray-800 pl-4">
+              <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 H. Privacy & Pricing
               </h2>
-              <p className="mb-4 text-sm text-gray-700">
+              <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
                 Final acknowledgements and consent
               </p>
 
-              <div className="rounded-lg bg-gray-50 p-4 mb-4 border border-gray-300">
-                <p className="text-sm text-gray-700">
+              <div className="rounded-lg bg-gray-50 dark:bg-gray-700 p-4 mb-4 border border-gray-300 dark:border-gray-600">
+                <p className="text-sm text-gray-700 dark:text-gray-300">
                   <strong>Transparency first.</strong> We collect{" "}
                   <strong>estimates only</strong> — no account statements. When
                   you ask us to coordinate, we work only with{" "}
@@ -1732,7 +1773,7 @@ export default function RetireHowForm(): JSX.Element {
 
               <div className="grid gap-3">
                 <label
-                  className={`flex items-start gap-3 p-3 bg-white rounded-lg border transition-colors select-none cursor-pointer ${toggleErrorBorderColor(
+                  className={`flex items-start gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border transition-colors select-none cursor-pointer ${toggleErrorBorderColor(
                     form.privacy_acknowledgements.ack_poc as boolean,
                     "ack_poc"
                   )}`}
@@ -1754,7 +1795,7 @@ export default function RetireHowForm(): JSX.Element {
                       onChange={handleCheckboxChange}
                     />
                   </ConfigProvider>
-                  <span className="text-gray-700">
+                  <span className="text-gray-700 dark:text-gray-300">
                     I acknowledge that during the proof-of-concept stage, I will
                     only pay actual vendor costs and agree to share feedback on
                     my experience.
@@ -1762,7 +1803,7 @@ export default function RetireHowForm(): JSX.Element {
                 </label>
 
                 <label
-                  className={`flex items-start gap-3 p-3 bg-white rounded-lg border transition-colors select-none cursor-pointer ${toggleErrorBorderColor(
+                  className={`flex items-start gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border transition-colors select-none cursor-pointer ${toggleErrorBorderColor(
                     form.privacy_acknowledgements.consent_contact as boolean,
                     "consent_contact"
                   )}`}
@@ -1786,14 +1827,14 @@ export default function RetireHowForm(): JSX.Element {
                       onChange={handleCheckboxChange}
                     />
                   </ConfigProvider>
-                  <span className="text-gray-700">
+                  <span className="text-gray-700 dark:text-gray-300">
                     I would like to be contacted by RetireHow Inc. to discuss my
                     submission.
                   </span>
                 </label>
 
                 <label
-                  className={`flex items-start gap-3 p-3 bg-white rounded-lg border transition-colors select-none cursor-pointer ${toggleErrorBorderColor(
+                  className={`flex items-start gap-3 p-3 bg-white dark:bg-gray-700 rounded-lg border transition-colors select-none cursor-pointer ${toggleErrorBorderColor(
                     form.privacy_acknowledgements.ack_scope as boolean,
                     "ack_scope"
                   )}`}
@@ -1817,7 +1858,7 @@ export default function RetireHowForm(): JSX.Element {
                       onChange={handleCheckboxChange}
                     />
                   </ConfigProvider>
-                  <span className="text-gray-700">
+                  <span className="text-gray-700 dark:text-gray-300">
                     I understand that RetireHow and DollarFar provide lifestyle
                     optimization, cost-management, and travel-planning guidance
                     — not investment or financial advice.
@@ -1828,7 +1869,7 @@ export default function RetireHowForm(): JSX.Element {
                 (!form.privacy_acknowledgements.ack_poc ||
                   !form.privacy_acknowledgements.ack_scope ||
                   !form.privacy_acknowledgements.consent_contact) && (
-                  <p className="text-red-500 my-3 font-bold">
+                  <p className="text-red-500 dark:text-red-400 my-3 font-bold">
                     Please check all the Privacy & Pricing checkboxes above.
                   </p>
                 )}
@@ -1839,18 +1880,22 @@ export default function RetireHowForm(): JSX.Element {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full max-w-md rounded-full bg-gray-900 hover:bg-black px-6 py-4 text-lg font-semibold text-white disabled:opacity-60 transition-colors shadow-lg"
+                className="w-full max-w-md rounded-full bg-gray-900 dark:bg-gray-700 hover:bg-black dark:hover:bg-gray-600 px-6 py-4 text-lg font-semibold text-white disabled:opacity-60 transition-colors shadow-lg"
               >
                 {submitting ? "Submitting..." : "Submit & Request My Plan"}
               </button>
 
-              <div className="mt-4 border-t border-gray-300 pt-4 text-center text-lg text-gray-600">
+              <div className="mt-4 border-t border-gray-300 dark:border-gray-600 pt-4 text-center text-lg text-gray-600 dark:text-gray-400">
                 DollarFar.com is provided by{" "}
-                <strong className="text-gray-800">RetireHow Inc.</strong> as
-                part of our commitment to bring financial know-how to everyone.
-                A member of the{" "}
-                <strong className="text-gray-800">RetireHow</strong> team will
-                contact you directly after submission.
+                <strong className="text-gray-800 dark:text-gray-200">
+                  RetireHow Inc.
+                </strong>{" "}
+                as part of our commitment to bring financial know-how to
+                everyone. A member of the{" "}
+                <strong className="text-gray-800 dark:text-gray-200">
+                  RetireHow
+                </strong>{" "}
+                team will contact you directly after submission.
               </div>
             </div>
           </form>

@@ -23,7 +23,7 @@ import { assets } from "../../assets/assets";
 
 function MessageBlock({ title, content }: { title: any; content: any }) {
   return (
-    <div className="rounded-2xl border border-gray-300 dark:border-gray-500 bg-white dark:bg-neutral-800 dark:text-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-gray-300 bg-white dark:bg-gray-900 dark:text-gray-100 p-5 shadow-sm">
       <h2 className="text-lg font-semibold">{title}</h2>
       <p className="mt-2 text-lg leading-8">{content}</p>
     </div>
@@ -93,7 +93,7 @@ const HelpModal = ({ title, content, visible, onClose }: HelpModalProps) => {
         <button
           key="submit"
           className="px-4 py-2 rounded-md text-white"
-          style={{ backgroundColor: "#2b6777" }}
+          style={{ backgroundColor: "#000000" }}
           onClick={onClose}
         >
           Got it!
@@ -197,8 +197,10 @@ const removeCommas = (value: string): number => {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white dark:bg-gray-800 p-4 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md">
-        <p className="font-bold text-gray-800 dark:text-white">Age: {label}</p>
+      <div className="bg-white dark:bg-gray-800 p-4 border border-gray-300 rounded-lg shadow-md">
+        <p className="font-bold text-gray-900 dark:text-gray-100">
+          Age: {label}
+        </p>
         {payload.map((entry: any, index: number) => (
           <p key={`item-${index}`} style={{ color: entry.color }}>
             {entry.name}: {formatCurrency(entry.value)}
@@ -495,7 +497,7 @@ const RetirementSimulator: React.FC = () => {
     incomeReplacementRate: {
       title: "Required Yearly Retirement Income",
       content:
-        "Percent of final income you’ll need each year in retirement (typically 70 – 80 %). Fact: Retirees usually spend about three-quarters of pre-retirement income, with higher travel costs early and rising healthcare needs later.",
+        "Percent of final income you'll need each year in retirement (typically 70 – 80 %). Fact: Retirees usually spend about three-quarters of pre-retirement income, with higher travel costs early and rising healthcare needs later.",
     },
     annualPension: {
       title: "Yearly Pension at Retirement",
@@ -512,7 +514,7 @@ const RetirementSimulator: React.FC = () => {
   return (
     <>
       <PageHero data={data} />
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 dark:from-gray-900 dark:to-gray-800 py-8 px-4">
+      <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-8 px-4">
         <HelpModal
           title={modalContent.title}
           content={modalContent.content}
@@ -521,7 +523,7 @@ const RetirementSimulator: React.FC = () => {
         />
         <div className="max-w-7xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
           {/* Simplified Header */}
-          <div className="p-4 bg-white dark:bg-neutral-800 dark:text-white flex md:flex-row flex-col md:gap-0 gap-3 justify-between items-center">
+          <div className="p-4 bg-white dark:bg-gray-800 dark:text-gray-100 flex md:flex-row flex-col md:gap-0 gap-3 justify-between items-center">
             <h1 className="text-2xl font-bold flex items-center gap-2">
               <Icon icon="mdi:finance" className="text-3xl" />
               Retirement Simulator
@@ -535,7 +537,7 @@ const RetirementSimulator: React.FC = () => {
                 toPDF={toPDF}
               />
               {pdfError && (
-                <p className="text-red-500 font-semibold text-right my-2">
+                <p className="text-gray-800 dark:text-gray-200 font-semibold text-right my-2">
                   Error: PDF could not be downloaded!
                 </p>
               )}
@@ -546,9 +548,12 @@ const RetirementSimulator: React.FC = () => {
             {/* Form and Status Side by Side */}
             <div className="flex flex-col lg:flex-row">
               {/* Input Form */}
-              <div className="p-6 border-b border-gray-200 dark:border-gray-700 lg:w-2/3 lg:border-r lg:border-b-0">
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-6 flex items-center gap-2">
-                  <Icon icon="mdi:calculator" className="text-teal-600" />
+              <div className="p-6 border-b border-gray-300 dark:border-gray-700 lg:w-2/3 lg:border-r lg:border-b-0">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
+                  <Icon
+                    icon="mdi:calculator"
+                    className="text-gray-800 dark:text-gray-200"
+                  />
                   Your Financial Information
                 </h2>
 
@@ -557,7 +562,7 @@ const RetirementSimulator: React.FC = () => {
                   <div>
                     <div className="space-y-5">
                       <div>
-                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
+                        <label className="text-md font-medium text-gray-800 dark:text-gray-200 mb-1 flex items-center">
                           Current Age
                           <button
                             onClick={() =>
@@ -566,7 +571,7 @@ const RetirementSimulator: React.FC = () => {
                                 helpContent.currentAge.content
                               )
                             }
-                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                            className="ml-2 cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                           >
                             <Icon
                               icon="mdi:information-outline"
@@ -581,7 +586,7 @@ const RetirementSimulator: React.FC = () => {
                           value={displayValues.currentAge}
                           onChange={handleInputChange}
                           onWheel={handleWheel}
-                          className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                          className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-800 focus:border-gray-800 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                           min="18"
                           max="100"
                           title="Your current age"
@@ -589,7 +594,7 @@ const RetirementSimulator: React.FC = () => {
                       </div>
 
                       <div>
-                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
+                        <label className="text-md font-medium text-gray-800 dark:text-gray-200 mb-1 flex items-center">
                           Current Yearly Income
                           <button
                             onClick={() =>
@@ -598,7 +603,7 @@ const RetirementSimulator: React.FC = () => {
                                 helpContent.annualIncome.content
                               )
                             }
-                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                            className="ml-2 cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                           >
                             <Icon
                               icon="mdi:information-outline"
@@ -608,7 +613,7 @@ const RetirementSimulator: React.FC = () => {
                           </button>
                         </label>
                         <div className="relative">
-                          <span className="absolute left-3 top-3 text-gray-500 dark:text-gray-400">
+                          <span className="absolute left-3 top-3 text-gray-600 dark:text-gray-400">
                             $
                           </span>
                           <input
@@ -617,14 +622,14 @@ const RetirementSimulator: React.FC = () => {
                             value={displayValues.annualIncome}
                             onChange={handleInputChange}
                             onWheel={handleWheel}
-                            className="w-full pl-8 p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            className="w-full pl-8 p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-800 focus:border-gray-800 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                             title="Your current yearly earnings before taxes"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
+                        <label className="text-md font-medium text-gray-800 dark:text-gray-200 mb-1 flex items-center">
                           Current Retirement Savings
                           <button
                             onClick={() =>
@@ -633,7 +638,7 @@ const RetirementSimulator: React.FC = () => {
                                 helpContent.currentSavings.content
                               )
                             }
-                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                            className="ml-2 cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                           >
                             <Icon
                               icon="mdi:information-outline"
@@ -643,7 +648,7 @@ const RetirementSimulator: React.FC = () => {
                           </button>
                         </label>
                         <div className="relative">
-                          <span className="absolute left-3 top-3 text-gray-500 dark:text-gray-400">
+                          <span className="absolute left-3 top-3 text-gray-600 dark:text-gray-400">
                             $
                           </span>
                           <input
@@ -652,14 +657,14 @@ const RetirementSimulator: React.FC = () => {
                             value={displayValues.currentSavings}
                             onChange={handleInputChange}
                             onWheel={handleWheel}
-                            className="w-full pl-8 p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            className="w-full pl-8 p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-800 focus:border-gray-800 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                             title="Total amount you have saved for retirement so far"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
+                        <label className="text-md font-medium text-gray-800 dark:text-gray-200 mb-1 flex items-center">
                           Yearly Savings Amount
                           <button
                             onClick={() =>
@@ -668,7 +673,7 @@ const RetirementSimulator: React.FC = () => {
                                 helpContent.annualSavings.content
                               )
                             }
-                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                            className="ml-2 cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                           >
                             <Icon
                               icon="mdi:information-outline"
@@ -678,7 +683,7 @@ const RetirementSimulator: React.FC = () => {
                           </button>
                         </label>
                         <div className="relative">
-                          <span className="absolute left-3 top-3 text-gray-500 dark:text-gray-400">
+                          <span className="absolute left-3 top-3 text-gray-600 dark:text-gray-400">
                             $
                           </span>
                           <input
@@ -687,14 +692,14 @@ const RetirementSimulator: React.FC = () => {
                             value={displayValues.annualSavings}
                             onChange={handleInputChange}
                             onWheel={handleWheel}
-                            className="w-full pl-8 p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            className="w-full pl-8 p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-800 focus:border-gray-800 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                             title="How much you save each year for retirement"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
+                        <label className="text-md font-medium text-gray-800 dark:text-gray-200 mb-1 flex items-center">
                           Yearly Savings Increase (%)
                           <button
                             onClick={() =>
@@ -703,7 +708,7 @@ const RetirementSimulator: React.FC = () => {
                                 helpContent.savingsIncreaseRate.content
                               )
                             }
-                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                            className="ml-2 cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                           >
                             <Icon
                               icon="mdi:information-outline"
@@ -713,7 +718,7 @@ const RetirementSimulator: React.FC = () => {
                           </button>
                         </label>
                         <div className="relative">
-                          <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">
+                          <span className="absolute right-3 top-3 text-gray-600 dark:text-gray-400">
                             %
                           </span>
                           <input
@@ -722,14 +727,14 @@ const RetirementSimulator: React.FC = () => {
                             value={displayValues.savingsIncreaseRate}
                             onChange={handleInputChange}
                             onWheel={handleWheel}
-                            className="w-full p-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            className="w-full p-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-800 focus:border-gray-800 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                             title="How much your savings contributions increase each year"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
+                        <label className="text-md font-medium text-gray-800 dark:text-gray-200 mb-1 flex items-center">
                           Expected Yearly Investment Growth (%)
                           <button
                             onClick={() =>
@@ -738,7 +743,7 @@ const RetirementSimulator: React.FC = () => {
                                 helpContent.investmentReturn.content
                               )
                             }
-                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                            className="ml-2 cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                           >
                             <Icon
                               icon="mdi:information-outline"
@@ -748,7 +753,7 @@ const RetirementSimulator: React.FC = () => {
                           </button>
                         </label>
                         <div className="relative">
-                          <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">
+                          <span className="absolute right-3 top-3 text-gray-600 dark:text-gray-400">
                             %
                           </span>
                           <input
@@ -757,7 +762,7 @@ const RetirementSimulator: React.FC = () => {
                             value={displayValues.investmentReturn}
                             onChange={handleInputChange}
                             onWheel={handleWheel}
-                            className="w-full p-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            className="w-full p-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-800 focus:border-gray-800 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                             title="Average yearly return on your investments"
                           />
                         </div>
@@ -769,7 +774,7 @@ const RetirementSimulator: React.FC = () => {
                   <div>
                     <div className="space-y-5">
                       <div>
-                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
+                        <label className="text-md font-medium text-gray-800 dark:text-gray-200 mb-1 flex items-center">
                           Planned Retirement Age
                           <button
                             onClick={() =>
@@ -778,7 +783,7 @@ const RetirementSimulator: React.FC = () => {
                                 helpContent.retirementAge.content
                               )
                             }
-                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                            className="ml-2 cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                           >
                             <Icon
                               icon="mdi:information-outline"
@@ -793,7 +798,7 @@ const RetirementSimulator: React.FC = () => {
                           value={displayValues.retirementAge}
                           onChange={handleInputChange}
                           onWheel={handleWheel}
-                          className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                          className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-800 focus:border-gray-800 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                           min={params.currentAge + 1}
                           max="100"
                           title="The age you plan to retire"
@@ -801,7 +806,7 @@ const RetirementSimulator: React.FC = () => {
                       </div>
 
                       <div>
-                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
+                        <label className="text-md font-medium text-gray-800 dark:text-gray-200 mb-1 flex items-center">
                           Life Expectancy
                           <button
                             onClick={() =>
@@ -810,7 +815,7 @@ const RetirementSimulator: React.FC = () => {
                                 helpContent.lifeExpectancy.content
                               )
                             }
-                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                            className="ml-2 cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                           >
                             <Icon
                               icon="mdi:information-outline"
@@ -825,7 +830,7 @@ const RetirementSimulator: React.FC = () => {
                           value={displayValues.lifeExpectancy}
                           onChange={handleInputChange}
                           onWheel={handleWheel}
-                          className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                          className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-800 focus:border-gray-800 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                           min={params.retirementAge + 1}
                           max="120"
                           title="How long you expect to live (plan conservatively)"
@@ -833,7 +838,7 @@ const RetirementSimulator: React.FC = () => {
                       </div>
 
                       <div>
-                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
+                        <label className="text-md font-medium text-gray-800 dark:text-gray-200 mb-1 flex items-center">
                           Yearly Inflation and Raise Rate (%)
                           <button
                             onClick={() =>
@@ -842,7 +847,7 @@ const RetirementSimulator: React.FC = () => {
                                 helpContent.inflationRate.content
                               )
                             }
-                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                            className="ml-2 cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                           >
                             <Icon
                               icon="mdi:information-outline"
@@ -852,7 +857,7 @@ const RetirementSimulator: React.FC = () => {
                           </button>
                         </label>
                         <div className="relative">
-                          <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">
+                          <span className="absolute right-3 top-3 text-gray-600 dark:text-gray-400">
                             %
                           </span>
                           <input
@@ -861,14 +866,14 @@ const RetirementSimulator: React.FC = () => {
                             value={displayValues.inflationRate}
                             onChange={handleInputChange}
                             onWheel={handleWheel}
-                            className="w-full p-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            className="w-full p-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-800 focus:border-gray-800 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                             title="Average yearly increase in living costs"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
+                        <label className="text-md font-medium text-gray-800 dark:text-gray-200 mb-1 flex items-center">
                           Required Yearly Retirement Income (% of Final Salary)
                           <button
                             onClick={() =>
@@ -877,7 +882,7 @@ const RetirementSimulator: React.FC = () => {
                                 helpContent.incomeReplacementRate.content
                               )
                             }
-                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                            className="ml-2 cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                           >
                             <Icon
                               icon="mdi:information-outline"
@@ -887,7 +892,7 @@ const RetirementSimulator: React.FC = () => {
                           </button>
                         </label>
                         <div className="relative">
-                          <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">
+                          <span className="absolute right-3 top-3 text-gray-600 dark:text-gray-400">
                             %
                           </span>
                           <input
@@ -896,14 +901,14 @@ const RetirementSimulator: React.FC = () => {
                             value={displayValues.incomeReplacementRate}
                             onChange={handleInputChange}
                             onWheel={handleWheel}
-                            className="w-full p-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            className="w-full p-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-800 focus:border-gray-800 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                             title="Percentage of your pre-retirement income you'll need annually in retirement"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
+                        <label className="text-md font-medium text-gray-800 dark:text-gray-200 mb-1 flex items-center">
                           Yearly Pension at Retirement
                           <button
                             onClick={() =>
@@ -912,7 +917,7 @@ const RetirementSimulator: React.FC = () => {
                                 helpContent.annualPension.content
                               )
                             }
-                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                            className="ml-2 cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                           >
                             <Icon
                               icon="mdi:information-outline"
@@ -922,7 +927,7 @@ const RetirementSimulator: React.FC = () => {
                           </button>
                         </label>
                         <div className="relative">
-                          <span className="absolute left-3 top-3 text-gray-500 dark:text-gray-400">
+                          <span className="absolute left-3 top-3 text-gray-600 dark:text-gray-400">
                             $
                           </span>
                           <input
@@ -931,14 +936,14 @@ const RetirementSimulator: React.FC = () => {
                             value={displayValues.annualPension}
                             onChange={handleInputChange}
                             onWheel={handleWheel}
-                            className="w-full pl-8 p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            className="w-full pl-8 p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-800 focus:border-gray-800 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                             title="Annual pension or Social Security income at start of retirement"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
+                        <label className="text-md font-medium text-gray-800 dark:text-gray-200 mb-1 flex items-center">
                           Yearly Pension Increase (%)
                           <button
                             onClick={() =>
@@ -947,7 +952,7 @@ const RetirementSimulator: React.FC = () => {
                                 helpContent.pensionIncreaseRate.content
                               )
                             }
-                            className="ml-2 cursor-pointer text-gray-400 hover:text-[#2b6777] dark:hover:text-[#52ab98] transition-colors"
+                            className="ml-2 cursor-pointer text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
                           >
                             <Icon
                               icon="mdi:information-outline"
@@ -957,7 +962,7 @@ const RetirementSimulator: React.FC = () => {
                           </button>
                         </label>
                         <div className="relative">
-                          <span className="absolute right-3 top-3 text-gray-500 dark:text-gray-400">
+                          <span className="absolute right-3 top-3 text-gray-600 dark:text-gray-400">
                             %
                           </span>
                           <input
@@ -966,7 +971,7 @@ const RetirementSimulator: React.FC = () => {
                             value={displayValues.pensionIncreaseRate}
                             onChange={handleInputChange}
                             onWheel={handleWheel}
-                            className="w-full p-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                            className="w-full p-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-800 focus:border-gray-800 transition-shadow shadow-sm hover:shadow-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                             title="How much your pension increases each year (e.g., cost-of-living adjustment)"
                           />
                         </div>
@@ -979,33 +984,36 @@ const RetirementSimulator: React.FC = () => {
               {/* Streamlined Retirement Status */}
               {isCalculated && results.length > 0 && retirementSummary && (
                 <div className="p-6 lg:w-1/3 lg:border-b-0">
-                  <h3 className="text-xl font-semibold text-teal-800 dark:text-teal-300 mb-4 flex items-center gap-2">
-                    <Icon icon="mdi:chart-line" className="text-teal-600" />
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+                    <Icon
+                      icon="mdi:chart-line"
+                      className="text-gray-800 dark:text-gray-200"
+                    />
                     Your Retirement Readiness
                   </h3>
 
-                  <div className="bg-gradient-to-r from-blue-50 to-teal-50 dark:from-gray-700 dark:to-gray-600 md:p-6 p-3 rounded-lg border border-teal-200 dark:border-teal-800 shadow-sm">
+                  <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 md:p-6 p-3 rounded-lg border border-gray-300 dark:border-gray-600 shadow-sm">
                     {/* Consolidated Status Indicator */}
                     <div
                       className={`p-4 rounded-lg mb-6 ${
                         retirementSummary.isOnTrack
-                          ? "bg-green-50 dark:bg-green-900 border-2 border-green-200 dark:border-green-700"
-                          : "bg-amber-50 dark:bg-amber-900 border-2 border-amber-200 dark:border-amber-700"
+                          ? "bg-gray-100 dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600"
+                          : "bg-gray-100 dark:bg-gray-800 border-2 border-gray-400 dark:border-gray-500"
                       }`}
                     >
                       <div className="flex items-start gap-3">
                         <div
                           className={`flex-1 ${
                             retirementSummary.isOnTrack
-                              ? "text-green-800 dark:text-green-200"
-                              : "text-amber-800 dark:text-amber-200"
+                              ? "text-gray-800 dark:text-gray-200"
+                              : "text-gray-800 dark:text-gray-200"
                           }`}
                         >
                           <h4
                             className={`font-bold text-lg mb-2 ${
                               retirementSummary.isOnTrack
-                                ? "text-green-800 dark:text-green-200"
-                                : "text-amber-800 dark:text-amber-200"
+                                ? "text-gray-900 dark:text-gray-100"
+                                : "text-gray-900 dark:text-gray-100"
                             }`}
                           >
                             {retirementSummary.isOnTrack
@@ -1017,34 +1025,34 @@ const RetirementSimulator: React.FC = () => {
                           </h4>
 
                           {/* Gap/Surplus Display */}
-                          <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border dark:border-gray-700 mb-3">
+                          <div className="bg-white dark:bg-gray-700 p-3 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600 mb-3">
                             <div className="flex justify-between items-center mb-1">
-                              <span className="text-gray-600 dark:text-gray-400">
+                              <span className="text-gray-700 dark:text-gray-300">
                                 Your Projected Savings:
                               </span>
-                              <span className="text-lg font-bold text-gray-900 dark:text-white">
+                              <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
                                 {formatCurrency(
                                   retirementSummary.totalProjectedSavings
                                 )}
                               </span>
                             </div>
                             <div className="flex justify-between items-center mb-1">
-                              <span className="text-gray-600 dark:text-gray-400">
+                              <span className="text-gray-700 dark:text-gray-300">
                                 Savings Needed for Retirement:
                               </span>
-                              <span className="text-lg font-bold text-gray-900 dark:text-white">
+                              <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
                                 {formatCurrency(
                                   retirementSummary.nestEggRequired
                                 )}
                               </span>
                             </div>
-                            <hr className="my-1 border-gray-200 dark:border-gray-600" />
+                            <hr className="my-1 border-gray-300 dark:border-gray-600" />
                             <div className="flex justify-between items-center">
                               <span
                                 className={`font-bold text-lg ${
                                   retirementSummary.isOnTrack
-                                    ? "text-green-700 dark:text-green-300"
-                                    : "text-amber-700 dark:text-amber-300"
+                                    ? "text-gray-800 dark:text-gray-200"
+                                    : "text-gray-800 dark:text-gray-200"
                                 }`}
                               >
                                 {retirementSummary.isOnTrack
@@ -1054,8 +1062,8 @@ const RetirementSimulator: React.FC = () => {
                               <span
                                 className={`text-xl font-bold ${
                                   retirementSummary.isOnTrack
-                                    ? "text-green-600 dark:text-green-400"
-                                    : "text-amber-600 dark:text-amber-400"
+                                    ? "text-gray-900 dark:text-gray-100"
+                                    : "text-gray-900 dark:text-gray-100"
                                 }`}
                               >
                                 {retirementSummary.isOnTrack
@@ -1075,8 +1083,8 @@ const RetirementSimulator: React.FC = () => {
                           <p
                             className={`text-md ${
                               retirementSummary.isOnTrack
-                                ? "text-green-700 dark:text-green-300"
-                                : "text-amber-700 dark:text-amber-300"
+                                ? "text-gray-700 dark:text-gray-300"
+                                : "text-gray-700 dark:text-gray-300"
                             }`}
                           >
                             {retirementSummary.isOnTrack ? (
@@ -1137,42 +1145,42 @@ const RetirementSimulator: React.FC = () => {
 
                     {/* Essential Metrics - Reduced to 2 */}
                     <div className="grid md:grid-cols-2 gap-3">
-                      <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border dark:border-gray-700 text-center">
-                        <div className="text-teal-600 dark:text-teal-400 text-md font-bold mb-1">
+                      <div className="bg-white dark:bg-gray-700 p-3 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600 text-center">
+                        <div className="text-gray-800 dark:text-gray-200 text-md font-bold mb-1">
                           Extra Yearly Savings Needed
                         </div>
-                        <div className="text-lg font-bold text-gray-900 dark:text-white">
+                        <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
                           {formatCurrency(
                             retirementSummary.yearlySavingsNeeded
                           )}
                         </div>
                       </div>
 
-                      <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border dark:border-gray-700 text-center">
-                        <div className="text-teal-600 dark:text-teal-400 text-md font-bold mb-1">
+                      <div className="bg-white dark:bg-gray-700 p-3 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600 text-center">
+                        <div className="text-gray-800 dark:text-gray-200 text-md font-bold mb-1">
                           Your Yearly Retirement Income
                         </div>
-                        <div className="text-lg font-bold text-gray-900 dark:text-white">
+                        <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
                           {formatCurrency(
                             retirementSummary.annualRetirementIncome
                           )}
                         </div>
                       </div>
 
-                      <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border dark:border-gray-700 text-center">
-                        <div className="text-teal-600 dark:text-teal-400 text-md font-bold mb-1">
+                      <div className="bg-white dark:bg-gray-700 p-3 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600 text-center">
+                        <div className="text-gray-800 dark:text-gray-200 text-md font-bold mb-1">
                           Years Until Retirement
                         </div>
-                        <div className="text-lg font-bold text-gray-900 dark:text-white">
+                        <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
                           {params.retirementAge - params.currentAge}
                         </div>
                       </div>
 
-                      <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border dark:border-gray-700 text-center">
-                        <div className="text-teal-600 dark:text-teal-400 text-md font-bold mb-1">
+                      <div className="bg-white dark:bg-gray-700 p-3 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600 text-center">
+                        <div className="text-gray-800 dark:text-gray-200 text-md font-bold mb-1">
                           Years in Retirement
                         </div>
-                        <div className="text-lg font-bold text-gray-900 dark:text-white">
+                        <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
                           {params.lifeExpectancy - params.retirementAge + 1}
                         </div>
                       </div>
@@ -1187,8 +1195,8 @@ const RetirementSimulator: React.FC = () => {
               <div className="p-6">
                 {/* Original Data Table - UPDATED */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mb-6">
-                  <div className="flex justify-between items-center p-4 border-b bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                  <div className="flex justify-between items-center p-4 border-b bg-gray-100 dark:bg-gray-700 dark:border-gray-600">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                       Complete Year-by-Year Projection ({results.length} years)
                     </h3>
                   </div>
@@ -1196,7 +1204,7 @@ const RetirementSimulator: React.FC = () => {
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr className="bg-gradient-to-r from-teal-600 to-teal-700 text-white">
+                        <tr className="bg-gradient-to-r from-gray-800 to-gray-900 text-gray-100">
                           <th className="px-4 py-3 text-left font-semibold text-md">
                             Age
                           </th>
@@ -1233,13 +1241,13 @@ const RetirementSimulator: React.FC = () => {
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                      <tbody className="divide-y divide-gray-300 dark:divide-gray-700">
                         {displayData.map((year, index) => (
                           <tr
                             key={year.age}
                             className={`hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
                               year.age === params.retirementAge
-                                ? "bg-gradient-to-r from-teal-200 to-blue-200 dark:from-teal-900 dark:to-blue-900 border-l-4 border-teal-500 font-semibold"
+                                ? "bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 border-l-4 border-gray-800 dark:border-gray-300 font-semibold"
                                 : index % 2 === 0
                                 ? "bg-white dark:bg-gray-800"
                                 : "bg-gray-50 dark:bg-gray-700"
@@ -1249,8 +1257,8 @@ const RetirementSimulator: React.FC = () => {
                               <span
                                 className={`${
                                   year.age === params.retirementAge
-                                    ? "text-teal-800 dark:text-teal-200"
-                                    : "text-gray-900 dark:text-white"
+                                    ? "text-gray-900 dark:text-gray-100"
+                                    : "text-gray-900 dark:text-gray-100"
                                 }`}
                               >
                                 {year.age}
@@ -1261,8 +1269,8 @@ const RetirementSimulator: React.FC = () => {
                               <span
                                 className={`${
                                   year.age === params.retirementAge
-                                    ? "text-teal-800 dark:text-teal-200"
-                                    : "text-gray-900 dark:text-white"
+                                    ? "text-gray-900 dark:text-gray-100"
+                                    : "text-gray-900 dark:text-gray-100"
                                 }`}
                               >
                                 {formatCurrency(year.salary)}
@@ -1273,8 +1281,8 @@ const RetirementSimulator: React.FC = () => {
                               <span
                                 className={`${
                                   year.age === params.retirementAge
-                                    ? "text-teal-800 dark:text-teal-200"
-                                    : "text-gray-900 dark:text-white"
+                                    ? "text-gray-900 dark:text-gray-100"
+                                    : "text-gray-900 dark:text-gray-100"
                                 }`}
                               >
                                 {formatCurrency(year.beginningBalance)}
@@ -1283,7 +1291,7 @@ const RetirementSimulator: React.FC = () => {
 
                             <td className="px-4 py-3">
                               <span
-                                className={`text-green-600 dark:text-green-400 ${
+                                className={`text-gray-700 dark:text-gray-300 ${
                                   year.age === params.retirementAge
                                     ? "font-semibold"
                                     : ""
@@ -1297,8 +1305,8 @@ const RetirementSimulator: React.FC = () => {
                               <span
                                 className={`${
                                   year.age === params.retirementAge
-                                    ? "text-teal-800 dark:text-teal-200"
-                                    : "text-gray-900 dark:text-white"
+                                    ? "text-gray-900 dark:text-gray-100"
+                                    : "text-gray-900 dark:text-gray-100"
                                 }`}
                               >
                                 {formatCurrency(year.savings)}
@@ -1309,8 +1317,8 @@ const RetirementSimulator: React.FC = () => {
                               <span
                                 className={`${
                                   year.age === params.retirementAge
-                                    ? "text-teal-800 dark:text-teal-200"
-                                    : "text-gray-900 dark:text-white"
+                                    ? "text-gray-900 dark:text-gray-100"
+                                    : "text-gray-900 dark:text-gray-100"
                                 }`}
                               >
                                 {formatCurrency(year.desiredIncome)}
@@ -1319,7 +1327,7 @@ const RetirementSimulator: React.FC = () => {
 
                             <td className="px-4 py-3">
                               <span
-                                className={`text-purple-600 dark:text-purple-400 ${
+                                className={`text-gray-700 dark:text-gray-300 ${
                                   year.age === params.retirementAge
                                     ? "font-semibold"
                                     : ""
@@ -1333,8 +1341,8 @@ const RetirementSimulator: React.FC = () => {
                               <span
                                 className={`${
                                   year.endingBalance < 0
-                                    ? "text-red-600 dark:text-red-400 font-bold"
-                                    : "text-indigo-700 dark:text-indigo-400"
+                                    ? "text-red-500 font-bold"
+                                    : "text-gray-800 dark:text-gray-200"
                                 } ${
                                   year.age === params.retirementAge
                                     ? "font-semibold"
@@ -1353,8 +1361,8 @@ const RetirementSimulator: React.FC = () => {
 
                 {/* Single Savings Growth Chart - Updated */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-                  <div className="flex justify-between items-center p-4 border-b bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                  <div className="flex justify-between items-center p-4 border-b bg-gray-100 dark:bg-gray-700 dark:border-gray-600">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                       Your Savings Growth Over Time
                     </h3>
                   </div>
@@ -1424,13 +1432,13 @@ const RetirementSimulator: React.FC = () => {
 
                 {/* Retirement Income Sustainability Chart */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mt-6">
-                  <div className="flex justify-between items-center p-4 border-b bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                  <div className="flex justify-between items-center p-4 border-b bg-gray-100 dark:bg-gray-700 dark:border-gray-600">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                       Your Retirement Savings Sustainability
                     </h3>
                     <Icon
                       icon="mdi:alert-circle"
-                      className="text-amber-500 text-xl"
+                      className="text-gray-600 dark:text-gray-400 text-xl"
                     />
                   </div>
 
@@ -1488,12 +1496,12 @@ const RetirementSimulator: React.FC = () => {
                     </div>
 
                     {/* Key Sustainability Metrics */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 p-4 bg-amber-50 dark:bg-amber-900 rounded-lg border border-amber-200 dark:border-amber-700">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600">
                       <div className="text-center">
-                        <div className="text-md font-semibold text-amber-700 dark:text-amber-300">
+                        <div className="text-md font-semibold text-gray-800 dark:text-gray-200">
                           Annual Spending Rate
                         </div>
-                        <div className="text-lg font-bold text-amber-800 dark:text-amber-200">
+                        <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
                           {retirementSummary
                             ? (
                                 ((results.find(
@@ -1506,16 +1514,16 @@ const RetirementSimulator: React.FC = () => {
                               ).toFixed(1) + "%"
                             : "N/A"}
                         </div>
-                        <div className="text-xs text-amber-600 dark:text-amber-400">
+                        <div className="text-xs text-gray-600 dark:text-gray-400">
                           (Target: 3-4%)
                         </div>
                       </div>
 
                       <div className="text-center">
-                        <div className="text-md font-semibold text-amber-700 dark:text-amber-300">
+                        <div className="text-md font-semibold text-gray-800 dark:text-gray-200">
                           Years Money Will Last
                         </div>
-                        <div className="text-lg font-bold text-amber-800 dark:text-amber-200">
+                        <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
                           {retirementSummary
                             ? results.filter(
                                 (r) =>
@@ -1524,7 +1532,7 @@ const RetirementSimulator: React.FC = () => {
                               ).length + " years"
                             : "N/A"}
                         </div>
-                        <div className="text-xs text-amber-600 dark:text-amber-400">
+                        <div className="text-xs text-gray-600 dark:text-gray-400">
                           Funds last until age{" "}
                           {results.find((r) => r.endingBalance <= 0)?.age ||
                             params.lifeExpectancy}
@@ -1532,10 +1540,10 @@ const RetirementSimulator: React.FC = () => {
                       </div>
 
                       <div className="text-center">
-                        <div className="text-md font-semibold text-amber-700 dark:text-amber-300">
+                        <div className="text-md font-semibold text-gray-800 dark:text-gray-200">
                           Pension Covers
                         </div>
-                        <div className="text-lg font-bold text-amber-800 dark:text-amber-200">
+                        <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
                           {retirementSummary
                             ? (
                                 ((results.find(
@@ -1548,7 +1556,7 @@ const RetirementSimulator: React.FC = () => {
                               ).toFixed(0) + "%"
                             : "N/A"}
                         </div>
-                        <div className="text-xs text-amber-600 dark:text-amber-400">
+                        <div className="text-xs text-gray-600 dark:text-gray-400">
                           of retirement income
                         </div>
                       </div>
@@ -1657,9 +1665,9 @@ const RetirementSimulator: React.FC = () => {
               <div className="flex md:flex-row flex-col items-center gap-3 mb-4">
                 <Icon
                   icon="mdi:rocket-launch"
-                  className="text-white text-2xl"
+                  className="text-gray-100 text-2xl"
                 />
-                <h3 className="text-2xl md:text-3xl font-bold text-white">
+                <h3 className="text-2xl md:text-3xl font-bold text-gray-100">
                   Ready to Take the Next Step?
                 </h3>
               </div>
@@ -1697,7 +1705,7 @@ const RetirementSimulator: React.FC = () => {
             {/* Action Button */}
             <div className="md:w-1/3 text-center md:text-right">
               <Link to="/retirement-simulator/retire-how-form">
-                <button className="bg-white text-gray-900 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700 font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl text-lg w-full md:w-auto border border-gray-300 dark:border-gray-600">
+                <button className="bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600 font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl text-lg w-full md:w-auto border border-gray-300 dark:border-gray-600">
                   <div className="flex md:flex-row flex-col items-center justify-center gap-2">
                     <Icon icon="mdi:chart-line" className="text-xl" />
                     Get Personalized Plan
