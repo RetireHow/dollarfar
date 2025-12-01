@@ -1327,17 +1327,14 @@ export default function RetireHowForm(): JSX.Element {
                       {/* Subscription Start Button  */}
                       <div>
                         {isLoadingSubscription ? (
-                          <button
-                            type="button"
-                            className="rounded-xl border px-3 py-2 font-semibold transition-colors h-12 w-full flex justify-center items-center bg-gray-200 animate-pulse"
-                          >
+                          <div className="rounded-xl border px-3 py-2 font-semibold transition-colors h-12 w-full flex justify-center items-center bg-gray-200 animate-pulse">
                             <Icon
-                              className="text-gray-400"
+                              className="text-gray-900"
                               icon="line-md:loading-loop"
                               width="30"
                               height="30"
                             />
-                          </button>
+                          </div>
                         ) : (
                           <button
                             type="button"
@@ -1360,23 +1357,10 @@ export default function RetireHowForm(): JSX.Element {
                       {data?.data?.status === "active" && (
                         <div className="w-full">
                           <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
-                            <div className="flex items-start gap-3">
-                              <div className="flex-shrink-0 mt-0.5">
-                                <svg
-                                  className="w-6 h-6 text-amber-600 dark:text-amber-400"
-                                  fill="currentColor"
-                                  viewBox="0 0 20 20"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                              </div>
+                            <div className="">
                               <div className="flex-1">
                                 <h4 className="text-lg font-semibold text-amber-800 dark:text-amber-300 mb-2">
-                                  Complete Form to Schedule Your Sessions
+                                  Complete The Form to Schedule Your Sessions
                                 </h4>
 
                                 {/* Essential Subscription Info */}
