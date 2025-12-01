@@ -20,6 +20,7 @@ import { ArrowBigRight } from "lucide-react";
 import { useGetSingleConsultationSubscriptionQuery } from "../../redux/features/APIEndpoints/consultationSubscriptionApi/consultationSubscription";
 import { useBookConsultationSessoinMutation } from "../../redux/features/APIEndpoints/consultationSessionApi/consultationSessionApi";
 import moment from "moment";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 // const STRIPE_LIVE_SECRET_KEY =
 //   "pk_live_51RplAhBYC7YMMAFC7uODsfkBdTVL0v5Qhq5EOZ0MryrKf9P74f2l2zXjTS9i6kQXMGpPFvGMJD4ttj20WMHZH9CX004Xd966hu";
@@ -334,11 +335,14 @@ export default function RetireHowForm(): JSX.Element {
   const [addRetirementPlan, { isLoading: submitting, isError, error }] =
     useAddRetirementPlanMutation();
 
-  const { data, refetch: refetchSubscription } =
-    useGetSingleConsultationSubscriptionQuery(form.contact.email, {
-      refetchOnMountOrArgChange: true,
-      skip: !form.dollarfar_planning.interpretation_toggle,
-    });
+  const {
+    data,
+    isLoading: isLoadingSubscription,
+    refetch: refetchSubscription,
+  } = useGetSingleConsultationSubscriptionQuery(form.contact.email, {
+    refetchOnMountOrArgChange: true,
+    skip: !form.dollarfar_planning.interpretation_toggle,
+  });
 
   const [
     bookConsultationSession,
@@ -1322,20 +1326,34 @@ export default function RetireHowForm(): JSX.Element {
                       </div>
                       {/* Subscription Start Button  */}
                       <div>
-                        <button
-                          type="button"
-                          onClick={onStartSubscription}
-                          disabled={data?.data?.status === "active"}
-                          className={`rounded-xl border px-3 py-2 font-semibold transition-colors ${
-                            data?.data?.status === "active"
-                              ? "border-green-600 bg-green-500 text-white"
-                              : "border-gray-700 bg-gray-700 hover:border-gray-900 hover:bg-gray-900 duration-300 text-white"
-                          }`}
-                        >
-                          {data?.data?.status === "active"
-                            ? "✓ Subscription Active — $199 CAD Paid ( + taxes )"
-                            : "Start subscription with this request — $199 CAD ( + taxes )"}
-                        </button>
+                        {isLoadingSubscription ? (
+                          <button
+                            type="button"
+                            className="rounded-xl border px-3 py-2 font-semibold transition-colors h-12 w-full flex justify-center items-center bg-gray-200 animate-pulse"
+                          >
+                            <Icon
+                              className="text-gray-400"
+                              icon="line-md:loading-loop"
+                              width="30"
+                              height="30"
+                            />
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={onStartSubscription}
+                            disabled={data?.data?.status === "active"}
+                            className={`rounded-xl border px-3 py-2 font-semibold transition-colors w-full ${
+                              data?.data?.status === "active"
+                                ? "border-green-600 bg-green-500 text-white"
+                                : "border-gray-700 bg-gray-700 hover:border-gray-900 hover:bg-gray-900 duration-300 text-white"
+                            }`}
+                          >
+                            {data?.data?.status === "active"
+                              ? "✓ Subscription Active — $199 CAD Paid ( + taxes )"
+                              : "Start subscription with this request — $199 CAD ( + taxes )"}
+                          </button>
+                        )}
                       </div>
 
                       {/* Subscribed Warning Box */}
