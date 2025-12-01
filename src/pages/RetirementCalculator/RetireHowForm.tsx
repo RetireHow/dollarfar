@@ -1975,10 +1975,12 @@ export default function RetireHowForm(): JSX.Element {
             <div className="text-center">
               <button
                 type="submit"
-                disabled={submitting}
+                disabled={submitting || isBookingSession}
                 className="w-full max-w-md rounded-full bg-gray-900 dark:bg-gray-700 hover:bg-black dark:hover:bg-gray-600 px-6 py-4 text-lg font-semibold text-white disabled:opacity-60 transition-colors shadow-lg"
               >
-                {submitting ? "Submitting..." : "Submit & Request My Plan"}
+                {submitting || isBookingSession
+                  ? "Submitting..."
+                  : "Submit & Request My Plan"}
               </button>
 
               <div className="mt-4 border-t border-gray-300 dark:border-gray-600 pt-4 text-center text-lg text-gray-600 dark:text-gray-400">
