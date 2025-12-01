@@ -1,16 +1,16 @@
 import { TResponseRedux } from "../../../../types";
 import { baseApi } from "../../../api/baseApi";
 
-const subscriptionPaymentApi = baseApi.injectEndpoints({
+const consultationSubscription = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getSingleSubscriptionPayment: builder.query({
-      query: (paymentIntentId) => {
+    getSingleConsultationSubscription: builder.query({
+      query: (email) => {
         return {
-          url: `/subscription/get-subscription-payment/${paymentIntentId}`,
+          url: `/consultation-subscription/user/${email}`,
           method: "GET",
         };
       },
-      providesTags: ["subscriptionPayment"],
+      providesTags: ["consultationSubscription"],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       transformResponse: (response: TResponseRedux<any>) => {
         return {
@@ -21,4 +21,5 @@ const subscriptionPaymentApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetSingleSubscriptionPaymentQuery } = subscriptionPaymentApi;
+export const { useGetSingleConsultationSubscriptionQuery } =
+  consultationSubscription;

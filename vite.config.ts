@@ -12,7 +12,4 @@ export default defineConfig({
     // Optional: Include if you're using CSS modules
     css: true,
   },
-  server: {
-    port: 5174,
-  },
 });

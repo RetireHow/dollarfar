@@ -134,7 +134,7 @@ export default function BookLandingPage() {
                 <Icon icon="ic:baseline-facebook" width="33" height="33" />
               </Link>
               <Link
-                to="https://www.linkedin.com/in/rao-movva-pfp%C2%AE-cim%C2%AE-ciwm-fcsi%C2%AE-1826263/"
+                to="https://www.linkedin.com/in/raomovvadollarfar?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
                 target="_blank"
               >
                 <Icon
@@ -160,7 +160,10 @@ export default function BookLandingPage() {
                   height="30"
                 />
               </Link>
-              <Link to="https://www.youtube.com/@RetireHowWithRao" target="_blank">
+              <Link
+                to="https://www.youtube.com/@RetireHowWithRao"
+                target="_blank"
+              >
                 <Icon
                   icon="entypo-social:youtube-with-circle"
                   width="30"

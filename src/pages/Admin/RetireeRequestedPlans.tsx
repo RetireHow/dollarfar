@@ -392,7 +392,7 @@ const NotesModal = ({
 
 const EmailModal = ({
   onClose,
-  selectedRecordForAction
+  selectedRecordForAction,
 }: {
   onClose: () => void;
   selectedRecordForAction: RetirementData;
@@ -424,7 +424,8 @@ const EmailModal = ({
       subject: emailSubject,
       body: emailBody,
       planId: selectedRecordForAction?._id,
-      userId: user?.data?.user,
+      userId:
+        user?.data?.role === "superAdmin" ? user?.data?._id : user?.data?.user,
     };
 
     const res = await addRetirementEmail(newEmailData);
@@ -1844,7 +1845,7 @@ export default function RetireeRequestedPlans() {
           </h1>
           <div className="overflow-x-auto border border-gray-300 dark:border-gray-700 rounded-lg">
             <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
-              <thead className="bg-green-50 dark:bg-green-900/30">
+              <thead className="bg-gray-100 dark:bg-gray-800">
                 <tr>
                   <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
                     Client
@@ -1853,13 +1854,13 @@ export default function RetireeRequestedPlans() {
                     Contact
                   </th>
                   <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
-                    Travel Readiness
+                    Retirement Goals
                   </th>
                   <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
-                    Destination
+                    Travel Preferences
                   </th>
                   <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
-                    Timeline
+                    Submitted
                   </th>
                   <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
                     Actions
@@ -1872,6 +1873,7 @@ export default function RetireeRequestedPlans() {
                 <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-300 dark:divide-gray-700">
                   {paidSubscriptionPlans?.map((record) => {
                     const contactInfo = getContactInfo(record);
+                    const retirementSnapshot = getRetirementSnapshot(record);
                     const travelPlanning = getTravelPlanning(record);
 
                     return (
@@ -1901,16 +1903,22 @@ export default function RetireeRequestedPlans() {
                         </td>
                         <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
                           <div className="space-y-1">
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-200">
-                              <Icon icon="mdi:check-circle" className="mr-1" />
-                              Independent Travel
-                            </span>
                             <p className="text-sm">
                               <span className="font-medium dark:text-white">
-                                Style:
+                                Age:
                               </span>{" "}
                               <span className="dark:text-gray-300">
-                                {travelPlanning.travel_style || "Not set"}
+                                {retirementSnapshot.target_age || "Not set"}
+                              </span>
+                            </p>
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Income:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {formatCurrency(
+                                  retirementSnapshot.desired_income as string
+                                )}
                               </span>
                             </p>
                           </div>
@@ -1919,7 +1927,7 @@ export default function RetireeRequestedPlans() {
                           <div className="space-y-1">
                             <p className="text-sm">
                               <span className="font-medium dark:text-white">
-                                Region:
+                                Destination:
                               </span>{" "}
                               <span className="dark:text-gray-300">
                                 {travelPlanning.country_region_interest ||
@@ -1928,35 +1936,18 @@ export default function RetireeRequestedPlans() {
                             </p>
                             <p className="text-sm">
                               <span className="font-medium dark:text-white">
-                                Locations:
-                              </span>{" "}
-                              <span className="dark:text-gray-300">
-                                {travelPlanning.ideal_locations_interest ||
-                                  "Not set"}
-                              </span>
-                            </p>
-                          </div>
-                        </td>
-                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                          <div className="space-y-1">
-                            <p className="text-sm">
-                              <span className="font-medium dark:text-white">
-                                Start:
+                                Timeline:
                               </span>{" "}
                               <span className="dark:text-gray-300">
                                 {travelPlanning.start_timeline || "Not set"}
                               </span>
                             </p>
-                            <p className="text-sm">
-                              <span className="font-medium dark:text-white">
-                                Duration:
-                              </span>{" "}
-                              <span className="dark:text-gray-300">
-                                {travelPlanning.months_abroad || "Not set"}{" "}
-                                months
-                              </span>
-                            </p>
                           </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {formatDate(record.createdAt)}
+                          </p>
                         </td>
                         <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
                           <div className="flex flex-col gap-2">
@@ -1971,6 +1962,12 @@ export default function RetireeRequestedPlans() {
                               className="inline-flex items-center px-4 py-2 bg-emerald-600 dark:bg-emerald-700 text-white rounded-lg hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors font-medium"
                             >
                               Notes
+                            </button>
+                            <button
+                              onClick={() => handleEmailModal(record)}
+                              className="inline-flex items-center px-4 py-2 bg-orange-600 dark:bg-orange-700 text-white rounded-lg hover:bg-orange-700 dark:hover:bg-orange-600 transition-colors font-medium"
+                            >
+                              Email
                             </button>
                           </div>
                         </td>
@@ -2117,6 +2114,12 @@ export default function RetireeRequestedPlans() {
                               className="inline-flex items-center px-4 py-2 bg-emerald-600 dark:bg-emerald-700 text-white rounded-lg hover:bg-emerald-700 dark:hover:bg-emerald-600 transition-colors font-medium"
                             >
                               Notes
+                            </button>
+                            <button
+                              onClick={() => handleEmailModal(record)}
+                              className="inline-flex items-center px-4 py-2 bg-orange-600 dark:bg-orange-700 text-white rounded-lg hover:bg-orange-700 dark:hover:bg-orange-600 transition-colors font-medium"
+                            >
+                              Email
                             </button>
                           </div>
                         </td>

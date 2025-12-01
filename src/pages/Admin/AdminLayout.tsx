@@ -100,7 +100,6 @@ export default function AdminLayout() {
                 <span>Ebook Downloads</span>
               </NavLink>
             </li>
-
             <li onClick={handleMobileViewNavClick}>
               <NavLink
                 to="retiree-requests"

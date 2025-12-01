@@ -16,6 +16,10 @@ import { Link } from "react-router-dom";
 import RedStar from "../../components/UI/RedStar";
 import { useAddRetirementPlanMutation } from "../../redux/features/APIEndpoints/retirementPlansApi/retirementPlansApi";
 import { showApiErrorToast } from "../../utils/showApiErrorToast";
+import { ArrowBigRight } from "lucide-react";
+import { useGetSingleConsultationSubscriptionQuery } from "../../redux/features/APIEndpoints/consultationSubscriptionApi/consultationSubscription";
+import { useBookConsultationSessoinMutation } from "../../redux/features/APIEndpoints/consultationSessionApi/consultationSessionApi";
+import moment from "moment";
 
 // const STRIPE_LIVE_SECRET_KEY =
 //   "pk_live_51RplAhBYC7YMMAFC7uODsfkBdTVL0v5Qhq5EOZ0MryrKf9P74f2l2zXjTS9i6kQXMGpPFvGMJD4ttj20WMHZH9CX004Xd966hu";
@@ -23,34 +27,6 @@ const STRIPE_TEST_SECRET_KEY =
   "pk_test_51RppIt4G0lMbEIGhQ3ltvcDSaNOOZaRalURZRSahGnm2EUCDMPU14eTNz9FiTodU9TV3hQhxzM8cMZVQeaMJXR4L00aUu5KTyR";
 
 const stripePromise = loadStripe(STRIPE_TEST_SECRET_KEY);
-
-// Add this polling function
-const pollForPaymentData = async (
-  paymentIntentId: string,
-  maxAttempts = 10
-): Promise<any> => {
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    try {
-      const res = await fetch(
-        `${baseUrl}/subscription/get-subscription-payment/${paymentIntentId}`
-      );
-
-      if (res.status === 200) {
-        const data = await res.json();
-        if (data?.data) {
-          return data.data;
-        }
-      }
-
-      // Wait 2 seconds before next attempt
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-    } catch (error) {
-      console.error(`Polling attempt ${attempt + 1} failed:`, error);
-    }
-  }
-
-  throw new Error("Payment data not found in database after multiple attempts");
-};
 
 /**
  * Organized Form State Types by Category
@@ -76,11 +52,8 @@ type HousingEquity = {
 type DollarFarPlanning = {
   calculators?: string[];
   interpretation_toggle?: boolean;
-  name_pre?: string;
-  email_pre?: string;
-  phone_pre?: string;
-  time_pre?: string;
-  subscription_status?: "" | "have" | "start" | "paid";
+  consultation_time: string;
+  payment_status?: "" | "start" | "paid";
   subscription_payment_intent?: string;
 };
 
@@ -113,7 +86,7 @@ type FormState = {
   dollarfar_planning: DollarFarPlanning;
   travel_planning: TravelPlanning;
   budget_estimates: BudgetEstimates;
-  travel_purpose: string[];
+  travel_purposes: string[];
   privacy_acknowledgements: PrivacyAcknowledgements;
 };
 
@@ -142,6 +115,33 @@ const parseCommaNumber = (value: string): string => {
   return value.replace(/,/g, "");
 };
 
+// Add this polling function
+const pollForPaymentData = async (
+  email: string,
+  maxAttempts = 10
+): Promise<any> => {
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      const res = await fetch(
+        `${baseUrl}/consultation-subscription/user/${email}`
+      );
+
+      if (res.status === 200) {
+        const data = await res.json();
+        if (data?.data) {
+          return data.data;
+        }
+      }
+
+      // Wait 2 seconds before next attempt
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    } catch (error) {
+      console.error(`Polling attempt ${attempt + 1} failed:`, error);
+    }
+  }
+
+  throw new Error("Payment data not found in database after multiple attempts");
+};
 /**
  * PaymentModal uses Stripe hooks - must be wrapped in Elements
  */
@@ -150,24 +150,27 @@ function PaymentModalComponent({
   onClose,
   onPaid,
   contactInfo,
-  setIsSubscribeClicked,
 }: {
   open: boolean;
   onClose: () => void;
   onPaid: (paymentIntentId: string) => void;
   contactInfo: ContactInfo;
-  setIsSubscribeClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  if (!contactInfo.email || !contactInfo.phone || !contactInfo.name) {
-    setIsSubscribeClicked(true);
-    return null;
-  }
 
   if (!open) return null;
+
+  if (!contactInfo.name || !contactInfo.email || !contactInfo.phone) {
+    onClose();
+    toast.error(
+      "Please provide the required contact informations before start subscription!",
+      { autoClose: 15000 }
+    );
+    return null;
+  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -181,7 +184,7 @@ function PaymentModalComponent({
     setLoading(true);
     try {
       const res = await fetch(
-        `${baseUrl}/subscription/create-subscription-payment-intent`,
+        `${baseUrl}/consultation-subscription/payment-intent`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -215,7 +218,7 @@ function PaymentModalComponent({
 
       if (result.paymentIntent?.status === "succeeded") {
         // Wait for webhook to store payment in DB
-        const paymentData = await pollForPaymentData(result.paymentIntent.id);
+        const paymentData = await pollForPaymentData(contactInfo.email);
         console.log("🎉 Payment fully processed:", paymentData);
         onPaid(result.paymentIntent.id);
         setLoading(false);
@@ -235,7 +238,7 @@ function PaymentModalComponent({
         <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
           Complete Subscription
         </h3>
-        <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
+        <p className="mb-4 text-md text-gray-700 dark:text-gray-300">
           Your plan includes two 30-minute consultations within 12 months.
         </p>
 
@@ -258,7 +261,7 @@ function PaymentModalComponent({
           </div>
 
           {error && (
-            <div className="mb-3 text-center text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 py-2 px-3 rounded-lg border border-red-200 dark:border-red-800">
+            <div className="mb-3 text-center text-md text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 py-2 px-3 rounded-lg border border-red-200 dark:border-red-800">
               {error}
             </div>
           )}
@@ -293,7 +296,6 @@ const PaymentModal = (props: {
   onClose: () => void;
   onPaid: (paymentIntentId: string) => void;
   contactInfo: ContactInfo;
-  setIsSubscribeClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }) => (
   <Elements stripe={stripePromise}>
     <PaymentModalComponent {...props} />
@@ -304,9 +306,9 @@ const PaymentModal = (props: {
  * Main form component
  */
 export default function RetireHowForm(): JSX.Element {
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+  // useEffect(() => {
+  //   window.scrollTo({ top: 0, behavior: "smooth" });
+  // }, []);
   const [form, setForm] = useState<FormState>({
     contact: {
       name: "",
@@ -316,17 +318,36 @@ export default function RetireHowForm(): JSX.Element {
     retirement_snapshot: {},
     housing_equity: {},
     dollarfar_planning: {
-      subscription_status: "",
+      payment_status: "",
+      consultation_time: "",
     },
     travel_planning: {},
     budget_estimates: {},
-    travel_purpose: [], // FIXED: Changed from {} to []
+    travel_purposes: [], // FIXED: Changed from {} to []
     privacy_acknowledgements: {},
   });
 
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [showError, setShowError] = useState(false);
-  const [isSubscribeClicked, setIsSubscribeClicked] = useState(false);
+
+  // ===========================================|| RTK Query ||==============================================
+  const [addRetirementPlan, { isLoading: submitting, isError, error }] =
+    useAddRetirementPlanMutation();
+
+  const { data, refetch: refetchSubscription } =
+    useGetSingleConsultationSubscriptionQuery(form.contact.email, {
+      refetchOnMountOrArgChange: true,
+      skip: !form.dollarfar_planning.interpretation_toggle,
+    });
+
+  const [
+    bookConsultationSession,
+    {
+      isLoading: isBookingSession,
+      isError: isBookingError,
+      error: bookingError,
+    },
+  ] = useBookConsultationSessoinMutation();
 
   // Enhanced change handler with number formatting
   const handleChange = (
@@ -376,7 +397,7 @@ export default function RetireHowForm(): JSX.Element {
   };
 
   // Checkbox handler: supports single boolean checkboxes and multi-value groups
-  const handleCheckboxChange = (
+  const handleCheckboxChange = async (
     e: React.ChangeEvent<HTMLInputElement> | CheckboxChangeEvent
   ) => {
     const { name, value, checked } = e.target as {
@@ -385,18 +406,30 @@ export default function RetireHowForm(): JSX.Element {
       checked: boolean;
     };
 
+    // Validate Interpretation Eable Button
+    if (
+      name === "dollarfar_planning.interpretation_toggle" &&
+      checked &&
+      (!form.contact.name || !form.contact.email || !form.contact.phone)
+    ) {
+      return toast.error(
+        "Oops! Please fill in the required fields in the Contact Information section above to enable this service!",
+        { autoClose: 30000 }
+      );
+    }
+
     // Extract category and field name
     const [category, fieldName] = name.includes(".")
       ? name.split(".")
       : [null, name];
 
-    // Handle travel_purpose (direct array)
-    if (name === "travel_purpose") {
+    // Handle travel_purposes (direct array)
+    if (name === "travel_purposes") {
       setForm((prev) => ({
         ...prev,
-        travel_purpose: checked
-          ? [...prev.travel_purpose, value]
-          : prev.travel_purpose.filter((item) => item !== value),
+        travel_purposes: checked
+          ? [...prev.travel_purposes, value]
+          : prev.travel_purposes.filter((item) => item !== value),
       }));
       return;
     }
@@ -452,10 +485,7 @@ export default function RetireHowForm(): JSX.Element {
             ...prev,
             dollarfar_planning: {
               ...prev.dollarfar_planning,
-              name_pre: "",
-              email_pre: "",
-              phone_pre: "",
-              time_pre: "",
+              consultation_time: "",
             },
           }));
         }
@@ -466,18 +496,7 @@ export default function RetireHowForm(): JSX.Element {
 
   // Helper to check if travel purpose is selected
   const isTravelPurposeSelected = (value: string): boolean => {
-    return form.travel_purpose.includes(value);
-  };
-
-  // When user clicks 'I have a subscription'
-  const onHaveSubscription = () => {
-    setForm((prev) => ({
-      ...prev,
-      dollarfar_planning: {
-        ...prev.dollarfar_planning,
-        subscription_status: "have",
-      },
-    }));
+    return form.travel_purposes.includes(value);
   };
 
   // When user clicks 'Start subscription' -> open payment modal
@@ -486,7 +505,7 @@ export default function RetireHowForm(): JSX.Element {
       ...prev,
       dollarfar_planning: {
         ...prev.dollarfar_planning,
-        subscription_status: "start",
+        payment_status: "start",
       },
     }));
     setPaymentOpen(true);
@@ -499,11 +518,15 @@ export default function RetireHowForm(): JSX.Element {
         ...prev,
         dollarfar_planning: {
           ...prev.dollarfar_planning,
-          subscription_status: "paid",
+          payment_status: "paid",
           subscription_payment_intent: paymentIntentId,
         },
       }));
       setPaymentOpen(false);
+      // Immediately refetch subscription data
+      if (form.contact.email) {
+        await refetchSubscription();
+      }
       toast.success("Payment successful. You can now submit the main form.", {
         autoClose: 15000,
       });
@@ -535,14 +558,17 @@ export default function RetireHowForm(): JSX.Element {
   const emailReg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
   const phoneReg = /^[+]?[1-9][\d]{0,15}$/;
 
-  const [addRetirementPlan, { isLoading: submitting, isError, error }] =
-    useAddRetirementPlanMutation();
-
   useEffect(() => {
     if (isError && !submitting && error) {
       showApiErrorToast(error);
     }
   }, [submitting, isError, error]);
+
+  useEffect(() => {
+    if (!isBookingSession && isBookingError && bookingError) {
+      showApiErrorToast(bookingError);
+    }
+  }, [isBookingSession, isBookingError, bookingError]);
 
   // final submit - parse comma numbers before sending
   const handleSubmit = async (e: FormEvent) => {
@@ -582,15 +608,23 @@ export default function RetireHowForm(): JSX.Element {
     // Validate subscription if interpretation is enabled
     if (
       form.dollarfar_planning.interpretation_toggle &&
-      form.dollarfar_planning.subscription_status !== "have" &&
-      form.dollarfar_planning.subscription_status !== "paid"
+      data?.data?.status !== "active"
     ) {
-      toast.error(
-        "Please select either have an existing subscription or start a new one for interpretation services."
-      );
+      toast.error("Please start subscription for interpretation services.");
       setShowError(true);
       return;
     }
+
+    //Validate Preferred Consultation Time
+    if (
+      form.dollarfar_planning.interpretation_toggle &&
+      !form.dollarfar_planning.consultation_time
+    ) {
+      toast.error("Please input your preferred consultation time.");
+      setShowError(true);
+      return;
+    }
+
     // Prepare form data by parsing comma numbers
     const submitData = { ...form };
 
@@ -615,31 +649,73 @@ export default function RetireHowForm(): JSX.Element {
       }
     });
 
-    const res = await addRetirementPlan(submitData);
-    if (res?.error) return;
+    // Call api conditionally
+    const {
+      contact,
+      budget_estimates,
+      housing_equity,
+      privacy_acknowledgements,
+      retirement_snapshot,
+      travel_purposes,
+      travel_planning,
+      dollarfar_planning,
+    } = form;
+    if (
+      form.dollarfar_planning.interpretation_toggle &&
+      data?.data?.status === "active"
+    ) {
+      const subscription = data?.data?._id;
+      const newSessionData = {
+        subscription,
+        contact,
+        budget_estimates,
+        housing_equity,
+        privacy_acknowledgements,
+        retirement_snapshot,
+        travel_purposes,
+        travel_planning,
+        dollarfar_planning: {
+          calculators: dollarfar_planning?.calculators,
+          interpretation_toggle: true,
+          consultation_time: dollarfar_planning?.consultation_time,
+        },
+      };
 
-    toast.success(
-      "Form submitted successfully. A member of RetireHow Team will contact you.",
-      { autoClose: 15000 }
-    );
+      const res = await bookConsultationSession(newSessionData);
+      if (res?.error) return;
+      toast.success(
+        "Your consultation session is booked successfully. A member of RetireHow Team will contact you.",
+        { autoClose: 15000 }
+      );
+    } else {
+      const res = await addRetirementPlan(submitData);
+      if (res?.error) return;
+      toast.success(
+        "Form submitted successfully. A member of RetireHow Team will contact you.",
+        { autoClose: 15000 }
+      );
+    }
+
     // Reset form - FIXED: Proper type matching
-    // setForm({
-    //   contact: {
-    //     name: "",
-    //     phone: "",
-    //     email: "",
-    //   },
-    //   retirement_snapshot: {},
-    //   housing_equity: {},
-    //   dollarfar_planning: {
-    //     subscription_status: "",
-    //     interpretation_toggle: false,
-    //   },
-    //   travel_planning: {},
-    //   budget_estimates: {},
-    //   travel_purpose: [], // FIXED: Changed from {} to []
-    //   privacy_acknowledgements: {},
-    // });
+    setForm({
+      contact: {
+        name: "",
+        phone: "",
+        email: "",
+        region: "",
+      },
+      retirement_snapshot: {},
+      housing_equity: {},
+      dollarfar_planning: {
+        payment_status: "",
+        interpretation_toggle: false,
+        consultation_time: "",
+      },
+      travel_planning: {},
+      budget_estimates: {},
+      travel_purposes: [],
+      privacy_acknowledgements: {},
+    });
   };
 
   const toggleErrorBorderColor = (value: string | boolean, field: string) => {
@@ -667,6 +743,10 @@ export default function RetireHowForm(): JSX.Element {
       return showError && !value
         ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
         : "border-gray-400 dark:border-gray-500 hover:border-gray-600 dark:hover:border-gray-400";
+    } else if (field === "consultation_time") {
+      return showError && !value
+        ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
+        : "border-gray-400 dark:border-gray-500 hover:border-gray-600 dark:hover:border-gray-400";
     }
   };
 
@@ -678,7 +758,6 @@ export default function RetireHowForm(): JSX.Element {
           onClose={() => setPaymentOpen(false)}
           onPaid={onPaymentSuccess}
           contactInfo={form.contact}
-          setIsSubscribeClicked={setIsSubscribeClicked}
         />
       )}
 
@@ -694,14 +773,19 @@ export default function RetireHowForm(): JSX.Element {
           </button>
         </Link>
         <h3 className="md:text-[28px] text-[23px] font-extrabold text-white dark:text-white">
-          Ready to explore your next step?
+          💡 Retirement Simulator Results
         </h3>
-        <p className="md:text-[20px] text-gray-300 dark:text-gray-300 md:leading-[35px] leading-[27px] md:mr-[8rem]">
-          Complete the short form below to share your retirement vision, and
-          we'll create a personalized roadmap to optimize your finances, explore
-          global living opportunities, and achieve your ideal lifestyle —
-          whether staying local or going abroad.
-        </p>
+        <div className="space-y-3 md:text-[1.3rem] text-[1.1rem]">
+          <p className="text-gray-300 dark:text-gray-300 md:mr-[8rem]">
+            Instant insights tailored to your retirement readiness — and ways to
+            make your plan go further.
+          </p>
+          <p className="text-gray-300 dark:text-gray-300 md:mr-[8rem]">
+            👉 Ready to explore your next step? Complete the short form below
+            and we’ll tailor a plan to maintain or elevate your lifestyle — at
+            home or abroad.
+          </p>
+        </div>
         <div className="absolute bottom-0 right-0 flex justify-end">
           <img
             className="md:w-auto w-[80px]"
@@ -711,7 +795,7 @@ export default function RetireHowForm(): JSX.Element {
         </div>
       </section>
 
-      <main className="mx-auto max-w-4xl md:p-6 p-3">
+      <main className="mx-auto max-w-6xl md:p-6 p-3">
         <section className="rounded-2xl bg-white dark:bg-gray-800 md:p-6 p-3 shadow-lg border border-gray-300 dark:border-gray-700">
           <form
             id="df-retire-form"
@@ -723,7 +807,7 @@ export default function RetireHowForm(): JSX.Element {
               <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 A. Contact Information
               </h2>
-              <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
+              <p className="mb-4 text-md text-gray-700 dark:text-gray-300">
                 Basic details so we can reach you with your personalized plan
               </p>
 
@@ -739,7 +823,7 @@ export default function RetireHowForm(): JSX.Element {
                         <RedStar />
                       </p>
                       {showError && !form.contact.name && (
-                        <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-sm">
+                        <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-md">
                           Required*
                         </p>
                       )}
@@ -760,10 +844,10 @@ export default function RetireHowForm(): JSX.Element {
                       "name"
                     )}`}
                   />
-                  <small className="block text-gray-600 dark:text-gray-400 mt-1">
+                  <p className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: So we can address you properly in your
                     personalized plan.
-                  </small>
+                  </p>
                 </div>
 
                 <div>
@@ -777,14 +861,14 @@ export default function RetireHowForm(): JSX.Element {
                         <RedStar />
                       </p>
                       {showError && !form.contact.phone && (
-                        <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-sm">
+                        <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-md">
                           Required*
                         </p>
                       )}
                       {showError &&
                         form.contact.phone &&
                         !phoneReg.test(form.contact.phone) && (
-                          <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-sm">
+                          <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-md">
                             Required a valid phone number!
                           </p>
                         )}
@@ -804,10 +888,10 @@ export default function RetireHowForm(): JSX.Element {
                       "phone"
                     )}`}
                   />
-                  <small className="block text-gray-600 dark:text-gray-400 mt-1">
+                  <p className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: We'll need a reliable number to coordinate
                     details and confirm preferences quickly.
-                  </small>
+                  </p>
                 </div>
               </div>
 
@@ -823,14 +907,14 @@ export default function RetireHowForm(): JSX.Element {
                         <RedStar />
                       </p>
                       {showError && !form.contact.email && (
-                        <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-sm">
+                        <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-md">
                           Required*
                         </p>
                       )}
                       {showError &&
                         form.contact.email &&
                         !emailReg.test(form.contact.email) && (
-                          <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-sm">
+                          <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-md">
                             Required a valid email!
                           </p>
                         )}
@@ -849,9 +933,9 @@ export default function RetireHowForm(): JSX.Element {
                       "email"
                     )}`}
                   />
-                  <small className="block text-gray-600 dark:text-gray-400 mt-1">
+                  <p className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: To deliver your summary and follow ups.
-                  </small>
+                  </p>
                 </div>
 
                 <div>
@@ -872,10 +956,10 @@ export default function RetireHowForm(): JSX.Element {
                     placeholder="Enter your province or state"
                     className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   />
-                  <small className="block text-gray-600 dark:text-gray-400 mt-1">
+                  <p className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: Benefits/taxes and travel rules may vary by
                     region.
-                  </small>
+                  </p>
                 </div>
               </div>
             </div>
@@ -885,7 +969,7 @@ export default function RetireHowForm(): JSX.Element {
               <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 B. Retirement Snapshot
               </h2>
-              <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
+              <p className="mb-4 text-md text-gray-700 dark:text-gray-300">
                 Help us understand your retirement goals and current financial
                 picture
               </p>
@@ -909,10 +993,10 @@ export default function RetireHowForm(): JSX.Element {
                     placeholder="Enter target retirement age, e.g., 65"
                     className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   />
-                  <small className="block text-gray-600 dark:text-gray-400 mt-1">
+                  <p className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: Timing affects benefits, drawdown order, and
                     travel windows.
-                  </small>
+                  </p>
                 </div>
 
                 <div>
@@ -934,10 +1018,10 @@ export default function RetireHowForm(): JSX.Element {
                     placeholder="Enter desired annual income, e.g., 60,000"
                     className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   />
-                  <small className="block text-gray-600 dark:text-gray-400 mt-1">
+                  <p className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: Sets your lifestyle target so we can compare
                     home vs. abroad.
-                  </small>
+                  </p>
                 </div>
               </div>
 
@@ -946,13 +1030,15 @@ export default function RetireHowForm(): JSX.Element {
                   htmlFor="retirement_snapshot.estimated_savings"
                   className="block font-semibold mb-2 text-gray-800 dark:text-gray-200"
                 >
-                  Estimated total savings and investments
+                  Estimated total savings and investments (including registered
+                  and non-registered money such as RRSPs, TFSAs, 401(k)s, SIPPs,
+                  ISAs, FDs, CDs, GICs, or similar accounts)
                 </label>
-                <small className="block text-gray-600 dark:text-gray-400 mb-2">
+                <p className="block text-gray-600 dark:text-gray-400 mb-2">
                   💬 Include everything you've set aside for retirement —
                   investments, savings, or deposits, whether registered,
                   non-registered, or held abroad.
-                </small>
+                </p>
                 <input
                   id="retirement_snapshot.estimated_savings"
                   name="retirement_snapshot.estimated_savings"
@@ -965,10 +1051,10 @@ export default function RetireHowForm(): JSX.Element {
                   placeholder="Enter total savings amount, e.g., 500,000"
                   className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                 />
-                <small className="block text-gray-600 dark:text-gray-400 mt-1">
+                <p className="block text-gray-600 dark:text-gray-400 mt-1">
                   Why we ask: A rough picture helps us size safe withdrawal
                   rates and gaps.
-                </small>
+                </p>
               </div>
             </div>
 
@@ -977,7 +1063,7 @@ export default function RetireHowForm(): JSX.Element {
               <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 C. Housing & Real Estate Equity
               </h2>
-              <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
+              <p className="mb-4 text-md text-gray-700 dark:text-gray-300">
                 Understanding your housing situation helps us explore all
                 financial options
               </p>
@@ -1001,11 +1087,11 @@ export default function RetireHowForm(): JSX.Element {
                   placeholder="Enter home equity amount, e.g., 300,000"
                   className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                 />
-                <small className="block text-gray-600 dark:text-gray-400 mt-1">
+                <p className="block text-gray-600 dark:text-gray-400 mt-1">
                   Why we ask: Renters can leave this blank; for homeowners, an
                   estimate of net equity (value minus debt) helps us understand
                   flexibility and retirement optionality.
-                </small>
+                </p>
               </div>
 
               <div className="mt-4">
@@ -1032,11 +1118,11 @@ export default function RetireHowForm(): JSX.Element {
                   </option>
                   <option value="Not comfortable">Not comfortable</option>
                 </select>
-                <small className="block text-gray-600 dark:text-gray-400 mt-1">
+                <p className="block text-gray-600 dark:text-gray-400 mt-1">
                   Why we ask: Some clients prefer to preserve home equity;
                   others use a limited portion to fund experiences or cover
                   gaps.
-                </small>
+                </p>
               </div>
             </div>
 
@@ -1045,10 +1131,6 @@ export default function RetireHowForm(): JSX.Element {
               <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 D. DollarFar — Pre-Retirement Planning
               </h2>
-              <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
-                Explore our free calculators and optional guided interpretation
-                services
-              </p>
 
               <div className="mb-3 flex items-center justify-between rounded-lg border border-gray-400 dark:border-gray-500 bg-gray-50 dark:bg-gray-700 p-3">
                 <div className="flex items-center gap-3">
@@ -1061,13 +1143,13 @@ export default function RetireHowForm(): JSX.Element {
                   href="https://DollarFar.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-md border border-gray-500 dark:border-gray-400 px-3 py-1 text-sm font-semibold text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                  className="rounded-md border border-gray-500 dark:border-gray-400 px-3 py-1 text-md font-semibold text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
                 >
                   Visit DollarFar
                 </a>
               </div>
 
-              <p className="mb-3 text-sm text-gray-700 dark:text-gray-300">
+              <p className="mb-3 text-md text-gray-700 dark:text-gray-300">
                 Together, DollarFar's six free calculators turn scattered
                 numbers into clarity — revealing how long savings last, where
                 money goes further, and how lifestyle choices shape retirement.
@@ -1080,7 +1162,7 @@ export default function RetireHowForm(): JSX.Element {
               </label>
 
               {/* calculators (multi) */}
-              <div className="grid gap-2 md:grid-cols-2">
+              <div className="grid gap-4 md:grid-cols-2">
                 {[
                   {
                     label: "Net Worth",
@@ -1095,27 +1177,27 @@ export default function RetireHowForm(): JSX.Element {
                   {
                     label: "Cost-of-Living Comparison",
                     value: "Cost-of-Living Comparison",
-                    tip: "Compares your current city with lower-cost alternatives to reveal how far your dollars go in each location.",
+                    tip: "Compares your current city with lower‑cost alternatives to reveal how far your dollars go in each location.",
                   },
                   {
                     label: "Retirement Money Stretch",
                     value: "Retirement Money Stretch",
-                    tip: "Displays how long your financial portfolio can be stretched by choosing a seasonal-living geography with a weaker currency.",
+                    tip: "Displays how long your financial portfolio can be stretched by choosing a seasonal‑living geography with a weaker currency — the currency translation effect acts like 'Cost Escape' or 'purchasing power' dividends that extend portfolio longevity without market risk.",
                   },
                   {
                     label: "Retirement Simulator",
                     value: "Retirement Simulator",
-                    tip: "Built to help retirees take control of their future and inform their decisions in less than 60 seconds.",
+                    tip: "Built to help retirees take control of their future and inform their decisions in less than 60 seconds. Traditionally, a retirement plan can take hours to prepare — this simulator eliminates guesswork. Like a flight simulator trains pilots in a safe environment before flying, the Retirement Simulator lets retirees test financial outcomes safely before making real‑life decisions.",
                   },
                   {
                     label: "Real Estate Equity Access",
                     value: "Real Estate Equity Access",
-                    tip: "Shows how home equity can support lifestyle through a HELOC or a Reverse Mortgage.",
+                    tip: "Shows how home equity can support lifestyle through a HELOC or a Reverse Mortgage — letting you compare lifetime cost and the remaining equity at the end for each path.",
                   },
                   {
                     label: "Cost Escape™ Toolkit",
                     value: "Cost Escape™ Toolkit",
-                    tip: "Guides the Cost Escape™ approach: test seasonal living in warmer, lower-cost regions to extend savings.",
+                    tip: "Guides the Cost Escape™ approach: test seasonal living in warmer, lower‑cost regions to extend savings without sacrificing comfort.",
                   },
                 ].map((option) => (
                   <label
@@ -1145,7 +1227,7 @@ export default function RetireHowForm(): JSX.Element {
                       <div className="font-semibold text-gray-800 dark:text-gray-200">
                         {option.value}
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-md text-gray-600 dark:text-gray-400">
                         {option.tip}
                       </div>
                     </div>
@@ -1158,160 +1240,112 @@ export default function RetireHowForm(): JSX.Element {
                 <div className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Request Human Interpretation
                 </div>
-                <p className="mb-3 text-sm text-gray-700 dark:text-gray-300">
+                <p className="mb-3 text-md text-gray-700 dark:text-gray-300">
                   Have a specialist walk through results with you.
                 </p>
 
-                <label className="mb-3 flex items-center justify-between rounded-xl border border-gray-400 dark:border-gray-500 hover:border-gray-600 dark:hover:border-gray-400 duration-300 p-3 font-bold select-none cursor-pointer bg-white dark:bg-gray-700">
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Enable Interpretation Services
-                  </span>
-                  <ConfigProvider
-                    theme={{
-                      token: {
-                        colorPrimary: "#000",
-                        colorBorder: "#808080",
-                      },
-                    }}
-                  >
-                    <Checkbox
-                      name="dollarfar_planning.interpretation_toggle"
-                      checked={
-                        getFieldValue(
-                          "dollarfar_planning",
-                          "interpretation_toggle"
-                        ) || false
-                      }
-                      onChange={handleCheckboxChange}
-                    />
-                  </ConfigProvider>
-                </label>
+                <section className="space-y-5">
+                  {/* Enable Interpretation Services  */}
+                  <div>
+                    <label className="flex items-center justify-between rounded-xl border border-green-400 hover:border-green-600 duration-300 p-3 font-bold select-none cursor-pointer bg-green-100 dark:bg-green-500">
+                      <span className="text-gray-700 dark:text-white">
+                        Enable Interpretation Services
+                      </span>
+                      <ConfigProvider
+                        theme={{
+                          token: {
+                            colorPrimary: "#000",
+                            colorBorder: "#808080",
+                          },
+                        }}
+                      >
+                        <Checkbox
+                          name="dollarfar_planning.interpretation_toggle"
+                          checked={
+                            getFieldValue(
+                              "dollarfar_planning",
+                              "interpretation_toggle"
+                            ) || false
+                          }
+                          onChange={handleCheckboxChange}
+                        />
+                      </ConfigProvider>
+                    </label>
+                  </div>
 
-                {/* Interpretation fields - only show if enabled */}
-                {getFieldValue(
-                  "dollarfar_planning",
-                  "interpretation_toggle"
-                ) && (
-                  <div className="mb-3">
-                    <div className="bg-gray-50 dark:bg-gray-600 border border-gray-200 dark:border-gray-500 rounded-lg p-4 mb-4">
-                      <p className="text-gray-800 dark:text-gray-200 text-sm font-bold">
-                        📞 We'll contact you using the information provided in
-                        Section A
-                      </p>
-                      <div className="mt-2 text-sm text-gray-700 dark:text-gray-300 space-y-2">
-                        <p>
-                          <strong>Name:</strong> {form.contact.name}
-                        </p>
-                        <p>
-                          <strong>Email:</strong> {form.contact.email}
-                        </p>
-                        <p>
-                          <strong>Phone:</strong> {form.contact.phone}
+                  {getFieldValue(
+                    "dollarfar_planning",
+                    "interpretation_toggle"
+                  ) && (
+                    <>
+                      <div>
+                        <p className="text-gray-800 dark:text-gray-200 text-md font-bold flex items-center gap-1">
+                          <ArrowBigRight className="text-green-500" size={25} />
+                          We'll contact you using the information provided in
+                          Section A
                         </p>
                       </div>
-                    </div>
-
-                    {/* Only show preferred time field */}
-                    <div>
-                      <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
-                        Preferred Consultation Time
-                      </label>
-                      <input
-                        type="text"
-                        name="dollarfar_planning.time_pre"
-                        value={getFieldValue("dollarfar_planning", "time_pre")}
-                        onChange={handleChange}
-                        placeholder="e.g., Weekday mornings, Tuesday afternoons"
-                        className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                      />
-                      <small className="block text-gray-600 dark:text-gray-400 mt-1">
-                        Let us know your preferred days/times for the
-                        consultation
-                      </small>
-                    </div>
-                  </div>
-                )}
-
-                {getFieldValue(
-                  "dollarfar_planning",
-                  "interpretation_toggle"
-                ) && (
-                  <div className="mb-3 space-y-3">
-                    <input
-                      type="hidden"
-                      name="dollarfar_planning.subscription_status"
-                      value={getFieldValue(
-                        "dollarfar_planning",
-                        "subscription_status"
-                      )}
-                    />
-                    <div className="flex gap-3 flex-wrap">
-                      <button
-                        type="button"
-                        onClick={onHaveSubscription}
-                        className={`rounded-xl border px-3 py-2 font-semibold transition-colors ${
-                          getFieldValue(
+                      {/* Consultion Preference Time Input Field  */}
+                      <div>
+                        <label className="block font-semibold text-gray-800 dark:text-gray-200 mb-1">
+                          <div className="flex items-center justify-between">
+                            <p>
+                              Preferred Consultation Time (local)
+                              <RedStar />
+                            </p>
+                            {showError &&
+                              !form.dollarfar_planning.consultation_time && (
+                                <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-md">
+                                  Required*
+                                </p>
+                              )}
+                          </div>
+                        </label>
+                        <input
+                          type="text"
+                          name="dollarfar_planning.consultation_time"
+                          value={getFieldValue(
                             "dollarfar_planning",
-                            "subscription_status"
-                          ) === "have"
-                            ? "border-green-600 bg-green-500 text-white"
-                            : "border-gray-400 dark:border-gray-500 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600"
-                        }`}
-                      >
-                        I have a subscription
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={onStartSubscription}
-                        disabled={
-                          getFieldValue(
-                            "dollarfar_planning",
-                            "subscription_status"
-                          ) === "paid"
-                        }
-                        className={`rounded-xl border px-3 py-2 font-semibold transition-colors ${
-                          getFieldValue(
-                            "dollarfar_planning",
-                            "subscription_status"
-                          ) === "paid"
-                            ? "border-green-600 bg-green-500 text-white"
-                            : "border-gray-400 dark:border-gray-500 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600"
-                        }`}
-                      >
-                        {getFieldValue(
-                          "dollarfar_planning",
-                          "subscription_status"
-                        ) === "paid"
-                          ? "✓ Subscription Active — $199 CAD Paid"
-                          : "Start subscription with this request — $199 CAD"}
-                      </button>
-                    </div>
-
-                    {/* Display contact info missing error  */}
-                    {form.dollarfar_planning.interpretation_toggle &&
-                      isSubscribeClicked &&
-                      (!form.contact.email ||
-                        !form.contact.phone ||
-                        !form.contact.name) && (
-                        <p className="text-red-500 dark:text-red-400">
-                          Please fill in the contact info input fields first
-                          before starting subscription.
+                            "consultation_time"
+                          )}
+                          onChange={handleChange}
+                          placeholder="e.g., Weekday mornings, Tuesday afternoons"
+                          className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${toggleErrorBorderColor(
+                            form.dollarfar_planning.consultation_time,
+                            "consultation_time"
+                          )}`}
+                        />
+                        <p className="block text-gray-600 dark:text-gray-400 mt-1">
+                          Let us know your preferred days/times for the
+                          consultation
                         </p>
-                      )}
+                      </div>
+                      {/* Subscription Start Button  */}
+                      <div>
+                        <button
+                          type="button"
+                          onClick={onStartSubscription}
+                          disabled={data?.data?.status === "active"}
+                          className={`rounded-xl border px-3 py-2 font-semibold transition-colors ${
+                            data?.data?.status === "active"
+                              ? "border-green-600 bg-green-500 text-white"
+                              : "border-gray-700 bg-gray-700 hover:border-gray-900 hover:bg-gray-900 duration-300 text-white"
+                          }`}
+                        >
+                          {data?.data?.status === "active"
+                            ? "✓ Subscription Active — $199 CAD Paid ( + taxes )"
+                            : "Start subscription with this request — $199 CAD ( + taxes )"}
+                        </button>
+                      </div>
 
-                    {/* Senior UI/UX Designed Warning Box */}
-                    {getFieldValue(
-                      "dollarfar_planning",
-                      "subscription_status"
-                    ) === "paid" && (
-                      <div className="w-full mt-4">
-                        <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 shadow-sm">
-                          <div className="flex items-start gap-3">
-                            <div className="flex-shrink-0 mt-0.5">
-                              <div className="w-5 h-5 bg-amber-100 dark:bg-amber-800 rounded-full flex items-center justify-center">
+                      {/* Subscribed Warning Box */}
+                      {data?.data?.status === "active" && (
+                        <div className="w-full">
+                          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
+                            <div className="flex items-start gap-3">
+                              <div className="flex-shrink-0 mt-0.5">
                                 <svg
-                                  className="w-5 h-w-5 text-amber-600 dark:text-amber-400"
+                                  className="w-6 h-6 text-amber-600 dark:text-amber-400"
                                   fill="currentColor"
                                   viewBox="0 0 20 20"
                                 >
@@ -1322,69 +1356,105 @@ export default function RetireHowForm(): JSX.Element {
                                   />
                                 </svg>
                               </div>
-                            </div>
-                            <div className="flex-1">
-                              <h4 className="text-sm font-semibold text-amber-800 dark:text-amber-300 mb-1">
-                                Important: Complete Your Form Submission
-                              </h4>
-                              <p className="text-sm text-amber-700 dark:text-amber-400 leading-relaxed">
-                                Your subscription is active, but{" "}
-                                <strong>
-                                  your consultation request is not yet submitted
-                                </strong>
-                                . Please complete and submit the entire form
-                                below to schedule your sessions. Your payment
-                                secures the subscription, but we need your full
-                                details to proceed.
-                              </p>
+                              <div className="flex-1">
+                                <h4 className="text-lg font-semibold text-amber-800 dark:text-amber-300 mb-2">
+                                  Complete Form to Schedule Your Sessions
+                                </h4>
+
+                                {/* Essential Subscription Info */}
+                                <div className="flex flex-wrap items-center gap-4 text-lg text-amber-700 dark:text-amber-400 mb-3">
+                                  <div className="flex items-center gap-2 bg-amber-100 dark:bg-amber-800/30 px-3 py-1 rounded-lg">
+                                    <svg
+                                      className="w-5 h-5"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                                      />
+                                    </svg>
+                                    <span>
+                                      <strong>
+                                        {data?.data?.sessionsPurchased -
+                                          (data?.data?.sessionsUsed || 0)}{" "}
+                                        session
+                                        {data?.data?.sessionsUsed === 0
+                                          ? "s"
+                                          : ""}{" "}
+                                        available
+                                      </strong>
+                                      <span className="text-md ml-1">
+                                        ({data?.data?.sessionsUsed || 0}/
+                                        {data?.data?.sessionsPurchased} used)
+                                      </span>
+                                    </span>
+                                  </div>
+
+                                  <div className="flex items-center gap-2 bg-amber-100 dark:bg-amber-800/30 px-3 py-1 rounded-lg">
+                                    <svg
+                                      className="w-5 h-5"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                      />
+                                    </svg>
+                                    <span>
+                                      <strong>Expires:</strong>{" "}
+                                      {moment(data?.data?.expiryDate).format(
+                                        "LLLL"
+                                      )}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                {/* Renewal Information */}
+                                <div className=" text-amber-700 dark:text-amber-400 bg-amber-100/50 dark:bg-amber-800/30 rounded-lg p-3">
+                                  <p className="font-bold mb-1">
+                                    Renewal Process:
+                                  </p>
+                                  <p>
+                                    You'll need to subscribe again after using
+                                    all sessions or when your subscription
+                                    expires. Submit this form each time to book
+                                    available sessions.
+                                  </p>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
+                      )}
+
+                      {/* Subscription Instructions  */}
+                      <div>
+                        <ul className="ml-4 list-disc text-md text-gray-600 dark:text-gray-400 space-y-2">
+                          <li>
+                            Pay-as-you-go: covers <strong>2 × 30-minute</strong>{" "}
+                            online consultations.
+                          </li>
+                          <li>
+                            Validity: use both sessions within{" "}
+                            <strong>12 months</strong> of purchase.
+                          </li>
+                          <li>
+                            No carry-forward: unused sessions do not roll over
+                            to the next year.
+                          </li>
+                        </ul>
                       </div>
-                    )}
-
-                    <div>
-                      {showError &&
-                        form.dollarfar_planning.interpretation_toggle &&
-                        form.dollarfar_planning.subscription_status !==
-                          "have" &&
-                        form.dollarfar_planning.subscription_status !==
-                          "paid" && (
-                          <p className="text-red-500 dark:text-red-400">
-                            Please select either have an existing subscription
-                            or start a new one for interpretation services.
-                          </p>
-                        )}
-                    </div>
-
-                    <div className="ml-2 rounded-md border border-gray-400 dark:border-gray-500 px-3 py-2 font-bold text-gray-800 dark:text-gray-200 inline-block bg-white dark:bg-gray-700">
-                      Support Subscription — $199 CAD{" "}
-                      <span className="block text-xs font-normal text-gray-600 dark:text-gray-400">
-                        (applicable tax is implied)
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                {getFieldValue(
-                  "dollarfar_planning",
-                  "interpretation_toggle"
-                ) && (
-                  <ul className="ml-4 list-disc text-sm text-gray-600 dark:text-gray-400">
-                    <li>
-                      Pay-as-you-go: covers <strong>2 × 30-minute</strong>{" "}
-                      online consultations.
-                    </li>
-                    <li>
-                      Validity: use both sessions within{" "}
-                      <strong>12 months</strong> of purchase.
-                    </li>
-                    <li>
-                      No carry-forward: unused sessions do not roll over to the
-                      next year.
-                    </li>
-                  </ul>
-                )}
+                    </>
+                  )}
+                </section>
               </div>
             </div>
 
@@ -1393,108 +1463,122 @@ export default function RetireHowForm(): JSX.Element {
               <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 E. Travel Planning — Book Now vs Future Interest
               </h2>
-              <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
+              <p className="mb-4 text-md text-gray-700 dark:text-gray-300">
                 Explore available destinations and express interest for future
                 locations
               </p>
 
-              <div className="rounded-xl border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-700 p-4 mb-3">
+              <div className="rounded-xl border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-700 p-4 mb-3 space-y-5">
                 <div className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                   Book Now — Vijayawada (Pilot 2026–2027)
                 </div>
-                <div className="mb-3 rounded-md bg-gray-50 dark:bg-gray-600 p-3 font-semibold text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-500">
-                  Available: On-ground concierge support in Vijayawada only
-                  during the pilot.
+                <div className="mb-3 rounded-md bg-gray-50 dark:bg-gray-600 p-3 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-500">
+                  <span className="font-bold">Available:</span> On-ground
+                  concierge support in{" "}
+                  <span className="font-bold">Vijayawada</span> only during the
+                  pilot.
                 </div>
 
-                <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
-                  Months abroad per year
-                </label>
-                <select
-                  name="travel_planning.months_abroad"
-                  value={getFieldValue("travel_planning", "months_abroad")}
-                  onChange={handleChange}
-                  className="mb-2 w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white cursor-pointer"
-                >
-                  <option value="">Select duration...</option>
-                  <option value="1 month">1 month</option>
-                  <option value="1–2 months">1–2 months</option>
-                  <option value="2–3 months">2–3 months</option>
-                  <option value="3–4 months">3–4 months</option>
-                  <option value="4–5 months">4–5 months</option>
-                </select>
+                <div>
+                  <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
+                    Months abroad per year
+                  </label>
+                  <select
+                    name="travel_planning.months_abroad"
+                    value={getFieldValue("travel_planning", "months_abroad")}
+                    onChange={handleChange}
+                    className="mb-2 w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white cursor-pointer"
+                  >
+                    <option value="">Select duration...</option>
+                    <option value="1 month">1 month</option>
+                    <option value="1–2 months">1–2 months</option>
+                    <option value="2–3 months">2–3 months</option>
+                    <option value="3–4 months">3–4 months</option>
+                    <option value="4–5 months">4–5 months</option>
+                  </select>
+                  <label className="mb-2 block font-medium text-gray-500 dark:text-gray-200">
+                    Helps tailor accommodation and seasonal planning.
+                  </label>
+                </div>
 
-                <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
-                  Earliest start (season / year / month)
-                </label>
-                <input
-                  name="travel_planning.start_timeline"
-                  type="text"
-                  placeholder="Enter start timeline, e.g., Winter 2026"
-                  minLength={2}
-                  maxLength={40}
-                  value={getFieldValue("travel_planning", "start_timeline")}
-                  onChange={handleChange}
-                  className="mb-2 w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                />
-                <small className="block text-gray-600 dark:text-gray-400 mb-2">
-                  <strong>Bookings open January 2026</strong> for stays
-                  beginning <strong>November 2026</strong> onward.
-                </small>
+                <div>
+                  <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
+                    Earliest start (season / year / month)
+                  </label>
+                  <input
+                    name="travel_planning.start_timeline"
+                    type="text"
+                    placeholder="Enter start timeline, e.g., Winter 2026"
+                    minLength={2}
+                    maxLength={40}
+                    value={getFieldValue("travel_planning", "start_timeline")}
+                    onChange={handleChange}
+                    className="mb-2 w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                  />
+                  <p className="block text-gray-600 dark:text-gray-400 mb-2">
+                    <strong>Bookings open January 2026</strong> for stays
+                    beginning <strong>November 2026</strong> onward.
+                  </p>
+                </div>
 
-                <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
-                  Accommodation style
-                </label>
-                <select
-                  name="travel_planning.travel_style"
-                  value={getFieldValue("travel_planning", "travel_style")}
-                  onChange={handleChange}
-                  className="mb-2 w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white cursor-pointer"
-                >
-                  <option value="">Select accommodation type...</option>
-                  <option value="2-Bedroom Condo">2-Bedroom Condo</option>
-                  <option value="3-Bedroom Condo">3-Bedroom Condo</option>
-                  <option
-                    value="4-Bedroom Villa (Large Family / Circle of Friends / Travel
+                <div>
+                  <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
+                    Accommodation style
+                  </label>
+                  <select
+                    name="travel_planning.travel_style"
+                    value={getFieldValue("travel_planning", "travel_style")}
+                    onChange={handleChange}
+                    className="mb-2 w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white cursor-pointer"
+                  >
+                    <option value="">Select accommodation type...</option>
+                    <option value="2-Bedroom Condo">2-Bedroom Condo</option>
+                    <option value="3-Bedroom Condo">3-Bedroom Condo</option>
+                    <option
+                      value="4-Bedroom Villa (Large Family / Circle of Friends / Travel
                     Buddies)"
-                  >
-                    4-Bedroom Villa (Large Family / Circle of Friends / Travel
-                    Buddies)
-                  </option>
-                </select>
+                    >
+                      4-Bedroom Villa (Large Family / Circle of Friends / Travel
+                      Buddies)
+                    </option>
+                  </select>
+                  <label className="mb-2 block font-medium text-gray-500 dark:text-gray-200">
+                    Options reflect properties supported in the Vijayawada
+                    pilot.
+                  </label>
+                </div>
 
-                <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
-                  Independent travel acknowledgement
-                </label>
-                <label className="flex items-start gap-3 select-none cursor-pointer">
-                  <ConfigProvider
-                    theme={{
-                      token: {
-                        colorPrimary: "#000",
-                        colorBorder: "#808080",
-                      },
-                    }}
-                  >
-                    <Checkbox
-                      name="travel_planning.independent_travel_ack"
-                      checked={
-                        getFieldValue(
-                          "travel_planning",
-                          "independent_travel_ack"
-                        ) || false
-                      }
-                      onChange={handleCheckboxChange}
-                    />
-                  </ConfigProvider>
-                  <span className="text-gray-700 dark:text-gray-300">
-                    I can travel independently without mobility assistance. I
-                    understand some destinations abroad may be less accessible
-                    than in Canada, the USA, the UK, or Europe.
-                  </span>
-                </label>
-                <small className="block text-gray-600 dark:text-gray-400 mt-1">
-                  Ensures practical, safe options for you.
-                </small>
+                <div>
+                  <label className="flex items-start gap-3 select-none cursor-pointer">
+                    <ConfigProvider
+                      theme={{
+                        token: {
+                          colorPrimary: "#000",
+                          colorBorder: "#808080",
+                        },
+                      }}
+                    >
+                      <Checkbox
+                        name="travel_planning.independent_travel_ack"
+                        checked={
+                          getFieldValue(
+                            "travel_planning",
+                            "independent_travel_ack"
+                          ) || false
+                        }
+                        onChange={handleCheckboxChange}
+                      />
+                    </ConfigProvider>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      I can travel independently without mobility assistance. I
+                      understand some destinations abroad may be less accessible
+                      than in Canada, the USA, the UK, or Europe.
+                    </span>
+                  </label>
+                  <p className="block text-gray-600 dark:text-gray-400 mt-1">
+                    Ensures practical, safe options for you.
+                  </p>
+                </div>
               </div>
 
               <div className="rounded-xl border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-700 p-4">
@@ -1530,10 +1614,10 @@ export default function RetireHowForm(): JSX.Element {
                     <option value="Other">Other</option>
                   </optgroup>
                 </select>
-                <small className="block text-gray-600 dark:text-gray-400 mb-2">
+                <p className="block text-gray-600 dark:text-gray-400 mb-2">
                   Choose Vijayawada to book now, or other locations to express
                   interest for future Cost Escape™ hubs.
-                </small>
+                </p>
 
                 <label className="mb-2 block font-semibold text-gray-800 dark:text-gray-200">
                   City / area (interest)
@@ -1551,10 +1635,10 @@ export default function RetireHowForm(): JSX.Element {
                   onChange={handleChange}
                   className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                 />
-                <small className="block text-gray-600 dark:text-gray-400 mt-1">
+                <p className="block text-gray-600 dark:text-gray-400 mt-1">
                   Your interest helps us prioritize next hubs and early-access
                   invites.
-                </small>
+                </p>
               </div>
             </div>
 
@@ -1563,7 +1647,7 @@ export default function RetireHowForm(): JSX.Element {
               <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 F. Budget Estimates
               </h2>
-              <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
+              <p className="mb-4 text-md text-gray-700 dark:text-gray-300">
                 Help us understand your spending preferences and travel style
               </p>
 
@@ -1583,9 +1667,9 @@ export default function RetireHowForm(): JSX.Element {
                     placeholder="Enter monthly home budget, e.g., 3,000"
                     className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   />
-                  <small className="block text-gray-600 dark:text-gray-400 mt-1">
+                  <p className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: Baseline to compare vs. abroad.
-                  </small>
+                  </p>
                 </div>
 
                 <div>
@@ -1603,10 +1687,10 @@ export default function RetireHowForm(): JSX.Element {
                     placeholder="Enter monthly abroad budget, e.g., 2,000"
                     className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   />
-                  <small className="block text-gray-600 dark:text-gray-400 mt-1">
+                  <p className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: Helps right-size destinations and accommodation
                     type.
-                  </small>
+                  </p>
                 </div>
               </div>
 
@@ -1625,10 +1709,10 @@ export default function RetireHowForm(): JSX.Element {
                   onChange={handleChange}
                   className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                 />
-                <small className="block text-gray-600 dark:text-gray-400 mt-1">
+                <p className="block text-gray-600 dark:text-gray-400 mt-1">
                   Why we ask: Costs vary widely; free-form lets you enter ranges
                   or notes.
-                </small>
+                </p>
               </div>
 
               <div className="mt-4">
@@ -1647,10 +1731,10 @@ export default function RetireHowForm(): JSX.Element {
                   <option value="Business">Business</option>
                   <option value="First">First</option>
                 </select>
-                <small className="block text-gray-600 dark:text-gray-400 mt-1">
+                <p className="block text-gray-600 dark:text-gray-400 mt-1">
                   Why we ask: Class of travel affects airfare budgets
                   substantially.
-                </small>
+                </p>
               </div>
             </div>
 
@@ -1659,7 +1743,7 @@ export default function RetireHowForm(): JSX.Element {
               <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 G. Purpose of Travel
               </h2>
-              <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
+              <p className="mb-4 text-md text-gray-700 dark:text-gray-300">
                 Select all that apply to help us understand your travel
                 motivations
               </p>
@@ -1715,7 +1799,7 @@ export default function RetireHowForm(): JSX.Element {
                       }}
                     >
                       <Checkbox
-                        name="travel_purpose"
+                        name="travel_purposes"
                         value={option.value}
                         checked={isTravelPurposeSelected(option.value)}
                         onChange={handleCheckboxChange}
@@ -1734,12 +1818,12 @@ export default function RetireHowForm(): JSX.Element {
               <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 H. Privacy & Pricing
               </h2>
-              <p className="mb-4 text-sm text-gray-700 dark:text-gray-300">
+              <p className="mb-4 text-md text-gray-700 dark:text-gray-300 text-">
                 Final acknowledgements and consent
               </p>
 
               <div className="rounded-lg bg-gray-50 dark:bg-gray-700 p-4 mb-4 border border-gray-300 dark:border-gray-600">
-                <p className="text-sm text-gray-700 dark:text-gray-300">
+                <p className="text-md text-gray-700 dark:text-gray-300 leading-7">
                   <strong>Transparency first.</strong> We collect{" "}
                   <strong>estimates only</strong> — no account statements. When
                   you ask us to coordinate, we work only with{" "}
@@ -1747,21 +1831,32 @@ export default function RetireHowForm(): JSX.Element {
                   concierge support, transport, and curated experiences.
                   <br />
                   <br />
-                  <strong>Our products include:</strong>
-                  <br />• Concierge support —{" "}
-                  <strong>airport pickup and arrival assistance</strong>,
-                  SIM/Wi-Fi setup, local orientation, and vetted household
-                  helpers.
-                  <br />
-                  • Housing coordination — matched to your comfort level and
-                  budget.
-                  <br />
-                  • Optional curated cultural experiences and short-haul
-                  getaways.
-                  <br />• <em>Luxury packages</em> include a dedicated{" "}
-                  <strong>Car &amp; Driver</strong> service.
-                  <br />
-                  <br />
+                  <h3 className="font-bold text-[1.1rem] mb-1">
+                    Our products include:
+                  </h3>
+                  <ul className="list-disc list-inside mb-5">
+                    <li>
+                      Concierge support —{" "}
+                      <strong>airport pickup and arrival assistance</strong>,
+                      SIM/Wi-Fi setup, local orientation, and vetted household
+                      helpers.
+                    </li>
+
+                    <li>
+                      Housing coordination — matched to your comfort level and
+                      budget.
+                    </li>
+
+                    <li>
+                      Optional curated cultural experiences and short-haul
+                      getaways.
+                    </li>
+
+                    <li>
+                      Luxury packages include a dedicated
+                      <strong> Car &amp; Driver</strong> service.
+                    </li>
+                  </ul>
                   <em>
                     (RetireHow does not coordinate visas, insurance, medical, or
                     legal matters. Our focus is on comfort, connection, and
@@ -1794,7 +1889,7 @@ export default function RetireHowForm(): JSX.Element {
                       onChange={handleCheckboxChange}
                     />
                   </ConfigProvider>
-                  <span className="text-gray-700 dark:text-gray-300">
+                  <span className="text-gray-700 dark:text-gray-300 font-bold">
                     I acknowledge that during the proof-of-concept stage, I will
                     only pay actual vendor costs and agree to share feedback on
                     my experience.
@@ -1826,7 +1921,7 @@ export default function RetireHowForm(): JSX.Element {
                       onChange={handleCheckboxChange}
                     />
                   </ConfigProvider>
-                  <span className="text-gray-700 dark:text-gray-300">
+                  <span className="text-gray-700 dark:text-gray-300 font-bold">
                     I would like to be contacted by RetireHow Inc. to discuss my
                     submission.
                   </span>
@@ -1857,7 +1952,7 @@ export default function RetireHowForm(): JSX.Element {
                       onChange={handleCheckboxChange}
                     />
                   </ConfigProvider>
-                  <span className="text-gray-700 dark:text-gray-300">
+                  <span className="text-gray-700 dark:text-gray-300 font-bold">
                     I understand that RetireHow and DollarFar provide lifestyle
                     optimization, cost-management, and travel-planning guidance
                     — not investment or financial advice.

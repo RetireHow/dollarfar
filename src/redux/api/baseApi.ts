@@ -10,7 +10,6 @@ import {
 import { RootState } from "../store";
 import { logout, setUser } from "../features/APIEndpoints/authApi/authSlice";
 import { baseUrl } from "../../api/apiConstant";
-import { toast } from "react-toastify";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: baseUrl,
@@ -37,7 +36,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     const data = result.error.data;
 
     if (data && typeof data === "object" && "message" in data) {
-      toast.error((data as { message: string }).message);
+      console.log((data as { message: string }).message);
     }
   }
 
@@ -45,7 +44,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     const data = result.error.data;
 
     if (data && typeof data === "object" && "message" in data) {
-      toast.error((data as { message: string }).message);
+      console.log((data as { message: string }).message);
     }
   }
 
@@ -88,8 +87,9 @@ export const baseApi = createApi({
     "ebookUsers",
     "reportUsers",
     "users",
-    "subscriptionPayment",
+    "consultationSubscription",
     "retirementEmail",
+    "consultationSession"
   ],
   endpoints: () => ({}),
 });
