@@ -1271,4 +1271,3 @@ function calculate2025PersonalTax(taxableIncome) {
 
 // Example usage:
 const result = calculate2025PersonalTax(16000);
-console.log(result);

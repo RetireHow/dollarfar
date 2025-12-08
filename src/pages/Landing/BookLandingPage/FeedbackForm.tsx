@@ -48,7 +48,6 @@ const FeedbackForm: React.FC = () => {
       setRatingError(true);
       return;
     }
-    console.log("Feedback submitted:", formData);
 
     //API Call
     try {

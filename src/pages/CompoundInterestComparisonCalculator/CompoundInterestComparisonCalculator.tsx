@@ -178,7 +178,6 @@ export default function CompoundInterestComparisonCalculator() {
     // Simulate calculation time for loading state
     setTimeout(() => {
       const allResults = investors.map((investor) => {
-        console.log(parseInt(investor?.startAge));
         const isStartAgeGreater =
           parseInt(investor?.startAge) >= parseInt(investor?.stopAge);
         if (isStartAgeGreater) {
