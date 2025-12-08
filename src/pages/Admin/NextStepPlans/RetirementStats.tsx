@@ -290,15 +290,19 @@ export default function RetirementStats() {
     return scheduledTime.toDateString() === today.toDateString();
   }).length;
 
-  const totalPurchasedSessions = activeSubscriptions?.reduce(
-    (total, sub) => total + (sub.sessionsPurchased || 0),
-    0
-  );
+  const totalPurchasedSessions = Array.isArray(activeSubscriptions)
+    ? activeSubscriptions.reduce(
+        (total, sub) => total + (sub.sessionsPurchased || 0),
+        0
+      )
+    : 0;
 
-  const totalUsedSessions = activeSubscriptions?.reduce(
-    (total, sub) => total + (sub.sessionsUsed || 0),
-    0
-  );
+  const totalUsedSessions = Array.isArray(activeSubscriptions)
+    ? activeSubscriptions.reduce(
+        (total, sub) => total + (sub.sessionsUsed || 0),
+        0
+      )
+    : 0;
 
   const sessionUtilizationRate = totalPurchasedSessions
     ? Math.round((totalUsedSessions / totalPurchasedSessions) * 100)
@@ -313,9 +317,9 @@ export default function RetirementStats() {
   const averageSessionDuration = bookedSessions?.length
     ? Math.round(
         bookedSessions?.reduce(
-          (acc, session) => acc + (session.session_duration || 0),
+          (acc, session) => acc + (session?.session_duration || 0),
           0
-        ) / bookedSessions.length
+        ) / bookedSessions?.length
       )
     : 0;
 
