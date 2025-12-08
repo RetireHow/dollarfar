@@ -19,6 +19,22 @@ const retirementPlansApi = baseApi.injectEndpoints({
       },
     }),
 
+    getSingleRetirementPlan: builder.query({
+      query: (planId) => {
+        return {
+          url: `/retirement-next-step-plans/${planId}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["retirementPlans"],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      transformResponse: (response: TResponseRedux<any>) => {
+        return {
+          data: response.data,
+        };
+      },
+    }),
+
     addRetirementPlan: builder.mutation({
       query: (data) => ({
         url: "/retirement-next-step-plans",
@@ -42,4 +58,5 @@ export const {
   useGetAllRetirementPlansQuery,
   useAddRetirementPlanMutation,
   useCreateRetirementPaymentMutation,
+  useGetSingleRetirementPlanQuery
 } = retirementPlansApi;

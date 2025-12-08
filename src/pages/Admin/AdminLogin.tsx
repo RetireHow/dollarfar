@@ -1,13 +1,17 @@
 // AdminLogin.tsx
 
 import { Icon } from "@iconify/react/dist/iconify.js";
-import React, { useState, FormEvent, ChangeEvent } from "react";
+import React, { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../redux/features/APIEndpoints/authApi/authApi";
-import { setUser, TUser } from "../../redux/features/APIEndpoints/authApi/authSlice";
+import {
+  setUser,
+  TUser,
+} from "../../redux/features/APIEndpoints/authApi/authSlice";
 import { verifyToken } from "../../utils/verifyToken";
 import { useAppDispatch } from "../../redux/hooks";
+import { showApiErrorToast } from "../../utils/showApiErrorToast";
 
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -15,7 +19,8 @@ const AdminLogin: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
-  const [login, { isLoading }] = useLoginMutation();
+  const [login, { isLoading, isError, error: loggingError }] =
+    useLoginMutation();
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -32,6 +37,12 @@ const AdminLogin: React.FC = () => {
     toast.success("Login success!");
     navigate("/admin");
   };
+
+  useEffect(() => {
+    if (!isLoading && isError && loggingError) {
+      showApiErrorToast(loggingError);
+    }
+  }, [isLoading, isError, loggingError]);
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);

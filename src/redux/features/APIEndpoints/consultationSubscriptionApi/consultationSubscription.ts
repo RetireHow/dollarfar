@@ -11,7 +11,21 @@ const consultationSubscription = baseApi.injectEndpoints({
         };
       },
       providesTags: ["consultationSubscription"],
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      transformResponse: (response: TResponseRedux<any>) => {
+        return {
+          data: response.data,
+        };
+      },
+    }),
+
+    getAllActiveConsultationSubscriptions: builder.query({
+      query: () => {
+        return {
+          url: "/consultation-subscription/active",
+          method: "GET",
+        };
+      },
+      providesTags: ["consultationSubscription"],
       transformResponse: (response: TResponseRedux<any>) => {
         return {
           data: response.data,
@@ -21,5 +35,7 @@ const consultationSubscription = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetSingleConsultationSubscriptionQuery } =
-  consultationSubscription;
+export const {
+  useGetSingleConsultationSubscriptionQuery,
+  useGetAllActiveConsultationSubscriptionsQuery,
+} = consultationSubscription;

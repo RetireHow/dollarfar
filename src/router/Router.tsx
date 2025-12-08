@@ -43,9 +43,6 @@ import EstimatedCostCalculatorPage from "../pages/COLC/COLCPages/EstimatedCostCa
 import CrimeExplanation from "../pages/COLC/COLCPages/CrimeExplanation";
 import AdminLogin from "../pages/Admin/AdminLogin";
 import PrivateRoute from "./PrivateRoute";
-import SendOtpForm from "../pages/Admin/OTPVerification/SendOtpForm";
-import VerifyOtpForm from "../pages/Admin/OTPVerification/VerifyOtpForm";
-import ResetPasswordForm from "../pages/Admin/OTPVerification/ResetPasswordForm";
 import { Ebook1 } from "../pages/Ebook/Ebook1";
 import CostOfLivingPersonalizedCalculator from "../pages/COLC/PersonalizedCostOfLivingCalculator/CostOfLivingPersonalizedCalculator";
 import CostOfLivingEstimator from "../pages/AdvanceEstimator";
@@ -65,13 +62,19 @@ import InvestmentCalculator from "../pages/Investor/InvestmentCalculator";
 import RetirementSimulator from "../pages/RetirementCalculator/RetirementSimulator";
 import AdminLayout from "../pages/Admin/AdminLayout";
 import PdfDownloadedUserTable from "../pages/Admin/PdfDownloadedUserTable";
-import EbookDownloadedUserTable from "../pages/Ebook/EbookDownloadedUserTable";
-import RetireeRequestedPlans from "../pages/Admin/RetireeRequestedPlans";
+import EbookDownloadedUserTable from "../pages/Admin/EbookDownloadedUserTable";
 import EbookReaderFeedbacks from "../pages/Admin/EbookReaderFeedbacks";
 import DashboardOverview from "../pages/Admin/DashboardOverview";
 import LeveragedInvestingCalculator from "../pages/LeveragedInvestingCalculator/LeveragedInvestingCalculator";
 
 import RetireHowForm from "../pages/RetirementCalculator/RetireHowForm";
+import SendOtpForm from "../pages/OTPVerification/SendOtpForm";
+import VerifyOtpForm from "../pages/OTPVerification/VerifyOtpForm";
+import ResetPasswordForm from "../pages/OTPVerification/ResetPasswordForm";
+import NextStepPlanDetails from "../pages/Admin/NextStepPlans/NextStepPlanDetails";
+import SessionDetails from "../pages/Admin/BookedSessions/SessionDetails";
+import RetirementPanel from "../pages/Admin/Panels/RetirementPanel";
+import RetireeRequests from "../pages/Admin/RetireeRequests";
 
 export const router = createBrowserRouter([
   {
@@ -372,8 +375,22 @@ export const router = createBrowserRouter([
             element: <EbookReaderFeedbacks />,
           },
           {
-            path: "retiree-requests",
-            element: <RetireeRequestedPlans />,
+            path: "retirement-panel",
+            element: <RetirementPanel />,
+            children: [
+              {
+                path: "",
+                element: <RetireeRequests />,
+              },
+              {
+                path: "plan-details/:planId",
+                element: <NextStepPlanDetails />,
+              },
+              {
+                path: "session-details/:sessionId",
+                element: <SessionDetails />,
+              },
+            ],
           },
         ],
       },

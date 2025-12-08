@@ -71,7 +71,7 @@ export default function AdminLayout() {
             <li>
               <NavLink
                 to="/admin"
-                className="flex items-center gap-3 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mt-5"
+                className="flex items-center gap-3 hover:text-green-600 dark:hover:text-green-400 transition-colors mt-5"
                 style={setActiveStyle}
                 end
                 onClick={handleMobileViewNavClick}
@@ -83,7 +83,7 @@ export default function AdminLayout() {
             <li onClick={handleMobileViewNavClick}>
               <NavLink
                 to="pdf-reports"
-                className="flex items-center gap-3 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="flex items-center gap-3 hover:text-green-600 dark:hover:text-green-400 transition-colors"
                 style={setActiveStyle}
               >
                 <FileText size={20} />
@@ -93,7 +93,7 @@ export default function AdminLayout() {
             <li onClick={handleMobileViewNavClick}>
               <NavLink
                 to="ebook-downloads"
-                className="flex items-center gap-3 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="flex items-center gap-3 hover:text-green-600 dark:hover:text-green-400 transition-colors"
                 style={setActiveStyle}
               >
                 <Download size={20} />
@@ -102,8 +102,8 @@ export default function AdminLayout() {
             </li>
             <li onClick={handleMobileViewNavClick}>
               <NavLink
-                to="retiree-requests"
-                className="flex items-center gap-3 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                to="retirement-panel"
+                className="flex items-center gap-3 hover:text-green-600 dark:hover:text-green-400 transition-colors"
                 style={setActiveStyle}
               >
                 <UserCheck size={20} />
@@ -113,7 +113,7 @@ export default function AdminLayout() {
             <li onClick={handleMobileViewNavClick}>
               <NavLink
                 to="ebook-feedbacks"
-                className="flex items-center gap-3 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className="flex items-center gap-3 hover:text-green-600 dark:hover:text-green-400 transition-colors"
                 style={setActiveStyle}
               >
                 <MessageSquare size={20} />

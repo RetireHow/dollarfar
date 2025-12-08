@@ -1,0 +1,152 @@
+[
+  {
+    "_id": "692e8c2394b302406b4f15bc",
+    "subscription": {
+      "_id": "692e8bda94b302406b4f15b7",
+      "name": "Siam Ahmed",
+      "email": "billal@skygoalnext.com",
+      "phone": "+8801311123533",
+      "paymentIntentId": "pi_3SZnOP4G0lMbEIGh0Y1Vy5Zq",
+      "amountPaid": 199,
+      "currency": "CAD",
+      "sessionsPurchased": 2,
+      "sessionsUsed": 2,
+      "expiryDate": "2026-12-02T06:48:58.217Z",
+      "status": "used",
+      "purchaseDate": "2025-12-02T06:48:58.219Z",
+      "createdAt": "2025-12-02T06:48:58.223Z",
+      "updatedAt": "2025-12-02T07:16:54.674Z"
+    },
+    "session_number": 1,
+    "sessions_remaining": 1,
+    "session_duration": 30,
+    "status": "scheduled",
+    "scheduled_by": "user",
+    "contact": {
+      "name": "Siam Ahmed",
+      "email": "billal@skygoalnext.com",
+      "phone": "+8801311123533",
+      "region": "Comilla"
+    },
+    "retirement_snapshot": {
+      "target_age": "65",
+      "desired_income": "7000",
+      "estimated_savings": "9000"
+    },
+    "housing_equity": {
+      "estimated_home_equity": "4000",
+      "equity_comfort": "Open to discuss"
+    },
+    "dollarfar_planning": {
+      "calculators": [
+        "Net Worth",
+        "Retirement Money Stretch",
+        "Retirement Simulator"
+      ],
+      "interpretation_toggle": true,
+      "consultation_time": "2025-12-24T23:30:00.000Z"
+    },
+    "travel_planning": {
+      "months_abroad": "2–3 months",
+      "start_timeline": "Summer 2026",
+      "travel_style": "3-Bedroom Condo",
+      "independent_travel_ack": true,
+      "country_region_interest": "South India — Kochi",
+      "ideal_locations_interest": "Hyderabad"
+    },
+    "travel_purposes": [
+      "Escape winter",
+      "Reduce cost of living",
+      "Stretch my dollars further"
+    ],
+    "budget_estimates": {
+      "home_spend_monthly": "7000",
+      "abroad_budget_season": "9000",
+      "flights_insurance_budget": "12000",
+      "flight_class": "Business"
+    },
+    "privacy_acknowledgements": {
+      "ack_poc": true,
+      "consent_contact": true,
+      "ack_scope": true
+    },
+    "isDeleted": false,
+    "createdAt": "2025-12-02T06:50:11.025Z",
+    "updatedAt": "2025-12-02T06:50:11.025Z"
+  },
+  {
+    "_id": "692e9266050233c791866289",
+    "subscription": {
+      "_id": "692e8bda94b302406b4f15b7",
+      "name": "Siam Ahmed",
+      "email": "billal@skygoalnext.com",
+      "phone": "+8801311123533",
+      "paymentIntentId": "pi_3SZnOP4G0lMbEIGh0Y1Vy5Zq",
+      "amountPaid": 199,
+      "currency": "CAD",
+      "sessionsPurchased": 2,
+      "sessionsUsed": 2,
+      "expiryDate": "2026-12-02T06:48:58.217Z",
+      "status": "used",
+      "purchaseDate": "2025-12-02T06:48:58.219Z",
+      "createdAt": "2025-12-02T06:48:58.223Z",
+      "updatedAt": "2025-12-02T07:16:54.674Z"
+    },
+    "session_number": 2,
+    "sessions_remaining": 0,
+    "session_duration": 30,
+    "status": "scheduled",
+    "scheduled_by": "user",
+    "contact": {
+      "name": "Siam Ahmed",
+      "email": "billal@skygoalnext.com",
+      "phone": "+8801311123533",
+      "region": "Ontario"
+    },
+    "retirement_snapshot": {
+      "target_age": "75",
+      "desired_income": "12000",
+      "estimated_savings": "54354"
+    },
+    "housing_equity": {
+      "estimated_home_equity": "12000",
+      "equity_comfort": "Open to discuss"
+    },
+    "dollarfar_planning": {
+      "calculators": [
+        "Budget & Cashflow",
+        "Cost-of-Living Comparison",
+        "Real Estate Equity Access"
+      ],
+      "interpretation_toggle": true,
+      "consultation_time": "2025-12-17T23:30:35.000Z"
+    },
+    "travel_planning": {
+      "months_abroad": "3–4 months",
+      "start_timeline": "Summer 2026",
+      "travel_style": "3-Bedroom Condo",
+      "independent_travel_ack": true,
+      "country_region_interest": "Mexico",
+      "ideal_locations_interest": "Toronto"
+    },
+    "travel_purposes": [
+      "Escape winter",
+      "Reduce cost of living",
+      "Stretch my dollars further"
+    ],
+    "budget_estimates": {
+      "home_spend_monthly": "8000",
+      "abroad_budget_season": "9000",
+      "flights_insurance_budget": "4000 premium economy",
+      "flight_class": "Business"
+    },
+    "privacy_acknowledgements": {
+      "ack_poc": true,
+      "consent_contact": true,
+      "ack_scope": true
+    },
+    "isDeleted": false,
+    "createdAt": "2025-12-02T07:16:54.623Z",
+    "updatedAt": "2025-12-02T07:16:54.623Z"
+  }
+]

@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { updateOTPField } from "../../../redux/features/OTP/OTP";
-import RedStar from "../../../components/UI/RedStar";
 import { toast } from "react-toastify";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useSendOTPMutation } from "../../../redux/features/APIEndpoints/authApi/authApi";
-import { showApiErrorToast } from "../../../utils/showApiErrorToast";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useSendOTPMutation } from "../../redux/features/APIEndpoints/authApi/authApi";
+import { showApiErrorToast } from "../../utils/showApiErrorToast";
+import RedStar from "../../components/UI/RedStar";
+import { updateOTPField } from "../../redux/features/OTP/OTP";
 
 const SendOtpForm: React.FC = () => {
   const navigate = useNavigate();

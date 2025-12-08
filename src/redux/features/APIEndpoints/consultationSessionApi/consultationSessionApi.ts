@@ -26,10 +26,42 @@ const consultationSessionApi = baseApi.injectEndpoints({
         };
       },
     }),
+    getConsultationSessoinDetails: builder.query({
+      query: (sessionId) => {
+        return {
+          url: `consultation-session/scheduled/${sessionId}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["consultationSession"],
+      transformResponse: (response: TResponseRedux<any>) => {
+        return {
+          data: response.data,
+        };
+      },
+    }),
+
+    getAllConsultationSlots: builder.query({
+      query: (date) => {
+        return {
+          url: `/consultation-session/scheduled/slots/${date}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["consultationSession"],
+      transformResponse: (response: TResponseRedux<any>) => {
+        return {
+          data: response.data,
+        };
+      },
+    }),
+
   }),
 });
 
 export const {
   useGetAllConsultationSessoinsQuery,
   useBookConsultationSessoinMutation,
+  useGetConsultationSessoinDetailsQuery,
+  useGetAllConsultationSlotsQuery
 } = consultationSessionApi;

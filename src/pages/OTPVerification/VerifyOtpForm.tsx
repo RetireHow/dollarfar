@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import OtpInput from "react-otp-input";
 import "./OTPStyles.css";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { updateOTPField } from "../../../redux/features/OTP/OTP";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { toast } from "react-toastify";
-import { useVerifyOTPMutation } from "../../../redux/features/APIEndpoints/authApi/authApi";
-import { showApiErrorToast } from "../../../utils/showApiErrorToast";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useVerifyOTPMutation } from "../../redux/features/APIEndpoints/authApi/authApi";
+import { updateOTPField } from "../../redux/features/OTP/OTP";
+import { showApiErrorToast } from "../../utils/showApiErrorToast";
 
 const VerifyOtpForm: React.FC = () => {
   const navigate = useNavigate();

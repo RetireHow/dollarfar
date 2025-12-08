@@ -7,7 +7,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { Checkbox, ConfigProvider } from "antd";
+import { Checkbox, ConfigProvider, Tooltip } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { baseUrl } from "../../api/apiConstant";
 import { toast } from "react-toastify";
@@ -16,11 +16,17 @@ import { Link } from "react-router-dom";
 import RedStar from "../../components/UI/RedStar";
 import { useAddRetirementPlanMutation } from "../../redux/features/APIEndpoints/retirementPlansApi/retirementPlansApi";
 import { showApiErrorToast } from "../../utils/showApiErrorToast";
-import { ArrowBigRight } from "lucide-react";
+import { ArrowBigRight, Clock } from "lucide-react";
 import { useGetSingleConsultationSubscriptionQuery } from "../../redux/features/APIEndpoints/consultationSubscriptionApi/consultationSubscription";
-import { useBookConsultationSessoinMutation } from "../../redux/features/APIEndpoints/consultationSessionApi/consultationSessionApi";
+import {
+  useBookConsultationSessoinMutation,
+  useGetAllConsultationSlotsQuery,
+} from "../../redux/features/APIEndpoints/consultationSessionApi/consultationSessionApi";
 import moment from "moment";
 import { Icon } from "@iconify/react/dist/iconify.js";
+
+import { DatePicker } from "antd";
+import dayjs, { Dayjs } from "dayjs";
 
 // const STRIPE_LIVE_SECRET_KEY =
 //   "pk_live_51RplAhBYC7YMMAFC7uODsfkBdTVL0v5Qhq5EOZ0MryrKf9P74f2l2zXjTS9i6kQXMGpPFvGMJD4ttj20WMHZH9CX004Xd966hu";
@@ -53,9 +59,9 @@ type HousingEquity = {
 type DollarFarPlanning = {
   calculators?: string[];
   interpretation_toggle?: boolean;
-  consultation_time: string;
   payment_status?: "" | "start" | "paid";
   subscription_payment_intent?: string;
+  selected_date: string;
 };
 
 type TravelPlanning = {
@@ -320,16 +326,17 @@ export default function RetireHowForm(): JSX.Element {
     housing_equity: {},
     dollarfar_planning: {
       payment_status: "",
-      consultation_time: "",
+      selected_date: "",
     },
     travel_planning: {},
     budget_estimates: {},
-    travel_purposes: [], // FIXED: Changed from {} to []
+    travel_purposes: [],
     privacy_acknowledgements: {},
   });
 
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [selectedSlot, setSelectedSlot] = useState("");
 
   // ===========================================|| RTK Query ||==============================================
   const [addRetirementPlan, { isLoading: submitting, isError, error }] =
@@ -343,6 +350,14 @@ export default function RetireHowForm(): JSX.Element {
     refetchOnMountOrArgChange: true,
     skip: !form.dollarfar_planning.interpretation_toggle,
   });
+
+  const { data: slotsData, isLoading: slotLoading } =
+    useGetAllConsultationSlotsQuery(form.dollarfar_planning.selected_date, {
+      refetchOnMountOrArgChange: true,
+      skip: !form.dollarfar_planning.interpretation_toggle,
+    });
+  const availableSlots = slotsData?.data;
+  const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   const [
     bookConsultationSession,
@@ -489,7 +504,6 @@ export default function RetireHowForm(): JSX.Element {
             ...prev,
             dollarfar_planning: {
               ...prev.dollarfar_planning,
-              consultation_time: "",
             },
           }));
         }
@@ -619,12 +633,9 @@ export default function RetireHowForm(): JSX.Element {
       return;
     }
 
-    //Validate Preferred Consultation Time
-    if (
-      form.dollarfar_planning.interpretation_toggle &&
-      !form.dollarfar_planning.consultation_time
-    ) {
-      toast.error("Please input your preferred consultation time.");
+    //Validate selected slot
+    if (form.dollarfar_planning.interpretation_toggle && !selectedSlot) {
+      toast.error("Please select time slot.");
       setShowError(true);
       return;
     }
@@ -664,11 +675,13 @@ export default function RetireHowForm(): JSX.Element {
       travel_planning,
       dollarfar_planning,
     } = form;
+
     if (
       form.dollarfar_planning.interpretation_toggle &&
       data?.data?.status === "active"
     ) {
       const subscription = data?.data?._id;
+
       const newSessionData = {
         subscription,
         contact,
@@ -681,8 +694,9 @@ export default function RetireHowForm(): JSX.Element {
         dollarfar_planning: {
           calculators: dollarfar_planning?.calculators,
           interpretation_toggle: true,
-          consultation_time: dollarfar_planning?.consultation_time,
+          consultation_time: selectedSlot,
         },
+        slot: selectedSlot,
       };
 
       const res = await bookConsultationSession(newSessionData);
@@ -692,7 +706,20 @@ export default function RetireHowForm(): JSX.Element {
         { autoClose: 15000 }
       );
     } else {
-      const res = await addRetirementPlan(submitData);
+      const newRetirementNextStepData = {
+        contact,
+        budget_estimates,
+        housing_equity,
+        privacy_acknowledgements,
+        retirement_snapshot,
+        travel_purposes,
+        travel_planning,
+        dollarfar_planning: {
+          calculators: dollarfar_planning?.calculators,
+          interpretation_toggle: false,
+        },
+      };
+      const res = await addRetirementPlan(newRetirementNextStepData);
       if (res?.error) return;
       toast.success(
         "Form submitted successfully. A member of RetireHow Team will contact you.",
@@ -700,7 +727,6 @@ export default function RetireHowForm(): JSX.Element {
       );
     }
 
-    // Reset form - FIXED: Proper type matching
     setForm({
       contact: {
         name: "",
@@ -712,14 +738,16 @@ export default function RetireHowForm(): JSX.Element {
       housing_equity: {},
       dollarfar_planning: {
         payment_status: "",
+        selected_date: "",
         interpretation_toggle: false,
-        consultation_time: "",
       },
       travel_planning: {},
       budget_estimates: {},
       travel_purposes: [],
       privacy_acknowledgements: {},
     });
+    setShowError(false);
+    setSelectedSlot("");
   };
 
   const toggleErrorBorderColor = (value: string | boolean, field: string) => {
@@ -744,10 +772,6 @@ export default function RetireHowForm(): JSX.Element {
         ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
         : "border-gray-400 dark:border-gray-500 hover:border-gray-600 dark:hover:border-gray-400";
     } else if (field === "ack_poc") {
-      return showError && !value
-        ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
-        : "border-gray-400 dark:border-gray-500 hover:border-gray-600 dark:hover:border-gray-400";
-    } else if (field === "consultation_time") {
       return showError && !value
         ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
         : "border-gray-400 dark:border-gray-500 hover:border-gray-600 dark:hover:border-gray-400";
@@ -1251,7 +1275,7 @@ export default function RetireHowForm(): JSX.Element {
                 <section className="space-y-5">
                   {/* Enable Interpretation Services  */}
                   <div>
-                    <label className="flex items-center justify-between rounded-xl border border-green-400 hover:border-green-600 duration-300 p-3 font-bold select-none cursor-pointer bg-green-100 dark:bg-green-500">
+                    <label className="flex items-center justify-between rounded-3xl border border-green-600 hover:border-green-600 duration-300 p-3 font-bold select-none cursor-pointer bg-green-200 hover:bg-green-300 dark:bg-green-500">
                       <span className="text-gray-700 dark:text-white">
                         Enable Interpretation Services
                       </span>
@@ -1294,40 +1318,126 @@ export default function RetireHowForm(): JSX.Element {
                         <label className="block font-semibold text-gray-800 dark:text-gray-200 mb-1">
                           <div className="flex items-center justify-between">
                             <p>
-                              Preferred Consultation Time (local)
+                              Preferred Consultation Date (local)
                               <RedStar />
                             </p>
                             {showError &&
-                              !form.dollarfar_planning.consultation_time && (
+                              !form.dollarfar_planning.selected_date && (
                                 <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-md">
-                                  Required*
+                                  Required Date*
                                 </p>
                               )}
                           </div>
                         </label>
-                        <input
-                          type="text"
-                          name="dollarfar_planning.consultation_time"
-                          value={getFieldValue(
-                            "dollarfar_planning",
-                            "consultation_time"
+
+                        <div>
+                          <DatePicker
+                            className="w-full py-3 px-4 rounded-xl border-gray-400 hover:border-gray-500"
+                            placeholder="Select Consultation Date"
+                            status={
+                              showError &&
+                              !form.dollarfar_planning.selected_date
+                                ? "error"
+                                : ""
+                            }
+                            onChange={(__, dateString) => {
+                              setForm({
+                                ...form,
+                                dollarfar_planning: {
+                                  ...form.dollarfar_planning,
+                                  selected_date: dateString as string,
+                                },
+                              });
+                            }}
+                            disabledDate={(current: Dayjs | null) => {
+                              if (!current) return false;
+                              // Use dayjs directly - it has the same API as moment
+                              return current
+                                .startOf("day")
+                                .isBefore(dayjs().startOf("day"));
+                            }}
+                          />
+
+                          {/* Show available slots if date is selected  */}
+                          {form.dollarfar_planning.selected_date && (
+                            <div>
+                              <h3
+                                className="font-bold mb-2"
+                                style={{ marginTop: 20 }}
+                              >
+                                Available Slots ({userTZ})
+                              </h3>
+                              <div className="flex items-center flex-wrap gap-3">
+                                {slotLoading ? (
+                                  <p className="font-bold text-lg">
+                                    Loading...
+                                  </p>
+                                ) : (
+                                  availableSlots?.map(
+                                    (slot: {
+                                      utc: string;
+                                      available: boolean;
+                                      providerTime: string;
+                                    }) => (
+                                      <Tooltip
+                                        title={
+                                          !slot.available
+                                            ? "This is already booked!"
+                                            : ""
+                                        }
+                                      >
+                                        <button
+                                          type="button"
+                                          key={slot.utc}
+                                          className={`border-[1px] border-gray-300 rounded-md px-2 py-1 ${
+                                            selectedSlot === slot.utc
+                                              ? "bg-green-500 text-white"
+                                              : !slot.available
+                                              ? "bg-gray-300 text-gray-500"
+                                              : "hover:border-green-600"
+                                          }`}
+                                          onClick={() =>
+                                            setSelectedSlot(slot.utc)
+                                          }
+                                          disabled={!slot.available}
+                                        >
+                                          <div className="flex items-center gap-2">
+                                            <Clock
+                                              className={`${
+                                                selectedSlot === slot.utc
+                                                  ? "text-white"
+                                                  : "text-gray-500"
+                                              }`}
+                                              size={18}
+                                            />
+                                            <p>
+                                              {moment(slot.utc).format("LT")}
+                                            </p>
+                                          </div>
+                                        </button>
+                                      </Tooltip>
+                                    )
+                                  )
+                                )}
+                              </div>
+                              {showError && !slotLoading && !selectedSlot && (
+                                <p className="text-red-500 font-semibold mt-1">
+                                  Time slot is required*
+                                </p>
+                              )}
+                              <p className="block text-gray-600 dark:text-gray-400 mt-2">
+                                ☝️ Choose an available time slot for your
+                                consultation. Gray slots are already booked.
+                              </p>
+                            </div>
                           )}
-                          onChange={handleChange}
-                          placeholder="e.g., Weekday mornings, Tuesday afternoons"
-                          className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${toggleErrorBorderColor(
-                            form.dollarfar_planning.consultation_time,
-                            "consultation_time"
-                          )}`}
-                        />
-                        <p className="block text-gray-600 dark:text-gray-400 mt-1">
-                          Let us know your preferred days/times for the
-                          consultation
-                        </p>
+                        </div>
                       </div>
+
                       {/* Subscription Start Button  */}
                       <div>
                         {isLoadingSubscription ? (
-                          <div className="rounded-xl border px-3 py-2 font-semibold transition-colors h-12 w-full flex justify-center items-center bg-gray-200 animate-pulse">
+                          <div className="rounded-3xl border px-3 py-6 font-semibold transition-colors h-12 w-full flex justify-center items-center bg-gray-200 animate-pulse">
                             <Icon
                               className="text-gray-900"
                               icon="line-md:loading-loop"
@@ -1340,10 +1450,10 @@ export default function RetireHowForm(): JSX.Element {
                             type="button"
                             onClick={onStartSubscription}
                             disabled={data?.data?.status === "active"}
-                            className={`rounded-xl border px-3 py-2 font-semibold transition-colors w-full ${
+                            className={`rounded-3xl border px-3 py-3 font-semibold transition-colors w-full ${
                               data?.data?.status === "active"
                                 ? "border-green-600 bg-green-500 text-white"
-                                : "border-gray-700 bg-gray-700 hover:border-gray-900 hover:bg-gray-900 duration-300 text-white"
+                                : "border-gray-700 bg-gray-800 hover:border-gray-900 hover:bg-gray-900 duration-300 text-white"
                             }`}
                           >
                             {data?.data?.status === "active"
