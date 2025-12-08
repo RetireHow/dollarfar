@@ -358,6 +358,7 @@ export default function RetireHowForm(): JSX.Element {
     });
   const availableSlots = slotsData?.data;
   const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  console.log({availableSlots})
 
   const [
     bookConsultationSession,
@@ -697,6 +698,7 @@ export default function RetireHowForm(): JSX.Element {
           consultation_time: selectedSlot,
         },
         slot: selectedSlot,
+        userTZ,
       };
 
       const res = await bookConsultationSession(newSessionData);

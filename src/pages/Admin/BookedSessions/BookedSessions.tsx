@@ -632,13 +632,13 @@ export default function BookedSessions() {
               className="text-4xl text-gray-400 dark:text-gray-500 mx-auto mb-3"
             />
             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">
-              No upcoming sessions
+              No completed sessions
             </h3>
             <p className="text-gray-500 dark:text-gray-400 mb-4">
-              There are no upcoming consultation sessions scheduled.
+              There are no completed consultation sessions.
             </p>
             <div className="text-sm text-gray-500 dark:text-gray-400">
-              Total sessions in system: {allSessions.length}
+              Total completed sessions in system: {completedSessions.length}
             </div>
           </div>
         )}
