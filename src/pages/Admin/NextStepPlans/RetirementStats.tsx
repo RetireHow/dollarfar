@@ -312,7 +312,7 @@ export default function RetirementStats() {
   // Calculate average session duration
   const averageSessionDuration = bookedSessions?.length
     ? Math.round(
-        bookedSessions.reduce(
+        bookedSessions?.reduce(
           (acc, session) => acc + (session.session_duration || 0),
           0
         ) / bookedSessions.length
