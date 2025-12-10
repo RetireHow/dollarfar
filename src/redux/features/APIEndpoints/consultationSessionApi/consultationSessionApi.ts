@@ -41,27 +41,11 @@ const consultationSessionApi = baseApi.injectEndpoints({
       },
     }),
 
-    getAllConsultationSlots: builder.query({
-      query: (date) => {
-        return {
-          url: `/consultation-session/scheduled/slots/${date}`,
-          method: "GET",
-        };
-      },
-      providesTags: ["consultationSession"],
-      transformResponse: (response: TResponseRedux<any>) => {
-        return {
-          data: response.data,
-        };
-      },
-    }),
-
   }),
 });
 
 export const {
   useGetAllConsultationSessoinsQuery,
   useBookConsultationSessoinMutation,
-  useGetConsultationSessoinDetailsQuery,
-  useGetAllConsultationSlotsQuery
+  useGetConsultationSessoinDetailsQuery
 } = consultationSessionApi;

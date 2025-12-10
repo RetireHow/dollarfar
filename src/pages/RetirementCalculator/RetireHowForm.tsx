@@ -18,15 +18,13 @@ import { useAddRetirementPlanMutation } from "../../redux/features/APIEndpoints/
 import { showApiErrorToast } from "../../utils/showApiErrorToast";
 import { ArrowBigRight, Clock } from "lucide-react";
 import { useGetSingleConsultationSubscriptionQuery } from "../../redux/features/APIEndpoints/consultationSubscriptionApi/consultationSubscription";
-import {
-  useBookConsultationSessoinMutation,
-  useGetAllConsultationSlotsQuery,
-} from "../../redux/features/APIEndpoints/consultationSessionApi/consultationSessionApi";
+import { useBookConsultationSessoinMutation } from "../../redux/features/APIEndpoints/consultationSessionApi/consultationSessionApi";
 import moment from "moment";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
 import { DatePicker } from "antd";
 import dayjs, { Dayjs } from "dayjs";
+import { useGetScheduleConfigSlotsQuery } from "../../redux/features/APIEndpoints/ScheduleConfigApi/ShceduleConfigApi";
 
 // const STRIPE_LIVE_SECRET_KEY =
 //   "pk_live_51RplAhBYC7YMMAFC7uODsfkBdTVL0v5Qhq5EOZ0MryrKf9P74f2l2zXjTS9i6kQXMGpPFvGMJD4ttj20WMHZH9CX004Xd966hu";
@@ -352,13 +350,13 @@ export default function RetireHowForm(): JSX.Element {
   });
 
   const { data: slotsData, isLoading: slotLoading } =
-    useGetAllConsultationSlotsQuery(form.dollarfar_planning.selected_date, {
+    useGetScheduleConfigSlotsQuery(form.dollarfar_planning.selected_date, {
       refetchOnMountOrArgChange: true,
       skip: !form.dollarfar_planning.interpretation_toggle,
     });
   const availableSlots = slotsData?.data;
   const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  console.log({availableSlots})
+  console.log({ availableSlots });
 
   const [
     bookConsultationSession,
@@ -983,7 +981,7 @@ export default function RetireHowForm(): JSX.Element {
                     maxLength={60}
                     value={getFieldValue("contact", "region")}
                     onChange={handleChange}
-                    placeholder="Enter your province or state"
+                    placeholder="Enter your residence. e.g., Toronto, Canada"
                     className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                   />
                   <p className="block text-gray-600 dark:text-gray-400 mt-1">
@@ -1425,6 +1423,13 @@ export default function RetireHowForm(): JSX.Element {
                               {showError && !slotLoading && !selectedSlot && (
                                 <p className="text-red-500 font-semibold mt-1">
                                   Time slot is required*
+                                </p>
+                              )}
+
+                              {availableSlots?.length == 0 && (
+                                <p className="text-red-500 font-semibold mt-1">
+                                  No slot is available for this date! Please
+                                  select another date.
                                 </p>
                               )}
                               <p className="block text-gray-600 dark:text-gray-400 mt-2">
