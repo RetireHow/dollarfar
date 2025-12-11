@@ -356,7 +356,6 @@ export default function RetireHowForm(): JSX.Element {
     });
   const availableSlots = slotsData?.data;
   const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  console.log({ availableSlots });
 
   const [
     bookConsultationSession,

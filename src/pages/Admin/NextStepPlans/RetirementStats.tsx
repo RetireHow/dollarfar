@@ -247,15 +247,21 @@ function RetirementStatsSkeleton() {
 
 export default function RetirementStats() {
   const { data: planData, isLoading: plansLoading } =
-    useGetAllRetirementPlansQuery(undefined);
+    useGetAllRetirementPlansQuery(undefined, {
+      refetchOnMountOrArgChange: true,
+    });
   const retirementPlans: TPlan[] = planData?.data || [];
 
   const { data: sessionData, isLoading: sessionsLoading } =
-    useGetAllConsultationSessoinsQuery(undefined);
+    useGetAllConsultationSessoinsQuery(undefined, {
+      refetchOnMountOrArgChange: true,
+    });
   const bookedSessions: TSession[] = sessionData?.data || [];
 
   const { data: subscriptionData, isLoading: subscriptionsLoading } =
-    useGetAllActiveConsultationSubscriptionsQuery(undefined);
+    useGetAllActiveConsultationSubscriptionsQuery(undefined, {
+      refetchOnMountOrArgChange: true,
+    });
   const activeSubscriptions: TConsultationSubscription[] =
     subscriptionData?.data || [];
 

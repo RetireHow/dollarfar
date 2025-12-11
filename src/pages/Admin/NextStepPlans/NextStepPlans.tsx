@@ -5,6 +5,7 @@ import { useGetAllRetirementPlansQuery } from "../../../redux/features/APIEndpoi
 import { NotesModal } from "../Modals/NotesModal";
 import { EmailModal } from "../Modals/EmailModal";
 import { Link } from "react-router-dom";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 /*=====================| Helper functions to safely access nested data |=================*/
 export const getContactInfo = (record: TPlan) => record.contact || {};
@@ -116,7 +117,9 @@ export default function NextStepPlans() {
   const [selectedRecordForAction, setSelectedRecordForAction] =
     useState<TPlan | null>(null);
 
-  const { data, isLoading } = useGetAllRetirementPlansQuery(undefined);
+  const { data, isLoading } = useGetAllRetirementPlansQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
   const retirementPlans: TPlan[] = data?.data || [];
 
   const formatCurrency = (amount: string) => {
@@ -156,145 +159,163 @@ export default function NextStepPlans() {
   }
 
   return (
-    <div className="dark:bg-gray-900 dark:text-gray-100 min-h-screen">
+    <div className="dark:bg-gray-900 dark:text-gray-100">
       <div>
         {/* All Plans */}
         <section className="mb-12">
           <h1 className="text-[1.5rem] font-semibold mb-2 dark:text-white">
             Retirement Next Step Plans
           </h1>
-          <div className="overflow-x-auto border border-gray-300 dark:border-gray-700 rounded-lg">
-            <table className="divide-y divide-gray-200 dark:divide-gray-700 w-full">
-              <thead className="bg-gray-100 dark:bg-gray-800">
-                <tr>
-                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
-                    Client
-                  </th>
-                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
-                    Contact
-                  </th>
-                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
-                    Retirement Goals
-                  </th>
-                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
-                    Travel Preferences
-                  </th>
-                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
-                    Submitted
-                  </th>
-                  <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-300 dark:divide-gray-700">
-                {retirementPlans?.map((record) => {
-                  const contactInfo = getContactInfo(record);
-                  const retirementSnapshot = getRetirementSnapshot(record);
-                  const travelPlanning = getTravelPlanning(record);
+          <div className="overflow-x-auto border border-gray-100 dark:border-gray-700 rounded-lg">
+            {retirementPlans?.length > 0 ? (
+              <table className="divide-y divide-gray-200 dark:divide-gray-700 w-full">
+                <thead className="bg-gray-100 dark:bg-gray-800">
+                  <tr>
+                    <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                      Client
+                    </th>
+                    <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                      Contact
+                    </th>
+                    <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                      Retirement Goals
+                    </th>
+                    <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                      Travel Preferences
+                    </th>
+                    <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                      Submitted
+                    </th>
+                    <th className="text-left px-4 py-2 text-[1rem] font-bold text-gray-700 dark:text-white border border-gray-300 dark:border-gray-600">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-300 dark:divide-gray-700">
+                  {retirementPlans?.map((record) => {
+                    const contactInfo = getContactInfo(record);
+                    const retirementSnapshot = getRetirementSnapshot(record);
+                    const travelPlanning = getTravelPlanning(record);
 
-                  return (
-                    <tr
-                      key={record._id}
-                      className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                    >
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div>
-                          <p className="font-semibold text-gray-900 dark:text-white">
-                            {contactInfo.name}
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {contactInfo.region || "No region"}
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div>
-                          <p className="text-gray-900 dark:text-white">
-                            {contactInfo.email}
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {contactInfo.phone}
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div className="space-y-1">
-                          <p className="text-sm">
-                            <span className="font-medium dark:text-white">
-                              Age:
-                            </span>{" "}
-                            <span className="dark:text-gray-300">
-                              {retirementSnapshot.target_age || "Not set"}
-                            </span>
-                          </p>
-                          <p className="text-sm">
-                            <span className="font-medium dark:text-white">
-                              Income:
-                            </span>{" "}
-                            <span className="dark:text-gray-300">
-                              {formatCurrency(
-                                retirementSnapshot.desired_income as string
-                              )}
-                            </span>
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <div className="space-y-1">
-                          <p className="text-sm">
-                            <span className="font-medium dark:text-white">
-                              Destination:
-                            </span>{" "}
-                            <span className="dark:text-gray-300">
-                              {travelPlanning.country_region_interest ||
-                                "Not set"}
-                            </span>
-                          </p>
-                          <p className="text-sm">
-                            <span className="font-medium dark:text-white">
-                              Timeline:
-                            </span>{" "}
-                            <span className="dark:text-gray-300">
-                              {travelPlanning.start_timeline || "Not set"}
-                            </span>
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          {formatDate(record.createdAt)}
-                        </p>
-                      </td>
-                      {/* Actions */}
-                      <td className="px-6 py-4">
-                        <div className="flex flex-col gap-2">
-                          <Link to={`plan-details/${record._id}`}>
-                            <button className="w-full px-4 py-2 bg-gray-900 dark:bg-gray-800 text-white rounded-lg hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors font-medium text-sm">
-                              View Details
-                            </button>
-                          </Link>
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => handleAddNote(record)}
-                              className="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
-                            >
-                              Note
-                            </button>
-                            <button
-                              onClick={() => handleEmailModal(record)}
-                              className="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
-                            >
-                              Email
-                            </button>
+                    return (
+                      <tr
+                        key={record._id}
+                        className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div>
+                            <p className="font-semibold text-gray-900 dark:text-white">
+                              {contactInfo.name}
+                            </p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              {contactInfo.region || "No region"}
+                            </p>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div>
+                            <p className="text-gray-900 dark:text-white">
+                              {contactInfo.email}
+                            </p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              {contactInfo.phone}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div className="space-y-1">
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Age:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {retirementSnapshot.target_age || "Not set"}
+                              </span>
+                            </p>
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Income:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {formatCurrency(
+                                  retirementSnapshot.desired_income as string
+                                )}
+                              </span>
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <div className="space-y-1">
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Destination:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {travelPlanning.country_region_interest ||
+                                  "Not set"}
+                              </span>
+                            </p>
+                            <p className="text-sm">
+                              <span className="font-medium dark:text-white">
+                                Timeline:
+                              </span>{" "}
+                              <span className="dark:text-gray-300">
+                                {travelPlanning.start_timeline || "Not set"}
+                              </span>
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 text-sm text-gray-800 dark:text-gray-300 border border-gray-300 dark:border-gray-600">
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {formatDate(record.createdAt)}
+                          </p>
+                        </td>
+                        {/* Actions */}
+                        <td className="px-6 py-4">
+                          <div className="flex flex-col gap-2">
+                            <Link to={`plan-details/${record._id}`}>
+                              <button className="w-full px-4 py-2 bg-gray-900 dark:bg-gray-800 text-white rounded-lg hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors font-medium text-sm">
+                                View Details
+                              </button>
+                            </Link>
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => handleAddNote(record)}
+                                className="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
+                              >
+                                Note
+                              </button>
+                              <button
+                                onClick={() => handleEmailModal(record)}
+                                className="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
+                              >
+                                Email
+                              </button>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            ) : (
+              <div className="text-center py-12 border border-gray-200 dark:border-gray-700 rounded-lg">
+                <Icon
+                  icon="mdi:calendar-check"
+                  className="text-4xl text-gray-400 dark:text-gray-500 mx-auto mb-3"
+                />
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">
+                  No retirement next step plans
+                </h3>
+                <p className="text-gray-500 dark:text-gray-400 mb-4">
+                  There are no retirement next step plans submitted.
+                </p>
+                <div className="text-sm text-gray-500 dark:text-gray-400">
+                  Total plans in system: {retirementPlans.length}
+                </div>
+              </div>
+            )}
           </div>
         </section>
       </div>

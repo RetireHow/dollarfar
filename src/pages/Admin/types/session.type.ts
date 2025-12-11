@@ -1,5 +1,7 @@
 export type TSession = {
   _id: string;
+  userTZ: string;
+  providerTZ: string;
   subscription: Subscription;
   session_number: number;
   sessions_remaining: number;

@@ -1,7 +1,14 @@
 // components/ConsultationScheduleForm.tsx
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useGetScheduleConfigQuery } from "../../../redux/features/APIEndpoints/ScheduleConfigApi/ShceduleConfigApi";
+import {
+  useGetScheduleConfigQuery,
+  useUpdateScheduleConfigMutation,
+} from "../../../redux/features/APIEndpoints/ScheduleConfigApi/ShceduleConfigApi";
+import RedStar from "../../../components/UI/RedStar";
+import { showApiErrorToast } from "../../../utils/showApiErrorToast";
+import { Select } from "antd";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 type DayName =
   | "Monday"
@@ -32,8 +39,8 @@ interface DisabledTimeRange {
 
 interface ConsultationScheduleConfig {
   _id: string;
-  providerTimezone: string;
-  slotDurationMinutes: number;
+  providerTimezone: { label: string; value: string };
+  slotDurationMinutes: string;
   workingHours: WorkingHour[];
   breaks: Break[];
   disabledDates: string[];
@@ -51,10 +58,11 @@ const weekdays: DayName[] = [
 ];
 
 const ConsultationScheduleForm: React.FC = () => {
+  const timezones = (Intl as any).supportedValuesOf("timeZone");
   const [config, setConfig] = useState<ConsultationScheduleConfig>({
     _id: "",
-    providerTimezone: "America/Toronto",
-    slotDurationMinutes: 30,
+    providerTimezone: { label: "America/Toronto", value: "America/Toronto" },
+    slotDurationMinutes: "30",
     workingHours: weekdays.map((day) => ({
       day,
       start: "09:00",
@@ -65,38 +73,69 @@ const ConsultationScheduleForm: React.FC = () => {
     disabledTimeRanges: [],
   });
 
+  const [showError, setShowError] = useState(false);
+
   const { data: fetchedConfigData, isLoading } =
     useGetScheduleConfigQuery(undefined);
+
+  const [
+    updateScheduleConfig,
+    {
+      isLoading: updatingScheduleConfig,
+      isError: isUpdateScheduleConfigError,
+      error: updateScheduleConfigError,
+    },
+  ] = useUpdateScheduleConfigMutation(undefined);
 
   // ❗ FIX: Deep clone RTK returned frozen data
   useEffect(() => {
     if (!isLoading && fetchedConfigData?.data) {
       const unfrozen = JSON.parse(JSON.stringify(fetchedConfigData.data));
-      setConfig(unfrozen);
+      setConfig({
+        ...unfrozen,
+        providerTimezone: {
+          label: unfrozen?.providerTimezone,
+          value: unfrozen?.providerTimezone,
+        },
+      });
     }
   }, [isLoading, fetchedConfigData]);
 
   // -------------------------------
   // Working Hours Update
   // -------------------------------
-
   const handleWorkingHourChange = (
-    day: DayName,
-    field: "start" | "end",
+    index: number,
+    field: "day" | "start" | "end",
     value: string
   ) => {
+    setConfig((prev) => {
+      const updated = [...prev.workingHours];
+      updated[index] = { ...updated[index], [field]: value };
+      return { ...prev, workingHours: updated };
+    });
+  };
+
+  const handleAddWorkingHour = () => {
     setConfig((prev) => ({
       ...prev,
-      workingHours: prev.workingHours.map((wh) =>
-        wh.day === day ? { ...wh, [field]: value } : wh
-      ),
+      workingHours: [
+        ...prev.workingHours,
+        { day: "Monday", start: "10:00", end: "16:00" },
+      ],
+    }));
+  };
+
+  const handleRemoveWorkingHour = (index: number) => {
+    setConfig((prev) => ({
+      ...prev,
+      workingHours: prev.workingHours.filter((_, i) => i !== index),
     }));
   };
 
   // -------------------------------
   // Breaks Update
   // -------------------------------
-
   const handleBreakChange = (
     index: number,
     field: "day" | "start" | "end",
@@ -114,7 +153,6 @@ const ConsultationScheduleForm: React.FC = () => {
   // -------------------------------
   // Disabled Time Range Update
   // -------------------------------
-
   const handleDisabledTimeRangeChange = (
     index: number,
     field: "date" | "start" | "end",
@@ -131,22 +169,45 @@ const ConsultationScheduleForm: React.FC = () => {
   // -------------------------------
   // Submit Handler
   // -------------------------------
+  useEffect(() => {
+    if (
+      !updatingScheduleConfig &&
+      isUpdateScheduleConfigError &&
+      updateScheduleConfigError
+    ) {
+      showApiErrorToast(updateScheduleConfigError);
+    }
+  }, [
+    updatingScheduleConfig,
+    isUpdateScheduleConfigError,
+    updateScheduleConfigError,
+  ]);
 
   const handleSubmit = async () => {
-    try {
-      await fetch(
-        `http://localhost:5000/api/v1/consultation-schedule-config/${config._id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(config),
-        }
-      );
+    const { providerTimezone, slotDurationMinutes, workingHours } = config;
+    if (!providerTimezone || !slotDurationMinutes || workingHours.length < 1) {
+      toast.error("Please fill in the required fields!");
+      return setShowError(true);
+    }
+    const res = await updateScheduleConfig({
+      configId: config._id,
+      data: { ...config, providerTimezone: config.providerTimezone.value },
+    });
+    if (res?.error) return;
+    toast.success("Consultation schedule is updated successfully.", {
+      autoClose: 5000,
+    });
+  };
 
-      toast.success("Configuration updated successfully");
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to update configuration");
+  const toggleErrorBorderColor = (value: string | boolean, field: string) => {
+    if (field === "slotDurationMinutes") {
+      return showError && !value
+        ? "border-[2px] p-2 w-full rounded border-red-500 outline-red-500 focus:ring-red-500"
+        : "border p-2 w-full rounded";
+    } else if (field === "providerTime") {
+      return showError && !value
+        ? "border-[2px] p-2 w-full rounded border-red-500 outline-red-500 focus:ring-red-500"
+        : "border p-2 w-full rounded";
     }
   };
 
@@ -158,30 +219,86 @@ const ConsultationScheduleForm: React.FC = () => {
 
       {/* -------- Provider Timezone -------- */}
       <div className="mb-4">
-        <label className="block font-semibold mb-1">Provider Timezone</label>
+        <div className="font-semibold mb-1 flex justify-between items-center">
+          <p>
+            Your Timezone <RedStar />
+          </p>
+          {showError && !config?.providerTimezone && (
+            <p className="text-red-500">Required*</p>
+          )}
+        </div>
+        <Select
+          size="large"
+          className="w-full h-[50px] border-[1px] !border-[#838383] rounded-[8px]"
+          // value={config.providerTimezone.value}
+          value={config.providerTimezone.value}
+          onChange={(value) => {
+            setConfig((prev) => ({
+              ...prev,
+              providerTimezone: { label: value, value },
+            }));
+          }}
+          options={timezones?.map((tz: string) => ({ label: tz, value: tz }))}
+          suffixIcon={
+            <Icon
+              className="text-[1.5rem] text-gray-600"
+              icon="iconamoon:arrow-down-2"
+            />
+          }
+          placeholder="Search and select timezone"
+          showSearch={true}
+          allowClear
+        ></Select>
+      </div>
+
+      {/* <div className="mb-4">
+        <div className="font-semibold mb-1 flex justify-between items-center">
+          <p>
+            Your Timezone <RedStar />
+          </p>
+          {showError && !config?.providerTimezone && (
+            <p className="text-red-500">Required*</p>
+          )}
+        </div>
         <input
           type="text"
-          className="border p-2 w-full rounded"
+          className={`${toggleErrorBorderColor(
+            config.providerTimezone,
+            "providerTime"
+          )}`}
+          name="providerTime"
+          placeholder="Enter your time zone"
           value={config.providerTimezone}
           onChange={(e) =>
             setConfig({ ...config, providerTimezone: e.target.value })
           }
         />
-      </div>
+      </div> */}
 
       {/* -------- Slot Duration -------- */}
       <div className="mb-4">
-        <label className="block font-semibold mb-1">
-          Slot Duration (minutes)
-        </label>
+        <div className="font-semibold mb-1 flex justify-between items-center">
+          <p>
+            Slot Duration (minutes)
+            <RedStar />
+          </p>
+          {showError && !config.slotDurationMinutes && (
+            <p className="text-red-500">Required*</p>
+          )}
+        </div>
         <input
           type="number"
-          className="border p-2 w-full rounded"
+          className={`${toggleErrorBorderColor(
+            config.slotDurationMinutes,
+            "slotDurationMinutes"
+          )}`}
+          placeholder="Please enter slot duration"
           value={config.slotDurationMinutes}
+          name="slotDurationMinutes"
           onChange={(e) =>
             setConfig({
               ...config,
-              slotDurationMinutes: Number(e.target.value),
+              slotDurationMinutes: e.target.value,
             })
           }
           onWheel={(e) => (e.target as HTMLFormElement).blur()}
@@ -190,29 +307,65 @@ const ConsultationScheduleForm: React.FC = () => {
 
       {/* -------- Working Hours -------- */}
       <div className="mb-6">
-        <h3 className="font-semibold mb-2">Working Hours</h3>
-        {config.workingHours.map((w, idx) => (
+        <div className="font-semibold mb-1 flex justify-between items-center">
+          <p>
+            Working Hours <RedStar />
+          </p>
+          {showError && !config.workingHours.length && (
+            <p className="text-red-500">Working hour is required*</p>
+          )}
+        </div>
+
+        {config.workingHours.map((wh, idx) => (
           <div key={idx} className="flex items-center gap-2 mb-2">
-            <span className="w-24">{w.day}</span>
+            <select
+              className="border p-1 rounded"
+              value={wh.day}
+              onChange={(e) =>
+                handleWorkingHourChange(idx, "day", e.target.value)
+              }
+            >
+              {weekdays.map((d) => (
+                <option key={d}>{d}</option>
+              ))}
+            </select>
+
             <input
               type="time"
               className="border p-1 rounded"
-              value={w.start}
+              value={wh.start}
               onChange={(e) =>
-                handleWorkingHourChange(w.day, "start", e.target.value)
+                handleWorkingHourChange(idx, "start", e.target.value)
               }
             />
+
             <span>-</span>
+
             <input
               type="time"
               className="border p-1 rounded"
-              value={w.end}
+              value={wh.end}
               onChange={(e) =>
-                handleWorkingHourChange(w.day, "end", e.target.value)
+                handleWorkingHourChange(idx, "end", e.target.value)
               }
             />
+
+            <button
+              className="text-red-500 ml-2"
+              onClick={() => handleRemoveWorkingHour(idx)}
+            >
+              Remove
+            </button>
           </div>
         ))}
+
+        {/* Add Working Hour */}
+        <button
+          className="mt-2 px-3 py-1 bg-gray-700 hover:bg-gray-900 duration-300 text-white rounded"
+          onClick={handleAddWorkingHour}
+        >
+          Add Working Hour
+        </button>
       </div>
 
       {/* -------- Breaks -------- */}
@@ -237,9 +390,7 @@ const ConsultationScheduleForm: React.FC = () => {
               value={b.start}
               onChange={(e) => handleBreakChange(idx, "start", e.target.value)}
             />
-
             <span>-</span>
-
             <input
               type="time"
               className="border p-1 rounded"
@@ -262,7 +413,7 @@ const ConsultationScheduleForm: React.FC = () => {
         ))}
 
         <button
-          className="mt-2 px-3 py-1 bg-blue-500 text-white rounded"
+          className="mt-2 px-3 py-1 bg-gray-700 hover:bg-gray-900 duration-300 text-white rounded"
           onClick={() =>
             setConfig((prev) => ({
               ...prev,
@@ -306,7 +457,7 @@ const ConsultationScheduleForm: React.FC = () => {
         ))}
 
         <button
-          className="mt-2 px-3 py-1 bg-blue-500 text-white rounded"
+          className="mt-2 px-3 py-1 bg-gray-700 hover:bg-gray-900 duration-300 text-white rounded"
           onClick={() =>
             setConfig((prev) => ({
               ...prev,
@@ -373,7 +524,7 @@ const ConsultationScheduleForm: React.FC = () => {
         ))}
 
         <button
-          className="mt-2 px-3 py-1 bg-blue-500 text-white rounded"
+          className="mt-2 px-3 py-1 bg-gray-700 hover:bg-gray-900 duration-300 text-white rounded"
           onClick={() =>
             setConfig((prev) => ({
               ...prev,
@@ -394,10 +545,13 @@ const ConsultationScheduleForm: React.FC = () => {
 
       {/* -------- Save Button -------- */}
       <button
-        className="px-4 py-2 bg-green-500 text-white rounded"
+        className={`px-4 py-2 text-white rounded md:min-w-[300px] min-w-full ${
+          updatingScheduleConfig ? "bg-gray-300" : "bg-green-500"
+        }`}
         onClick={handleSubmit}
+        disabled={updatingScheduleConfig}
       >
-        Save Configuration
+        {updatingScheduleConfig ? "Saving..." : "Save Configuration"}
       </button>
     </div>
   );

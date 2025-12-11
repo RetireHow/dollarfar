@@ -6,20 +6,11 @@ import { EmailModal } from "../Modals/EmailModal";
 import { TSession } from "../types/session.type";
 import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import moment from "moment";
+import { convertUTCToTimeZone } from "../admin.utils";
 
 export const getContactInfo = (record: TSession) => record.contact || {};
 export const getDollarFarPlanning = (record: TSession) =>
   record.dollarfar_planning || {};
-
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-};
 
 const getSessionStatusColor = (status: string) => {
   switch (status?.toLowerCase()) {
@@ -216,7 +207,9 @@ export default function BookedSessions() {
   const [selectedRecordForAction, setSelectedRecordForAction] =
     useState<TSession | null>(null);
 
-  const { data, isLoading } = useGetAllConsultationSessoinsQuery(undefined);
+  const { data, isLoading } = useGetAllConsultationSessoinsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
   const allSessions: TSession[] = data?.data || [];
 
   // Filter only upcoming scheduled sessions
@@ -262,19 +255,6 @@ export default function BookedSessions() {
   const handleEmailModal = async (record: TSession) => {
     setSelectedRecordForAction(record);
     setEmailModalOpen(true);
-  };
-
-  const getTimeUntilSession = (consultationTime: string): string => {
-    if (!consultationTime) return "";
-
-    const now = moment();
-    const scheduled = moment(consultationTime);
-
-    if (scheduled.isBefore(now)) {
-      return "Started";
-    }
-
-    return scheduled.fromNow(); // Returns "in 2 days", "in 3 hours", etc.
   };
 
   // Show skeleton if data is loading
@@ -390,17 +370,27 @@ export default function BookedSessions() {
                       {/* Scheduled Time */}
                       <td className="px-6 py-4">
                         <div className="space-y-2">
+                          {/* Instructor Local Time  */}
                           <div className="font-medium text-gray-900 dark:text-white">
-                            {consultationTime
-                              ? formatDate(consultationTime)
-                              : "Not scheduled"}
+                            <span>
+                              {convertUTCToTimeZone(
+                                consultationTime,
+                                record.providerTZ
+                              )}
+                            </span>
+                            <span className="ml-2">({record.providerTZ})</span>
                           </div>
-                          {/* Added time until session */}
-                          {consultationTime && (
-                            <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                              {getTimeUntilSession(consultationTime)}
-                            </div>
-                          )}
+                          {/* Client Local Time */}
+                          <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                            <span>
+                              {convertUTCToTimeZone(
+                                consultationTime,
+                                record.userTZ
+                              )}
+                            </span>
+                            <span className="ml-2">({record.userTZ})</span>
+                          </div>
+
                           <div className="text-xs text-gray-500 dark:text-gray-400">
                             {record.sessions_remaining} sessions remaining
                           </div>
@@ -450,7 +440,7 @@ export default function BookedSessions() {
               There are no upcoming consultation sessions scheduled.
             </p>
             <div className="text-sm text-gray-500 dark:text-gray-400">
-              Total sessions in system: {allSessions.length}
+              Total upcoming sessions in system: {allSessions.length}
             </div>
           </div>
         )}
@@ -578,17 +568,27 @@ export default function BookedSessions() {
                       {/* Scheduled Time */}
                       <td className="px-6 py-4">
                         <div className="space-y-2">
+                          {/* Instructor Local Time  */}
                           <div className="font-medium text-gray-900 dark:text-white">
-                            {consultationTime
-                              ? formatDate(consultationTime)
-                              : "Not scheduled"}
+                            <span>
+                              {convertUTCToTimeZone(
+                                consultationTime,
+                                record.providerTZ
+                              )}
+                            </span>
+                            <span className="ml-2">({record.providerTZ})</span>
                           </div>
-                          {/* Added time until session */}
-                          {consultationTime && (
-                            <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                              {getTimeUntilSession(consultationTime)}
-                            </div>
-                          )}
+                          {/* Client Local Time */}
+                          <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                            <span>
+                              {convertUTCToTimeZone(
+                                consultationTime,
+                                record.userTZ
+                              )}
+                            </span>
+                            <span className="ml-2">({record.userTZ})</span>
+                          </div>
+
                           <div className="text-xs text-gray-500 dark:text-gray-400">
                             {record.sessions_remaining} sessions remaining
                           </div>
