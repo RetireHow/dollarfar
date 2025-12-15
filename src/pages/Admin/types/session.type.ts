@@ -43,6 +43,7 @@ export interface Contact {
   email: string;
   phone: string;
   region: string;
+  country: string;
 }
 
 export interface RetirementSnapshot {

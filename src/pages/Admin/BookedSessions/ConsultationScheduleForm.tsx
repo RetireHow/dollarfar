@@ -39,6 +39,13 @@ interface DisabledTimeRange {
 
 interface ConsultationScheduleConfig {
   _id: string;
+
+  // ✅ NEW FIELDS
+  name: string;
+  email: string;
+  country: string;
+  state: string;
+
   providerTimezone: { label: string; value: string };
   slotDurationMinutes: string;
   workingHours: WorkingHour[];
@@ -61,6 +68,11 @@ const ConsultationScheduleForm: React.FC = () => {
   const timezones = (Intl as any).supportedValuesOf("timeZone");
   const [config, setConfig] = useState<ConsultationScheduleConfig>({
     _id: "",
+    name: "",
+    email: "",
+    country: "",
+    state: "",
+
     providerTimezone: { label: "America/Toronto", value: "America/Toronto" },
     slotDurationMinutes: "30",
     workingHours: weekdays.map((day) => ({
@@ -184,8 +196,24 @@ const ConsultationScheduleForm: React.FC = () => {
   ]);
 
   const handleSubmit = async () => {
-    const { providerTimezone, slotDurationMinutes, workingHours } = config;
-    if (!providerTimezone || !slotDurationMinutes || workingHours.length < 1) {
+    const {
+      name,
+      email,
+      country,
+      state,
+      providerTimezone,
+      slotDurationMinutes,
+      workingHours,
+    } = config;
+    if (
+      !name ||
+      !email ||
+      !country ||
+      !state ||
+      !providerTimezone ||
+      !slotDurationMinutes ||
+      workingHours.length < 1
+    ) {
       toast.error("Please fill in the required fields!");
       return setShowError(true);
     }
@@ -216,6 +244,40 @@ const ConsultationScheduleForm: React.FC = () => {
       <h2 className="text-xl font-bold mb-4">
         Consultation Schedule Configuration
       </h2>
+
+      {/* -------- Provider Info -------- */}
+      <div className="mb-6">
+        <h3 className="font-semibold mb-3">Consultant Information</h3>
+
+        <input
+          className="border p-2 w-full rounded mb-3"
+          placeholder="Name"
+          value={config.name}
+          onChange={(e) => setConfig({ ...config, name: e.target.value })}
+        />
+
+        <input
+          type="email"
+          className="border p-2 w-full rounded mb-3"
+          placeholder="Email"
+          value={config.email}
+          onChange={(e) => setConfig({ ...config, email: e.target.value })}
+        />
+
+        <input
+          className="border p-2 w-full rounded mb-3"
+          placeholder="Country"
+          value={config.country}
+          onChange={(e) => setConfig({ ...config, country: e.target.value })}
+        />
+
+        <input
+          className="border p-2 w-full rounded"
+          placeholder="State / Province"
+          value={config.state}
+          onChange={(e) => setConfig({ ...config, state: e.target.value })}
+        />
+      </div>
 
       {/* -------- Provider Timezone -------- */}
       <div className="mb-4">

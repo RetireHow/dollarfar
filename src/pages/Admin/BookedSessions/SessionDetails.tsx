@@ -723,11 +723,12 @@ export default function SessionDetails() {
                       className="text-gray-600 dark:text-gray-400"
                     />
                     <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                      Province/State
+                      Residence
                     </h3>
                   </div>
                   <p className="text-base font-semibold text-gray-900 dark:text-white">
-                    {contactInfo.region || "Not specified"}
+                    {contactInfo.region + ", " + contactInfo.country ||
+                      "Not specified"}
                   </p>
                 </div>
               </div>

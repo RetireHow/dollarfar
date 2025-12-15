@@ -75,6 +75,7 @@ import NextStepPlanDetails from "../pages/Admin/NextStepPlans/NextStepPlanDetail
 import SessionDetails from "../pages/Admin/BookedSessions/SessionDetails";
 import RetirementPanel from "../pages/Admin/Panels/RetirementPanel";
 import RetireeRequests from "../pages/Admin/RetireeRequests";
+import EmailsUI from "../pages/EmailsUI";
 
 export const router = createBrowserRouter([
   {
@@ -394,6 +395,13 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path:'emails-ui',
+        element:<EmailsUI/>
+      }
+
+
+
     ],
   },
 ]);

@@ -40,7 +40,8 @@ type ContactInfo = {
   name: string;
   phone: string;
   email: string;
-  region?: string;
+  region: string;
+  country: string;
 };
 
 type RetirementSnapshot = {
@@ -319,6 +320,8 @@ export default function RetireHowForm(): JSX.Element {
       name: "",
       phone: "",
       email: "",
+      region: "",
+      country: "",
     },
     retirement_snapshot: {},
     housing_equity: {},
@@ -572,7 +575,6 @@ export default function RetireHowForm(): JSX.Element {
   };
 
   const emailReg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-  const phoneReg = /^[+]?[1-9][\d]{0,15}$/;
 
   useEffect(() => {
     if (isError && !submitting && error) {
@@ -591,7 +593,13 @@ export default function RetireHowForm(): JSX.Element {
     e.preventDefault();
 
     // Validate required contact fields
-    if (!form.contact.name || !form.contact.phone || !form.contact.email) {
+    if (
+      !form.contact.name ||
+      !form.contact.phone ||
+      !form.contact.email ||
+      !form.contact.region ||
+      !form.contact.country
+    ) {
       setShowError(true);
       toast.error("Please provide all the required informations.");
       window.scrollTo({ top: 340, behavior: "smooth" });
@@ -603,11 +611,6 @@ export default function RetireHowForm(): JSX.Element {
       toast.error("Please provide a valid email address!", {
         autoClose: 10000,
       });
-      return;
-    }
-    if (!phoneReg.test(form.contact.phone)) {
-      setShowError(true);
-      toast.error("Please provide a valid phone number!");
       return;
     }
 
@@ -732,6 +735,7 @@ export default function RetireHowForm(): JSX.Element {
         phone: "",
         email: "",
         region: "",
+        country: "",
       },
       retirement_snapshot: {},
       housing_equity: {},
@@ -754,12 +758,16 @@ export default function RetireHowForm(): JSX.Element {
       return showError && !value
         ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
         : "border-gray-400 dark:border-gray-500";
-    } else if (field === "phone") {
-      return showError && (!value || !phoneReg.test(value as string))
-        ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
-        : "border-gray-400 dark:border-gray-500";
     } else if (field === "email") {
       return showError && (!value || !emailReg.test(value as string))
+        ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
+        : "border-gray-400 dark:border-gray-500";
+    } else if (field === "region") {
+      return showError && !value
+        ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
+        : "border-gray-400 dark:border-gray-500";
+    } else if (field === "country") {
+      return showError && !value
         ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
         : "border-gray-400 dark:border-gray-500";
     } else if (field === "ack_scope") {
@@ -892,13 +900,6 @@ export default function RetireHowForm(): JSX.Element {
                           Required*
                         </p>
                       )}
-                      {showError &&
-                        form.contact.phone &&
-                        !phoneReg.test(form.contact.phone) && (
-                          <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-md">
-                            Required a valid phone number!
-                          </p>
-                        )}
                     </div>
                   </label>
                   <input
@@ -966,23 +967,70 @@ export default function RetireHowForm(): JSX.Element {
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="contact.region"
-                    className="block font-semibold mb-2 text-gray-800 dark:text-gray-200"
-                  >
-                    Province/State of residence
-                  </label>
-                  <input
-                    id="contact.region"
-                    name="contact.region"
-                    type="text"
-                    minLength={2}
-                    maxLength={60}
-                    value={getFieldValue("contact", "region")}
-                    onChange={handleChange}
-                    placeholder="Enter your residence. e.g., Toronto, Canada"
-                    className="w-full rounded-2xl border border-gray-400 dark:border-gray-500 px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                  />
+                  <div className="grid md:grid-cols-2 gap-3">
+                    <div>
+                      <label
+                        htmlFor="contact.region"
+                        className="block font-semibold mb-2 text-gray-800 dark:text-gray-200"
+                      >
+                        <div className="flex justify-between items-center">
+                          <p>
+                            Province/State of residence <RedStar />
+                          </p>
+                          {showError && !form.contact.region && (
+                            <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-md">
+                              Required*
+                            </p>
+                          )}
+                        </div>
+                      </label>
+                      <input
+                        id="contact.region"
+                        name="contact.region"
+                        type="text"
+                        minLength={2}
+                        maxLength={60}
+                        value={getFieldValue("contact", "region")}
+                        onChange={handleChange}
+                        placeholder="Enter state/province"
+                        className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${toggleErrorBorderColor(
+                          form.contact.region,
+                          "region"
+                        )}`}
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="contact.country"
+                        className="block font-semibold mb-2 text-gray-800 dark:text-gray-200"
+                      >
+                        <div className="flex justify-between items-center">
+                          <p>
+                            Country of residence <RedStar />
+                          </p>
+                          {showError && !form.contact.country && (
+                            <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-md">
+                              Required*
+                            </p>
+                          )}
+                        </div>
+                      </label>
+                      <input
+                        id="contact.country"
+                        name="contact.country"
+                        type="text"
+                        minLength={2}
+                        maxLength={60}
+                        value={getFieldValue("contact", "country")}
+                        onChange={handleChange}
+                        placeholder="Enter country"
+                        className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${toggleErrorBorderColor(
+                          form.contact.country,
+                          "country"
+                        )}`}
+                      />
+                    </div>
+                  </div>
                   <p className="block text-gray-600 dark:text-gray-400 mt-1">
                     Why we ask: Benefits/taxes and travel rules may vary by
                     region.
