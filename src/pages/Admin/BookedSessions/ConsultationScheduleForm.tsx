@@ -242,7 +242,7 @@ const ConsultationScheduleForm: React.FC = () => {
   return (
     <div className="mx-auto p-6 bg-white shadow rounded mb-[2.5rem]">
       <h2 className="text-xl font-bold mb-4">
-        Consultation Schedule Configuration
+        Consultation Time Slots Configuration
       </h2>
 
       {/* -------- Provider Info -------- */}
@@ -312,30 +312,6 @@ const ConsultationScheduleForm: React.FC = () => {
           allowClear
         ></Select>
       </div>
-
-      {/* <div className="mb-4">
-        <div className="font-semibold mb-1 flex justify-between items-center">
-          <p>
-            Your Timezone <RedStar />
-          </p>
-          {showError && !config?.providerTimezone && (
-            <p className="text-red-500">Required*</p>
-          )}
-        </div>
-        <input
-          type="text"
-          className={`${toggleErrorBorderColor(
-            config.providerTimezone,
-            "providerTime"
-          )}`}
-          name="providerTime"
-          placeholder="Enter your time zone"
-          value={config.providerTimezone}
-          onChange={(e) =>
-            setConfig({ ...config, providerTimezone: e.target.value })
-          }
-        />
-      </div> */}
 
       {/* -------- Slot Duration -------- */}
       <div className="mb-4">
