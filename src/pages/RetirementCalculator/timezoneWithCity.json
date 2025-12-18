@@ -1,0 +1,1834 @@
+[
+  {
+    "tz_windows": "(UTC-12:00) International Date Line West",
+    "tz_iana": "Etc/GMT+12"
+  },
+  {
+    "tz_windows": "(UTC-11:00) Coordinated Universal Time-11",
+    "tz_iana": "Etc/GMT+11"
+  },
+  {
+    "tz_windows": "(UTC-11:00) Samoa",
+    "tz_iana": "Pacific/Pago_Pago"
+  },
+  {
+    "tz_windows": "(UTC-11:00) Niue",
+    "tz_iana": "Pacific/Niue"
+  },
+  {
+    "tz_windows": "(UTC-11:00) Midway",
+    "tz_iana": "Pacific/Midway"
+  },
+  {
+    "tz_windows": "(UTC-10:00) Aleutian Islands",
+    "tz_iana": "America/Adak"
+  },
+  {
+    "tz_windows": "(UTC-10:00) Hawaii",
+    "tz_iana": "Pacific/Honolulu"
+  },
+  {
+    "tz_windows": "(UTC-10:00) Cook Islands",
+    "tz_iana": "Pacific/Rarotonga"
+  },
+  {
+    "tz_windows": "(UTC-10:00) Tahiti",
+    "tz_iana": "Pacific/Tahiti"
+  },
+  {
+    "tz_windows": "(UTC-10:00) Johnston Atoll",
+    "tz_iana": "Pacific/Johnston"
+  },
+  {
+    "tz_windows": "(UTC-10:00) UTC-10",
+    "tz_iana": "Etc/GMT+10"
+  },
+  {
+    "tz_windows": "(UTC-09:30) Marquesas Islands",
+    "tz_iana": "Pacific/Marquesas"
+  },
+  {
+    "tz_windows": "(UTC-09:00) Alaska (Anchorage, Juneau)",
+    "tz_iana": "America/Anchorage"
+  },
+  {
+    "tz_windows": "(UTC-09:00) Alaska (Juneau)",
+    "tz_iana": "America/Juneau"
+  },
+  {
+    "tz_windows": "(UTC-09:00) Alaska (Metlakatla)",
+    "tz_iana": "America/Metlakatla"
+  },
+  {
+    "tz_windows": "(UTC-09:00) Alaska (Nome)",
+    "tz_iana": "America/Nome"
+  },
+  {
+    "tz_windows": "(UTC-09:00) Alaska (Sitka)",
+    "tz_iana": "America/Sitka"
+  },
+  {
+    "tz_windows": "(UTC-09:00) Alaska (Yakutat)",
+    "tz_iana": "America/Yakutat"
+  },
+  {
+    "tz_windows": "(UTC-09:00) UTC-09",
+    "tz_iana": "Etc/GMT+9"
+  },
+  {
+    "tz_windows": "(UTC-09:00) Gambier Islands",
+    "tz_iana": "Pacific/Gambier"
+  },
+  {
+    "tz_windows": "(UTC-08:00) Baja California (Tijuana)",
+    "tz_iana": "America/Tijuana"
+  },
+  {
+    "tz_windows": "(UTC-08:00) Baja California (Santa Isabel)",
+    "tz_iana": "America/Santa_Isabel"
+  },
+  {
+    "tz_windows": "(UTC-08:00) UTC-08",
+    "tz_iana": "Etc/GMT+8"
+  },
+  {
+    "tz_windows": "(UTC-08:00) Pitcairn Islands",
+    "tz_iana": "Pacific/Pitcairn"
+  },
+  {
+    "tz_windows": "(UTC-08:00) Pacific Time - US & Canada (Los Angeles, Vancouver)",
+    "tz_iana": "America/Los_Angeles"
+  },
+  {
+    "tz_windows": "(UTC-08:00) Pacific Time - US & Canada (Vancouver)",
+    "tz_iana": "America/Vancouver"
+  },
+  {
+    "tz_windows": "(UTC-08:00) Pacific Time - US & Canada",
+    "tz_iana": "PST8PDT"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Arizona (Phoenix)",
+    "tz_iana": "America/Phoenix"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Mountain Time - Mexico (Creston)",
+    "tz_iana": "America/Creston"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Mountain Time - Mexico (Dawson Creek)",
+    "tz_iana": "America/Dawson_Creek"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Mountain Time - Mexico (Fort Nelson)",
+    "tz_iana": "America/Fort_Nelson"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Mountain Time - Mexico (Hermosillo)",
+    "tz_iana": "America/Hermosillo"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Mountain Time - Mexico",
+    "tz_iana": "Etc/GMT+7"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Chihuahua, La Paz, Mazatlan",
+    "tz_iana": "America/Chihuahua"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Chihuahua, La Paz, Mazatlan",
+    "tz_iana": "America/Mazatlan"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Mountain Time - US & Canada (Denver, Edmonton)",
+    "tz_iana": "America/Denver"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Mountain Time - US & Canada (Edmonton)",
+    "tz_iana": "America/Edmonton"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Mountain Time - US & Canada (Cambridge Bay)",
+    "tz_iana": "America/Cambridge_Bay"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Mountain Time - US & Canada (Inuvik)",
+    "tz_iana": "America/Inuvik"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Mountain Time - US & Canada (Yellowknife)",
+    "tz_iana": "America/Yellowknife"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Mountain Time - US & Canada (Ojinaga)",
+    "tz_iana": "America/Ojinaga"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Mountain Time - US & Canada (Boise)",
+    "tz_iana": "America/Boise"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Mountain Time - US & Canada",
+    "tz_iana": "MST7MDT"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Yukon (Whitehorse)",
+    "tz_iana": "America/Whitehorse"
+  },
+  {
+    "tz_windows": "(UTC-07:00) Yukon (Dawson)",
+    "tz_iana": "America/Dawson"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central America (Guatemala)",
+    "tz_iana": "America/Guatemala"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central America (Belize)",
+    "tz_iana": "America/Belize"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central America (Costa Rica)",
+    "tz_iana": "America/Costa_Rica"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Galapagos",
+    "tz_iana": "Pacific/Galapagos"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central America (Tegucigalpa)",
+    "tz_iana": "America/Tegucigalpa"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central America (Managua)",
+    "tz_iana": "America/Managua"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central America (El Salvador)",
+    "tz_iana": "America/El_Salvador"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central America",
+    "tz_iana": "Etc/GMT+6"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central Time - US & Canada (Chicago, Winnipeg)",
+    "tz_iana": "America/Chicago"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central Time - US & Canada (Winnipeg)",
+    "tz_iana": "America/Winnipeg"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central Time - US & Canada (Rainy River)",
+    "tz_iana": "America/Rainy_River"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central Time - US & Canada (Rankin Inlet)",
+    "tz_iana": "America/Rankin_Inlet"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central Time - US & Canada (Resolute)",
+    "tz_iana": "America/Resolute"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central Time - Mexico (Matamoros)",
+    "tz_iana": "America/Matamoros"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central Time - US & Canada (Knox, Indiana)",
+    "tz_iana": "America/Indiana/Knox"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central Time - US & Canada (Tell City, Indiana)",
+    "tz_iana": "America/Indiana/Tell_City"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central Time - US & Canada (Menominee)",
+    "tz_iana": "America/Menominee"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central Time - US & Canada (Beulah, North Dakota)",
+    "tz_iana": "America/North_Dakota/Beulah"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central Time - US & Canada (Center, North Dakota)",
+    "tz_iana": "America/North_Dakota/Center"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central Time - US & Canada (New Salem, North Dakota)",
+    "tz_iana": "America/North_Dakota/New_Salem"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Central Time - US & Canada",
+    "tz_iana": "CST6CDT"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Easter Island",
+    "tz_iana": "Pacific/Easter"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Mexico City",
+    "tz_iana": "America/Mexico_City"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Mexico City (Bahia Banderas)",
+    "tz_iana": "America/Bahia_Banderas"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Mexico City (Merida)",
+    "tz_iana": "America/Merida"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Mexico City (Monterrey)",
+    "tz_iana": "America/Monterrey"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Saskatchewan (Regina)",
+    "tz_iana": "America/Regina"
+  },
+  {
+    "tz_windows": "(UTC-06:00) Saskatchewan (Swift Current)",
+    "tz_iana": "America/Swift_Current"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Bogota, Lima, Quito",
+    "tz_iana": "America/Bogota"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Acre (Rio Branco)",
+    "tz_iana": "America/Rio_Branco"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Acre (Eirunepe)",
+    "tz_iana": "America/Eirunepe"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Eastern Time - US & Canada (Coral Harbour)",
+    "tz_iana": "America/Coral_Harbour"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Ecuador (Guayaquil)",
+    "tz_iana": "America/Guayaquil"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Jamaica (Kingston)",
+    "tz_iana": "America/Jamaica"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Cayman Islands",
+    "tz_iana": "America/Cayman"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Panama",
+    "tz_iana": "America/Panama"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Peru (Lima)",
+    "tz_iana": "America/Lima"
+  },
+  {
+    "tz_windows": "(UTC-05:00) UTC-05",
+    "tz_iana": "Etc/GMT+5"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Cancun",
+    "tz_iana": "America/Cancun"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Eastern Time - US & Canada (New York, Toronto)",
+    "tz_iana": "America/New_York"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Eastern Time - US & Canada (Nassau)",
+    "tz_iana": "America/Nassau"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Eastern Time - US & Canada (Toronto)",
+    "tz_iana": "America/Toronto"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Eastern Time - US & Canada (Iqaluit)",
+    "tz_iana": "America/Iqaluit"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Eastern Time - US & Canada (Montreal)",
+    "tz_iana": "America/Montreal"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Eastern Time - US & Canada (Nipigon)",
+    "tz_iana": "America/Nipigon"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Eastern Time - US & Canada (Pangnirtung)",
+    "tz_iana": "America/Pangnirtung"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Eastern Time - US & Canada (Thunder Bay)",
+    "tz_iana": "America/Thunder_Bay"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Eastern Time - US & Canada (Detroit)",
+    "tz_iana": "America/Detroit"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Eastern Time - US & Canada (Petersburg, Indiana)",
+    "tz_iana": "America/Indiana/Petersburg"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Eastern Time - US & Canada (Vincennes, Indiana)",
+    "tz_iana": "America/Indiana/Vincennes"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Eastern Time - US & Canada (Winamac, Indiana)",
+    "tz_iana": "America/Indiana/Winamac"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Eastern Time - US & Canada (Monticello, Kentucky)",
+    "tz_iana": "America/Kentucky/Monticello"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Eastern Time - US & Canada (Louisville)",
+    "tz_iana": "America/Louisville"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Eastern Time - US & Canada",
+    "tz_iana": "EST5EDT"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Haiti (Port-au-Prince)",
+    "tz_iana": "America/Port-au-Prince"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Cuba (Havana)",
+    "tz_iana": "America/Havana"
+  },
+  {
+    "tz_windows": "(UTC-05:00) US Eastern Time (Indianapolis)",
+    "tz_iana": "America/Indianapolis"
+  },
+  {
+    "tz_windows": "(UTC-05:00) US Eastern Time (Marengo, Indiana)",
+    "tz_iana": "America/Indiana/Marengo"
+  },
+  {
+    "tz_windows": "(UTC-05:00) US Eastern Time (Vevay, Indiana)",
+    "tz_iana": "America/Indiana/Vevay"
+  },
+  {
+    "tz_windows": "(UTC-05:00) Turks and Caicos (Grand Turk)",
+    "tz_iana": "America/Grand_Turk"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Asuncion",
+    "tz_iana": "America/Asuncion"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time - Canada (Halifax)",
+    "tz_iana": "America/Halifax"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time - Bermuda",
+    "tz_iana": "Atlantic/Bermuda"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time - Canada (Glace Bay)",
+    "tz_iana": "America/Glace_Bay"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time - Canada (Goose Bay)",
+    "tz_iana": "America/Goose_Bay"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time - Canada (Moncton)",
+    "tz_iana": "America/Moncton"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time - Canada (Thule)",
+    "tz_iana": "America/Thule"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Caracas",
+    "tz_iana": "America/Caracas"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Cuiaba",
+    "tz_iana": "America/Cuiaba"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Cuiaba (Campo Grande)",
+    "tz_iana": "America/Campo_Grande"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Georgetown, La Paz, Manaus, San Juan",
+    "tz_iana": "America/La_Paz"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Antigua)",
+    "tz_iana": "America/Antigua"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Anguilla)",
+    "tz_iana": "America/Anguilla"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Aruba)",
+    "tz_iana": "America/Aruba"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Barbados)",
+    "tz_iana": "America/Barbados"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (St. Barthelemy)",
+    "tz_iana": "America/St_Barthelemy"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Kralendijk)",
+    "tz_iana": "America/Kralendijk"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Amazon Time (Manaus)",
+    "tz_iana": "America/Manaus"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Amazon Time (Boa Vista)",
+    "tz_iana": "America/Boa_Vista"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Amazon Time (Porto Velho)",
+    "tz_iana": "America/Porto_Velho"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Blanc-Sablon)",
+    "tz_iana": "America/Blanc-Sablon"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Curacao)",
+    "tz_iana": "America/Curacao"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Dominica)",
+    "tz_iana": "America/Dominica"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Santo Domingo)",
+    "tz_iana": "America/Santo_Domingo"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Grenada)",
+    "tz_iana": "America/Grenada"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Guadeloupe)",
+    "tz_iana": "America/Guadeloupe"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Guyana (Georgetown)",
+    "tz_iana": "America/Guyana"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (St. Kitts)",
+    "tz_iana": "America/St_Kitts"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (St. Lucia)",
+    "tz_iana": "America/St_Lucia"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Marigot)",
+    "tz_iana": "America/Marigot"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Martinique)",
+    "tz_iana": "America/Martinique"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Montserrat)",
+    "tz_iana": "America/Montserrat"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Puerto Rico)",
+    "tz_iana": "America/Puerto_Rico"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Lower Princes)",
+    "tz_iana": "America/Lower_Princes"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Port of Spain)",
+    "tz_iana": "America/Port_of_Spain"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (St. Vincent)",
+    "tz_iana": "America/St_Vincent"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (Tortola)",
+    "tz_iana": "America/Tortola"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time (St. Thomas)",
+    "tz_iana": "America/St_Thomas"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Atlantic Time",
+    "tz_iana": "Etc/GMT+4"
+  },
+  {
+    "tz_windows": "(UTC-04:00) Santiago",
+    "tz_iana": "America/Santiago"
+  },
+  {
+    "tz_windows": "(UTC-03:30) Newfoundland (St. John's)",
+    "tz_iana": "America/St_Johns"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Araguaina",
+    "tz_iana": "America/Araguaina"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Brasilia (Sao Paulo)",
+    "tz_iana": "America/Sao_Paulo"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Cayenne, Fortaleza",
+    "tz_iana": "America/Cayenne"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Rothera",
+    "tz_iana": "Antarctica/Rothera"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Palmer",
+    "tz_iana": "Antarctica/Palmer"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Fortaleza",
+    "tz_iana": "America/Fortaleza"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Fortaleza (Belem)",
+    "tz_iana": "America/Belem"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Fortaleza (Maceio)",
+    "tz_iana": "America/Maceio"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Fortaleza (Santarem)",
+    "tz_iana": "America/Santarem"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Fortaleza (Recife)",
+    "tz_iana": "America/Recife"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Stanley",
+    "tz_iana": "Atlantic/Stanley"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Paramaribo",
+    "tz_iana": "America/Paramaribo"
+  },
+  {
+    "tz_windows": "(UTC-03:00) UTC-03",
+    "tz_iana": "Etc/GMT+3"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Buenos Aires",
+    "tz_iana": "America/Buenos_Aires"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Argentina (La Rioja)",
+    "tz_iana": "America/Argentina/La_Rioja"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Argentina (Rio Gallegos)",
+    "tz_iana": "America/Argentina/Rio_Gallegos"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Argentina (Salta)",
+    "tz_iana": "America/Argentina/Salta"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Argentina (San Juan)",
+    "tz_iana": "America/Argentina/San_Juan"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Argentina (San Luis)",
+    "tz_iana": "America/Argentina/San_Luis"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Argentina (Tucuman)",
+    "tz_iana": "America/Argentina/Tucuman"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Argentina (Ushuaia)",
+    "tz_iana": "America/Argentina/Ushuaia"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Argentina (Catamarca)",
+    "tz_iana": "America/Catamarca"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Argentina (Cordoba)",
+    "tz_iana": "America/Cordoba"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Argentina (Jujuy)",
+    "tz_iana": "America/Jujuy"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Argentina (Mendoza)",
+    "tz_iana": "America/Mendoza"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Greenland (Nuuk)",
+    "tz_iana": "America/Godthab"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Montevideo",
+    "tz_iana": "America/Montevideo"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Punta Arenas",
+    "tz_iana": "America/Punta_Arenas"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Saint Pierre and Miquelon",
+    "tz_iana": "America/Miquelon"
+  },
+  {
+    "tz_windows": "(UTC-03:00) Bahia",
+    "tz_iana": "America/Bahia"
+  },
+  {
+    "tz_windows": "(UTC-02:00) UTC-02",
+    "tz_iana": "Etc/GMT+2"
+  },
+  {
+    "tz_windows": "(UTC-02:00) Fernando de Noronha",
+    "tz_iana": "America/Noronha"
+  },
+  {
+    "tz_windows": "(UTC-02:00) South Georgia",
+    "tz_iana": "Atlantic/South_Georgia"
+  },
+  {
+    "tz_windows": "(UTC-01:00) Azores",
+    "tz_iana": "Atlantic/Azores"
+  },
+  {
+    "tz_windows": "(UTC-01:00) Scoresbysund",
+    "tz_iana": "America/Scoresbysund"
+  },
+  {
+    "tz_windows": "(UTC-01:00) Cape Verde",
+    "tz_iana": "Atlantic/Cape_Verde"
+  },
+  {
+    "tz_windows": "(UTC-01:00) UTC-01",
+    "tz_iana": "Etc/GMT+1"
+  },
+  {
+    "tz_windows": "(UTC+00:00) Coordinated Universal Time",
+    "tz_iana": "Etc/UTC"
+  },
+  {
+    "tz_windows": "(UTC+00:00) Coordinated Universal Time",
+    "tz_iana": "Etc/GMT"
+  },
+  {
+    "tz_windows": "(UTC+00:00) Dublin, Edinburgh, Lisbon, London",
+    "tz_iana": "Europe/London"
+  },
+  {
+    "tz_windows": "(UTC+00:00) Canary Islands",
+    "tz_iana": "Atlantic/Canary"
+  },
+  {
+    "tz_windows": "(UTC+00:00) Faroe Islands",
+    "tz_iana": "Atlantic/Faeroe"
+  },
+  {
+    "tz_windows": "(UTC+00:00) Guernsey",
+    "tz_iana": "Europe/Guernsey"
+  },
+  {
+    "tz_windows": "(UTC+00:00) Dublin",
+    "tz_iana": "Europe/Dublin"
+  },
+  {
+    "tz_windows": "(UTC+00:00) Isle of Man",
+    "tz_iana": "Europe/Isle_of_Man"
+  },
+  {
+    "tz_windows": "(UTC+00:00) Jersey",
+    "tz_iana": "Europe/Jersey"
+  },
+  {
+    "tz_windows": "(UTC+00:00) Lisbon",
+    "tz_iana": "Europe/Lisbon"
+  },
+  {
+    "tz_windows": "(UTC+00:00) Madeira",
+    "tz_iana": "Atlantic/Madeira"
+  },
+  {
+    "tz_windows": "(UTC+00:00) Monrovia, Reykjavik",
+    "tz_iana": "Atlantic/Reykjavik"
+  },
+  {
+    "tz_windows": "(UTC+00:00) West Africa Time",
+    "tz_iana": "Africa/Ouagadougou"
+  },
+  {
+    "tz_windows": "(UTC+00:00) West Africa Time",
+    "tz_iana": "Africa/Abidjan"
+  },
+  {
+    "tz_windows": "(UTC+00:00) West Africa Time",
+    "tz_iana": "Africa/Accra"
+  },
+  {
+    "tz_windows": "(UTC+00:00) Danmarkshavn",
+    "tz_iana": "America/Danmarkshavn"
+  },
+  {
+    "tz_windows": "(UTC+00:00) West Africa Time",
+    "tz_iana": "Africa/Banjul"
+  },
+  {
+    "tz_windows": "(UTC+00:00) West Africa Time",
+    "tz_iana": "Africa/Conakry"
+  },
+  {
+    "tz_windows": "(UTC+00:00) West Africa Time",
+    "tz_iana": "Africa/Bissau"
+  },
+  {
+    "tz_windows": "(UTC+00:00) West Africa Time",
+    "tz_iana": "Africa/Monrovia"
+  },
+  {
+    "tz_windows": "(UTC+00:00) West Africa Time",
+    "tz_iana": "Africa/Bamako"
+  },
+  {
+    "tz_windows": "(UTC+00:00) West Africa Time",
+    "tz_iana": "Africa/Nouakchott"
+  },
+  {
+    "tz_windows": "(UTC+00:00) St. Helena",
+    "tz_iana": "Atlantic/St_Helena"
+  },
+  {
+    "tz_windows": "(UTC+00:00) West Africa Time",
+    "tz_iana": "Africa/Freetown"
+  },
+  {
+    "tz_windows": "(UTC+00:00) West Africa Time",
+    "tz_iana": "Africa/Dakar"
+  },
+  {
+    "tz_windows": "(UTC+00:00) West Africa Time",
+    "tz_iana": "Africa/Lome"
+  },
+  {
+    "tz_windows": "(UTC+00:00) Sao Tome",
+    "tz_iana": "Africa/Sao_Tome"
+  },
+  {
+    "tz_windows": "(UTC+00:00) Casablanca",
+    "tz_iana": "Africa/Casablanca"
+  },
+  {
+    "tz_windows": "(UTC+00:00) El Aaiun",
+    "tz_iana": "Africa/El_Aaiun"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna",
+    "tz_iana": "Europe/Berlin"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Andorra",
+    "tz_iana": "Europe/Andorra"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Vienna",
+    "tz_iana": "Europe/Vienna"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Zurich",
+    "tz_iana": "Europe/Zurich"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Busingen",
+    "tz_iana": "Europe/Busingen"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Gibraltar",
+    "tz_iana": "Europe/Gibraltar"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Rome",
+    "tz_iana": "Europe/Rome"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Vaduz",
+    "tz_iana": "Europe/Vaduz"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Luxembourg",
+    "tz_iana": "Europe/Luxembourg"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Monaco",
+    "tz_iana": "Europe/Monaco"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Malta",
+    "tz_iana": "Europe/Malta"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Amsterdam",
+    "tz_iana": "Europe/Amsterdam"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Oslo",
+    "tz_iana": "Europe/Oslo"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Stockholm",
+    "tz_iana": "Europe/Stockholm"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Longyearbyen",
+    "tz_iana": "Arctic/Longyearbyen"
+  },
+  {
+    "tz_windows": "(UTC+01:00) San Marino",
+    "tz_iana": "Europe/San_Marino"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Vatican",
+    "tz_iana": "Europe/Vatican"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague",
+    "tz_iana": "Europe/Budapest"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Tirane",
+    "tz_iana": "Europe/Tirane"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Prague",
+    "tz_iana": "Europe/Prague"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Podgorica",
+    "tz_iana": "Europe/Podgorica"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Belgrade",
+    "tz_iana": "Europe/Belgrade"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Ljubljana",
+    "tz_iana": "Europe/Ljubljana"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Bratislava",
+    "tz_iana": "Europe/Bratislava"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Brussels, Copenhagen, Madrid, Paris",
+    "tz_iana": "Europe/Paris"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Brussels",
+    "tz_iana": "Europe/Brussels"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Copenhagen",
+    "tz_iana": "Europe/Copenhagen"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Ceuta",
+    "tz_iana": "Africa/Ceuta"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb",
+    "tz_iana": "Europe/Warsaw"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Sarajevo",
+    "tz_iana": "Europe/Sarajevo"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Zagreb",
+    "tz_iana": "Europe/Zagreb"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Skopje",
+    "tz_iana": "Europe/Skopje"
+  },
+  {
+    "tz_windows": "(UTC+01:00) West Central Africa",
+    "tz_iana": "Africa/Lagos"
+  },
+  {
+    "tz_windows": "(UTC+01:00) West Central Africa",
+    "tz_iana": "Africa/Luanda"
+  },
+  {
+    "tz_windows": "(UTC+01:00) West Central Africa",
+    "tz_iana": "Africa/Porto-Novo"
+  },
+  {
+    "tz_windows": "(UTC+01:00) West Central Africa",
+    "tz_iana": "Africa/Kinshasa"
+  },
+  {
+    "tz_windows": "(UTC+01:00) West Central Africa",
+    "tz_iana": "Africa/Bangui"
+  },
+  {
+    "tz_windows": "(UTC+01:00) West Central Africa",
+    "tz_iana": "Africa/Brazzaville"
+  },
+  {
+    "tz_windows": "(UTC+01:00) West Central Africa",
+    "tz_iana": "Africa/Douala"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Algiers",
+    "tz_iana": "Africa/Algiers"
+  },
+  {
+    "tz_windows": "(UTC+01:00) West Central Africa",
+    "tz_iana": "Africa/Libreville"
+  },
+  {
+    "tz_windows": "(UTC+01:00) West Central Africa",
+    "tz_iana": "Africa/Malabo"
+  },
+  {
+    "tz_windows": "(UTC+01:00) West Central Africa",
+    "tz_iana": "Africa/Niamey"
+  },
+  {
+    "tz_windows": "(UTC+01:00) West Central Africa",
+    "tz_iana": "Africa/Ndjamena"
+  },
+  {
+    "tz_windows": "(UTC+01:00) Tunis",
+    "tz_iana": "Africa/Tunis"
+  },
+  {
+    "tz_windows": "(UTC+01:00) West Central Africa",
+    "tz_iana": "Etc/GMT-1"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Amman",
+    "tz_iana": "Asia/Amman"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Athens, Bucharest",
+    "tz_iana": "Europe/Bucharest"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Nicosia",
+    "tz_iana": "Asia/Nicosia"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Famagusta",
+    "tz_iana": "Asia/Famagusta"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Athens",
+    "tz_iana": "Europe/Athens"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Beirut",
+    "tz_iana": "Asia/Beirut"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Cairo",
+    "tz_iana": "Africa/Cairo"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Chisinau",
+    "tz_iana": "Europe/Chisinau"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Damascus",
+    "tz_iana": "Asia/Damascus"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Gaza, Hebron",
+    "tz_iana": "Asia/Hebron"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Gaza",
+    "tz_iana": "Asia/Gaza"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Harare, Pretoria",
+    "tz_iana": "Africa/Johannesburg"
+  },
+  {
+    "tz_windows": "(UTC+02:00) South Africa Time",
+    "tz_iana": "Africa/Bujumbura"
+  },
+  {
+    "tz_windows": "(UTC+02:00) South Africa Time",
+    "tz_iana": "Africa/Gaborone"
+  },
+  {
+    "tz_windows": "(UTC+02:00) South Africa Time",
+    "tz_iana": "Africa/Lubumbashi"
+  },
+  {
+    "tz_windows": "(UTC+02:00) South Africa Time",
+    "tz_iana": "Africa/Maseru"
+  },
+  {
+    "tz_windows": "(UTC+02:00) South Africa Time",
+    "tz_iana": "Africa/Blantyre"
+  },
+  {
+    "tz_windows": "(UTC+02:00) South Africa Time",
+    "tz_iana": "Africa/Maputo"
+  },
+  {
+    "tz_windows": "(UTC+02:00) South Africa Time",
+    "tz_iana": "Africa/Kigali"
+  },
+  {
+    "tz_windows": "(UTC+02:00) South Africa Time",
+    "tz_iana": "Africa/Mbabane"
+  },
+  {
+    "tz_windows": "(UTC+02:00) South Africa Time",
+    "tz_iana": "Africa/Lusaka"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Harare",
+    "tz_iana": "Africa/Harare"
+  },
+  {
+    "tz_windows": "(UTC+02:00) South Africa Time",
+    "tz_iana": "Etc/GMT-2"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius",
+    "tz_iana": "Europe/Kiev"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Mariehamn",
+    "tz_iana": "Europe/Mariehamn"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Sofia",
+    "tz_iana": "Europe/Sofia"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Tallinn",
+    "tz_iana": "Europe/Tallinn"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Helsinki",
+    "tz_iana": "Europe/Helsinki"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Vilnius",
+    "tz_iana": "Europe/Vilnius"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Riga",
+    "tz_iana": "Europe/Riga"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Uzhgorod",
+    "tz_iana": "Europe/Uzhgorod"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Zaporozhye",
+    "tz_iana": "Europe/Zaporozhye"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Jerusalem",
+    "tz_iana": "Asia/Jerusalem"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Juba",
+    "tz_iana": "Africa/Juba"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Kaliningrad",
+    "tz_iana": "Europe/Kaliningrad"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Khartoum",
+    "tz_iana": "Africa/Khartoum"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Tripoli",
+    "tz_iana": "Africa/Tripoli"
+  },
+  {
+    "tz_windows": "(UTC+02:00) Windhoek",
+    "tz_iana": "Africa/Windhoek"
+  },
+  {
+    "tz_windows": "(UTC+03:00) Baghdad",
+    "tz_iana": "Asia/Baghdad"
+  },
+  {
+    "tz_windows": "(UTC+03:00) Istanbul",
+    "tz_iana": "Europe/Istanbul"
+  },
+  {
+    "tz_windows": "(UTC+03:00) Kuwait, Riyadh",
+    "tz_iana": "Asia/Riyadh"
+  },
+  {
+    "tz_windows": "(UTC+03:00) Bahrain",
+    "tz_iana": "Asia/Bahrain"
+  },
+  {
+    "tz_windows": "(UTC+03:00) Kuwait",
+    "tz_iana": "Asia/Kuwait"
+  },
+  {
+    "tz_windows": "(UTC+03:00) Qatar",
+    "tz_iana": "Asia/Qatar"
+  },
+  {
+    "tz_windows": "(UTC+03:00) Aden",
+    "tz_iana": "Asia/Aden"
+  },
+  {
+    "tz_windows": "(UTC+03:00) Minsk",
+    "tz_iana": "Europe/Minsk"
+  },
+  {
+    "tz_windows": "(UTC+03:00) Moscow, St. Petersburg",
+    "tz_iana": "Europe/Moscow"
+  },
+  {
+    "tz_windows": "(UTC+03:00) Kirov",
+    "tz_iana": "Europe/Kirov"
+  },
+  {
+    "tz_windows": "(UTC+03:00) Simferopol",
+    "tz_iana": "Europe/Simferopol"
+  },
+  {
+    "tz_windows": "(UTC+03:00) Nairobi",
+    "tz_iana": "Africa/Nairobi"
+  },
+  {
+    "tz_windows": "(UTC+03:00) Syowa",
+    "tz_iana": "Antarctica/Syowa"
+  },
+  {
+    "tz_windows": "(UTC+03:00) East Africa Time",
+    "tz_iana": "Africa/Djibouti"
+  },
+  {
+    "tz_windows": "(UTC+03:00) East Africa Time",
+    "tz_iana": "Africa/Asmera"
+  },
+  {
+    "tz_windows": "(UTC+03:00) East Africa Time",
+    "tz_iana": "Africa/Addis_Ababa"
+  },
+  {
+    "tz_windows": "(UTC+03:00) East Africa Time",
+    "tz_iana": "Indian/Comoro"
+  },
+  {
+    "tz_windows": "(UTC+03:00) East Africa Time",
+    "tz_iana": "Indian/Antananarivo"
+  },
+  {
+    "tz_windows": "(UTC+03:00) East Africa Time",
+    "tz_iana": "Africa/Mogadishu"
+  },
+  {
+    "tz_windows": "(UTC+03:00) East Africa Time",
+    "tz_iana": "Africa/Dar_es_Salaam"
+  },
+  {
+    "tz_windows": "(UTC+03:00) East Africa Time",
+    "tz_iana": "Africa/Kampala"
+  },
+  {
+    "tz_windows": "(UTC+03:00) East Africa Time",
+    "tz_iana": "Indian/Mayotte"
+  },
+  {
+    "tz_windows": "(UTC+03:00) East Africa Time",
+    "tz_iana": "Etc/GMT-3"
+  },
+  {
+    "tz_windows": "(UTC+03:30) Tehran",
+    "tz_iana": "Asia/Tehran"
+  },
+  {
+    "tz_windows": "(UTC+04:00) Abu Dhabi, Muscat",
+    "tz_iana": "Asia/Dubai"
+  },
+  {
+    "tz_windows": "(UTC+04:00) Muscat",
+    "tz_iana": "Asia/Muscat"
+  },
+  {
+    "tz_windows": "(UTC+04:00) UTC+04",
+    "tz_iana": "Etc/GMT-4"
+  },
+  {
+    "tz_windows": "(UTC+04:00) Astrakhan, Ulyanovsk",
+    "tz_iana": "Europe/Astrakhan"
+  },
+  {
+    "tz_windows": "(UTC+04:00) Ulyanovsk",
+    "tz_iana": "Europe/Ulyanovsk"
+  },
+  {
+    "tz_windows": "(UTC+04:00) Baku",
+    "tz_iana": "Asia/Baku"
+  },
+  {
+    "tz_windows": "(UTC+04:00) Izhevsk, Samara",
+    "tz_iana": "Europe/Samara"
+  },
+  {
+    "tz_windows": "(UTC+04:00) Mauritius",
+    "tz_iana": "Indian/Mauritius"
+  },
+  {
+    "tz_windows": "(UTC+04:00) Reunion",
+    "tz_iana": "Indian/Reunion"
+  },
+  {
+    "tz_windows": "(UTC+04:00) Mahe",
+    "tz_iana": "Indian/Mahe"
+  },
+  {
+    "tz_windows": "(UTC+04:00) Saratov",
+    "tz_iana": "Europe/Saratov"
+  },
+  {
+    "tz_windows": "(UTC+04:00) Tbilisi",
+    "tz_iana": "Asia/Tbilisi"
+  },
+  {
+    "tz_windows": "(UTC+04:00) Volgograd",
+    "tz_iana": "Europe/Volgograd"
+  },
+  {
+    "tz_windows": "(UTC+04:00) Yerevan",
+    "tz_iana": "Asia/Yerevan"
+  },
+  {
+    "tz_windows": "(UTC+04:30) Kabul",
+    "tz_iana": "Asia/Kabul"
+  },
+  {
+    "tz_windows": "(UTC+05:00) Ashgabat, Tashkent",
+    "tz_iana": "Asia/Tashkent"
+  },
+  {
+    "tz_windows": "(UTC+05:00) Mawson",
+    "tz_iana": "Antarctica/Mawson"
+  },
+  {
+    "tz_windows": "(UTC+05:00) Oral",
+    "tz_iana": "Asia/Oral"
+  },
+  {
+    "tz_windows": "(UTC+05:00) Aqtau",
+    "tz_iana": "Asia/Aqtau"
+  },
+  {
+    "tz_windows": "(UTC+05:00) Aqtobe",
+    "tz_iana": "Asia/Aqtobe"
+  },
+  {
+    "tz_windows": "(UTC+05:00) Atyrau",
+    "tz_iana": "Asia/Atyrau"
+  },
+  {
+    "tz_windows": "(UTC+05:00) Maldives",
+    "tz_iana": "Indian/Maldives"
+  },
+  {
+    "tz_windows": "(UTC+05:00) Kerguelen",
+    "tz_iana": "Indian/Kerguelen"
+  },
+  {
+    "tz_windows": "(UTC+05:00) Dushanbe",
+    "tz_iana": "Asia/Dushanbe"
+  },
+  {
+    "tz_windows": "(UTC+05:00) Ashgabat",
+    "tz_iana": "Asia/Ashgabat"
+  },
+  {
+    "tz_windows": "(UTC+05:00) Samarkand",
+    "tz_iana": "Asia/Samarkand"
+  },
+  {
+    "tz_windows": "(UTC+05:00) UTC+05",
+    "tz_iana": "Etc/GMT-5"
+  },
+  {
+    "tz_windows": "(UTC+05:00) Ekaterinburg",
+    "tz_iana": "Asia/Yekaterinburg"
+  },
+  {
+    "tz_windows": "(UTC+05:00) Islamabad, Karachi",
+    "tz_iana": "Asia/Karachi"
+  },
+  {
+    "tz_windows": "(UTC+05:00) Qyzylorda",
+    "tz_iana": "Asia/Qyzylorda"
+  },
+  {
+    "tz_windows": "(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi",
+    "tz_iana": "Asia/Calcutta"
+  },
+  {
+    "tz_windows": "(UTC+05:30) Sri Jayawardenepura",
+    "tz_iana": "Asia/Colombo"
+  },
+  {
+    "tz_windows": "(UTC+05:45) Kathmandu",
+    "tz_iana": "Asia/Katmandu"
+  },
+  {
+    "tz_windows": "(UTC+06:00) Astana",
+    "tz_iana": "Asia/Almaty"
+  },
+  {
+    "tz_windows": "(UTC+06:00) Vostok",
+    "tz_iana": "Antarctica/Vostok"
+  },
+  {
+    "tz_windows": "(UTC+06:00) Urumqi",
+    "tz_iana": "Asia/Urumqi"
+  },
+  {
+    "tz_windows": "(UTC+06:00) Chagos",
+    "tz_iana": "Indian/Chagos"
+  },
+  {
+    "tz_windows": "(UTC+06:00) Bishkek",
+    "tz_iana": "Asia/Bishkek"
+  },
+  {
+    "tz_windows": "(UTC+06:00) Qostanay",
+    "tz_iana": "Asia/Qostanay"
+  },
+  {
+    "tz_windows": "(UTC+06:00) UTC+06",
+    "tz_iana": "Etc/GMT-6"
+  },
+  {
+    "tz_windows": "(UTC+06:00) Dhaka",
+    "tz_iana": "Asia/Dhaka"
+  },
+  {
+    "tz_windows": "(UTC+06:00) Thimphu",
+    "tz_iana": "Asia/Thimphu"
+  },
+  {
+    "tz_windows": "(UTC+06:00) Omsk",
+    "tz_iana": "Asia/Omsk"
+  },
+  {
+    "tz_windows": "(UTC+06:30) Yangon (Rangoon)",
+    "tz_iana": "Asia/Rangoon"
+  },
+  {
+    "tz_windows": "(UTC+06:30) Cocos Islands",
+    "tz_iana": "Indian/Cocos"
+  },
+  {
+    "tz_windows": "(UTC+07:00) Bangkok, Hanoi, Jakarta",
+    "tz_iana": "Asia/Bangkok"
+  },
+  {
+    "tz_windows": "(UTC+07:00) Davis",
+    "tz_iana": "Antarctica/Davis"
+  },
+  {
+    "tz_windows": "(UTC+07:00) Christmas Island",
+    "tz_iana": "Indian/Christmas"
+  },
+  {
+    "tz_windows": "(UTC+07:00) Jakarta",
+    "tz_iana": "Asia/Jakarta"
+  },
+  {
+    "tz_windows": "(UTC+07:00) Pontianak",
+    "tz_iana": "Asia/Pontianak"
+  },
+  {
+    "tz_windows": "(UTC+07:00) Indochina Time",
+    "tz_iana": "Asia/Phnom_Penh"
+  },
+  {
+    "tz_windows": "(UTC+07:00) Indochina Time",
+    "tz_iana": "Asia/Vientiane"
+  },
+  {
+    "tz_windows": "(UTC+07:00) Indochina Time",
+    "tz_iana": "Asia/Saigon"
+  },
+  {
+    "tz_windows": "(UTC+07:00) UTC+07",
+    "tz_iana": "Etc/GMT-7"
+  },
+  {
+    "tz_windows": "(UTC+07:00) Barnaul",
+    "tz_iana": "Asia/Barnaul"
+  },
+  {
+    "tz_windows": "(UTC+07:00) Hovd",
+    "tz_iana": "Asia/Hovd"
+  },
+  {
+    "tz_windows": "(UTC+07:00) Krasnoyarsk",
+    "tz_iana": "Asia/Krasnoyarsk"
+  },
+  {
+    "tz_windows": "(UTC+07:00) Novokuznetsk",
+    "tz_iana": "Asia/Novokuznetsk"
+  },
+  {
+    "tz_windows": "(UTC+07:00) Novosibirsk",
+    "tz_iana": "Asia/Novosibirsk"
+  },
+  {
+    "tz_windows": "(UTC+07:00) Tomsk",
+    "tz_iana": "Asia/Tomsk"
+  },
+  {
+    "tz_windows": "(UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi",
+    "tz_iana": "Asia/Shanghai"
+  },
+  {
+    "tz_windows": "(UTC+08:00) Hong Kong",
+    "tz_iana": "Asia/Hong_Kong"
+  },
+  {
+    "tz_windows": "(UTC+08:00) Macau",
+    "tz_iana": "Asia/Macau"
+  },
+  {
+    "tz_windows": "(UTC+08:00) Irkutsk",
+    "tz_iana": "Asia/Irkutsk"
+  },
+  {
+    "tz_windows": "(UTC+08:00) Kuala Lumpur, Singapore",
+    "tz_iana": "Asia/Singapore"
+  },
+  {
+    "tz_windows": "(UTC+08:00) Brunei",
+    "tz_iana": "Asia/Brunei"
+  },
+  {
+    "tz_windows": "(UTC+08:00) Makassar",
+    "tz_iana": "Asia/Makassar"
+  },
+  {
+    "tz_windows": "(UTC+08:00) Kuching",
+    "tz_iana": "Asia/Kuching"
+  },
+  {
+    "tz_windows": "(UTC+08:00) Kuala Lumpur",
+    "tz_iana": "Asia/Kuala_Lumpur"
+  },
+  {
+    "tz_windows": "(UTC+08:00) Manila",
+    "tz_iana": "Asia/Manila"
+  },
+  {
+    "tz_windows": "(UTC+08:00) UTC+08",
+    "tz_iana": "Etc/GMT-8"
+  },
+  {
+    "tz_windows": "(UTC+08:00) Perth",
+    "tz_iana": "Australia/Perth"
+  },
+  {
+    "tz_windows": "(UTC+08:00) Taipei",
+    "tz_iana": "Asia/Taipei"
+  },
+  {
+    "tz_windows": "(UTC+08:00) Ulaanbaatar",
+    "tz_iana": "Asia/Ulaanbaatar"
+  },
+  {
+    "tz_windows": "(UTC+08:00) Choibalsan",
+    "tz_iana": "Asia/Choibalsan"
+  },
+  {
+    "tz_windows": "(UTC+08:45) Eucla",
+    "tz_iana": "Australia/Eucla"
+  },
+  {
+    "tz_windows": "(UTC+09:00) Chita",
+    "tz_iana": "Asia/Chita"
+  },
+  {
+    "tz_windows": "(UTC+09:00) Osaka, Sapporo, Tokyo",
+    "tz_iana": "Asia/Tokyo"
+  },
+  {
+    "tz_windows": "(UTC+09:00) Jayapura",
+    "tz_iana": "Asia/Jayapura"
+  },
+  {
+    "tz_windows": "(UTC+09:00) Palau",
+    "tz_iana": "Pacific/Palau"
+  },
+  {
+    "tz_windows": "(UTC+09:00) Dili",
+    "tz_iana": "Asia/Dili"
+  },
+  {
+    "tz_windows": "(UTC+09:00) UTC+09",
+    "tz_iana": "Etc/GMT-9"
+  },
+  {
+    "tz_windows": "(UTC+09:00) Pyongyang",
+    "tz_iana": "Asia/Pyongyang"
+  },
+  {
+    "tz_windows": "(UTC+09:00) Seoul",
+    "tz_iana": "Asia/Seoul"
+  },
+  {
+    "tz_windows": "(UTC+09:00) Yakutsk",
+    "tz_iana": "Asia/Yakutsk"
+  },
+  {
+    "tz_windows": "(UTC+09:00) Khandyga",
+    "tz_iana": "Asia/Khandyga"
+  },
+  {
+    "tz_windows": "(UTC+09:30) Adelaide",
+    "tz_iana": "Australia/Adelaide"
+  },
+  {
+    "tz_windows": "(UTC+09:30) Broken Hill",
+    "tz_iana": "Australia/Broken_Hill"
+  },
+  {
+    "tz_windows": "(UTC+09:30) Darwin",
+    "tz_iana": "Australia/Darwin"
+  },
+  {
+    "tz_windows": "(UTC+10:00) Brisbane",
+    "tz_iana": "Australia/Brisbane"
+  },
+  {
+    "tz_windows": "(UTC+10:00) Lindeman",
+    "tz_iana": "Australia/Lindeman"
+  },
+  {
+    "tz_windows": "(UTC+10:00) Canberra, Melbourne, Sydney",
+    "tz_iana": "Australia/Sydney"
+  },
+  {
+    "tz_windows": "(UTC+10:00) Melbourne",
+    "tz_iana": "Australia/Melbourne"
+  },
+  {
+    "tz_windows": "(UTC+10:00) Guam, Port Moresby",
+    "tz_iana": "Pacific/Port_Moresby"
+  },
+  {
+    "tz_windows": "(UTC+10:00) Dumont-d'Urville",
+    "tz_iana": "Antarctica/DumontDUrville"
+  },
+  {
+    "tz_windows": "(UTC+10:00) Chuuk",
+    "tz_iana": "Pacific/Truk"
+  },
+  {
+    "tz_windows": "(UTC+10:00) Guam",
+    "tz_iana": "Pacific/Guam"
+  },
+  {
+    "tz_windows": "(UTC+10:00) Saipan",
+    "tz_iana": "Pacific/Saipan"
+  },
+  {
+    "tz_windows": "(UTC+10:00) UTC+10",
+    "tz_iana": "Etc/GMT-10"
+  },
+  {
+    "tz_windows": "(UTC+10:00) Hobart",
+    "tz_iana": "Australia/Hobart"
+  },
+  {
+    "tz_windows": "(UTC+10:00) Currie",
+    "tz_iana": "Australia/Currie"
+  },
+  {
+    "tz_windows": "(UTC+10:00) Macquarie Island",
+    "tz_iana": "Antarctica/Macquarie"
+  },
+  {
+    "tz_windows": "(UTC+10:00) Vladivostok",
+    "tz_iana": "Asia/Vladivostok"
+  },
+  {
+    "tz_windows": "(UTC+10:00) Ust-Nera",
+    "tz_iana": "Asia/Ust-Nera"
+  },
+  {
+    "tz_windows": "(UTC+10:30) Lord Howe Island",
+    "tz_iana": "Australia/Lord_Howe"
+  },
+  {
+    "tz_windows": "(UTC+11:00) Bougainville Island",
+    "tz_iana": "Pacific/Bougainville"
+  },
+  {
+    "tz_windows": "(UTC+11:00) Srednekolymsk",
+    "tz_iana": "Asia/Srednekolymsk"
+  },
+  {
+    "tz_windows": "(UTC+11:00) Magadan",
+    "tz_iana": "Asia/Magadan"
+  },
+  {
+    "tz_windows": "(UTC+11:00) Norfolk Island",
+    "tz_iana": "Pacific/Norfolk"
+  },
+  {
+    "tz_windows": "(UTC+11:00) Sakhalin",
+    "tz_iana": "Asia/Sakhalin"
+  },
+  {
+    "tz_windows": "(UTC+11:00) Solomon Is., New Caledonia",
+    "tz_iana": "Pacific/Guadalcanal"
+  },
+  {
+    "tz_windows": "(UTC+11:00) Casey",
+    "tz_iana": "Antarctica/Casey"
+  },
+  {
+    "tz_windows": "(UTC+11:00) Pohnpei",
+    "tz_iana": "Pacific/Ponape"
+  },
+  {
+    "tz_windows": "(UTC+11:00) Kosrae",
+    "tz_iana": "Pacific/Kosrae"
+  },
+  {
+    "tz_windows": "(UTC+11:00) New Caledonia (Noumea)",
+    "tz_iana": "Pacific/Noumea"
+  },
+  {
+    "tz_windows": "(UTC+11:00) Vanuatu (Efate)",
+    "tz_iana": "Pacific/Efate"
+  },
+  {
+    "tz_windows": "(UTC+11:00) UTC+11",
+    "tz_iana": "Etc/GMT-11"
+  },
+  {
+    "tz_windows": "(UTC+12:00) Anadyr, Petropavlovsk-Kamchatsky",
+    "tz_iana": "Asia/Kamchatka"
+  },
+  {
+    "tz_windows": "(UTC+12:00) Anadyr",
+    "tz_iana": "Asia/Anadyr"
+  },
+  {
+    "tz_windows": "(UTC+12:00) Auckland, Wellington",
+    "tz_iana": "Pacific/Auckland"
+  },
+  {
+    "tz_windows": "(UTC+12:00) McMurdo",
+    "tz_iana": "Antarctica/McMurdo"
+  },
+  {
+    "tz_windows": "(UTC+12:00) UTC+12",
+    "tz_iana": "Etc/GMT-12"
+  },
+  {
+    "tz_windows": "(UTC+12:00) Tarawa",
+    "tz_iana": "Pacific/Tarawa"
+  },
+  {
+    "tz_windows": "(UTC+12:00) Majuro",
+    "tz_iana": "Pacific/Majuro"
+  },
+  {
+    "tz_windows": "(UTC+12:00) Kwajalein",
+    "tz_iana": "Pacific/Kwajalein"
+  },
+  {
+    "tz_windows": "(UTC+12:00) Nauru",
+    "tz_iana": "Pacific/Nauru"
+  },
+  {
+    "tz_windows": "(UTC+12:00) Funafuti",
+    "tz_iana": "Pacific/Funafuti"
+  },
+  {
+    "tz_windows": "(UTC+12:00) Wake Island",
+    "tz_iana": "Pacific/Wake"
+  },
+  {
+    "tz_windows": "(UTC+12:00) Wallis and Futuna",
+    "tz_iana": "Pacific/Wallis"
+  },
+  {
+    "tz_windows": "(UTC+12:00) Fiji (Suva)",
+    "tz_iana": "Pacific/Fiji"
+  },
+  {
+    "tz_windows": "(UTC+12:45) Chatham Islands",
+    "tz_iana": "Pacific/Chatham"
+  },
+  {
+    "tz_windows": "(UTC+13:00) UTC+13",
+    "tz_iana": "Etc/GMT-13"
+  },
+  {
+    "tz_windows": "(UTC+13:00) Enderbury",
+    "tz_iana": "Pacific/Enderbury"
+  },
+  {
+    "tz_windows": "(UTC+13:00) Fakaofo",
+    "tz_iana": "Pacific/Fakaofo"
+  },
+  {
+    "tz_windows": "(UTC+13:00) Nuku'alofa",
+    "tz_iana": "Pacific/Tongatapu"
+  },
+  {
+    "tz_windows": "(UTC+13:00) Samoa (Apia)",
+    "tz_iana": "Pacific/Apia"
+  },
+  {
+    "tz_windows": "(UTC+14:00) Kiritimati Island",
+    "tz_iana": "Pacific/Kiritimati"
+  },
+  {
+    "tz_windows": "(UTC+14:00) UTC+14",
+    "tz_iana": "Etc/GMT-14"
+  }
+]

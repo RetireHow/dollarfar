@@ -10,6 +10,13 @@ import { showApiErrorToast } from "../../../utils/showApiErrorToast";
 import { Select } from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
+import timezoneMap from "../../RetirementCalculator/timezone.json"; // IANA ↔ Windows mapping
+
+const standardTimezoneMap = timezoneMap.map((tz) => ({
+  label: tz.tz_windows,
+  value: tz.tz_iana,
+}));
+
 type DayName =
   | "Monday"
   | "Tuesday"
@@ -29,12 +36,19 @@ interface Break {
   day: DayName;
   start: string;
   end: string;
+  reason: string;
 }
 
-interface DisabledTimeRange {
+interface BlockedDate {
+  date: string;
+  reason: string;
+}
+
+interface BlockedTimeRange {
   date: string;
   start: string;
   end: string;
+  reason: string;
 }
 
 interface ConsultationScheduleConfig {
@@ -46,12 +60,12 @@ interface ConsultationScheduleConfig {
   country: string;
   state: string;
 
-  providerTimezone: { label: string; value: string };
+  consultantTZ: { label: string; value: string };
   slotDurationMinutes: string;
   workingHours: WorkingHour[];
   breaks: Break[];
-  disabledDates: string[];
-  disabledTimeRanges: DisabledTimeRange[];
+  blockedDates: BlockedDate[];
+  blockedTimeRanges: BlockedTimeRange[];
 }
 
 const weekdays: DayName[] = [
@@ -65,7 +79,6 @@ const weekdays: DayName[] = [
 ];
 
 const ConsultationScheduleForm: React.FC = () => {
-  const timezones = (Intl as any).supportedValuesOf("timeZone");
   const [config, setConfig] = useState<ConsultationScheduleConfig>({
     _id: "",
     name: "",
@@ -73,7 +86,10 @@ const ConsultationScheduleForm: React.FC = () => {
     country: "",
     state: "",
 
-    providerTimezone: { label: "America/Toronto", value: "America/Toronto" },
+    consultantTZ: {
+      label: "(UTC-05:00) Eastern Time (US & Canada)",
+      value: "America/Toronto",
+    },
     slotDurationMinutes: "30",
     workingHours: weekdays.map((day) => ({
       day,
@@ -81,8 +97,8 @@ const ConsultationScheduleForm: React.FC = () => {
       end: "17:00",
     })),
     breaks: [],
-    disabledDates: [],
-    disabledTimeRanges: [],
+    blockedDates: [],
+    blockedTimeRanges: [],
   });
 
   const [showError, setShowError] = useState(false);
@@ -103,11 +119,22 @@ const ConsultationScheduleForm: React.FC = () => {
   useEffect(() => {
     if (!isLoading && fetchedConfigData?.data) {
       const unfrozen = JSON.parse(JSON.stringify(fetchedConfigData.data));
+
+      // Handle migration from string array to object array for blockedDates
+      const blockedDates = unfrozen.blockedDates || [];
+      const migratedBlockedDates =
+        Array.isArray(blockedDates) &&
+        blockedDates.length > 0 &&
+        typeof blockedDates[0] === "string"
+          ? blockedDates.map((date: string) => ({ date, reason: "" }))
+          : blockedDates;
+
       setConfig({
         ...unfrozen,
-        providerTimezone: {
-          label: unfrozen?.providerTimezone,
-          value: unfrozen?.providerTimezone,
+        blockedDates: migratedBlockedDates,
+        consultantTZ: {
+          label: unfrozen?.consultantTZ,
+          value: unfrozen?.consultantTZ_IANA,
         },
       });
     }
@@ -150,7 +177,7 @@ const ConsultationScheduleForm: React.FC = () => {
   // -------------------------------
   const handleBreakChange = (
     index: number,
-    field: "day" | "start" | "end",
+    field: "day" | "start" | "end" | "reason",
     value: string
   ) => {
     setConfig((prev) => {
@@ -163,18 +190,34 @@ const ConsultationScheduleForm: React.FC = () => {
   };
 
   // -------------------------------
-  // Disabled Time Range Update
+  // Blocked Date Update
   // -------------------------------
-  const handleDisabledTimeRangeChange = (
+  const handleBlockedDateChange = (
     index: number,
-    field: "date" | "start" | "end",
+    field: "date" | "reason",
     value: string
   ) => {
     setConfig((prev) => {
-      const updated = prev.disabledTimeRanges.map((r, i) =>
+      const updated = prev.blockedDates.map((d, i) =>
+        i === index ? { ...d, [field]: value } : d
+      );
+      return { ...prev, blockedDates: updated };
+    });
+  };
+
+  // -------------------------------
+  // Blocked Time Range Update
+  // -------------------------------
+  const handleBlockedTimeRangeChange = (
+    index: number,
+    field: "date" | "start" | "end" | "reason",
+    value: string
+  ) => {
+    setConfig((prev) => {
+      const updated = prev.blockedTimeRanges.map((r, i) =>
         i === index ? { ...r, [field]: value } : r
       );
-      return { ...prev, disabledTimeRanges: updated };
+      return { ...prev, blockedTimeRanges: updated };
     });
   };
 
@@ -201,7 +244,7 @@ const ConsultationScheduleForm: React.FC = () => {
       email,
       country,
       state,
-      providerTimezone,
+      consultantTZ,
       slotDurationMinutes,
       workingHours,
     } = config;
@@ -210,16 +253,21 @@ const ConsultationScheduleForm: React.FC = () => {
       !email ||
       !country ||
       !state ||
-      !providerTimezone ||
+      !consultantTZ ||
       !slotDurationMinutes ||
       workingHours.length < 1
     ) {
       toast.error("Please fill in the required fields!");
       return setShowError(true);
     }
+    // console.log("Form Data=============> ", config);
     const res = await updateScheduleConfig({
       configId: config._id,
-      data: { ...config, providerTimezone: config.providerTimezone.value },
+      data: {
+        ...config,
+        consultantTZ: config.consultantTZ.label,
+        consultantTZ_IANA: config.consultantTZ.value,
+      },
     });
     if (res?.error) return;
     toast.success("Consultation schedule is updated successfully.", {
@@ -285,29 +333,33 @@ const ConsultationScheduleForm: React.FC = () => {
           <p>
             Your Timezone <RedStar />
           </p>
-          {showError && !config?.providerTimezone && (
+          {showError && !config?.consultantTZ.value && (
             <p className="text-red-500">Required*</p>
           )}
         </div>
         <Select
           size="large"
-          className="w-full h-[50px] border-[1px] !border-[#838383] rounded-[8px]"
-          // value={config.providerTimezone.value}
-          value={config.providerTimezone.value}
-          onChange={(value) => {
-            setConfig((prev) => ({
-              ...prev,
-              providerTimezone: { label: value, value },
-            }));
+          status={showError && !config.consultantTZ.value ? "error" : ""}
+          className="w-full h-[50px]"
+          value={config.consultantTZ?.value}
+          onChange={(
+            _,
+            option:
+              | { label: string; value: string }
+              | { label: string; value: string }[]
+          ) => {
+            // Assert that option is a single object (not array) for single select
+            const singleOption = option as { label: string; value: string };
+            setConfig({ ...config, consultantTZ: singleOption });
           }}
-          options={timezones?.map((tz: string) => ({ label: tz, value: tz }))}
+          options={standardTimezoneMap}
           suffixIcon={
             <Icon
               className="text-[1.5rem] text-gray-600"
               icon="iconamoon:arrow-down-2"
             />
           }
-          placeholder="Search and select timezone"
+          placeholder="Type City & select timezone. e.g., Toronto"
           showSearch={true}
           allowClear
         ></Select>
@@ -411,42 +463,60 @@ const ConsultationScheduleForm: React.FC = () => {
         <h3 className="font-semibold mb-2">Breaks</h3>
 
         {config.breaks.map((b, idx) => (
-          <div key={idx} className="flex items-center gap-2 mb-2">
-            <select
-              className="border p-1 rounded"
-              value={b.day}
-              onChange={(e) => handleBreakChange(idx, "day", e.target.value)}
-            >
-              {weekdays.map((d) => (
-                <option key={d}>{d}</option>
-              ))}
-            </select>
+          <div
+            key={idx}
+            className="flex flex-col gap-2 mb-4 p-3 border rounded"
+          >
+            <div className="flex items-center gap-2">
+              <select
+                className="border p-1 rounded"
+                value={b.day}
+                onChange={(e) => handleBreakChange(idx, "day", e.target.value)}
+              >
+                {weekdays.map((d) => (
+                  <option key={d}>{d}</option>
+                ))}
+              </select>
 
-            <input
-              type="time"
-              className="border p-1 rounded"
-              value={b.start}
-              onChange={(e) => handleBreakChange(idx, "start", e.target.value)}
-            />
-            <span>-</span>
-            <input
-              type="time"
-              className="border p-1 rounded"
-              value={b.end}
-              onChange={(e) => handleBreakChange(idx, "end", e.target.value)}
-            />
+              <input
+                type="time"
+                className="border p-1 rounded"
+                value={b.start}
+                onChange={(e) =>
+                  handleBreakChange(idx, "start", e.target.value)
+                }
+              />
+              <span>-</span>
+              <input
+                type="time"
+                className="border p-1 rounded"
+                value={b.end}
+                onChange={(e) => handleBreakChange(idx, "end", e.target.value)}
+              />
 
-            <button
-              className="text-red-500"
-              onClick={() =>
-                setConfig((prev) => ({
-                  ...prev,
-                  breaks: prev.breaks.filter((_, i) => i !== idx),
-                }))
-              }
-            >
-              Remove
-            </button>
+              <button
+                className="text-red-500"
+                onClick={() =>
+                  setConfig((prev) => ({
+                    ...prev,
+                    breaks: prev.breaks.filter((_, i) => i !== idx),
+                  }))
+                }
+              >
+                Remove
+              </button>
+            </div>
+            <div className="mt-2">
+              <input
+                type="text"
+                className="border p-2 w-full rounded"
+                placeholder="Reason for break (optional)"
+                value={b.reason || ""}
+                onChange={(e) =>
+                  handleBreakChange(idx, "reason", e.target.value)
+                }
+              />
+            </div>
           </div>
         ))}
 
@@ -455,7 +525,10 @@ const ConsultationScheduleForm: React.FC = () => {
           onClick={() =>
             setConfig((prev) => ({
               ...prev,
-              breaks: [...prev.breaks, { day: "Monday", start: "", end: "" }],
+              breaks: [
+                ...prev.breaks,
+                { day: "Monday", start: "", end: "", reason: "" },
+              ],
             }))
           }
         >
@@ -463,34 +536,48 @@ const ConsultationScheduleForm: React.FC = () => {
         </button>
       </div>
 
-      {/* -------- Disabled Dates -------- */}
+      {/* -------- Blocked Dates -------- */}
       <div className="mb-6">
-        <h3 className="font-semibold mb-2">Disabled Dates</h3>
+        <h3 className="font-semibold mb-2">Blocked Dates</h3>
 
-        {config.disabledDates.map((d, idx) => (
-          <div key={idx} className="flex items-center gap-2 mb-2">
-            <input
-              type="date"
-              className="border p-1 rounded"
-              value={d}
-              onChange={(e) => {
-                const newDates = [...config.disabledDates];
-                newDates[idx] = e.target.value;
-                setConfig({ ...config, disabledDates: newDates });
-              }}
-            />
+        {config.blockedDates.map((d, idx) => (
+          <div
+            key={idx}
+            className="flex flex-col gap-2 mb-4 p-3 border rounded"
+          >
+            <div className="flex items-center gap-2">
+              <input
+                type="date"
+                className="border p-1 rounded"
+                value={d.date}
+                onChange={(e) =>
+                  handleBlockedDateChange(idx, "date", e.target.value)
+                }
+              />
 
-            <button
-              className="text-red-500"
-              onClick={() =>
-                setConfig((prev) => ({
-                  ...prev,
-                  disabledDates: prev.disabledDates.filter((_, i) => i !== idx),
-                }))
-              }
-            >
-              Remove
-            </button>
+              <button
+                className="text-red-500"
+                onClick={() =>
+                  setConfig((prev) => ({
+                    ...prev,
+                    blockedDates: prev.blockedDates.filter((_, i) => i !== idx),
+                  }))
+                }
+              >
+                Remove
+              </button>
+            </div>
+            <div className="mt-2">
+              <input
+                type="text"
+                className="border p-2 w-full rounded"
+                placeholder="Reason for blocking this date (optional)"
+                value={d.reason || ""}
+                onChange={(e) =>
+                  handleBlockedDateChange(idx, "reason", e.target.value)
+                }
+              />
+            </div>
           </div>
         ))}
 
@@ -499,91 +586,111 @@ const ConsultationScheduleForm: React.FC = () => {
           onClick={() =>
             setConfig((prev) => ({
               ...prev,
-              disabledDates: [
-                ...prev.disabledDates,
-                new Date().toISOString().slice(0, 10),
-              ],
-            }))
-          }
-        >
-          Add Disabled Date
-        </button>
-      </div>
-
-      {/* -------- Disabled Time Ranges -------- */}
-      <div className="mb-6">
-        <h3 className="font-semibold mb-2">Disabled Time Ranges</h3>
-
-        {config.disabledTimeRanges.map((r, idx) => (
-          <div key={idx} className="flex items-center gap-2 mb-2">
-            <input
-              type="date"
-              className="border p-1 rounded"
-              value={r.date}
-              onChange={(e) =>
-                handleDisabledTimeRangeChange(idx, "date", e.target.value)
-              }
-            />
-
-            <input
-              type="time"
-              className="border p-1 rounded"
-              value={r.start}
-              onChange={(e) =>
-                handleDisabledTimeRangeChange(idx, "start", e.target.value)
-              }
-            />
-
-            <span>-</span>
-
-            <input
-              type="time"
-              className="border p-1 rounded"
-              value={r.end}
-              onChange={(e) =>
-                handleDisabledTimeRangeChange(idx, "end", e.target.value)
-              }
-            />
-
-            <button
-              className="text-red-500"
-              onClick={() =>
-                setConfig((prev) => ({
-                  ...prev,
-                  disabledTimeRanges: prev.disabledTimeRanges.filter(
-                    (_, i) => i !== idx
-                  ),
-                }))
-              }
-            >
-              Remove
-            </button>
-          </div>
-        ))}
-
-        <button
-          className="mt-2 px-3 py-1 bg-gray-700 hover:bg-gray-900 duration-300 text-white rounded"
-          onClick={() =>
-            setConfig((prev) => ({
-              ...prev,
-              disabledTimeRanges: [
-                ...prev.disabledTimeRanges,
+              blockedDates: [
+                ...prev.blockedDates,
                 {
                   date: new Date().toISOString().slice(0, 10),
-                  start: "",
-                  end: "",
+                  reason: "",
                 },
               ],
             }))
           }
         >
-          Add Disabled Range
+          Add Blocked Date
+        </button>
+      </div>
+
+      {/* -------- Blocked Time Ranges -------- */}
+      <div className="mb-6">
+        <h3 className="font-semibold mb-2">Blocked Time Ranges</h3>
+
+        {config.blockedTimeRanges.map((r, idx) => (
+          <div
+            key={idx}
+            className="flex flex-col gap-2 mb-4 p-3 border rounded"
+          >
+            <div className="flex items-center gap-2">
+              <input
+                type="date"
+                className="border p-1 rounded"
+                value={r.date}
+                onChange={(e) =>
+                  handleBlockedTimeRangeChange(idx, "date", e.target.value)
+                }
+              />
+
+              <input
+                type="time"
+                className="border p-1 rounded"
+                value={r.start}
+                onChange={(e) =>
+                  handleBlockedTimeRangeChange(idx, "start", e.target.value)
+                }
+              />
+
+              <span>-</span>
+
+              <input
+                type="time"
+                className="border p-1 rounded"
+                value={r.end}
+                onChange={(e) =>
+                  handleBlockedTimeRangeChange(idx, "end", e.target.value)
+                }
+              />
+
+              <button
+                className="text-red-500"
+                onClick={() =>
+                  setConfig((prev) => ({
+                    ...prev,
+                    blockedTimeRanges: prev.blockedTimeRanges.filter(
+                      (_, i) => i !== idx
+                    ),
+                  }))
+                }
+              >
+                Remove
+              </button>
+            </div>
+            <div className="mt-2">
+              <input
+                type="text"
+                className="border p-2 w-full rounded"
+                placeholder="Reason for blocking this time range (optional)"
+                value={r.reason || ""}
+                onChange={(e) =>
+                  handleBlockedTimeRangeChange(idx, "reason", e.target.value)
+                }
+              />
+            </div>
+          </div>
+        ))}
+
+        <button
+          className="mt-2 px-3 py-1 bg-gray-700 hover:bg-gray-900 duration-300 text-white rounded"
+          onClick={() =>
+            setConfig((prev) => ({
+              ...prev,
+              blockedTimeRanges: [
+                ...prev.blockedTimeRanges,
+                {
+                  date: new Date().toISOString().slice(0, 10),
+                  start: "",
+                  end: "",
+                  reason: "",
+                },
+              ],
+            }))
+          }
+        >
+          Add Blocked Range
         </button>
       </div>
 
       {/* -------- Save Button -------- */}
       <button
-        className={`px-4 py-2 text-white rounded md:min-w-[300px] min-w-full ${
+        className={`px-4 py-2 text-white rounded  min-w-full ${
           updatingScheduleConfig ? "bg-gray-300" : "bg-green-500"
         }`}
         onClick={handleSubmit}

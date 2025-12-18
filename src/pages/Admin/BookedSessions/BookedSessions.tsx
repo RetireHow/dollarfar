@@ -375,20 +375,20 @@ export default function BookedSessions() {
                             <span>
                               {convertUTCToTimeZone(
                                 consultationTime,
-                                record.providerTZ
+                                record.consultantTZ_IANA
                               )}
                             </span>
-                            <span className="ml-2">({record.providerTZ})</span>
+                            <span className="ml-2">{record.consultantTZ}</span>
                           </div>
                           {/* Client Local Time */}
                           <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                             <span>
                               {convertUTCToTimeZone(
                                 consultationTime,
-                                record.userTZ
+                                record.userTZ_IANA
                               )}
                             </span>
-                            <span className="ml-2">({record.userTZ})</span>
+                            <span className="ml-2">{record.userTZ}</span>
                           </div>
 
                           <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -573,20 +573,20 @@ export default function BookedSessions() {
                             <span>
                               {convertUTCToTimeZone(
                                 consultationTime,
-                                record.providerTZ
+                                record.consultantTZ_IANA
                               )}
                             </span>
-                            <span className="ml-2">({record.providerTZ})</span>
+                            <span className="ml-2">{record.consultantTZ}</span>
                           </div>
                           {/* Client Local Time */}
                           <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                             <span>
                               {convertUTCToTimeZone(
                                 consultationTime,
-                                record.userTZ
+                                record.userTZ_IANA
                               )}
                             </span>
-                            <span className="ml-2">({record.userTZ})</span>
+                            <span className="ml-2">{record.userTZ}</span>
                           </div>
 
                           <div className="text-xs text-gray-500 dark:text-gray-400">

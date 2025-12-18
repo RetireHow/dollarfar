@@ -7,7 +7,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { Checkbox, ConfigProvider, Tooltip } from "antd";
+import { Checkbox, ConfigProvider, Select, Tooltip } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { baseUrl } from "../../api/apiConstant";
 import { toast } from "react-toastify";
@@ -25,6 +25,12 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { DatePicker } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { useGetScheduleConfigSlotsQuery } from "../../redux/features/APIEndpoints/ScheduleConfigApi/ShceduleConfigApi";
+import timezoneMap from "./timezone.json"; // IANA ↔ Windows mapping
+
+const standardTimezoneMap = timezoneMap.map((tz) => ({
+  label: tz.tz_windows,
+  value: tz.tz_iana,
+}));
 
 // const STRIPE_LIVE_SECRET_KEY =
 //   "pk_live_51RplAhBYC7YMMAFC7uODsfkBdTVL0v5Qhq5EOZ0MryrKf9P74f2l2zXjTS9i6kQXMGpPFvGMJD4ttj20WMHZH9CX004Xd966hu";
@@ -338,6 +344,10 @@ export default function RetireHowForm(): JSX.Element {
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [showError, setShowError] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState("");
+  const [selectedTZ, setSelectedTZ] = useState<{
+    label: string;
+    value: string;
+  } | null>(null);
 
   // ===========================================|| RTK Query ||==============================================
   const [addRetirementPlan, { isLoading: submitting, isError, error }] =
@@ -358,7 +368,6 @@ export default function RetireHowForm(): JSX.Element {
       skip: !form.dollarfar_planning.interpretation_toggle,
     });
   const availableSlots = slotsData?.data;
-  const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   const [
     bookConsultationSession,
@@ -614,17 +623,31 @@ export default function RetireHowForm(): JSX.Element {
       return;
     }
 
-    // Basic client validation: required ack checkboxes
-    if (
-      !form.privacy_acknowledgements.ack_poc ||
-      !form.privacy_acknowledgements.consent_contact ||
-      !form.privacy_acknowledgements.ack_scope
-    ) {
+    //Check if time zone selected
+    if (form.dollarfar_planning.interpretation_toggle && !selectedTZ) {
+      toast.error("Please select your time zone.");
       setShowError(true);
       return;
     }
 
-    // Validate subscription if interpretation is enabled
+    //Check if date selected
+    if (
+      form.dollarfar_planning.interpretation_toggle &&
+      !form.dollarfar_planning.selected_date
+    ) {
+      toast.error("Please select your time zone.");
+      setShowError(true);
+      return;
+    }
+
+    //Check if time slot selected
+    if (form.dollarfar_planning.interpretation_toggle && !selectedSlot) {
+      toast.error("Please select time slot.");
+      setShowError(true);
+      return;
+    }
+
+    // Check if subscription is active
     if (
       form.dollarfar_planning.interpretation_toggle &&
       data?.data?.status !== "active"
@@ -634,9 +657,12 @@ export default function RetireHowForm(): JSX.Element {
       return;
     }
 
-    //Validate selected slot
-    if (form.dollarfar_planning.interpretation_toggle && !selectedSlot) {
-      toast.error("Please select time slot.");
+    // Basic client validation: required ack checkboxes
+    if (
+      !form.privacy_acknowledgements.ack_poc ||
+      !form.privacy_acknowledgements.consent_contact ||
+      !form.privacy_acknowledgements.ack_scope
+    ) {
       setShowError(true);
       return;
     }
@@ -698,7 +724,8 @@ export default function RetireHowForm(): JSX.Element {
           consultation_time: selectedSlot,
         },
         slot: selectedSlot,
-        userTZ,
+        userTZ: selectedTZ?.label,
+        userTZ_IANA: selectedTZ?.value,
       };
 
       const res = await bookConsultationSession(newSessionData);
@@ -749,6 +776,7 @@ export default function RetireHowForm(): JSX.Element {
       travel_purposes: [],
       privacy_acknowledgements: {},
     });
+    setSelectedTZ({ label: "", value: "" });
     setShowError(false);
     setSelectedSlot("");
   };
@@ -836,6 +864,7 @@ export default function RetireHowForm(): JSX.Element {
             id="df-retire-form"
             onSubmit={handleSubmit}
             className="md:space-y-12 space-y-10"
+            autoComplete="off"
           >
             {/* SECTION A: Contact Information */}
             <div className="border-l-4 border-gray-800 dark:border-gray-300 pl-4">
@@ -1360,18 +1389,50 @@ export default function RetireHowForm(): JSX.Element {
                           Section A
                         </p>
                       </div>
-                      {/* Consultion Preference Time Input Field  */}
+                      {/* Time Zone Field  */}
+                      <div className="my-4">
+                        <div className="font-semibold mb-1 flex justify-between items-center">
+                          <p>
+                            Your Timezone <RedStar />
+                          </p>
+                          {showError && !selectedTZ && (
+                            <p className="text-red-500">Required*</p>
+                          )}
+                        </div>
+                        <Select
+                          size="large"
+                          status={showError && !selectedTZ ? "error" : ""}
+                          className="w-full !h-[48px]"
+                          value={selectedTZ}
+                          onChange={(_, option) => {
+                            setSelectedTZ(
+                              option as { label: string; value: string }
+                            );
+                          }}
+                          options={standardTimezoneMap}
+                          suffixIcon={
+                            <Icon
+                              className="text-[1.5rem] text-gray-600"
+                              icon="iconamoon:arrow-down-2"
+                            />
+                          }
+                          placeholder="Type City & select timezone. e.g., Toronto"
+                          showSearch={true}
+                          allowClear
+                        ></Select>
+                      </div>
+                      {/* Consultion Preference Date Input Field  */}
                       <div>
                         <label className="block font-semibold text-gray-800 dark:text-gray-200 mb-1">
                           <div className="flex items-center justify-between">
                             <p>
-                              Preferred Consultation Date (local)
+                              Preferred Consultation Date
                               <RedStar />
                             </p>
                             {showError &&
                               !form.dollarfar_planning.selected_date && (
                                 <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-md">
-                                  Required Date*
+                                  Required*
                                 </p>
                               )}
                           </div>
@@ -1412,7 +1473,7 @@ export default function RetireHowForm(): JSX.Element {
                                 className="font-bold mb-2"
                                 style={{ marginTop: 20 }}
                               >
-                                Available Slots ({userTZ})
+                                Available Slots
                               </h3>
                               <div className="flex items-center flex-wrap gap-3">
                                 {slotLoading ? (

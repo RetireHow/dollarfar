@@ -1,7 +1,9 @@
 export type TSession = {
   _id: string;
   userTZ: string;
-  providerTZ: string;
+  userTZ_IANA: string;
+  consultantTZ: string;
+  consultantTZ_IANA: string;
   subscription: Subscription;
   session_number: number;
   sessions_remaining: number;
