@@ -11,7 +11,7 @@ import { updateOTPField } from "../../redux/features/OTP/OTP";
 const ResetPasswordForm: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { newPassword, confirmPassword, email, otp } = useAppSelector(
+  const { newPassword, confirmPassword, email } = useAppSelector(
     (state) => state.OTP
   );
 
@@ -35,7 +35,7 @@ const ResetPasswordForm: React.FC = () => {
     }
 
     // Implement your password reset logic here
-    const res = await resetPassword({ email, otp, newPassword });
+    const res = await resetPassword({ email, newPassword });
     if (res?.error) return;
     toast.success("Password is reset successfully.");
     navigate("/admin-login");

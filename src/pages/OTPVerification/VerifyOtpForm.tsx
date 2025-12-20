@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useVerifyOTPMutation } from "../../redux/features/APIEndpoints/authApi/authApi";
 import { updateOTPField } from "../../redux/features/OTP/OTP";
 import { showApiErrorToast } from "../../utils/showApiErrorToast";
+import Countdown, { zeroPad } from "react-countdown";
 
 const VerifyOtpForm: React.FC = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const VerifyOtpForm: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const [showError, setShowError] = useState<boolean>(false);
+  const [isOTPExpired, setIsOTPExpired] = useState(false);
   const [verifyOTP, { isLoading, isError, error }] = useVerifyOTPMutation();
 
   const handleResend = () => {
@@ -43,6 +45,22 @@ const VerifyOtpForm: React.FC = () => {
       showApiErrorToast(error);
     }
   }, [isLoading, isError, error]);
+
+  // Render the Countdown component with stable props
+  const CountdownRenderer = ({
+    seconds,
+    minutes,
+  }: {
+    seconds: number;
+    minutes: number;
+  }) => (
+    <div className="mt-2">
+      <span className="font-bold">OTP expires in: </span>
+      <span>{zeroPad(minutes)}</span>
+      <span>:</span>
+      <span>{zeroPad(seconds)}</span>
+    </div>
+  );
 
   return (
     <div className="min-h-screen flex items-start justify-center py-[2rem] bg-gray-100 dark:bg-gray-900 px-4">
@@ -79,6 +97,19 @@ const VerifyOtpForm: React.FC = () => {
             Please fill in the all fields!
           </p>
         )}
+        <div className="flex justify-center text-orange-400">
+          {isOTPExpired ? (
+            <p className="text-orange-400 font-medium mt-2">
+              OTP has expired! Please request a new one.
+            </p>
+          ) : (
+            <Countdown
+              date={Date.now() + 60000 * 5}
+              onComplete={() => setIsOTPExpired(true)}
+              renderer={CountdownRenderer}
+            />
+          )}
+        </div>
         <div className="text-center mb-4">
           <span className="text-gray-600 dark:text-gray-300">
             Didn’t receive the code?

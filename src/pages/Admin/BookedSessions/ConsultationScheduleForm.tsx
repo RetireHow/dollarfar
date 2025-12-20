@@ -11,6 +11,7 @@ import { Select } from "antd";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
 import timezoneMap from "../../RetirementCalculator/timezone.json"; // IANA ↔ Windows mapping
+import { DataLoadingError } from "../../../components/UI/DataLoadingError";
 
 const standardTimezoneMap = timezoneMap.map((tz) => ({
   label: tz.tz_windows,
@@ -78,6 +79,143 @@ const weekdays: DayName[] = [
   "Sunday",
 ];
 
+const ConsultationScheduleFormSkeleton: React.FC = () => {
+  return (
+    <div className="mx-auto p-6 bg-white shadow rounded mb-[2.5rem] animate-pulse">
+      {/* Title */}
+      <h2 className="text-xl font-bold mb-4">
+        Consultation Time Slots Configuration
+      </h2>
+
+      {/* -------- Consultant Information -------- */}
+      <div className="mb-6">
+        <div className="h-5 w-40 bg-gray-200 rounded mb-3"></div>
+
+        {/* Name */}
+        <div className="h-10 bg-gray-100 rounded mb-3"></div>
+
+        {/* Email */}
+        <div className="h-10 bg-gray-100 rounded mb-3"></div>
+
+        {/* Country */}
+        <div className="h-10 bg-gray-100 rounded mb-3"></div>
+
+        {/* State */}
+        <div className="h-10 bg-gray-100 rounded"></div>
+      </div>
+
+      {/* -------- Timezone Select -------- */}
+      <div className="mb-4">
+        <div className="flex justify-between items-center mb-1">
+          <div className="h-5 w-32 bg-gray-200 rounded"></div>
+        </div>
+        <div className="h-12 bg-gray-100 rounded"></div>
+      </div>
+
+      {/* -------- Slot Duration -------- */}
+      <div className="mb-4">
+        <div className="flex justify-between items-center mb-1">
+          <div className="h-5 w-44 bg-gray-200 rounded"></div>
+        </div>
+        <div className="h-10 bg-gray-100 rounded"></div>
+      </div>
+
+      {/* -------- Working Hours -------- */}
+      <div className="mb-6">
+        <div className="flex justify-between items-center mb-1">
+          <div className="h-5 w-32 bg-gray-200 rounded"></div>
+        </div>
+
+        {/* Working hours rows */}
+        {[1, 2].map((_, idx) => (
+          <div key={idx} className="flex items-center gap-2 mb-3">
+            <div className="h-9 w-24 bg-gray-100 rounded"></div>
+            <div className="h-9 w-24 bg-gray-100 rounded"></div>
+            <div className="h-4 w-4 bg-gray-100 rounded"></div>
+            <div className="h-9 w-24 bg-gray-100 rounded"></div>
+            <div className="h-5 w-16 bg-gray-100 rounded ml-2"></div>
+          </div>
+        ))}
+
+        {/* Add Working Hour button */}
+        <div className="mt-2 h-8 w-36 bg-gray-100 rounded"></div>
+      </div>
+
+      {/* -------- Breaks -------- */}
+      <div className="mb-6">
+        <div className="h-5 w-20 bg-gray-200 rounded mb-2"></div>
+
+        {/* Breaks rows */}
+        {[1].map((_, idx) => (
+          <div key={idx} className="mb-4 p-3 border rounded">
+            <div className="flex items-center gap-2">
+              <div className="h-9 w-24 bg-gray-100 rounded"></div>
+              <div className="h-9 w-24 bg-gray-100 rounded"></div>
+              <div className="h-4 w-4 bg-gray-100 rounded"></div>
+              <div className="h-9 w-24 bg-gray-100 rounded"></div>
+              <div className="h-5 w-16 bg-gray-100 rounded"></div>
+            </div>
+            <div className="mt-2">
+              <div className="h-10 bg-gray-100 rounded"></div>
+            </div>
+          </div>
+        ))}
+
+        {/* Add Break button */}
+        <div className="mt-2 h-8 w-28 bg-gray-100 rounded"></div>
+      </div>
+
+      {/* -------- Blocked Dates -------- */}
+      <div className="mb-6">
+        <div className="h-5 w-32 bg-gray-200 rounded mb-2"></div>
+
+        {/* Blocked dates rows */}
+        {[1].map((_, idx) => (
+          <div key={idx} className="mb-4 p-3 border rounded">
+            <div className="flex items-center gap-2">
+              <div className="h-9 w-32 bg-gray-100 rounded"></div>
+              <div className="h-5 w-16 bg-gray-100 rounded"></div>
+            </div>
+            <div className="mt-2">
+              <div className="h-10 bg-gray-100 rounded"></div>
+            </div>
+          </div>
+        ))}
+
+        {/* Add Blocked Date button */}
+        <div className="mt-2 h-8 w-40 bg-gray-100 rounded"></div>
+      </div>
+
+      {/* -------- Blocked Time Ranges -------- */}
+      <div className="mb-6">
+        <div className="h-5 w-48 bg-gray-200 rounded mb-2"></div>
+
+        {/* Blocked time ranges rows */}
+        {[1].map((_, idx) => (
+          <div key={idx} className="mb-4 p-3 border rounded">
+            <div className="flex items-center gap-2">
+              <div className="h-9 w-32 bg-gray-100 rounded"></div>
+              <div className="h-9 w-24 bg-gray-100 rounded"></div>
+              <div className="h-4 w-4 bg-gray-100 rounded"></div>
+              <div className="h-9 w-24 bg-gray-100 rounded"></div>
+              <div className="h-5 w-16 bg-gray-100 rounded"></div>
+            </div>
+            <div className="mt-2">
+              <div className="h-10 bg-gray-100 rounded"></div>
+            </div>
+          </div>
+        ))}
+
+        {/* Add Blocked Range button */}
+        <div className="mt-2 h-8 w-44 bg-gray-100 rounded"></div>
+      </div>
+
+      {/* -------- Save Button -------- */}
+      <div className="h-10 bg-gray-200 rounded"></div>
+    </div>
+  );
+};
+
 const ConsultationScheduleForm: React.FC = () => {
   const [config, setConfig] = useState<ConsultationScheduleConfig>({
     _id: "",
@@ -103,8 +241,12 @@ const ConsultationScheduleForm: React.FC = () => {
 
   const [showError, setShowError] = useState(false);
 
-  const { data: fetchedConfigData, isLoading } =
-    useGetScheduleConfigQuery(undefined);
+  const {
+    data: fetchedConfigData,
+    isLoading,
+    isError: isConfigDataError,
+    refetch: refetchConfiguration,
+  } = useGetScheduleConfigQuery(undefined);
 
   const [
     updateScheduleConfig,
@@ -280,12 +422,23 @@ const ConsultationScheduleForm: React.FC = () => {
       return showError && !value
         ? "border-[2px] p-2 w-full rounded border-red-500 outline-red-500 focus:ring-red-500"
         : "border p-2 w-full rounded";
-    } else if (field === "providerTime") {
-      return showError && !value
-        ? "border-[2px] p-2 w-full rounded border-red-500 outline-red-500 focus:ring-red-500"
-        : "border p-2 w-full rounded";
     }
   };
+
+  // Decide what to render
+  if (isLoading && !isConfigDataError) {
+    return <ConsultationScheduleFormSkeleton />;
+  }
+
+  if (!isLoading && isConfigDataError) {
+    return (
+      <DataLoadingError
+        title="Failed to load schedule configuration"
+        errorMessage="There is something wrong!"
+        onRetry={refetchConfiguration}
+      />
+    );
+  }
 
   return (
     <div className="mx-auto p-6 bg-white shadow rounded mb-[2.5rem]">
@@ -295,7 +448,9 @@ const ConsultationScheduleForm: React.FC = () => {
 
       {/* -------- Provider Info -------- */}
       <div className="mb-6">
-        <h3 className="font-semibold mb-3">Consultant Information</h3>
+        <h3 className="font-semibold mb-3">
+          Consultant Information <RedStar />
+        </h3>
 
         <input
           className="border p-2 w-full rounded mb-3"
