@@ -32,12 +32,12 @@ const standardTimezoneMap = timezoneMap.map((tz) => ({
   value: tz.tz_iana,
 }));
 
-// const STRIPE_LIVE_SECRET_KEY =
-//   "pk_live_51RplAhBYC7YMMAFC7uODsfkBdTVL0v5Qhq5EOZ0MryrKf9P74f2l2zXjTS9i6kQXMGpPFvGMJD4ttj20WMHZH9CX004Xd966hu";
-const STRIPE_TEST_SECRET_KEY =
-  "pk_test_51RppIt4G0lMbEIGhQ3ltvcDSaNOOZaRalURZRSahGnm2EUCDMPU14eTNz9FiTodU9TV3hQhxzM8cMZVQeaMJXR4L00aUu5KTyR";
+const STRIPE_LIVE_SECRET_KEY =
+  "pk_live_51RplAhBYC7YMMAFC7uODsfkBdTVL0v5Qhq5EOZ0MryrKf9P74f2l2zXjTS9i6kQXMGpPFvGMJD4ttj20WMHZH9CX004Xd966hu";
+// const STRIPE_TEST_SECRET_KEY =
+//   "pk_test_51RppIt4G0lMbEIGhQ3ltvcDSaNOOZaRalURZRSahGnm2EUCDMPU14eTNz9FiTodU9TV3hQhxzM8cMZVQeaMJXR4L00aUu5KTyR";
 
-const stripePromise = loadStripe(STRIPE_TEST_SECRET_KEY);
+const stripePromise = loadStripe(STRIPE_LIVE_SECRET_KEY);
 
 /**
  * Organized Form State Types by Category
@@ -154,6 +154,7 @@ const pollForPaymentData = async (
 
   throw new Error("Payment data not found in database after multiple attempts");
 };
+
 /**
  * PaymentModal uses Stripe hooks - must be wrapped in Elements
  */
@@ -318,9 +319,9 @@ const PaymentModal = (props: {
  * Main form component
  */
 export default function RetireHowForm(): JSX.Element {
-  // useEffect(() => {
-  //   window.scrollTo({ top: 0, behavior: "smooth" });
-  // }, []);
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   const [form, setForm] = useState<FormState>({
     contact: {
       name: "",
