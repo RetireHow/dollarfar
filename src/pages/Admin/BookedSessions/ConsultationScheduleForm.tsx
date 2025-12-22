@@ -411,7 +411,7 @@ const ConsultationScheduleForm: React.FC = () => {
       toast.error("Please fill in the required fields!");
       return setShowError(true);
     }
-    // console.log("Form Data=============> ", config);
+
     const res = await updateScheduleConfig({
       configId: config._id,
       data: {
