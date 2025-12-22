@@ -247,9 +247,6 @@ function RetirementStatsSkeleton() {
 }
 
 export default function RetirementStats() {
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
   const { data: planData, isLoading: plansLoading } =
     useGetAllRetirementPlansQuery(undefined, {
       refetchOnMountOrArgChange: true,

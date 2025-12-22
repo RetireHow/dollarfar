@@ -13,6 +13,7 @@ import { useGetAllRetirementPlansQuery } from "../../redux/features/APIEndpoints
 import { useGetAllReportUsersQuery } from "../../redux/features/APIEndpoints/reportUsersApi/reportUsersApi";
 import { useGetAllEbookUsersQuery } from "../../redux/features/APIEndpoints/ebookUsersApi/ebookUsersApi";
 import { useGetAllEbookFeedbacksQuery } from "../../redux/features/APIEndpoints/ebookFeedbacksApi/ebookFeedbackApis";
+import { useEffect } from "react";
 
 interface DashboardStats {
   totalRetirementPlans: number;
@@ -62,6 +63,9 @@ const DashboardOverviewSkeleton = () => {
 };
 
 export default function DashboardOverview() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   const { data: plansData, isLoading } =
     useGetAllRetirementPlansQuery(undefined);
   const { data: pdfData } = useGetAllReportUsersQuery(undefined);
@@ -207,7 +211,7 @@ export default function DashboardOverview() {
             Quick Actions
           </h2>
           <div className="space-y-3">
-            <Link to="retiree-requests">
+            <Link to="retirement-panel">
               <button className="w-full text-left p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <div className="flex items-center justify-between">
                   <span className="font-medium text-gray-700 dark:text-gray-300">
