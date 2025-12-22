@@ -66,7 +66,7 @@ export const EbookDownloadFormPopup = () => {
     setIsLoading(true);
 
     try {
-      const res = await fetch(`${baseUrl}/ebook-downloaded-users/create-user`, {
+      const res = await fetch(`${baseUrl}/ebook-downloaded-users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
