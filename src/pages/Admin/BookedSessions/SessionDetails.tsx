@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useGetConsultationSessoinDetailsQuery } from "../../../redux/features/APIEndpoints/consultationSessionApi/consultationSessionApi";
 import { TSession } from "../types/session.type";
+import { useEffect } from "react";
 
 const formatCurrency = (amount: number | string) => {
   if (!amount) return "Not specified";
@@ -445,6 +446,9 @@ function SessionDetailsSkeleton() {
 }
 
 export default function SessionDetails() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   const { sessionId } = useParams();
   const navigate = useNavigate();
   const { data: sessionData, isLoading: sessionLoading } =

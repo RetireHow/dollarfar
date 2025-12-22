@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { useGetAllConsultationSessoinsQuery } from "../../../redux/features/APIEndpoints/consultationSessionApi/consultationSessionApi";
 import { useGetAllRetirementPlansQuery } from "../../../redux/features/APIEndpoints/retirementPlansApi/retirementPlansApi";
 import { useGetAllActiveConsultationSubscriptionsQuery } from "../../../redux/features/APIEndpoints/consultationSubscriptionApi/consultationSubscription";
+import { useEffect } from "react";
 
 // Types (kept as provided)
 export type TSession = {
@@ -246,6 +247,9 @@ function RetirementStatsSkeleton() {
 }
 
 export default function RetirementStats() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   const { data: planData, isLoading: plansLoading } =
     useGetAllRetirementPlansQuery(undefined, {
       refetchOnMountOrArgChange: true,

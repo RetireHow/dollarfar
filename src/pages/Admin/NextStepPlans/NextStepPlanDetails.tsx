@@ -4,6 +4,7 @@ import { useGetAllRetirementPlanNotesQuery } from "../../../redux/features/APIEn
 import { TNote } from "../types/note.type";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetSingleRetirementPlanQuery } from "../../../redux/features/APIEndpoints/retirementPlansApi/retirementPlansApi";
+import { useEffect } from "react";
 
 const formatCurrency = (amount: string) => {
   if (!amount) return "Not specified";
@@ -394,6 +395,9 @@ function NextStepPlanDetailsPageSkeleton() {
 }
 
 export default function NextStepPlanDetailsPage() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   const { planId } = useParams();
   const navigate = useNavigate();
   const { data: planData, isLoading: planLoading } =
