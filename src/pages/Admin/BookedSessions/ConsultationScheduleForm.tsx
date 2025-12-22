@@ -560,7 +560,7 @@ const ConsultationScheduleForm: React.FC = () => {
       </div>
 
       {/* -------- Working Hours -------- */}
-      <div className="mb-6">
+      <div className="mb-6 overflow-x-auto">
         <div className="font-semibold mb-1 flex justify-between items-center">
           <p className="dark:text-white">
             Working Hours <RedStar />
@@ -625,7 +625,7 @@ const ConsultationScheduleForm: React.FC = () => {
       </div>
 
       {/* -------- Breaks -------- */}
-      <div className="mb-6">
+      <div className="mb-6 overflow-x-auto">
         <h3 className="font-semibold mb-2 dark:text-white">Breaks</h3>
 
         {config.breaks.map((b, idx) => (
@@ -705,7 +705,7 @@ const ConsultationScheduleForm: React.FC = () => {
       </div>
 
       {/* -------- Blocked Dates -------- */}
-      <div className="mb-6">
+      <div className="mb-6 overflow-x-auto">
         <h3 className="font-semibold mb-2 dark:text-white">Blocked Dates</h3>
 
         {config.blockedDates.map((d, idx) => (
@@ -769,7 +769,7 @@ const ConsultationScheduleForm: React.FC = () => {
       </div>
 
       {/* -------- Blocked Time Ranges -------- */}
-      <div className="mb-6">
+      <div className="mb-6 overflow-x-auto">
         <h3 className="font-semibold mb-2 dark:text-white">
           Blocked Time Ranges
         </h3>
