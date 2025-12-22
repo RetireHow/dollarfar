@@ -81,137 +81,146 @@ const weekdays: DayName[] = [
 
 const ConsultationScheduleFormSkeleton: React.FC = () => {
   return (
-    <div className="mx-auto p-6 bg-white shadow rounded mb-[2.5rem] animate-pulse">
+    <div className="mx-auto p-6 bg-white dark:bg-gray-800 shadow rounded mb-[2.5rem] animate-pulse">
       {/* Title */}
-      <h2 className="text-xl font-bold mb-4">
+      <h2 className="text-xl font-bold mb-4 dark:text-white">
         Consultation Time Slots Configuration
       </h2>
 
       {/* -------- Consultant Information -------- */}
       <div className="mb-6">
-        <div className="h-5 w-40 bg-gray-200 rounded mb-3"></div>
+        <div className="h-5 w-40 bg-gray-200 dark:bg-gray-700 rounded mb-3"></div>
 
         {/* Name */}
-        <div className="h-10 bg-gray-100 rounded mb-3"></div>
+        <div className="h-10 bg-gray-100 dark:bg-gray-700 rounded mb-3"></div>
 
         {/* Email */}
-        <div className="h-10 bg-gray-100 rounded mb-3"></div>
+        <div className="h-10 bg-gray-100 dark:bg-gray-700 rounded mb-3"></div>
 
         {/* Country */}
-        <div className="h-10 bg-gray-100 rounded mb-3"></div>
+        <div className="h-10 bg-gray-100 dark:bg-gray-700 rounded mb-3"></div>
 
         {/* State */}
-        <div className="h-10 bg-gray-100 rounded"></div>
+        <div className="h-10 bg-gray-100 dark:bg-gray-700 rounded"></div>
       </div>
 
       {/* -------- Timezone Select -------- */}
       <div className="mb-4">
         <div className="flex justify-between items-center mb-1">
-          <div className="h-5 w-32 bg-gray-200 rounded"></div>
+          <div className="h-5 w-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
         </div>
-        <div className="h-12 bg-gray-100 rounded"></div>
+        <div className="h-12 bg-gray-100 dark:bg-gray-700 rounded"></div>
       </div>
 
       {/* -------- Slot Duration -------- */}
       <div className="mb-4">
         <div className="flex justify-between items-center mb-1">
-          <div className="h-5 w-44 bg-gray-200 rounded"></div>
+          <div className="h-5 w-44 bg-gray-200 dark:bg-gray-700 rounded"></div>
         </div>
-        <div className="h-10 bg-gray-100 rounded"></div>
+        <div className="h-10 bg-gray-100 dark:bg-gray-700 rounded"></div>
       </div>
 
       {/* -------- Working Hours -------- */}
       <div className="mb-6">
         <div className="flex justify-between items-center mb-1">
-          <div className="h-5 w-32 bg-gray-200 rounded"></div>
+          <div className="h-5 w-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
         </div>
 
         {/* Working hours rows */}
         {[1, 2].map((_, idx) => (
           <div key={idx} className="flex items-center gap-2 mb-3">
-            <div className="h-9 w-24 bg-gray-100 rounded"></div>
-            <div className="h-9 w-24 bg-gray-100 rounded"></div>
-            <div className="h-4 w-4 bg-gray-100 rounded"></div>
-            <div className="h-9 w-24 bg-gray-100 rounded"></div>
-            <div className="h-5 w-16 bg-gray-100 rounded ml-2"></div>
+            <div className="h-9 w-24 bg-gray-100 dark:bg-gray-700 rounded"></div>
+            <div className="h-9 w-24 bg-gray-100 dark:bg-gray-700 rounded"></div>
+            <div className="h-4 w-4 bg-gray-100 dark:bg-gray-700 rounded"></div>
+            <div className="h-9 w-24 bg-gray-100 dark:bg-gray-700 rounded"></div>
+            <div className="h-5 w-16 bg-gray-100 dark:bg-gray-700 rounded ml-2"></div>
           </div>
         ))}
 
         {/* Add Working Hour button */}
-        <div className="mt-2 h-8 w-36 bg-gray-100 rounded"></div>
+        <div className="mt-2 h-8 w-36 bg-gray-100 dark:bg-gray-700 rounded"></div>
       </div>
 
       {/* -------- Breaks -------- */}
       <div className="mb-6">
-        <div className="h-5 w-20 bg-gray-200 rounded mb-2"></div>
+        <div className="h-5 w-20 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
 
         {/* Breaks rows */}
         {[1].map((_, idx) => (
-          <div key={idx} className="mb-4 p-3 border rounded">
+          <div
+            key={idx}
+            className="mb-4 p-3 border dark:border-gray-700 rounded"
+          >
             <div className="flex items-center gap-2">
-              <div className="h-9 w-24 bg-gray-100 rounded"></div>
-              <div className="h-9 w-24 bg-gray-100 rounded"></div>
-              <div className="h-4 w-4 bg-gray-100 rounded"></div>
-              <div className="h-9 w-24 bg-gray-100 rounded"></div>
-              <div className="h-5 w-16 bg-gray-100 rounded"></div>
+              <div className="h-9 w-24 bg-gray-100 dark:bg-gray-700 rounded"></div>
+              <div className="h-9 w-24 bg-gray-100 dark:bg-gray-700 rounded"></div>
+              <div className="h-4 w-4 bg-gray-100 dark:bg-gray-700 rounded"></div>
+              <div className="h-9 w-24 bg-gray-100 dark:bg-gray-700 rounded"></div>
+              <div className="h-5 w-16 bg-gray-100 dark:bg-gray-700 rounded"></div>
             </div>
             <div className="mt-2">
-              <div className="h-10 bg-gray-100 rounded"></div>
+              <div className="h-10 bg-gray-100 dark:bg-gray-700 rounded"></div>
             </div>
           </div>
         ))}
 
         {/* Add Break button */}
-        <div className="mt-2 h-8 w-28 bg-gray-100 rounded"></div>
+        <div className="mt-2 h-8 w-28 bg-gray-100 dark:bg-gray-700 rounded"></div>
       </div>
 
       {/* -------- Blocked Dates -------- */}
       <div className="mb-6">
-        <div className="h-5 w-32 bg-gray-200 rounded mb-2"></div>
+        <div className="h-5 w-32 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
 
         {/* Blocked dates rows */}
         {[1].map((_, idx) => (
-          <div key={idx} className="mb-4 p-3 border rounded">
+          <div
+            key={idx}
+            className="mb-4 p-3 border dark:border-gray-700 rounded"
+          >
             <div className="flex items-center gap-2">
-              <div className="h-9 w-32 bg-gray-100 rounded"></div>
-              <div className="h-5 w-16 bg-gray-100 rounded"></div>
+              <div className="h-9 w-32 bg-gray-100 dark:bg-gray-700 rounded"></div>
+              <div className="h-5 w-16 bg-gray-100 dark:bg-gray-700 rounded"></div>
             </div>
             <div className="mt-2">
-              <div className="h-10 bg-gray-100 rounded"></div>
+              <div className="h-10 bg-gray-100 dark:bg-gray-700 rounded"></div>
             </div>
           </div>
         ))}
 
         {/* Add Blocked Date button */}
-        <div className="mt-2 h-8 w-40 bg-gray-100 rounded"></div>
+        <div className="mt-2 h-8 w-40 bg-gray-100 dark:bg-gray-700 rounded"></div>
       </div>
 
       {/* -------- Blocked Time Ranges -------- */}
       <div className="mb-6">
-        <div className="h-5 w-48 bg-gray-200 rounded mb-2"></div>
+        <div className="h-5 w-48 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
 
         {/* Blocked time ranges rows */}
         {[1].map((_, idx) => (
-          <div key={idx} className="mb-4 p-3 border rounded">
+          <div
+            key={idx}
+            className="mb-4 p-3 border dark:border-gray-700 rounded"
+          >
             <div className="flex items-center gap-2">
-              <div className="h-9 w-32 bg-gray-100 rounded"></div>
-              <div className="h-9 w-24 bg-gray-100 rounded"></div>
-              <div className="h-4 w-4 bg-gray-100 rounded"></div>
-              <div className="h-9 w-24 bg-gray-100 rounded"></div>
-              <div className="h-5 w-16 bg-gray-100 rounded"></div>
+              <div className="h-9 w-32 bg-gray-100 dark:bg-gray-700 rounded"></div>
+              <div className="h-9 w-24 bg-gray-100 dark:bg-gray-700 rounded"></div>
+              <div className="h-4 w-4 bg-gray-100 dark:bg-gray-700 rounded"></div>
+              <div className="h-9 w-24 bg-gray-100 dark:bg-gray-700 rounded"></div>
+              <div className="h-5 w-16 bg-gray-100 dark:bg-gray-700 rounded"></div>
             </div>
             <div className="mt-2">
-              <div className="h-10 bg-gray-100 rounded"></div>
+              <div className="h-10 bg-gray-100 dark:bg-gray-700 rounded"></div>
             </div>
           </div>
         ))}
 
         {/* Add Blocked Range button */}
-        <div className="mt-2 h-8 w-44 bg-gray-100 rounded"></div>
+        <div className="mt-2 h-8 w-44 bg-gray-100 dark:bg-gray-700 rounded"></div>
       </div>
 
       {/* -------- Save Button -------- */}
-      <div className="h-10 bg-gray-200 rounded"></div>
+      <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded"></div>
     </div>
   );
 };
@@ -420,8 +429,8 @@ const ConsultationScheduleForm: React.FC = () => {
   const toggleErrorBorderColor = (value: string | boolean, field: string) => {
     if (field === "slotDurationMinutes") {
       return showError && !value
-        ? "border-[2px] p-2 w-full rounded border-red-500 outline-red-500 focus:ring-red-500"
-        : "border p-2 w-full rounded";
+        ? "border-[2px] p-2 w-full rounded border-red-500 outline-red-500 focus:ring-red-500 dark:bg-gray-700 dark:border-red-500"
+        : "border p-2 w-full rounded dark:bg-gray-700 dark:border-gray-600";
     }
   };
 
@@ -441,19 +450,19 @@ const ConsultationScheduleForm: React.FC = () => {
   }
 
   return (
-    <div className="mx-auto p-6 bg-white shadow rounded mb-[2.5rem]">
-      <h2 className="text-xl font-bold mb-4">
+    <div className="mx-auto p-6 bg-white dark:bg-gray-800 shadow rounded mb-[2.5rem]">
+      <h2 className="text-xl font-bold mb-4 dark:text-white">
         Consultation Time Slots Configuration
       </h2>
 
       {/* -------- Provider Info -------- */}
       <div className="mb-6">
-        <h3 className="font-semibold mb-3">
+        <h3 className="font-semibold mb-3 dark:text-white">
           Consultant Information <RedStar />
         </h3>
 
         <input
-          className="border p-2 w-full rounded mb-3"
+          className="border p-2 w-full rounded mb-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           placeholder="Name"
           value={config.name}
           onChange={(e) => setConfig({ ...config, name: e.target.value })}
@@ -461,21 +470,21 @@ const ConsultationScheduleForm: React.FC = () => {
 
         <input
           type="email"
-          className="border p-2 w-full rounded mb-3"
+          className="border p-2 w-full rounded mb-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           placeholder="Email"
           value={config.email}
           onChange={(e) => setConfig({ ...config, email: e.target.value })}
         />
 
         <input
-          className="border p-2 w-full rounded mb-3"
+          className="border p-2 w-full rounded mb-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           placeholder="Country"
           value={config.country}
           onChange={(e) => setConfig({ ...config, country: e.target.value })}
         />
 
         <input
-          className="border p-2 w-full rounded"
+          className="border p-2 w-full rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           placeholder="State / Province"
           value={config.state}
           onChange={(e) => setConfig({ ...config, state: e.target.value })}
@@ -485,7 +494,7 @@ const ConsultationScheduleForm: React.FC = () => {
       {/* -------- Provider Timezone -------- */}
       <div className="mb-4">
         <div className="font-semibold mb-1 flex justify-between items-center">
-          <p>
+          <p className="dark:text-white">
             Your Timezone <RedStar />
           </p>
           {showError && !config?.consultantTZ.value && (
@@ -495,7 +504,7 @@ const ConsultationScheduleForm: React.FC = () => {
         <Select
           size="large"
           status={showError && !config.consultantTZ.value ? "error" : ""}
-          className="w-full h-[50px]"
+          className="w-full h-[50px] dark:[&_.ant-select-selector]:bg-gray-700 dark:[&_.ant-select-selector]:border-gray-600 dark:[&_.ant-select-selection-placeholder]:text-gray-400 dark:[&_.ant-select-selection-item]:text-white"
           value={config.consultantTZ?.value}
           onChange={(
             _,
@@ -510,7 +519,7 @@ const ConsultationScheduleForm: React.FC = () => {
           options={standardTimezoneMap}
           suffixIcon={
             <Icon
-              className="text-[1.5rem] text-gray-600"
+              className="text-[1.5rem] text-gray-600 dark:text-gray-400"
               icon="iconamoon:arrow-down-2"
             />
           }
@@ -523,7 +532,7 @@ const ConsultationScheduleForm: React.FC = () => {
       {/* -------- Slot Duration -------- */}
       <div className="mb-4">
         <div className="font-semibold mb-1 flex justify-between items-center">
-          <p>
+          <p className="dark:text-white">
             Slot Duration (minutes)
             <RedStar />
           </p>
@@ -536,7 +545,7 @@ const ConsultationScheduleForm: React.FC = () => {
           className={`${toggleErrorBorderColor(
             config.slotDurationMinutes,
             "slotDurationMinutes"
-          )}`}
+          )} dark:text-white`}
           placeholder="Please enter slot duration"
           value={config.slotDurationMinutes}
           name="slotDurationMinutes"
@@ -553,7 +562,7 @@ const ConsultationScheduleForm: React.FC = () => {
       {/* -------- Working Hours -------- */}
       <div className="mb-6">
         <div className="font-semibold mb-1 flex justify-between items-center">
-          <p>
+          <p className="dark:text-white">
             Working Hours <RedStar />
           </p>
           {showError && !config.workingHours.length && (
@@ -564,31 +573,33 @@ const ConsultationScheduleForm: React.FC = () => {
         {config.workingHours.map((wh, idx) => (
           <div key={idx} className="flex items-center gap-2 mb-2">
             <select
-              className="border p-1 rounded"
+              className="border p-1 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               value={wh.day}
               onChange={(e) =>
                 handleWorkingHourChange(idx, "day", e.target.value)
               }
             >
               {weekdays.map((d) => (
-                <option key={d}>{d}</option>
+                <option key={d} className="dark:bg-gray-700">
+                  {d}
+                </option>
               ))}
             </select>
 
             <input
               type="time"
-              className="border p-1 rounded"
+              className="border p-1 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               value={wh.start}
               onChange={(e) =>
                 handleWorkingHourChange(idx, "start", e.target.value)
               }
             />
 
-            <span>-</span>
+            <span className="dark:text-white">-</span>
 
             <input
               type="time"
-              className="border p-1 rounded"
+              className="border p-1 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               value={wh.end}
               onChange={(e) =>
                 handleWorkingHourChange(idx, "end", e.target.value)
@@ -596,7 +607,7 @@ const ConsultationScheduleForm: React.FC = () => {
             />
 
             <button
-              className="text-red-500 ml-2"
+              className="text-red-500 ml-2 dark:text-red-400"
               onClick={() => handleRemoveWorkingHour(idx)}
             >
               Remove
@@ -606,7 +617,7 @@ const ConsultationScheduleForm: React.FC = () => {
 
         {/* Add Working Hour */}
         <button
-          className="mt-2 px-3 py-1 bg-gray-700 hover:bg-gray-900 duration-300 text-white rounded"
+          className="mt-2 px-3 py-1 bg-gray-700 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 duration-300 text-white rounded"
           onClick={handleAddWorkingHour}
         >
           Add Working Hour
@@ -615,42 +626,44 @@ const ConsultationScheduleForm: React.FC = () => {
 
       {/* -------- Breaks -------- */}
       <div className="mb-6">
-        <h3 className="font-semibold mb-2">Breaks</h3>
+        <h3 className="font-semibold mb-2 dark:text-white">Breaks</h3>
 
         {config.breaks.map((b, idx) => (
           <div
             key={idx}
-            className="flex flex-col gap-2 mb-4 p-3 border rounded"
+            className="flex flex-col gap-2 mb-4 p-3 border rounded dark:border-gray-700"
           >
             <div className="flex items-center gap-2">
               <select
-                className="border p-1 rounded"
+                className="border p-1 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 value={b.day}
                 onChange={(e) => handleBreakChange(idx, "day", e.target.value)}
               >
                 {weekdays.map((d) => (
-                  <option key={d}>{d}</option>
+                  <option key={d} className="dark:bg-gray-700">
+                    {d}
+                  </option>
                 ))}
               </select>
 
               <input
                 type="time"
-                className="border p-1 rounded"
+                className="border p-1 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 value={b.start}
                 onChange={(e) =>
                   handleBreakChange(idx, "start", e.target.value)
                 }
               />
-              <span>-</span>
+              <span className="dark:text-white">-</span>
               <input
                 type="time"
-                className="border p-1 rounded"
+                className="border p-1 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 value={b.end}
                 onChange={(e) => handleBreakChange(idx, "end", e.target.value)}
               />
 
               <button
-                className="text-red-500"
+                className="text-red-500 dark:text-red-400"
                 onClick={() =>
                   setConfig((prev) => ({
                     ...prev,
@@ -664,7 +677,7 @@ const ConsultationScheduleForm: React.FC = () => {
             <div className="mt-2">
               <input
                 type="text"
-                className="border p-2 w-full rounded"
+                className="border p-2 w-full rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 placeholder="Reason for break (optional)"
                 value={b.reason || ""}
                 onChange={(e) =>
@@ -676,7 +689,7 @@ const ConsultationScheduleForm: React.FC = () => {
         ))}
 
         <button
-          className="mt-2 px-3 py-1 bg-gray-700 hover:bg-gray-900 duration-300 text-white rounded"
+          className="mt-2 px-3 py-1 bg-gray-700 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 duration-300 text-white rounded"
           onClick={() =>
             setConfig((prev) => ({
               ...prev,
@@ -693,17 +706,17 @@ const ConsultationScheduleForm: React.FC = () => {
 
       {/* -------- Blocked Dates -------- */}
       <div className="mb-6">
-        <h3 className="font-semibold mb-2">Blocked Dates</h3>
+        <h3 className="font-semibold mb-2 dark:text-white">Blocked Dates</h3>
 
         {config.blockedDates.map((d, idx) => (
           <div
             key={idx}
-            className="flex flex-col gap-2 mb-4 p-3 border rounded"
+            className="flex flex-col gap-2 mb-4 p-3 border rounded dark:border-gray-700"
           >
             <div className="flex items-center gap-2">
               <input
                 type="date"
-                className="border p-1 rounded"
+                className="border p-1 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 value={d.date}
                 onChange={(e) =>
                   handleBlockedDateChange(idx, "date", e.target.value)
@@ -711,7 +724,7 @@ const ConsultationScheduleForm: React.FC = () => {
               />
 
               <button
-                className="text-red-500"
+                className="text-red-500 dark:text-red-400"
                 onClick={() =>
                   setConfig((prev) => ({
                     ...prev,
@@ -725,7 +738,7 @@ const ConsultationScheduleForm: React.FC = () => {
             <div className="mt-2">
               <input
                 type="text"
-                className="border p-2 w-full rounded"
+                className="border p-2 w-full rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 placeholder="Reason for blocking this date (optional)"
                 value={d.reason || ""}
                 onChange={(e) =>
@@ -737,7 +750,7 @@ const ConsultationScheduleForm: React.FC = () => {
         ))}
 
         <button
-          className="mt-2 px-3 py-1 bg-gray-700 hover:bg-gray-900 duration-300 text-white rounded"
+          className="mt-2 px-3 py-1 bg-gray-700 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 duration-300 text-white rounded"
           onClick={() =>
             setConfig((prev) => ({
               ...prev,
@@ -757,17 +770,19 @@ const ConsultationScheduleForm: React.FC = () => {
 
       {/* -------- Blocked Time Ranges -------- */}
       <div className="mb-6">
-        <h3 className="font-semibold mb-2">Blocked Time Ranges</h3>
+        <h3 className="font-semibold mb-2 dark:text-white">
+          Blocked Time Ranges
+        </h3>
 
         {config.blockedTimeRanges.map((r, idx) => (
           <div
             key={idx}
-            className="flex flex-col gap-2 mb-4 p-3 border rounded"
+            className="flex flex-col gap-2 mb-4 p-3 border rounded dark:border-gray-700"
           >
             <div className="flex items-center gap-2">
               <input
                 type="date"
-                className="border p-1 rounded"
+                className="border p-1 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 value={r.date}
                 onChange={(e) =>
                   handleBlockedTimeRangeChange(idx, "date", e.target.value)
@@ -776,18 +791,18 @@ const ConsultationScheduleForm: React.FC = () => {
 
               <input
                 type="time"
-                className="border p-1 rounded"
+                className="border p-1 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 value={r.start}
                 onChange={(e) =>
                   handleBlockedTimeRangeChange(idx, "start", e.target.value)
                 }
               />
 
-              <span>-</span>
+              <span className="dark:text-white">-</span>
 
               <input
                 type="time"
-                className="border p-1 rounded"
+                className="border p-1 rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 value={r.end}
                 onChange={(e) =>
                   handleBlockedTimeRangeChange(idx, "end", e.target.value)
@@ -795,7 +810,7 @@ const ConsultationScheduleForm: React.FC = () => {
               />
 
               <button
-                className="text-red-500"
+                className="text-red-500 dark:text-red-400"
                 onClick={() =>
                   setConfig((prev) => ({
                     ...prev,
@@ -811,7 +826,7 @@ const ConsultationScheduleForm: React.FC = () => {
             <div className="mt-2">
               <input
                 type="text"
-                className="border p-2 w-full rounded"
+                className="border p-2 w-full rounded dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 placeholder="Reason for blocking this time range (optional)"
                 value={r.reason || ""}
                 onChange={(e) =>
@@ -823,7 +838,7 @@ const ConsultationScheduleForm: React.FC = () => {
         ))}
 
         <button
-          className="mt-2 px-3 py-1 bg-gray-700 hover:bg-gray-900 duration-300 text-white rounded"
+          className="mt-2 px-3 py-1 bg-gray-700 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 duration-300 text-white rounded"
           onClick={() =>
             setConfig((prev) => ({
               ...prev,
@@ -845,8 +860,10 @@ const ConsultationScheduleForm: React.FC = () => {
 
       {/* -------- Save Button -------- */}
       <button
-        className={`px-4 py-2 text-white rounded  min-w-full ${
-          updatingScheduleConfig ? "bg-gray-300" : "bg-green-500"
+        className={`px-4 py-2 text-white rounded min-w-full duration-300 ${
+          updatingScheduleConfig
+            ? "bg-gray-300 dark:bg-gray-600"
+            : "bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700"
         }`}
         onClick={handleSubmit}
         disabled={updatingScheduleConfig}

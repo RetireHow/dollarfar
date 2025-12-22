@@ -83,7 +83,7 @@ export const ExportMortgagePDFModal = ({
 
     try {
       const res = await fetch(
-        `${baseUrl}/report-downloaded-users/create-user`,
+        `${baseUrl}/report-downloaded-users`,
         {
           method: "POST",
           headers: {
