@@ -124,7 +124,7 @@ export const EmailModal = ({
           </div>
 
           <div>
-            <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-bold text-gray-700 dark:text-gray-300">
               Email Body
             </label>
             <textarea
@@ -136,25 +136,25 @@ export const EmailModal = ({
             />
           </div>
 
-          <div className="flex justify-between items-center pt-4">
+          <div className="space-y-3">
             <div className="text-sm text-gray-500 dark:text-gray-400">
               <p>Recipient: {contactInfo?.email}</p>
             </div>
-            <div className="flex gap-3">
-              <button
-                onClick={onClose}
-                className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-              >
-                Cancel
-              </button>
+            <div className="space-y-3">
               <button
                 onClick={handleSendEmailSubmit}
                 disabled={
                   !emailSubject.trim() || !emailBody.trim() || isAddingEmail
                 }
-                className="px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                className="px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium w-full"
               >
                 {isAddingEmail ? "Sending..." : "Send Email"}
+              </button>
+              <button
+                onClick={onClose}
+                className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors w-full"
+              >
+                Cancel
               </button>
             </div>
           </div>
