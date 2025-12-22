@@ -292,7 +292,7 @@ export const NotesModal = ({
                   {isAddingNewNote ? (
                     <Icon icon="line-md:loading-loop" width="24" height="24" />
                   ) : (
-                    "Save TNote"
+                    "Save Note"
                   )}
                 </button>
               )}
