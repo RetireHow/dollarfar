@@ -72,7 +72,7 @@ const AdminLogin: React.FC = () => {
             <input
               id="email"
               type="email"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               value={email}
               onChange={handleEmailChange}
               placeholder="admin@example.com"
@@ -90,7 +90,7 @@ const AdminLogin: React.FC = () => {
               <input
                 id="password"
                 type={isVisible ? "text" : "password"}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                 value={password}
                 onChange={handlePasswordChange}
                 placeholder="Enter password"
@@ -122,10 +122,10 @@ const AdminLogin: React.FC = () => {
           <button
             type="submit"
             disabled={isLoading ? true : false}
-            className={`w-full text-white py-2 rounded-md hover:bg-blue-700 dark:hover:bg-neutral-700 transition flex justify-center items-center h-[45px] ${
+            className={`w-full text-white py-2 rounded-md hover:bg-gray-800 duration-300 dark:hover:bg-neutral-700 transition flex justify-center items-center h-[45px] ${
               isLoading
-                ? "bg-blue-300 hover:bg-blue-300 dark:bg-neutral-600 dark:hover:bg-neutral-600"
-                : "bg-blue-600 dark:bg-neutral-700"
+                ? "bg-gray-300 hover:bg-gray-300 dark:bg-neutral-600 dark:hover:bg-neutral-600"
+                : "bg-gray-700 dark:bg-neutral-700"
             }`}
           >
             {isLoading ? (

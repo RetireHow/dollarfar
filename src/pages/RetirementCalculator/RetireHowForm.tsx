@@ -441,7 +441,11 @@ export default function RetireHowForm(): JSX.Element {
     if (
       name === "dollarfar_planning.interpretation_toggle" &&
       checked &&
-      (!form.contact.name || !form.contact.email || !form.contact.phone)
+      (!form.contact.name ||
+        !form.contact.email ||
+        !form.contact.phone ||
+        !form.contact.country ||
+        !form.contact.region)
     ) {
       return toast.error(
         "Oops! Please fill in the required fields in the Contact Information section above to enable this service!",
@@ -790,6 +794,10 @@ export default function RetireHowForm(): JSX.Element {
         : "border-gray-400 dark:border-gray-500";
     } else if (field === "email") {
       return showError && (!value || !emailReg.test(value as string))
+        ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
+        : "border-gray-400 dark:border-gray-500";
+    } else if (field === "phone") {
+      return showError && !value
         ? "border-red-500 dark:border-red-400 border-[2px] outline-red-500 focus:ring-red-500"
         : "border-gray-400 dark:border-gray-500";
     } else if (field === "region") {
@@ -2122,6 +2130,7 @@ export default function RetireHowForm(): JSX.Element {
                     I acknowledge that during the proof-of-concept stage, I will
                     only pay actual vendor costs and agree to share feedback on
                     my experience.
+                    <RedStar />
                   </span>
                 </label>
 
@@ -2153,6 +2162,7 @@ export default function RetireHowForm(): JSX.Element {
                   <span className="text-gray-700 dark:text-gray-300 font-bold">
                     I would like to be contacted by RetireHow Inc. to discuss my
                     submission.
+                    <RedStar />
                   </span>
                 </label>
 
@@ -2185,6 +2195,7 @@ export default function RetireHowForm(): JSX.Element {
                     I understand that RetireHow and DollarFar provide lifestyle
                     optimization, cost-management, and travel-planning guidance
                     — not investment or financial advice.
+                    <RedStar />
                   </span>
                 </label>
               </div>

@@ -69,7 +69,7 @@ const ResetPasswordForm: React.FC = () => {
               <input
                 id="password"
                 type={isVisible ? "text" : "password"}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                 value={newPassword}
                 onChange={(e) => {
                   dispatch(
@@ -112,7 +112,7 @@ const ResetPasswordForm: React.FC = () => {
             <input
               id="password"
               type={isVisibleConfirmPassword ? "text" : "password"}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               value={confirmPassword}
               onChange={(e) => {
                 dispatch(
@@ -153,8 +153,8 @@ const ResetPasswordForm: React.FC = () => {
         <button
           type="submit"
           disabled={isLoading ? true : false}
-          className={`w-full text-white py-2 rounded-md hover:bg-blue-700 transition flex justify-center items-center h-[45px] mt-5 ${
-            isLoading ? "bg-blue-300 hover:bg-blue-300" : "bg-blue-600"
+          className={`w-full text-white py-2 rounded-md hover:bg-gray-800 transition flex justify-center items-center h-[45px] mt-5 ${
+            isLoading ? "bg-gray-300 hover:bg-gray-300" : "bg-gray-700"
           }`}
         >
           {isLoading ? (

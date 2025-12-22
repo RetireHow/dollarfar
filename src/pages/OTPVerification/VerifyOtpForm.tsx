@@ -6,7 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { useVerifyOTPMutation } from "../../redux/features/APIEndpoints/authApi/authApi";
+import {
+  useSendOTPMutation,
+  useVerifyOTPMutation,
+} from "../../redux/features/APIEndpoints/authApi/authApi";
 import { updateOTPField } from "../../redux/features/OTP/OTP";
 import { showApiErrorToast } from "../../utils/showApiErrorToast";
 import Countdown, { zeroPad } from "react-countdown";
@@ -20,8 +23,20 @@ const VerifyOtpForm: React.FC = () => {
   const [isOTPExpired, setIsOTPExpired] = useState(false);
   const [verifyOTP, { isLoading, isError, error }] = useVerifyOTPMutation();
 
-  const handleResend = () => {
-    // Implement your resend OTP logic here
+  const [
+    resendOTP,
+    {
+      isLoading: resendingOTP,
+      isError: isErrorResendOTP,
+      error: resendOTPError,
+    },
+  ] = useSendOTPMutation();
+
+  const handleResend = async () => {
+    //OTP Resending logic
+    const res = await resendOTP({ email });
+    if (res?.error) return;
+    toast.success("OTP is sent again successfully.");
   };
 
   const handleOTPChange = (value: string) => {
@@ -45,6 +60,12 @@ const VerifyOtpForm: React.FC = () => {
       showApiErrorToast(error);
     }
   }, [isLoading, isError, error]);
+
+  useEffect(() => {
+    if (!resendingOTP && isErrorResendOTP && resendOTPError) {
+      showApiErrorToast(resendOTPError);
+    }
+  }, [resendingOTP, isErrorResendOTP, resendOTPError]);
 
   // Render the Countdown component with stable props
   const CountdownRenderer = ({
@@ -84,7 +105,7 @@ const VerifyOtpForm: React.FC = () => {
             renderInput={(props) => (
               <input
                 {...props}
-                className="otp-input w-10 h-10 sm:w-12 sm:h-12 text-center text-lg sm:text-xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white mx-1"
+                className="otp-input w-10 h-10 sm:w-12 sm:h-12 text-center text-lg sm:text-xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white mx-1"
               />
             )}
           />
@@ -116,17 +137,18 @@ const VerifyOtpForm: React.FC = () => {
           </span>{" "}
           <button
             type="button"
+            disabled={resendingOTP}
             onClick={handleResend}
-            className="text-blue-600 hover:underline dark:text-blue-400 font-semibold text-sm sm:text-base mt-5"
+            className="text-gray-600 hover:underline hover:text-gray-700 dark:text-gray-400 font-semibold text-sm sm:text-base mt-5"
           >
             Send Again
           </button>
         </div>
         <button
-          type="submit"
-          disabled={isLoading ? true : false}
-          className={`w-full text-white py-2 rounded-md hover:bg-blue-700 transition flex justify-center items-center h-[45px] mt-5 ${
-            isLoading ? "bg-blue-300 hover:bg-blue-300" : "bg-blue-600"
+          type="button"
+          disabled={isLoading}
+          className={`w-full text-white py-2 duration-300 rounded-md transition flex justify-center items-center h-[45px] mt-5 ${
+            isLoading ? "bg-gray-300" : "bg-gray-700 hover:bg-gray-800"
           }`}
         >
           {isLoading ? (
