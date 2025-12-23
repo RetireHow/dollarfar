@@ -43,7 +43,6 @@ export interface TCrimeData {
 function CrimeDynamicComponent({
   city,
 }: {
-  country: string;
   city: string;
 }) {
   const [crimeData, setCrimeData] = useState<TCrimeDataResponse>(
@@ -462,7 +461,7 @@ export default function Crime() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  const { selectedCountryName2, selectedCityName2, selectedCountryName1, selectedCityName1 } = useAppSelector(
+  const { selectedCityName2, selectedCityName1 } = useAppSelector(
     (state) => state.COLCalculator
   );
 
@@ -487,11 +486,9 @@ export default function Crime() {
 
       <section className="grid grid-cols-1  md:grid-cols-2 gap-10">
         <CrimeDynamicComponent
-          country={selectedCountryName2}
           city={selectedCityName2}
         />
         <CrimeDynamicComponent
-          country={selectedCountryName1}
           city={selectedCityName1}
         />
       </section>

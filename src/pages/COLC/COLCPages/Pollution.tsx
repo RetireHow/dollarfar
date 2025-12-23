@@ -48,7 +48,6 @@ export interface Data {
 function PollutionDynamicComponent({
   city,
 }: {
-  country: string;
   city: string;
 }) {
   const [pollutionData, setPollutionData] = useState<PollutionResponse>(
@@ -752,9 +751,7 @@ export default function Pollution() {
   }, []);
 
   const {
-    selectedCountryName2,
     selectedCityName2,
-    selectedCountryName1,
     selectedCityName1,
   } = useAppSelector((state) => state.COLCalculator);
 
@@ -779,11 +776,9 @@ export default function Pollution() {
 
       <section className="grid md:grid-cols-2 grid-cols-1 gap-10">
         <PollutionDynamicComponent
-          country={selectedCountryName2}
           city={selectedCityName2}
         />
         <PollutionDynamicComponent
-          country={selectedCountryName1}
           city={selectedCityName1}
         />
       </section>

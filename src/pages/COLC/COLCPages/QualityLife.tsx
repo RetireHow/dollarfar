@@ -84,10 +84,8 @@ export interface TInsuranceType {
 }
 
 function QualityLifeDynamicComponent({
-  country,
   city,
 }: {
-  country: string;
   city: string;
 }) {
   const [cityIndicesData, setCityIndicesData] = useState<TCityIndecesResponse>(
@@ -156,7 +154,7 @@ function QualityLifeDynamicComponent({
         <div className="space-y-[1rem]">
           <div className="flex items-center gap-3">
             <Link
-              to={`/cost-of-living-calculator/close-city-living-cost/${country}-${city}`}
+              to={`/cost-of-living-calculator/close-city-living-cost/${city}`}
               className="text-blue-600 hover:underline flex-1"
             >
               Purchasing Power Index:
@@ -172,7 +170,7 @@ function QualityLifeDynamicComponent({
           </div>
           <div className="flex items-center gap-3">
             <Link
-              to={`/cost-of-living-calculator/crime/${country}-${city}`}
+              to={`/cost-of-living-calculator/crime/${city}`}
               className="text-blue-600 hover:underline flex-1"
             >
               Safety Index:
@@ -188,7 +186,7 @@ function QualityLifeDynamicComponent({
           </div>
           <div className="flex items-center gap-3">
             <Link
-              to={`/cost-of-living-calculator/health-care/${country}-${city}`}
+              to={`/cost-of-living-calculator/health-care/${city}`}
               className="text-blue-600 hover:underline flex-1"
             >
               Health Care Index:
@@ -217,7 +215,7 @@ function QualityLifeDynamicComponent({
           </div>
           <div className="flex items-center gap-3">
             <Link
-              to={`/cost-of-living-calculator/close-city-living-cost/${country}-${city}`}
+              to={`/cost-of-living-calculator/close-city-living-cost/${city}`}
               className="text-blue-600 hover:underline flex-1"
             >
               Cost of Living Index:
@@ -233,7 +231,7 @@ function QualityLifeDynamicComponent({
           </div>
           <div className="flex items-center gap-3">
             <Link
-              to={`/cost-of-living-calculator/property-prices/${country}-${city}`}
+              to={`/cost-of-living-calculator/property-prices/${city}`}
               className="text-blue-600 hover:underline flex-1"
             >
               Property Price to Income Ratio:
@@ -249,7 +247,7 @@ function QualityLifeDynamicComponent({
           </div>
           <div className="flex items-center gap-3">
             <Link
-              to={`/cost-of-living-calculator/traffic/${country}-${city}`}
+              to={`/cost-of-living-calculator/traffic/${city}`}
               className="text-blue-600 hover:underline flex-1"
             >
               Traffic Commute Time Index:
@@ -265,7 +263,7 @@ function QualityLifeDynamicComponent({
           </div>
           <div className="flex items-center gap-3">
             <Link
-              to={`/cost-of-living-calculator/pollution/${country}-${city}`}
+              to={`/cost-of-living-calculator/pollution/${city}`}
               className="text-blue-600 hover:underline flex-1"
             >
               Pollution Index:
@@ -313,10 +311,10 @@ export default function QualityLife() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  const { selectedCityName1, selectedCountryName1 } = useAppSelector(
+  const { selectedCityName1 } = useAppSelector(
     (state) => state.COLCalculator
   );
-  const { selectedCityName2, selectedCountryName2 } = useAppSelector(
+  const { selectedCityName2 } = useAppSelector(
     (state) => state.COLCalculator
   );
 
@@ -342,11 +340,9 @@ export default function QualityLife() {
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-10">
         <QualityLifeDynamicComponent
-          country={selectedCountryName2}
           city={selectedCityName2}
         />
         <QualityLifeDynamicComponent
-          country={selectedCountryName1}
           city={selectedCityName1}
         />
       </section>

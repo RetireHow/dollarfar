@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { getCurrencySymbol } from "../../../utils/getCurrencySymbol";
 import { numberWithCommas } from "../../../utils/numberWithCommas";
@@ -10,8 +9,8 @@ import {
   setMembers,
 } from "../../../redux/features/COLC/COLCSlice";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { baseUrl } from "../../../api/apiConstant";
 import EstimatedCostLoadingSkeleton from "../SkeletonLoaders/EstimatedCostLoadingSkeleton";
+import { useGetEstimatedCostQuery } from "../../../redux/features/APIEndpoints/numbioApi/numbioApi";
 
 export interface EstimatedCostDataResponse {
   message: string;
@@ -48,40 +47,20 @@ export default function EstimatedCostCalculatorPage() {
   }, []);
 
   const dispatch = useAppDispatch();
-  const {
-    selectedCityName2,
-    selectedCountryName2,
-    homeCurrencyCode,
-    members,
-    children,
-    isRent,
-  } = useAppSelector((state) => state.COLCalculator);
-  const [estimatedCostData, setEstimatedCostData] =
-    useState<EstimatedCostDataResponse>({} as EstimatedCostDataResponse);
-  const [isEstimateLoading, setIsEstimateLoading] = useState(false);
+  const { selectedCityName2, homeCurrencyCode, members, children, isRent } =
+    useAppSelector((state) => state.COLCalculator);
 
-  const loadEstimatedCostData = async () => {
-    try {
-      setIsEstimateLoading(true);
-      const res = await fetch(
-        `${baseUrl}/numbeo/city-cost-esitmator?country=${selectedCountryName2}&city=${selectedCityName2}&members=${members}&children=${children}&isRent=${isRent}&currency=${homeCurrencyCode}`
-      );
-      const data: EstimatedCostDataResponse = await res.json();
-      if (!data?.success) {
-        return toast.error("There is internal server error.");
-      }
-      setEstimatedCostData(data);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      toast.error("There is something wrong!");
-    } finally {
-      setIsEstimateLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadEstimatedCostData();
-  }, [homeCurrencyCode, members, children, isRent]);
+  const { data: estimatedCostData, isLoading: isEstimateLoading } =
+    useGetEstimatedCostQuery(
+      {
+        city: selectedCityName2,
+        members,
+        children,
+        isRent,
+        homeCurrencyCode,
+      },
+      { refetchOnMountOrArgChange: true }
+    );
 
   const navigate = useNavigate();
   const handleBack = () => {
@@ -100,7 +79,7 @@ export default function EstimatedCostCalculatorPage() {
       </div>
 
       <h3 className="text-[1rem] font-semibold mb-2 dark:text-darkModeHeadingTextColor">
-        Estimated cost calculator in {selectedCityName2}, {selectedCountryName2}
+        Estimated cost calculator in {selectedCityName2}
       </h3>
       <section className="flex md:flex-row flex-col md:items-center gap-5 mb-10 text-[14px]">
         <div className="flex items-center gap-1 w-full">
@@ -166,16 +145,16 @@ export default function EstimatedCostCalculatorPage() {
       ) : (
         <section>
           <div className="mb-5">
-            {estimatedCostData?.data?.error ? (
+            {estimatedCostData?.error ? (
               <p className="text-red-500 p-3 border-[1px] mb-4">
-                {estimatedCostData?.data?.error}
+                {estimatedCostData?.error}
               </p>
             ) : (
               <div className="border-[1px] border-gray-300 rounded-lg p-5 mb-5 bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor inline-block">
                 <div className="flex items-center justify-between">
                   <p>
                     <span className="font-semibold">Summary</span> of cost of
-                    living in {selectedCityName2}, {selectedCountryName2}:
+                    living in {selectedCityName2}:
                   </p>
                   {isEstimateLoading && (
                     <Icon
@@ -203,9 +182,7 @@ export default function EstimatedCostCalculatorPage() {
                     <span className="ml-1 font-semibold">
                       {homeCurrencyCode && getCurrencySymbol(homeCurrencyCode)}{" "}
                       {numberWithCommas(
-                        Number(
-                          estimatedCostData?.data?.overall_estimate?.toFixed(2)
-                        )
+                        Number(estimatedCostData?.overall_estimate?.toFixed(2))
                       )}
                     </span>{" "}
                     {isRent == "true" ? "with" : "without"} rent
@@ -231,19 +208,21 @@ export default function EstimatedCostCalculatorPage() {
                 </tr>
               </thead>
               <tbody>
-                {estimatedCostData?.data?.breakdown?.map((item) => {
-                  return (
-                    <tr key={item?.category} className="hover:bg-[#42c6c623]">
-                      <td className="border-[1px] border-gray-300 md:p-3 p-2">
-                        {item?.category}
-                      </td>
-                      <td className="border-[1px] border-gray-300 md:p-3 p-2 space-x-1">
-                        <span>{getCurrencySymbol(homeCurrencyCode)}</span>
-                        <span>{item?.estimate?.toFixed(2)}</span>
-                      </td>
-                    </tr>
-                  );
-                })}
+                {estimatedCostData?.breakdown?.map(
+                  (item: EstimatedCostItem) => {
+                    return (
+                      <tr key={item?.category} className="hover:bg-[#42c6c623]">
+                        <td className="border-[1px] border-gray-300 md:p-3 p-2">
+                          {item?.category}
+                        </td>
+                        <td className="border-[1px] border-gray-300 md:p-3 p-2 space-x-1">
+                          <span>{getCurrencySymbol(homeCurrencyCode)}</span>
+                          <span>{item?.estimate?.toFixed(2)}</span>
+                        </td>
+                      </tr>
+                    );
+                  }
+                )}
               </tbody>
             </table>
           </div>

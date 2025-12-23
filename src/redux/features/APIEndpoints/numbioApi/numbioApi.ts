@@ -5,15 +5,10 @@ const ebookUsersApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getCityPrices: builder.query({
       query: ({ city, currency }) => {
+        console.log("Currency==> ", currency);
         return {
           url: `/numbeo/city-prices?city=${city}&currency=${currency}`,
           method: "GET",
-        };
-      },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      transformResponse: (response: TResponseRedux<any>) => {
-        return {
-          data: response?.data?.data,
         };
       },
     }),
@@ -27,9 +22,7 @@ const ebookUsersApi = baseApi.injectEndpoints({
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       transformResponse: (response: TResponseRedux<any>) => {
-        return {
-          data: response?.data?.data,
-        };
+        return response?.data;
       },
     }),
 
@@ -42,24 +35,20 @@ const ebookUsersApi = baseApi.injectEndpoints({
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       transformResponse: (response: TResponseRedux<any>) => {
-        return {
-          data: response?.data?.data,
-        };
+        return response?.data;
       },
     }),
 
     getEstimatedCost: builder.query({
-      query: ({ city, members, isRent, currency }) => {
+      query: ({ city, members, isRent, currency, children }) => {
         return {
-          url: `/numbeo/city-cost-esitmator?city=${city}&members=${members}&isRent=${isRent}&currency=${currency}`,
+          url: `/numbeo/city-cost-esitmator?city=${city}&members=${members}&children=${children}&isRent=${isRent}&currency=${currency}`,
           method: "GET",
         };
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       transformResponse: (response: TResponseRedux<any>) => {
-        return {
-          data: response?.data?.data,
-        };
+        return response?.data;
       },
     }),
 
@@ -74,14 +63,12 @@ const ebookUsersApi = baseApi.injectEndpoints({
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       transformResponse: (response: TResponseRedux<any>) => {
-        return {
-          data: response?.data?.data,
-        };
+        return response?.data;
       },
     }),
 
     getCityIndices: builder.query({
-      query: ({ city }) => {
+      query: (city) => {
         return {
           url: `/numbeo/city-indices?city=${city}`,
           method: "GET",
@@ -89,9 +76,7 @@ const ebookUsersApi = baseApi.injectEndpoints({
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       transformResponse: (response: TResponseRedux<any>) => {
-        return {
-          data: response?.data?.data,
-        };
+        return response?.data;
       },
     }),
 
@@ -104,9 +89,7 @@ const ebookUsersApi = baseApi.injectEndpoints({
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       transformResponse: (response: TResponseRedux<any>) => {
-        return {
-          data: response?.data?.data,
-        };
+        return response?.data;
       },
     }),
 
@@ -119,9 +102,7 @@ const ebookUsersApi = baseApi.injectEndpoints({
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       transformResponse: (response: TResponseRedux<any>) => {
-        return {
-          data: response?.data?.data,
-        };
+        return response?.data;
       },
     }),
 
@@ -134,9 +115,7 @@ const ebookUsersApi = baseApi.injectEndpoints({
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       transformResponse: (response: TResponseRedux<any>) => {
-        return {
-          data: response?.data?.data,
-        };
+        return response?.data;
       },
     }),
 
@@ -149,9 +128,7 @@ const ebookUsersApi = baseApi.injectEndpoints({
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       transformResponse: (response: TResponseRedux<any>) => {
-        return {
-          data: response?.data?.data,
-        };
+        return response?.data;
       },
     }),
   }),

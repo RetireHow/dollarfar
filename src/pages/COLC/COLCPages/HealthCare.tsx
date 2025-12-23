@@ -43,7 +43,6 @@ export interface TInsuranceType {
 function HealthCareDynamicComponent({
   city,
 }: {
-  country: string;
   city: string;
 }) {
   const [healthCareData, setHealthCareData] = useState<THealthCareDataResponse>(
@@ -319,7 +318,7 @@ export default function HealthCare() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  const { selectedCountryName2, selectedCityName2, selectedCountryName1, selectedCityName1 } = useAppSelector(
+  const { selectedCityName2, selectedCityName1 } = useAppSelector(
     (state) => state.COLCalculator
   );
 
@@ -346,11 +345,9 @@ export default function HealthCare() {
 
       <section className="grid md:grid-cols-2 grid-cols-1 gap-10">
         <HealthCareDynamicComponent
-          country={selectedCountryName2}
           city={selectedCityName2}
         />
         <HealthCareDynamicComponent
-          country={selectedCountryName1}
           city={selectedCityName1}
         />
       </section>

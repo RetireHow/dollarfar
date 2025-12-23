@@ -2,10 +2,21 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import { useAppSelector } from "../../redux/hooks";
+import { useGetCityIndicesQuery } from "../../redux/features/APIEndpoints/numbioApi/numbioApi";
 
 const LivingIndexPieChart = () => {
-  const { city1Indices, city2Indices, selectedCityName1, selectedCityName2 } =
-    useAppSelector((state) => state.COLCalculator);
+  const { selectedCityName1, selectedCityName2 } = useAppSelector(
+    (state) => state.COLCalculator
+  );
+
+  const { data: city1Indices } = useGetCityIndicesQuery(selectedCityName1, {
+    skip: !selectedCityName1,
+  });
+
+  const { data: city2Indices } = useGetCityIndicesQuery(selectedCityName2, {
+    skip: !selectedCityName2,
+  });
+
   const data = [
     {
       name: selectedCityName1,

@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { useAppSelector } from "../../redux/hooks";
 import { isNegative } from "../../utils/isNegative";
 import { Link } from "react-router-dom";
+import { useGetCityIndicesQuery } from "../../redux/features/APIEndpoints/numbioApi/numbioApi";
 
 const getIndexDiff = (city1Index: number, city2Index: number) => {
   if (!city1Index || !city2Index) {
@@ -12,8 +13,17 @@ const getIndexDiff = (city1Index: number, city2Index: number) => {
 };
 
 export default function CityIndices() {
-  const { city1Indices, city2Indices, selectedCityName1, selectedCityName2 } =
-    useAppSelector((state) => state.COLCalculator);
+  const { selectedCityName1, selectedCityName2 } = useAppSelector(
+    (state) => state.COLCalculator
+  );
+
+  const { data: city1Indices } = useGetCityIndicesQuery(selectedCityName1, {
+    skip: !selectedCityName1,
+  });
+
+  const { data: city2Indices } = useGetCityIndicesQuery(selectedCityName2, {
+    skip: !selectedCityName2,
+  });
 
   return (
     <section className="border-[1px] bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor border-gray-300 dark:border-darkModeBorderColor p-3 mb-[1rem] mt-[1rem] rounded-lg inline-block">
@@ -61,11 +71,13 @@ export default function CityIndices() {
               ? "lower"
               : "higher"}{" "}
           </span>
-          than in {selectedCityName1} <span className="font-semibold">(without rent)</span>
+          than in {selectedCityName1}{" "}
+          <span className="font-semibold">(without rent)</span>
         </div>
 
         <div>
-          Cost of Living <span className="font-semibold">Including Rent</span> in {selectedCityName2} is{" "}
+          Cost of Living <span className="font-semibold">Including Rent</span>{" "}
+          in {selectedCityName2} is{" "}
           {Math.abs(
             getIndexDiff(
               city1Indices?.cost_of_living_plus_rent_index,

@@ -392,10 +392,8 @@ const TrafficTable = ({
 };
 
 function TrafficDynamicComponent({
-  country,
   city,
 }: {
-  country: string;
   city: string;
 }) {
   const [trafficData, setTrafficData] = useState<TTrafficDataResponse>(
@@ -406,7 +404,7 @@ function TrafficDynamicComponent({
     try {
       setIsLoading(true);
       const res = await fetch(
-        `${baseUrl}/numbeo/city-traffic?country=${country}&city=${city}`
+        `${baseUrl}/numbeo/city-traffic?city=${city}`
       );
       const data: TTrafficDataResponse = await res.json();
       if (!data?.success) {
@@ -775,9 +773,7 @@ export default function Traffic() {
   }, []);
 
   const {
-    selectedCountryName2,
     selectedCityName2,
-    selectedCountryName1,
     selectedCityName1,
   } = useAppSelector((state) => state.COLCalculator);
 
@@ -802,11 +798,9 @@ export default function Traffic() {
 
       <section className="grid md:grid-cols-2 grid-cols-1 gap-5">
         <TrafficDynamicComponent
-          country={selectedCountryName2}
           city={selectedCityName2}
         />
         <TrafficDynamicComponent
-          country={selectedCountryName1}
           city={selectedCityName1}
         />
       </section>

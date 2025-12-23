@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { useAppSelector } from "../../redux/hooks";
 import { getCurrencySymbol } from "../../utils/getCurrencySymbol";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 import { Link } from "react-router-dom";
-import { baseUrl } from "../../api/apiConstant";
+import { useGetEstimatedCostQuery } from "../../redux/features/APIEndpoints/numbioApi/numbioApi";
 
 export interface EstimatedCostDataResponse {
   message: string;
@@ -30,70 +28,42 @@ export interface EstimatedCostItem {
 }
 
 export default function EstimatedCost() {
-  const {
-    selectedCityName2,
-    selectedCountryName2,
-    homeCurrencyCode,
-    members,
-    children,
-    isRent,
-  } = useAppSelector((state) => state.COLCalculator);
-  const [estimatedCostData, setEstimatedCostData] =
-    useState<EstimatedCostDataResponse>({} as EstimatedCostDataResponse);
-  const [estimatedCostDataSinglePerson, setEstimatedCostDataSinglePerson] =
-    useState<EstimatedCostDataResponse>({} as EstimatedCostDataResponse);
+  const { selectedCityName2, homeCurrencyCode, members, children, isRent } =
+    useAppSelector((state) => state.COLCalculator);
 
-  const loadEstimatedCostData = async () => {
-    try {
-      const res = await fetch(
-        `${baseUrl}/numbeo/city-cost-esitmator?country=${selectedCountryName2}&city=${selectedCityName2}&members=${members}&children=${children}&isRent=${isRent}&currency=${homeCurrencyCode}`
-      );
-      const data: EstimatedCostDataResponse = await res.json();
-      if (!data?.success) {
-        return toast.error("There is internal server error.");
-      }
-      setEstimatedCostData(data);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      toast.error("There is something wrong!");
-    }
-  };
+  const { data: estimatedCostData } = useGetEstimatedCostQuery(
+    {
+      city: selectedCityName2,
+      members,
+      children,
+      isRent,
+      homeCurrencyCode,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
-  const loadEstimatedCostSinglePersonData = async () => {
-    try {
-      const res = await fetch(
-        `${baseUrl}/numbeo/city-cost-esitmator?country=${selectedCountryName2}&city=${selectedCityName2}&members=1&children=0&isRent=false&currency=${homeCurrencyCode}`
-      );
-      const data: EstimatedCostDataResponse = await res.json();
-      if (!data?.success) {
-        return toast.error("There is internal server error.");
-      }
-      setEstimatedCostDataSinglePerson(data);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      toast.error("There is something wrong!");
-    }
-  };
-
-  useEffect(() => {
-    loadEstimatedCostData();
-  }, [homeCurrencyCode, members, children, isRent]);
-
-  useEffect(() => {
-    loadEstimatedCostSinglePersonData();
-  }, [homeCurrencyCode]);
+  const { data: estimatedCostDataSinglePerson } = useGetEstimatedCostQuery(
+    {
+      city: selectedCityName2,
+      members: 1,
+      children: 0,
+      isRent: false,
+      homeCurrencyCode,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   return (
     <>
-      {estimatedCostData?.data?.error ? (
+      {estimatedCostData?.error ? (
         <p className="text-red-500 p-3 border-[1px] mb-4">
-          {estimatedCostData?.data?.error}
+          {estimatedCostData?.error}
         </p>
       ) : (
         <section className="border-[1px] border-gray-300 dark:border-darkModeBorderColor rounded-lg p-5 mb-5 bg-[#FBFBF8] inline-block dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor">
           <p>
             <span className="font-semibold">Summary</span> of cost of living in{" "}
-            {selectedCityName2}, {selectedCountryName2}:
+            {selectedCityName2}:
           </p>
 
           <ul className="list-disc ml-8 text-[14px] space-y-[0.5rem] mt-3">
@@ -112,7 +82,7 @@ export default function EstimatedCost() {
               <span className="ml-1 font-semibold">
                 {homeCurrencyCode && getCurrencySymbol(homeCurrencyCode)}{" "}
                 {numberWithCommas(
-                  Number(estimatedCostData?.data?.overall_estimate?.toFixed(2))
+                  Number(estimatedCostData?.overall_estimate?.toFixed(2))
                 )}
               </span>{" "}
               {isRent == "true" ? "with" : "without"} rent
@@ -129,9 +99,7 @@ export default function EstimatedCost() {
                 {homeCurrencyCode && getCurrencySymbol(homeCurrencyCode)}{" "}
                 {numberWithCommas(
                   Number(
-                    estimatedCostDataSinglePerson?.data?.overall_estimate?.toFixed(
-                      2
-                    )
+                    estimatedCostDataSinglePerson?.overall_estimate?.toFixed(2)
                   )
                 )}
               </span>
