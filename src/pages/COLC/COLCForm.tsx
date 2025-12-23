@@ -113,7 +113,6 @@ export default function COLCForm() {
           <Select
             size="large"
             className="w-full !h-[47px] border-[1px] !border-[#838383] rounded-[8px]"
-            value={fromCity}
             onSearch={(value) => setFromCity(value)}
             onChange={(value) => setFromCity(value || "")}
             options={
