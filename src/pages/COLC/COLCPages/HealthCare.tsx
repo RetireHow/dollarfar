@@ -41,7 +41,6 @@ export interface TInsuranceType {
 }
 
 function HealthCareDynamicComponent({
-  country,
   city,
 }: {
   country: string;
@@ -55,7 +54,7 @@ function HealthCareDynamicComponent({
     try {
       setIsLoading(true);
       const res = await fetch(
-        `${baseUrl}/numbeo/city-healthcare?country=${country}&city=${city}`
+        `${baseUrl}/numbeo/city-healthcare?&city=${city}`
       );
       const data: THealthCareDataResponse = await res.json();
       if (!data?.success) {

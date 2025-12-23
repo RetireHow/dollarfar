@@ -2,9 +2,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useAppDispatch } from "../../redux/hooks";
-import data from "../../data/apiCities.json";
-
-import { ConfigProvider, theme as antdTheme } from "antd";
 
 type TCityIndicesResponse = {
   message: string;
@@ -43,13 +40,6 @@ type TCityIndicesData = {
   city_id: number;
 };
 
-type TOption = {
-  label: string;
-  value: string;
-  city: string;
-  country: string;
-};
-
 import {
   setCity1Indices,
   setCity2Indices,
@@ -57,8 +47,6 @@ import {
   setHomeCurrencyCode,
   setSelectedCityName1,
   setSelectedCityName2,
-  setSelectedCountryName1,
-  setSelectedCountryName2,
   TCostOfLivingData,
 } from "../../redux/features/COLC/COLCSlice";
 
@@ -68,58 +56,58 @@ import { Select } from "antd";
 import CustomTooltip from "../../components/UI/CustomTooltip";
 import { baseUrl } from "../../api/apiConstant";
 import { transformCityPriceData } from "../../utils/transformCityPricesData";
+import useCitySearch from "../../hooks/useCitySearch";
 
 export default function COLCForm() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-  const isDarkMode = document.documentElement.classList.contains("dark");
 
   const dispatch = useAppDispatch();
+  const [fromCity, setFromCity] = useState("");
+  const [toCity, setToCity] = useState("");
 
-  // State for the input field and API response
-  const [cityName1, setCityName1] = useState("");
-  const [cityName2, setCityName2] = useState("");
+  const [debouncedCity1, setDebouncedCity1] = useState("");
+  const [debouncedCity2, setDebouncedCity2] = useState("");
 
-  const [countryName1, setCountryName1] = useState("");
-  const [countryName2, setCountryName2] = useState("");
-
-  // const [storedIncome, setStoredIncome] = useState("");
   const [apiDataLoading, setApiDataLoading] = useState(false);
-  const [selectOptions, setSelectOptions] = useState<TOption[]>([]);
-  // const [showError, setShowError] = useState(false);
-  const [isCitiesLoading, setIsCitiesLoading] = useState(false);
 
+  // Debounce "from" city
   useEffect(() => {
-    setIsCitiesLoading(true);
-    const options = data?.cities?.map(
-      (item: { city: string; country: string }) => {
-        return {
-          label: `${item?.city}, ${item?.country}`,
-          value: `${item?.city}, ${item?.country}`,
-          city: item?.city,
-          country: item?.country,
-        };
-      }
-    );
-    setSelectOptions(options);
-    setIsCitiesLoading(false);
-  }, []);
+    const timer = setTimeout(() => {
+      setDebouncedCity1(fromCity);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [fromCity]);
+
+  // Debounce "to" city
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedCity2(toCity);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [toCity]);
+
+  const { cities: fromCities, loading: fromCityLoading } =
+    useCitySearch(debouncedCity1);
+
+  const { cities: toCities, loading: toCityLoading } =
+    useCitySearch(debouncedCity2);
 
   const handleCompare = async (e: FormEvent) => {
     e.preventDefault();
-    if (cityName1 && cityName2 && countryName1 && countryName2) {
+    if (fromCity && toCity) {
       try {
         setApiDataLoading(true);
         // Transform API response
         const res1 = await fetch(
-          `${baseUrl}/numbeo/city-prices?country=${countryName1}&city=${cityName1}&currency=null`
+          `${baseUrl}/numbeo/city-prices?city=${fromCity}&currency=null`
         );
         const city1DefaultCurrencyData = await res1.json();
 
         if (city1DefaultCurrencyData?.data?.error) {
           toast.error(
-            `${city1DefaultCurrencyData?.data?.error} Please try with anyother city except ${cityName1}, ${countryName1}.`
+            `${city1DefaultCurrencyData?.data?.error} Please try with anyother city except ${fromCity}.`
           );
           return setApiDataLoading(false);
         }
@@ -140,13 +128,13 @@ export default function COLCForm() {
         }
 
         const res2 = await fetch(
-          `${baseUrl}/numbeo/city-prices?country=${countryName2}&city=${cityName2}&currency=null`
+          `${baseUrl}/numbeo/city-prices?city=${toCity}&currency=null`
         );
         const city2DefaultCurrencyData = await res2.json();
 
         if (city2DefaultCurrencyData?.data?.error) {
           toast.error(
-            `${city2DefaultCurrencyData?.data?.error} Please try with anyother city except ${cityName2}, ${countryName2}.`
+            `${city2DefaultCurrencyData?.data?.error} Please try with anyother city except ${toCity}.`
           );
           return setApiDataLoading(false);
         }
@@ -168,13 +156,13 @@ export default function COLCForm() {
 
         //Other Currency Data
         const res3 = await fetch(
-          `${baseUrl}/numbeo/city-prices?country=${countryName1}&city=${cityName1}&currency=${city2DefaultCurrencyData?.data?.currency}`
+          `${baseUrl}/numbeo/city-prices?city=${fromCity}&currency=${city2DefaultCurrencyData?.data?.currency}`
         );
         const city1OtherCurrencyData = await res3.json();
 
         if (city1OtherCurrencyData?.data?.error) {
           toast.error(
-            `${city1OtherCurrencyData?.data?.error} Please try with anyother city except ${cityName2}, ${countryName2}.`
+            `${city1OtherCurrencyData?.data?.error} Please try with anyother city except ${toCity}.`
           );
           return setApiDataLoading(false);
         }
@@ -195,13 +183,13 @@ export default function COLCForm() {
         }
 
         const res4 = await fetch(
-          `${baseUrl}/numbeo/city-prices?country=${countryName2}&city=${cityName2}&currency=${city1DefaultCurrencyData?.data?.currency}`
+          `${baseUrl}/numbeo/city-prices?city=${toCity}&currency=${city1DefaultCurrencyData?.data?.currency}`
         );
         const city2OtherCurrencyData = await res4.json();
 
         if (city2OtherCurrencyData?.data?.error) {
           toast.error(
-            `${city2OtherCurrencyData?.data?.error} Please try with anyother city except ${cityName2}, ${countryName2}.`
+            `${city2OtherCurrencyData?.data?.error} Please try with anyother city except ${toCity}.`
           );
           return setApiDataLoading(false);
         }
@@ -230,13 +218,13 @@ export default function COLCForm() {
 
         // City Indices API
         const cityIndicesRes1 = await fetch(
-          `${baseUrl}/numbeo/city-indices?city=${cityName1}&country=${countryName1}`
+          `${baseUrl}/numbeo/city-indices?city=${fromCity}`
         );
         const cityIndicesData1: TCityIndicesResponse =
           await cityIndicesRes1.json();
 
         const cityIndicesRes2 = await fetch(
-          `${baseUrl}/numbeo/city-indices?city=${cityName2}&country=${countryName2}`
+          `${baseUrl}/numbeo/city-indices?city=${toCity}`
         );
         const cityIndicesData2: TCityIndicesResponse =
           await cityIndicesRes2.json();
@@ -254,19 +242,14 @@ export default function COLCForm() {
           return toast.error(cityIndicesData1?.message);
         }
 
-        dispatch(setSelectedCityName1(cityName1));
-        dispatch(setSelectedCityName2(cityName2));
-        dispatch(setSelectedCountryName1(countryName1));
-        dispatch(setSelectedCountryName2(countryName2));
+        dispatch(setSelectedCityName1(fromCity));
+        dispatch(setSelectedCityName2(toCity));
         dispatch(
           setCOLCModifiedCostData(costOfLivingData as TCostOfLivingData)
         );
         dispatch(setHomeCurrencyCode(city1DefaultCurrencyData?.data?.currency));
-        //Store cityName2 & countryName2 into localStorage
-        localStorage.setItem(
-          "destinationPlace",
-          `${cityName2},${countryName2}`
-        );
+        //Store toCity & countryName2 into localStorage
+        localStorage.setItem("destinationPlace", `${toCity}`);
         setApiDataLoading(false);
       } catch (error: any) {
         setApiDataLoading(false);
@@ -278,126 +261,101 @@ export default function COLCForm() {
   };
 
   return (
-    <ConfigProvider
-      theme={{
-        algorithm: isDarkMode
-          ? antdTheme.darkAlgorithm
-          : antdTheme.defaultAlgorithm,
-      }}
-    >
-      <form className="grid lg:grid-cols-2 grid-cols-1 gap-6 mb-[3rem] dark:text-darkModeHeadingTextColor">
-        <div className="md:text-[1rem] text-[14px]">
-          <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
-            <p className="dark:text-darkModeHeadingTextColor">
-              City you are moving from
-            </p>
-            <CustomTooltip title="Select the city you’re currently living in to start the comparison." />
-          </div>
-          <div className="relative">
-            <Select
-              size="large"
-              // style={{ width: 130, height: 45, border: "1px solid gray" }}
-              className="w-full h-[50px] border-[1px] !border-[#838383] rounded-[8px]"
-              onChange={(_value, option) => {
-                if (!Array.isArray(option)) {
-                  setCityName1(option.city);
-                  setCountryName1(option.country);
-                }
-              }}
-              options={selectOptions}
-              suffixIcon={
-                <Icon
-                  className="text-[1.5rem] text-gray-600"
-                  icon="iconamoon:arrow-down-2"
-                />
-              }
-              placeholder="Type and Pick City"
-              showSearch={true}
-              allowClear
-              loading={isCitiesLoading}
-              disabled={isCitiesLoading}
-            ></Select>
-            {isCitiesLoading && (
-              <Icon
-                className="absolute left-3 top-2"
-                icon="line-md:loading-loop"
-                width="24"
-                height="24"
-              />
-            )}
-          </div>
+    <form className="grid lg:grid-cols-2 grid-cols-1 gap-6 mb-[3rem] dark:text-darkModeHeadingTextColor">
+      <div className="md:text-[1rem] text-[14px]">
+        <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
+          <p className="dark:text-darkModeHeadingTextColor">
+            City you are moving from
+          </p>
+          <CustomTooltip title="Select the city you’re currently living in to start the comparison." />
         </div>
-
-        <div className="md:text-[1rem] text-[14px]">
-          <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
-            <p className="dark:text-darkModeHeadingTextColor">
-              City you are moving to or curious to know about
-            </p>
-            <CustomTooltip title="Select the city you’re moving to or curious to know about for a detailed cost of living comparison." />
-          </div>
-          <div className="relative">
-            <Select
-              size="large"
-              className="w-full h-[50px] border-[1px] !border-[#838383] rounded-[8px]"
-              onChange={(_value, option) => {
-                if (!Array.isArray(option)) {
-                  setCityName2(option.city);
-                  setCountryName2(option.country);
-                }
-              }}
-              options={selectOptions}
-              suffixIcon={
-                <Icon
-                  className="text-[1.5rem] text-gray-600"
-                  icon="iconamoon:arrow-down-2"
-                />
-              }
-              placeholder="Type and Pick City"
-              showSearch={true}
-              allowClear
-              loading={isCitiesLoading}
-              disabled={isCitiesLoading}
-            ></Select>
-            {isCitiesLoading && (
-              <Icon
-                className="absolute left-3 top-2"
-                icon="line-md:loading-loop"
-                width="24"
-                height="24"
-              />
-            )}
-          </div>
+        <div className="relative">
+          <Select
+            size="large"
+            className="w-full !h-[47px] border-[1px] !border-[#838383] rounded-[8px]"
+            onSearch={(value) => setFromCity(value)}
+            onChange={(value) => setFromCity(value || "")}
+            options={
+              fromCities?.map((c) => ({
+                label: c.label,
+                value: c.label,
+              })) || []
+            }
+            placeholder="Type and Pick City"
+            showSearch={true}
+            allowClear
+            loading={fromCityLoading}
+          ></Select>
+          {fromCityLoading && (
+            <Icon
+              className="absolute left-3 top-2"
+              icon="line-md:loading-loop"
+              width="24"
+              height="24"
+            />
+          )}
         </div>
+      </div>
 
-        {apiDataLoading ? (
-          <div className="flex justify-end lg:col-span-3">
-            <button
-              disabled
-              className="text-white cursor-not-allowed px-[0.8rem] h-[50px] rounded-[10px] w-full bg-gray-300 dark:bg-darkModeBgColor flex justify-center items-center"
-            >
-              <Icon
-                icon="eos-icons:three-dots-loading"
-                width="70"
-                height="70"
-              />
-            </button>
-          </div>
-        ) : (
-          <div className="flex justify-end lg:col-span-3">
-            <button
-              onClick={handleCompare}
-              disabled={cityName1 && cityName2 ? false : true}
-              className={`text-white p-[0.8rem] border-[1px] dark:border-gray-700 rounded-[10px] w-full ${
-                cityName1 && cityName2
-                  ? "bg-black"
-                  : "bg-gray-300 dark:bg-darkModeBgColor dark:text-gray-500"
-              }`}
-            >
-              Compare
-            </button>
-          </div>
-        )}
-      </form>
-    </ConfigProvider>
+      <div className="md:text-[1rem] text-[14px]">
+        <div className="mb-[0.5rem] font-semibold flex items-center gap-2">
+          <p className="dark:text-darkModeHeadingTextColor">
+            City you are moving to or curious to know about
+          </p>
+          <CustomTooltip title="Select the city you’re moving to or curious to know about for a detailed cost of living comparison." />
+        </div>
+        <div className="relative">
+          <Select
+            size="large"
+            className="w-full !h-[47px] border-[1px] !border-[#838383] rounded-[8px]"
+            loading={toCityLoading}
+            onSearch={(value) => setToCity(value)}
+            onChange={(value) => setToCity(value || "")}
+            options={
+              toCities?.map((c) => ({
+                label: c.label,
+                value: c.label,
+              })) || []
+            }
+            placeholder="Type and Pick City"
+            showSearch={true}
+            allowClear
+          ></Select>
+          {toCityLoading && (
+            <Icon
+              className="absolute left-3 top-2"
+              icon="line-md:loading-loop"
+              width="24"
+              height="24"
+            />
+          )}
+        </div>
+      </div>
+
+      {apiDataLoading ? (
+        <div className="flex justify-end lg:col-span-3">
+          <button
+            disabled
+            className="text-white cursor-not-allowed px-[0.8rem] h-[50px] rounded-[10px] w-full bg-gray-300 dark:bg-darkModeBgColor flex justify-center items-center"
+          >
+            <Icon icon="eos-icons:three-dots-loading" width="70" height="70" />
+          </button>
+        </div>
+      ) : (
+        <div className="flex justify-end lg:col-span-3">
+          <button
+            onClick={handleCompare}
+            disabled={fromCity && toCity ? false : true}
+            className={`text-white p-[0.8rem] border-[1px] dark:border-gray-700 rounded-[10px] w-full ${
+              fromCity && toCity
+                ? "bg-black"
+                : "bg-gray-300 dark:bg-darkModeBgColor dark:text-gray-500"
+            }`}
+          >
+            Compare
+          </button>
+        </div>
+      )}
+    </form>
   );
 }

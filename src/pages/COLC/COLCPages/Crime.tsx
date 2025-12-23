@@ -41,7 +41,6 @@ export interface TCrimeData {
 }
 
 function CrimeDynamicComponent({
-  country,
   city,
 }: {
   country: string;
@@ -56,7 +55,7 @@ function CrimeDynamicComponent({
     try {
       setIsLoading(true);
       const res = await fetch(
-        `${baseUrl}/numbeo/city-crime?country=${country}&city=${city}`
+        `${baseUrl}/numbeo/city-crime?city=${city}`
       );
       const data: TCrimeDataResponse = await res.json();
       if (!data?.success) {
@@ -108,7 +107,7 @@ function CrimeDynamicComponent({
       <div className="border-[1px] border-gray-300 p-3 mb-[3rem] mt-[1rem] rounded-lg bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor">
         <div className="font-bold mb-2 text-[1.3rem] flex justify-between items-center">
           <p>
-            {country}, {city}
+            {city}
           </p>
           <Link to="/cost-of-living-calculator/crime/crime-explanation">
             <p title="About these indices">

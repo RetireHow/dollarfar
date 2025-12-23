@@ -100,7 +100,7 @@ function QualityLifeDynamicComponent({
     try {
       setIsLoading(true);
       const res = await fetch(
-        `${baseUrl}/numbeo/city-indices?country=${country}&city=${city}`
+        `${baseUrl}/numbeo/city-indices?city=${city}`
       );
       const data: TCityIndecesResponse = await res.json();
       if (!data?.success) {

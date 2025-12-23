@@ -46,7 +46,6 @@ export interface Data {
 }
 
 function PollutionDynamicComponent({
-  country,
   city,
 }: {
   country: string;
@@ -60,7 +59,7 @@ function PollutionDynamicComponent({
     try {
       setIsLoading(true);
       const res = await fetch(
-        `${baseUrl}/numbeo/city-pollution?country=${country}&city=${city}`
+        `${baseUrl}/numbeo/city-pollution?city=${city}`
       );
       const data: PollutionResponse = await res.json();
       if (!data?.success) {

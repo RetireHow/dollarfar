@@ -21,8 +21,6 @@ export default function COLC() {
   const {
     selectedCityName1,
     selectedCityName2,
-    selectedCountryName1,
-    selectedCountryName2,
     COLCModifiedCostData,
   } = useAppSelector((state) => state.COLCalculator);
 
@@ -51,21 +49,17 @@ export default function COLC() {
             <section className="flex md:flex-row flex-col md:items-center gap-5 mt-5">
               <CityMovingCard
                 selectedCity={selectedCityName1}
-                selectedCountry={selectedCountryName1}
               />
               <CityMovingCard
                 selectedCity={selectedCityName2}
-                selectedCountry={selectedCountryName2}
               />
             </section>
             <section className="flex md:flex-row flex-col gap-5 mt-5">
               <CloseCityList
                 selectedCity={selectedCityName1}
-                selectedCountry={selectedCountryName1}
               />
               <CloseCityList
                 selectedCity={selectedCityName2}
-                selectedCountry={selectedCountryName2}
               />
             </section>
           </div>

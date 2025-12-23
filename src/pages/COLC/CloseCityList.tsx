@@ -134,21 +134,20 @@ export interface City {
 
 export default function CloseCityList({
   selectedCity,
-  selectedCountry,
 }: {
   selectedCity: string;
-  selectedCountry: string;
 }) {
   const [closeCities, setCloseCities] = useState<CloseCityDataResponse>(
     {} as CloseCityDataResponse
   );
+
   const [selectedLatitude, setSelectedLatitude] = useState<number>(0);
   const [selectedLongitude, setSelectedLongitude] = useState<number>(0);
 
   const loadCloseCitiesData = async () => {
     try {
       const res = await fetch(
-        `${baseUrl}/numbeo/close-cities-with-price?country=${selectedCountry}&city=${selectedCity}`
+        `${baseUrl}/numbeo/close-cities-with-price?city=${selectedCity}`
       );
       const data: CloseCityDataResponse = await res.json();
       if (!data?.success) {
@@ -181,12 +180,12 @@ export default function CloseCityList({
       </div>
       <table className="ml-7 space-y-[0.3rem] mt-2 text-[14px] dark:text-darkModeNormalTextColor">
         {closeCities?.data?.cities?.slice(1).map((item) => {
-          const { city_id, country, short_name, latitude, longitude } =
+          const { city_id, country, short_name, name, latitude, longitude } =
             item || {};
           return (
             <li key={city_id} className="flex items-center gap-5">
               <Link
-                to={`/cost-of-living-calculator/close-city-living-cost/${country}-${short_name}`}
+                to={`/cost-of-living-calculator/close-city-living-cost/${name},${country}`}
                 className="hover:underline"
               >
                 <p>

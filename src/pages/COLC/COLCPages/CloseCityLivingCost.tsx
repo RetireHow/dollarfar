@@ -240,8 +240,6 @@ export default function CloseCityLivingCost() {
   }, []);
 
   const { countryCity } = useParams();
-  const country = countryCity?.split("-")[0];
-  const city = countryCity?.split("-")[1];
 
   const [cityPriceData, setCityPriceData] = useState<TransformedData>(
     {} as TransformedData
@@ -260,7 +258,7 @@ export default function CloseCityLivingCost() {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `${baseUrl}/numbeo/city-prices?country=${country}&city=${city}&currency=${selectedCurrency}`
+        `${baseUrl}/numbeo/city-prices?city=${countryCity}&currency=${selectedCurrency}`
       );
       const data: CityPriceDataResponse = await res.json();
       if (!data?.success) {
@@ -279,7 +277,7 @@ export default function CloseCityLivingCost() {
   const loadEstimatedCostData = async () => {
     try {
       const res = await fetch(
-        `${baseUrl}/numbeo/city-cost-esitmator?country=${country}&city=${city}&members=4&children=0&isRent=false&currency=${selectedCurrency}`
+        `${baseUrl}/numbeo/city-cost-esitmator?city=${countryCity}&members=4&children=0&isRent=false&currency=${selectedCurrency}`
       );
       const data: EstimatedCostDataResponse = await res.json();
       if (!data?.success) {
@@ -294,7 +292,7 @@ export default function CloseCityLivingCost() {
   const loadEstimatedCostSinglePersonData = async () => {
     try {
       const res = await fetch(
-        `${baseUrl}/numbeo/city-cost-esitmator?country=${country}&city=${city}&members=1&children=0&isRent=false&currency=${selectedCurrency}`
+        `${baseUrl}/numbeo/city-cost-esitmator?city=${countryCity}&members=1&children=0&isRent=false&currency=${selectedCurrency}`
       );
       const data: EstimatedCostDataResponse = await res.json();
       if (!data?.success) {
@@ -369,7 +367,7 @@ export default function CloseCityLivingCost() {
                 <p>
                   <span className="font-semibold">Summary</span> of cost of
                   living in
-                  {city}, {country}:
+                  {countryCity}:
                 </p>
 
                 <ul className="list-disc ml-8">

@@ -160,7 +160,6 @@ type PropertyPriceOutput = {
 };
 
 function PropertyPriceDynamicComponent({
-  country,
   city,
 }: {
   country: string;
@@ -186,7 +185,7 @@ function PropertyPriceDynamicComponent({
   const loadCityPriceData = async () => {
     try {
       const res = await fetch(
-        `${baseUrl}/numbeo/city-prices?country=${country}&city=${city}&currency=${selectedCurrency}`
+        `${baseUrl}/numbeo/city-prices?city=${city}&currency=${selectedCurrency}`
       );
       const data: CityPriceDataResponse = await res.json();
       if (!data?.success) {

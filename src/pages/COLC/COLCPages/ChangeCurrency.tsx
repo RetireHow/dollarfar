@@ -35,8 +35,6 @@ export default function ChangeCurrency() {
   const {
     selectedCityName1: cityName1,
     selectedCityName2: cityName2,
-    selectedCountryName1: countryName1,
-    selectedCountryName2: countryName2,
     homeCurrencyCode,
   } = useAppSelector((state) => state.COLCalculator);
 
@@ -50,15 +48,13 @@ export default function ChangeCurrency() {
     if (
       cityName1 &&
       cityName2 &&
-      countryName1 &&
-      countryName2 &&
       selectedCurrency
     ) {
       try {
         setApiDataLoading(true);
         // Transform API response
         const res1 = await fetch(
-          `${baseUrl}/numbeo/city-prices?country=${countryName1}&city=${cityName1}&currency=${selectedCurrency}`
+          `${baseUrl}/numbeo/city-prices?city=${cityName1}&currency=${selectedCurrency}`
         );
         const city1DefaultCurrencyData = await res1.json();
         if (
@@ -80,7 +76,7 @@ export default function ChangeCurrency() {
         }
 
         const res2 = await fetch(
-          `${baseUrl}/numbeo/city-prices?country=${countryName2}&city=${cityName2}&currency=null`
+          `${baseUrl}/numbeo/city-prices?city=${cityName2}&currency=null`
         );
         const city2DefaultCurrencyData = await res2.json();
         if (
@@ -103,7 +99,7 @@ export default function ChangeCurrency() {
 
         //Other Currency Data
         const res3 = await fetch(
-          `${baseUrl}/numbeo/city-prices?country=${countryName1}&city=${cityName1}&currency=${city2DefaultCurrencyData?.data?.currency}`
+          `${baseUrl}/numbeo/city-prices?city=${cityName1}&currency=${city2DefaultCurrencyData?.data?.currency}`
         );
         const city1OtherCurrencyData = await res3.json();
         if (
@@ -125,7 +121,7 @@ export default function ChangeCurrency() {
         }
 
         const res4 = await fetch(
-          `${baseUrl}/numbeo/city-prices?country=${countryName2}&city=${cityName2}&currency=${city1DefaultCurrencyData?.data?.currency}`
+          `${baseUrl}/numbeo/city-prices?city=${cityName2}&currency=${city1DefaultCurrencyData?.data?.currency}`
         );
         const city2OtherCurrencyData = await res4.json();
         if (

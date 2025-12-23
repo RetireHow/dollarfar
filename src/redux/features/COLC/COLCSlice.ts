@@ -73,6 +73,10 @@ type TIndices = {
 
 // Define the state type
 interface COLCState {
+  //Newly Added
+  selectedFromCity: string;
+  selectedToCity: string;
+
   selectedCityName1: string;
   selectedCityName2: string;
 
@@ -95,6 +99,8 @@ interface COLCState {
 // Initial state
 const initialState: COLCState = {
   income: 0,
+  selectedFromCity: "",
+  selectedToCity: "",
   selectedCityName1: "",
   selectedCityName2: "",
   selectedCountryName1: "",
@@ -122,6 +128,14 @@ const COLCSlice = createSlice({
 
     setSelectedCityName2(state, action: PayloadAction<string>) {
       state.selectedCityName2 = action.payload;
+    },
+
+    setSelectedFromCity(state, action: PayloadAction<string>) {
+      state.selectedFromCity = action.payload;
+    },
+
+    setSelectedToCity(state, action: PayloadAction<string>) {
+      state.selectedToCity = action.payload;
     },
 
     setSelectedCountryName1(state, action: PayloadAction<string>) {
@@ -161,6 +175,8 @@ const COLCSlice = createSlice({
 export const {
   setSelectedCityName1,
   setSelectedCityName2,
+  setSelectedFromCity,
+  setSelectedToCity,
   setSelectedCountryName1,
   setSelectedCountryName2,
   setIncome,
@@ -170,7 +186,7 @@ export const {
   setHomeCurrencyCode,
   setMembers,
   setChildren,
-  setIsRent
+  setIsRent,
 } = COLCSlice.actions;
 
 export default COLCSlice.reducer;

@@ -78,9 +78,13 @@ export default function CustomCollapese() {
                 )}
                 <span>{category}</span>
               </p>
-              <div>{selectedCityName1}</div>
+              <div>
+                {selectedCityName1?.split(",").slice(0, -1).join(",").trim()}
+              </div>
 
-              <div>{selectedCityName2}</div>
+              <div>
+                {selectedCityName2?.split(",").slice(0, -1).join(",").trim()}
+              </div>
               <div>Difference</div>
             </div>
 

@@ -3,10 +3,8 @@ import { Link } from "react-router-dom";
 
 export default function CityMovingCard({
   selectedCity,
-  selectedCountry,
 }: {
   selectedCity: string;
-  selectedCountry: string;
 }) {
   return (
     <div className="border-[1px] bg-[#FBFBF8] dark:bg-darkModeBgColor border-gray-300 dark:border-darkModeBorderColor rounded-md p-3 flex-1">
@@ -23,7 +21,7 @@ export default function CityMovingCard({
         <li>
           <Link
             className="hover:underline"
-            to={`/cost-of-living-calculator/quality-life/${selectedCountry}-${selectedCity}`}
+            to={`/cost-of-living-calculator/quality-life/${selectedCity}`}
           >
             Quality of Life in {selectedCity}
           </Link>
@@ -32,7 +30,7 @@ export default function CityMovingCard({
         <li>
           <Link
             className="hover:underline"
-            to={`/cost-of-living-calculator/crime/${selectedCountry}-${selectedCity}`}
+            to={`/cost-of-living-calculator/crime/${selectedCity}`}
           >
             Crime in {selectedCity}
           </Link>
@@ -41,7 +39,7 @@ export default function CityMovingCard({
         <li>
           <Link
             className="hover:underline"
-            to={`/cost-of-living-calculator/health-care/${selectedCountry}-${selectedCity}`}
+            to={`/cost-of-living-calculator/health-care/${selectedCity}`}
           >
             Health Care in {selectedCity}
           </Link>
@@ -50,7 +48,7 @@ export default function CityMovingCard({
         <li>
           <Link
             className="hover:underline"
-            to={`/cost-of-living-calculator/pollution/${selectedCountry}-${selectedCity}`}
+            to={`/cost-of-living-calculator/pollution/${selectedCity}`}
           >
             Pollution in {selectedCity}
           </Link>
@@ -59,7 +57,7 @@ export default function CityMovingCard({
         <li>
           <Link
             className="hover:underline"
-            to={`/cost-of-living-calculator/property-prices/${selectedCountry}-${selectedCity}`}
+            to={`/cost-of-living-calculator/property-prices/${selectedCity}`}
           >
             Property Prices in {selectedCity}
           </Link>
@@ -68,7 +66,7 @@ export default function CityMovingCard({
         <li>
           <Link
             className="hover:underline"
-            to={`/cost-of-living-calculator/traffic/${selectedCountry}-${selectedCity}`}
+            to={`/cost-of-living-calculator/traffic/${selectedCity}`}
           >
             Traffic in {selectedCity}
           </Link>

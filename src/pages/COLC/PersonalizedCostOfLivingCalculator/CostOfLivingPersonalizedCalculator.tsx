@@ -302,21 +302,18 @@ const ExportPDFModal = ({
     setIsLoading(true);
     // API Call
     try {
-      const res = await fetch(
-        `${baseUrl}/report-downloaded-users`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            phone,
-            downloadedFileName: "Personalized cost of living calculator",
-          }),
-        }
-      );
+      const res = await fetch(`${baseUrl}/report-downloaded-users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          downloadedFileName: "Personalized cost of living calculator",
+        }),
+      });
 
       if (!res.ok) {
         return toast.error("There is something went wrong!");
@@ -520,11 +517,12 @@ export default function CostOfLivingPersonalizedCalculator() {
   const [selectedBudgetForComparison, setSelectedBudgetForComparison] =
     useState<SavedBudget | null>(null);
 
-  const { selectedCountryName2, selectedCityName2, homeCurrencyCode } =
-    useAppSelector((state) => state.COLCalculator);
+  const { selectedCityName2, homeCurrencyCode } = useAppSelector(
+    (state) => state.COLCalculator
+  );
 
   const [selectedCity, setSelectedCity] = useState<string>(
-    `${selectedCityName2},${selectedCountryName2}`
+    `${selectedCityName2}`
   );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -569,7 +567,7 @@ export default function CostOfLivingPersonalizedCalculator() {
     try {
       // Mock API call - replace with actual fetch
       const response = await fetch(
-        `${baseUrl}/numbeo/city-prices-by-city?city=${city}&currency=${currency}`
+        `${baseUrl}/numbeo/city-prices?city=${city}&currency=${currency}`
       );
       if (!response.ok) {
         return toast.error("There is something went wrong!");
@@ -1029,7 +1027,10 @@ export default function CostOfLivingPersonalizedCalculator() {
                       className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 bg-gray-50 dark:bg-neutral-800 rounded-lg border border-gray-200 transition-all hover:shadow-sm"
                     >
                       <div className="md:col-span-2">
-                        <label htmlFor="item-name" className="block text-sm font-medium text-[#2b6777] dark:text-[#52ab98] mb-1">
+                        <label
+                          htmlFor="item-name"
+                          className="block text-sm font-medium text-[#2b6777] dark:text-[#52ab98] mb-1"
+                        >
                           Item Name
                         </label>
                         <select
@@ -1052,7 +1053,10 @@ export default function CostOfLivingPersonalizedCalculator() {
                       </div>
 
                       <div>
-                        <label htmlFor="price" className="block text-sm font-medium text-[#2b6777] dark:text-[#52ab98] mb-1">
+                        <label
+                          htmlFor="price"
+                          className="block text-sm font-medium text-[#2b6777] dark:text-[#52ab98] mb-1"
+                        >
                           Price
                         </label>
                         <div className="flex items-center h-10 px-3 py-2 bg-white dark:bg-neutral-900 border border-gray-300 rounded-md">
@@ -1062,7 +1066,10 @@ export default function CostOfLivingPersonalizedCalculator() {
                       </div>
 
                       <div>
-                        <label htmlFor="frequency" className="block text-sm font-medium text-[#2b6777] dark:text-[#52ab98] mb-1">
+                        <label
+                          htmlFor="frequency"
+                          className="block text-sm font-medium text-[#2b6777] dark:text-[#52ab98] mb-1"
+                        >
                           Frequency
                         </label>
                         <select
@@ -1085,7 +1092,10 @@ export default function CostOfLivingPersonalizedCalculator() {
                         </select>
                       </div>
                       <div>
-                        <label htmlFor="monthly-cost" className="block text-sm font-medium text-[#2b6777] dark:text-[#52ab98] mb-1">
+                        <label
+                          htmlFor="monthly-cost"
+                          className="block text-sm font-medium text-[#2b6777] dark:text-[#52ab98] mb-1"
+                        >
                           Monthly Cost
                         </label>
                         <div className="flex items-center h-10 px-3 py-2 bg-white dark:bg-neutral-900 border border-gray-300 rounded-md font-medium">

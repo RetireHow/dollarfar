@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
+import { baseUrl } from "../api/apiConstant";
 
 const useCitySearch = (debouncedCityName: string) => {
   const [loading, setLoading] = useState(false);
@@ -13,7 +14,7 @@ const useCitySearch = (debouncedCityName: string) => {
       setLoading(true);
       setError(null);
       const response = await fetch(
-        `https://city-api-iota.vercel.app/cities?cityName=${debouncedCityName.trim()}`
+        `${baseUrl}/numbeo/all-cities?term=${debouncedCityName.trim()}`
       );
       const data = await response.json();
       setCities(data?.data);
