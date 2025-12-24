@@ -12,18 +12,68 @@ const getIndexDiff = (city1Index: number, city2Index: number) => {
   return Number(indexDifference?.toFixed(1));
 };
 
+function CityIndicesSkeleton() {
+  return (
+    <section className="border-[1px] bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor border-gray-300 dark:border-darkModeBorderColor p-3 mb-[1rem] mt-[1rem] rounded-lg inline-block animate-pulse md:w-[70%] w-full">
+      <div className="font-bold mb-2 text-[1rem] flex justify-between items-center">
+        <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-40"></div>
+        <div title="About these indices">
+          <Icon
+            className="text-gray-300 dark:text-gray-700 cursor-pointer"
+            icon="rivet-icons:exclamation-mark-circle-solid"
+            width="20"
+            height="20"
+          />
+        </div>
+      </div>
+      <div className="space-y-[0.8rem] text-[14px]">
+        <div className="flex items-center">
+          <div className="h-3 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+        </div>
+
+        <div className="flex items-center">
+          <div className="h-3 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+        </div>
+
+        <div className="flex items-center">
+          <div className="h-3 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+        </div>
+
+        <div className="flex items-center">
+          <div className="h-3 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+        </div>
+
+        <div className="flex items-center">
+          <div className="h-3 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+        </div>
+
+        <div className="flex items-center">
+          <div className="h-3 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function CityIndices() {
   const { selectedCityName1, selectedCityName2 } = useAppSelector(
     (state) => state.COLCalculator
   );
 
-  const { data: city1Indices } = useGetCityIndicesQuery(selectedCityName1, {
-    skip: !selectedCityName1,
-  });
+  const { data: city1Indices, isLoading: city1IndicesLoading } =
+    useGetCityIndicesQuery(selectedCityName1, {
+      skip: !selectedCityName1,
+    });
 
-  const { data: city2Indices } = useGetCityIndicesQuery(selectedCityName2, {
-    skip: !selectedCityName2,
-  });
+  const { data: city2Indices, isLoading: city2IndicesLoading } =
+    useGetCityIndicesQuery(selectedCityName2, {
+      skip: !selectedCityName2,
+    });
+
+  // Decide what to render
+  if (city1IndicesLoading || city2IndicesLoading) {
+    return <CityIndicesSkeleton />;
+  }
 
   return (
     <section className="border-[1px] bg-[#FBFBF8] dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor border-gray-300 dark:border-darkModeBorderColor p-3 mb-[1rem] mt-[1rem] rounded-lg inline-block">

@@ -27,11 +27,37 @@ export interface EstimatedCostItem {
   category: string;
 }
 
+function EstimatedCostSkeleton() {
+  return (
+    <>
+      <section className="border-[1px] border-gray-300 dark:border-darkModeBorderColor rounded-lg p-5 mb-5 bg-[#FBFBF8] inline-block dark:bg-darkModeBgColor dark:text-darkModeNormalTextColor animate-pulse md:w-[70%] w-full">
+        <div className="mb-4">
+          <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
+        </div>
+
+        <ul className="list-disc ml-8 text-[14px] space-y-[0.5rem] mt-3">
+          <li className="flex flex-col gap-2">
+            <div className="h-3 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+            <div className="h-3 bg-gray-300 dark:bg-gray-700 rounded w-4/5"></div>
+          </li>
+          <li className="flex flex-col gap-2">
+            <div className="h-3 bg-gray-300 dark:bg-gray-700 rounded w-full"></div>
+            <div className="h-3 bg-gray-300 dark:bg-gray-700 rounded w-3/4"></div>
+          </li>
+        </ul>
+      </section>
+    </>
+  );
+}
+
 export default function EstimatedCost() {
   const { selectedCityName2, homeCurrencyCode, members, children, isRent } =
     useAppSelector((state) => state.COLCalculator);
 
-  const { data: estimatedCostData } = useGetEstimatedCostQuery(
+  const {
+    data: estimatedCostData,
+    isLoading: estimatedCostLoadingMultiplePerson,
+  } = useGetEstimatedCostQuery(
     {
       city: selectedCityName2,
       members,
@@ -42,7 +68,10 @@ export default function EstimatedCost() {
     { refetchOnMountOrArgChange: true }
   );
 
-  const { data: estimatedCostDataSinglePerson } = useGetEstimatedCostQuery(
+  const {
+    data: estimatedCostDataSinglePerson,
+    isLoading: estimatedCostLoadingSinglePerson,
+  } = useGetEstimatedCostQuery(
     {
       city: selectedCityName2,
       members: 1,
@@ -52,6 +81,10 @@ export default function EstimatedCost() {
     },
     { refetchOnMountOrArgChange: true }
   );
+
+  if (estimatedCostLoadingMultiplePerson || estimatedCostLoadingSinglePerson) {
+    return <EstimatedCostSkeleton />;
+  }
 
   return (
     <>
