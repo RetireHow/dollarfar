@@ -74,9 +74,6 @@ export default function COLCForm() {
     { refetchOnMountOrArgChange: true, skip: res1Loading }
   );
 
-  const apiDataLoading =
-    res1Loading || res2Loading || res3Loading || res4Loading;
-
   const handleCompare = async (e: FormEvent) => {
     e.preventDefault();
     if (!fromCity || !toCity) {
@@ -95,6 +92,7 @@ export default function COLCForm() {
       dispatch(setHomeCurrencyCode(rtkRes1?.data?.currency));
       //Store toCity & countryName2 into localStorage
       localStorage.setItem("destinationPlace", `${toCity}`);
+      window.scrollTo({ top: 540, behavior: "smooth" });
     } catch (error: any) {
       toast.error("There was an error occured.", error?.message);
     }
@@ -172,30 +170,19 @@ export default function COLCForm() {
         </div>
       </div>
 
-      {apiDataLoading ? (
-        <div className="flex justify-end lg:col-span-3">
-          <button
-            disabled
-            className="text-white cursor-not-allowed px-[0.8rem] h-[50px] rounded-[10px] w-full bg-gray-300 dark:bg-darkModeBgColor flex justify-center items-center"
-          >
-            <Icon icon="eos-icons:three-dots-loading" width="70" height="70" />
-          </button>
-        </div>
-      ) : (
-        <div className="flex justify-end lg:col-span-3">
-          <button
-            onClick={handleCompare}
-            disabled={fromCity && toCity ? false : true}
-            className={`text-white p-[0.8rem] border-[1px] dark:border-gray-700 rounded-[10px] w-full ${
-              fromCity && toCity
-                ? "bg-black"
-                : "bg-gray-300 dark:bg-darkModeBgColor dark:text-gray-500"
-            }`}
-          >
-            Compare
-          </button>
-        </div>
-      )}
+      <div className="flex justify-end lg:col-span-3">
+        <button
+          onClick={handleCompare}
+          disabled={fromCity && toCity ? false : true}
+          className={`text-white p-[0.8rem] border-[1px] dark:border-gray-700 rounded-[10px] w-full ${
+            fromCity && toCity
+              ? "bg-black"
+              : "bg-gray-300 dark:bg-darkModeBgColor dark:text-gray-500"
+          }`}
+        >
+          Compare
+        </button>
+      </div>
     </form>
   );
 }
