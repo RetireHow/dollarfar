@@ -17,7 +17,7 @@ import { Select } from "antd";
 import CustomTooltip from "../../components/UI/CustomTooltip";
 import { transformCityPriceData } from "../../utils/transformCityPricesData";
 import useCitySearch from "../../hooks/useCitySearch";
-import { useGetCityPricesQuery } from "../../redux/features/APIEndpoints/numbioApi/numbioApi";
+import { useLazyGetCityPricesQuery } from "../../redux/features/APIEndpoints/numbioApi/numbioApi";
 
 export default function COLCForm() {
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function COLCForm() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedCity1(fromCity);
-    }, 400);
+    }, 300);
     return () => clearTimeout(timer);
   }, [fromCity]);
 
@@ -43,7 +43,7 @@ export default function COLCForm() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedCity2(toCity);
-    }, 400);
+    }, 300);
     return () => clearTimeout(timer);
   }, [toCity]);
 
@@ -54,47 +54,62 @@ export default function COLCForm() {
     useCitySearch(debouncedCity2);
 
   // City Prices data
-  const { data: rtkRes1, isLoading: res1Loading } = useGetCityPricesQuery(
-    { city: fromCity, currency: null },
-    { refetchOnMountOrArgChange: true, skip: !fromCity }
-  );
-
-  const { data: rtkRes2, isLoading: res2Loading } = useGetCityPricesQuery(
-    { city: toCity, currency: null },
-    { refetchOnMountOrArgChange: true, skip: !toCity }
-  );
-
-  const { data: rtkRes3 } = useGetCityPricesQuery(
-    { city: fromCity, currency: rtkRes2?.data?.currency },
-    { refetchOnMountOrArgChange: true, skip: res2Loading }
-  );
-
-  const { data: rtkRes4 } = useGetCityPricesQuery(
-    { city: toCity, currency: rtkRes1?.data?.currency },
-    { refetchOnMountOrArgChange: true, skip: res1Loading }
-  );
+  const [getCityPrices, { isLoading: cityPricesLoading }] =
+    useLazyGetCityPricesQuery();
 
   const handleCompare = async (e: FormEvent) => {
     e.preventDefault();
     if (!fromCity || !toCity) {
       return toast.error("Home city & destination city must be selected!");
     }
+
     try {
+      // 1️⃣ Fetch both cities in their native currencies
+      const fromNative = await getCityPrices({
+        city: fromCity,
+        currency: null,
+      }).unwrap();
+
+      if (fromNative?.data?.error) {
+        throw `Could not resolve city (${fromCity}) in your request.`;
+      }
+
+      const toNative = await getCityPrices({
+        city: toCity,
+        currency: null,
+      }).unwrap();
+
+      if (toNative?.data?.error) {
+        throw `Could not resolve city (${toCity}) in your request.`;
+      }
+
+      // 2️⃣ Cross currency conversion
+      const fromConverted = await getCityPrices({
+        city: fromCity,
+        currency: toNative.data.currency,
+      }).unwrap();
+
+      const toConverted = await getCityPrices({
+        city: toCity,
+        currency: fromNative.data.currency,
+      }).unwrap();
+
+      // 3️⃣ Transform & store
       const costOfLivingData = transformCityPriceData(
-        rtkRes1,
-        rtkRes3,
-        rtkRes2,
-        rtkRes4
+        fromNative,
+        fromConverted,
+        toNative,
+        toConverted
       );
       dispatch(setSelectedCityName1(fromCity));
       dispatch(setSelectedCityName2(toCity));
       dispatch(setCOLCModifiedCostData(costOfLivingData as TCostOfLivingData));
-      dispatch(setHomeCurrencyCode(rtkRes1?.data?.currency));
+      dispatch(setHomeCurrencyCode(fromNative?.data?.currency));
       //Store toCity & countryName2 into localStorage
       localStorage.setItem("destinationPlace", `${toCity}`);
       window.scrollTo({ top: 540, behavior: "smooth" });
     } catch (error: any) {
-      toast.error("There was an error occured.", error?.message);
+      toast.error(error);
     }
   };
 
@@ -126,7 +141,7 @@ export default function COLCForm() {
           ></Select>
           {fromCityLoading && (
             <Icon
-              className="absolute left-3 top-2"
+              className="absolute right-3 top-2"
               icon="line-md:loading-loop"
               width="24"
               height="24"
@@ -161,7 +176,7 @@ export default function COLCForm() {
           ></Select>
           {toCityLoading && (
             <Icon
-              className="absolute left-3 top-2"
+              className="absolute right-3 top-2"
               icon="line-md:loading-loop"
               width="24"
               height="24"
@@ -171,17 +186,21 @@ export default function COLCForm() {
       </div>
 
       <div className="flex justify-end lg:col-span-3">
-        <button
-          onClick={handleCompare}
-          disabled={fromCity && toCity ? false : true}
-          className={`text-white p-[0.8rem] border-[1px] dark:border-gray-700 rounded-[10px] w-full ${
-            fromCity && toCity
-              ? "bg-black"
-              : "bg-gray-300 dark:bg-darkModeBgColor dark:text-gray-500"
-          }`}
-        >
-          Compare
-        </button>
+        {cityPricesLoading ? (
+          <div className="text-white p-[0.8rem] border-[1px] dark:border-gray-700 rounded-[10px] w-full bg-gray-300 cursor-not-allowed flex items-center justify-center gap-1">
+            <p>Loading...</p>
+            <p>
+              <Icon icon="line-md:loading-loop" width="24" height="24" />
+            </p>
+          </div>
+        ) : (
+          <button
+            onClick={handleCompare}
+            className={`text-white p-[0.8rem] border-[1px] dark:border-gray-700 rounded-[10px] w-full bg-black`}
+          >
+            Compare
+          </button>
+        )}
       </div>
     </form>
   );

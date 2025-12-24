@@ -145,4 +145,6 @@ export const {
   useGetCloseCitiesQuery,
   useGetEstimatedCostQuery,
   useGetCurrencyExchangeRatesQuery,
+
+  useLazyGetCityPricesQuery
 } = ebookUsersApi;

@@ -46,7 +46,7 @@ export default function CustomCollapese() {
       {COLCModifiedCostData?.output?.map((item) => {
         const { category, items } = item || {};
         return (
-          <section>
+          <section key={category}>
             <div className="grid gap-2 grid-cols-6 font-semibold text-[1rem] p-1 mt-5 dark:text-darkModeHeadingTextColor">
               <p className="flex md:items-center gap-1 col-span-3">
                 {category == "Restaurants" ? (
