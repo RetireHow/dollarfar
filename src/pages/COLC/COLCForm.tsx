@@ -30,6 +30,7 @@ export default function COLCForm() {
 
   const [debouncedCity1, setDebouncedCity1] = useState("");
   const [debouncedCity2, setDebouncedCity2] = useState("");
+  const [cityPricesLoading, setCityPricesLoading] = useState(false);
 
   // Debounce "from" city
   useEffect(() => {
@@ -54,8 +55,7 @@ export default function COLCForm() {
     useCitySearch(debouncedCity2);
 
   // City Prices data
-  const [getCityPrices, { isLoading: cityPricesLoading }] =
-    useLazyGetCityPricesQuery();
+  const [getCityPrices] = useLazyGetCityPricesQuery();
 
   const handleCompare = async (e: FormEvent) => {
     e.preventDefault();
@@ -64,6 +64,7 @@ export default function COLCForm() {
     }
 
     try {
+      setCityPricesLoading(true);
       // 1️⃣ Fetch both cities in their native currencies
       const fromNative = await getCityPrices({
         city: fromCity,
@@ -108,8 +109,10 @@ export default function COLCForm() {
       //Store toCity & countryName2 into localStorage
       localStorage.setItem("destinationPlace", `${toCity}`);
       window.scrollTo({ top: 540, behavior: "smooth" });
+      setCityPricesLoading(false);
     } catch (error: any) {
       toast.error(error);
+      setCityPricesLoading(false);
     }
   };
 
