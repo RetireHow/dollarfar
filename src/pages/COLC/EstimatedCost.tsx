@@ -63,7 +63,7 @@ export default function EstimatedCost() {
       members,
       children,
       isRent,
-      homeCurrencyCode,
+      currency: homeCurrencyCode,
     },
     { refetchOnMountOrArgChange: true }
   );
@@ -77,7 +77,7 @@ export default function EstimatedCost() {
       members: 1,
       children: 0,
       isRent: false,
-      homeCurrencyCode,
+      currency: homeCurrencyCode,
     },
     { refetchOnMountOrArgChange: true }
   );

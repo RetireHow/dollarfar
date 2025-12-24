@@ -57,7 +57,7 @@ export default function EstimatedCostCalculatorPage() {
         members,
         children,
         isRent,
-        homeCurrencyCode,
+        currency: homeCurrencyCode,
       },
       { refetchOnMountOrArgChange: true }
     );
