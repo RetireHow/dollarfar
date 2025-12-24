@@ -64,12 +64,12 @@ export default function COLCForm() {
     { refetchOnMountOrArgChange: true, skip: !toCity }
   );
 
-  const { data: rtkRes3, isLoading: res3Loading } = useGetCityPricesQuery(
+  const { data: rtkRes3 } = useGetCityPricesQuery(
     { city: fromCity, currency: rtkRes2?.data?.currency },
     { refetchOnMountOrArgChange: true, skip: res2Loading }
   );
 
-  const { data: rtkRes4, isLoading: res4Loading } = useGetCityPricesQuery(
+  const { data: rtkRes4 } = useGetCityPricesQuery(
     { city: toCity, currency: rtkRes1?.data?.currency },
     { refetchOnMountOrArgChange: true, skip: res1Loading }
   );
