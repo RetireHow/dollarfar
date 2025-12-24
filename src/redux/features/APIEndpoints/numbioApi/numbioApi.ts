@@ -131,6 +131,35 @@ const ebookUsersApi = baseApi.injectEndpoints({
         return response?.data;
       },
     }),
+
+    logRecentComparison: builder.mutation({
+      query: (payload) => {
+        return {
+          url: `/numbeo/log`,
+          method: "POST",
+          body: payload,
+        };
+      },
+      invalidatesTags: ["RecentComparisons"],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      transformResponse: (response: TResponseRedux<any>) => {
+        return response?.data;
+      },
+    }),
+
+    getRecentComparisons: builder.query({
+      query: () => {
+        return {
+          url: `/numbeo/recent`,
+          method: "GET",
+        };
+      },
+      providesTags: ["RecentComparisons"],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      transformResponse: (response: TResponseRedux<any>) => {
+        return response?.data;
+      },
+    }),
   }),
 });
 
@@ -145,6 +174,8 @@ export const {
   useGetCloseCitiesQuery,
   useGetEstimatedCostQuery,
   useGetCurrencyExchangeRatesQuery,
+  useLogRecentComparisonMutation,
+  useGetRecentComparisonsQuery,
 
-  useLazyGetCityPricesQuery
+  useLazyGetCityPricesQuery,
 } = ebookUsersApi;

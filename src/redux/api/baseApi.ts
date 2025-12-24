@@ -88,7 +88,8 @@ export const baseApi = createApi({
     "consultationSubscription",
     "retirementEmail",
     "consultationSession",
-    "ScheduleConfig"
+    "ScheduleConfig",
+    "RecentComparisons",
   ],
   endpoints: () => ({}),
 });

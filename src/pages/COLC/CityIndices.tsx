@@ -9,7 +9,7 @@ const getIndexDiff = (city1Index: number, city2Index: number) => {
     return 0;
   }
   const indexDifference = ((city2Index - city1Index) / city1Index) * 100;
-  return Number(indexDifference?.toFixed(1));
+  return Number(indexDifference?.toFixed(2));
 };
 
 function CityIndicesSkeleton() {

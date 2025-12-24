@@ -7,6 +7,7 @@ import { useAppSelector } from "../../redux/hooks";
 import useTitle from "../../hooks/useTitle";
 import CityMovingCard from "./CityMovingCard";
 import CloseCityList from "./CloseCityList";
+import RecentComparisons from "./RecentComparisons";
 
 const data = {
   title: "Cost of Living Comparison Calculator",
@@ -18,11 +19,8 @@ const data = {
 export default function COLC() {
   useTitle("Dollarfar | COLC");
 
-  const {
-    selectedCityName1,
-    selectedCityName2,
-    COLCModifiedCostData,
-  } = useAppSelector((state) => state.COLCalculator);
+  const { selectedCityName1, selectedCityName2, COLCModifiedCostData } =
+    useAppSelector((state) => state.COLCalculator);
 
   return (
     <main className="mb-[5rem]">
@@ -31,6 +29,7 @@ export default function COLC() {
       </div>
 
       <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] dark:border-darkModeBorderColor rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[3rem]">
+        <RecentComparisons />
         <COLCForm />
         {!COLCModifiedCostData?.output ? (
           <div className="flex justify-center">
@@ -47,20 +46,12 @@ export default function COLC() {
           <div>
             <CostTable />
             <section className="flex md:flex-row flex-col md:items-center gap-5 mt-5">
-              <CityMovingCard
-                selectedCity={selectedCityName1}
-              />
-              <CityMovingCard
-                selectedCity={selectedCityName2}
-              />
+              <CityMovingCard selectedCity={selectedCityName1} />
+              <CityMovingCard selectedCity={selectedCityName2} />
             </section>
             <section className="flex md:flex-row flex-col gap-5 mt-5">
-              <CloseCityList
-                selectedCity={selectedCityName1}
-              />
-              <CloseCityList
-                selectedCity={selectedCityName2}
-              />
+              <CloseCityList selectedCity={selectedCityName1} />
+              <CloseCityList selectedCity={selectedCityName2} />
             </section>
           </div>
         )}
