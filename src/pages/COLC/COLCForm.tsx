@@ -36,7 +36,7 @@ export default function COLCForm() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedCity1(fromCity);
-    }, 300);
+    }, 100);
     return () => clearTimeout(timer);
   }, [fromCity]);
 
@@ -44,7 +44,7 @@ export default function COLCForm() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedCity2(toCity);
-    }, 300);
+    }, 100);
     return () => clearTimeout(timer);
   }, [toCity]);
 
