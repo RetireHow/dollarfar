@@ -7,7 +7,6 @@ import { useAppSelector } from "../../redux/hooks";
 import useTitle from "../../hooks/useTitle";
 import CityMovingCard from "./CityMovingCard";
 import CloseCityList from "./CloseCityList";
-import RecentComparisons from "./RecentComparisons";
 
 const data = {
   title: "Cost of Living Comparison Calculator",
@@ -29,7 +28,6 @@ export default function COLC() {
       </div>
 
       <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] dark:border-darkModeBorderColor rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[3rem]">
-        <RecentComparisons />
         <COLCForm />
         {!COLCModifiedCostData?.output ? (
           <div className="flex justify-center">

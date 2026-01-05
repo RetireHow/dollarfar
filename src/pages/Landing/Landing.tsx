@@ -55,6 +55,24 @@ export default function Landing() {
         </div>
       </section>
 
+      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem]">
+        <div className="text-center md:mt-[5rem] mt-[3rem] md:mb-[2.5rem] mb-[1.5rem]">
+          <h1 className="font-bold md:text-[2.5rem] text-[20px] md:mb-0 mb-2 dark:text-darkModeHeadingTextColor">
+            Our calculators and tools for you
+          </h1>
+          <h3 className="md:text-[1.25rem] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
+            Choose the calculator that fits your needs and start making informed
+            financial decisions today!
+          </h3>
+        </div>
+
+        <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 md:gap-[2.5rem] gap-[2rem]">
+          {cardsData.map((item) => (
+            <CalculatorCard key={item.id} item={item} />
+          ))}
+        </div>
+      </section>
+
       {/* Book Section  */}
       <section className="bg-[#EDF3F8] dark:bg-neutral-800 flex md:flex-row flex-col items-center justify-center md:px-20 md:py-16 py-5 px-5 md:gap-16 gap-5 mt-20">
         <img src={assets.bookCoverPageWithBadge} alt="Book Cover Page" />
@@ -94,24 +112,6 @@ export default function Landing() {
               FREE! After that, it will be available as a paid download.
             </span>
           </p>
-        </div>
-      </section>
-
-      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem]">
-        <div className="text-center md:mt-[5rem] mt-[3rem] md:mb-[2.5rem] mb-[1.5rem]">
-          <h1 className="font-bold md:text-[2.5rem] text-[20px] md:mb-0 mb-2 dark:text-darkModeHeadingTextColor">
-            Our calculators and tools for you
-          </h1>
-          <h3 className="md:text-[1.25rem] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
-            Choose the calculator that fits your needs and start making informed
-            financial decisions today!
-          </h3>
-        </div>
-
-        <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 md:gap-[2.5rem] gap-[2rem]">
-          {cardsData.map((item) => (
-            <CalculatorCard key={item.id} item={item} />
-          ))}
         </div>
       </section>
     </main>

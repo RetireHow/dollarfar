@@ -67,7 +67,6 @@ import EbookReaderFeedbacks from "../pages/Admin/EbookReaderFeedbacks";
 import DashboardOverview from "../pages/Admin/DashboardOverview";
 import LeveragedInvestingCalculator from "../pages/LeveragedInvestingCalculator/LeveragedInvestingCalculator";
 
-import RetireHowForm from "../pages/RetirementCalculator/RetireHowForm";
 import SendOtpForm from "../pages/OTPVerification/SendOtpForm";
 import VerifyOtpForm from "../pages/OTPVerification/VerifyOtpForm";
 import ResetPasswordForm from "../pages/OTPVerification/ResetPasswordForm";
@@ -76,6 +75,11 @@ import SessionDetails from "../pages/Admin/BookedSessions/SessionDetails";
 import RetirementPanel from "../pages/Admin/Panels/RetirementPanel";
 import RetireeRequests from "../pages/Admin/RetireeRequests";
 import EmailsUI from "../pages/EmailsUI";
+import StandardLiving from "../pages/RetirementCalculator/StandardLiving";
+import Contact from "../pages/RetirementCalculator/Contact";
+import POCInterestForm from "../pages/RetirementCalculator/POCInterestForm";
+import Privacy from "../pages/RetirementCalculator/Privacy";
+import Terms from "../pages/RetirementCalculator/Terms";
 
 export const router = createBrowserRouter([
   {
@@ -342,8 +346,24 @@ export const router = createBrowserRouter([
         element: <RetirementSimulator />,
       },
       {
-        path: "retirement-simulator/retire-how-form",
-        element: <RetireHowForm />,
+        path: "retirement-simulator/standard-living",
+        element: <StandardLiving />,
+      },
+      {
+        path: "retirement-simulator/poc-interest",
+        element: <POCInterestForm />,
+      },
+      {
+        path: "retirement-simulator/contact",
+        element: <Contact />,
+      },
+      {
+        path: "retirement-simulator/privacy",
+        element: <Privacy />,
+      },
+      {
+        path: "retirement-simulator/terms",
+        element: <Terms />,
       },
       {
         path: "LeveragedInvestingCalculator",
@@ -396,12 +416,9 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path:'emails-ui',
-        element:<EmailsUI/>
-      }
-
-
-
+        path: "emails-ui",
+        element: <EmailsUI />,
+      },
     ],
   },
 ]);

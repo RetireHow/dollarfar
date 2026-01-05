@@ -18,8 +18,7 @@ import CustomTooltip from "../../components/UI/CustomTooltip";
 import { transformCityPriceData } from "../../utils/transformCityPricesData";
 import useCitySearch from "../../hooks/useCitySearch";
 import {
-  useLazyGetCityPricesQuery,
-  useLogRecentComparisonMutation,
+  useLazyGetCityPricesQuery
 } from "../../redux/features/APIEndpoints/numbioApi/numbioApi";
 
 export default function COLCForm() {
@@ -60,8 +59,6 @@ export default function COLCForm() {
   // City Prices data
   const [getCityPrices] = useLazyGetCityPricesQuery();
 
-  const [logRecentComparison] = useLogRecentComparisonMutation();
-
   const handleCompare = async (e: FormEvent) => {
     e.preventDefault();
     if (!fromCity || !toCity) {
@@ -99,8 +96,6 @@ export default function COLCForm() {
         city: toCity,
         currency: fromNative.data.currency,
       }).unwrap();
-
-      await logRecentComparison({ cityA: fromCity, cityB: toCity });
 
       // 3️⃣ Transform & store
       const costOfLivingData = transformCityPriceData(

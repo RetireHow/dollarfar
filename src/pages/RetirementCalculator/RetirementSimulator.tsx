@@ -1704,7 +1704,7 @@ const RetirementSimulator: React.FC = () => {
 
             {/* Action Button */}
             <div className="md:w-1/3 text-center md:text-right">
-              <Link to="/retirement-simulator/retire-how-form">
+              <Link to="/retirement-simulator/standard-living">
                 <button className="bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600 font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl text-lg w-full md:w-auto border border-gray-300 dark:border-gray-600">
                   <div className="flex md:flex-row flex-col items-center justify-center gap-2">
                     <Icon icon="mdi:chart-line" className="text-xl" />
