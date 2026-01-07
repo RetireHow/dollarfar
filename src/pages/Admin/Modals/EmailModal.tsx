@@ -7,16 +7,16 @@ import {
   useGetAllRetirementEmailQuery,
 } from "../../../redux/features/APIEndpoints/retirementEmailApi/retirementEmailApi";
 import { useGetMeQuery } from "../../../redux/features/APIEndpoints/userApi/userApi";
-import { TPlan } from "../types/plan.type";
 import { TEmail } from "../types/email.type";
-const getContactInfo = (record: TPlan) => record.contact || {};
+import { TSession } from "../types/session.type";
+const getContactInfo = (record: TSession) => record.contact || {};
 
 export const EmailModal = ({
   onClose,
   selectedRecordForAction,
 }: {
   onClose: () => void;
-  selectedRecordForAction: TPlan;
+  selectedRecordForAction: TSession;
 }) => {
   const [emailSubject, setEmailSubject] = useState("");
   const [emailBody, setEmailBody] = useState("");

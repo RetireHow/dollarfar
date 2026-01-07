@@ -10,7 +10,7 @@ import { useGetMeQuery } from "../../../redux/features/APIEndpoints/userApi/user
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { showApiErrorToast } from "../../../utils/showApiErrorToast";
-import { TPlan } from "../types/plan.type";
+import { TSession } from "../types/session.type";
 
 /*=====================| Loading Skeleton |=================*/
 const NoteLoadingSkeleton = () => {
@@ -101,14 +101,14 @@ const NoteLoadingSkeleton = () => {
   );
 };
 
-const getContactInfo = (record: TPlan) => record.contact || {};
+const getContactInfo = (record: TSession) => record.contact || {};
 
 export const NotesModal = ({
   onClose,
   selectedRecordForAction,
 }: {
   onClose: () => void;
-  selectedRecordForAction: TPlan;
+  selectedRecordForAction: TSession;
 }) => {
   const [newNote, setNewNote] = useState<string>("");
   const [editingNote, setEditingNote] = useState<TNote | null>();

@@ -1,5 +1,4 @@
 import { FormEvent, ChangeEvent, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 type ContactFormState = {
   name: string;
@@ -165,21 +164,8 @@ export default function Contact(): JSX.Element {
           </div>
 
           {/* Footer */}
-          <div className="flex flex-wrap justify-between gap-[10px] border-t border-[rgba(18,48,74,.10)] px-[28px] py-[22px] text-[12.5px] text-[#5b6b7a]">
+          <div className="flex justify-center border-t border-[rgba(18,48,74,.10)] px-[28px] py-[22px] text-[12.5px] text-[#5b6b7a]">
             <div>© RetireHow.com / DollarFar.com</div>
-            <div className="space-x-2">
-              <Link to="/privacy" className="underline hover:text-[#12304a]">
-                Privacy Policy
-              </Link>
-              ·
-              <Link to="/terms" className="underline hover:text-[#12304a]">
-                Terms of Use
-              </Link>
-              ·
-              <Link to="/contact" className="underline hover:text-[#12304a]">
-                Contact
-              </Link>
-            </div>
           </div>
         </section>
       </div>

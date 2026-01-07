@@ -70,7 +70,6 @@ import LeveragedInvestingCalculator from "../pages/LeveragedInvestingCalculator/
 import SendOtpForm from "../pages/OTPVerification/SendOtpForm";
 import VerifyOtpForm from "../pages/OTPVerification/VerifyOtpForm";
 import ResetPasswordForm from "../pages/OTPVerification/ResetPasswordForm";
-import NextStepPlanDetails from "../pages/Admin/NextStepPlans/NextStepPlanDetails";
 import SessionDetails from "../pages/Admin/BookedSessions/SessionDetails";
 import RetirementPanel from "../pages/Admin/Panels/RetirementPanel";
 import RetireeRequests from "../pages/Admin/RetireeRequests";
@@ -80,6 +79,7 @@ import Contact from "../pages/RetirementCalculator/Contact";
 import POCInterestForm from "../pages/RetirementCalculator/POCInterestForm";
 import Privacy from "../pages/RetirementCalculator/Privacy";
 import Terms from "../pages/RetirementCalculator/Terms";
+import POCInterestDetails from "../pages/Admin/POCInterestTable/POCInterestDetails";
 
 export const router = createBrowserRouter([
   {
@@ -404,12 +404,12 @@ export const router = createBrowserRouter([
                 element: <RetireeRequests />,
               },
               {
-                path: "plan-details/:planId",
-                element: <NextStepPlanDetails />,
-              },
-              {
                 path: "session-details/:sessionId",
                 element: <SessionDetails />,
+              },
+              {
+                path: "poc-interest-details/:pocInterestId",
+                element: <POCInterestDetails />,
               },
             ],
           },

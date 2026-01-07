@@ -4,8 +4,9 @@ import { TNote } from "../types/note.type";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useGetConsultationSessoinDetailsQuery } from "../../../redux/features/APIEndpoints/consultationSessionApi/consultationSessionApi";
-import { TSession } from "../types/session.type";
+import { TSession, Subscription, Contact } from "../types/session.type";
 import { useEffect } from "react";
+import { convertUTCToTimeZone } from "../admin.utils";
 
 const formatCurrency = (amount: number | string) => {
   if (!amount) return "Not specified";
@@ -27,21 +28,6 @@ const formatDate = (dateString: string) => {
     hour: "2-digit",
     minute: "2-digit",
   });
-};
-
-const getComfortLevelColor = (comfort: string) => {
-  switch (comfort?.toLowerCase()) {
-    case "comfortable":
-    case "open to discuss":
-      return "bg-emerald-100 text-emerald-800 border-emerald-200";
-    case "open":
-      return "bg-amber-100 text-amber-800 border-amber-200";
-    case "none":
-    case "not comfortable":
-      return "bg-gray-100 text-gray-800 border-gray-200";
-    default:
-      return "bg-gray-100 text-gray-800 border-gray-200";
-  }
 };
 
 const getSessionStatusColor = (status: string) => {
@@ -74,21 +60,6 @@ const getSubscriptionStatusColor = (status: string) => {
   }
 };
 
-/*=====================| Helper functions to safely access nested data |=================*/
-export const getContactInfo = (record: TSession) => record.contact || {};
-export const getRetirementSnapshot = (record: TSession) =>
-  record.retirement_snapshot || {};
-export const getHousingEquity = (record: TSession) =>
-  record.housing_equity || {};
-export const getDollarFarPlanning = (record: TSession) =>
-  record.dollarfar_planning || {};
-export const getTravelPlanning = (record: TSession) =>
-  record.travel_planning || {};
-export const getBudgetEstimates = (record: TSession) =>
-  record.budget_estimates || {};
-export const getPrivacyAcknowledgements = (record: TSession) =>
-  record.privacy_acknowledgements || {};
-
 /*=====================| Loading Skeleton |=================*/
 const NoteLoadingSkeleton = () => {
   return (
@@ -111,29 +82,6 @@ const NoteLoadingSkeleton = () => {
           </div>
         </div>
       ))}
-    </div>
-  );
-};
-
-const getStatusBadge = (status: boolean, label: string) => {
-  return (
-    <div
-      className={`flex items-center p-3 rounded-lg border ${
-        status
-          ? "bg-emerald-50 text-emerald-800 border-emerald-200"
-          : "bg-gray-50 text-gray-800 border-gray-200"
-      }`}
-    >
-      <Icon
-        icon={status ? "mdi:check-circle" : "mdi:close-circle"}
-        className={`text-lg mr-2 ${
-          status ? "text-emerald-600" : "text-gray-500"
-        }`}
-      />
-      <div className="text-left">
-        <div className="text-sm font-medium">{label}</div>
-        <div className="text-xs">{status ? "Yes" : "No"}</div>
-      </div>
     </div>
   );
 };
@@ -225,184 +173,6 @@ function SessionDetailsSkeleton() {
               </div>
             </div>
 
-            {/* SECTION C: Retirement Snapshot Skeleton */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-gray-300 dark:bg-gray-700 rounded-lg"></div>
-                <div className="h-6 w-56 bg-gray-300 dark:bg-gray-700 rounded"></div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {[...Array(3)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700"
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="h-5 w-5 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                      <div className="h-4 w-36 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                    </div>
-                    <div className="h-8 w-32 bg-gray-400 dark:bg-gray-700 rounded"></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* SECTION D: Housing & Real Estate Equity Skeleton */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-gray-300 dark:bg-gray-700 rounded-lg"></div>
-                <div className="h-6 w-64 bg-gray-300 dark:bg-gray-700 rounded"></div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {[...Array(2)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700"
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="h-5 w-5 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                      <div className="h-4 w-40 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                    </div>
-                    <div className="h-8 w-36 bg-gray-400 dark:bg-gray-700 rounded"></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* SECTION E: DollarFar — Pre-Retirement Planning Skeleton */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-gray-300 dark:bg-gray-700 rounded-lg"></div>
-                <div className="h-6 w-72 bg-gray-300 dark:bg-gray-700 rounded"></div>
-              </div>
-
-              {/* Selected Calculators Skeleton */}
-              <div className="mb-6">
-                <div className="h-4 w-36 bg-gray-300 dark:bg-gray-600 rounded mb-3"></div>
-                <div className="flex flex-wrap gap-2">
-                  {[...Array(3)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-8 w-24 bg-gray-300 dark:bg-gray-600 rounded-lg"
-                    ></div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Interpretation Services & Consultation Time Skeleton */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                {[...Array(2)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700"
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="h-5 w-5 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                      <div className="h-4 w-40 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                    </div>
-                    <div className="h-6 w-32 bg-gray-400 dark:bg-gray-700 rounded"></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* SECTION F: Travel Planning Skeleton */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-gray-300 dark:bg-gray-700 rounded-lg"></div>
-                <div className="h-6 w-48 bg-gray-300 dark:bg-gray-700 rounded"></div>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  {[...Array(3)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700"
-                    >
-                      <div className="h-4 w-36 bg-gray-300 dark:bg-gray-600 rounded mb-2"></div>
-                      <div className="h-6 w-28 bg-gray-400 dark:bg-gray-700 rounded"></div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="space-y-4">
-                  {[...Array(3)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700"
-                    >
-                      <div className="h-4 w-40 bg-gray-300 dark:bg-gray-600 rounded mb-2"></div>
-                      <div className="h-6 w-32 bg-gray-400 dark:bg-gray-700 rounded"></div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* SECTION G: Budget Estimates Skeleton */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-gray-300 dark:bg-gray-700 rounded-lg"></div>
-                <div className="h-6 w-48 bg-gray-300 dark:bg-gray-700 rounded"></div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {[...Array(4)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700"
-                  >
-                    <div className="flex flex-col items-center text-center">
-                      <div className="h-8 w-8 bg-gray-300 dark:bg-gray-600 rounded mb-3"></div>
-                      <div className="h-4 w-32 bg-gray-300 dark:bg-gray-600 rounded mb-1"></div>
-                      <div className="h-6 w-24 bg-gray-400 dark:bg-gray-700 rounded"></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* SECTION H: Purpose of Travel Skeleton */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-gray-300 dark:bg-gray-700 rounded-lg"></div>
-                <div className="h-6 w-48 bg-gray-300 dark:bg-gray-700 rounded"></div>
-              </div>
-              <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                <div className="h-4 w-44 bg-gray-300 dark:bg-gray-600 rounded mb-3"></div>
-                <div className="flex flex-wrap gap-2">
-                  {[...Array(4)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-8 w-28 bg-gray-300 dark:bg-gray-600 rounded-lg"
-                    ></div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* SECTION I: Privacy & Pricing Skeleton */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-gray-300 dark:bg-gray-700 rounded-lg"></div>
-                <div className="h-6 w-48 bg-gray-300 dark:bg-gray-700 rounded"></div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {[...Array(3)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center p-3 rounded-lg border bg-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600"
-                  >
-                    <div className="h-6 w-6 bg-gray-300 dark:bg-gray-600 rounded mr-2"></div>
-                    <div className="text-left">
-                      <div className="h-4 w-32 bg-gray-300 dark:bg-gray-600 rounded mb-1"></div>
-                      <div className="h-3 w-12 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
             {/* Client Notes Section Skeleton */}
             <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
               <div className="mb-4">
@@ -449,26 +219,21 @@ export default function SessionDetails() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
   const { sessionId } = useParams();
   const navigate = useNavigate();
   const { data: sessionData, isLoading: sessionLoading } =
     useGetConsultationSessoinDetailsQuery(sessionId);
-  const record = sessionData?.data || {};
+
+  const record: TSession = sessionData?.data || ({} as TSession);
+  const subscription: Subscription =
+    record.subscription || ({} as Subscription);
+  const contactInfo: Contact = record.contact || ({} as Contact);
 
   const { data, isLoading: isLoadingNotes } = useGetAllRetirementPlanNotesQuery(
     record?._id
   );
   const notes: TNote[] = data?.data || [];
-
-  // Extract data using helper functions
-  const contactInfo = getContactInfo(record);
-  const retirementSnapshot = getRetirementSnapshot(record);
-  const housingEquity = getHousingEquity(record);
-  const dollarfarPlanning = getDollarFarPlanning(record);
-  const travelPlanning = getTravelPlanning(record);
-  const budgetEstimates = getBudgetEstimates(record);
-  const privacyAcknowledgements = getPrivacyAcknowledgements(record);
-  const subscription = record.subscription || {};
 
   if (sessionLoading) {
     return <SessionDetailsSkeleton />;
@@ -526,9 +291,8 @@ export default function SessionDetails() {
                       className="text-gray-600 dark:text-gray-400"
                     />
                     <span className="text-gray-700 dark:text-gray-300">
-                      Scheduled for{" "}
-                      {dollarfarPlanning.consultation_time
-                        ? formatDate(dollarfarPlanning.consultation_time)
+                      {record.slot
+                        ? `Scheduled for: ${record.slot}`
                         : "Not scheduled"}
                     </span>
                   </div>
@@ -561,6 +325,7 @@ export default function SessionDetails() {
                   Session & Subscription Information
                 </h2>
               </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3 mb-3">
@@ -576,6 +341,7 @@ export default function SessionDetails() {
                     #{record.session_number}
                   </p>
                 </div>
+
                 <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3 mb-3">
                     <Icon
@@ -591,6 +357,7 @@ export default function SessionDetails() {
                     {subscription.sessionsPurchased}
                   </p>
                 </div>
+
                 <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3 mb-3">
                     <Icon
@@ -636,6 +403,7 @@ export default function SessionDetails() {
                     {subscription.currency}
                   </p>
                 </div>
+
                 <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                   <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
                     Purchase Date
@@ -646,6 +414,7 @@ export default function SessionDetails() {
                       : "Not specified"}
                   </p>
                 </div>
+
                 <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                   <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
                     Expiry Date
@@ -656,6 +425,7 @@ export default function SessionDetails() {
                       : "Not specified"}
                   </p>
                 </div>
+
                 <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                   <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
                     Payment Intent ID
@@ -677,6 +447,7 @@ export default function SessionDetails() {
                   Contact Information
                 </h2>
               </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3 mb-3">
@@ -692,6 +463,7 @@ export default function SessionDetails() {
                     {contactInfo.name}
                   </p>
                 </div>
+
                 <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3 mb-3">
                     <Icon
@@ -706,6 +478,7 @@ export default function SessionDetails() {
                     {contactInfo.email}
                   </p>
                 </div>
+
                 <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3 mb-3">
                     <Icon
@@ -720,6 +493,7 @@ export default function SessionDetails() {
                     {contactInfo.phone}
                   </p>
                 </div>
+
                 <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3 mb-3">
                     <Icon
@@ -731,24 +505,82 @@ export default function SessionDetails() {
                     </h3>
                   </div>
                   <p className="text-base font-semibold text-gray-900 dark:text-white">
-                    {contactInfo.region + ", " + contactInfo.country ||
-                      "Not specified"}
+                    {contactInfo.region || contactInfo.country
+                      ? `${contactInfo.region || ""}${
+                          contactInfo.region && contactInfo.country ? ", " : ""
+                        }${contactInfo.country || ""}`
+                      : "Not specified"}
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* SECTION C: Retirement Snapshot */}
+            {/* Time Zone Information */}
             <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 bg-gray-900 rounded-lg">
-                  <Icon icon="mdi:finance" className="text-xl text-white" />
+                  <Icon
+                    icon="mdi:clock-outline"
+                    className="text-xl text-white"
+                  />
                 </div>
                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Retirement Snapshot
+                  Time Zone Information
                 </h2>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Icon
+                      icon="mdi:account-clock"
+                      className="text-gray-600 dark:text-gray-400"
+                    />
+                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      User Time Zone
+                    </h3>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-base font-semibold text-gray-900 dark:text-white">
+                      {record.userTZ || "Not specified"}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Icon
+                      icon="mdi:briefcase-clock"
+                      className="text-gray-600 dark:text-gray-400"
+                    />
+                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      Consultant Time Zone
+                    </h3>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-base font-semibold text-gray-900 dark:text-white">
+                      {record.consultantTZ || "Not specified"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Session Details */}
+            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-gray-900 rounded-lg">
+                  <Icon
+                    icon="mdi:calendar-text"
+                    className="text-xl text-white"
+                  />
+                </div>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  Session Details
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3 mb-3">
                     <Icon
@@ -756,414 +588,94 @@ export default function SessionDetails() {
                       className="text-gray-600 dark:text-gray-400"
                     />
                     <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                      Target Retirement Age
+                      Scheduled Slot
                     </h3>
                   </div>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">
-                    {retirementSnapshot.target_age || "Not specified"}
-                  </p>
-                </div>
-                <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Icon
-                      icon="mdi:cash"
-                      className="text-gray-600 dark:text-gray-400"
-                    />
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                      Desired Annual Income
-                    </h3>
-                  </div>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">
-                    {formatCurrency(
-                      retirementSnapshot.desired_income as string
+                  <p className="text-base font-semibold text-gray-900 dark:text-white">
+                    {convertUTCToTimeZone(
+                      record.slot,
+                      record.consultantTZ_IANA
                     )}
                   </p>
                 </div>
-                <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Icon
-                      icon="mdi:bank"
-                      className="text-gray-600 dark:text-gray-400"
-                    />
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                      Estimated Total Savings
-                    </h3>
-                  </div>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">
-                    {formatCurrency(
-                      retirementSnapshot?.estimated_savings as string
-                    )}
-                  </p>
-                </div>
-              </div>
-            </div>
 
-            {/* SECTION D: Housing & Real Estate Equity */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-gray-900 rounded-lg">
-                  <Icon
-                    icon="mdi:home-analytics"
-                    className="text-xl text-white"
-                  />
-                </div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Housing & Real Estate Equity
-                </h2>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3 mb-3">
                     <Icon
-                      icon="mdi:home"
+                      icon="mdi:account-supervisor"
                       className="text-gray-600 dark:text-gray-400"
                     />
                     <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                      Estimated Home Equity
+                      Scheduled By
                     </h3>
                   </div>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">
-                    {formatCurrency(
-                      housingEquity.estimated_home_equity as string
-                    )}
+                  <p className="text-base font-semibold text-gray-900 dark:text-white">
+                    {record.scheduled_by || "Not specified"}
                   </p>
                 </div>
+
                 <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-3 mb-3">
                     <Icon
-                      icon="mdi:heart-outline"
+                      icon="mdi:calendar-edit"
                       className="text-gray-600 dark:text-gray-400"
                     />
                     <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                      Comfort with Tapping Home Equity
+                      Last Updated
+                    </h3>
+                  </div>
+                  <p className="text-base font-semibold text-gray-900 dark:text-white">
+                    {record.updatedAt
+                      ? formatDate(record.updatedAt)
+                      : "Not specified"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Icon
+                      icon="mdi:calendar-plus"
+                      className="text-gray-600 dark:text-gray-400"
+                    />
+                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      Created Date
+                    </h3>
+                  </div>
+                  <p className="text-base font-semibold text-gray-900 dark:text-white">
+                    {record.createdAt
+                      ? formatDate(record.createdAt)
+                      : "Not specified"}
+                  </p>
+                </div>
+
+                <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Icon
+                      icon="mdi:account-cancel"
+                      className="text-gray-600 dark:text-gray-400"
+                    />
+                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      Deletion Status
                     </h3>
                   </div>
                   <div
-                    className={`inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium border ${getComfortLevelColor(
-                      housingEquity.equity_comfort as string
-                    )}`}
+                    className={`inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium border ${
+                      record.isDeleted
+                        ? "bg-rose-100 text-rose-800 border-rose-200"
+                        : "bg-emerald-100 text-emerald-800 border-emerald-200"
+                    }`}
                   >
                     <Icon
                       icon={
-                        housingEquity.equity_comfort?.toLowerCase() ===
-                          "comfortable" ||
-                        housingEquity.equity_comfort?.toLowerCase() ===
-                          "open to discuss"
-                          ? "mdi:check-circle"
-                          : housingEquity.equity_comfort?.toLowerCase() ===
-                            "open"
-                          ? "mdi:help-circle"
-                          : housingEquity.equity_comfort?.toLowerCase() ===
-                            "none"
-                          ? "mdi:close-circle"
-                          : "mdi:information"
+                        record.isDeleted ? "mdi:delete" : "mdi:check-circle"
                       }
                       className="mr-2"
                     />
-                    {housingEquity.equity_comfort || "Not specified"}
+                    {record.isDeleted ? "Deleted" : "Active"}
                   </div>
                 </div>
-              </div>
-            </div>
-
-            {/* SECTION E: DollarFar — Pre-Retirement Planning */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-gray-900 rounded-lg">
-                  <Icon icon="mdi:calculator" className="text-xl text-white" />
-                </div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  DollarFar — Pre-Retirement Planning
-                </h2>
-              </div>
-
-              {/* Selected Calculators */}
-              <div className="mb-6">
-                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-3">
-                  Selected Calculators
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {dollarfarPlanning.calculators?.map((calculator, index) => (
-                    <span
-                      key={index}
-                      className="inline-flex items-center px-3 py-1.5 text-sm bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-300 rounded-lg border border-gray-300 dark:border-gray-700"
-                    >
-                      <Icon
-                        icon="mdi:check-circle"
-                        className="mr-1.5 text-emerald-600"
-                      />
-                      {calculator}
-                    </span>
-                  ))}
-                  {(!dollarfarPlanning?.calculators ||
-                    dollarfarPlanning?.calculators?.length === 0) && (
-                    <span className="text-gray-500 dark:text-gray-400 italic text-sm">
-                      No calculators selected
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* Interpretation Services & Consultation Time */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Icon
-                      icon="mdi:account-voice"
-                      className="text-gray-600 dark:text-gray-400"
-                    />
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                      Interpretation Services
-                    </h3>
-                  </div>
-                  <p className="text-base font-semibold text-gray-900 dark:text-white">
-                    {dollarfarPlanning.interpretation_toggle
-                      ? "Enabled"
-                      : "Disabled"}
-                  </p>
-                </div>
-
-                <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Icon
-                      icon="mdi:clock-outline"
-                      className="text-gray-600 dark:text-gray-400"
-                    />
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                      Consultation Time
-                    </h3>
-                  </div>
-                  <p className="text-base font-semibold text-gray-900 dark:text-white">
-                    {dollarfarPlanning.consultation_time
-                      ? formatDate(dollarfarPlanning.consultation_time)
-                      : "Not scheduled"}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* SECTION F: Travel Planning */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-gray-900 rounded-lg">
-                  <Icon icon="mdi:airplane" className="text-xl text-white" />
-                </div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Travel Planning
-                </h2>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                      Months Abroad Per Year
-                    </h3>
-                    <p className="text-base font-semibold text-gray-900 dark:text-white">
-                      {travelPlanning.months_abroad || "Not specified"}
-                    </p>
-                  </div>
-
-                  <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                      Earliest Start Timeline
-                    </h3>
-                    <p className="text-base font-semibold text-gray-900 dark:text-white">
-                      {travelPlanning.start_timeline || "Not specified"}
-                    </p>
-                  </div>
-
-                  <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                      Accommodation Style
-                    </h3>
-                    <p className="text-base font-semibold text-gray-900 dark:text-white">
-                      {travelPlanning.travel_style || "Not specified"}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                      Country/Region Interest
-                    </h3>
-                    <p className="text-base font-semibold text-gray-900 dark:text-white">
-                      {travelPlanning.country_region_interest ||
-                        "Not specified"}
-                    </p>
-                  </div>
-
-                  <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                      Ideal Locations Interest
-                    </h3>
-                    <p className="text-base font-semibold text-gray-900 dark:text-white">
-                      {travelPlanning.ideal_locations_interest ||
-                        "Not specified"}
-                    </p>
-                  </div>
-
-                  <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                      Independent Travel Acknowledgement
-                    </h3>
-                    <p
-                      className={`text-base font-semibold ${
-                        travelPlanning.independent_travel_ack
-                          ? "text-emerald-600"
-                          : "text-gray-600"
-                      }`}
-                    >
-                      {travelPlanning.independent_travel_ack ? "Yes" : "No"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* SECTION G: Budget Estimates */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-gray-900 rounded-lg">
-                  <Icon
-                    icon="mdi:wallet-outline"
-                    className="text-xl text-white"
-                  />
-                </div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Budget Estimates
-                </h2>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                  <div className="flex flex-col items-center text-center">
-                    <Icon
-                      icon="mdi:home-currency-usd"
-                      className="text-2xl text-gray-600 dark:text-gray-400 mb-3"
-                    />
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-                      Monthly Home Budget
-                    </h3>
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">
-                      {formatCurrency(
-                        budgetEstimates.home_spend_monthly as string
-                      )}
-                    </p>
-                  </div>
-                </div>
-                <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                  <div className="flex flex-col items-center text-center">
-                    <Icon
-                      icon="mdi:passport"
-                      className="text-2xl text-gray-600 dark:text-gray-400 mb-3"
-                    />
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-                      Monthly Abroad Budget
-                    </h3>
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">
-                      {formatCurrency(
-                        budgetEstimates?.abroad_budget_season as string
-                      )}
-                    </p>
-                  </div>
-                </div>
-                <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                  <div className="flex flex-col items-center text-center">
-                    <Icon
-                      icon="mdi:airplane-ticket"
-                      className="text-2xl text-gray-600 dark:text-gray-400 mb-3"
-                    />
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-                      Flight & Insurance Budget
-                    </h3>
-                    <p className="text-base font-semibold text-gray-900 dark:text-white">
-                      {budgetEstimates.flights_insurance_budget ||
-                        "Not specified"}
-                    </p>
-                  </div>
-                </div>
-                <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                  <div className="flex flex-col items-center text-center">
-                    <Icon
-                      icon="mdi:airplane-seat"
-                      className="text-2xl text-gray-600 dark:text-gray-400 mb-3"
-                    />
-                    <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-                      Preferred Flight Class
-                    </h3>
-                    <p className="text-base font-semibold text-gray-900 dark:text-white">
-                      {budgetEstimates.flight_class || "Not specified"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* SECTION H: Purpose of Travel */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-gray-900 rounded-lg">
-                  <Icon
-                    icon="mdi:heart-multiple"
-                    className="text-xl text-white"
-                  />
-                </div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Purpose of Travel
-                </h2>
-              </div>
-              <div className="bg-white dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-3">
-                  Selected Travel Purposes
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {record.travel_purposes?.map(
-                    (purpose: string, index: number) => (
-                      <span
-                        key={index}
-                        className="inline-flex items-center px-3 py-1.5 text-sm bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400 rounded-lg border border-blue-200 dark:border-blue-800"
-                      >
-                        <Icon icon="mdi:check-circle" className="mr-1.5" />
-                        {purpose}
-                      </span>
-                    )
-                  )}
-                  {record?.travel_purposes?.length === 0 && (
-                    <span className="text-gray-500 dark:text-gray-400 italic text-sm">
-                      No travel purposes specified
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* SECTION I: Privacy & Pricing */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-5 border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-gray-900 rounded-lg">
-                  <Icon
-                    icon="mdi:shield-check"
-                    className="text-xl text-white"
-                  />
-                </div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Privacy & Pricing
-                </h2>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                {getStatusBadge(
-                  privacyAcknowledgements.ack_poc || false,
-                  "Proof of Concept Acknowledgement"
-                )}
-                {getStatusBadge(
-                  privacyAcknowledgements.consent_contact || false,
-                  "Contact Consent"
-                )}
-                {getStatusBadge(
-                  privacyAcknowledgements.ack_scope || false,
-                  "Scope Acknowledgment"
-                )}
               </div>
             </div>
 

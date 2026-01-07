@@ -374,18 +374,16 @@ export default function StandardLiving(): JSX.Element {
       );
       return setShowError(true);
     }
-    const bookingInfo = {
-      name,
-      email,
-      phone,
-      country,
-      region,
-      selectedDate,
-      selectedSlot,
-      selectedTZ,
+    const subscription = data?.data?._id;
+    const newSessionData = {
+      subscription,
+      contact: { name, email, phone, country, region },
+      slot: selectedSlot,
+      userTZ: selectedTZ?.label,
+      userTZ_IANA: selectedTZ?.value,
     };
-    console.log("Booking Info=============> ", bookingInfo);
-    const res = await bookConsultationSession(bookingInfo);
+
+    const res = await bookConsultationSession(newSessionData);
     if (res?.error) return;
     toast.success(
       "Your consultation session is booked successfully. A member of RetireHow Team will contact you.",
@@ -896,11 +894,14 @@ export default function StandardLiving(): JSX.Element {
                                       </p>
                                     ) : (
                                       availableSlots?.map(
-                                        (slot: {
-                                          utc: string;
-                                          available: boolean;
-                                          providerTime: string;
-                                        }, index:number) => (
+                                        (
+                                          slot: {
+                                            utc: string;
+                                            available: boolean;
+                                            providerTime: string;
+                                          },
+                                          index: number
+                                        ) => (
                                           <Tooltip
                                             title={
                                               !slot.available
@@ -970,9 +971,14 @@ export default function StandardLiving(): JSX.Element {
                             <button
                               onClick={handleBookGuidance}
                               type="button"
-                              className="bg-teal-500 hover:bg-teal-600 duration-300 text-white px-6 py-3 rounded-lg mt-5"
+                              className={`duration-300 text-white px-6 py-3 rounded-lg mt-5 ${
+                                isBookingSession
+                                  ? "bg-gray-300 hover:bg-gray-300 "
+                                  : "bg-teal-500 hover:bg-teal-600 "
+                              }`}
+                              disabled={isBookingSession}
                             >
-                              Book Now
+                              {isBookingSession ? "Booking..." : "Book Now"}
                             </button>
                           </div>
                         </div>

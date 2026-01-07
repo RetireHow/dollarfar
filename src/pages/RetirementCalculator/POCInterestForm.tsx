@@ -1,4 +1,7 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import { useCreatePOCInterestMutation } from "../../redux/features/APIEndpoints/POCInterestApi/POCInterestApi";
+import { toast } from "react-toastify";
+import { showApiErrorToast } from "../../utils/showApiErrorToast";
 
 type POCFormState = {
   first_name: string;
@@ -44,13 +47,24 @@ export default function POCInterestForm(): JSX.Element {
     }
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+  const [createPOCInterest, { isLoading, isError, error }] =
+    useCreatePOCInterestMutation(undefined);
+
+  useEffect(() => {
+    if (isError && !isLoading && error) {
+      showApiErrorToast(error);
+    }
+  }, [isLoading, isError, error]);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!form.first_name || !form.email || !form.ack) {
       return setShowError(true);
     }
 
-    console.log("Form Data=========>", form);
+    const res = await createPOCInterest(form);
+    if (res?.error) return;
+    toast.success("Your form is submitted successfully.", { autoClose: 5000 });
   };
 
   return (
@@ -433,9 +447,14 @@ export default function POCInterestForm(): JSX.Element {
                   <div className="mt-[16px] flex justify-center">
                     <button
                       type="submit"
-                      className="rounded-[12px] border border-[rgba(28,168,168,.30)] bg-[#1ca8a8] px-[16px] py-[12px] text-[14px] font-extrabold text-white shadow-[0_6px_12px_rgba(28,168,168,.10)]"
+                      className={`rounded-[12px] border px-[16px] py-[12px] text-[14px] font-extrabold text-white shadow-[0_6px_12px_rgba(28,168,168,.10)] ${
+                        isLoading
+                          ? "border-gray-300 bg-gray-300"
+                          : "border-[rgba(28,168,168,.30)] bg-[#1ca8a8]"
+                      }`}
+                      disabled={isLoading}
                     >
-                      Submit Interest
+                      {isLoading ? "Submiting" : "Submit Interest"}
                     </button>
                   </div>
 
@@ -452,15 +471,15 @@ export default function POCInterestForm(): JSX.Element {
               <div className="flex flex-wrap justify-between gap-[10px] border-t border-[rgba(18,48,74,.06)] px-[22px] py-[20px] text-[12.6px] text-[#556574]">
                 <div>POC Pathway — RetireHow.com / DollarFar.com</div>
                 <div className="space-x-2">
-                  <a href="/privacy.html" className="underline">
+                  <a href="/retirement-simulator/privacy" className="underline">
                     Privacy Policy
                   </a>{" "}
                   ·
-                  <a href="/terms.html" className="underline">
+                  <a href="/retirement-simulator/terms" className="underline">
                     Terms of Use
                   </a>{" "}
                   ·
-                  <a href="/contact.html" className="underline">
+                  <a href="/retirement-simulator/contact" className="underline">
                     Contact
                   </a>
                 </div>

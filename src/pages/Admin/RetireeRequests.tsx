@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import BookedSessions from "./BookedSessions/BookedSessions";
 import ConsultationScheduleForm from "./BookedSessions/ConsultationScheduleForm";
-import NextStepPlans from "./NextStepPlans/NextStepPlans";
 import RetirementStats from "./NextStepPlans/RetirementStats";
+import POCInterestTable from "./POCInterestTable/POCInterestTable";
 
 export default function RetireeRequests() {
   useEffect(() => {
@@ -12,7 +12,7 @@ export default function RetireeRequests() {
     <main>
       <RetirementStats />
       <BookedSessions />
-      <NextStepPlans />
+      <POCInterestTable />
       <ConsultationScheduleForm />
     </main>
   );

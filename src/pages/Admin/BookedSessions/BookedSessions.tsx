@@ -9,8 +9,6 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { convertUTCToTimeZone } from "../admin.utils";
 
 export const getContactInfo = (record: TSession) => record.contact || {};
-export const getDollarFarPlanning = (record: TSession) =>
-  record.dollarfar_planning || {};
 
 const getSessionStatusColor = (status: string) => {
   switch (status?.toLowerCase()) {
@@ -29,7 +27,7 @@ const getSessionStatusColor = (status: string) => {
 
 // Function to check if a session is upcoming
 const isUpcomingSession = (session: TSession): boolean => {
-  const consultationTime = session.dollarfar_planning?.consultation_time;
+  const consultationTime = session?.slot;
   if (!consultationTime) return false;
 
   const now = new Date();
@@ -217,19 +215,15 @@ export default function BookedSessions() {
 
   // Sort by scheduled time (earliest first)
   const sortedSessions = [...upcomingSessions].sort((a, b) => {
-    const timeA = a.dollarfar_planning?.consultation_time
-      ? new Date(a.dollarfar_planning.consultation_time).getTime()
-      : 0;
-    const timeB = b.dollarfar_planning?.consultation_time
-      ? new Date(b.dollarfar_planning.consultation_time).getTime()
-      : 0;
+    const timeA = a.slot ? new Date(a.slot).getTime() : 0;
+    const timeB = b.slot ? new Date(b.slot).getTime() : 0;
     return timeA - timeB;
   });
 
   // Calculate completed/past sessions
   const completedSessions = allSessions?.filter((session: TSession) => {
     const now = new Date();
-    const consultationTime = session.dollarfar_planning?.consultation_time;
+    const consultationTime = session.slot;
     if (!consultationTime) return false;
 
     const scheduledTime = new Date(consultationTime);
@@ -238,12 +232,8 @@ export default function BookedSessions() {
 
   // Sort by scheduled time (latest first)
   const sortedCompletedSessions = [...completedSessions].sort((a, b) => {
-    const timeA = a.dollarfar_planning?.consultation_time
-      ? new Date(a.dollarfar_planning.consultation_time).getTime()
-      : 0;
-    const timeB = b.dollarfar_planning?.consultation_time
-      ? new Date(b.dollarfar_planning.consultation_time).getTime()
-      : 0;
+    const timeA = a.slot ? new Date(a.slot).getTime() : 0;
+    const timeB = b.slot ? new Date(b.slot).getTime() : 0;
     return timeB - timeA;
   });
 
@@ -310,8 +300,7 @@ export default function BookedSessions() {
               <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
                 {sortedSessions.map((record: TSession) => {
                   const contactInfo = getContactInfo(record);
-                  const dollarfarPlanning = getDollarFarPlanning(record);
-                  const consultationTime = dollarfarPlanning.consultation_time;
+                  const consultationTime = record.slot;
 
                   // Calculate if session is today
                   const isToday = consultationTime
@@ -508,8 +497,7 @@ export default function BookedSessions() {
               <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
                 {sortedCompletedSessions.map((record: TSession) => {
                   const contactInfo = getContactInfo(record);
-                  const dollarfarPlanning = getDollarFarPlanning(record);
-                  const consultationTime = dollarfarPlanning.consultation_time;
+                  const consultationTime = record.slot;
 
                   // Calculate if session is today
                   const isToday = consultationTime

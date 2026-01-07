@@ -49,7 +49,6 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   }
 
   if (result?.error?.status === 401) {
-
     const res = await fetch(`${baseUrl}/auth/refresh-token`, {
       method: "POST",
       credentials: "include",
@@ -90,6 +89,7 @@ export const baseApi = createApi({
     "consultationSession",
     "ScheduleConfig",
     "RecentComparisons",
+    "POCInterest",
   ],
   endpoints: () => ({}),
 });
