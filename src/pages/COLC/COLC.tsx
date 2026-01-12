@@ -16,7 +16,7 @@ const data = {
 };
 
 export default function COLC() {
-  useTitle("Dollarfar | COLC");
+  useTitle("Dollarfar | Cost of living calculator");
 
   const { selectedCityName1, selectedCityName2, COLCModifiedCostData } =
     useAppSelector((state) => state.COLCalculator);

@@ -33,7 +33,7 @@ export const CIRCContributionFrequencyOptions: TOption[] = [
 ];
 
 export default function CIRC() {
-  useTitle("Dollarfar | CIRC");
+  useTitle("Dollarfar | CIR Calculator");
 
   const [isLoading, setIsLoading] = useState(false);
   const [isCalculationCompleted, setIsCalculationCompleted] = useState(false);

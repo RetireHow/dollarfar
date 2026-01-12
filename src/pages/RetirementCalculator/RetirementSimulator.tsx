@@ -20,6 +20,7 @@ import { Modal } from "antd";
 import { Link } from "react-router-dom";
 import PageHero from "../../components/UI/PageHero";
 import { assets } from "../../assets/assets";
+import useTitle from "../../hooks/useTitle";
 
 function MessageBlock({ title, content }: { title: any; content: any }) {
   return (
@@ -214,6 +215,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 // Main component
 const RetirementSimulator: React.FC = () => {
+  useTitle("Dollarfar | Retirement Simulator");
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);

@@ -19,6 +19,7 @@ import PageHero from "../../components/UI/PageHero";
 import { NetIncomeYieldCalculatorPDFModal } from "./NetIncomeYieldCalculatorPDFModal";
 import { useCustomPDF } from "../../hooks/useCustomPDF";
 import { FixedWidthNetIncomeYieldCalculatorPDFTemplate } from "./FixedWidthNetIncomeYieldCalculatorPDFTemplate";
+import useTitle from "../../hooks/useTitle";
 
 const data = {
   title: "Net Income Yield Calculator",
@@ -123,6 +124,8 @@ const chartTooltipFormatter = (value: number, name: string) => {
 
 // Main component
 const NetIncomeYieldCalculator: React.FC = () => {
+  useTitle("Dollarfar | Net Income Yield Calculator");
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);

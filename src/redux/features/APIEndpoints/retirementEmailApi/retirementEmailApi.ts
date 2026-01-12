@@ -35,11 +35,20 @@ const retirementEmailApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["retirementPlanNotes"],
     }),
+
+    sendCustomEmail: builder.mutation({
+      query: (data) => ({
+        url: `/retirement-plan-email/send-email`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
 export const {
   useAddRetirementEmailMutation,
   useGetAllRetirementEmailQuery,
+  useSendCustomEmailMutation,
   useLazyGetAllRetirementEmailQuery,
 } = retirementEmailApi;

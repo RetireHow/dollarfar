@@ -20,7 +20,7 @@ const data = {
 };
 
 export default function NWC() {
-  useTitle("Dollarfar | NWC");
+  useTitle("Dollarfar | Net Worth Calculator");
   const { totalAssets, totalLiabilities, netWorth, assets, liabilities } =
     useAppSelector((state) => state.NWCalculator);
 

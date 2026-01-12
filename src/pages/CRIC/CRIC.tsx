@@ -8,6 +8,7 @@ import { CRICPdf } from "./CRICPdf";
 import { ConfigProvider, theme as antdTheme } from "antd";
 
 import "./CRICDarkmodeStyle.css";
+import useTitle from "../../hooks/useTitle";
 
 const data = {
   title: "Comprehensive Retirement Income Calculator",
@@ -17,6 +18,7 @@ const data = {
 };
 
 export default function CRIC() {
+  useTitle("Dollarfar | CRI Calculator");
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);

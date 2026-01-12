@@ -80,6 +80,8 @@ import POCInterestForm from "../pages/RetirementCalculator/POCInterestForm";
 import Privacy from "../pages/RetirementCalculator/Privacy";
 import Terms from "../pages/RetirementCalculator/Terms";
 import POCInterestDetails from "../pages/Admin/POCInterestTable/POCInterestDetails";
+import HomeEquity from "../pages/HomeEquity/HomeEquity";
+import MoneyStretch from "../pages/MoneyStretch/MoneyStretch";
 
 export const router = createBrowserRouter([
   {
@@ -256,6 +258,14 @@ export const router = createBrowserRouter([
             element: <Summary />,
           },
         ],
+      },
+      {
+        path: "money-stretch",
+        element: <MoneyStretch />,
+      },
+      {
+        path: "home-equity",
+        element: <HomeEquity />,
       },
 
       {

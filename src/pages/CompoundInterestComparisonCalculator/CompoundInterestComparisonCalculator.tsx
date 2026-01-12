@@ -48,8 +48,10 @@ const data = {
 import { ExportInvestmentComparisonPDFModal } from "./ExportInvestmentComparisonPDFModal";
 import { useCustomPDF } from "../../hooks/useCustomPDF";
 import { FixedWidthInvestmentGrowthPDFTemplate } from "./FixedWidthInvestmentGrowthPDFTemplate";
+import useTitle from "../../hooks/useTitle";
 
 export default function CompoundInterestComparisonCalculator() {
+  useTitle("Dollarfar | Compound Interst Scenario Calculator");
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
@@ -316,17 +318,17 @@ export default function CompoundInterestComparisonCalculator() {
               </div>
               <div>
                 <ExportInvestmentComparisonPDFModal
-                setIsGeneratingPDF={setIsGeneratingPDF}
-                isGeneratingPDF={isGeneratingPDF}
-                setPdfError={setPdfError}
-                targetRef={targetRef}
-                toPDF={toPDF}
-              />
-              {pdfError && (
-                <p className="text-red-500 font-semibold text-right my-2">
-                  Error: PDF could not be downloaded!
-                </p>
-              )}
+                  setIsGeneratingPDF={setIsGeneratingPDF}
+                  isGeneratingPDF={isGeneratingPDF}
+                  setPdfError={setPdfError}
+                  targetRef={targetRef}
+                  toPDF={toPDF}
+                />
+                {pdfError && (
+                  <p className="text-red-500 font-semibold text-right my-2">
+                    Error: PDF could not be downloaded!
+                  </p>
+                )}
               </div>
             </div>
           </div>

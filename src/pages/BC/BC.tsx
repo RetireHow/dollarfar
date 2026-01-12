@@ -17,7 +17,7 @@ const data = {
 };
 
 export default function BC() {
-  useTitle("Dollarfar | BC");
+  useTitle("Dollarfar | Budget Calculator");
 
   const {
     income: {

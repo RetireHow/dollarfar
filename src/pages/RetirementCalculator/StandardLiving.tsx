@@ -36,6 +36,7 @@ import { toast } from "react-toastify";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import moment from "moment";
 import { showApiErrorToast } from "../../utils/showApiErrorToast";
+import useTitle from "../../hooks/useTitle";
 
 type ContactInfo = {
   name: string;
@@ -244,6 +245,12 @@ const PaymentModal = (props: {
 );
 
 export default function StandardLiving(): JSX.Element {
+  useTitle("Dollarfar | Standard Living");
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   const [paymentOpen, setPaymentOpen] = useState(false);
   const [showError, setShowError] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState("");
@@ -408,43 +415,44 @@ export default function StandardLiving(): JSX.Element {
         [--soft:rgba(18,48,74,.06)]
         [--shadow:0_14px_34px_rgba(18,48,74,.10)]
         [--radius:18px]
+        dark:bg-gray-900 dark:text-gray-100
       "
     >
       <div className="mx-auto max-w-[980px] px-[14px] pb-[44px] pt-[22px]">
         {/* Topbar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-[14px] border border-[var(--soft)] bg-[var(--paper)] px-[14px] py-[10px]">
-          <div className="text-[13.2px] font-extrabold tracking-[.2px] text-[var(--navy)]">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-[14px] border border-[var(--soft)] bg-[var(--paper)] px-[14px] py-[10px] dark:border-gray-800 dark:bg-gray-800 dark:text-gray-300">
+          <div className="text-[13.2px] font-extrabold tracking-[.2px] text-[var(--navy)] dark:text-blue-100">
             RetireHow.com / DollarFar.com
           </div>
-          <div className="text-[12.6px] font-extrabold text-[var(--muted)]">
+          <div className="text-[12.6px] font-extrabold text-[var(--muted)] dark:text-gray-400">
             Plan · Retire · Travel · Live Better for Less
           </div>
         </div>
 
         {/* Card */}
-        <section className="mt-[14px] overflow-hidden rounded-[18px] border border-[var(--soft)] bg-[var(--paper)] shadow-[var(--shadow)]">
+        <section className="mt-[14px] overflow-hidden rounded-[18px] border border-[var(--soft)] bg-[var(--paper)] shadow-[var(--shadow)] dark:border-gray-800 dark:bg-gray-800 dark:shadow-[0_14px_34px_rgba(0,0,0,.3)]">
           <div className="h-[6px] bg-[var(--teal)]" />
 
-          <div className="px-[28px] pb-[24px] pt-[28px] max-sm:px-[14px] max-sm:pt-[20px]">
-            <h1 className="mb-[14px] text-center text-[28px] font-[750] tracking-[-0.35px] text-[var(--navy)] max-sm:text-[22px]">
+          <div className="px-[28px] pb-[24px] pt-[28px] max-sm:px-[14px] max-sm:pt-[20px] dark:text-gray-300">
+            <h1 className="mb-[14px] text-center text-[28px] font-[750] tracking-[-0.35px] text-[var(--navy)] max-sm:text-[22px] dark:text-blue-50">
               What It Takes to Sustain Your Standard of Living
             </h1>
 
-            <p className="mx-auto mb-[14px] max-w-[66ch] text-center text-[15.2px] font-semibold text-[var(--muted)]">
+            <p className="mx-auto mb-[14px] max-w-[66ch] text-center text-[15.2px] font-semibold text-[var(--muted)] dark:text-gray-400">
               Complete the full retirement check in about an hour.
             </p>
 
-            <div className="mx-auto mb-[18px] max-w-[66ch] rounded-[14px] border border-[var(--soft)] bg-[rgba(18,48,74,.03)] px-[14px] py-[12px] text-center text-[14px] font-extrabold text-[var(--navy)] max-sm:text-left">
-              You don’t need perfect numbers to get value. Start with what you
+            <div className="mx-auto mb-[18px] max-w-[66ch] rounded-[14px] border border-[var(--soft)] bg-[rgba(18,48,74,.03)] px-[14px] py-[12px] text-center text-[14px] font-extrabold text-[var(--navy)] max-sm:text-left dark:border-gray-700 dark:bg-blue-900/10 dark:text-blue-100">
+              You don't need perfect numbers to get value. Start with what you
               know.
             </div>
 
-            <h2 className="mb-[10px] mt-[18px] border-l-[5px] border-[var(--orange)] pl-[10px] text-[16px] font-semibold text-[var(--navy)]">
+            <h2 className="mb-[10px] mt-[18px] border-l-[5px] border-[var(--orange)] pl-[10px] text-[16px] font-semibold text-[var(--navy)] dark:text-blue-100">
               Six Essential Calculators
             </h2>
 
-            <div className="mb-[14px] rounded-[14px] border border-[rgba(242,139,60,.20)] bg-[rgba(242,139,60,.10)] px-[12px] py-[10px] text-[13.4px] font-extrabold text-[var(--navy)]">
-              When you complete all six, you’ll have a clear view of how long
+            <div className="mb-[14px] rounded-[14px] border border-[rgba(242,139,60,.20)] bg-[rgba(242,139,60,.10)] px-[12px] py-[10px] text-[13.4px] font-extrabold text-[var(--navy)] dark:border-orange-300/30 dark:bg-orange-500/10 dark:text-blue-50">
+              When you complete all six, you'll have a clear view of how long
               your money can last — and where it can go further.
             </div>
 
@@ -496,50 +504,59 @@ export default function StandardLiving(): JSX.Element {
               ].map(([num, title, tag, desc, link]) => (
                 <div
                   key={num}
-                  className="flex items-start justify-between gap-[14px] rounded-[18px] border border-[rgba(18,48,74,.08)] bg-[var(--paper)] px-[16px] py-[16px]"
+                  className="flex items-start justify-between gap-[14px] rounded-[18px] border border-[rgba(18,48,74,.08)] bg-[var(--paper)] px-[16px] py-[16px] dark:border-gray-700 dark:bg-gray-800/50"
                 >
                   <div className="flex gap-[12px]">
-                    <div className="mt-[2px] flex h-[28px] w-[28px] items-center justify-center rounded-full border border-[rgba(28,168,168,.22)] bg-[rgba(28,168,168,.10)] text-[14px] font-extrabold text-[var(--navy)]">
+                    <div className="mt-[2px] flex h-[28px] w-[28px] items-center justify-center rounded-full border border-[rgba(28,168,168,.22)] bg-[rgba(28,168,168,.10)] text-[14px] font-extrabold text-[var(--navy)] dark:border-teal-400/30 dark:bg-teal-500/10 dark:text-blue-100">
                       {num}
                     </div>
                     <div>
-                      <div className="text-[15px] font-bold text-[var(--navy)]">
+                      <div className="text-[15px] font-bold text-[var(--navy)] dark:text-blue-100">
                         {title}
                         {tag && (
-                          <span className="ml-[8px] text-[12px] font-extrabold text-[var(--teal)]">
+                          <span className="ml-[8px] text-[12px] font-extrabold text-[var(--teal)] dark:text-teal-300">
                             {tag}
                           </span>
                         )}
                       </div>
-                      <p className="mt-[5px] max-w-[68ch] text-[13.4px] leading-[1.35] text-[var(--muted)]">
+                      <p className="mt-[5px] max-w-[68ch] text-[13.4px] leading-[1.35] text-[var(--muted)] dark:text-gray-400">
                         {desc}
                       </p>
                     </div>
                   </div>
 
-                  <a
-                    href={link as string}
-                    className="rounded-[12px] bg-[var(--teal)] px-[12px] py-[9px] text-[13.8px] font-extrabold text-white shadow-[0_6px_12px_rgba(28,168,168,.10)] hover:brightness-105"
+                  <Link
+                    to={link as string}
+                    className="rounded-[12px] bg-[var(--teal)] px-[12px] py-[9px] text-[13.8px] font-extrabold text-white shadow-[0_6px_12px_rgba(28,168,168,.10)] hover:brightness-105 dark:bg-teal-600 dark:hover:bg-teal-500"
                   >
                     Open
-                  </a>
+                  </Link>
                 </div>
               ))}
             </div>
 
             {/* Cost Escape */}
-            <div className="mt-[18px] rounded-[16px] border border-[rgba(242,139,60,.14)] bg-[rgba(242,139,60,.06)] px-[14px] py-[14px]">
-              <p className="text-[14px] font-extrabold text-[var(--navy)]">
+            <div className="mt-[18px] rounded-[16px] border border-[rgba(242,139,60,.14)] bg-[rgba(242,139,60,.06)] px-[14px] py-[14px] dark:border-orange-300/20 dark:bg-orange-500/10">
+              <p className="text-[14px] font-extrabold text-[var(--navy)] dark:text-blue-50">
                 Earn in a stronger currency. Spend where costs are lower.{" "}
-                <span className="text-[var(--orange)]">
+                <span className="text-[var(--orange)] dark:text-orange-300">
                   Your money lasts longer.
                 </span>
               </p>
-              <p className="mt-[8px] text-[13.4px] text-[var(--muted)]">
-                That’s the Cost Escape™ Dividend — realized{" "}
-                <strong>without market risk</strong>,{" "}
-                <strong>without saving more</strong>, and{" "}
-                <strong>without lifestyle compromise</strong>.
+              <p className="mt-[8px] text-[13.4px] text-[var(--muted)] dark:text-gray-400">
+                That's the Cost Escape™ Dividend — realized{" "}
+                <strong className="dark:text-gray-300">
+                  without market risk
+                </strong>
+                ,{" "}
+                <strong className="dark:text-gray-300">
+                  without saving more
+                </strong>
+                , and{" "}
+                <strong className="dark:text-gray-300">
+                  without lifestyle compromise
+                </strong>
+                .
               </p>
             </div>
 
@@ -555,18 +572,18 @@ export default function StandardLiving(): JSX.Element {
               )}
 
               {/* CTA */}
-              <div className="mt-[18px] rounded-[16px] border border-[var(--soft)] bg-[rgba(28,168,168,.06)] px-[14px] py-[16px]">
-                <h2 className="mb-[10px] border-l-[5px] border-[var(--orange)] pl-[10px] text-[16px] font-semibold text-[var(--navy)]">
+              <div className="mt-[18px] rounded-[16px] border border-[var(--soft)] bg-[rgba(28,168,168,.06)] px-[14px] py-[16px] dark:border-gray-700 dark:bg-teal-500/10">
+                <h2 className="mb-[10px] border-l-[5px] border-[var(--orange)] pl-[10px] text-[16px] font-semibold text-[var(--navy)] dark:text-blue-50">
                   Want a second set of eyes?
                 </h2>
-                <p className="mb-[12px] text-[14px] text-[var(--muted)]">
+                <p className="mb-[12px] text-[14px] text-[var(--muted)] dark:text-gray-400">
                   RetireHow helps you turn insight into action — connecting your
                   results and clarifying the trade-offs that matter.
                 </p>
                 <section className="space-y-5">
                   {/* Enable Interpretation Services  */}
                   <div className="flex justify-end">
-                    <label className="inline-flex rounded-[12px] bg-[var(--teal)] px-[14px] py-[12px] text-[14.5px] font-extrabold text-white shadow-[0_10px_18px_rgba(28,168,168,.14)] cursor-pointer">
+                    <label className="inline-flex rounded-[12px] bg-[var(--teal)] px-[14px] py-[12px] text-[14.5px] font-extrabold text-white shadow-[0_10px_18px_rgba(28,168,168,.14)] cursor-pointer dark:bg-teal-600 dark:hover:bg-teal-500">
                       <span className="mr-3">Enable Human Guidance</span>
                       <ConfigProvider
                         theme={{
@@ -590,7 +607,7 @@ export default function StandardLiving(): JSX.Element {
                   {enabledGuidance && (
                     <>
                       {/* SECTION : Contact Information */}
-                      <div className="border-l-4 border-orange-400 dark:border-gray-300 pl-4">
+                      <div className="border-l-4 border-orange-400 dark:border-orange-500 pl-4">
                         <p className="mb-4 text-md text-gray-700 dark:text-gray-300">
                           Provide your contact information to start subscription
                           for human guidance.
@@ -771,9 +788,9 @@ export default function StandardLiving(): JSX.Element {
                       {/* Subscription Start Button  */}
                       <div>
                         {isLoadingSubscription ? (
-                          <div className="rounded-3xl border px-3 py-6 font-semibold transition-colors h-12 w-full flex justify-center items-center bg-gray-200 animate-pulse">
+                          <div className="rounded-3xl border px-3 py-6 font-semibold transition-colors h-12 w-full flex justify-center items-center bg-gray-200 dark:bg-gray-700 animate-pulse">
                             <Icon
-                              className="text-gray-900"
+                              className="text-gray-900 dark:text-gray-300"
                               icon="line-md:loading-loop"
                               width="30"
                               height="30"
@@ -784,10 +801,10 @@ export default function StandardLiving(): JSX.Element {
                             type="button"
                             onClick={onStartSubscription}
                             disabled={data?.data?.status === "active"}
-                            className={`rounded-3xl border px-3 py-3 font-semibold transition-colors w-full ${
+                            className={`rounded-2xl border px-3 py-3 font-semibold transition-colors w-full ${
                               data?.data?.status === "active"
-                                ? "border-teal-600 bg-teal-500 text-white"
-                                : "border-gray-700 bg-gray-800 hover:border-gray-900 hover:bg-gray-900 duration-300 text-white"
+                                ? "border-teal-600 bg-teal-500 text-white dark:border-teal-500 dark:bg-teal-600"
+                                : "border-gray-700 bg-gray-800 hover:border-gray-900 hover:bg-gray-900 duration-300 text-white dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                             }`}
                           >
                             {data?.data?.status === "active"
@@ -800,7 +817,7 @@ export default function StandardLiving(): JSX.Element {
                       {data?.data?.status === "active" && (
                         <div>
                           {/* 2. BOOKING INSTRUCTIONS */}
-                          <div className="bg-teal-50 dark:bg-blue-900/10 border border-teal-200 dark:border-gray-800 rounded-xl p-4">
+                          <div className="bg-teal-50 dark:bg-blue-900/20 border border-teal-200 dark:border-blue-800 rounded-xl p-4">
                             <h5 className="font-semibold dark:text-gray-300 mb-2">
                               📅 How to Book Your Session:
                             </h5>
@@ -813,18 +830,20 @@ export default function StandardLiving(): JSX.Element {
                           </div>
                           {/* Time Zone Field  */}
                           <div className="my-4">
-                            <div className="font-semibold mb-1 flex justify-between items-center">
+                            <div className="font-semibold mb-1 flex justify-between items-center dark:text-gray-200">
                               <p>
                                 Your Timezone <RedStar />
                               </p>
                               {showError && !selectedTZ && (
-                                <p className="text-red-500">Required*</p>
+                                <p className="text-red-500 dark:text-red-400">
+                                  Required*
+                                </p>
                               )}
                             </div>
                             <Select
                               size="large"
                               status={showError && !selectedTZ ? "error" : ""}
-                              className="w-full !h-[48px]"
+                              className="w-full !h-[48px] dark:[&_.ant-select-selector]:bg-gray-700 dark:[&_.ant-select-selector]:text-white dark:[&_.ant-select-selector]:border-gray-600"
                               value={selectedTZ}
                               onChange={(_, option) => {
                                 setSelectedTZ(
@@ -834,7 +853,7 @@ export default function StandardLiving(): JSX.Element {
                               options={standardTimezoneMap}
                               suffixIcon={
                                 <Icon
-                                  className="text-[1.5rem] text-gray-600"
+                                  className="text-[1.5rem] text-gray-600 dark:text-gray-400"
                                   icon="iconamoon:arrow-down-2"
                                 />
                               }
@@ -861,7 +880,7 @@ export default function StandardLiving(): JSX.Element {
 
                             <div>
                               <DatePicker
-                                className="w-full py-3 px-4 rounded-xl border-gray-400 hover:border-gray-500"
+                                className="w-full py-3 px-4 rounded-xl border-gray-400 hover:border-gray-500 dark:border-gray-600 dark:hover:border-gray-500 dark:bg-gray-700 dark:text-white"
                                 placeholder="Select Consultation Date"
                                 status={
                                   showError && !selectedDate ? "error" : ""
@@ -882,14 +901,14 @@ export default function StandardLiving(): JSX.Element {
                               {selectedDate && (
                                 <div>
                                   <h3
-                                    className="font-bold mb-2"
+                                    className="font-bold mb-2 dark:text-gray-300"
                                     style={{ marginTop: 20 }}
                                   >
                                     Available Slots
                                   </h3>
                                   <div className="flex items-center flex-wrap gap-3">
                                     {slotLoading ? (
-                                      <p className="font-bold text-lg">
+                                      <p className="font-bold text-lg dark:text-gray-300">
                                         Loading...
                                       </p>
                                     ) : (
@@ -908,16 +927,16 @@ export default function StandardLiving(): JSX.Element {
                                                 ? "This is already booked!"
                                                 : ""
                                             }
+                                            key={index}
                                           >
                                             <button
                                               type="button"
-                                              key={index}
-                                              className={`border-[1px] border-orange-300 rounded-md px-2 py-1 ${
+                                              className={`border-[1px] border-orange-300 dark:border-orange-500 rounded-md px-2 py-1 ${
                                                 selectedSlot === slot.utc
-                                                  ? "bg-orange-500 text-white"
+                                                  ? "bg-orange-500 dark:bg-orange-600 text-white"
                                                   : !slot.available
-                                                  ? "bg-gray-300 text-gray-500"
-                                                  : "hover:border-orange-600"
+                                                  ? "bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
+                                                  : "hover:border-orange-600 dark:hover:border-orange-400"
                                               }`}
                                               onClick={() =>
                                                 setSelectedSlot(slot.utc)
@@ -929,11 +948,11 @@ export default function StandardLiving(): JSX.Element {
                                                   className={`${
                                                     selectedSlot === slot.utc
                                                       ? "text-white"
-                                                      : "text-gray-500"
+                                                      : "text-gray-500 dark:text-gray-400"
                                                   }`}
                                                   size={18}
                                                 />
-                                                <p>
+                                                <p className="dark:text-gray-300">
                                                   {moment(slot.utc).format(
                                                     "LT"
                                                   )}
@@ -948,13 +967,13 @@ export default function StandardLiving(): JSX.Element {
                                   {showError &&
                                     !slotLoading &&
                                     !selectedSlot && (
-                                      <p className="text-red-500 font-semibold mt-1">
+                                      <p className="text-red-500 dark:text-red-400 font-semibold mt-1">
                                         Time slot is required*
                                       </p>
                                     )}
 
                                   {availableSlots?.length == 0 && (
-                                    <p className="text-red-500 font-semibold mt-1">
+                                    <p className="text-red-500 dark:text-red-400 font-semibold mt-1">
                                       No slot is available for this date! Please
                                       select another date.
                                     </p>
@@ -973,8 +992,8 @@ export default function StandardLiving(): JSX.Element {
                               type="button"
                               className={`duration-300 text-white px-6 py-3 rounded-lg mt-5 ${
                                 isBookingSession
-                                  ? "bg-gray-300 hover:bg-gray-300 "
-                                  : "bg-teal-500 hover:bg-teal-600 "
+                                  ? "bg-gray-300 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-600"
+                                  : "bg-teal-500 dark:bg-teal-600 hover:bg-teal-600 dark:hover:bg-teal-500"
                               }`}
                               disabled={isBookingSession}
                             >
@@ -987,7 +1006,7 @@ export default function StandardLiving(): JSX.Element {
                       {/* Subscribed Warning Box */}
                       {data?.data?.status === "active" && (
                         <div className="w-full">
-                          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
+                          <div className="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
                             <div className="">
                               <div className="flex-1">
                                 <h4 className="text-lg font-semibold text-amber-800 dark:text-amber-300 mb-2">
@@ -996,7 +1015,7 @@ export default function StandardLiving(): JSX.Element {
 
                                 {/* Essential Subscription Info */}
                                 <div className="flex flex-wrap items-center gap-4 text-lg text-amber-700 dark:text-amber-400 mb-3">
-                                  <div className="flex items-center gap-2 bg-amber-100 dark:bg-amber-800/30 px-3 py-1 rounded-lg">
+                                  <div className="flex items-center gap-2 bg-amber-100 dark:bg-amber-800/40 px-3 py-1 rounded-lg">
                                     <svg
                                       className="w-5 h-5"
                                       fill="none"
@@ -1020,14 +1039,14 @@ export default function StandardLiving(): JSX.Element {
                                           : ""}{" "}
                                         available
                                       </strong>
-                                      <span className="text-md ml-1">
+                                      <span className="text-md ml-1 dark:text-amber-300">
                                         ({data?.data?.sessionsUsed || 0}/
                                         {data?.data?.sessionsPurchased} used)
                                       </span>
                                     </span>
                                   </div>
 
-                                  <div className="flex items-center gap-2 bg-amber-100 dark:bg-amber-800/30 px-3 py-1 rounded-lg">
+                                  <div className="flex items-center gap-2 bg-amber-100 dark:bg-amber-800/40 px-3 py-1 rounded-lg">
                                     <svg
                                       className="w-5 h-5"
                                       fill="none"
@@ -1079,38 +1098,54 @@ export default function StandardLiving(): JSX.Element {
             </Elements>
 
             {/* POC */}
-            <div className="mt-[12px] rounded-[16px] border border-[var(--soft)] bg-[rgba(18,48,74,.02)] px-[14px] py-[16px]">
-              <h2 className="mb-[10px] border-l-[5px] border-[var(--orange)] pl-[10px] text-[16px] font-semibold text-[var(--navy)]">
+            <div className="mt-[12px] rounded-[16px] border border-[var(--soft)] bg-[rgba(18,48,74,.02)] px-[14px] py-[16px] dark:border-gray-700 dark:bg-blue-900/10">
+              <h2 className="mb-[10px] border-l-[5px] border-[var(--orange)] pl-[10px] text-[16px] font-semibold text-[var(--navy)] dark:text-blue-100">
                 Ready to make this real?
               </h2>
-              <p className="mb-[12px] text-[14px] text-[var(--muted)]">
+              <p className="mb-[12px] text-[14px] text-[var(--muted)] dark:text-gray-400">
                 If you want to explore comfort-first seasonal living and see how
                 Cost Escape™ could work in real life, learn about the
                 Proof-of-Concept pathway.
               </p>
-              <Link
-                to="/retirement-simulator/poc-interest"
-                className="inline-flex rounded-[12px] border border-[rgba(18,48,74,.18)] px-[14px] py-[12px] text-[14.5px] font-extrabold text-[var(--navy)] hover:brightness-95"
-              >
-                Explore the POC Pathway
-              </Link>
+              <div className="flex justify-between">
+                <Link
+                  to="/retirement-simulator"
+                  className="rounded-[12px] border border-[rgba(18,48,74,.18)] px-[14px] py-[12px] text-[14.5px] font-extrabold text-[var(--navy)] hover:brightness-95 flex items-center gap-3 hover:bg-teal-500 hover:text-white duration-300 dark:border-gray-700 dark:text-blue-100 dark:hover:bg-teal-600"
+                >
+                  <Icon icon="ep:back" width="24" height="24" />
+                  <span>Go Back</span>
+                </Link>
+                <Link
+                  to="/retirement-simulator/poc-interest"
+                  className="inline-flex rounded-[12px] border border-[rgba(18,48,74,.18)] px-[14px] py-[12px] text-[14.5px] font-extrabold text-[var(--navy)] hover:brightness-95 hover:bg-teal-500 hover:text-white duration-300 dark:border-gray-700 dark:text-blue-100 dark:hover:bg-teal-600"
+                >
+                  Explore the POC Pathway
+                </Link>
+              </div>
             </div>
           </div>
 
           {/* Footer */}
           <div className="h-[8px] bg-[var(--teal)]" />
-          <div className="flex flex-wrap justify-between gap-[10px] border-t border-[var(--soft)] px-[22px] py-[18px] text-[12.6px] text-[var(--muted)]">
+          <div className="flex flex-wrap justify-between gap-[10px] border-t border-[var(--soft)] px-[22px] py-[18px] text-[12.6px] text-[var(--muted)] dark:border-gray-700 dark:text-gray-400">
             <div>Retirement Decision Hub — DollarFar.com</div>
             <div className="space-x-2">
-              <Link to="/retirement-simulator/privacy" className="underline">
+              <Link
+                to="/retirement-simulator/privacy"
+                className="underline dark:text-blue-300 hover:dark:text-blue-200"
+              >
                 Privacy Policy
               </Link>
-              ·
-              <Link to="/retirement-simulator/terms" className="underline">
+              <Link
+                to="/retirement-simulator/terms"
+                className="underline dark:text-blue-300 hover:dark:text-blue-200"
+              >
                 Terms of Use
               </Link>
-              ·
-              <Link to="/retirement-simulator/contact" className="underline">
+              <Link
+                to="/retirement-simulator/contact"
+                className="underline dark:text-blue-300 hover:dark:text-blue-200"
+              >
                 Contact
               </Link>
             </div>
