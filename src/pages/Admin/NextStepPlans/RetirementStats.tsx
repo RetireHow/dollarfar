@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useGetAllConsultationSessoinsQuery } from "../../../redux/features/APIEndpoints/consultationSessionApi/consultationSessionApi";
-import { useGetAllRetirementPlansQuery } from "../../../redux/features/APIEndpoints/retirementPlansApi/retirementPlansApi";
 import { useGetAllActiveConsultationSubscriptionsQuery } from "../../../redux/features/APIEndpoints/consultationSubscriptionApi/consultationSubscription";
+import { useGetAllPOCInterestsQuery } from "../../../redux/features/APIEndpoints/POCInterestApi/POCInterestApi";
 
 // Types (kept as provided)
 export type TSession = {
@@ -246,11 +246,11 @@ function RetirementStatsSkeleton() {
 }
 
 export default function RetirementStats() {
-  const { data: planData, isLoading: plansLoading } =
-    useGetAllRetirementPlansQuery(undefined, {
+  const { data: POCInterests, isLoading: plansLoading } =
+    useGetAllPOCInterestsQuery(undefined, {
       refetchOnMountOrArgChange: true,
     });
-  const retirementPlans: TPlan[] = planData?.data || [];
+  const POCInterestsData: TPlan[] = POCInterests?.data || [];
 
   const { data: sessionData, isLoading: sessionsLoading } =
     useGetAllConsultationSessoinsQuery(undefined, {
@@ -314,7 +314,7 @@ export default function RetirementStats() {
     ? Math.round((totalUsedSessions / totalPurchasedSessions) * 100)
     : 0;
 
-  const recentPlans = retirementPlans?.filter(
+  const recentPlans = POCInterestsData?.filter(
     (plan) =>
       new Date(plan.createdAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
   ).length;
@@ -355,10 +355,10 @@ export default function RetirementStats() {
           <div className="flex items-start justify-between mb-4">
             <div>
               <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">
-                Retirement Plans
+                POC Interests
               </p>
               <p className="text-4xl font-bold text-gray-900 dark:text-white">
-                {retirementPlans?.length || 0}
+                {POCInterestsData?.length || 0}
               </p>
               <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium mt-2 flex items-center gap-1">
                 <Icon icon="mdi:trending-up" className="text-lg" />
@@ -373,7 +373,7 @@ export default function RetirementStats() {
             </div>
           </div>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
-            Total retirement planning submissions
+            Total POC interest submissions
           </p>
         </div>
 

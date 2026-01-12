@@ -9,14 +9,14 @@ import {
   Calendar,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useGetAllRetirementPlansQuery } from "../../redux/features/APIEndpoints/retirementPlansApi/retirementPlansApi";
 import { useGetAllReportUsersQuery } from "../../redux/features/APIEndpoints/reportUsersApi/reportUsersApi";
 import { useGetAllEbookUsersQuery } from "../../redux/features/APIEndpoints/ebookUsersApi/ebookUsersApi";
 import { useGetAllEbookFeedbacksQuery } from "../../redux/features/APIEndpoints/ebookFeedbacksApi/ebookFeedbackApis";
 import { useEffect } from "react";
+import { useGetAllPOCInterestsQuery } from "../../redux/features/APIEndpoints/POCInterestApi/POCInterestApi";
 
 interface DashboardStats {
-  totalRetirementPlans: number;
+  totalPOCInterest: number;
   totalPdfDownloads: number;
   totalEbookDownloads: number;
   totalFeedbacks: number;
@@ -67,7 +67,7 @@ export default function DashboardOverview() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
   const { data: plansData, isLoading } =
-    useGetAllRetirementPlansQuery(undefined);
+    useGetAllPOCInterestsQuery(undefined);
   const { data: pdfData } = useGetAllReportUsersQuery(undefined);
   const { data: ebookData } = useGetAllEbookUsersQuery(undefined);
   const { data: feedbackData } = useGetAllEbookFeedbacksQuery(undefined);
@@ -76,7 +76,7 @@ export default function DashboardOverview() {
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
   const stats: DashboardStats = {
-    totalRetirementPlans: plansData?.data?.length || 0,
+    totalPOCInterest: plansData?.data?.length || 0,
     totalPdfDownloads: pdfData?.data?.length || 0,
     totalEbookDownloads: ebookData?.data?.length || 0,
     totalFeedbacks: feedbackData?.data?.length || 0,
@@ -92,12 +92,12 @@ export default function DashboardOverview() {
 
   const statCards = [
     {
-      title: "Retirement Plans",
-      value: stats?.totalRetirementPlans || 0,
+      title: "POC Interests",
+      value: stats?.totalPOCInterest || 0,
       recent: stats?.recentRetirementPlans || 0,
       icon: Users,
       color: "blue",
-      description: "Total requested retirement plans",
+      description: "Total requested POC interest",
     },
     {
       title: "PDF Reports",
@@ -215,7 +215,7 @@ export default function DashboardOverview() {
               <button className="w-full text-left p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <div className="flex items-center justify-between">
                   <span className="font-medium text-gray-700 dark:text-gray-300">
-                    View Retirement Plans
+                    View POC Interests
                   </span>
                   <Users className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                 </div>
@@ -267,7 +267,7 @@ export default function DashboardOverview() {
               <div className="flex items-center">
                 <Calendar className="w-4 h-4 text-gray-400 dark:text-gray-500 mr-3" />
                 <span className="text-sm text-gray-700 dark:text-gray-300">
-                  New retirement plans today
+                  New POC Interest today
                 </span>
               </div>
               <span className="font-semibold text-gray-900 dark:text-white">
