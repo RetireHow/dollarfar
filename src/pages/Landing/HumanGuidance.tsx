@@ -400,7 +400,7 @@ export default function HumanGuidance(): JSX.Element {
           />
         )}
 
-        <h2 className="mb-[10px] border-l-[5px] border-orange-500 pl-[10px] text-[16px] font-semibold text-[var(--navy)] dark:text-blue-50">
+        <h2 className="mb-[10px] border-l-[5px] border-orange-500 pl-[10px] text-xl font-semibold text-[var(--navy)] dark:text-blue-50">
           Expert Human Guidance for Your Financial Journey
         </h2>
         <p className="mb-4 text-[14px] text-[var(--muted)] dark:text-gray-400">

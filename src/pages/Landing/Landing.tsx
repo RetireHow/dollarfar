@@ -92,13 +92,13 @@ export default function Landing() {
               </p>
             </div>
             <Link to="cost-of-living-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor">
+              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
                 <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
                   <p className="font-semibold text-[18px]">Calculate</p>
-                  <img
-                    className="w-[1.5rem] h-[1.5rem]"
-                    src={assets.arrowUpIcon}
-                    alt="Arrow Icon"
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
                   />
                 </div>
                 <img
@@ -124,13 +124,13 @@ export default function Landing() {
               </p>
             </div>
             <Link to="retirement-simulator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor">
+              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
                 <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
                   <p className="font-semibold text-[18px]">Calculate</p>
-                  <img
-                    className="w-[1.5rem] h-[1.5rem]"
-                    src={assets.arrowUpIcon}
-                    alt="Arrow Icon"
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
                   />
                 </div>
                 <img
@@ -155,13 +155,13 @@ export default function Landing() {
               </p>
             </div>
             <Link to="registered-retirement-savings-plan-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor">
+              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
                 <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
                   <p className="font-semibold text-[18px]">Calculate</p>
-                  <img
-                    className="w-[1.5rem] h-[1.5rem]"
-                    src={assets.arrowUpIcon}
-                    alt="Arrow Icon"
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
                   />
                 </div>
                 <img
@@ -186,13 +186,13 @@ export default function Landing() {
               </p>
             </div>
             <Link to="registered-retirement-income-fund-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor">
+              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
                 <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
                   <p className="font-semibold text-[18px]">Calculate</p>
-                  <img
-                    className="w-[1.5rem] h-[1.5rem]"
-                    src={assets.arrowUpIcon}
-                    alt="Arrow Icon"
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
                   />
                 </div>
                 <img
@@ -218,13 +218,13 @@ export default function Landing() {
               </p>
             </div>
             <Link to="CRIC">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor">
+              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
                 <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
                   <p className="font-semibold text-[18px]">Calculate</p>
-                  <img
-                    className="w-[1.5rem] h-[1.5rem]"
-                    src={assets.arrowUpIcon}
-                    alt="Arrow Icon"
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
                   />
                 </div>
                 <img
@@ -262,13 +262,13 @@ export default function Landing() {
               </p>
             </div>
             <Link to="compound-interest-rate-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor">
+              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
                 <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
                   <p className="font-semibold text-[18px]">Calculate</p>
-                  <img
-                    className="w-[1.5rem] h-[1.5rem]"
-                    src={assets.arrowUpIcon}
-                    alt="Arrow Icon"
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
                   />
                 </div>
                 <img
@@ -293,13 +293,13 @@ export default function Landing() {
               </p>
             </div>
             <Link to="compound-interest-comparison-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor">
+              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
                 <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
                   <p className="font-semibold text-[18px]">Calculate</p>
-                  <img
-                    className="w-[1.5rem] h-[1.5rem]"
-                    src={assets.arrowUpIcon}
-                    alt="Arrow Icon"
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
                   />
                 </div>
                 <img
@@ -325,13 +325,13 @@ export default function Landing() {
               </p>
             </div>
             <Link to="net-worth-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor">
+              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
                 <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
                   <p className="font-semibold text-[18px]">Calculate</p>
-                  <img
-                    className="w-[1.5rem] h-[1.5rem]"
-                    src={assets.arrowUpIcon}
-                    alt="Arrow Icon"
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
                   />
                 </div>
                 <img
@@ -357,13 +357,13 @@ export default function Landing() {
               </p>
             </div>
             <Link to="budget-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor">
+              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
                 <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
                   <p className="font-semibold text-[18px]">Calculate</p>
-                  <img
-                    className="w-[1.5rem] h-[1.5rem]"
-                    src={assets.arrowUpIcon}
-                    alt="Arrow Icon"
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
                   />
                 </div>
                 <img
@@ -390,13 +390,13 @@ export default function Landing() {
               </p>
             </div>
             <Link to="net-income-yield-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor">
+              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
                 <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
                   <p className="font-semibold text-[18px]">Calculate</p>
-                  <img
-                    className="w-[1.5rem] h-[1.5rem]"
-                    src={assets.arrowUpIcon}
-                    alt="Arrow Icon"
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
                   />
                 </div>
                 <img
@@ -436,14 +436,10 @@ export default function Landing() {
               </p>
             </div>
             <Link to="mortgage-calculator-canada">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor">
+              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
                 <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
                   <p className="font-semibold text-[18px]">Calculate</p>
-                  <img
-                    className="w-[1.5rem] h-[1.5rem]"
-                    src={assets.arrowUpIcon}
-                    alt="Arrow Icon"
-                  />
+                  <Icon icon="akar-icons:arrow-up-right" width="24" height="24" />
                 </div>
                 <img
                   className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
@@ -468,14 +464,10 @@ export default function Landing() {
               </p>
             </div>
             <Link to="mortgage-calculator-america">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor">
+              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
                 <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
                   <p className="font-semibold text-[18px]">Calculate</p>
-                  <img
-                    className="w-[1.5rem] h-[1.5rem]"
-                    src={assets.arrowUpIcon}
-                    alt="Arrow Icon"
-                  />
+                  <Icon icon="akar-icons:arrow-up-right" width="24" height="24" />
                 </div>
                 <img
                   className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
@@ -501,14 +493,10 @@ export default function Landing() {
               </p>
             </div>
             <Link to="mortgage-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor">
+              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
                 <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
                   <p className="font-semibold text-[18px]">Calculate</p>
-                  <img
-                    className="w-[1.5rem] h-[1.5rem]"
-                    src={assets.arrowUpIcon}
-                    alt="Arrow Icon"
-                  />
+                  <Icon icon="akar-icons:arrow-up-right" width="24" height="24" />
                 </div>
                 <img
                   className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
