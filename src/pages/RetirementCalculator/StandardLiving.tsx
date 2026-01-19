@@ -577,7 +577,7 @@ export default function StandardLiving(): JSX.Element {
                   Want a second set of eyes?
                 </h2>
                 <p className="mb-[12px] text-[14px] text-[var(--muted)] dark:text-gray-400">
-                  RetireHow helps you turn insight into action — connecting your
+                  RetireHow team helps you turn insight into action — connecting your
                   results and clarifying the trade-offs that matter.
                 </p>
                 <section className="space-y-5">
@@ -727,7 +727,7 @@ export default function StandardLiving(): JSX.Element {
                             >
                               <div className="flex justify-between items-center">
                                 <p>
-                                  Residential Province <RedStar />
+                                  Province/State <RedStar />
                                 </p>
                                 {showError && !region && (
                                   <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-md">
@@ -744,7 +744,7 @@ export default function StandardLiving(): JSX.Element {
                               maxLength={60}
                               value={region}
                               onChange={(e) => setRegion(e.target.value)}
-                              placeholder="Enter residential state/province"
+                              placeholder="Enter state/province"
                               className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${toggleErrorBorderColor(
                                 region,
                                 "region"
@@ -758,7 +758,7 @@ export default function StandardLiving(): JSX.Element {
                             >
                               <div className="flex justify-between items-center">
                                 <p>
-                                  Residential Country <RedStar />
+                                  Country <RedStar />
                                 </p>
                                 {showError && !country && (
                                   <p className="text-red-500 dark:text-red-400 font-bold md:text-[1rem] text-md">
@@ -775,7 +775,7 @@ export default function StandardLiving(): JSX.Element {
                               maxLength={60}
                               value={country}
                               onChange={(e) => setCountry(e.target.value)}
-                              placeholder="Enter residential country"
+                              placeholder="Enter country"
                               className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${toggleErrorBorderColor(
                                 country,
                                 "country"

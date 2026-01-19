@@ -2,13 +2,14 @@ import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useCreatePOCInterestMutation } from "../../redux/features/APIEndpoints/POCInterestApi/POCInterestApi";
 import { toast } from "react-toastify";
 import { showApiErrorToast } from "../../utils/showApiErrorToast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import useTitle from "../../hooks/useTitle";
 
 type POCFormState = {
-  first_name: string;
+  full_name: string;
   email: string;
+  phone: string;
   country: string;
   participating_as: string;
   duration: string;
@@ -25,8 +26,9 @@ export default function POCInterestForm(): JSX.Element {
   }, []);
 
   const [form, setForm] = useState<POCFormState>({
-    first_name: "",
+    full_name: "",
     email: "",
+    phone: "",
     country: "",
     participating_as: "",
     duration: "",
@@ -67,7 +69,7 @@ export default function POCInterestForm(): JSX.Element {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!form.first_name || !form.email || !form.ack) {
+    if (!form.full_name || !form.email || !form.phone || !form.ack) {
       return setShowError(true);
     }
 
@@ -75,6 +77,8 @@ export default function POCInterestForm(): JSX.Element {
     if (res?.error) return;
     toast.success("Your form is submitted successfully.", { autoClose: 5000 });
   };
+
+  const navigate = useNavigate();
 
   return (
     <main
@@ -141,7 +145,7 @@ export default function POCInterestForm(): JSX.Element {
                     day-to-day fit
                   </li>
                   <li className="my-[6px]">
-                    Supported by RetireHow's on-the-ground concierge layer
+                    Supported by RetireHow's on-the-ground concierge team
                   </li>
                 </ul>
               </div>
@@ -226,21 +230,21 @@ export default function POCInterestForm(): JSX.Element {
                     We'll use this to follow up and suggest a next step.
                   </p>
 
-                  <div className="grid grid-cols-2 gap-[12px] max-[760px]:grid-cols-1">
+                  <div className="grid md:grid-cols-3 grid-cols-1 gap-[12px]">
                     <div className="rounded-[16px] border border-[rgba(18,48,74,.06)] bg-white p-[14px] dark:border-gray-700 dark:bg-gray-700/50">
                       <label className="mb-[8px] block text-[13.6px] font-bold text-[#12304a] dark:text-blue-100">
-                        First name
+                        Full name
                       </label>
                       <input
                         type="text"
-                        name="first_name"
-                        value={form.first_name}
+                        name="full_name"
+                        value={form.full_name}
                         onChange={handleChange}
-                        placeholder="Enter your first name"
+                        placeholder="Enter your full name"
                         required
                         className="w-full rounded-[12px] border border-[rgba(18,48,74,.14)] px-[12px] py-[12px] text-[14px] outline-none focus:border-[rgba(28,168,168,.45)] focus:ring-4 focus:ring-[rgba(28,168,168,.10)] dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-teal-500 dark:focus:ring-teal-500/20"
                       />
-                      {showError && !form.first_name && (
+                      {showError && !form.full_name && (
                         <p className="text-red-500 dark:text-red-400 font-semibold mt-1 text-sm">
                           This field is required*
                         </p>
@@ -261,6 +265,25 @@ export default function POCInterestForm(): JSX.Element {
                         className="w-full rounded-[12px] border border-[rgba(18,48,74,.14)] px-[12px] py-[12px] text-[14px] outline-none focus:border-[rgba(28,168,168,.45)] focus:ring-4 focus:ring-[rgba(28,168,168,.10)] dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-teal-500 dark:focus:ring-teal-500/20"
                       />
                       {showError && !form.email && (
+                        <p className="text-red-500 dark:text-red-400 font-semibold mt-1 text-sm">
+                          This field is required*
+                        </p>
+                      )}
+                    </div>
+                    <div className="rounded-[16px] border border-[rgba(18,48,74,.06)] bg-white p-[14px] dark:border-gray-700 dark:bg-gray-700/50">
+                      <label className="mb-[8px] block text-[13.6px] font-bold text-[#12304a] dark:text-blue-100">
+                        Phone
+                      </label>
+                      <input
+                        type="text"
+                        name="phone"
+                        value={form.phone}
+                        onChange={handleChange}
+                        placeholder="Enter your phone"
+                        required
+                        className="w-full rounded-[12px] border border-[rgba(18,48,74,.14)] px-[12px] py-[12px] text-[14px] outline-none focus:border-[rgba(28,168,168,.45)] focus:ring-4 focus:ring-[rgba(28,168,168,.10)] dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-teal-500 dark:focus:ring-teal-500/20"
+                      />
+                      {showError && !form.phone && (
                         <p className="text-red-500 dark:text-red-400 font-semibold mt-1 text-sm">
                           This field is required*
                         </p>
@@ -460,13 +483,13 @@ export default function POCInterestForm(): JSX.Element {
 
                   {/* Submit */}
                   <div className="flex justify-between my-8">
-                    <Link
-                      to="/retirement-simulator/standard-living"
+                    <button
+                      onClick={() => navigate(-1)}
                       className="rounded-[12px] border border-[rgba(18,48,74,.18)] px-[14px] py-[12px] text-[14.5px] font-extrabold text-[var(--navy)] hover:brightness-95 flex items-center gap-3 hover:bg-teal-500 hover:text-white duration-300 dark:border-gray-700 dark:text-blue-100 dark:hover:bg-teal-600"
                     >
                       <Icon icon="ep:back" width="24" height="24" />
                       <span>Go Back</span>
-                    </Link>
+                    </button>
                     <button
                       type="submit"
                       className={`rounded-[12px] border px-[16px] py-[12px] text-[14px] font-extrabold text-white shadow-[0_6px_12px_rgba(28,168,168,.10)] ${
