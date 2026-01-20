@@ -19,7 +19,7 @@ export default function Footer() {
               to="/terms-and-condition"
               className="hover:text-white hover:underline transition-colors"
             >
-              Terms & Conditions
+              Terms of Use
             </Link>
           </li>
           <li>

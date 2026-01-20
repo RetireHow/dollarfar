@@ -50,9 +50,7 @@ import { MortgageCalculatorCanada } from "../pages/MortgageCalculatorCanada/Mort
 import { MortgageCalculatorAmerica } from "../pages/MortgageCalculatorAmerica/MortgageCalculatorAmerica";
 import { MortgageCalculator } from "../pages/Mortgage/MortgageCalculator";
 import BookLandingPage from "../pages/Landing/BookLandingPage/BookLandingPage";
-import PrivacyPolicy from "../pages/Policies/PrivacyPolicy";
 import RefundPolicy from "../pages/Policies/RefundPolicy";
-import TermsAndConditions from "../pages/Policies/TermsAndConditions";
 import FeedbackForm from "../pages/Landing/BookLandingPage/FeedbackForm";
 import PaymentSuccess from "../pages/Landing/BookLandingPage/PaymentSuccess";
 import PaymentCancel from "../pages/Landing/BookLandingPage/PaymentCancel";
@@ -75,13 +73,14 @@ import RetirementPanel from "../pages/Admin/Panels/RetirementPanel";
 import RetireeRequests from "../pages/Admin/RetireeRequests";
 import EmailsUI from "../pages/EmailsUI";
 import StandardLiving from "../pages/RetirementCalculator/StandardLiving";
-import Contact from "../pages/RetirementCalculator/Contact";
+import Contact from "../pages/Policies/Contact";
 import POCInterestForm from "../pages/RetirementCalculator/POCInterestForm";
-import Privacy from "../pages/RetirementCalculator/Privacy";
-import Terms from "../pages/RetirementCalculator/Terms";
+import Privacy from "../pages/Policies/Privacy";
+import Terms from "../pages/Policies/Terms";
 import POCInterestDetails from "../pages/Admin/POCInterestTable/POCInterestDetails";
 import HomeEquity from "../pages/HomeEquity/HomeEquity";
 import MoneyStretch from "../pages/MoneyStretch/MoneyStretch";
+import EquityAccessComparison from "../pages/EquityAccessComparison/EquityAccessComparison";
 
 export const router = createBrowserRouter([
   {
@@ -264,8 +263,8 @@ export const router = createBrowserRouter([
         element: <MoneyStretch />,
       },
       {
-        path: "home-equity",
-        element: <HomeEquity />,
+        path: "equity-access-comparison",
+        element: <EquityAccessComparison />,
       },
 
       {
@@ -325,7 +324,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "privacy-policy",
-        element: <PrivacyPolicy />,
+        element: <Privacy />,
       },
       {
         path: "refund-policy",
@@ -333,7 +332,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "terms-and-condition",
-        element: <TermsAndConditions />,
+        element: <Terms />,
       },
       {
         path: "feedback-form",

@@ -158,7 +158,8 @@ export default function Terms(): JSX.Element {
               we update them, we will revise the "Last updated" date.
             </p>
             <p className="dark:text-gray-300">
-              <strong className="dark:text-blue-100">Last updated:</strong> December 16, 2025
+              <strong className="dark:text-blue-100">Last updated:</strong>{" "}
+              December 16, 2025
             </p>
 
             <h2 className="mt-[18px] mb-[10px] border-l-[6px] border-[#f28b3c] pl-[12px] text-[18px] font-semibold text-[#12304a] dark:text-blue-50">
@@ -169,7 +170,10 @@ export default function Terms(): JSX.Element {
             </p>
             <p className="dark:text-gray-300">
               <strong className="dark:text-blue-100">Contact:</strong>{" "}
-              <Link to="/contact" className="underline dark:text-blue-300 hover:dark:text-blue-200">
+              <Link
+                to="/retirement-simulator/contact"
+                className="underline dark:text-blue-300 hover:dark:text-blue-200"
+              >
                 /contact
               </Link>
             </p>

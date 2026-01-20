@@ -54,7 +54,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ====================== || Calculators ||=================  */}
+      {/* ====================== || Header ||=================  */}
       <div className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem]">
         <div className="text-center md:mt-[5rem] mt-[3rem] md:mb-[2.5rem] mb-[1.5rem]">
           <h1 className="font-bold md:text-[2.5rem] text-[20px] md:mb-0 mb-2 dark:text-darkModeHeadingTextColor">
@@ -102,7 +102,7 @@ export default function Landing() {
                   />
                 </div>
                 <img
-                  className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
+                  className="md:w-[150px] w-[90px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
                   src={assets.costOfLivingCalcIcon}
                   alt="Calculator Icon"
                 />
@@ -124,6 +124,36 @@ export default function Landing() {
               </p>
             </div>
             <Link to="retirement-simulator">
+              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
+                <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
+                  <p className="font-semibold text-[18px]">Calculate</p>
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
+                  />
+                </div>
+                <img
+                  className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
+                  src={assets.whiteBarChart}
+                  alt="Retirement Simulator Icon"
+                />
+              </div>
+            </Link>
+          </div>
+
+          {/* Card 3: Equity Access Comparison Tool */}
+          <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:text-teal-600">
+            <div className="pt-[1.5rem] px-[1.5rem]">
+              <h3 className="md:text-xl text-md font-bold mb-[1rem] dark:text-darkModeHeadingTextColor">
+                Equity Access Comparison Tool
+              </h3>
+              <p className="md:text-[18px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
+                Compare the long-term costs, interest, and equity usage between HELOC and Reverse Mortgage options. 
+          This tool helps you plan financial decisions while understanding future home value and debt impact.
+              </p>
+            </div>
+            <Link to="equity-access-comparison">
               <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
                 <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
                   <p className="font-semibold text-[18px]">Calculate</p>
@@ -694,7 +724,7 @@ export default function Landing() {
       <HumanGuidance />
 
       {/* Book Section  */}
-      <section className="bg-[#EDF3F8] dark:bg-neutral-800 flex md:flex-row flex-col items-center justify-center md:px-20 md:py-16 py-5 px-5 md:gap-16 gap-5 mt-20">
+      <section className="bg-teal-50 dark:bg-neutral-800 flex md:flex-row flex-col items-center justify-center md:px-20 md:py-16 py-5 px-5 md:gap-16 gap-5 mt-20">
         <img src={assets.bookCoverPageWithBadge} alt="Book Cover Page" />
 
         <div>

@@ -179,7 +179,7 @@ export default function Privacy(): JSX.Element {
             </p>
             <p className="dark:text-gray-300">
               <strong className="dark:text-blue-100">Contact:</strong>{" "}
-              <Link to="/contact" className="underline dark:text-blue-300 hover:dark:text-blue-200">
+              <Link to="/retirement-simulator/contact" className="underline dark:text-blue-300 hover:dark:text-blue-200">
                 /contact
               </Link>
             </p>
