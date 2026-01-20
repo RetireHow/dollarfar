@@ -78,7 +78,6 @@ import POCInterestForm from "../pages/RetirementCalculator/POCInterestForm";
 import Privacy from "../pages/Policies/Privacy";
 import Terms from "../pages/Policies/Terms";
 import POCInterestDetails from "../pages/Admin/POCInterestTable/POCInterestDetails";
-import HomeEquity from "../pages/HomeEquity/HomeEquity";
 import MoneyStretch from "../pages/MoneyStretch/MoneyStretch";
 import EquityAccessComparison from "../pages/EquityAccessComparison/EquityAccessComparison";
 
