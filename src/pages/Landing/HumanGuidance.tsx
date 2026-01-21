@@ -401,12 +401,10 @@ export default function HumanGuidance(): JSX.Element {
         )}
 
         <h2 className="mb-[10px] border-l-[5px] border-orange-500 pl-[10px] text-xl font-semibold text-[var(--navy)] dark:text-blue-50">
-          Expert Human Guidance for Your Financial Journey
+          Human Guidance for Your Financial Journey
         </h2>
         <p className="mb-4 text-[14px] text-[var(--muted)] dark:text-gray-400">
-          Get personalized 1-on-1 consultations with our financial experts to
-          review your retirement plans, discuss calculator results, and create
-          actionable strategies tailored to your situation.
+          DollarFar’s six free calculators turn scattered numbers into clarity — showing how long savings may last and where money can go further. Optional guided interpretation walks through results and trade-offs. The $199 subscription includes two 30-minute sessions with the RetireHow team — not advice, just clarity before decisions are tested.
         </p>
         <section className="space-y-5">
           {/* SECTION : Contact Information */}
