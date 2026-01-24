@@ -127,7 +127,7 @@ export default function MoneyStretch(): JSX.Element {
 
           <section className="bg-gradient-to-r from-teal-50 to-orange-50 rounded-xl shadow-sm p-6 mb-6">
             <h2 className="font-semibold mb-4">Start</h2>
-            <label className="block text-sm font-medium mb-1">
+            <label className="block text-sm font-bold mb-1">
               Home country
             </label>
             <select
@@ -148,7 +148,7 @@ export default function MoneyStretch(): JSX.Element {
               <div>
                 <h2 className="font-semibold text-lg mb-4">Inputs</h2>
 
-                <label className="text-sm font-medium">
+                <label className="text-sm font-bold">
                   Investment portfolio (liquid) — optional
                 </label>
                 <input
@@ -163,7 +163,7 @@ export default function MoneyStretch(): JSX.Element {
                   Used to estimate the “equivalent return” of savings.
                 </p>
 
-                <label className="text-sm font-medium mt-4 block">
+                <label className="text-sm font-bold mt-4 block">
                   Planned withdrawal rate on portfolio (%) — optional
                 </label>
                 <input
@@ -175,7 +175,7 @@ export default function MoneyStretch(): JSX.Element {
                   }
                 />
 
-                <label className="text-sm font-medium mt-6 block">
+                <label className="text-sm font-bold mt-6 block">
                   Estimated cost of living in your home country (monthly)
                 </label>
                 <input
@@ -188,18 +188,18 @@ export default function MoneyStretch(): JSX.Element {
                 />
                 <div className="flex gap-2 mt-2">
                   <Link to="/budget-calculator">
-                    <button className="text-xs border hover:border-teal-300 px-4 py-2 rounded-lg bg-teal-50">
+                    <button className="text-xs border hover:border-teal-300 px-4 py-2 rounded-lg bg-teal-50 font-bold">
                       Open Budget Calculator
                     </button>
                   </Link>
                   <Link to="/cost-of-living-calculator">
-                    <button className="text-xs border hover:border-teal-300 px-4 py-2 rounded-lg bg-teal-50">
+                    <button className="text-xs border hover:border-teal-300 px-4 py-2 rounded-lg bg-teal-50 font-bold">
                       Open Cost-of-Living Comparison
                     </button>
                   </Link>
                 </div>
 
-                <label className="text-sm font-medium mt-6 block">
+                <label className="text-sm font-bold mt-6 block">
                   Estimated cost of living / budget in your destination country
                   (monthly)
                 </label>
@@ -214,18 +214,18 @@ export default function MoneyStretch(): JSX.Element {
                 <div className="flex gap-2 mt-2">
                   {" "}
                   <Link to="/budget-calculator">
-                    <button className="text-xs border hover:border-teal-300 px-4 py-2 rounded-lg bg-teal-50">
+                    <button className="text-xs border hover:border-teal-300 px-4 py-2 rounded-lg bg-teal-50 font-bold">
                       Open Budget Calculator
                     </button>
                   </Link>
                   <Link to="/cost-of-living-calculator">
-                    <button className="text-xs border hover:border-teal-300 px-4 py-2 rounded-lg bg-teal-50">
+                    <button className="text-xs border hover:border-teal-300 px-4 py-2 rounded-lg bg-teal-50 font-bold">
                       Open Cost-of-Living Comparison
                     </button>
                   </Link>
                 </div>
 
-                <label className="text-sm font-medium mt-6 block">
+                <label className="text-sm font-bold mt-6 block">
                   Travel + travel insurance + permits/visas (annual total)
                 </label>
                 <input
@@ -237,7 +237,7 @@ export default function MoneyStretch(): JSX.Element {
                   }
                 />
 
-                <label className="text-sm font-medium mt-4 block">
+                <label className="text-sm font-bold mt-4 block">
                   Months away per year
                 </label>
                 <input
@@ -277,19 +277,19 @@ export default function MoneyStretch(): JSX.Element {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="border rounded-lg p-4">
-                    <p className="text-sm">Money you keep each year</p>
+                    <p className="text-sm font-bold">Money you keep each year</p>
                     <p className="font-bold text-lg">
                       {results ? fmt(results.savings) : "—"}
                     </p>
                   </div>
                   <div className="border rounded-lg p-4">
-                    <p className="text-sm">Months until you come out ahead</p>
+                    <p className="text-sm font-bold">Months until you come out ahead</p>
                     <p className="font-bold text-lg">
                       {results ? results.breakeven : "—"}
                     </p>
                   </div>
                   <div className="border rounded-lg p-4">
-                    <p className="text-sm">
+                    <p className="text-sm font-bold">
                       What investment return this equals
                     </p>
                     <p className="font-bold text-lg">
@@ -297,7 +297,7 @@ export default function MoneyStretch(): JSX.Element {
                     </p>
                   </div>
                   <div className="border rounded-lg p-4">
-                    <p className="text-sm">
+                    <p className="text-sm font-bold">
                       How long your savings could last with this plan
                     </p>
                     <p className="font-bold text-lg">
@@ -319,7 +319,7 @@ export default function MoneyStretch(): JSX.Element {
                       </button>
                     </Link>
                     <Link to="/retirement-simulator/poc-interest">
-                      <button className="bg-slate-900 text-white px-4 py-2 rounded-lg">
+                      <button className="bg-slate-900 text-white px-4 py-2 rounded-lg font-bold">
                         Open City Fit Tool
                       </button>
                     </Link>
