@@ -32,10 +32,10 @@ function MessageBlock({ title, content }: { title: any; content: any }) {
 }
 
 const data = {
-  title: "Retirement Simulator",
+  title: "60-Second Retirement Simulator",
   description:
     "Project your retirement future. This powerful simulator forecasts savings growth, identifies financial gaps, and provides actionable insights to secure your golden years with confidence.",
-  image: assets.compoundInterestCalcIcon,
+  image: assets.retirementSimulator,
 };
 
 // Types (unchanged)
@@ -529,7 +529,7 @@ const RetirementSimulator: React.FC = () => {
           <div className="p-4 bg-white dark:bg-gray-800 dark:text-gray-100 flex md:flex-row flex-col md:gap-0 gap-3 justify-between items-center">
             <h1 className="text-2xl font-bold flex items-center gap-2">
               <Icon icon="mdi:finance" className="text-3xl" />
-              Retirement Simulator
+              60-Second Retirement Simulator
             </h1>
             <div className="flex flex-col">
               <RetirementSimulatorPDFModal

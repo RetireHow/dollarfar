@@ -485,7 +485,7 @@ export default function StandardLiving(): JSX.Element {
                   "Home-Equity Access Tool",
                   null,
                   "See how your home can support retirement cash flow — without losing sight of what comes next.",
-                  "/home-equity",
+                  "/equity-access-comparison",
                 ],
                 [
                   5,

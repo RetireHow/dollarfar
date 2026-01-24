@@ -9,10 +9,10 @@ import CityMovingCard from "./CityMovingCard";
 import CloseCityList from "./CloseCityList";
 
 const data = {
-  title: "Cost of Living Comparison Calculator",
+  title: "Cost-of-Living Comparison (9,000 Cities)",
   description:
     "This tool compares the cost of living between two locations by evaluating expenses like housing, transportation, food, and utilities. It provides a clear picture of how living costs vary, helping you make informed decisions about relocation or budgeting.",
-  image: assets.costOfLeavingFrame,
+  image: assets.costOfLiving,
 };
 
 export default function COLC() {
@@ -27,7 +27,7 @@ export default function COLC() {
         <PageHero data={data} />
       </div>
 
-      <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] dark:border-darkModeBorderColor rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[3rem]">
+      <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] dark:border-darkModeBorderColor rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[3rem] bg-gradient-to-r from-teal-50 to-orange-50 mt-8">
         <COLCForm />
         {!COLCModifiedCostData?.output ? (
           <div className="flex justify-center">

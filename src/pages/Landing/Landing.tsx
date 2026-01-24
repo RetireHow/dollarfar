@@ -36,7 +36,7 @@ export default function Landing() {
             <div className="flex lg:justify-start justify-center">
               <button
                 onClick={handleGetStarted}
-                className="bg-black text-white dark:text-darkModeHeadingTextColor dark:border-[1px] md:text-[18px] text-[1rem] font-bold flex items-center justify-center gap-3 px-8 py-2 rounded-[10px] mt-[2.5rem] hover:scale-105 duration-300 animate-bounce hover:animate-none"
+                className="bg-teal-600 text-white dark:text-darkModeHeadingTextColor dark:border-[1px] md:text-[18px] text-[1rem] font-bold flex items-center justify-center gap-3 px-8 py-2 rounded-[10px] mt-[2.5rem] hover:scale-105 duration-300 animate-bounce hover:animate-none"
               >
                 <span>Get Started</span>
                 <img src={assets.arrowWhite} alt="Arrow Icon" />
@@ -68,64 +68,39 @@ export default function Landing() {
       </div>
 
       {/* Retirement Decision Lab Tools  */}
-      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-gray-300 dark:border-gray-600 rounded-xl bg-teal-50 dark:bg-gray-900">
+      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-orange-200 dark:border-gray-600 rounded-xl bg-gradient-to-r from-teal-50 to-orange-50  dark:bg-gray-900">
         <div className="mb-5">
           <h1 className="text-2xl font-bold mb-1">Retirement Decision Lab</h1>
           <p className="text-lg">
-            What It Takes to Sustain Your Standard of Living. Complete the full
-            retirement check in about an hour.
+            When you complete all six, you'll have a clear view of how long your
+            money can last — and where it can go further.
           </p>
         </div>
 
-        <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 md:gap-[2.5rem] gap-[2rem]">
-          {/* Card 1: Cost of Living Comparison Calculator */}
-          <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:text-teal-600">
-            <div className="pt-[1.5rem] px-[1.5rem]">
-              <h3 className="md:text-xl text-md font-bold mb-[1rem] dark:text-darkModeHeadingTextColor">
-                Cost of Living Comparison Calculator
-              </h3>
-              <p className="md:text-[18px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
-                This calculator is used to compare the expenses required to
-                maintain a certain standard of living in different locations or
-                cities. It calculates the necessary income to sustain your
-                lifestyle.....
-              </p>
-            </div>
-            <Link to="cost-of-living-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
-                <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
-                  <p className="font-semibold text-[18px]">Calculate</p>
-                  <Icon
-                    icon="akar-icons:arrow-up-right"
-                    width="24"
-                    height="24"
-                  />
+        <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
+          {/* Card 1: Retirement Simulator */}
+          <Link to="retirement-simulator">
+            <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-4 hover:text-teal-600 border-t-[5px] border-teal-500 h-full">
+              <div>
+                <div className="flex items-start gap-3">
+                  <p className="flex h-[28px] w-[35px] items-center justify-center rounded-full border-[1px] border-orange-200 text-orange-500 bg-orange-100  text-[14px] font-extrabold">
+                    1
+                  </p>
+                  <h3 className="md:text-[18px] text-md font-bold dark:text-darkModeHeadingTextColor mb-2">
+                    60-Second Retirement Simulator{" "}
+                    <span className="text-teal-600 text-sm font-bold">
+                      Start here
+                    </span>
+                  </h3>
                 </div>
-                <img
-                  className="md:w-[150px] w-[90px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
-                  src={assets.costOfLivingCalcIcon}
-                  alt="Calculator Icon"
-                />
+                <p className="text-[#696969] dark:text-darkModeNormalTextColor">
+                  See how long your money can last — and what moves the needle
+                  most.
+                </p>
               </div>
-            </Link>
-          </div>
 
-          {/* Card 2: Retirement Simulator */}
-          <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:text-teal-600">
-            <div className="pt-[1.5rem] px-[1.5rem]">
-              <h3 className="md:text-xl text-md font-bold mb-[1rem] dark:text-darkModeHeadingTextColor">
-                Retirement Simulator
-              </h3>
-              <p className="md:text-[18px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
-                Project your retirement future. This powerful simulator
-                forecasts savings growth, identifies financial gaps, and
-                provides actionable insights to secure your golden years with
-                confidence.
-              </p>
-            </div>
-            <Link to="retirement-simulator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
-                <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
+              <div className="flex justify-end mt-2 text-black">
+                <div className="flex items-center gap-[1.5rem] text-teal-600">
                   <p className="font-semibold text-[18px]">Calculate</p>
                   <Icon
                     icon="akar-icons:arrow-up-right"
@@ -133,60 +108,33 @@ export default function Landing() {
                     height="24"
                   />
                 </div>
-                <img
-                  className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
-                  src={assets.whiteBarChart}
-                  alt="Retirement Simulator Icon"
-                />
               </div>
-            </Link>
-          </div>
+            </div>
+          </Link>
 
-          {/* Card 3: Equity Access Comparison Tool */}
-          <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:text-teal-600">
-            <div className="pt-[1.5rem] px-[1.5rem]">
-              <h3 className="md:text-xl text-md font-bold mb-[1rem] dark:text-darkModeHeadingTextColor">
-                Equity Access Comparison Tool
-              </h3>
-              <p className="md:text-[18px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
-                Compare the long-term costs, interest, and equity usage between HELOC and Reverse Mortgage options. 
-          This tool helps you plan financial decisions while understanding future home value and debt impact.
-              </p>
-            </div>
-            <Link to="equity-access-comparison">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
-                <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
-                  <p className="font-semibold text-[18px]">Calculate</p>
-                  <Icon
-                    icon="akar-icons:arrow-up-right"
-                    width="24"
-                    height="24"
-                  />
+          {/* Card 2: Cost of Living Comparison Calculator */}
+          <Link to="cost-of-living-calculator">
+            <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-4 hover:text-teal-600 border-t-[5px] border-teal-500 h-full">
+              <div>
+                <div className="flex items-start gap-3">
+                  <p className="flex h-[28px] w-[35px] items-center justify-center rounded-full rounded-full border-[1px] border-orange-200 text-orange-500 bg-orange-100 text-[14px] font-extrabold">
+                    2
+                  </p>
+                  <h3 className="md:text-[18px] text-md font-bold dark:text-darkModeHeadingTextColor mb-2">
+                    Cost-of-Living Comparison (9,000 Cities){" "}
+                    <span className="text-teal-600 text-sm font-bold">
+                      Next
+                    </span>
+                  </h3>
                 </div>
-                <img
-                  className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
-                  src={assets.whiteBarChart}
-                  alt="Retirement Simulator Icon"
-                />
+                <p className="text-[#696969] dark:text-darkModeNormalTextColor">
+                  See where the same income can support a higher standard of
+                  living — across 9,000 cities.
+                </p>
               </div>
-            </Link>
-          </div>
 
-          {/* Card 3: Registered Retirement Savings Plan (RRSP) Calculator */}
-          <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:text-teal-600">
-            <div className="pt-[1.5rem] px-[1.5rem]">
-              <h3 className="md:text-xl text-md font-bold mb-[1rem] dark:text-darkModeHeadingTextColor">
-                Registered Retirement Savings Plan (RRSP) Calculator
-              </h3>
-              <p className="md:text-[18px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
-                This calculator is a financial tool that helps users estimate
-                how much money they can accumulate in their RRSP account over
-                time.
-              </p>
-            </div>
-            <Link to="registered-retirement-savings-plan-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
-                <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
+              <div className="flex justify-end mt-2 text-black">
+                <div className="flex items-center gap-[1.5rem] text-teal-600">
                   <p className="font-semibold text-[18px]">Calculate</p>
                   <Icon
                     icon="akar-icons:arrow-up-right"
@@ -194,62 +142,30 @@ export default function Landing() {
                     height="24"
                   />
                 </div>
-                <img
-                  className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
-                  src={assets.registeredRetirementSavings}
-                  alt="RRSP Calculator Icon"
-                />
               </div>
-            </Link>
-          </div>
+            </div>
+          </Link>
 
-          {/* Card 4: Registered Retirement Income Fund (RRIF) Calculator */}
-          <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:text-teal-600">
-            <div className="pt-[1.5rem] px-[1.5rem]">
-              <h3 className="md:text-xl text-md font-bold mb-[1rem] dark:text-darkModeHeadingTextColor">
-                Registered Retirement Income Fund (RRIF) Calculator
-              </h3>
-              <p className="md:text-[18px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
-                This calculator is a tool that helps individuals in Canada
-                estimate their withdrawals from an RRIF after converting their
-                RRSP (Registered Retirement Savings Plan) into an RRIF.....
-              </p>
-            </div>
-            <Link to="registered-retirement-income-fund-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
-                <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
-                  <p className="font-semibold text-[18px]">Calculate</p>
-                  <Icon
-                    icon="akar-icons:arrow-up-right"
-                    width="24"
-                    height="24"
-                  />
+          {/* Card 3: Money Stretch Tool */}
+          <Link to="money-stretch">
+            <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-4 hover:text-teal-600 border-t-[5px] border-teal-500 h-full">
+              <div>
+                <div className="flex items-start gap-3">
+                  <p className="flex h-[28px] w-[35px] items-center justify-center rounded-full border-[1px] border-orange-200 text-orange-500 bg-orange-100 text-[14px] font-extrabold">
+                    3
+                  </p>
+                  <h3 className="md:text-[18px] text-md font-bold dark:text-darkModeHeadingTextColor mb-2">
+                    Money Stretch Calculator (Cost Escape™ Dividend)
+                  </h3>
                 </div>
-                <img
-                  className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
-                  src={assets.registeredRetirementIncome}
-                  alt="RRIF Calculator Icon"
-                />
+                <p className="text-[#696969] dark:text-darkModeNormalTextColor">
+                  Measure how much longer your money could last — without market
+                  risk or saving more.
+                </p>
               </div>
-            </Link>
-          </div>
 
-          {/* Card 5: Comprehensive Retirement Income Calculator */}
-          <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:text-teal-600">
-            <div className="pt-[1.5rem] px-[1.5rem]">
-              <h3 className="md:text-xl text-md font-bold mb-[1rem] dark:text-darkModeHeadingTextColor">
-                Comprehensive Retirement Income Calculator
-              </h3>
-              <p className="md:text-[18px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
-                This calculator helps users roughly estimate their retirement
-                income from all sources including, pensions, government benefits
-                and other incomes from investments based on input data (Ball
-                park estimate)
-              </p>
-            </div>
-            <Link to="CRIC">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
-                <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
+              <div className="flex justify-end mt-2 text-black">
+                <div className="flex items-center gap-[1.5rem] text-teal-600">
                   <p className="font-semibold text-[18px]">Calculate</p>
                   <Icon
                     icon="akar-icons:arrow-up-right"
@@ -257,19 +173,106 @@ export default function Landing() {
                     height="24"
                   />
                 </div>
-                <img
-                  className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
-                  src={assets.comprehensiveRetirement}
-                  alt="Comprehensive Retirement Calculator Icon"
-                />
               </div>
-            </Link>
-          </div>
+            </div>
+          </Link>
+
+          {/* Card 4: Equity Access Comparison Tool */}
+          <Link to="equity-access-comparison">
+            <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-4 hover:text-teal-600 border-t-[5px] border-teal-500 h-full">
+              <div>
+                <div className="flex items-start gap-3">
+                  <p className="flex h-[28px] w-[28px] items-center justify-center rounded-full border-[1px] border-orange-200 text-orange-500 bg-orange-100 text-[14px] font-extrabold">
+                    4
+                  </p>
+                  <h3 className="md:text-[18px] text-md font-bold dark:text-darkModeHeadingTextColor mb-2">
+                    Home-Equity Access Tool
+                  </h3>
+                </div>
+                <p className="text-[#696969] dark:text-darkModeNormalTextColor">
+                  See how your home can support retirement cash flow — without
+                  losing sight of what comes next.
+                </p>
+              </div>
+
+              <div className="flex justify-end mt-2 text-black">
+                <div className="flex items-center gap-[1.5rem] text-teal-600">
+                  <p className="font-semibold text-[18px]">Calculate</p>
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
+                  />
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          {/* Card 5: Budget Planner */}
+          <Link to="budget-calculator">
+            <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-4 hover:text-teal-600 border-t-[5px] border-teal-500 h-full">
+              <div>
+                <div className="flex items-start gap-3">
+                  <p className="flex h-[28px] w-[28px] items-center justify-center rounded-full border-[1px] border-orange-200 text-orange-500 bg-orange-100 text-[14px] font-extrabold">
+                    5
+                  </p>
+                  <h3 className="md:text-[18px] text-md font-bold dark:text-darkModeHeadingTextColor mb-2">
+                    Budget Planner
+                  </h3>
+                </div>
+                <p className="text-[#696969] dark:text-darkModeNormalTextColor">
+                  Clarify what your lifestyle actually costs — month to month.
+                </p>
+              </div>
+
+              <div className="flex justify-end mt-2 text-black">
+                <div className="flex items-center gap-[1.5rem] text-teal-600">
+                  <p className="font-semibold text-[18px]">Calculate</p>
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
+                  />
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          {/* Card 6: Net Worth Calculator */}
+          <Link to="net-worth-calculator">
+            <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-4 hover:text-teal-600 border-t-[5px] border-teal-500 h-full">
+              <div>
+                <div className="flex items-start gap-3">
+                  <p className="flex h-[28px] w-[28px] items-center justify-center rounded-full border-[1px] border-orange-200 text-orange-500 bg-orange-100 text-[14px] font-extrabold">
+                    6
+                  </p>
+                  <h3 className="md:text-[18px] text-md font-bold dark:text-darkModeHeadingTextColor mb-2">
+                    Net Worth Calculator
+                  </h3>
+                </div>
+                <p className="text-[#696969] dark:text-darkModeNormalTextColor">
+                  See what you truly have today — so retirement decisions rest
+                  on facts.
+                </p>
+              </div>
+
+              <div className="flex justify-end mt-2 text-black">
+                <div className="flex items-center gap-[1.5rem] text-teal-600">
+                  <p className="font-semibold text-[18px]">Calculate</p>
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
+                  />
+                </div>
+              </div>
+            </div>
+          </Link>
         </div>
       </section>
 
       {/* Wealth Building Lab  */}
-      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-gray-300 dark:border-gray-600 rounded-xl bg-teal-50 dark:bg-gray-900">
+      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-orange-200 dark:border-gray-600 rounded-xl bg-gradient-to-r from-teal-50 to-orange-50 dark:bg-gray-900">
         <div className="mb-5">
           <h1 className="text-2xl font-bold mb-1">Wealth Building Lab</h1>
           <p className="text-lg">
@@ -278,22 +281,22 @@ export default function Landing() {
           </p>
         </div>
 
-        <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 md:gap-[2.5rem] gap-[2rem]">
+        <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
           {/* Card 1: Compound Interest Rate Calculator */}
-          <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:text-teal-600">
-            <div className="pt-[1.5rem] px-[1.5rem]">
-              <h3 className="md:text-xl text-md font-bold mb-[1rem] dark:text-darkModeHeadingTextColor">
-                Compound Interest Rate Calculator
-              </h3>
-              <p className="md:text-[18px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
-                This calculator helps you determine how much an investment will
-                grow over time when interest is applied not just to the
-                principal amount but also to the accumulated interest.....
-              </p>
-            </div>
-            <Link to="compound-interest-rate-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
-                <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
+          <Link to="compound-interest-rate-calculator">
+            <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-4 hover:text-teal-600 border-t-[5px] border-teal-500 h-full">
+              <div>
+                <h3 className="md:text-[18px] text-md font-bold dark:text-darkModeHeadingTextColor mb-2">
+                  Compound Interest Rate Calculator
+                </h3>
+                <p className="text-[#696969] dark:text-darkModeNormalTextColor">
+                  Calculates investment growth over time by compounding interest
+                  on principal and accumulated earnings.
+                </p>
+              </div>
+
+              <div className="flex justify-end mt-2 text-black">
+                <div className="flex items-center gap-[1.5rem] text-teal-600">
                   <p className="font-semibold text-[18px]">Calculate</p>
                   <Icon
                     icon="akar-icons:arrow-up-right"
@@ -301,30 +304,25 @@ export default function Landing() {
                     height="24"
                   />
                 </div>
-                <img
-                  className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
-                  src={assets.compoundInterestCalcIcon}
-                  alt="Compound Interest Calculator Icon"
-                />
               </div>
-            </Link>
-          </div>
+            </div>
+          </Link>
 
           {/* Card 2: Compound Interest Scenario/Comparison Calculator */}
-          <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:text-teal-600">
-            <div className="pt-[1.5rem] px-[1.5rem]">
-              <h3 className="md:text-xl text-md font-bold mb-[1rem] dark:text-darkModeHeadingTextColor">
-                Compound Interest Scenario/Comparison Calculator
-              </h3>
-              <p className="md:text-[18px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
-                Compare investment timelines with this calculator. Visualize how
-                starting ages affect compound interest growth through
-                interactive tables.
-              </p>
-            </div>
-            <Link to="compound-interest-comparison-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
-                <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
+          <Link to="compound-interest-comparison-calculator">
+            <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-4 hover:text-teal-600 border-t-[5px] border-teal-500 h-full">
+              <div>
+                <h3 className="md:text-[18px] text-md font-bold dark:text-darkModeHeadingTextColor mb-2">
+                  Compound Interest Scenario/Comparison Calculator
+                </h3>
+                <p className="text-[#696969] dark:text-darkModeNormalTextColor">
+                  Compare investment timelines and see how starting ages impact
+                  compound interest growth with interactive tables.
+                </p>
+              </div>
+
+              <div className="flex justify-end mt-2 text-black">
+                <div className="flex items-center gap-[1.5rem] text-teal-600">
                   <p className="font-semibold text-[18px]">Calculate</p>
                   <Icon
                     icon="akar-icons:arrow-up-right"
@@ -332,31 +330,25 @@ export default function Landing() {
                     height="24"
                   />
                 </div>
-                <img
-                  className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
-                  src={assets.compoundInterestCalcIcon}
-                  alt="Compound Interest Comparison Calculator Icon"
-                />
               </div>
-            </Link>
-          </div>
+            </div>
+          </Link>
 
           {/* Card 3: Net Worth Calculator */}
-          <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:text-teal-600">
-            <div className="pt-[1.5rem] px-[1.5rem]">
-              <h3 className="md:text-xl text-md font-bold mb-[1rem] dark:text-darkModeHeadingTextColor">
-                Net Worth Calculator
-              </h3>
-              <p className="md:text-[18px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
-                This tool calculates your net worth by subtracting your total
-                liabilities from your total assets. It gives you a snapshot of
-                your financial health and helps you understand your financial
-                standing.....
-              </p>
-            </div>
-            <Link to="net-worth-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
-                <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
+          <Link to="net-worth-calculator">
+            <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-4 hover:text-teal-600 border-t-[5px] border-teal-500 h-full">
+              <div>
+                <h3 className="md:text-[18px] text-md font-bold dark:text-darkModeHeadingTextColor mb-2">
+                  Net Worth Calculator
+                </h3>
+                <p className="text-[#696969] dark:text-darkModeNormalTextColor">
+                  Calculates net worth by subtracting liabilities from assets,
+                  providing a clear financial health snapshot.
+                </p>
+              </div>
+
+              <div className="flex justify-end mt-2 text-black">
+                <div className="flex items-center gap-[1.5rem] text-teal-600">
                   <p className="font-semibold text-[18px]">Calculate</p>
                   <Icon
                     icon="akar-icons:arrow-up-right"
@@ -364,31 +356,25 @@ export default function Landing() {
                     height="24"
                   />
                 </div>
-                <img
-                  className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
-                  src={assets.netWorthCalcIcon}
-                  alt="Net Worth Calculator Icon"
-                />
               </div>
-            </Link>
-          </div>
+            </div>
+          </Link>
 
           {/* Card 4: Budget Calculator */}
-          <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:text-teal-600">
-            <div className="pt-[1.5rem] px-[1.5rem]">
-              <h3 className="md:text-xl text-md font-bold mb-[1rem] dark:text-darkModeHeadingTextColor">
-                Budget Calculator
-              </h3>
-              <p className="md:text-[18px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
-                This calculator aids in managing personal finances by tracking
-                income and expenses. It helps you allocate your funds wisely and
-                ensure you're living within your means while saving for future
-                goals.....
-              </p>
-            </div>
-            <Link to="budget-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
-                <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
+          <Link to="budget-calculator">
+            <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-4 hover:text-teal-600 border-t-[5px] border-teal-500 h-full">
+              <div>
+                <h3 className="md:text-[18px] text-md font-bold dark:text-darkModeHeadingTextColor mb-2">
+                  Budget Calculator
+                </h3>
+                <p className="text-[#696969] dark:text-darkModeNormalTextColor">
+                  Tracks income and expenses to help you budget, save, and
+                  manage finances wisely.
+                </p>
+              </div>
+
+              <div className="flex justify-end mt-2 text-black">
+                <div className="flex items-center gap-[1.5rem] text-teal-600">
                   <p className="font-semibold text-[18px]">Calculate</p>
                   <Icon
                     icon="akar-icons:arrow-up-right"
@@ -396,32 +382,25 @@ export default function Landing() {
                     height="24"
                   />
                 </div>
-                <img
-                  className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
-                  src={assets.budgetCalcIcon}
-                  alt="Budget Calculator Icon"
-                />
               </div>
-            </Link>
-          </div>
+            </div>
+          </Link>
 
           {/* Card 5: Net Income Yield Calculator */}
-          <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:text-teal-600">
-            <div className="pt-[1.5rem] px-[1.5rem]">
-              <h3 className="md:text-xl text-md font-bold mb-[1rem] dark:text-darkModeHeadingTextColor">
-                Net Income Yield Calculator
-              </h3>
-              <p className="md:text-[18px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
-                This yield calculator determines your true net returns by
-                accounting for advisor fees, taxes, and inflation. It provides
-                clear visualizations of how these costs impact both nominal and
-                real yields, helping investors understand their actual earnings
-                after all expenses and economic factors.
-              </p>
-            </div>
-            <Link to="net-income-yield-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
-                <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
+          <Link to="net-income-yield-calculator">
+            <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-4 hover:text-teal-600 border-t-[5px] border-teal-500 h-full">
+              <div>
+                <h3 className="md:text-[18px] text-md font-bold dark:text-darkModeHeadingTextColor mb-2">
+                  Net Income Yield Calculator
+                </h3>
+                <p className="text-[#696969] dark:text-darkModeNormalTextColor">
+                  Shows true investment returns after fees, taxes, and
+                  inflation, visualizing effects on real earnings.
+                </p>
+              </div>
+
+              <div className="flex justify-end mt-2 text-black">
+                <div className="flex items-center gap-[1.5rem] text-teal-600">
                   <p className="font-semibold text-[18px]">Calculate</p>
                   <Icon
                     icon="akar-icons:arrow-up-right"
@@ -429,19 +408,14 @@ export default function Landing() {
                     height="24"
                   />
                 </div>
-                <img
-                  className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
-                  src={assets.whiteBarChart}
-                  alt="Net Income Yield Calculator Icon"
-                />
               </div>
-            </Link>
-          </div>
+            </div>
+          </Link>
         </div>
       </section>
 
       {/* Home buying / Borrowing lab  */}
-      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-gray-300 dark:border-gray-600 rounded-xl bg-teal-50 dark:bg-gray-900">
+      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-orange-200 dark:border-gray-600 rounded-xl bg-gradient-to-r from-teal-50 to-orange-50 dark:bg-gray-900">
         <div className="mb-5">
           <h1 className="text-2xl font-bold mb-1">Home Buying/Borrowing Lab</h1>
           <p className="text-lg">
@@ -451,96 +425,90 @@ export default function Landing() {
           </p>
         </div>
 
-        <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 md:gap-[2.5rem] gap-[2rem]">
+        <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
           {/* Card 1: Canadian Mortgage Calculator */}
-          <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:text-teal-600">
-            <div className="pt-[1.5rem] px-[1.5rem]">
-              <h3 className="md:text-xl text-md font-bold mb-[1rem] dark:text-darkModeHeadingTextColor">
-                Canadian Mortgage Calculator
-              </h3>
-              <p className="md:text-[18px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
-                Quickly estimate your home loan payments, amortization schedule,
-                and potential savings from prepayments. Compare different
-                payment frequencies, visualize interest costs, and see how extra
-                payments reduce your loan term.
-              </p>
-            </div>
-            <Link to="mortgage-calculator-canada">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
-                <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
-                  <p className="font-semibold text-[18px]">Calculate</p>
-                  <Icon icon="akar-icons:arrow-up-right" width="24" height="24" />
-                </div>
-                <img
-                  className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
-                  src={assets.mortgageIconSvg}
-                  alt="Canadian Mortgage Calculator Icon"
-                />
+          <Link to="mortgage-calculator-canada">
+            <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-4 hover:text-teal-600 border-t-[5px] border-teal-500 h-full">
+              <div>
+                <h3 className="md:text-[18px] text-md font-bold dark:text-darkModeHeadingTextColor mb-2">
+                  Canadian Mortgage Calculator
+                </h3>
+                <p className="text-[#696969] dark:text-darkModeNormalTextColor">
+                  Estimate home loan payments, compare options, track
+                  amortization, and see how prepayments cut interest and loan
+                  term.
+                </p>
               </div>
-            </Link>
-          </div>
+
+              <div className="flex justify-end mt-2 text-black">
+                <div className="flex items-center gap-[1.5rem] text-teal-600">
+                  <p className="font-semibold text-[18px]">Calculate</p>
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
+                  />
+                </div>
+              </div>
+            </div>
+          </Link>
 
           {/* Card 2: U.S Mortgage Calculator */}
-          <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:text-teal-600">
-            <div className="pt-[1.5rem] px-[1.5rem]">
-              <h3 className="md:text-xl text-md font-bold mb-[1rem] dark:text-darkModeHeadingTextColor">
-                U.S Mortgage Calculator
-              </h3>
-              <p className="md:text-[18px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
-                Estimate payments, compare loan options, and track equity growth
-                with this powerful tool. Works for fixed-rate and adjustable
-                (ARM) mortgages, with extra payment analysis and interactive
-                charts.
-              </p>
-            </div>
-            <Link to="mortgage-calculator-america">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
-                <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
-                  <p className="font-semibold text-[18px]">Calculate</p>
-                  <Icon icon="akar-icons:arrow-up-right" width="24" height="24" />
-                </div>
-                <img
-                  className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
-                  src={assets.mortgageIconSvg}
-                  alt="U.S. Mortgage Calculator Icon"
-                />
+          <Link to="mortgage-calculator-america">
+            <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-4 hover:text-teal-600 border-t-[5px] border-teal-500 h-full">
+              <div>
+                <h3 className="md:text-[18px] text-md font-bold dark:text-darkModeHeadingTextColor mb-2">
+                  U.S Mortgage Calculator
+                </h3>
+                <p className="text-[#696969] dark:text-darkModeNormalTextColor">
+                  Estimate payments, compare mortgage options, and track equity
+                  growth for fixed and adjustable loans with interactive charts.
+                </p>
               </div>
-            </Link>
-          </div>
+
+              <div className="flex justify-end mt-2 text-black">
+                <div className="flex items-center gap-[1.5rem] text-teal-600">
+                  <p className="font-semibold text-[18px]">Calculate</p>
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
+                  />
+                </div>
+              </div>
+            </div>
+          </Link>
 
           {/* Card 3: North America Mortgage Calculator */}
-          <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:text-teal-600">
-            <div className="pt-[1.5rem] px-[1.5rem]">
-              <h3 className="md:text-xl text-md font-bold mb-[1rem] dark:text-darkModeHeadingTextColor">
-                North America Mortgage Calculator
-              </h3>
-              <p className="md:text-[18px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
-                Plan your home loan with this powerful mortgage calculator.
-                Estimate monthly payments, compare fixed and adjustable rates,
-                and see how extra payments reduce interest. Includes taxes,
-                insurance, and amortization charts for both U.S. and Canadian
-                mortgages.
-              </p>
-            </div>
-            <Link to="mortgage-calculator">
-              <div className="flex justify-between items-center text-[#404040] dark:text-darkModeNormalTextColor dark:hover:text-darkModeHoverColor hover:text-teal-500">
-                <div className="flex items-center gap-[1.5rem] pl-[1.5rem]">
-                  <p className="font-semibold text-[18px]">Calculate</p>
-                  <Icon icon="akar-icons:arrow-up-right" width="24" height="24" />
-                </div>
-                <img
-                  className="md:w-[150px] w-[80px] md:h-[90px] h-[80px] md:mb-0 mb-[-0.2rem]"
-                  src={assets.mortgageIconSvg}
-                  alt="North America Mortgage Calculator Icon"
-                />
+          <Link to="mortgage-calculator">
+            <div className="flex flex-col justify-between overflow-hidden bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl dark:border-gray-700 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 p-4 hover:text-teal-600 border-t-[5px] border-teal-500 h-full">
+              <div>
+                <h3 className="md:text-[18px] text-md font-bold dark:text-darkModeHeadingTextColor mb-2">
+                  North America Mortgage Calculator
+                </h3>
+                <p className="text-[#696969] dark:text-darkModeNormalTextColor">
+                  Plan your home loan by estimating payments, comparing rates,
+                  and viewing taxes, insurance, and amortization charts.
+                </p>
               </div>
-            </Link>
-          </div>
+
+              <div className="flex justify-end mt-2 text-black">
+                <div className="flex items-center gap-[1.5rem] text-teal-600">
+                  <p className="font-semibold text-[18px]">Calculate</p>
+                  <Icon
+                    icon="akar-icons:arrow-up-right"
+                    width="24"
+                    height="24"
+                  />
+                </div>
+              </div>
+            </div>
+          </Link>
         </div>
       </section>
 
       {/* Proof of Concept Platform  */}
-      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-gray-300 dark:border-gray-600 rounded-xl bg-teal-50 dark:bg-gray-900">
+      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-orange-200 dark:border-gray-600 rounded-xl bg-gradient-to-r from-teal-50 to-orange-50 dark:bg-gray-900">
         <div className="mb-8">
           <h1 className="text-2xl font-bold mb-1">Proof of Concept Platform</h1>
           <p className="text-lg">
@@ -724,7 +692,7 @@ export default function Landing() {
       <HumanGuidance />
 
       {/* Book Section  */}
-      <section className="bg-teal-50 dark:bg-neutral-800 flex md:flex-row flex-col items-center justify-center md:px-20 md:py-16 py-5 px-5 md:gap-16 gap-5 mt-20">
+      <section className="bg-gradient-to-r from-teal-50 to-orange-50 dark:bg-neutral-800 flex md:flex-row flex-col items-center justify-center md:px-20 md:py-16 py-5 px-5 md:gap-16 gap-5 mt-20">
         <img src={assets.bookCoverPageWithBadge} alt="Book Cover Page" />
 
         <div>
@@ -745,7 +713,7 @@ export default function Landing() {
           <div className="flex md:flex-row flex-col items-center gap-5 my-5">
             <Link
               to="book-landing"
-              className="bg-black rounded-lg text-white md:px-5 px-2 py-3 md:w-auto w-full"
+              className="bg-teal-600 rounded-lg text-white md:px-5 px-2 py-3 md:w-auto w-full"
             >
               <button className="flex justify-center items-center gap-3 w-full">
                 <p>Get Your Free Copy Now</p>{" "}

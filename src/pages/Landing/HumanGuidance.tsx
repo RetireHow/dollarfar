@@ -47,12 +47,12 @@ type ContactInfo = {
 // Add this polling function
 const pollForPaymentData = async (
   email: string,
-  maxAttempts = 10
+  maxAttempts = 10,
 ): Promise<any> => {
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     try {
       const res = await fetch(
-        `${baseUrl}/consultation-subscription/user/${email}`
+        `${baseUrl}/consultation-subscription/user/${email}`,
       );
 
       if (res.status === 200) {
@@ -105,7 +105,7 @@ function PaymentModalComponent({
     onClose();
     toast.error(
       "Please fill in the required input fields before start subscription!",
-      { autoClose: 15000 }
+      { autoClose: 15000 },
     );
     setShowError(true);
     return null;
@@ -128,13 +128,13 @@ function PaymentModalComponent({
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(contactInfo),
-        }
+        },
       );
 
       if (!res.ok) {
         const errorText = await res.text();
         throw new Error(
-          errorText || `Payment failed with status: ${res.status}`
+          errorText || `Payment failed with status: ${res.status}`,
         );
       }
 
@@ -305,12 +305,12 @@ export default function HumanGuidance(): JSX.Element {
         "Payment successful. You can now book consultation session.",
         {
           autoClose: 15000,
-        }
+        },
       );
     } catch (error) {
       console.error("❌ Failed to verify payment storage:", error);
       toast.error(
-        "Payment processed but verification failed. Please contact support."
+        "Payment processed but verification failed. Please contact support.",
       );
     }
   };
@@ -366,7 +366,7 @@ export default function HumanGuidance(): JSX.Element {
     ) {
       toast.error(
         "Please fill in the required input fields before start subscription!",
-        { autoClose: 15000 }
+        { autoClose: 15000 },
       );
       return setShowError(true);
     }
@@ -383,12 +383,12 @@ export default function HumanGuidance(): JSX.Element {
     if (res?.error) return;
     toast.success(
       "Your consultation session is booked successfully. A member of RetireHow Team will contact you.",
-      { autoClose: 15000 }
+      { autoClose: 15000 },
     );
   };
 
   return (
-    <main className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-gray-300 dark:border-gray-600 rounded-xl bg-teal-50 dark:bg-gray-900">
+    <main className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-orange-200 dark:border-gray-600 rounded-xl bg-gradient-to-r from-teal-50 to-orange-50 dark:bg-gray-900">
       <Elements stripe={stripePromise}>
         {paymentOpen && (
           <PaymentModal
@@ -404,7 +404,11 @@ export default function HumanGuidance(): JSX.Element {
           Human Guidance for Your Financial Journey
         </h2>
         <p className="mb-4 text-[14px] text-[var(--muted)] dark:text-gray-400">
-          DollarFar’s six free calculators turn scattered numbers into clarity — showing how long savings may last and where money can go further. Optional guided interpretation walks through results and trade-offs. The $199 subscription includes two 30-minute sessions with the RetireHow team — not advice, just clarity before decisions are tested.
+          DollarFar’s six free calculators turn scattered numbers into clarity —
+          showing how long savings may last and where money can go further.
+          Optional guided interpretation walks through results and trade-offs.
+          The $199 subscription includes two 30-minute sessions with the
+          RetireHow team — not advice, just clarity before decisions are tested.
         </p>
         <section className="space-y-5">
           {/* SECTION : Contact Information */}
@@ -444,7 +448,7 @@ export default function HumanGuidance(): JSX.Element {
                   placeholder="Enter your full name"
                   className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${toggleErrorBorderColor(
                     name,
-                    "name"
+                    "name",
                   )}`}
                 />
               </div>
@@ -477,7 +481,7 @@ export default function HumanGuidance(): JSX.Element {
                   placeholder="e.g., +15551234567"
                   className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${toggleErrorBorderColor(
                     phone,
-                    "phone"
+                    "phone",
                   )}`}
                 />
               </div>
@@ -514,7 +518,7 @@ export default function HumanGuidance(): JSX.Element {
                   placeholder="Enter your email address"
                   className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${toggleErrorBorderColor(
                     email,
-                    "email"
+                    "email",
                   )}`}
                 />
               </div>
@@ -546,7 +550,7 @@ export default function HumanGuidance(): JSX.Element {
                   placeholder="Enter state/province"
                   className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${toggleErrorBorderColor(
                     region,
-                    "region"
+                    "region",
                   )}`}
                 />
               </div>
@@ -577,7 +581,7 @@ export default function HumanGuidance(): JSX.Element {
                   placeholder="Enter country"
                   className={`w-full rounded-2xl border px-4 py-3 focus:border-gray-700 dark:focus:border-gray-300 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600 transition-colors bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 ${toggleErrorBorderColor(
                     country,
-                    "country"
+                    "country",
                   )}`}
                 />
               </div>
@@ -712,7 +716,7 @@ export default function HumanGuidance(): JSX.Element {
                                 available: boolean;
                                 providerTime: string;
                               },
-                              index: number
+                              index: number,
                             ) => (
                               <Tooltip
                                 title={
@@ -728,8 +732,8 @@ export default function HumanGuidance(): JSX.Element {
                                     selectedSlot === slot.utc
                                       ? "bg-orange-500 dark:bg-orange-600 text-white"
                                       : !slot.available
-                                      ? "bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
-                                      : "hover:border-orange-600 dark:hover:border-orange-400"
+                                        ? "bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
+                                        : "hover:border-orange-600 dark:hover:border-orange-400"
                                   }`}
                                   onClick={() => setSelectedSlot(slot.utc)}
                                   disabled={!slot.available}
@@ -749,7 +753,7 @@ export default function HumanGuidance(): JSX.Element {
                                   </div>
                                 </button>
                               </Tooltip>
-                            )
+                            ),
                           )
                         )}
                       </div>

@@ -34,7 +34,7 @@ export default function BuyNowEbook() {
       disabled={isLoading}
       onClick={handleBuyNow}
       className={`rounded-lg text-white md:px-5 px-2 py-3 md:w-[130px] h-[48px] w-full text-center flex justify-center items-center ${
-        isLoading ? "bg-gray-600" : "bg-black"
+        isLoading ? "bg-gray-600" : "bg-teal-600"
       }`}
     >
       {isLoading ? (

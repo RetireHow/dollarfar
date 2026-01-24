@@ -46,6 +46,19 @@ import tableOfContent2 from "./Ebook/Table of Contents-2.png";
 import bookIntroduction from "./Ebook/Introduction.png";
 import bookContentCover from "./Ebook/Book Cover.png";
 
+// Landing Page Icons
+import costOfLiving from "./LandingPageIcons/Cost of living.svg";
+import retirementSimulator from "./LandingPageIcons/Retirement Simulator.svg";
+import equityAccess from "./LandingPageIcons/Equity Access Comparison.svg";
+import moneyStretch from "./LandingPageIcons/Retirement Money Stretching.svg";
+import retirementSavings from "./LandingPageIcons/Retirement Savings.svg";
+import retirementFund from "./LandingPageIcons/Retirement Fund.svg";
+import retirementIncome from "./LandingPageIcons/Retirement Income.svg";
+import compoundInterest from "./LandingPageIcons/Compound Interest.svg";
+import netWorth from "./LandingPageIcons/Net Worth.svg";
+import budget from "./LandingPageIcons/Budget.svg";
+import mortgage from "./LandingPageIcons/Mortgage.svg";
+
 export const assets = {
   siteLogo,
   siteLogoWhite,
@@ -92,5 +105,18 @@ export const assets = {
   tableOfContent1,
   tableOfContent2,
   bookIntroduction,
-  bookContentCover
+  bookContentCover,
+
+  // Landing Page Icons
+  costOfLiving,
+  retirementSimulator,
+  equityAccess,
+  moneyStretch,
+  retirementSavings,
+  retirementFund,
+  retirementIncome,
+  compoundInterest,
+  netWorth,
+  budget,
+  mortgage,
 };

@@ -78,8 +78,8 @@ import POCInterestForm from "../pages/RetirementCalculator/POCInterestForm";
 import Privacy from "../pages/Policies/Privacy";
 import Terms from "../pages/Policies/Terms";
 import POCInterestDetails from "../pages/Admin/POCInterestTable/POCInterestDetails";
-import MoneyStretch from "../pages/MoneyStretch/MoneyStretch";
 import EquityAccessComparison from "../pages/EquityAccessComparison/EquityAccessComparison";
+import MoneyStretch from "../pages/MoneyStretch/MoneyStretch";
 
 export const router = createBrowserRouter([
   {

@@ -30,7 +30,7 @@ const data = {
   title: "Canadian Mortgage Calculator",
   description:
     "Quickly estimate your home loan payments, amortization schedule, and potential savings from prepayments. Compare different payment frequencies, visualize interest costs, and see how extra payments reduce your loan term.",
-  image: assets.mortgageIconSvg,
+  image: assets.mortgage,
 };
 
 // Types

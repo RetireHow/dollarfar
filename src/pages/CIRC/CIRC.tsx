@@ -16,7 +16,7 @@ const data = {
   title: "Compound Interest Rate Calculator",
   description:
     "This calculator helps you determine how much an investment will grow over time when interest is applied not just to the principal amount but also to the accumulated interest. It's useful for understanding the power of compounding in savings accounts or investments.",
-  image: assets.whiteBarChart,
+  image: assets.compoundInterest,
 };
 
 type TOption = {

@@ -13,7 +13,7 @@ const data = {
   title: "Budget calculator/cash flow calculator",
   description:
     "This calculator aids in managing personal finances by tracking income and expenses. It helps you allocate your funds wisely and ensure you’re living within your means while saving for future goals.",
-  image: assets.budgetCalcIcon,
+  image: assets.budget,
 };
 
 export default function BC() {

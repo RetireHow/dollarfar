@@ -32,7 +32,7 @@ const data = {
   title: "U.S Mortgage Calculator",
   description:
     "Estimate payments, compare loan options, and track equity growth with this powerful tool. Works for fixed-rate and adjustable (ARM) mortgages, with extra payment analysis and interactive charts.",
-  image: assets.mortgageIconSvg,
+  image: assets.mortgage,
 };
 
 // Types

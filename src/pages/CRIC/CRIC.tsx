@@ -14,7 +14,7 @@ const data = {
   title: "Comprehensive Retirement Income Calculator",
   description:
     "This calculator aids in managing personal finances by tracking income and expenses. It helps you allocate your funds wisely and ensure you’re living within your means while saving for future goals.",
-  image: assets.comprehensiveRetirementFrame,
+  image: assets.retirementIncome,
 };
 
 export default function CRIC() {

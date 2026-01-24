@@ -16,7 +16,7 @@ const data = {
   title: "Net Worth Calculator",
   description:
     "This tool calculates your net worth by subtracting your total liabilities from your total assets. It gives you a snapshot of your financial health and helps you understand your financial standing.",
-  image: assets.netWorthCalcIcon,
+  image: assets.netWorth,
 };
 
 export default function NWC() {

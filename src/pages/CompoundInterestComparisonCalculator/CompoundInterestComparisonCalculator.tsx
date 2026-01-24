@@ -42,7 +42,7 @@ const data = {
   title: "Compound Interest Scenario/Comparison Calculator",
   description:
     "This calculator compares investment growth for multiple investors, showing how starting ages and contributions affect returns up to retirement. Adjust settings like compounding frequency to visualize results in interactive tables. See your financial future clearly.",
-  image: assets.compoundInterestCalcIcon,
+  image: assets.compoundInterest,
 };
 
 import { ExportInvestmentComparisonPDFModal } from "./ExportInvestmentComparisonPDFModal";

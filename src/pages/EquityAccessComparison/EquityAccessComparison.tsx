@@ -5,10 +5,10 @@ import PageHero from "../../components/UI/PageHero";
 import { assets } from "../../assets/assets";
 
 const data = {
-  title: "Equity Access Comparison Tool",
+  title: "Home-Equity Access Tool",
   description:
     "Compare the long-term costs, interest, and equity usage between HELOC and Reverse Mortgage options. This tool helps you plan financial decisions while understanding future home value and debt impact.",
-  image: assets.costOfLeavingFrame,
+  image: assets.equityAccess,
 };
 
 type Inputs = {
@@ -208,14 +208,14 @@ export default function EquityAccessComparison(): JSX.Element {
       </div>
       <div className="max-w-[1150px] mx-auto px-5 py-6">
         <h1 className="text-[28px] font-extrabold text-[#12304a] dark:text-blue-50">
-          Equity Access Comparison Tool
+          Home-Equity Access Tool
         </h1>
         <p className="text-[#5b6b7a] dark:text-gray-400 mb-4">
           Compare HELOC vs Reverse Mortgage + see future equity growth.
         </p>
 
         {/* INPUT CARD */}
-        <section className="rounded-[18px] bg-white dark:bg-gray-900 shadow-lg p-6">
+        <section className="rounded-[18px] bg-gradient-to-r from-teal-50 to-orange-50 dark:bg-gray-900 shadow-lg p-6">
           <div className="flex justify-center gap-3 flex-wrap mb-4">
             <button
               disabled
@@ -282,7 +282,7 @@ export default function EquityAccessComparison(): JSX.Element {
             ).map(([title, prefix, canvasRef, suffix]) => (
               <div
                 key={prefix}
-                className="bg-white dark:bg-gray-900 rounded-[18px] p-6 shadow"
+                className="bg-gradient-to-r from-teal-50 to-orange-50 dark:bg-gray-900 rounded-[18px] p-6 shadow"
               >
                 <h2 className="font-bold text-lg mb-3">{title}</h2>
 

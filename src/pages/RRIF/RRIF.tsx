@@ -16,7 +16,7 @@ const data = {
   title: "Registered Retirement Income Fund (RRIF) Calculator",
   description:
     "This calculator is a tool that helps individuals in Canada estimate their withdrawals from an RRIF after converting their RRSP (Registered Retirement Savings Plan) into an RRIF.",
-  image: assets.registeredRetirementIncome,
+  image: assets.retirementFund,
 };
 
 export default function RRIF() {

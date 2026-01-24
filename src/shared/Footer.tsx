@@ -2,14 +2,14 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="bg-neutral-900 text-white px-6 py-10 border-t border-neutral-800">
+    <footer className="bg-gradient-to-r from-teal-300 to-orange-300 px-6 py-10">
       <div className="max-w-7xl mx-auto space-y-6 text-center">
         {/* Row 1: Navigation Links */}
-        <ul className="flex flex-wrap justify-center gap-6 text-sm font-medium text-gray-300">
+        <ul className="flex flex-wrap justify-center gap-6 text-sm font-bold">
           <li>
             <Link
               to="/privacy-policy"
-              className="hover:text-white hover:underline transition-colors"
+              className="hover:underline transition-colors"
             >
               Privacy Policy
             </Link>
@@ -17,7 +17,7 @@ export default function Footer() {
           <li>
             <Link
               to="/terms-and-condition"
-              className="hover:text-white hover:underline transition-colors"
+              className="hover:underline transition-colors"
             >
               Terms of Use
             </Link>
@@ -25,7 +25,7 @@ export default function Footer() {
           <li>
             <Link
               to="/refund-policy"
-              className="hover:text-white hover:underline transition-colors"
+              className="hover:underline transition-colors"
             >
               Refund Policy
             </Link>
@@ -33,7 +33,7 @@ export default function Footer() {
         </ul>
 
         {/* Row 2: Copyright */}
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-gray-700">
           &copy;Copyright All rights reserved by Retirehow? Inc{" "}
           {new Date().getFullYear()}
         </p>

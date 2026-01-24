@@ -15,7 +15,7 @@ const data = {
   title: "Registered Retirement Savings Plan (RRSP) Calculator",
   description:
     "This calculator is a financial tool that helps users estimate how much money they can accumulate in their RRSP account over time.",
-  image: assets.registeredRetirementIncome,
+  image: assets.retirementSavings,
 };
 
 export default function RRSP() {
