@@ -2,6 +2,7 @@ import { useState, ChangeEvent, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { assets } from "../../assets/assets";
 import PageHero from "../../components/UI/PageHero";
+import useTitle from "../../hooks/useTitle";
 
 interface Results {
   savings: number;
@@ -18,6 +19,8 @@ const data = {
 };
 
 export default function MoneyStretch(): JSX.Element {
+  useTitle("Dollarfar | Money Stretch Calculator");
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
@@ -127,9 +130,7 @@ export default function MoneyStretch(): JSX.Element {
 
           <section className="bg-gradient-to-r from-teal-50 to-orange-50 rounded-xl shadow-sm p-6 mb-6">
             <h2 className="font-semibold mb-4">Start</h2>
-            <label className="block text-sm font-bold mb-1">
-              Home country
-            </label>
+            <label className="block text-sm font-bold mb-1">Home country</label>
             <select
               value={region}
               onChange={(e: ChangeEvent<HTMLSelectElement>) =>
@@ -277,13 +278,17 @@ export default function MoneyStretch(): JSX.Element {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="border rounded-lg p-4">
-                    <p className="text-sm font-bold">Money you keep each year</p>
+                    <p className="text-sm font-bold">
+                      Money you keep each year
+                    </p>
                     <p className="font-bold text-lg">
                       {results ? fmt(results.savings) : "—"}
                     </p>
                   </div>
                   <div className="border rounded-lg p-4">
-                    <p className="text-sm font-bold">Months until you come out ahead</p>
+                    <p className="text-sm font-bold">
+                      Months until you come out ahead
+                    </p>
                     <p className="font-bold text-lg">
                       {results ? results.breakeven : "—"}
                     </p>

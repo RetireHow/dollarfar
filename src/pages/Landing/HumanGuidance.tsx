@@ -388,7 +388,7 @@ export default function HumanGuidance(): JSX.Element {
   };
 
   return (
-    <main className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-orange-200 dark:border-gray-600 rounded-xl bg-gradient-to-r from-teal-50 to-orange-50 dark:bg-gray-900">
+    <main className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-orange-200 dark:border-gray-600 rounded-xl bg-gradient-to-r from-teal-50 to-orange-50 dark:from-gray-700 dark:to-gray-900">
       <Elements stripe={stripePromise}>
         {paymentOpen && (
           <PaymentModal

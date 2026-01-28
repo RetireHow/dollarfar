@@ -3,6 +3,7 @@ import RedStar from "../../components/UI/RedStar";
 import { toast } from "react-toastify";
 import PageHero from "../../components/UI/PageHero";
 import { assets } from "../../assets/assets";
+import useTitle from "../../hooks/useTitle";
 
 const data = {
   title: "Home-Equity Access Tool",
@@ -76,6 +77,7 @@ const drawSpark = (
 };
 
 export default function EquityAccessComparison(): JSX.Element {
+   useTitle("Dollarfar | Equity Access Calculator");
   const [showResults, setShowResults] = useState<boolean>(false);
 
   const [inputs, setInputs] = useState<Inputs>({

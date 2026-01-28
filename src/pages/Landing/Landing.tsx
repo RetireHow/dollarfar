@@ -24,14 +24,26 @@ export default function Landing() {
           className="md:max-w-full md:px-0 px-4 flex-1"
         >
           <div className="lg:ml-[5rem] md:ml-[2rem] ml-0 lg:text-left text-center">
-            <h3 className="font-extrabold lg:text-[54px] md:text-[2rem] text-[22px] md:leading-tight leading-[35px] mb-[1rem] dark:text-darkModeHeadingTextColor">
-              Master Your Finances with Powerful Calculators
+            <h3 className="font-extrabold lg:text-[2.8rem] md:text-[2rem] text-[22px] md:leading-tight leading-[35px] mb-[1rem] dark:text-darkModeHeadingTextColor">
+              Make Retirement Work Again — With Clarity, Not Products
             </h3>
             <p className="md:text-[20px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor">
-              Explore our suite of financial calculators to plan, save, and grow
-              your wealth. From budgeting and investments to loans and
-              retirement, we've got the tools you need for a smarter financial
-              future.
+              Explore DollarFar’s Retirement Decision Lab — six free calculators
+              grounded in practical economics, designed to help retirees
+              understand how long savings may last, where money can go further,
+              and how everyday living costs shape real retirement outcomes.
+            </p>
+            <p className="md:text-[20px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor mt-5">
+              As the platform grows, <span className="font-bold">Wealth-Building</span> and <span className="font-bold">Home Buying & Borrowing </span>
+              labs extend that same clarity to earlier stages of life — from
+              understanding compounding growth to testing real-world mortgage
+              scenarios.
+            </p>
+            <p className="md:text-[20px] text-[14px] text-[#696969] dark:text-darkModeNormalTextColor mt-5 font-semibold">
+              Start with clarity. Test assumptions. Decide with confidence —
+              with tools first, and optional human guidance for those who want
+              help interpreting results and thinking through trade-offs before
+              acting.
             </p>
             <div className="flex lg:justify-start justify-center">
               <button
@@ -68,7 +80,7 @@ export default function Landing() {
       </div>
 
       {/* Retirement Decision Lab Tools  */}
-      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-orange-200 dark:border-gray-600 rounded-xl bg-gradient-to-r from-teal-50 to-orange-50  dark:bg-gray-900">
+      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-orange-200 dark:border-gray-600 rounded-xl bg-gradient-to-r from-teal-50 to-orange-50 dark:from-gray-600 dark:to-gray-700">
         <div className="mb-5">
           <h1 className="text-2xl font-bold mb-1">Retirement Decision Lab</h1>
           <p className="text-lg">
@@ -272,7 +284,7 @@ export default function Landing() {
       </section>
 
       {/* Wealth Building Lab  */}
-      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-orange-200 dark:border-gray-600 rounded-xl bg-gradient-to-r from-teal-50 to-orange-50 dark:bg-gray-900">
+      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-orange-200 dark:border-gray-600 rounded-xl bg-gradient-to-r from-teal-50 to-orange-50 dark:from-gray-600 dark:to-gray-700">
         <div className="mb-5">
           <h1 className="text-2xl font-bold mb-1">Wealth Building Lab</h1>
           <p className="text-lg">
@@ -415,7 +427,7 @@ export default function Landing() {
       </section>
 
       {/* Home buying / Borrowing lab  */}
-      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-orange-200 dark:border-gray-600 rounded-xl bg-gradient-to-r from-teal-50 to-orange-50 dark:bg-gray-900">
+      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-orange-200 dark:border-gray-600 rounded-xl bg-gradient-to-r from-teal-50 to-orange-50 dark:from-gray-600 dark:to-gray-700">
         <div className="mb-5">
           <h1 className="text-2xl font-bold mb-1">Home Buying/Borrowing Lab</h1>
           <p className="text-lg">
@@ -508,7 +520,7 @@ export default function Landing() {
       </section>
 
       {/* Proof of Concept Platform  */}
-      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-orange-200 dark:border-gray-600 rounded-xl bg-gradient-to-r from-teal-50 to-orange-50 dark:bg-gray-900">
+      <section className="lg:mx-[5rem] md:mx-[2rem] mx-[1rem] mb-12 shadow-lg md:p-8 p-3 border-[1px] border-orange-200 dark:border-gray-600 rounded-xl bg-gradient-to-r from-teal-50 to-orange-50 dark:from-gray-600 dark:to-gray-700">
         <div className="mb-8">
           <h1 className="text-2xl font-bold mb-1">Proof of Concept Platform</h1>
           <p className="text-lg">
@@ -692,7 +704,7 @@ export default function Landing() {
       <HumanGuidance />
 
       {/* Book Section  */}
-      <section className="bg-gradient-to-r from-teal-50 to-orange-50 dark:bg-neutral-800 flex md:flex-row flex-col items-center justify-center md:px-20 md:py-16 py-5 px-5 md:gap-16 gap-5 mt-20">
+      <section className="bg-gradient-to-r from-teal-50 to-orange-50 dark:from-gray-800 dark:to-gray-900 flex md:flex-row flex-col items-center justify-center md:px-20 md:py-16 py-5 px-5 md:gap-16 gap-5 mt-20">
         <img src={assets.bookCoverPageWithBadge} alt="Book Cover Page" />
 
         <div>
