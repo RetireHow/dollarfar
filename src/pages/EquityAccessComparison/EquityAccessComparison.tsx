@@ -217,17 +217,17 @@ export default function EquityAccessComparison(): JSX.Element {
         </p>
 
         {/* INPUT CARD */}
-        <section className="rounded-[18px] bg-gradient-to-r from-teal-50 to-orange-50 dark:bg-gray-900 shadow-lg p-6">
+        <section className="rounded-[18px] bg-gradient-to-r from-teal-50 to-orange-50 dark:from-gray-800 dark:to-gray-900 shadow-lg p-6 dark:shadow-gray-900/30">
           <div className="flex justify-center gap-3 flex-wrap mb-4">
             <button
               disabled
-              className="px-4 py-2 rounded-xl bg-[#12304a] text-white font-semibold opacity-70"
+              className="px-4 py-2 rounded-xl bg-[#12304a] text-white font-semibold opacity-70 dark:bg-gray-700 dark:text-gray-300"
             >
               HELOC — Interest-Only
             </button>
             <button
               disabled
-              className="px-4 py-2 rounded-xl bg-[#12304a] text-white font-semibold opacity-70"
+              className="px-4 py-2 rounded-xl bg-[#12304a] text-white font-semibold opacity-70 dark:bg-gray-700 dark:text-gray-300"
             >
               Reverse Mortgage — No Payments
             </button>
@@ -244,14 +244,16 @@ export default function EquityAccessComparison(): JSX.Element {
               ["exist", "Existing mortgage (optional)", "e.g., 0 if none"],
             ].map(([id, label, placeholder]) => (
               <div key={id}>
-                <label className="font-semibold text-sm">{label}</label>
+                <label className="font-semibold text-sm dark:text-gray-300">
+                  {label}
+                </label>
                 {id !== "exist" && <RedStar />}
                 <input
                   id={id}
                   value={inputs[id as keyof Inputs]}
                   onChange={handleChange}
                   placeholder={placeholder}
-                  className="w-full mt-1 rounded-xl border border-gray-300 px-3 py-2"
+                  className="w-full mt-1 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400"
                 />
               </div>
             ))}
@@ -260,13 +262,13 @@ export default function EquityAccessComparison(): JSX.Element {
           <div className="flex justify-center gap-3 mt-5">
             <button
               onClick={calculate}
-              className="px-5 py-2 rounded-xl bg-[#12304a] text-white font-bold hover:brightness-110"
+              className="px-5 py-2 rounded-xl bg-[#12304a] dark:bg-blue-700 text-white font-bold hover:brightness-110 dark:hover:bg-blue-600 transition-colors"
             >
               Calculate
             </button>
             <button
               onClick={handleReset}
-              className="px-5 py-2 rounded-xl bg-gray-500 text-white font-bold"
+              className="px-5 py-2 rounded-xl bg-gray-500 dark:bg-gray-700 text-white font-bold hover:bg-gray-600 dark:hover:bg-gray-600 transition-colors"
             >
               Reset
             </button>
@@ -284,9 +286,11 @@ export default function EquityAccessComparison(): JSX.Element {
             ).map(([title, prefix, canvasRef, suffix]) => (
               <div
                 key={prefix}
-                className="bg-gradient-to-r from-teal-50 to-orange-50 dark:bg-gray-900 rounded-[18px] p-6 shadow"
+                className="bg-gradient-to-r from-teal-50 to-orange-50 dark:from-gray-800 dark:to-gray-900 rounded-[18px] p-6 shadow dark:shadow-gray-900/30"
               >
-                <h2 className="font-bold text-lg mb-3">{title}</h2>
+                <h2 className="font-bold text-lg mb-3 dark:text-gray-200">
+                  {title}
+                </h2>
 
                 {[
                   ["a", "Avg annual interest cost"],
@@ -297,9 +301,14 @@ export default function EquityAccessComparison(): JSX.Element {
                   ["pct", "% equity used"],
                   ["total", "Lifetime total cost"],
                 ].map(([key, label]) => (
-                  <div key={key} className="border rounded-lg p-3 mb-2">
-                    <div className="text-sm text-gray-500">{label}</div>
-                    <div className="text-xl font-bold">
+                  <div
+                    key={key}
+                    className="border rounded-lg p-3 mb-2 dark:border-gray-700 dark:bg-gray-800/50"
+                  >
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      {label}
+                    </div>
+                    <div className="text-xl font-bold dark:text-gray-100">
                       {format(
                         results[`${prefix}_${key}` as keyof Results] as number,
                       )}
@@ -308,18 +317,21 @@ export default function EquityAccessComparison(): JSX.Element {
                   </div>
                 ))}
 
-                <div className="mt-3 border rounded-lg p-3">
-                  <div className="text-sm font-semibold text-gray-500 mb-1">
+                <div className="mt-3 border rounded-lg p-3 dark:border-gray-700">
+                  <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-1">
                     Equity over time {suffix}
                   </div>
-                  <canvas ref={canvasRef} className="w-full h-[60px]" />
+                  <canvas 
+                    ref={canvasRef} 
+                    className="w-full h-[60px] dark:bg-gray-800/30 rounded" 
+                  />
                 </div>
               </div>
             ))}
           </section>
         )}
 
-        <p className="text-center text-xs text-gray-500 mt-6">
+        <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-6">
           Educational model; excludes inflation and tax effects.
         </p>
       </div>

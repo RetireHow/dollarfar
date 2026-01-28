@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-r from-teal-300 to-orange-300 px-6 py-10">
+    <footer className="bg-gradient-to-r from-teal-300 to-orange-300 dark:from-gray-700 dark:to-gray-900 px-6 py-10">
       <div className="max-w-7xl mx-auto space-y-6 text-center">
         {/* Row 1: Navigation Links */}
         <ul className="flex flex-wrap justify-center gap-6 text-sm font-bold">
@@ -33,7 +33,7 @@ export default function Footer() {
         </ul>
 
         {/* Row 2: Copyright */}
-        <p className="text-xs text-gray-700">
+        <p className="text-xs text-gray-700 dark:text-gray-300">
           &copy;Copyright All rights reserved by Retirehow? Inc{" "}
           {new Date().getFullYear()}
         </p>

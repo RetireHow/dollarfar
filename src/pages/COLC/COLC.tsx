@@ -27,7 +27,7 @@ export default function COLC() {
         <PageHero data={data} />
       </div>
 
-      <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] dark:border-darkModeBorderColor rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[3rem] bg-gradient-to-r from-teal-50 to-orange-50 mt-8">
+      <section className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] dark:border-darkModeBorderColor rounded-[10px] md:p-[2.5rem] p-[1rem] mb-[3rem] bg-gradient-to-r from-teal-50 to-orange-50 dark:from-gray-900 dark:to-dark-800 mt-8">
         <COLCForm />
         {!COLCModifiedCostData?.output ? (
           <div className="flex justify-center">
