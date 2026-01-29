@@ -85,10 +85,7 @@ const VerifyOtpForm: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-start justify-center py-[2rem] bg-gray-100 dark:bg-gray-900 px-4">
-      <form
-        onSubmit={handleVerify}
-        className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-lg shadow-md w-full max-w-md"
-      >
+      <form className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl sm:text-3xl font-semibold text-center text-gray-800 dark:text-gray-100 mb-2">
           Verify Your Identity
         </h2>
@@ -145,6 +142,7 @@ const VerifyOtpForm: React.FC = () => {
           </button>
         </div>
         <button
+          onClick={handleVerify}
           type="button"
           disabled={isLoading}
           className={`w-full text-white py-2 duration-300 rounded-md transition flex justify-center items-center h-[45px] mt-5 ${
