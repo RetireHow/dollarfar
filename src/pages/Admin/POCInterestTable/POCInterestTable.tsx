@@ -22,7 +22,7 @@ export default function POCInterestTable(): JSX.Element {
           <thead>
             <tr className="bg-gray-100">
               <th className="border border-gray-300 px-4 py-2 text-left">
-                First Name
+                Full Name
               </th>
               <th className="border border-gray-300 px-4 py-2 text-left">
                 Email

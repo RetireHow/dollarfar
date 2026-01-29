@@ -5,6 +5,7 @@ import { showApiErrorToast } from "../../utils/showApiErrorToast";
 import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import useTitle from "../../hooks/useTitle";
+import RedStar from "../../components/UI/RedStar";
 
 type POCFormState = {
   full_name: string;
@@ -39,7 +40,7 @@ export default function POCInterestForm(): JSX.Element {
   const [showError, setShowError] = useState(false);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ): void => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
@@ -233,7 +234,7 @@ export default function POCInterestForm(): JSX.Element {
                   <div className="grid md:grid-cols-3 grid-cols-1 gap-[12px]">
                     <div className="rounded-[16px] border border-[rgba(18,48,74,.06)] bg-white p-[14px] dark:border-gray-700 dark:bg-gray-700/50">
                       <label className="mb-[8px] block text-[13.6px] font-bold text-[#12304a] dark:text-blue-100">
-                        Full name
+                        Full name <RedStar />
                       </label>
                       <input
                         type="text"
@@ -253,7 +254,7 @@ export default function POCInterestForm(): JSX.Element {
 
                     <div className="rounded-[16px] border border-[rgba(18,48,74,.06)] bg-white p-[14px] dark:border-gray-700 dark:bg-gray-700/50">
                       <label className="mb-[8px] block text-[13.6px] font-bold text-[#12304a] dark:text-blue-100">
-                        Email
+                        Email <RedStar />
                       </label>
                       <input
                         type="email"
@@ -272,7 +273,7 @@ export default function POCInterestForm(): JSX.Element {
                     </div>
                     <div className="rounded-[16px] border border-[rgba(18,48,74,.06)] bg-white p-[14px] dark:border-gray-700 dark:bg-gray-700/50">
                       <label className="mb-[8px] block text-[13.6px] font-bold text-[#12304a] dark:text-blue-100">
-                        Phone
+                        Phone <RedStar />
                       </label>
                       <input
                         type="text"
@@ -328,7 +329,7 @@ export default function POCInterestForm(): JSX.Element {
                             )}
                           </span>
                         </label>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -359,7 +360,7 @@ export default function POCInterestForm(): JSX.Element {
                             </strong>
                           </span>
                         </label>
-                      )
+                      ),
                     )}
                   </div>
 
@@ -460,7 +461,7 @@ export default function POCInterestForm(): JSX.Element {
                       seasonal living — not a tour and not relocation.
                     </p>
 
-                    <label className="mt-[10px] flex items-start gap-[10px] rounded-[14px] bg-white p-[10px] dark:bg-gray-700/50">
+                    <label className="mt-[10px] flex items-center gap-[10px] rounded-[14px] bg-white p-[10px] dark:bg-gray-700/50">
                       <input
                         type="checkbox"
                         name="ack"
@@ -471,7 +472,7 @@ export default function POCInterestForm(): JSX.Element {
                       />
                       <span className="text-[13.6px] text-[#556574] dark:text-gray-400">
                         I understand — I'm exploring fit, not making a long-term
-                        commitment today.
+                        commitment today. <RedStar />
                       </span>
                     </label>
                     {showError && !form.ack && (
