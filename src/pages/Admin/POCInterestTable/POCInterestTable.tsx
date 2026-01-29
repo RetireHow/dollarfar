@@ -45,7 +45,7 @@ export default function POCInterestTable(): JSX.Element {
             {data?.data?.map((submission: IPOCInterest, index: number) => (
               <tr key={index} className="hover:bg-gray-50">
                 <td className="border border-gray-300 px-4 py-2">
-                  {submission.first_name}
+                  {submission.full_name}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   {submission.email}

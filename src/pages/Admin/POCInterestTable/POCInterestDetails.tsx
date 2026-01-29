@@ -39,7 +39,7 @@ export default function POCInterestDetails(): JSX.Element {
               POC Interest Submission Details
             </h1>
             <p className="text-gray-600">
-              Detailed information for {submission.first_name}'s submission
+              Detailed information for {submission.full_name}'s submission
             </p>
           </div>
 
@@ -70,10 +70,10 @@ export default function POCInterestDetails(): JSX.Element {
               <div className="space-y-3">
                 <div>
                   <label className="block text-sm font-medium text-gray-500 mb-1">
-                    First Name
+                    Full Name
                   </label>
                   <p className="text-lg font-medium text-gray-900">
-                    {submission.first_name}
+                    {submission.full_name}
                   </p>
                 </div>
                 <div>
