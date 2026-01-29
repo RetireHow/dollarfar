@@ -52,7 +52,7 @@ const FeedbackForm: React.FC = () => {
     //API Call
     try {
       setIsLoading(true);
-      const response = await fetch(`${baseUrl}/feedbacks/create-feedback`, {
+      const response = await fetch(`${baseUrl}/feedbacks`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -60,6 +60,7 @@ const FeedbackForm: React.FC = () => {
         body: JSON.stringify(formData),
       });
       const data = await response.json();
+      console.log('Feedback error===========> ', data)
       if (data?.success) {
         return setSubmitted(true);
       }else{
