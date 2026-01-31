@@ -37,8 +37,9 @@ export default function BgtLoanForm() {
   } = useAppSelector((state) => state.budgetCalculator);
 
   return (
-    <div className="space-y-[2rem]">
-      <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">
+    <div className="space-y-[2rem] flex flex-col justify-between h-full">
+      <div>
+        <h3 className="md:text-[2rem] text-[18px] font-bold mb-[1.25rem]">
         Loans
       </h3>
 
@@ -99,6 +100,7 @@ export default function BgtLoanForm() {
           />
         </section>
       </DFForm>
+      </div>
 
       <div className="grid grid-cols-2 md:gap-10 gap-3">
         <button

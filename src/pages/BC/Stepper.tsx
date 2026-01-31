@@ -12,7 +12,7 @@ export default function Stepper({ steps }: { steps: number[] }) {
         {/* Progress Bar */}
         <div className="relative h-[10px] w-full bg-gray-300 rounded-full mt-[1.25rem]">
           <div
-            className="h-full bg-gray-800 rounded-full transition-all duration-300"
+            className="h-full bg-orange-700 rounded-full transition-all duration-300"
             style={{ width: `${progressWidth}%` }}
           ></div>
         </div>
@@ -24,9 +24,9 @@ export default function Stepper({ steps }: { steps: number[] }) {
               key={index}
               className={`md:w-[2.5rem] w-[1.5rem] md:h-[2.5rem] h-[1.5rem] rounded-full border-[1px] border-gray-500 flex justify-center items-center font-extrabold md:text-[1.25rem] text-[14px] ${
                 index < activeStep
-                  ? "bg-black text-white" // Completed steps
+                  ? "bg-teal-500 text-white" // Completed steps
                   : index === activeStep
-                  ? "bg-gray-800 text-white" // Active step
+                  ? "bg-orange-500 text-white" // Active step
                   : "bg-white text-gray-800" // Incomplete steps
               }`}
             >

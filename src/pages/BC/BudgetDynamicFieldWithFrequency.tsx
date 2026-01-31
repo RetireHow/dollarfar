@@ -2,6 +2,15 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { useAppDispatch } from "../../redux/hooks";
 import {
   addDynamicField,
+  calculateCashFlow,
+  calculateTotalEducationalExpenses,
+  calculateTotalExpenses,
+  calculateTotalHousingExpenses,
+  calculateTotalIncome,
+  calculateTotalLoansExpenses,
+  calculateTotalOtherExpenses,
+  calculateTotalSavingsExpenses,
+  calculateTotalTransportExpenses,
   deleteDynamicField,
   updateDynamicFieldFrequency,
   updateDynamicFieldTitle,
@@ -11,6 +20,7 @@ import { Select } from "antd";
 import { BCFrequencyOptions } from "./BCFrequencyOptions";
 import { isNegative } from "../../utils/isNegative";
 import Error from "../../components/UI/Error";
+import { ChangeEvent } from "react";
 
 type TDynamicField = {
   title: string;
@@ -33,6 +43,132 @@ export default function BudgetDynamicFieldWithFrequency({
   dynamicFields: TDynamicField[];
 }) {
   const dispatch = useAppDispatch();
+
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    dispatch(
+      updateDynamicFieldValue({
+        stepName,
+        field,
+        value: e.target.value,
+        index,
+      }),
+    );
+
+    if (stepName === "income") {
+      dispatch(calculateTotalIncome());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "housing") {
+      dispatch(calculateTotalHousingExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "transport") {
+      dispatch(calculateTotalTransportExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "education") {
+      dispatch(calculateTotalEducationalExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "other") {
+      dispatch(calculateTotalOtherExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "loans") {
+      dispatch(calculateTotalLoansExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "savings") {
+      dispatch(calculateTotalSavingsExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    }
+  };
+
+  const handleSelectChange = (value: string, index: number) => {
+    dispatch(
+      updateDynamicFieldFrequency({
+        stepName,
+        field,
+        value,
+        index,
+      }),
+    );
+
+    if (stepName === "income") {
+      dispatch(calculateTotalIncome());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "housing") {
+      dispatch(calculateTotalHousingExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "transport") {
+      dispatch(calculateTotalTransportExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "education") {
+      dispatch(calculateTotalEducationalExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "other") {
+      dispatch(calculateTotalOtherExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "loans") {
+      dispatch(calculateTotalLoansExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "savings") {
+      dispatch(calculateTotalSavingsExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    }
+  };
+
+  const handleDelete = (index: number) => {
+    dispatch(
+      deleteDynamicField({
+        stepName,
+        field,
+        index,
+      }),
+    );
+
+    if (stepName === "income") {
+      dispatch(calculateTotalIncome());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "housing") {
+      dispatch(calculateTotalHousingExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "transport") {
+      dispatch(calculateTotalTransportExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "education") {
+      dispatch(calculateTotalEducationalExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "other") {
+      dispatch(calculateTotalOtherExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "loans") {
+      dispatch(calculateTotalLoansExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "savings") {
+      dispatch(calculateTotalSavingsExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    }
+  };
+
   return (
     <>
       {dynamicFields?.map((salary, index) => {
@@ -56,7 +192,7 @@ export default function BudgetDynamicFieldWithFrequency({
                         field,
                         value: e.target.value,
                         index,
-                      })
+                      }),
                     );
                   }}
                 />
@@ -72,16 +208,7 @@ export default function BudgetDynamicFieldWithFrequency({
                   placeholder="Enter amount here"
                   onWheel={(e) => e.currentTarget.blur()}
                   value={amount}
-                  onChange={(e) => {
-                    dispatch(
-                      updateDynamicFieldValue({
-                        stepName,
-                        field,
-                        value: e.target.value,
-                        index,
-                      })
-                    );
-                  }}
+                  onChange={(e) => handleInputChange(e, index)}
                 />
                 {isNegative(Number(amount)) && (
                   <Error message="Negative value is not allowed." />
@@ -93,7 +220,7 @@ export default function BudgetDynamicFieldWithFrequency({
               <label className="block mb-[0.3rem] font-semibold md:text-[1rem] text-[14px]">
                 Frequency
               </label>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 md:max-w-[200px] w-full">
                 <Select
                   value={frequency}
                   style={{
@@ -111,28 +238,11 @@ export default function BudgetDynamicFieldWithFrequency({
                     />
                   }
                   placeholder="Select one"
-                  onChange={(value) => {
-                    dispatch(
-                      updateDynamicFieldFrequency({
-                        stepName,
-                        field,
-                        value,
-                        index,
-                      })
-                    );
-                  }}
+                  onChange={(value) => handleSelectChange(value, index)}
                 ></Select>
                 <div className="border-[1px] text-red-500  duration-200 border-red-500 hover:bg-red-500 hover:text-white rounded-full p-2 cursor-pointer">
                   <Icon
-                    onClick={() => {
-                      dispatch(
-                        deleteDynamicField({
-                          stepName,
-                          field,
-                          index,
-                        })
-                      );
-                    }}
+                    onClick={() => handleDelete(index)}
                     icon="ic:baseline-delete"
                     width="24"
                     height="24"
@@ -156,7 +266,7 @@ export default function BudgetDynamicFieldWithFrequency({
                   frequency: "12",
                   totalAnnualAmount: 0,
                 },
-              })
+              }),
             )
           }
           className="border-[1px] border-[#229D00] text-[#229D00] md:text-[1rem] text-[14px] hover:bg-[#229D00] duration-200 hover:text-white px-2 py-1 rounded-md flex items-center gap-1"

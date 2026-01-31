@@ -77,7 +77,7 @@ const drawSpark = (
 };
 
 export default function EquityAccessComparison(): JSX.Element {
-   useTitle("Dollarfar | Equity Access Calculator");
+  useTitle("Dollarfar | Equity Access Calculator");
   const [showResults, setShowResults] = useState<boolean>(false);
 
   const [inputs, setInputs] = useState<Inputs>({
@@ -259,16 +259,16 @@ export default function EquityAccessComparison(): JSX.Element {
             ))}
           </div>
 
-          <div className="flex justify-center gap-3 mt-5">
+          <div className="grid md:grid-cols-2 gap-4 max-w-[860px] mx-auto mt-5">
             <button
               onClick={calculate}
-              className="px-5 py-2 rounded-xl bg-[#12304a] dark:bg-blue-700 text-white font-bold hover:brightness-110 dark:hover:bg-blue-600 transition-colors"
+              className="px-5 py-3 w-full rounded-xl bg-teal-600 dark:bg-blue-700 text-white font-bold hover:brightness-110 dark:hover:bg-blue-600 transition-colors"
             >
               Calculate
             </button>
             <button
               onClick={handleReset}
-              className="px-5 py-2 rounded-xl bg-gray-500 dark:bg-gray-700 text-white font-bold hover:bg-gray-600 dark:hover:bg-gray-600 transition-colors"
+              className="px-5 py-3 w-full rounded-xl bg-gray-500 dark:bg-gray-700 text-white font-bold hover:bg-gray-600 dark:hover:bg-gray-600 transition-colors"
             >
               Reset
             </button>
@@ -321,9 +321,9 @@ export default function EquityAccessComparison(): JSX.Element {
                   <div className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-1">
                     Equity over time {suffix}
                   </div>
-                  <canvas 
-                    ref={canvasRef} 
-                    className="w-full h-[60px] dark:bg-gray-800/30 rounded" 
+                  <canvas
+                    ref={canvasRef}
+                    className="w-full h-[60px] dark:bg-gray-800/30 rounded"
                   />
                 </div>
               </div>

@@ -256,13 +256,13 @@ export default function MoneyStretch(): JSX.Element {
                 <div className="flex gap-3 mt-6">
                   <button
                     onClick={run}
-                    className="bg-teal-700 dark:bg-teal-600 text-white px-5 py-2 rounded-lg hover:bg-teal-800 dark:hover:bg-teal-700"
+                    className="bg-teal-700 dark:bg-teal-600 text-white px-5 py-3 rounded-lg hover:bg-teal-800 dark:hover:bg-teal-700 w-full"
                   >
                     Calculate Scenario
                   </button>
                   <button
                     onClick={() => window.print()}
-                    className="border dark:border-slate-600 px-5 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                    className="border dark:border-slate-600 px-5 py-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 w-full"
                   >
                     Print / Save PDF
                   </button>
@@ -276,7 +276,9 @@ export default function MoneyStretch(): JSX.Element {
 
                 {results && (
                   <div className="border-l-4 border-teal-600 dark:border-teal-500 bg-teal-50 dark:bg-teal-900/20 p-4 rounded mb-4 text-sm leading-6">
-                    <strong className="dark:text-slate-200">Scenario summary</strong>
+                    <strong className="dark:text-slate-200">
+                      Scenario summary
+                    </strong>
                     {line}
                   </div>
                 )}
@@ -322,16 +324,18 @@ export default function MoneyStretch(): JSX.Element {
                     needed to match these savings. Longevity uses a simple
                     zero‑real‑return model for intuition, not forecast.
                   </p>
-                  <div className="flex gap-3 mt-4">
-                    <Link to="/cost-of-living-calculator">
-                      <button className="bg-teal-700 dark:bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-800 dark:hover:bg-teal-700">
-                        Compare Cities
-                      </button>
+                  <div className="flex gap-3 mt-4 w-full">
+                    <Link
+                      className="bg-teal-700 dark:bg-teal-600 text-white px-4 py-3 text-center rounded-lg hover:bg-teal-800 dark:hover:bg-teal-700 w-full"
+                      to="/cost-of-living-calculator"
+                    >
+                      Compare Cities
                     </Link>
-                    <Link to="/retirement-simulator/poc-interest">
-                      <button className="bg-slate-900 dark:bg-slate-800 text-white px-4 py-2 rounded-lg font-bold hover:bg-slate-800 dark:hover:bg-slate-700">
-                        Open City Fit Tool
-                      </button>
+                    <Link
+                      className="bg-slate-900 dark:bg-slate-800 text-white px-4 py-3 text-center rounded-lg font-bold hover:bg-slate-800 dark:hover:bg-slate-700 w-full"
+                      to="/retirement-simulator/poc-interest"
+                    >
+                      Open City Fit Tool
                     </Link>
                   </div>
                   <ul className="mt-4 text-sm space-y-2 dark:text-slate-300">

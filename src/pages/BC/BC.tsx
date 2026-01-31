@@ -209,12 +209,12 @@ export default function BC() {
 
         <section
           id="NWReport"
-          className="md:mx-[5rem] mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] md:p-[2.5rem] p-[1rem] md:mb-[5rem] mb-[3rem]"
+          className="mx-[1rem] border-[1px] border-[#EAECF0] rounded-[10px] mt-5 p-5"
         >
           {/* Header  */}
-          <div className="border-b-[1px] border-[#0000001A] md:pb-[2.5rem] pb-[1.3rem] mb-[3rem]">
+          <div className="border-b-[1px] border-[#0000001A] pb-[1.3rem]">
             <div className="flex justify-between items-center flex-wrap">
-              <h3 className="md:text-[1.5rem] text-[18px] font-bold md:mb-0 mb-3">
+              <h3 className="md:text-[1.5rem] text-[18px] font-bold">
                 Budget Calculator
               </h3>
               <div className="lg:w-auto w-full">

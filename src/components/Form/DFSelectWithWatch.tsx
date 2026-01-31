@@ -6,6 +6,15 @@ import { BCFrequencyOptions } from "../../pages/BC/BCFrequencyOptions";
 import { useEffect } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import {
+  calculateCashFlow,
+  calculateTotalEducationalExpenses,
+  calculateTotalExpenses,
+  calculateTotalHousingExpenses,
+  calculateTotalIncome,
+  calculateTotalLoansExpenses,
+  calculateTotalOtherExpenses,
+  calculateTotalSavingsExpenses,
+  calculateTotalTransportExpenses,
   TBudgetSlice,
   TStaticPayloadField,
   updateBgtStaticField,
@@ -44,8 +53,37 @@ export default function DFSelectWithWatch({
         field: field as keyof TStaticPayloadField,
         subField: name,
         value: value,
-      })
+      }),
     );
+    if (stepName === "income") {
+      dispatch(calculateTotalIncome());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "housing") {
+      dispatch(calculateTotalHousingExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "transport") {
+      dispatch(calculateTotalTransportExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "education") {
+      dispatch(calculateTotalEducationalExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "other") {
+      dispatch(calculateTotalOtherExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "loans") {
+      dispatch(calculateTotalLoansExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "savings") {
+      dispatch(calculateTotalSavingsExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    }
   }, [dispatch, value, field, name, stepName]);
 
   return (
@@ -70,7 +108,7 @@ export default function DFSelectWithWatch({
               border: "1px solid #838383",
               borderRadius: "8px",
             }}
-            className="md:w-[300px] w-full"
+            className="md:max-w-[200px] w-full"
             variant="borderless"
             options={BCFrequencyOptions}
             suffixIcon={

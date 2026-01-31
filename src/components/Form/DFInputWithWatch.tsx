@@ -4,6 +4,15 @@ import { useEffect } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import BCTooltip from "../../pages/BC/BCTooltip";
 import {
+  calculateCashFlow,
+  calculateTotalEducationalExpenses,
+  calculateTotalExpenses,
+  calculateTotalHousingExpenses,
+  calculateTotalIncome,
+  calculateTotalLoansExpenses,
+  calculateTotalOtherExpenses,
+  calculateTotalSavingsExpenses,
+  calculateTotalTransportExpenses,
   TBudgetSlice,
   TStaticPayloadField,
   updateBgtStaticField,
@@ -34,9 +43,7 @@ export default function DFInputWithWatch({
   tooltipTitle,
   subField,
 }: TInputProps) {
-  const {
-    register,
-  } = useFormContext();
+  const { register } = useFormContext();
 
   const dispatch = useAppDispatch();
 
@@ -52,8 +59,37 @@ export default function DFInputWithWatch({
         field: name as keyof TStaticPayloadField,
         subField,
         value: value,
-      })
+      }),
     );
+    if (stepName === "income") {
+      dispatch(calculateTotalIncome());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "housing") {
+      dispatch(calculateTotalHousingExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "transport") {
+      dispatch(calculateTotalTransportExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "education") {
+      dispatch(calculateTotalEducationalExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "other") {
+      dispatch(calculateTotalOtherExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "loans") {
+      dispatch(calculateTotalLoansExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    } else if (stepName === "savings") {
+      dispatch(calculateTotalSavingsExpenses());
+      dispatch(calculateTotalExpenses());
+      dispatch(calculateCashFlow());
+    }
   }, [value, dispatch, name, stepName, subField]);
 
   return (
@@ -80,9 +116,7 @@ export default function DFInputWithWatch({
         readOnly={readonly}
         onWheel={(e) => e.currentTarget.blur()}
       />
-      {isNegative(value) && (
-        <Error message="Negative value is not allowed." />
-      )}
+      {isNegative(value) && <Error message="Negative value is not allowed." />}
     </div>
   );
 }
